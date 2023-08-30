@@ -1,0 +1,43 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-gitops
+  namespace: flux-system
+spec:
+  interval: 30m
+  ref:
+    branch: main
+  secretRef:
+    name: github-deploy-key
+  url: ssh://git@github.com:dmfrey/home-gitops.git
+  ignore: |
+    # exclude all
+    /*
+    # include kubernetes directory
+    !/kubernetes/
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: ./kubernetes/flux
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  dependsOn:
+    - name: flux
+  decryption:
+    provider: sops
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-settings
+        optional: false
+      - kind: Secret
+        name: cluster-secrets

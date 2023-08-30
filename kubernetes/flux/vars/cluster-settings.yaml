@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+data:
+  ORGANIZATION: HomeLab
+  CLUSTER_NAME: microk8s-cluster
+  CLUSTER_APISERVER_ENDPOINT: 192.168.86.18
+  QNAP_ADDR: 192.168.86.11
+
+  SVC_NGINX_ADDR: 192.168.86.10
+  SVC_HASS_ADDR: 192.168.86.42
+  SVC_MASS_ADDR: 192.168.86.62
+  SVC_PLEX_ADDR: 192.168.86.79
+  SVC_VPN_ADDR: 192.168.86.77
+  SVC_SMTP_RELAY_ADDR: 192.168.77.25
+  WHITELIST_IP_RANGE: "10.0.0.0/9, 192.168.86.0/24"
