@@ -27,7 +27,7 @@
   ```
   * `sudo netplan apply`
   
-  Verify network
+  *Verify network*
   * `ip a`
 
 3. Set Hostname
@@ -35,7 +35,7 @@
   * `sudo hostnamect dmf-rpi-00[1|2|3|4]`
   * `sudo hostnamect "Ubuntu Server RPI microk8s cluster 00[1|2|3|4]" --pretty`
 
-  Verify hostname
+  *Verify hostname*
   * `sudo hostnamectl`
 
 4. Reboot
@@ -70,7 +70,7 @@
   exit
   ```
 
-  Verify microk8s
+  *Verify microk8s*
 
   * ssh to server
   * `microk8s status`
@@ -83,7 +83,7 @@
 
   * `sudo snap install kubectl --classic`
 
-  Verify kubectl
+  *Verify kubectl*
 
   * `kubectl get po -A`
 
