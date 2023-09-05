@@ -177,9 +177,12 @@
 
   * `sudo apt install google-cloud-cli`
 
-6. Initialize GCloud CLI
+6. Initialize GCloud CLI and set application default
 
-  * `gcloud init`
+  ```bash
+  gcloud init
+  gcloud auth application-default login
+  ```
 
 ## Install Terraform
 
@@ -227,4 +230,11 @@
   mkdir -p ~/development/dmfrey
   cd ~/development/dmfrey
   git clone git@github.com:dmfrey/home-gitops.git
+  ```
+
+2. Setup infrastructure
+
+  ```bash
+  cd development/git/dmfrey/home-gitops/infrastructure
+  terraform -apply
   ```
