@@ -25,20 +25,23 @@
           search: [192.168.86.1]
           addresses: [192.168.86.1]
   ```
+  
   * `sudo netplan apply`
   
-  *Verify network*
+3. Verify network
+  
   * `ip a`
 
-3. Set Hostname
+4. Set Hostname
 
   * `sudo hostnamect dmf-rpi-00[1|2|3|4]`
   * `sudo hostnamect "Ubuntu Server RPI microk8s cluster 00[1|2|3|4]" --pretty`
 
-  *Verify hostname*
+5. Verify hostname
+  
   * `sudo hostnamectl`
 
-4. Reboot
+6. Reboot
 
 ### Update ssh config
 
@@ -70,32 +73,32 @@
   exit
   ```
 
-  *Verify microk8s*
+3. Verify microk8s
 
   * ssh to server
   * `microk8s status`
 
-3. Setup .kube config
+4. Setup .kube config
 
   * `microk8s config >> ~/.kube/config`
 
-4. Setup kubectl
+5. Setup kubectl
 
   * `sudo snap install kubectl --classic`
 
-  *Verify kubectl*
+6. Verify kubectl
 
   * `kubectl get po -A`
 
-5. Setup kubectl bash completion
+7. Setup kubectl bash completion
 
   * `echo 'source <(kubectl completion bash)' >>~/.bashrc`
 
-6. Setup kubectl aliases
+8. Setup kubectl aliases
 
   ```bash
   echo 'alias k=kubectl' >>~/.bash_aliases
   echo 'complete -o default -F __start_kubectl k' >>~/.bash_aliases
   ```
-7. Exit
+9. Exit
 
