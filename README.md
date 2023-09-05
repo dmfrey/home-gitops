@@ -60,6 +60,59 @@
 
 * `kitty +kitten ssh [server]`
 
+## Setup BackUPS Shutdown
+
+1. Install i2c-tools
+
+  * `sudo apt install i2c-tools python3-smbus`
+
+2. Verify GPIO pins
+
+  * `sudo i2cdetect -y 1`
+
+3. Download and install the scripts
+
+  ```bash
+  mkdir -p development/git/geekworm-com
+  cd development/git/geekworm-com
+  git clone https://github.com/geekworm-com/x728-script
+  cd x728-script
+  chmod +x *.sh
+  sudo cp -f ./x728-pwr.sh /usr/local/bin/
+  sudo cp -f x728-pwr.service /lib/systemd/system
+  sudo systemctl daemon-reload
+  sudo systemctl enable x728-pwr
+  sudo systemctl start x728-pwr
+  sudo cp -f ./x728-v2.x-softsd.sh /usr/local/bin/x728-softsd.sh
+  echo "alias x728off='sudo /usr/local/bin/x728-softsd.sh'" >>   ~/.bash_aliases
+  ```
+
+4. Verify Safe Software Shutdown
+
+  * `x728off`
+
+5. Setup Realtime Clock module
+
+  * `sudo vi /boot/firmware/config.txt`
+  * Add to the end of the file in the `[all]` block
+
+  ```properties
+  [all]
+  dtoverlay=i2c-rtc,ds1307
+  ```
+
+6. Comment out lines 7-12 in `/lib/udev/hwclock-set`
+
+7. Reboot
+
+8. Set the clock
+
+  ```bash
+  date
+  sudo hwclock -w
+  sudo hwclock -r
+  ```
+
 ## Setup microk8s
 
 1. `sudo snap install microk8s --classic`
@@ -102,3 +155,40 @@
   ```
 9. Exit
 
+## Install Terraform
+
+1. Install HashiCorp GPG Key
+
+  ```bash
+  wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  ```
+
+2. Verify the key's fingerprint
+
+  ```bash
+  gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
+  ```
+
+3. Add the HashiCorp Deb Repository
+
+  ```bash
+  echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+  ```
+
+4. Update APT
+
+  * `sudo apt update`
+
+5. Install terraform
+
+  * `sudo apt install terraform`
+
+6. Verify terraform
+
+  * `terraform -help`
+
+7. Enable tab completion
+
+  * `terraform -install-autocomplete`
+
+8. Exit ssh to enable
