@@ -19,7 +19,7 @@ resource "google_project_service" "kms_api" {
 resource "google_kms_key_ring" "my_key_ring" {
   # Create the key ring on GCP
   project  = var.project
-  name     = "dmfrey-keyring"
+  name     = "homelab5767-keyring"
   location = "global"
   depends_on = [
   google_project_service.kms_api]
