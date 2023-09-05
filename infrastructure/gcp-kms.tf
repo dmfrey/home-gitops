@@ -34,5 +34,5 @@ resource "google_kms_crypto_key" "my_crypto_key" {
 variable "project" {
   description = "The GCP project"
   type        = string
-  default     = "moonlit-watch-362206"
+  default     = "homelab5767"
 }
