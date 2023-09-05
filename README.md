@@ -155,6 +155,32 @@
   ```
 9. Exit
 
+## Install GCloud CLI
+
+1. Install prerequisits
+
+  * `sudo apt install apt-transport-https ca-certificates gnupg curl sudo`
+
+2. Add GCloud Deb Repository
+
+  * `echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list`
+
+3. Add GCloud Deb Repository Public Key to the Keyring
+
+  * `curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -`
+
+4. Update APT
+
+  * `sudo apt update`
+
+5. Install `google-cloud-cli`
+
+  * `sudo apt install google-cloud-cli`
+
+6. Initialize GCloud CLI
+
+  * `gcloud init`
+
 ## Install Terraform
 
 1. Install HashiCorp GPG Key
@@ -192,3 +218,13 @@
   * `terraform -install-autocomplete`
 
 8. Exit ssh to enable
+
+## Setup home-gitops
+
+1. Clone the repo
+
+  ```bash
+  mkdir -p ~/development/dmfrey
+  cd ~/development/dmfrey
+  git clone git@github.com:dmfrey/home-gitops.git
+  ```
