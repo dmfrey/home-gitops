@@ -1,0 +1,80 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: alert-manager
+  namespace: monitor
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: quay.io/prometheus/alertmanager
+      tag: main@sha256:53a9a705d116b0d1e5fd6c7e052533b7cd3671758251f5db89f1f52a741536b4
+
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+
+    service:
+      main:
+        ports:
+          http:
+            port: 9093
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          auth.home.arpa/enabled: "true"
+        hosts:
+          - host: &host alert-manager.${EXTERNAL_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: alert-manager-tls-external
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: alertmanager-configmap
+        mountPath: /etc/alertmanager
+        readOnly: true
+      secrets:
+        enabled: true
+        type: secret
+        name: alert-manager-secret
+        mountPath: /etc/secrets
+        readOnly: true
+
+    resources:
+      requests:
+        cpu: 11m
+        memory: 50M
+      limits:
+        memory: 99M
+
+    volumeClaimTemplates:
+      - name: storage
+        mountPath: /alertmanager
+        accessMode: ReadWriteOnce
+        size: 50Mi
+        storageClass: ceph-block
