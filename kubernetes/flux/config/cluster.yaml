@@ -10,7 +10,7 @@ spec:
     branch: main
   secretRef:
     name: github-deploy-key
-  url: ssh://git@github.com:dmfrey/home-gitops.git
+  url: ssh://git@github.com/dmfrey/home-gitops.git
   ignore: |
     # exclude all
     /*
