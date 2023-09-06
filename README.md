@@ -184,6 +184,51 @@
   gcloud auth application-default login
   ```
 
+## Install Mozilla SOPS
+
+1. Download the binary
+
+  * `curl -LO https://github.com/getsops/sops/releases/download/v3.7.3/sops-v3.7.3.linux.arm64`
+
+2. Move the binary to `/usr/local/bind`
+
+  * `sudo mv sops-v3.7.3.linux.arm64 /usr/local/bin/sops`
+
+3. Make the binary executable
+
+  * `chmod +x /usr/local/bin/sops`
+
+### Install `age`
+
+1. Download the binary
+
+  ```bash
+  AGE_VERSION=$(curl -s "https://api.github.com/repos/FiloSottile/age/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+')
+  curl -Lo age.tar.gz "https://github.com/FiloSottile/age/releases/latest/download/age-v${AGE_VERSION}-linux-arm64.tar.gz"
+  ```
+
+2. Extract the archive
+
+  * `tar xf age.tar.gz`
+
+3. Install the binaries
+
+  ```bash
+  sudo mv age/age /usr/local/bin
+  sudo mv age/age-keygen /usr/local/bin
+  ```
+
+4. Verify age
+
+  * `age -version`
+
+5. Cleanup download
+
+  ```bash
+  rm -rf age.tar.gz
+  rm -rf age
+  ```
+
 ## Install Terraform
 
 1. Install HashiCorp GPG Key
