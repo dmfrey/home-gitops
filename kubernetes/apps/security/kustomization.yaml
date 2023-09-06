@@ -5,8 +5,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./rook-ceph/kustomization.yaml
-  # - ./nfs-subdir/ks.yaml
-  # - ./snapshot-controller/ks.yaml
-  # - ./synology-csi/ks.yaml
-  # - ./volsync/ks.yaml
+  # - ./authentik/ks.yaml
+  - ./cert-manager/ks.yaml
+  # - ./vaultwarden/ks.yaml
