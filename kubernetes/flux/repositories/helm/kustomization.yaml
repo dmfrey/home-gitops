@@ -1,0 +1,39 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - actions-runner-controller.yaml
+  - angelnu.yaml
+  - authentik.yaml
+  - backube.yaml
+  - bitnami.yaml
+  - bjw-s.yaml
+  - cilium.yaml
+  - cloudnative-pg.yaml
+  - emqx.yaml
+  - external-secrets.yaml
+  - emberstack.yaml
+  - grafana.yaml
+  - hajimari.yaml
+  - hashicorp.yaml
+  - influxdata.yaml
+  - ingress-nginx.yaml
+  - intel.yaml
+  - jetstack.yaml
+  - kubereboot.yaml
+  - kubernetes-sigs-descheduler.yaml
+  - kubernetes-sigs-external-dns.yaml
+  - kubernetes-sigs-metrics-server.yaml
+  - kubernetes-sigs-nfd.yaml
+  - kubernetes-sigs-nfs-subdir.yaml
+  - kyverno.yaml
+  - metallb.yaml
+  - piraeus.yaml
+  - postfinance.yaml
+  - prometheus-community.yaml
+  - rook-ceph.yaml
+  - stakater.yaml
+  - synology-csi.yaml
+  - tf-controller.yaml
+  - weave-gitops.yaml
+  - zalando-postgres-operator.yaml

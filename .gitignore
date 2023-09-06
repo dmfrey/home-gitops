@@ -1,1 +1,45 @@
+# Editors
+.vscode/
+
+# Folders
+ignore/
+logs/
+testing/
+
+# Trash
+.DS_Store
+Thumbs.db
+
+# Binaries
+bin
+*.iso
+
+# Sops
+.decrypted~*
+
+# Terraform
+## Local .terraform directories
+**/.terraform/*
+
+## .tfstate files
+*.tfstate
+*.tfstate.*
+
+## terraform plan output
+*tfplan*
+
+## terraform variable files
+*.tfvars
+
+# Other files
+kubeconfig
+
+# Talos clusterconfigs
+infrastructure/talos/**/clusterconfig
+
+# Other
+.env
+*.snap
+setup/cluster/*cluster.yml
+
 scratch/*
