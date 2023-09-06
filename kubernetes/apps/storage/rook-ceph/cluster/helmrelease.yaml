@@ -96,9 +96,9 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "rpi-k8s-master"
+          - name: "dmf-rpi-001"
             devices:
-              - name: "/dev/nvme0n1"
+              - name: "/dev/sda"
           # - name: "jsdyb-nuc-002"
           #   devices:
           #     - name: "/dev/nvme0n1"
