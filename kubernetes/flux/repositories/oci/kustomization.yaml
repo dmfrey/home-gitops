@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # - jefedavis-terraform-authentik.yaml
+  # - jefedavis-terraform-prowlarr.yaml
+  # - jefedavis-terraform-radarr.yaml
+  # - jefedavis-terraform-sonarr.yaml
+  # - jefedavis-terraform-volsync.yaml
+ 
