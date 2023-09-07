@@ -41,7 +41,11 @@
   
   * `sudo hostnamectl`
 
-6. Reboot
+6. Install `nfs-common`
+
+  * `sudo apt install nfs-common`
+
+7. Reboot
 
 ### Update ssh config
 
