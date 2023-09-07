@@ -65,6 +65,63 @@
 
     * `192.168.86.1[6|7|8|9] dmf-rpi-00[1|2|3|4]`
 
+### Setup SWAP space
+
+1. Create a `swapfile`
+
+    ```bash
+    sudo fallocate -l 1G /swapfile
+    ```
+
+1. Verify `swapfile`
+
+    ```bash
+    ls -lh /swapfile
+    ```
+
+1. Enable SWAP
+
+    ```bash
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    ```
+
+1. Verify SWAP enabled
+
+    ```bash
+    sudo swapon --show
+    free -h
+    ```
+
+1. Add SWAP to `/etc/fstab`
+
+    ```bash
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    ```
+
+1. Adjust swappiness
+
+    ```bash
+    sudo vi /etc/sysctl.conf
+    ```
+
+    Add to the end of the file:
+    ```properties
+    vm.swappiness=10
+    ```
+
+1. Adjust Cache Pressure
+
+    ```bash
+    sudo vi /etc/sysctl.conf
+    ```
+
+    Add to the end of the file:
+    ```properties
+    vm.vfs_cache_pressure=50
+    ```
+
 ## Update ssh config
 
 1. Update ssh config
