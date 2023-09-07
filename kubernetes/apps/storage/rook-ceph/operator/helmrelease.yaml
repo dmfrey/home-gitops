@@ -20,7 +20,7 @@ spec:
       enabled: true
 
     csi:
-      kubeletDirPath: /var/lib/kubelet
+      kubeletDirPath: /var/snap/microk8s/common/var/lib/kubelet
       enableCSIHostNetwork: true
       pluginTolerations:
         - effect: "NoExecute"
