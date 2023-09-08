@@ -70,7 +70,7 @@
 1. Create a `swapfile`
 
     ```bash
-    sudo fallocate -l 1G /swapfile
+    sudo fallocate -l 6G /swapfile
     ```
 
 1. Verify `swapfile`
