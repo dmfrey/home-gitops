@@ -16,18 +16,18 @@
 
     ```yaml
     network:
-    version: 2
-    renderer: networkd
-    ethernets:
-      eth0:
-        dhcp4: no
-        dhcp6: no
-        addresses:
-          - 192.168.86.[16|17|18|19]/24
-        gateway4: 192.168.86.1
-        nameservers:
-          search: [192.168.86.1]
-          addresses: [192.168.86.1]
+      version: 2
+      renderer: networkd
+      ethernets:
+        eth0:
+          dhcp4: no
+          dhcp6: no
+          addresses:
+            - 192.168.86.[16|17|18|19]/24
+          gateway4: 192.168.86.1
+          nameservers:
+            search: [192.168.86.1]
+            addresses: [192.168.86.1]
     ```
   
    * `sudo netplan apply`
