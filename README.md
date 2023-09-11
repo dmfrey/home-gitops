@@ -428,8 +428,8 @@ kitty +kitten ssh [server]
 1. Clone the repo
 
     ```bash
-    mkdir -p ~/development/dmfrey
-    cd ~/development/dmfrey
+    mkdir -p ~/development/git/dmfrey
+    cd ~/development/git/dmfrey
     git clone git@github.com:dmfrey/home-gitops.git
     ```
 
