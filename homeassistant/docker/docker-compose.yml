@@ -3,6 +3,11 @@ services:
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
+    environment:
+      - TZ=America/New_York
+      - PUID=1000
+      - PGID=1000
+      - UMASK=007
     volumes:
       - /home/ubuntu/homeassistant/config:/config
       - /etc/localtime:/etc/localtime:ro

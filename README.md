@@ -26,7 +26,7 @@
             - 192.168.86.[16|17|18|19]/24
           routes:
             - to: default
-          via: 192.168.86.1
+              via: 192.168.86.1
           nameservers:
             search: [192.168.86.1]
             addresses: [192.168.86.1]
