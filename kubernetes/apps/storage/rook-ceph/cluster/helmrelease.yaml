@@ -96,10 +96,13 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
+          - name: "dmf-amd-001"
+            devices:
+              - name: "/dev/sdb"
           - name: "dmf-rpi-001"
             devices:
               - name: "/dev/sda"
-          - name: "jsdyb-nuc-002"
+          - name: "dmf-rpi-002"
             devices:
               - name: "/dev/sda"
           # - name: "jsdyb-nuc-003"
