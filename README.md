@@ -330,7 +330,7 @@ kitty +kitten ssh [server]
     curl -LO https://github.com/getsops/sops/releases/download/v3.7.3/sops-v3.7.3.linux.arm64
     ```
 
-1. Move the binary to `/usr/local/bind`
+1. Move the binary to `/usr/local/bin`
 
     ```bash
     sudo mv sops-v3.7.3.linux.arm64 /usr/local/bin/sops
