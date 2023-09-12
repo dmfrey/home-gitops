@@ -437,6 +437,6 @@ kitty +kitten ssh [server]
 
     ```bash
     terraform init
-    cd infrastructure
+    cd home-gitops/infrastructure
     terraform apply
     ```
