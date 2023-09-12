@@ -21,7 +21,7 @@ spec:
     operatorNamespace: storage
 
     monitoring:
-      enabled: true
+      enabled: false
       createPrometheusRules: true
 
     configOverride: |
