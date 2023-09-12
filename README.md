@@ -59,6 +59,21 @@
     sudo apt install nfs-common
     ```
 
+1. Disable IPv6
+
+    ```bash
+    sudo vi /etc/sysctl.conf
+    ```
+
+    Add this property to the end of the file
+    ```properties
+    net.ipv6.conf.all.disable_ipv6 = 1
+    ```
+    Save the file and execute:
+    ```bash
+    sudo sysctl -p
+    ```
+    
 1. Reboot
 
 ### Update `/etc/hosts`
