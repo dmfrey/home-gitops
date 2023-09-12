@@ -436,6 +436,7 @@ kitty +kitten ssh [server]
 1. Setup infrastructure
 
     ```bash
-    cd development/git/dmfrey/home-gitops/infrastructure
-    terraform -apply
+    terraform init
+    cd infrastructure
+    terraform apply
     ```
