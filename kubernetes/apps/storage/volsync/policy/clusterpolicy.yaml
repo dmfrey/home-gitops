@@ -1,0 +1,90 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: volsync-generate-replication-source
+  annotations:
+    policies.kyverno.io/title: Generate Backup Policy
+    policies.kyverno.io/category: Volsync
+    kyverno.io/kyverno-version: 1.6.2
+    policies.kyverno.io/minversion: 1.6.2
+    policies.kyverno.io/subject: Policy
+    policies.kyverno.io/description: >-
+      Generate a volsync replication source for any Deployment or StatefulSet that adds the annotations
+      backup.home.arpa/enable: "true"
+      backup.home.arpa/source: <pvc to backup>
+spec:
+  background: true
+  generateExisting: true 
+  rules:
+    - context:
+        - name: name
+          variable:
+            jmesPath: request.object.metadata.labels."app.kubernetes.io/name"
+        - name: resticSecret
+          apiCall:
+            urlPath: "/api/v1/namespaces/flux-system/secrets/flux-volsync-secret"
+            jmesPath: data
+      name: volsync-generate-secret
+      match:
+        any:
+        - resources:
+            kinds:
+              - Deployment
+              - StatefulSet
+            annotations:
+              backup.home.arpa/enabled: "true"
+      generate:
+        apiVersion: v1
+        kind: Secret
+        name: "{{ name }}-restic-config"
+        namespace: "{{request.namespace}}"
+        data:
+          metadata:
+            labels:
+              app.kubernetes.io/name: "{{ name }}"
+              app.kubernetes.io/instance: "{{request.object.metadata.labels.\"app.kubernetes.io/instance\"}}"
+          stringData:
+            RESTIC_REPOSITORY: "s3:http://{{ base64_decode(resticSecret.S3_BUCKET_URL) }}{{ base64_decode(resticSecret.S3_BUCKET_NAME) }}/{{ name }}"
+            RESTIC_PASSWORD: "{{ base64_decode(resticSecret.RESTIC_PASSWORD) }}"
+            AWS_ACCESS_KEY_ID: "{{ base64_decode(resticSecret.AWS_ACCESS_KEY_ID) }}"
+            AWS_SECRET_ACCESS_KEY: "{{ base64_decode(resticSecret.AWS_SECRET_ACCESS_KEY) }}"
+    - context:
+        - name: name
+          variable:
+            jmesPath: request.object.metadata.labels."app.kubernetes.io/name"
+        - name: source
+          variable:
+            jmesPath: request.object.metadata.annotations."backup.home.arpa/source"
+      name: volsync-generate-replication-source
+      match:
+        any:
+        - resources:
+            kinds:
+              - Deployment
+              - StatefulSet
+            annotations:
+              backup.home.arpa/enabled: "true"
+      generate:
+        apiVersion: volsync.backube/v1alpha1
+        kind: ReplicationSource
+        name: "{{ name }}-backup"
+        namespace: "{{request.namespace}}"
+        data:
+          metadata:
+            labels:
+              app.kubernetes.io/name: "{{ name }}"
+              app.kubernetes.io/instance: "{{request.object.metadata.labels.\"app.kubernetes.io/instance\"}}"
+          spec:
+            sourcePVC: "{{ source }}"
+            trigger:
+              schedule: "@daily"
+            restic:
+              copyMethod: Snapshot
+              pruneIntervalDays: 7
+              repository: "{{ name }}-restic-secret"
+              cacheCapacity: 2Gi
+              volumeSnapshotClassName: ceph-block
+              storageClassName: ceph-block
+              retain:
+                daily: 7
+                within: 3d
