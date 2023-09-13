@@ -235,7 +235,7 @@ kitty +kitten ssh [server]
 1. Install microk8s with snap
 
     ```bash
-    sudo snap install microk8s --classic
+    sudo snap install microk8s --classic --channel=1.28/stable
     ```
 
 1. Setup user permissions
