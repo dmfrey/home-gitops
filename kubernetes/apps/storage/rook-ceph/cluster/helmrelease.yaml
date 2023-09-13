@@ -42,34 +42,34 @@ spec:
       resources:
         mgr:
           requests:
-            cpu: "100m"
-            memory: "512Mi"
+            cpu: "125m"
+            memory: "512M"
           limits:
-            memory: "1Gi"
+            memory: "1G"
         mon:
           requests:
-            cpu: "100m"
-            memory: "512Mi"
+            cpu: "49m"
+            memory: "512M"
           limits:
-            memory: "1Gi"
+            memory: "1G"
         osd:
           requests:
-            cpu: "512m"
-            memory: "1Gi"
+            cpu: "442m"
+            memory: "1024M"
           limits:
-            memory: "1Gi"
+            memory: "1536M"
         mgr-sidecar:
           requests:
-            cpu: "100m"
-            memory: "128Mi"
+            cpu: "49m"
+            memory: "94M"
           limits:
-            memory: "256Mi"
+            memory: "208M"
         crashcollector:
           requests:
-            cpu: "100m"
-            memory: "64Mi"
+            cpu: "15m"
+            memory: "64M"
           limits:
-            memory: "128Mi"
+            memory: "64M"
         logcollector:
           requests:
             cpu: "100m"
