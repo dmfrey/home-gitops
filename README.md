@@ -59,6 +59,12 @@
     sudo apt install nfs-common
     ```
 
+1. Install `linux-modules-extra` **(needed kernel modules for rook-ceph on rpi)**
+
+    ```bash
+    sudo apt install linux-modules-extra-$(uname -r)
+    ```
+
 1. Disable IPv6
 
     ```bash
@@ -73,7 +79,7 @@
     ```bash
     sudo sysctl -p
     ```
-    
+
 1. Reboot
 
 ### Update `/etc/hosts`
