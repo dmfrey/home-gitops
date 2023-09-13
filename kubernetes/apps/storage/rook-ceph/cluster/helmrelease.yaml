@@ -60,7 +60,7 @@ spec:
             memory: "1536M"
         mgr-sidecar:
           requests:
-            cpu: "49m"
+            cpu: "49m" 
             memory: "94M"
           limits:
             memory: "208M"
