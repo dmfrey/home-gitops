@@ -145,6 +145,16 @@
     vm.vfs_cache_pressure=50
     ```
 
+1. Update boot cmdline
+
+    ```bash
+    sudo vi /boot/firmware/cmdline.txt
+    ```
+
+    Add `cgroup_enable=memory cgroup_memory=1` to the beginning of the line and save the file
+
+1. Reboot
+
 ## Update ssh config
 
 1. Update ssh config
