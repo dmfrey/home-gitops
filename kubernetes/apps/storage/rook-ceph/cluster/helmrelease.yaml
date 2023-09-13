@@ -54,8 +54,8 @@ spec:
             memory: "1Gi"
         osd:
           requests:
-            cpu: "100m"
-            memory: "512Mi"
+            cpu: "512m"
+            memory: "768Mi"
           limits:
             memory: "1Gi"
         mgr-sidecar:
