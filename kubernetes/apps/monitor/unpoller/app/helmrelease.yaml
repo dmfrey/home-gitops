@@ -31,12 +31,12 @@ spec:
       tag: v2.8.1
     env:
       TZ: America/New_York
-      UP_UNIFI_DEFAULT_ROLE: home-ops
-      UP_UNIFI_DEFAULT_VERIFY_SSL: false
+      # UP_UNIFI_DEFAULT_ROLE: home-ops
+      # UP_UNIFI_DEFAULT_VERIFY_SSL: false
       UP_INFLUXDB_DISABLE: true
-    envFrom:
-      - secretRef:
-          name: unpoller-secret
+    # envFrom:
+      # - secretRef:
+          # name: unpoller-secret
     service:
       main:
         ports:
