@@ -1,0 +1,18 @@
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStoreUser
+metadata:
+  name: rgw-admin-ops-user
+  namespace: storage
+spec:
+  store: ceph-objectstore
+  displayName: ceph-objectstore
+  # quotas:
+  #   maxBuckets: 100
+  #   maxSize: 10G
+  #   maxObjects: 10000
+  capabilities:
+    user: "*"
+    bucket: "*"
+    usage: "*"
+    metadata: "read"
+    zone: "read"
