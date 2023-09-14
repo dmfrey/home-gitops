@@ -1,8 +1,8 @@
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
-  name: thanos-ceph-bucket
+  name: loki-ceph-bucket
   namespace: monitor
 spec:
-  generateBucketName: thanos
+  generateBucketName: loki
   storageClassName: ceph-bucket
