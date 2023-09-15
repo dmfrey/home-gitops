@@ -96,9 +96,9 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "dmf-amd-001"
-            devices:
-              - name: "/dev/sdb"
+          # - name: "dmf-amd-001"
+          #   devices:
+          #     - name: "/dev/sdb"
           - name: "dmf-rpi-001"
             devices:
               - name: "/dev/sda"
