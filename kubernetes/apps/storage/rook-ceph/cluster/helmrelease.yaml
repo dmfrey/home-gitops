@@ -110,7 +110,7 @@ spec:
       ingressClassName: "nginx"
       dashboard:
         annotations:
-          cert-manager.io/cluster-issuer: selfsigned-issuer
+          cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         host:
