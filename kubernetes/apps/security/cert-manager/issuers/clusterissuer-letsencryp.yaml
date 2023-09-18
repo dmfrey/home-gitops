@@ -16,7 +16,7 @@ spec:
       selector:
         dnsZones:
           - '${EXTERNAL_DOMAIN}'
-          # - '${PROFESSIONAL_DOMAIN}'
+          - '${PROFESSIONAL_DOMAIN}'
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
