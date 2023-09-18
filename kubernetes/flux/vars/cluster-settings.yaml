@@ -5,7 +5,7 @@ metadata:
   name: cluster-settings
   namespace: flux-system
 data:
-  ORGANIZATION: HomeLab
+  ORGANIZATION: HomeLab5767
   CLUSTER_NAME: microk8s-cluster
   CLUSTER_APISERVER_ENDPOINT: 192.168.86.2
   QNAP_ADDR: 192.168.86.11
