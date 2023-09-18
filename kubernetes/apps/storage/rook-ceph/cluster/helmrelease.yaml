@@ -106,20 +106,20 @@ spec:
             devices:
               - name: "/dev/sda"
 
-    ingress:
-      ingressClassName: "nginx"
-      dashboard:
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-        host:
-          name: &host rook.${EXTERNAL_DOMAIN}
-          path: "/"
-        tls:
-          - hosts:
-              - *host
-            secretName: rook-ceph-tls-secret
+    # ingress:
+    #   ingressClassName: "nginx"
+    #   dashboard:
+    #     annotations:
+    #       cert-manager.io/cluster-issuer: letsencrypt-prod
+    #       auth.home.arpa/enabled: "true"
+    #       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    #     host:
+    #       name: &host rook.${EXTERNAL_DOMAIN}
+    #       path: "/"
+    #     tls:
+    #       - hosts:
+    #           - *host
+    #         secretName: rook-ceph-tls-secret
 
     cephBlockPools:
       - name: ceph-blockpool
