@@ -39,7 +39,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          cert-manager.io/cluster-issuer: selfsigned-issuer
           auth.home.arpa/enabled: "true"
         hosts:
           - host: &host alert-manager.${EXTERNAL_DOMAIN}
