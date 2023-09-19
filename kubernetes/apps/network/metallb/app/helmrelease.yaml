@@ -1,0 +1,39 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: metallb
+  namespace: metallb
+spec:
+  interval: 30m
+  chart:
+    spec:
+      # renovate: registryUrl=https://metallb.github.io/metallb
+      chart: metallb
+      version: 0.13.11
+      sourceRef:
+        kind: HelmRepository
+        name: metallb
+        namespace: flux-system
+      interval: 30m
+  values:
+    prometheus:
+      namespace: monitor
+      serviceAccount: kube-prometheus-stack-prometheus
+      podMonitor:
+        enabled: true
+      prometheusRule:
+        enabled: true
+    controller:
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
+    speaker:
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
+      - key: "armhf"
+        operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+
