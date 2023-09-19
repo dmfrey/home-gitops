@@ -1,0 +1,7 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./secret-github-webhook-token.sops.yaml
+  - ./ingress.yaml
+  - ./receiver-k8s-home-ops.yaml
