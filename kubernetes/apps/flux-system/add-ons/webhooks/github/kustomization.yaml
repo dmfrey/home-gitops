@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./secret-github-webhook-token.sops.yaml
   - ./ingress.yaml
-  - ./receiver-k8s-home-ops.yaml
+  - ./receiver-home-gitops.yaml

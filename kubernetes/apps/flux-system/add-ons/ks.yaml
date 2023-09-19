@@ -9,7 +9,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-gitops
   wait: true
   postBuild:
     substituteFrom: []
@@ -32,7 +32,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-gitops
   wait: true
   postBuild:
     substituteFrom: []
@@ -49,7 +49,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-gitops
   wait: true
   postBuild:
     substituteFrom: []
