@@ -29,7 +29,7 @@ endpointStatus:
   enabled: true
   status: "policy"
 
-k8sServiceHost: microk8s-cluster.internal.frey.net
+k8sServiceHost: kubernetes.default
 
 k8sServicePort: 6443
 
