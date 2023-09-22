@@ -39,7 +39,7 @@ spec:
       ingress:
         enabled: true
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          cert-manager.io/cluster-issuer: letsencrypt-staging
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"

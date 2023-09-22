@@ -87,7 +87,7 @@ spec:
         pathType: Prefix
         ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          cert-manager.io/cluster-issuer: letsencrypt-staging
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alert-decagram-outline"
@@ -212,7 +212,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          cert-manager.io/cluster-issuer: letsencrypt-staging
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:prometheus"
