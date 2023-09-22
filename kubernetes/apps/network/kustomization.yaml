@@ -5,9 +5,9 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./cilium/ks.yaml
+  # - ./cilium/ks.yaml
   # - ./external-dns/ks.yaml
-  # - ./metallb/ks.yaml
+  - ./metallb/ks.yaml
   # - ./ingress-nginx/ks.yaml
   # - ./pod-gateway/ks.yaml
   - ./smtp-relay/ks.yaml
