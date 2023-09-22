@@ -31,7 +31,7 @@ endpointStatus:
 
 k8sServiceHost: 192.168.86.2
 
-k8sServicePort: 6443
+k8sServicePort: 16443
 
 ipam:
   mode: "kubernetes"
