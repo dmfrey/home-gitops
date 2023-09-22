@@ -29,7 +29,7 @@ endpointStatus:
   enabled: true
   status: "policy"
 
-k8sServiceHost: kubernetes.default
+k8sServiceHost: dmf-amd-001
 
 k8sServicePort: 6443
 
