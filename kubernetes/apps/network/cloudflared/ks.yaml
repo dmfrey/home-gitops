@@ -15,5 +15,5 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - cluster-apps-ingress-nginx
+    - name: cluster-apps-ingress-nginx
 
