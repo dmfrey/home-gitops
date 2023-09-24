@@ -23,7 +23,7 @@ spec:
       - ingress
     policy: sync
     registry: txt
-    txtPrefix: "dmf-kube-001-"
+    txtPrefix: "dmf-amd-001-"
     domainFilters:
       - ${INTERNAL_DOMAIN}
     provider: rfc2136
