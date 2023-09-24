@@ -1,4 +1,19 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-externaldns-shared
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./kubernetes/cluster-0/apps/network/external-dns/shared"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -6,7 +21,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/network/external-dns/app"
+  path: "./kubernetes/apps/network/external-dns/external"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -17,4 +32,5 @@ spec:
   decryption:
     provider: sops
   dependsOn:
+    - name: cluster-apps-externaldns-shared
     - name: cluster-apps-kube-prometheus-stack-crds
