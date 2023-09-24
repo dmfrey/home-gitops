@@ -13,6 +13,11 @@ spec:
     kind: GitRepository
     name: home-gitops
   wait: true
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn: []
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
