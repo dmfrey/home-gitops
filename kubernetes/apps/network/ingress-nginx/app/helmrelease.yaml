@@ -18,6 +18,7 @@ spec:
       interval: 30m
   values:
     controller:
+      allowSnippetAnnotations: true
       replicaCount: 3
 
       updateStrategy:
