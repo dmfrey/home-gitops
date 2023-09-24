@@ -3,14 +3,14 @@ originRequest:
   http2Origin: true
 
 ingress:
-  - hostname: "${EXTERNAL_DOMAIN}"
+  - hostname: "dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
-      originServerName: "tunnel.${EXTERNAL_DOMAIN}"
+      originServerName: "tunnel.dmfrey.com"
     noTLSVerify: true
-  - hostname: "*.${EXTERNAL_DOMAIN}"
+  - hostname: "*.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
-      originServerName: "tunnel.${EXTERNAL_DOMAIN}"
+      originServerName: "tunnel.dmfrey.com"
     noTLSVerify: true
   - service: http_status:404
