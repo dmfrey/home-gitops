@@ -1,11 +1,14 @@
 ---
+originRequest:
+  http2Origin: true
+
 ingress:
-  - hostname: "dmfrey.com"
+  - hostname: "${EXTERNAL_DOMAIN}"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    # originRequest:
-      # originServerName: tunnel.dmfrey.com
-  - hostname: "*.dmfrey.com"
+    originRequest:
+      originServerName: "tunnel.${EXTERNAL_DOMAIN}"
+  - hostname: "*.${EXTERNAL_DOMAIN}"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    # originRequest:
-      # originServerName: tunnel.dmfrey.com
+    originRequest:
+      originServerName: "tunnel.${EXTERNAL_DOMAIN}"
   - service: http_status:404
