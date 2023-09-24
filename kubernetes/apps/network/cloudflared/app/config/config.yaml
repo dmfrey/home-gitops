@@ -5,10 +5,10 @@ originRequest:
 ingress:
   - hostname: "${EXTERNAL_DOMAIN}"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "tunnel.${EXTERNAL_DOMAIN}"
+    # originRequest:
+      # originServerName: "tunnel.${EXTERNAL_DOMAIN}"
   - hostname: "*.${EXTERNAL_DOMAIN}"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "tunnel.${EXTERNAL_DOMAIN}"
+    # originRequest:
+      # originServerName: "tunnel.${EXTERNAL_DOMAIN}"
   - service: http_status:404
