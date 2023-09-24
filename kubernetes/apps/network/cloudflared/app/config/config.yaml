@@ -1,0 +1,11 @@
+---
+ingress:
+  - hostname: "dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: tunnel.dmfrey.com
+  - hostname: "*.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: tunnel.dmfrey.com
+  - service: http_status:404

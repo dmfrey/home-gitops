@@ -9,6 +9,7 @@ resources:
   # - ./external-dns/ks.yaml
   - ./metallb/ks.yaml
   - ./ingress-nginx/ks.yaml
+  - ./cloudflared/ks.yaml
   # - ./pod-gateway/ks.yaml
   - ./smtp-relay/ks.yaml
   # - ./multus/ks.yaml

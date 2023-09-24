@@ -1,0 +1,11 @@
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloudflared-tunnel
+  namespace: network
+spec:
+  endpoints:
+    - dnsName: tunnel.dmfrey.com
+      recordType: CNAME
+      targets: ["ba66fa70-2c9e-43a5-b8c2-92a47aab365a.cfargotunnel.com"]
