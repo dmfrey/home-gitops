@@ -53,6 +53,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "dmfrey.com"
+          acme.cert-manager.io/http01-edit-in-place: "false"
           # io.cilium/lb-ipam-ips: ${SVC_NGINX_ADDR}
         externalTrafficPolicy: Cluster
 
