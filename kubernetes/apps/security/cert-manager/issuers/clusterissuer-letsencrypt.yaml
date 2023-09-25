@@ -16,6 +16,12 @@ spec:
       selector:
         dnsZones:
           - '${EXTERNAL_DOMAIN}'
+    - dns01:
+        cloudflare:
+          email: ${EMAIL_ADDRESS}
+          apiTokenSecretRef:
+            name: cloudflare-api-token-secret
+            key: apiKey
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -34,3 +40,9 @@ spec:
       selector:
         dnsZones:
           - '${EXTERNAL_DOMAIN}'
+    - dns01:
+        cloudflare:
+          email: ${EMAIL_ADDRESS}
+          apiTokenSecretRef:
+            name: cloudflare-api-token-secret
+            key: apiKey
