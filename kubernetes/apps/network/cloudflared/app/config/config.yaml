@@ -5,12 +5,12 @@ originRequest:
 ingress:
   - hostname: "dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "tunnel.dmfrey.com"
+    # originRequest:
+      # originServerName: "tunnel.dmfrey.com"
     noTLSVerify: true
   - hostname: "*.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "tunnel.dmfrey.com"
+    # originRequest:
+      # originServerName: "tunnel.dmfrey.com"
     noTLSVerify: true
   - service: http_status:404
