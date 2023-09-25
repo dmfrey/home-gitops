@@ -10,12 +10,12 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-staging-account-key
     solvers:
-    - http01:
-        ingress:
-          class: nginx
-      selector:
-        dnsZones:
-          - '${EXTERNAL_DOMAIN}'
+    # - http01:
+    #     ingress:
+    #       class: nginx
+    #   selector:
+    #     dnsZones:
+    #       - '${EXTERNAL_DOMAIN}'
     - dns01:
         cloudflare:
           email: ${EMAIL_ADDRESS}
@@ -34,12 +34,12 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-account-key
     solvers:
-    - http01:
-        ingress:
-          class: nginx
-      selector:
-        dnsZones:
-          - '${EXTERNAL_DOMAIN}'
+    # - http01:
+    #     ingress:
+    #       class: nginx
+    #   selector:
+    #     dnsZones:
+    #       - '${EXTERNAL_DOMAIN}'
     - dns01:
         cloudflare:
           email: ${EMAIL_ADDRESS}
