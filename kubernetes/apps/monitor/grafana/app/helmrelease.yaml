@@ -91,14 +91,14 @@ spec:
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
-      security:
-        # Ref: https://grafana.com/grafana/dashboards/14837
-        authentik:
-          gnetId: 14837
-          revision: 2
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: prometheus
+      # security:
+      #   # Ref: https://grafana.com/grafana/dashboards/14837
+      #   authentik:
+      #     gnetId: 14837
+      #     revision: 2
+      #     datasource:
+      #       - name: "DS_PROMETHEUS"
+      #         value: prometheus
       storage:
         # Ref: https://grafana.com/grafana/dashboards/2842/
         ceph-cluster:
@@ -154,21 +154,22 @@ spec:
     grafana.ini:
       analytics:
         check_for_updates: false
-      auth:
-        oauth_auto_login: true
-      auth.generic_oauth:
-        enabled: true
-        name: Authentik
-        icon: signin
-        scopes: openid profile email
-        empty_scopes: false
-        use_pkce: true
-      auth.generic_oauth.group_mapping:
-        org_id: 1
-        role_attribute_path: |
-          contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
+      # auth:
+      #   oauth_auto_login: true
+      # auth.generic_oauth:
+      #   enabled: true
+      #   name: Authentik
+      #   icon: signin
+      #   scopes: openid profile email
+      #   empty_scopes: false
+      #   use_pkce: true
+      # auth.generic_oauth.group_mapping:
+      #   org_id: 1
+      #   role_attribute_path: |
+      #     contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
       auth.basic:
-        enabled: false
+        # enabled: false
+        enabled: true
       auth.anonymous:
         enabled: false
       paths:
