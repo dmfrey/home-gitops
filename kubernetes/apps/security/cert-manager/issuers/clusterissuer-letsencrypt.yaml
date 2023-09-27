@@ -54,6 +54,7 @@ metadata:
 spec:
   secretName: wildcard-cert-tls
   dnsNames:
+  - ${EXTERNAL_DOMAIN}
   - "*.${EXTERNAL_DOMAIN}"
   issuerRef:
     name: letsencrypt-staging
