@@ -9,11 +9,47 @@ ingress:
       originServerName: dmfrey.com
       httpHostHeader: dmfrey.com
       noTLSVerify: true
+  - hostname: "flux-webhook.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: flux-webhook.dmfrey.com
+      httpHostHeader: flux-webhook.dmfrey.com
+      noTLSVerify: true
+  - hostname: "alert-manager.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: alert-manager.dmfrey.com
+      httpHostHeader: alert-manager.dmfrey.com
+      noTLSVerify: true
   - hostname: "grafana.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
       originServerName: grafana.dmfrey.com
       httpHostHeader: grafana.dmfrey.com
+      noTLSVerify: true
+  - hostname: "loki.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: loki.dmfrey.com
+      httpHostHeader: loki.dmfrey.com
+      noTLSVerify: true
+  - hostname: "prometheus.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: prometheus.dmfrey.com
+      httpHostHeader: prometheus.dmfrey.com
+      noTLSVerify: true
+  - hostname: "thanos.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: thanos.dmfrey.com
+      httpHostHeader: thanos.dmfrey.com
+      noTLSVerify: true
+  - hostname: "rook.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: rook.dmfrey.com
+      httpHostHeader: rook.dmfrey.com
       noTLSVerify: true
   - hostname: "*.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
