@@ -179,15 +179,15 @@ spec:
 
     backend:
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.backendSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
+      # affinity: |
+      #   podAntiAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #       - weight: 1
+      #         podAffinityTerm:
+      #           labelSelector:
+      #             matchLabels:
+      #               {{- include "loki.backendSelectorLabels" . | nindent 12 }}
+      #           topologyKey: kubernetes.io/hostname
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
