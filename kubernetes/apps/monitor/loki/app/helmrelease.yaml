@@ -73,9 +73,9 @@ spec:
           enable_alertmanager_v2: true
           alertmanager_url: http://alert-manager.monitor.svc.cluster.local:9093
           storage:
-            type: local
-            local:
-              directory: /rules
+            type: s3
+            # local:
+            #   directory: /rules
           rule_path: /rules
           ring:
             kvstore:
