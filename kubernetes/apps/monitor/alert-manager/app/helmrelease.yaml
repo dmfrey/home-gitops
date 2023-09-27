@@ -49,6 +49,7 @@ spec:
         tls:
           - hosts:
               - *host
+              - alert-manager.${EXTERNAL_DOMAIN}
             secretName: alert-manager-tls-external
 
     persistence:
