@@ -47,6 +47,7 @@ spec:
         ssl-protocols: "TLSv1.3 TLSv1.2"
         custom-http-errors: 404,401,403,500,503
         use-forwarded-headers: "true"
+        default-ssl-certificate: security/wildcard-cert
         # use-geoip2: true
 
       service:
