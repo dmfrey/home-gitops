@@ -73,9 +73,9 @@ spec:
           enable_alertmanager_v2: true
           alertmanager_url: http://alert-manager.monitor.svc.cluster.local:9093
           storage:
-            type: s3
-            # local:
-            #   directory: /rules
+            type: local
+            local:
+              directory: /rules
           rule_path: /rules
           ring:
             kvstore:
@@ -179,15 +179,15 @@ spec:
 
     backend:
       replicas: 3
-      # affinity: |
-      #   podAntiAffinity:
-      #     preferredDuringSchedulingIgnoredDuringExecution:
-      #       - weight: 1
-      #         podAffinityTerm:
-      #           labelSelector:
-      #             matchLabels:
-      #               {{- include "loki.backendSelectorLabels" . | nindent 12 }}
-      #           topologyKey: kubernetes.io/hostname
+      affinity: |
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    {{- include "loki.backendSelectorLabels" . | nindent 12 }}
+                topologyKey: kubernetes.io/hostname
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
@@ -196,7 +196,7 @@ spec:
           emptyDir: {}
       persistence:
         size: 20Gi
-        storageClass: ceph-block
+        storageClass: microk8s-hostpath
 
     monitoring:
       dashboards:
