@@ -57,5 +57,5 @@ spec:
   - ${EXTERNAL_DOMAIN}
   - "*.${EXTERNAL_DOMAIN}"
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-prod
     kind: ClusterIssuer
