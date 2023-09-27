@@ -5,9 +5,16 @@ originRequest:
 ingress:
   - hostname: "dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    # originRequest:
-      # originServerName: "tunnel.dmfrey.com"
-    noTLSVerify: true
+    originRequest:
+      originServerName: dmfrey.com
+      httpHostHeader: dmfrey.com
+      noTLSVerify: true
+  - hostname: "grafana.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: grafana.dmfrey.com
+      httpHostHeader: grafana.dmfrey.com
+      noTLSVerify: true
   - hostname: "*.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     # originRequest:
