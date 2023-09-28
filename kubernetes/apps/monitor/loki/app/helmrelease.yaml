@@ -169,13 +169,9 @@ spec:
                 topologyKey: kubernetes.io/hostname
       extraVolumeMounts:
         - name: rules
-          mountPath: /rules/fake
-        - name: scratch
-          mountPath: /tmp/scratch
+          mountPath: /rules
       extraVolumes:
         - name: rules
-          emptyDir: {}
-        - name: scratch
           emptyDir: {}
       persistence:
         size: 20Gi
@@ -194,9 +190,13 @@ spec:
                 topologyKey: kubernetes.io/hostname
       extraVolumeMounts:
         - name: rules
-          mountPath: /rules
+          mountPath: /rules/fake
+        - name: scratch
+          mountPath: /tmp/scratch
       extraVolumes:
         - name: rules
+          emptyDir: {}
+        - name: scratch
           emptyDir: {}
       persistence:
         size: 20Gi
