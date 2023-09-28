@@ -196,7 +196,7 @@ spec:
           emptyDir: {}
       persistence:
         size: 20Gi
-        storageClass: microk8s-hostpath
+        storageClass: ceph-block
 
     monitoring:
       dashboards:
