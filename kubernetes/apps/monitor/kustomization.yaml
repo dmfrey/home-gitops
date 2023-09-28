@@ -8,7 +8,7 @@ resources:
   - ./alert-manager/ks.yaml
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
-  # - ./loki/ks.yaml
+  - ./loki/ks.yaml
   - ./metrics-server/ks.yaml
   - ./node-exporter/ks.yaml
   - ./thanos/ks.yaml
