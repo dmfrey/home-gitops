@@ -1,0 +1,47 @@
+---
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: talos-upgrade-control-plane
+  namespace: system
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  # renovate: datasource=github-releases depName=siderolabs/talos
+  version: "v1.4.6"
+  serviceAccountName: system-upgrade
+  secrets:
+    - name: talos-upgrade-api-access
+      path: /var/run/secrets/talos.dev
+  concurrency: 1
+  drain:
+    gracePeriod: 60
+    deleteEmptydirData: true
+    ignoreDaemonSets: true
+  nodeSelector:
+    matchExpressions:
+      - key: plan.upgrade.cattle.io/talos
+        operator: Exists
+  prepare:
+    image: ghcr.io/siderolabs/talosctl
+    envs:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+    args:
+      - '--nodes=$(NODE_IP)'
+      - 'health'
+  upgrade:
+    image: ghcr.io/siderolabs/talosctl
+    envs:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+    args:
+      - '--nodes=$(NODE_IP)'
+      - 'upgrade'
+      - '--image=ghcr.io/siderolabs/installer:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)'
+      - '--wait=false'
+      - '--stage=true'
