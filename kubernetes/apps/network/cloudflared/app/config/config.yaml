@@ -51,6 +51,12 @@ ingress:
       originServerName: rook.dmfrey.com
       httpHostHeader: rook.dmfrey.com
       noTLSVerify: true
+  - hostname: "portal.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: portal.dmfrey.com
+      httpHostHeader: portal.dmfrey.com
+      noTLSVerify: true
   - hostname: "*.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     # originRequest:
