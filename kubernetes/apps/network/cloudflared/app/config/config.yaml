@@ -27,6 +27,12 @@ ingress:
       originServerName: grafana.dmfrey.com
       httpHostHeader: grafana.dmfrey.com
       noTLSVerify: true
+  - hostname: "monitor.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: monitor.dmfrey.com
+      httpHostHeader: monitor.dmfrey.com
+      noTLSVerify: true
   - hostname: "loki.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
@@ -56,6 +62,12 @@ ingress:
     originRequest:
       originServerName: portal.dmfrey.com
       httpHostHeader: portal.dmfrey.com
+      noTLSVerify: true
+  - hostname: "theme-park.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: theme-park.dmfrey.com
+      httpHostHeader: theme-park.dmfrey.com
       noTLSVerify: true
   - hostname: "*.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
