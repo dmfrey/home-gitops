@@ -56,8 +56,8 @@ spec:
       create: true
     service:
       create: true
-  valuesFrom:
-  - targetPath: configuration.notifyUrl
-    kind: Secret
-    name: kured-secret
-    valuesKey: DISCORD_KURED_WEBHOOK_URL
+  # valuesFrom:
+  # - targetPath: configuration.notifyUrl
+  #   kind: Secret
+  #   name: kured-secret
+  #   valuesKey: DISCORD_KURED_WEBHOOK_URL
