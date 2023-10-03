@@ -1,5 +1,5 @@
 ---
 providerRegex: |
-  ^(jsdyb-nuc-00[1-3])$
+  ^(dmf-(amd|nuc|rpi)-00[1-4])$
 
 bypassDnsResolution: true
