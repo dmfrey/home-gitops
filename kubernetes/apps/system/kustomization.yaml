@@ -12,6 +12,6 @@ resources:
   - ./kubelet-csr-approver/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
-  # - ./reflector/ks.yaml
+  - ./reflector/ks.yaml
   # - ./system-upgrade-controller/ks.yaml
 
