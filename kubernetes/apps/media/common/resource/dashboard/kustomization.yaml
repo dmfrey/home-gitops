@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+  - name: servarr-dashboard
+    files:
+      - servarr.json=https://raw.githubusercontent.com/onedr0p/exportarr/88bf4028243a82cc160ce8f8ed75b76976e4acf5/examples/grafana/dashboard2.json
+
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Media
+  labels:
+    grafana.io/dashboard: "true"
