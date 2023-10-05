@@ -15,6 +15,12 @@ ingress:
       originServerName: flux-webhook.dmfrey.com
       httpHostHeader: flux-webhook.dmfrey.com
       noTLSVerify: true
+  - hostname: "plex.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: plex.dmfrey.com
+      httpHostHeader: plex.dmfrey.com
+      noTLSVerify: true
   - hostname: "alert-manager.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
