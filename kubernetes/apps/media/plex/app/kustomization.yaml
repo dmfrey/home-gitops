@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: media
+resources:
+  - ./secret-plex.sops.yaml
+  - ./helmrelease.yaml
+  # - ./volsync.yaml
+commonLabels:
+  app.kubernetes.io/name: plex
+  app.kubernetes.io/instance: plex
+configMapGenerator:
+  - name: plex-preferences-bootstrap
+    files:
+      - ./config/41-Plex-Preferences
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+  - name: plex-preferences
+    files:
+      - ./config/preferences.cfg
+generatorOptions:
+  disableNameSuffixHash: true

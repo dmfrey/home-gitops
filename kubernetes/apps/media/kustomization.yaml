@@ -10,7 +10,7 @@ resources:
   # - ./lidarr/ks.yaml
   # - ./music-assistant/ks.yaml
   # - ./overseerr/ks.yaml
-  # - ./plex/ks.yaml
+  - ./plex/ks.yaml
   # - ./plex-meta-manager/ks.yaml
   # - ./readarr/ks.yaml
   # - ./recyclarr/ks.yaml

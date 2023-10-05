@@ -1,0 +1,197 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: plex
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: plexinc/pms-docker
+      tag: 1.32.6.7557-1cf77d501
+
+    env:
+      TZ: "America/New_York"
+      ALLOWED_NETWORKS: "10.0.0.0/8"
+
+    envFrom:
+      - secretRef:
+          name: plex-secret
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:plex"
+          hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
+        hosts:
+        - host: "plex.${EXTERNAL_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "plex.${EXTERNAL_DOMAIN}"
+          secretName: plex-tls-external
+
+    podSecurityContext:
+      supplementalGroups:
+      - 39
+      - 44
+      - 109
+      - 100
+      - 1030
+
+    service:
+      main:
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVC_PLEX_ADDR}
+        ports:
+          http:
+            port: 32400
+            targetPort: 32400
+            nodePort: 32400
+          dnla-tcp:
+            enabled: true
+            port: 32469
+            protocol: TCP
+            targetPort: 32469
+            nodePort: 32469
+          dnla-udp:
+            enabled: true
+            port: 1900
+            protocol: UDP
+            targetPort: 1900
+            nodePort: 1900
+          bonjour-udp:
+            enabled: true
+            port: 5353
+            protocol: UDP
+            targetPort: 5353
+            nodePort: 5353
+          gdm-1:
+            enabled: true
+            port: 32410
+            protocol: UDP
+            targetPort: 32410
+            nodePort: 32410
+          gdm-2:
+            enabled: true
+            port: 32412
+            protocol: UDP
+            targetPort: 32412
+            nodePort: 32412
+          gdm-3:
+            enabled: true
+            port: 32413
+            protocol: UDP
+            targetPort: 32413
+            nodePort: 32413
+          gdm-4:
+            enabled: true
+            port: 32414
+            protocol: UDP
+            targetPort: 32414
+            nodePort: 32414
+
+    persistence:
+      preference-bootstrap:
+        enabled: true
+        type: configMap
+        name: plex-preferences-bootstrap
+        mountPath: /etc/cont-init.d/41-Plex-Preferences
+        subPath: 41-Plex-Preferences
+        defaultMode: 493
+      preferences:
+        enabled: true
+        type: configMap
+        name: plex-preferences
+        mountPath: /etc/cont-config.d
+        defaultMode: 493
+      transcode:
+        enabled: true
+        type: custom
+        volumeSpec:
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                storageClassName: ceph-block
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+                  limits:
+                    storage: 500Gi
+      tmp:
+        enabled: true
+        type: emptyDir
+        sizeLimit: 10Gi
+      media:
+        enabled: true
+        existingClaim: videos-nfs-media
+        readOnly: false
+      backup:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${QNAP_ADDR}"
+            path: /plexbackups
+        mountPath: /config/Backups
+        readOnly: false
+
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
+
+    serviceMonitor:
+      monitor:
+        enabled: true
+        serviceName: plex-monitor
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 2m
+
+    resources:
+      requests:
+        gpu.intel.com/i915: 1
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 10Gi
+
+    volumeClaimTemplates:
+      - name: config
+        metadata:
+          annotations:
+            backup.home.arpa/enabled: "true"
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 35Gi
+        storageClass: ceph-block
