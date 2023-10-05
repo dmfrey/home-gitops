@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: amd-gpu-node-labeller
-  namespace: kube-system
+  namespace: system
 spec:
   interval: 35m
   chart:
@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: amd-device-plugin
-      namespace: kube-system
+      namespace: system
   values:
     controller:
       type: daemonset
