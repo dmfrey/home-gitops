@@ -1,0 +1,22 @@
+---
+collections:
+  ############################
+  #          MONTHS          #
+  ############################
+
+  Normal:
+    build_collection: false
+    server_preroll: /media/library/prerolls/normal/Plex4K.mp4; /media/library/prerolls/normal/LightSpeed-Plex4K.mp4
+    schedule:
+      - range(01/01-01/31) # January
+      - range(02/01-01/28) # February
+      - range(03/01-03/31) # March
+      - range(04/01-04/30) # April
+      - range(05/01-05/31) # May
+      - range(06/01-06/30) # Jun
+      - range(07/01-07/31) # July
+      - range(08/01-08/31) # August
+      - range(09/01-09/30) # September
+      - range(10/01-10/31) # October
+      - range(11/01-11/30) # November
+      - range(12/01-12/31) # December

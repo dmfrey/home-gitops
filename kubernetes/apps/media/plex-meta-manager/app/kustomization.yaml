@@ -1,0 +1,27 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: media
+resources:
+  - ./pvc.yaml
+  - ./secret-plex-meta-manager.sops.yaml
+  - ./helmrelease.yaml
+configMapGenerator:
+  - name: pmm-config-template
+    files:
+      - ./config/config.yml
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+  - name: pmm-prerolls
+    files:
+      - ./config/pre-rolls.yml
+  - name: pmm-scripts
+    files:
+      - ./scripts/run.sh
+generatorOptions:
+  disableNameSuffixHash: true
+labels:
+  - pairs:
+      app.kubernetes.io/name: plex-meta-manager
+      app.kubernetes.io/instance: plex-meta-manager

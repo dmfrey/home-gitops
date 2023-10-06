@@ -1,0 +1,88 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: plex-meta-manager
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      type: cronjob
+      annotations:
+        secret.reloader.stakater.com/reload: &secret pmm-secret
+      cronjob:
+        schedule: 0 6 * * *
+    initContainers:
+      config-setup:
+        image: ghcr.io/onedr0p/alpine:3.18.4@sha256:a45f246424c791487a44ba5cbe5720ae5318813dce3924c0e04d943e0fd0996d
+        command:
+          - "/bin/sh"
+          - -c
+          - |
+            mkdir -p /config/assets
+            envsubst < /tmp/config-template/config.yml > /config/config.yml
+            exit 0
+        envFrom:
+          - secretRef:
+              name: starr-apps-secret
+          - secretRef:
+              name: pmm-secret
+        volumeMounts:
+          - name: config-template
+            mountPath: /tmp/config-template
+          - name: config
+            mountPath: /config
+    image:
+      repository: docker.io/meisnate12/plex-meta-manager
+      tag: v1.19.1
+    env:
+      TZ: "America/New York"
+      # PUID: "1000"
+      # PGID: "1000"
+    command:
+      - /scripts/run.sh
+    service:
+      main:
+        enabled: false
+    persistence:
+      config:
+        enabled: true
+        existingClaim: pmm-config
+      config-prerolls:
+        enabled: true
+        type: configMap
+        name: pmm-prerolls
+        mountPath: /config/pre-rolls.yml
+        subPath: pre-rolls.yml
+        readOnly: true
+      config-template:
+        enabled: true
+        type: configMap
+        name: pmm-config-template
+        readOnly: true
+        mountPath: "-"
+      scripts:
+        enabled: true
+        type: configMap
+        name: pmm-scripts
+        mountPath: /scripts
+        defaultMode: 511
