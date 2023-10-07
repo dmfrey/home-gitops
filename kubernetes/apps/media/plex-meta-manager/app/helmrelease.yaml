@@ -33,7 +33,7 @@ spec:
         schedule: 0 6 * * *
     initContainers:
       config-setup:
-        image: ghcr.io/onedr0p/alpine:3.18.4@sha256:a45f246424c791487a44ba5cbe5720ae5318813dce3924c0e04d943e0fd0996d
+        image: ghcr.io/onedr0p/alpine:3.18.4@sha256:01db2e6ff88bf0ce692fb6552ab68f4eb3f77d16ba5d3402e8a7de3f4f8873f1
         command:
           - "/bin/sh"
           - -c
