@@ -1,0 +1,142 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/onedr0p/sonarr-develop
+      tag: 4.0.0.688@sha256:cc88687162269b73c0e9bd6f147d4f7957639a4bdae3741cffe4bcabd7978e1f
+
+    env:
+      TZ: America/New_York
+      SONARR__INSTANCE_NAME: Sonarr
+      SONARR__PORT: &port 8989
+      SONARR__APPLICATION_URL: https://sonarr.${EXTERNAL_DOMAIN}
+      SONARR__LOG_LEVEL: info
+      SONARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: SONARR_API_KEY
+
+    sidecars:
+      exporter:
+        name: exporter
+        image: ghcr.io/onedr0p/exportarr:v1.5.3
+        args: ["sonarr"]
+        env:
+          - name: URL
+            value: "http://localhost"
+          - name: CONFIG
+            value: "/config/config.xml"
+          - name: PORT
+            value: &metricsPort 9707
+          - name: ENABLE_ADDITIONAL_METRICS
+            value: true
+          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+            value: false
+        ports:
+          - name: metrics
+            containerPort: *metricsPort 
+        volumeMounts:
+          - name: config
+            mountPath: /config
+            readOnly: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:television-classic"
+        hosts:
+          - host: &host sonarr.${EXTERNAL_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: sonarr-tls-external
+
+    persistence:
+      media:
+        enabled: true
+        existingClaim: nfs-media
+
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDR}"
+            path: /volume1/backups/sonarr
+        mountPath: /config/Backups
+        readOnly: false
+
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+        - 65539
+        - 1030
+
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 5m
+      limits:
+        memory: 431Mi
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: sonarr-metrics
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 2m
+
