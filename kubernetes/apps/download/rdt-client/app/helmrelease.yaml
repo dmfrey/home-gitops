@@ -1,0 +1,80 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: rdt-client
+  namespace: download
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: rogerfar/rdtclient 
+      tag: 2.0.39
+
+    podAnnotations:
+      vpn.home.arpa/enabled: "true"
+
+    dnsConfig:
+      options:
+        - name: ndots
+          value: "1"
+
+    hostname: rdt
+
+    service:
+      main:
+        ports:
+          http:
+            port: 6500
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          theme.home.arpa/theme: "nord"
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:download-circle-outline"
+        hosts:
+          - host: &host "rdt.${EXTERNAL_DOMAIN}"
+            paths:
+              - path: /
+        tls:
+          - hosts:
+              - *host
+            secretName: rdt-client-tls-external
+
+    volumeClaimTemplates:
+      - name: data
+        mountPath: /data/db
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        storageClass: ceph-block
+
+    persistence:
+      media:
+        enabled: true
+        existingClaim: nfs-downloads
+        mountPath: /data/downloads
+
+    resources:
+      requests:
+        cpu: 49m
+        memory: 765M

@@ -1,0 +1,31 @@
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: prowlarr-provisioner
+  namespace: download
+spec:
+  path: "./"
+  interval: 10m
+  approvePlan: auto
+  backendConfig:
+    disable: true
+  cliConfigSecretRef:
+    name: tf-cloud-token
+    namespace: flux-system
+  cloud:
+    organization: ${ORGANIZATION}
+    hostname: "app.terraform.io"
+    workspaces:
+      name: "prowlarr-provisioner"
+  sourceRef:
+    kind: OCIRepository
+    name: oci-terraform-prowlarr
+    namespace: flux-system
+  varsFrom:
+    - kind: Secret
+      name: starr-apps-secret
+  runnerPodTemplate:
+    metadata:
+      labels:
+        vpn.home.arpa/enabled: "false"

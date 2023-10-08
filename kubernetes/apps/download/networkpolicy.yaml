@@ -1,0 +1,40 @@
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-non-vpn-traffic
+  namespace: download
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    # Only allow ingress from K8S
+    - ipBlock:
+        cidr: 172.22.0.0/15
+  egress:
+  - to:
+    # Only allow egress to K8S
+    - ipBlock:
+        cidr: 172.22.0.0/15
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    kustomize.toolkit.fluxcd.io/name: cluster-apps
+    kustomize.toolkit.fluxcd.io/namespace: flux-system
+  name: allow-non-vpn-traffic
+  namespace: download
+spec:
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+  podSelector:
+    matchLabels:
+      vpn.home.arpa/enabled: "false"
+  policyTypes:
+  - Egress
