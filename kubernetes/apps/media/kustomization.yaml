@@ -13,11 +13,11 @@ resources:
   - ./plex/ks.yaml
   - ./plex-meta-manager/ks.yaml
   - ./readarr/ks.yaml
-  # - ./recyclarr/ks.yaml
+  - ./recyclarr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./tdarr/ks.yaml
   - ./unpackerr/ks.yaml
-  # - ./wizarr/ks.yaml
+  - ./wizarr/ks.yaml
 
