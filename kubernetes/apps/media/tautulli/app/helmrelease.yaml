@@ -70,6 +70,9 @@ spec:
       supplementalGroups:
         - 65539
 
+    nodeSelector:
+      beta.kubernetes.io/arch: amd64
+
     resources:
       requests:
         memory: 350Mi

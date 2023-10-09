@@ -63,6 +63,12 @@ ingress:
       originServerName: sonarr.dmfrey.com
       httpHostHeader: sonarr.dmfrey.com
       noTLSVerify: true
+  - hostname: "tautulli.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: tautulli.dmfrey.com
+      httpHostHeader: tautulli.dmfrey.com
+      noTLSVerify: true
   - hostname: "tdarr.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
