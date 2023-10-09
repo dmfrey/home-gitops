@@ -33,6 +33,12 @@ ingress:
       originServerName: bazarr.dmfrey.com
       httpHostHeader: bazarr.dmfrey.com
       noTLSVerify: true
+  - hostname: "lidarr.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: lidarr.dmfrey.com
+      httpHostHeader: lidarr.dmfrey.com
+      noTLSVerify: true
   - hostname: "plex.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
