@@ -94,7 +94,7 @@ spec:
     persistence:
       media:
         enabled: true
-        existingClaim: nfs-media
+        existingClaim: videos-nfs-media
 
       backups:
         enabled: true
@@ -124,10 +124,10 @@ spec:
 
     resources:
       requests:
-        memory: 128Mi
+        memory: 350Mi
         cpu: 5m
       limits:
-        memory: 256Mi
+        memory: 431Mi
 
     serviceMonitor:
       metrics:
