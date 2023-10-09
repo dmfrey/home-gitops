@@ -96,9 +96,11 @@ spec:
 
     resources:
       requests:
+        gpu.intel.com/i915: "1"
         memory: 350Mi
         cpu: 5m
       limits:
+        gpu.intel.com/i915: "1"
         memory: 431Mi
 
     serviceMonitor:
