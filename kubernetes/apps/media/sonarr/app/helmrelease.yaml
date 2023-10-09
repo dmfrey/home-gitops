@@ -124,10 +124,10 @@ spec:
 
     resources:
       requests:
-        memory: 350Mi
+        memory: 128Mi
         cpu: 5m
       limits:
-        memory: 431Mi
+        memory: 256Mi
 
     serviceMonitor:
       metrics:
