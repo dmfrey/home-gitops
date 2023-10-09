@@ -27,6 +27,12 @@ ingress:
       originServerName: rdt.dmfrey.com
       httpHostHeader: rdt.dmfrey.com
       noTLSVerify: true
+  - hostname: "bazarr.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: bazarr.dmfrey.com
+      httpHostHeader: bazarr.dmfrey.com
+      noTLSVerify: true
   - hostname: "plex.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:

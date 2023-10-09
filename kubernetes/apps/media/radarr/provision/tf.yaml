@@ -1,0 +1,27 @@
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: radarr-provisioner
+  namespace: media
+spec:
+  path: "./"
+  interval: 10m
+  approvePlan: auto
+  backendConfig:
+    disable: true
+  cliConfigSecretRef:
+    name: tf-cloud-token
+    namespace: flux-system
+  cloud:
+    organization: "${ORGANIZATION}"
+    hostname: "app.terraform.io"
+    workspaces:
+      name: "radarr-provisioner"
+  sourceRef:
+    kind: OCIRepository
+    name: oci-terraform-radarr
+    namespace: flux-system
+  varsFrom:
+    - kind: Secret
+      name: starr-apps-secret

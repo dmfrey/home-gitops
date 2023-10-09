@@ -1,0 +1,138 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: readarr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+      annotions:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: ghcr.io/onedr0p/readarr-nightly
+      tag: 0.3.6.2232@sha256:df2370dabfce2e13323364bb12cbfa9227508d2470d5347f8ae1a031a0b15c82
+    env:
+      TZ: America/New_York
+      READARR__INSTANCE_NAME: Readarr
+      READARR__PORT: &port 8787
+      READARR__APPLICATION_URL: https://readarr.${EXTERNAL_DOMAIN}
+      READARR__LOG_LEVEL: info
+      READARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: READARR_API_KEY
+
+    sidecars:
+      exporter:
+        name: exporter
+        image: ghcr.io/onedr0p/exportarr:v1.5.3
+        args: ["readarr"]
+        env:
+          - name: URL
+            value: "http://localhost"
+          - name: CONFIG
+            value: "/config/config.xml"
+          - name: PORT
+            value: &metricsPort 9711
+          - name: ENABLE_ADDITIONAL_METRICS
+            value: true
+          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+            value: false
+        ports:
+          - name: metrics
+            containerPort: *metricsPort 
+        volumeMounts:
+          - name: config
+            mountPath: /config
+            readOnly: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "material-symbols:book-outline-rounded"
+        hosts:
+          - host: &host readarr.${EXTERNAL_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: readarr-tls-external
+    persistence:
+      media:
+        enabled: true
+        existingClaim: videos-nfs-media
+    
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${QNAP_ADDR}"
+            path: /plexbackups/backups/readarr
+        mountPath: /config/Backups
+        readOnly: false
+
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+        - 65539
+        - 1030
+
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 5m
+      limits:
+        memory: 431Mi
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: readarr-metrics
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 2m

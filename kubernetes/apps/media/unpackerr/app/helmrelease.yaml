@@ -1,0 +1,99 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: unpackerr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: docker.io/golift/unpackerr
+      tag: unstable
+
+    env:
+      TZ: America/New_York
+      UN_INTERVAL: "1m"
+      UN_WEBSERVER_METRICS: "true"
+      UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local:8989
+      UN_SONARR_0_PATHS_0: /media/downloads/torrents/series
+      UN_SONARR_0_PATHS_1: /media/downloads/torrents/anime
+      UN_SONARR_0_API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: SONARR_API_KEY
+      UN_RADARR_0_URL: http://radarr.media.svc.cluster.local:7878
+      UN_RADARR_0_PATHS_0: /media/downloads/torrents/movies
+      UN_RADARR_0_API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: RADARR_API_KEY
+      UN_LIDARR_0_URL: http://lidarr.media.svc.cluster.local:8686
+      UN_LIDARR_0_PATHS_0: /media/downloads/torrents/music
+      UN_LIDARR_0_API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: LIDARR_API_KEY
+      UN_READARR_0_URL: http://readarr.media.svc.cluster.local:8787
+      UN_READARR_0_PATHS_0: /media/downloads/torrents/books
+      UN_READARR_0_API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: READARR_API_KEY
+
+    service:
+      main:
+        ports:
+          http:
+            port: 5656
+
+    serviceMonitor:
+      main:
+        enabled: true
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+        - 65539
+        - 1030
+
+    persistence:
+      media:
+        enabled: true
+        existingClaim: videos-nfs-media
+
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 10m
+      limits:
+        memory: 1024Mi

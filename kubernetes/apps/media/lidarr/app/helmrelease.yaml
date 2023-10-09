@@ -1,0 +1,142 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: lidarr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/onedr0p/lidarr
+      tag: 1.3.5.3530@sha256:fe314348b9c54d58a2d8b9808d586885dd4267b0410b7d3066bc46e2c79606d3
+
+    env:
+      TZ: America/New_York
+      LIDARR__INSTANCE_NAME: Lidarr
+      LIDARR__PORT: &port 8686
+      LIDARR__LOG_LEVEL: info
+      LIDARR__ANALYTICS_ENABLED: "False"
+      LIDARR__APPLICATION_URL: "https://lidarr.${EXTERNAL_DOMAIN}"
+      LIDARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: LIDARR_API_KEY
+
+    sidecars:
+      exporter:
+        name: exporter
+        image: ghcr.io/onedr0p/exportarr:v1.5.3
+        args: ["lidarr"]
+        env:
+          - name: URL
+            value: "http://localhost"
+          - name: CONFIG
+            value: "/config/config.xml"
+          - name: PORT
+            value: &metricsPort 9709
+          - name: ENABLE_ADDITIONAL_METRICS
+            value: true
+          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+            value: false
+        ports:
+          - name: metrics
+            containerPort: *metricsPort 
+        volumeMounts:
+          - name: config
+            mountPath: /config
+            readOnly: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:headphones"
+        hosts:
+        - host: &host "lidarr.${EXTERNAL_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - *host
+          secretName: lidarr-tls-external
+
+    persistence:
+      media:
+        enabled: true
+        existingClaim: videos-nfs-media
+
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${QNAP_ADDR}"
+            path: /plexbackups/backups/lidarr
+        mountPath: /config/Backups
+        readOnly: false
+
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+        - 65539
+        - 1030
+
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 5m
+      limits:
+        memory: 431Mi
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: lidarr-metrics
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 2m

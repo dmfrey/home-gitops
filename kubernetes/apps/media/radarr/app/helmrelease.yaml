@@ -1,0 +1,140 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/onedr0p/radarr
+      tag: 4.7.5.7809@sha256:2ad6f18b6065720d1960566fa224a0a31ad8f4671dd575b845edc6d88cafab19
+    env:
+      TZ: America/New_York
+      RADARR__INSTANCE_NAME: Radarr
+      RADARR__PORT: &port 7878
+      RADARR__APPLICATION_URL: https://radarr.${EXTERNAL_DOMAIN}
+      RADARR__LOG_LEVEL: info
+      RADARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: RADARR_API_KEY
+
+    sidecars:
+      exporter:
+        name: exporter
+        image: ghcr.io/onedr0p/exportarr:v1.5.3
+        args: ["radarr"]
+        env:
+          - name: URL
+            value: "http://localhost"
+          - name: CONFIG
+            value: "/config/config.xml"
+          - name: PORT
+            value: &metricsPort 9708
+          - name: ENABLE_ADDITIONAL_METRICS
+            value: true
+          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+            value: false
+        ports:
+          - name: metrics
+            containerPort: *metricsPort 
+        volumeMounts:
+          - name: config
+            mountPath: /config
+            readOnly: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:movie-open-outline"
+          # nginx.ingress.kubernetes.io/auth-response-headers: Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid,Authorization
+        hosts:
+          - host: &host radarr.${EXTERNAL_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: radarr-tls-external
+    persistence:
+      media:
+        enabled: true
+        existingClaim: videos-nfs-media
+
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${QNAP_ADDR}"
+            path: /plexbackups/backups/radarr
+        mountPath: /config/Backups
+        readOnly: false
+
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+        - 65539
+        - 1030
+
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 5m
+      limits:
+        memory: 431Mi
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: radarr-metrics
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 2m
