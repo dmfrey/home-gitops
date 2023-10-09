@@ -45,6 +45,12 @@ ingress:
       originServerName: plex.dmfrey.com
       httpHostHeader: plex.dmfrey.com
       noTLSVerify: true
+  - hostname: "readarr.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: readarr.dmfrey.com
+      httpHostHeader: readarr.dmfrey.com
+      noTLSVerify: true
   - hostname: "sonarr.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
