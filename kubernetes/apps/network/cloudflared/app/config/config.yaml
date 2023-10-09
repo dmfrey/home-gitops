@@ -63,6 +63,12 @@ ingress:
       originServerName: sonarr.dmfrey.com
       httpHostHeader: sonarr.dmfrey.com
       noTLSVerify: true
+  - hostname: "tdarr.dmfrey.com"
+    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: tdarr.dmfrey.com
+      httpHostHeader: tdarr.dmfrey.com
+      noTLSVerify: true
   - hostname: "alert-manager.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
