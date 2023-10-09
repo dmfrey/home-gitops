@@ -48,8 +48,8 @@ ingress:
   - hostname: "radarr.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
-      originServerName: raadarr.dmfrey.com
-      httpHostHeader: raadarr.dmfrey.com
+      originServerName: radarr.dmfrey.com
+      httpHostHeader: radarr.dmfrey.com
       noTLSVerify: true
   - hostname: "readarr.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
