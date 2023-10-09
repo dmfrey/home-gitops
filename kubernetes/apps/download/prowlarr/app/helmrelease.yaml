@@ -114,8 +114,8 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "${SYNOLOGY_ADDR}"
-            path: /volume1/backups/prowlarr
+            server: "${QNAP_ADDR}"
+            path: /plexbackups/backups/prowlarr
         mountPath: /config/Backups
         readOnly: false
 
