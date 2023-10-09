@@ -16,4 +16,4 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-pod-gateway
+    # - name: cluster-apps-pod-gateway

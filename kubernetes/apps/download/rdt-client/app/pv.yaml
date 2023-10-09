@@ -10,8 +10,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: ${SYNOLOGY_ADDR}
-    path: "/volume1/media/downloads"
+    server: ${QNAP_ADDR}
+    path: "/downloads"
   mountOptions:
     - nfsvers=3
     - tcp

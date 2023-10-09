@@ -19,7 +19,7 @@ spec:
     - name: cluster-apps-reflector
     # - name: cluster-apps-synology-csi
     - name: cluster-apps-kube-prometheus-stack-crds
-    - name: cluster-apps-pod-gateway
+    # - name: cluster-apps-pod-gateway
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
