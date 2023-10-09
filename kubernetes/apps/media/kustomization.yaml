@@ -14,7 +14,7 @@ resources:
   - ./plex-meta-manager/ks.yaml
   - ./readarr/ks.yaml
   # - ./recyclarr/ks.yaml
-  # - ./radarr/ks.yaml
+  - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   # - ./tautulli/ks.yaml
   # - ./tdarr/ks.yaml
