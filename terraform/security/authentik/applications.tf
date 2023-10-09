@@ -6,7 +6,7 @@ resource "authentik_provider_proxy" "proxy_providers" {
   external_host         = each.value.url
   skip_path_regex       = each.value.skip_path_regex
   authorization_flow    = data.authentik_flow.default-authorization-flow.id
-  authentication_flow   = authentik_flow.davishaus-authentication.uuid
+  authentication_flow   = authentik_flow.homelab5767-authentication.uuid
 }
 
 resource "authentik_application" "proxy_apps" {
@@ -24,7 +24,7 @@ resource "authentik_service_connection_kubernetes" "local" {
 }
 
 resource "authentik_outpost" "outpost" {
-  name               = "Davishaus Outpost"
+  name               = "homelab5767 Outpost"
   service_connection = authentik_service_connection_kubernetes.local.id
   protocol_providers = [for proxy in authentik_provider_proxy.proxy_providers : proxy.id]
   config = jsonencode({
@@ -54,7 +54,7 @@ resource "authentik_provider_oauth2" "oauth2_providers" {
   client_id             = each.value.client_id
   client_secret         = sensitive(each.value.client_secret)
   authorization_flow    = data.authentik_flow.default-authorization-flow.id
-  authentication_flow   = authentik_flow.davishaus-authentication.uuid
+  authentication_flow   = authentik_flow.homelab5767-authentication.uuid
   redirect_uris         = each.value.redirect_uris
   signing_key           = data.authentik_certificate_key_pair.default-certificate.id
   property_mappings     = data.authentik_scope_mapping.oauth2-scopes.ids

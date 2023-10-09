@@ -1,5 +1,5 @@
-resource "authentik_stage_identification" "davishaus-identity-stage" {
-  name = "davishaus-identification"
+resource "authentik_stage_identification" "homelab5767-identity-stage" {
+  name = "homelab5767-identification"
   user_fields = [
     "username",
     "email"

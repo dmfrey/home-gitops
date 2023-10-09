@@ -2,13 +2,13 @@ data "authentik_tenant" "authentik-default" {
   domain = "authentik-default"
 }
 
-resource "authentik_tenant" "davishaus" {
+resource "authentik_tenant" "homelab5767" {
   domain              = var.external_domain
   default             = false
-  branding_title      = "Davishaus"
-  flow_authentication = authentik_flow.davishaus-authentication.uuid
+  branding_title      = "homelab5767"
+  flow_authentication = authentik_flow.homelab5767-authentication.uuid
   flow_invalidation   = data.authentik_flow.default-invalidation-flow.id
   flow_user_settings  = data.authentik_flow.default-user-settings-flow.id
-  branding_logo       = "/media/branding/davishaus-logo.svg"
-  branding_favicon    = "/media/branding/davishaus-favicon.png"
+  branding_logo       = "/media/branding/homelab5767-logo.svg"
+  branding_favicon    = "/media/branding/homelab5767-favicon.png"
 }

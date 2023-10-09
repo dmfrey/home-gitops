@@ -1,7 +1,7 @@
-resource "authentik_flow" "davishaus-authentication" {
-  name               = "DavisHaus Authentication Flow"
-  slug               = "davishaus-authentication-flow"
-  title              = "Welcome to Davishaus!"
+resource "authentik_flow" "homelab5767-authentication" {
+  name               = "homelab5767 Authentication Flow"
+  slug               = "homelab5767-authentication-flow"
+  title              = "Welcome to homelab5767!"
   designation        = "authentication"
   background         = "/static/dist/assets/images/flow_background.jpg"
   compatibility_mode = false
@@ -9,7 +9,7 @@ resource "authentik_flow" "davishaus-authentication" {
 
 locals {
   stage_bindings = {
-    0 = authentik_stage_identification.davishaus-identity-stage.id
+    0 = authentik_stage_identification.homelab5767-identity-stage.id
     1 = data.authentik_stage.password-stage.id
     2 = data.authentik_stage.mfa-validation-stage.id
     3 = data.authentik_stage.user-login-stage.id
@@ -18,7 +18,7 @@ locals {
 
 resource "authentik_flow_stage_binding" "dh-sb-identity" {
   for_each = local.stage_bindings
-  target   = authentik_flow.davishaus-authentication.uuid
+  target   = authentik_flow.homelab5767-authentication.uuid
   stage    = each.value
   order    = each.key
 }

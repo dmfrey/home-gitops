@@ -6,7 +6,7 @@ terraform {
     }
   }
   cloud {
-    organization = "davishaus"
+    organization = "homelab5767"
     workspaces {
       name = "authentik-provisioner"
     }
