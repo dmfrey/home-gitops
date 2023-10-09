@@ -21,11 +21,11 @@ ingress:
       originServerName: prowlarr.dmfrey.com
       httpHostHeader: prowlarr.dmfrey.com
       noTLSVerify: true
-  - hostname: "rtd.dmfrey.com"
+  - hostname: "rdt.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
-      originServerName: rtd.dmfrey.com
-      httpHostHeader: rtd.dmfrey.com
+      originServerName: rdt.dmfrey.com
+      httpHostHeader: rdt.dmfrey.com
       noTLSVerify: true
   - hostname: "plex.dmfrey.com"
     service: https://ingress-nginx-controller.network.svc.cluster.local:443
