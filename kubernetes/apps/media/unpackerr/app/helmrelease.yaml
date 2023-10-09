@@ -90,6 +90,17 @@ spec:
       media:
         enabled: true
         existingClaim: videos-nfs-media
+      music:
+        enabled: true
+        existingClaim: music-nfs-media
+        readOnly: false
+      photos:
+        enabled: true
+        existingClaim: photos-nfs-media
+        readOnly: false
+
+    nodeSelector:
+      beta.kubernetes.io/arch: amd64
 
     resources:
       requests:
