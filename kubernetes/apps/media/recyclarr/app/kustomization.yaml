@@ -9,7 +9,7 @@ configMapGenerator:
     files:
       - ./config/radarr.yml
       - ./config/sonarr.yml
-      - ./config/sonarr-anime.yml
+      # - ./config/sonarr-anime.yml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
