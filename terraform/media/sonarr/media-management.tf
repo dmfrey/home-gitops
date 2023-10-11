@@ -33,5 +33,5 @@ resource "sonarr_naming" "naming" {
 }
 
 resource "sonarr_root_folder" "series" {
-  path = "/media/library/TV\ Shows"
+  path = "/media/library/TV Shows"
 }
