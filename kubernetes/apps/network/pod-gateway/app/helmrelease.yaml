@@ -25,7 +25,7 @@ spec:
 
     service:
       vpn:
-        enabled: true
+        enabled: false
         type: LoadBalancer
         annotations:
           # io.cilium/lb-ipam-ips: ${SVC_VPN_ADDR}
@@ -37,7 +37,7 @@ spec:
 
     addons:
       vpn:
-        enabled: true
+        enabled: false
         type: gluetun
         image:
           repository: ghcr.io/qdm12/gluetun
