@@ -7,7 +7,7 @@ terraform {
   }
 
   cloud {
-    organization = "homelab5767"
+    organization = "frey"
     workspaces {
       name = "sonarr-provisioner"
     }

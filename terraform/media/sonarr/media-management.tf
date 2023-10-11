@@ -33,9 +33,5 @@ resource "sonarr_naming" "naming" {
 }
 
 resource "sonarr_root_folder" "series" {
-  path = "/media/library/series"
-}
-
-resource "sonarr_root_folder" "anime" {
-  path = "/media/library/anime"
+  path = "/media/library/TV\ Shows"
 }
