@@ -58,8 +58,8 @@ spec:
             value: "off"
           - name: DOT
             value: "off"
-          - name: SERVER_CITIES
-            value: New York NY
+          # - name: SERVER_CITIES
+          #   value: New York NY
           # - name: SERVER_HOSTNAMES
           #   value: us167-wireguard
           - name: LOG_LEVEL
