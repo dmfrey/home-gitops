@@ -45,7 +45,7 @@ spec:
 
         env:
           - name: VPN_SERVICE_PROVIDER
-            value: custom
+            value: mullvad
           - name: VPN_TYPE
             value: wireguard
           - name: VPN_INTERFACE
