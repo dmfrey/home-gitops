@@ -65,7 +65,7 @@ spec:
 
         envFrom:
           - secretRef:
-            name: pod-gateway-secret
+              name: pod-gateway-secret
 
         resources:
           requests:
