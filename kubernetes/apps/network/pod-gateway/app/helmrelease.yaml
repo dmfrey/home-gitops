@@ -54,6 +54,8 @@ spec:
             value: 51821
           - name: FIREWALL
             value: "off"
+          - name: "DNS_KEEP_NAMESERVER"
+            value: "on"
           - name: DOT
             value: "off"
           - name: SERVER_CITIES
