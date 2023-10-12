@@ -45,7 +45,7 @@ spec:
 
         env:
           - name: VPN_SERVICE_PROVIDER
-            value: mullvad
+            value: custom
           - name: VPN_TYPE
             value: wireguard
           - name: VPN_INTERFACE
@@ -55,7 +55,7 @@ spec:
           - name: FIREWALL
             value: "off"
           - name: "DNS_KEEP_NAMESERVER"
-            value: "on"
+            value: "off"
           - name: DOT
             value: "off"
           - name: SERVER_CITIES
