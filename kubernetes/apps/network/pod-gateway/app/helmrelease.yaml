@@ -56,12 +56,14 @@ spec:
             value: "off"
           - name: DOT
             value: "off"
-          # - name: SERVER_CITIES
-          #   value: Atlanta GA
+          - name: SERVER_CITIES
+            value: Philadelphia PA
           # - name: SERVER_HOSTNAMES
           #   value: us167-wireguard
           - name: LOG_LEVEL
-            value: info
+            value: debug
+          - name: LOG_CONFS
+            value: "true"
 
         envFrom:
           - secretRef:
