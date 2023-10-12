@@ -51,7 +51,7 @@ spec:
           - name: VPN_INTERFACE
             value: wg0
           - name: VPN_ENDPOINT_PORT
-            value: 51820
+            value: 51821
           - name: FIREWALL
             value: "off"
           - name: DOT
@@ -111,7 +111,7 @@ spec:
       VPN_BLOCK_OTHER_TRAFFIC: true
       VPN_INTERFACE: wg0
       VPN_LOCAL_CIDRS: 10.0.0.0/8   # 192.168.0.0/16
-      VPN_TRAFFIC_PORT: "51820"
+      VPN_TRAFFIC_PORT: "51821"
       VXLAN_ID: 43
       VXLAN_IP_NETWORK: 172.16.1
 
