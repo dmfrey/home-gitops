@@ -7,5 +7,5 @@ resources:
   # - ./networkpolicy.yaml
   # Flux-Kustomizations
   - ./flaresolverr/ks.yaml
-  - ./prowlarr/ks.yaml
+  # - ./prowlarr/ks.yaml
   - ./rdt-client/ks.yaml
