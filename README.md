@@ -23,13 +23,13 @@
           dhcp4: no
           dhcp6: no
           addresses:
-            - 192.168.86.[16|17|18|19]/24
+            - 192.168.30.[5|6|10|11|12|13]/24
           routes:
             - to: default
-              via: 192.168.86.1
+              via: 192.168.30.1
           nameservers:
-            search: [192.168.86.1]
-            addresses: [192.168.86.1]
+            search: [192.168.30.1]
+            addresses: [192.168.30.1]
     ```
   
    * `sudo netplan apply`
@@ -86,7 +86,7 @@
 
 1. Add entry for each node
 
-    * `192.168.86.1[6|7|8|9] dmf-rpi-00[1|2|3|4]`
+    * `192.168.30.[5|6|10|11|12|13] dmf-[amd|nuc|rpi]-00[1|2|3|4]`
 
 ### Setup SWAP space
 
@@ -161,9 +161,9 @@
 
     ```config
     # Ubuntu Server microk8s cluster 001 
-    Host dmf-rpi-00[1|2|3|4]
+    Host dmf-[amd|nuc|rpi]-00[1|2|3|4]
       Preferredauthentications publickey
-      HostName 192.168.86.1[6|7|8|9]
+      HostName 192.168.30.[5|6|10|11|12|13]
       Port 22
       User ubuntu
     ```
