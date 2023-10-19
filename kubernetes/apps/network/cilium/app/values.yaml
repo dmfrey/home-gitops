@@ -18,7 +18,7 @@ cgroup:
   hostRoot: /sys/fs/cgroup
 
 cluster:
-  name: jsdyb-k8s-001
+  name: homelab-k8s-001
   id: 1
 
 cni:

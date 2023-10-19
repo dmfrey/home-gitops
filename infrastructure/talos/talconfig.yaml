@@ -164,7 +164,7 @@ controlPlane:
           advertisedSubnets:
             - 192.168.30.0/24
         extraManifests:
-          - https://raw.githubusercontent.com/dmfrey/home-gito/main/infrastructure/talos/integrations/cni/cilium.yaml
+          - https://raw.githubusercontent.com/dmfrey/home-gitops/main/infrastructure/talos/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/dmfrey/home-gitops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
 
     - |-

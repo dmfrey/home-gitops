@@ -427,7 +427,7 @@ data:
   cgroup-root: /sys/fs/cgroup
   cilium-endpoint-gc-interval: 5m0s
   cluster-id: "1"
-  cluster-name: jsdyb-k8s-001
+  cluster-name: homelab-k8s-001
   cni-exclusive: "false"
   cni-log-file: /var/run/cilium/cilium-cni.log
   custom-cni-conf: "false"
@@ -549,7 +549,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: 14ee3a6d395a9f34f7fd8992ad9fe6350abfa7e21dd4fd5479155313fdffe8e6
+        cilium.io/cilium-configmap-checksum: 9d5de7c533588a6cf7c668d40849c8565cee7bf64364e64b72e4fc63d9ce3aa4
       labels:
         app.kubernetes.io/name: cilium-operator
         app.kubernetes.io/part-of: cilium
@@ -652,7 +652,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: 14ee3a6d395a9f34f7fd8992ad9fe6350abfa7e21dd4fd5479155313fdffe8e6
+        cilium.io/cilium-configmap-checksum: 9d5de7c533588a6cf7c668d40849c8565cee7bf64364e64b72e4fc63d9ce3aa4
         container.apparmor.security.beta.kubernetes.io/cilium-agent: unconfined
         container.apparmor.security.beta.kubernetes.io/clean-cilium-state: unconfined
       labels:
