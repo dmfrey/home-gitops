@@ -2,7 +2,7 @@
 clusterName: ${CLUSTER_NAME}
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: "v1.5.4"
+talosVersion: v1.5.4
 kubernetesVersion: 1.28.2
 endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
 
@@ -69,68 +69,74 @@ nodes:
   #           dhcpOptions:
   #             routeMetric: 4096
   - hostname: dmf-rpi-001.${INTERNAL_DOMAIN}
-    disableSearchDomain: true
-    ipAddress: 192.168.30.10
     controlPlane: true
+    ipAddress: 192.168.30.21
     installDisk: /dev/mmcblk0
+    disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
         dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
         vip:
-          ip: 192.168.30.4
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 4096
+              routeMetric: 2048
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 4096
+              routeMetric: 3072
   - hostname: dmf-rpi-002.${INTERNAL_DOMAIN}
-    disableSearchDomain: true
-    ipAddress: 192.168.30.11
     controlPlane: true
+    ipAddress: 192.168.30.22
     installDisk: /dev/mmcblk0
+    disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
         dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
         vip:
-          ip: 192.168.30.4
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 4096
+              routeMetric: 2048
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 4096
+              routeMetric: 3072
   - hostname: dmf-rpi-003.${INTERNAL_DOMAIN}
-    disableSearchDomain: true
-    ipAddress: 192.168.30.12
     controlPlane: true
+    ipAddress: 192.168.30.23
     installDisk: /dev/mmcblk0
+    disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
         dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
         vip:
-          ip: 192.168.30.4
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 4096
+              routeMetric: 2048
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 4096
+              routeMetric: 3072
   # - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
   #   disableSearchDomain: true
   #   ipAddress: 192.168.30.13
@@ -158,7 +164,7 @@ controlPlane:
           advertisedSubnets:
             - 192.168.30.0/24
         extraManifests:
-          # - https://raw.githubusercontent.com/dmfrey/home-gito/main/infrastructure/talos/integrations/cni/cilium.yaml
+          - https://raw.githubusercontent.com/dmfrey/home-gito/main/infrastructure/talos/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/dmfrey/home-gitops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
 
     - |-
@@ -176,6 +182,9 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - system
+          kubePrism:
+            enabled: true
+            port: 7445
 
         files:
           - op: create
@@ -186,9 +195,9 @@ controlPlane:
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
 
-        install:
-          extensions:
-            - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
+        # install:
+        #   extensions:
+        #     - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
 
         kubelet:
           extraArgs:

@@ -434,11 +434,12 @@ data:
   debug: "false"
   debug-verbose: ""
   disable-cnp-status-updates: "false"
+  egress-gateway-reconciliation-trigger-interval: 1s
   enable-auto-protect-node-port-range: "true"
   enable-bandwidth-manager: "true"
   enable-bbr: "true"
   enable-bgp-control-plane: "true"
-  enable-bpf-clock-probe: "true"
+  enable-bpf-clock-probe: "false"
   enable-bpf-masquerade: "true"
   enable-bpf-tproxy: "true"
   enable-endpoint-health-checking: "true"
@@ -471,10 +472,12 @@ data:
   ipam: kubernetes
   ipam-cilium-node-update-rate: 15s
   ipv4-native-routing-cidr: 172.22.0.0/16
+  k8s-client-burst: "10"
+  k8s-client-qps: "5"
   kube-proxy-replacement: strict
   kube-proxy-replacement-healthz-bind-address: 0.0.0.0:10256
   mesh-auth-enabled: "true"
-  mesh-auth-expired-gc-interval: 15m0s
+  mesh-auth-gc-interval: 5m0s
   mesh-auth-queue-size: "1024"
   mesh-auth-rotated-identities-queue-size: "1024"
   monitor-aggregation: medium
@@ -546,7 +549,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: cca9f37856931c5be999f77fceb55536c31fdaac0ce48a6a2cae722790cbe583
+        cilium.io/cilium-configmap-checksum: 14ee3a6d395a9f34f7fd8992ad9fe6350abfa7e21dd4fd5479155313fdffe8e6
       labels:
         app.kubernetes.io/name: cilium-operator
         app.kubernetes.io/part-of: cilium
@@ -585,10 +588,10 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: homelab-k8s-001.frey.dev
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/operator-generic:v1.14.0-snapshot.4
+        image: quay.io/cilium/operator-generic:v1.14.2@sha256:52f70250dea22e506959439a7c4ea31b10fe8375db62f5c27ab746e3a2af866d
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -649,7 +652,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: cca9f37856931c5be999f77fceb55536c31fdaac0ce48a6a2cae722790cbe583
+        cilium.io/cilium-configmap-checksum: 14ee3a6d395a9f34f7fd8992ad9fe6350abfa7e21dd4fd5479155313fdffe8e6
         container.apparmor.security.beta.kubernetes.io/cilium-agent: unconfined
         container.apparmor.security.beta.kubernetes.io/clean-cilium-state: unconfined
       labels:
@@ -684,10 +687,10 @@ spec:
         - name: CILIUM_CLUSTERMESH_CONFIG
           value: /var/lib/cilium/clustermesh/
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: homelab-k8s-001.frey.dev
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.14.0-snapshot.4
+        image: quay.io/cilium/cilium:v1.14.2@sha256:6263f3a3d5d63b267b538298dbeb5ae87da3efacf09a2c620446c873ba807d35
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -794,10 +797,10 @@ spec:
               apiVersion: v1
               fieldPath: metadata.namespace
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: homelab-k8s-001.frey.dev
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.14.0-snapshot.4
+        image: quay.io/cilium/cilium:v1.14.2@sha256:6263f3a3d5d63b267b538298dbeb5ae87da3efacf09a2c620446c873ba807d35
         imagePullPolicy: IfNotPresent
         name: config
         terminationMessagePolicy: FallbackToLogsOnError
@@ -810,7 +813,7 @@ spec:
         - /bin/bash
         - -c
         - --
-        image: quay.io/cilium/cilium:v1.14.0-snapshot.4
+        image: quay.io/cilium/cilium:v1.14.2@sha256:6263f3a3d5d63b267b538298dbeb5ae87da3efacf09a2c620446c873ba807d35
         imagePullPolicy: IfNotPresent
         name: mount-bpf-fs
         securityContext:
@@ -836,10 +839,10 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: homelab-k8s-001.frey.dev
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.14.0-snapshot.4
+        image: quay.io/cilium/cilium:v1.14.2@sha256:6263f3a3d5d63b267b538298dbeb5ae87da3efacf09a2c620446c873ba807d35
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
@@ -868,7 +871,7 @@ spec:
           name: cilium-run
       - command:
         - /install-plugin.sh
-        image: quay.io/cilium/cilium:v1.14.0-snapshot.4
+        image: quay.io/cilium/cilium:v1.14.2@sha256:6263f3a3d5d63b267b538298dbeb5ae87da3efacf09a2c620446c873ba807d35
         imagePullPolicy: IfNotPresent
         name: install-cni-binaries
         resources:
