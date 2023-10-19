@@ -1,0 +1,191 @@
+---
+clusterName: ${CLUSTER_NAME}
+
+# renovate: datasource=github-releases depName=siderolabs/talos
+talosVersion: "v1.5.4"
+kubernetesVersion: 1.28.2
+endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
+
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlane: true
+
+clusterPodNets:
+  - 172.22.0.0/16
+clusterSvcNets:
+  - 172.23.0.0/16
+cniConfig:
+  name: none
+
+additionalApiServerCertSans:
+  - ${CLUSTER_ENDPOINT_IP}
+  - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}
+
+additionalMachineCertSans:
+  - ${CLUSTER_ENDPOINT_IP}
+  - ${CLUSTER_NAME}.${INTERNAL_DOMAIN}
+  - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}
+
+nodes:
+  # - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.5
+  #   controlPlane: true
+  #   installDisk: /dev/sda
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
+    disableSearchDomain: true
+    ipAddress: 192.168.30.6
+    controlPlane: true
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: en01
+        dhcp: true
+        vip:
+          ip: 192.168.30.4
+        vlans:
+          - vlanId: 90
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+  - hostname: dmf-rpi-001.${INTERNAL_DOMAIN}
+    disableSearchDomain: true
+    ipAddress: 192.168.30.10
+    controlPlane: true
+    installDisk: /dev/mmcblk0
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: 192.168.30.4
+        vlans:
+          - vlanId: 90
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+  # - hostname: dmf-rpi-002.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.11
+  #   controlPlane: true
+  #   installDisk: /dev/mmcblk0
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  # - hostname: dmf-rpi-003.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.12
+  #   controlPlane: true
+  #   installDisk: /dev/mmcblk0
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  # - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.13
+  #   controlPlane: true
+  #   installDisk: /dev/mmcblk0
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+
+controlPlane:
+  patches:
+    - |-
+      cluster:
+        proxy:
+          disabled: true
+        etcd:
+          advertisedSubnets:
+            - 192.168.0.0/24
+        extraManifests:
+          # - https://raw.githubusercontent.com/dmfrey/home-gito/main/infrastructure/talos/integrations/cni/cilium.yaml
+          - https://raw.githubusercontent.com/dmfrey/home-gitops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    - |-
+      machine:
+        nodeLabels:
+          plan.upgrade.cattle.io/talos: ""
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system
+
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+
+        install:
+          extensions:
+            - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
+
+        kubelet:
+          extraArgs:
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 250
+          nodeIP:
+            validSubnets:
+              - 192.168.0.0/24
+
+        network:
+          extraHostEntries:
+            - ip: ${CLUSTER_ENDPOINT_IP}
+              aliases:
+                - ${CLUSTER_NAME}.${INTERNAL_DOMAIN}
+
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+
+        time:
+          disabled: false
+          servers:
+            - ${NTP_SERVER}

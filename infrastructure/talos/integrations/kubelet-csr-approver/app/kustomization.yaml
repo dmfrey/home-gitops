@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: system
+
+helmCharts:
+  - name: kubelet-csr-approver
+    repo: https://postfinance.github.io/kubelet-csr-approver
+    version: 1.0.5
+    releaseName: kubelet-csr-approver
+    includeCRDs: true
+    namespace: system
+    valuesFile: ../../../../../kubernetes/apps/system/kubelet-csr-approver/app/values.yaml
+
+transformers:
+  - transformers.yaml
