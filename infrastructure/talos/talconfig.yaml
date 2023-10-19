@@ -26,38 +26,38 @@ additionalMachineCertSans:
   - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}
 
 nodes:
-  - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
-    disableSearchDomain: true
-    ipAddress: 192.168.30.5
-    controlPlane: true
-    installDisk: /dev/sda
-    networkInterfaces:
-      - interface: eth0
-        dhcp: true
-        vip:
-          ip: 192.168.30.4
-        vlans:
-          - vlanId: 90
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-  - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
-    disableSearchDomain: true
-    ipAddress: 192.168.30.6
-    controlPlane: true
-    installDisk: /dev/sda
-    networkInterfaces:
-      - interface: en01
-        dhcp: true
-        vip:
-          ip: 192.168.30.4
-        vlans:
-          - vlanId: 90
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+  # - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.5
+  #   controlPlane: true
+  #   installDisk: /dev/sda
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  # - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.6
+  #   controlPlane: true
+  #   installDisk: /dev/sda
+  #   networkInterfaces:
+  #     - interface: en01
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
   - hostname: dmf-rpi-001.${INTERNAL_DOMAIN}
     disableSearchDomain: true
     ipAddress: 192.168.30.10
@@ -106,22 +106,22 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-  - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
-    disableSearchDomain: true
-    ipAddress: 192.168.30.13
-    controlPlane: true
-    installDisk: /dev/mmcblk0
-    networkInterfaces:
-      - interface: eth0
-        dhcp: true
-        vip:
-          ip: 192.168.30.4
-        vlans:
-          - vlanId: 90
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+  # - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.13
+  #   controlPlane: true
+  #   installDisk: /dev/mmcblk0
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
 
 controlPlane:
   patches:

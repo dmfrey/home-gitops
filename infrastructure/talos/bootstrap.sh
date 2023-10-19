@@ -2,14 +2,18 @@
 
 echo "Applying Node Configs"
 # Deploy the configuration to the nodes
-talosctl apply-config --insecure -n 10.77.0.11 -f ./clusterconfig/jsdyb-k8s-001-jsdyb-nuc-001.internal.davishaus.dev.yaml
-talosctl apply-config --insecure -n 10.77.0.12 -f ./clusterconfig/jsdyb-k8s-001-jsdyb-nuc-002.internal.davishaus.dev.yaml
-talosctl apply-config --insecure -n 10.77.0.13 -f ./clusterconfig/jsdyb-k8s-001-jsdyb-nuc-003.internal.davishaus.dev.yaml
+talosctl apply-config --insecure -n 192.168.30.10 -f ./clusterconfig/homelab-k8s-001-dmf-rpi-001.frey.dev.yaml
+talosctl apply-config --insecure -n 192.168.30.11 -f ./clusterconfig/homelab-k8s-001-dmf-rpi-002.frey.dev.yaml
+talosctl apply-config --insecure -n 192.168.30.12 -f ./clusterconfig/homelab-k8s-001-dmf-rpi-003.frey.dev.yaml
+
+# talosctl apply-config --insecure -n 192.168.30.5 -f ./clusterconfig/homelab-k8s-001-dmf-amd-001.frey.dev.yaml
+# talosctl apply-config --insecure -n 192.168.30.6 -f ./clusterconfig/homelab-k8s-001-dmf-nuc-001.frey.dev.yaml
+# talosctl apply-config --insecure -n 192.168.30.13 -f ./clusterconfig/homelab-k8s-001-dmf-rpi-004.frey.dev.yaml
 
 echo "Sleeping..."
 sleep 120
 
-talosctl config node "10.77.0.11"; talosctl config endpoint 10.77.0.11 10.77.0.12 10.77.0.10
+talosctl config node "192.168.30.10"; talosctl config endpoint 192.168.30.10 192.168.30.11 192.168.30.12
 echo "Running bootstrap..."
 talosctl bootstrap
 
