@@ -37,12 +37,17 @@ nodes:
   #       vip:
   #         ip: 192.168.30.4
   #       vlans:
-  #         - vlanId: 90
+  #         - vlanId: 50
   #           mtu: 1500
   #           dhcp: true
   #           dhcpOptions:
   #             routeMetric: 4096
-  # - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+# - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
   #   disableSearchDomain: true
   #   ipAddress: 192.168.30.6
   #   controlPlane: true
@@ -53,7 +58,12 @@ nodes:
   #       vip:
   #         ip: 192.168.30.4
   #       vlans:
-  #         - vlanId: 90
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
   #           mtu: 1500
   #           dhcp: true
   #           dhcpOptions:
@@ -69,7 +79,12 @@ nodes:
         vip:
           ip: 192.168.30.4
         vlans:
-          - vlanId: 90
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+          - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
@@ -85,7 +100,12 @@ nodes:
         vip:
           ip: 192.168.30.4
         vlans:
-          - vlanId: 90
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+          - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
@@ -101,7 +121,12 @@ nodes:
         vip:
           ip: 192.168.30.4
         vlans:
-          - vlanId: 90
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+          - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
@@ -131,7 +156,7 @@ controlPlane:
           disabled: true
         etcd:
           advertisedSubnets:
-            - 192.168.0.0/24
+            - 192.168.30.0/24
         extraManifests:
           # - https://raw.githubusercontent.com/dmfrey/home-gito/main/infrastructure/talos/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/dmfrey/home-gitops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
@@ -173,7 +198,7 @@ controlPlane:
             maxPods: 250
           nodeIP:
             validSubnets:
-              - 192.168.0.0/24
+              - 192.168.30.0/24
 
         network:
           extraHostEntries:
