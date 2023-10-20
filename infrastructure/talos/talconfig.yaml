@@ -91,6 +91,8 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 3072
+    nameservers:
+      - 192.168.30.3
   - hostname: dmf-rpi-002.${INTERNAL_DOMAIN}
     controlPlane: true
     ipAddress: 192.168.30.22
@@ -114,6 +116,8 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 3072
+    nameservers:
+      - 192.168.30.3
   - hostname: dmf-rpi-003.${INTERNAL_DOMAIN}
     controlPlane: true
     ipAddress: 192.168.30.23
@@ -137,6 +141,8 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 3072
+    nameservers:
+      - 192.168.30.3
   # - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
   #   disableSearchDomain: true
   #   ipAddress: 192.168.30.13
