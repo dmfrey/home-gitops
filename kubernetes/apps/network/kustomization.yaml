@@ -6,12 +6,12 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./cilium/ks.yaml
-  - ./external-dns/ks.yaml
-  - ./metallb/ks.yaml
-  - ./ingress-nginx/ks.yaml
   - ./cloudflared/ks.yaml
-  - ./pod-gateway/ks.yaml
-  - ./smtp-relay/ks.yaml
+  # - ./external-dns/ks.yaml
+  # - ./metallb/ks.yaml
+  - ./ingress-nginx/ks.yaml
+  # - ./pod-gateway/ks.yaml
+  # - ./smtp-relay/ks.yaml
   # - ./multus/ks.yaml
   # # Standard Resources
   # - ./external-services
