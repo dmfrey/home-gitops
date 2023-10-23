@@ -95,7 +95,7 @@ spec:
         - 1030
 
     nodeSelector:
-      beta.kubernetes.io/arch: amd64
+      kubernetes.io/arch: amd64
     
     resources:
       requests:

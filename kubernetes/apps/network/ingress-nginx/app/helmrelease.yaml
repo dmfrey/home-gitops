@@ -55,9 +55,9 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "dmfrey.com"
+          external-dns.alpha.kubernetes.io/hostname: "portal.dmfrey.com"
           # acme.cert-manager.io/http01-edit-in-place: "false"
-          # io.cilium/lb-ipam-ips: ${SVC_NGINX_ADDR}
+          io.cilium/lb-ipam-ips: ${SVC_NGINX_ADDR}
         externalTrafficPolicy: Cluster
 
       publishService:
