@@ -31,7 +31,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "ingress-ext.dmfrey.com"
-          io.cilium/lb-ipam-ips: ${SVC_NGINX_ADDR}
+          io.cilium/lb-ipam-ips: 192.168.30.200
         externalTrafficPolicy: Cluster
 
       publishService:
