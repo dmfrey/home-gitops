@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: nginx-internal
+  name: nginx-external
 spec:
   interval: 30m
   chart:
@@ -17,7 +17,7 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    fullnameOverride: nginx-internal
+    fullnameOverride: nginx-external
 
     controller:
       allowSnippetAnnotations: true
@@ -30,7 +30,7 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "ingress-int.frey.dev"
+          external-dns.alpha.kubernetes.io/hostname: "ingress-ext.frey.dev"
           io.cilium/lb-ipam-ips: ${SVC_VPN_ADDR}
         externalTrafficPolicy: Cluster
 
@@ -38,9 +38,9 @@ spec:
         enabled: true
 
       ingressClassResource:
-        name: internal-nginx
-        default: true
-        controllerValue: k8s.io/ingress-nginx-internal
+        name: external-nginx
+        default: false
+        controllerValue: k8s.io/ingress-nginx-external
 
       admissionWebhooks:
         objectSelector:
@@ -48,7 +48,7 @@ spec:
             - key: ingress-class
               operator: In
               values:
-                - internal-nginx
+                - external-nginx
 
       config:
         block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
@@ -93,7 +93,7 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              app.kubernetes.io/instance: nginx-internal
+              app.kubernetes.io/instance: nginx-external
               app.kubernetes.io/component: controller
 
       resources:
