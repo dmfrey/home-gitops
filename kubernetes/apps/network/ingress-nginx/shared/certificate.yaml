@@ -2,14 +2,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "frey-dev"
+  name: "dmfrey-com"
   namespace: network
 spec:
-  secretName: "frey-dev-tls"
+  secretName: "dmfrey-com-tls"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: "${INTERNAL_DOMAIN}"
+  commonName: "${EXTERNAL_DOMAIN}"
   dnsNames:
-    - "${INTERNAL_DOMAIN}"
-    - "*.${INTERNAL_DOMAIN}"
+    - "${EXTERNAL_DOMAIN}"
+    - "*.${EXTERNAL_DOMAIN}"

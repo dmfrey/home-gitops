@@ -85,7 +85,7 @@ spec:
             any: true
 
       extraArgs:
-        default-ssl-certificate: "network/frey-dev-tls"
+        default-ssl-certificate: "network/dmfrey-com-tls"
 
       topologySpreadConstraints:
         - maxSkew: 2

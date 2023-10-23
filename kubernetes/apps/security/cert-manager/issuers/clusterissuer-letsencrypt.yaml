@@ -46,17 +46,3 @@ spec:
           apiTokenSecretRef:
             name: cloudflare-api-token-secret
             key: apiKey
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: wildcard-cert
-spec:
-  secretName: wildcard-cert-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  commonName: "*.${EXTERNAL_DOMAIN}"
-  dnsNames:
-  - ${EXTERNAL_DOMAIN}
-  - "*.${EXTERNAL_DOMAIN}"
