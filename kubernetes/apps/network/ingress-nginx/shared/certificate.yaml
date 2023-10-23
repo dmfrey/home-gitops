@@ -9,7 +9,7 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "frey.dev"
+  commonName: "${INTERNAL_DOMAIN}"
   dnsNames:
-    - "frey.dev"
-    - "*.frey.dev"
+    - "${INTERNAL_DOMAIN}"
+    - "*.${INTERNAL_DOMAIN}"
