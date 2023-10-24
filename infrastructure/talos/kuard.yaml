@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: kuard
-        image: gcr.io/kuar-demo/kuard-arm64:1
+        image: gcr.io/kuar-demo/kuard-amd64:1
         ports:
         - containerPort: 8080
           name: http
