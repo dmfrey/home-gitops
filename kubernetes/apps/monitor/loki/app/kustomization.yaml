@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: monitor
 resources:
   - ./secret-loki.sops.yaml
-  - ./loki-object-claim-delete.yaml
+  # - ./loki-object-claim-delete.yaml
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
