@@ -4,140 +4,138 @@ originRequest:
 
 ingress:
   - hostname: "dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
+    service: https://nginx-external-controller.network.svc.cluster.local:443
     originRequest:
-      originServerName: dmfrey.com
-      httpHostHeader: dmfrey.com
-      noTLSVerify: true
-  - hostname: "flux-webhook.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: flux-webhook.dmfrey.com
-      httpHostHeader: flux-webhook.dmfrey.com
-      noTLSVerify: true
-  - hostname: "prowlarr.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: prowlarr.dmfrey.com
-      httpHostHeader: prowlarr.dmfrey.com
-      noTLSVerify: true
-  - hostname: "rdt.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: rdt.dmfrey.com
-      httpHostHeader: rdt.dmfrey.com
-      noTLSVerify: true
-  - hostname: "bazarr.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: bazarr.dmfrey.com
-      httpHostHeader: bazarr.dmfrey.com
-      noTLSVerify: true
-  - hostname: "lidarr.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: lidarr.dmfrey.com
-      httpHostHeader: lidarr.dmfrey.com
-      noTLSVerify: true
-  - hostname: "plex.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: plex.dmfrey.com
-      httpHostHeader: plex.dmfrey.com
-      noTLSVerify: true
-  - hostname: "radarr.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: radarr.dmfrey.com
-      httpHostHeader: radarr.dmfrey.com
-      noTLSVerify: true
-  - hostname: "readarr.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: readarr.dmfrey.com
-      httpHostHeader: readarr.dmfrey.com
-      noTLSVerify: true
-  - hostname: "sonarr.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: sonarr.dmfrey.com
-      httpHostHeader: sonarr.dmfrey.com
-      noTLSVerify: true
-  - hostname: "tautulli.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: tautulli.dmfrey.com
-      httpHostHeader: tautulli.dmfrey.com
-      noTLSVerify: true
-  - hostname: "tdarr.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: tdarr.dmfrey.com
-      httpHostHeader: tdarr.dmfrey.com
-      noTLSVerify: true
-  - hostname: "join.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: join.dmfrey.com
-      httpHostHeader: join.dmfrey.com
-      noTLSVerify: true
-  - hostname: "alert-manager.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: alert-manager.dmfrey.com
-      httpHostHeader: alert-manager.dmfrey.com
-      noTLSVerify: true
-  - hostname: "grafana.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: grafana.dmfrey.com
-      httpHostHeader: grafana.dmfrey.com
-      noTLSVerify: true
-  - hostname: "monitor.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: monitor.dmfrey.com
-      httpHostHeader: monitor.dmfrey.com
-      noTLSVerify: true
-  - hostname: "loki.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: loki.dmfrey.com
-      httpHostHeader: loki.dmfrey.com
-      noTLSVerify: true
-  - hostname: "prometheus.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: prometheus.dmfrey.com
-      httpHostHeader: prometheus.dmfrey.com
-      noTLSVerify: true
-  - hostname: "thanos.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: thanos.dmfrey.com
-      httpHostHeader: thanos.dmfrey.com
-      noTLSVerify: true
-  - hostname: "rook.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: rook.dmfrey.com
-      httpHostHeader: rook.dmfrey.com
-      noTLSVerify: true
-  - hostname: "portal.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: portal.dmfrey.com
-      httpHostHeader: portal.dmfrey.com
-      noTLSVerify: true
-  - hostname: "theme-park.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: theme-park.dmfrey.com
-      httpHostHeader: theme-park.dmfrey.com
-      noTLSVerify: true
+      originServerName: ingress-ext.dmfrey.com
+  # - hostname: "flux-webhook.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: flux-webhook.dmfrey.com
+  #     httpHostHeader: flux-webhook.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "prowlarr.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: prowlarr.dmfrey.com
+  #     httpHostHeader: prowlarr.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "rdt.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: rdt.dmfrey.com
+  #     httpHostHeader: rdt.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "bazarr.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: bazarr.dmfrey.com
+  #     httpHostHeader: bazarr.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "lidarr.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: lidarr.dmfrey.com
+  #     httpHostHeader: lidarr.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "plex.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: plex.dmfrey.com
+  #     httpHostHeader: plex.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "radarr.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: radarr.dmfrey.com
+  #     httpHostHeader: radarr.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "readarr.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: readarr.dmfrey.com
+  #     httpHostHeader: readarr.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "sonarr.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: sonarr.dmfrey.com
+  #     httpHostHeader: sonarr.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "tautulli.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: tautulli.dmfrey.com
+  #     httpHostHeader: tautulli.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "tdarr.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: tdarr.dmfrey.com
+  #     httpHostHeader: tdarr.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "join.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: join.dmfrey.com
+  #     httpHostHeader: join.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "alert-manager.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: alert-manager.dmfrey.com
+  #     httpHostHeader: alert-manager.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "grafana.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: grafana.dmfrey.com
+  #     httpHostHeader: grafana.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "monitor.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: monitor.dmfrey.com
+  #     httpHostHeader: monitor.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "loki.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: loki.dmfrey.com
+  #     httpHostHeader: loki.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "prometheus.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: prometheus.dmfrey.com
+  #     httpHostHeader: prometheus.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "thanos.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: thanos.dmfrey.com
+  #     httpHostHeader: thanos.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "rook.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: rook.dmfrey.com
+  #     httpHostHeader: rook.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "portal.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: portal.dmfrey.com
+  #     httpHostHeader: portal.dmfrey.com
+  #     noTLSVerify: true
+  # - hostname: "theme-park.dmfrey.com"
+  #   service: https://nginx-external-controller.network.svc.cluster.local:443
+  #   originRequest:
+  #     originServerName: theme-park.dmfrey.com
+  #     httpHostHeader: theme-park.dmfrey.com
+  #     noTLSVerify: true
   - hostname: "*.dmfrey.com"
-    service: https://ingress-nginx-controller.network.svc.cluster.local:443
-    # originRequest:
-      # originServerName: "tunnel.dmfrey.com"
+    service: https://nginx-external-controller.network.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress-ext.dmfrey.com
     noTLSVerify: true
   - service: http_status:404
