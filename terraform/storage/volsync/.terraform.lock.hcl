@@ -6,6 +6,7 @@ provider "registry.terraform.io/backblaze/b2" {
   constraints = "~> 0.8.4"
   hashes = [
     "h1:EjWvu+zMSI+bSn1Mm2EIuj0bw8xojk9jtyrUVRGe6uk=",
+    "h1:vtRe9tVLQqXMJPthxF+lh1uq2xai/FdOUUY8OkPHBqk=",
     "zh:0181814e41ca950f0854d30efd9ac12ed46f031adab9628f768c7f1c3e851a46",
     "zh:d2c76fa03670a9b4b54b768e897ba2a9b6e382eba666850228b041d744619dda",
     "zh:f0d9e9d991215e69d9631b7bf75d3f6a7e8f76249c634bc704061a15b12349cd",
