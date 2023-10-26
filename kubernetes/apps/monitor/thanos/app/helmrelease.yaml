@@ -44,7 +44,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
         hostname: &host thanos.${EXTERNAL_DOMAIN}
-        ingressClassName: nginx
+        ingressClassName: external-nginx
         tls: false
         extraTls:
           - hosts:

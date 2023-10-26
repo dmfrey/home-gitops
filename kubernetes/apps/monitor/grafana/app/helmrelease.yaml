@@ -184,7 +184,7 @@ spec:
 
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: external-nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/enable: "true"
