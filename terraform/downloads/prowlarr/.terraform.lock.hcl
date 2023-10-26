@@ -5,6 +5,7 @@ provider "registry.terraform.io/devopsarr/prowlarr" {
   version     = "2.0.0"
   constraints = "2.0.0"
   hashes = [
+    "h1:C7qABCnRczXx2qIVe7N/04XxAyQe1K8/6Tk/2LHk1KQ=",
     "h1:hW7EULNVPdyruSzFnrabX2EBbOJ7rftOHYn0ZeuZvTo=",
     "zh:1014158b9a823be3dfd6e6d94a5fe775933338fa2f3801ca4f1628216c71bef8",
     "zh:1e4cbefcf160d96ea7826eb9dcf05a689ca02b4091e6a9befa19a7186b111f85",

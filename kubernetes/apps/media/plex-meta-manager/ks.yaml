@@ -19,6 +19,6 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-plex
-    # - name: cluster-apps-tautulli
-    # - name: cluster-apps-radarr
-    # - name: cluster-apps-sonarr
+    - name: cluster-apps-tautulli
+    - name: cluster-apps-radarr
+    - name: cluster-apps-sonarr
