@@ -123,12 +123,15 @@ spec:
               - name: "/dev/sda"
 
     ingress:
-      ingressClassName: "external-nginx"
+      ingressClassName: external-nginx
       dashboard:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:chess-rook"
+          hajimari.io/appName: "Ceph Dashboard"
+          # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         host:
           name: &host rook.${EXTERNAL_DOMAIN}
           path: "/"
