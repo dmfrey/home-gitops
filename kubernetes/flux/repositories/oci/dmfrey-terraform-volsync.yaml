@@ -2,10 +2,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: oci-terraform-sonarr
+  name: oci-terraform-volsync
   namespace: flux-system
 spec:
   interval: 1m
-  url: oci://ghcr.io/jefedavis/terraform/sonarr
+  url: oci://ghcr.io/dmfrey/terraform/volsync
   ref:
     tag: main

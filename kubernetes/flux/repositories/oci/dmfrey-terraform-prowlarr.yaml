@@ -2,10 +2,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: oci-terraform-radarr
+  name: oci-terraform-prowlarr
   namespace: flux-system
 spec:
   interval: 1m
-  url: oci://ghcr.io/jefedavis/terraform/radarr
+  url: oci://ghcr.io/dmfrey/terraform/prowlarr
   ref:
     tag: main
