@@ -82,22 +82,22 @@ spec:
               - severity = "warning"
             equal: ["alertname", "namespace"]
 
-      ingress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: external-nginx
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:alert-decagram-outline"
-          hajimari.io/appName: "Alert Manager"
-        hosts:
-          - &host alert-manager.${EXTERNAL_DOMAIN}
-        tls:
-          - hosts:
-              - *host
-            secretName: alert-manager-tls-external
+      # ingress:
+      #   enabled: true
+      #   pathType: Prefix
+      #   ingressClassName: external-nginx
+      #   annotations:
+      #     cert-manager.io/cluster-issuer: letsencrypt-prod
+      #     auth.home.arpa/enabled: "true"
+      #     hajimari.io/enable: "true"
+      #     hajimari.io/icon: "mdi:alert-decagram-outline"
+      #     hajimari.io/appName: "Alert Manager"
+      #   hosts:
+      #     - &host alert-manager.${EXTERNAL_DOMAIN}
+      #   tls:
+      #     - hosts:
+      #         - *host
+      #       secretName: alert-manager-tls-external
 
       alertmanagerSpec:
         replicas: 3
