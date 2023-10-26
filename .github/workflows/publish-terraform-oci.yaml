@@ -1,0 +1,91 @@
+---
+name: "Terraform: Build OCI artifacts"
+
+on: # yamllint disable-line rule:truthy
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+
+jobs:
+  changed-files:
+    name: Generate matrix for building images
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Tools
+        run: |
+          brew install jo
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@fea790cb660e33aef4bdf07304e28fedd77dfa13 # v39.2.4
+        with:
+          dir_names: true
+          json: true
+          files: |
+            terraform/**
+
+      - name: List all changed files
+        run: |
+          echo '${{ steps.changed-files.outputs.all_changed_files }}'
+
+      - name: Store changed projects
+        id: set-matrix
+        run: |
+          if [[ "${{ steps.changed-files.outputs.all_changed_files }}" == "[]" ]]; then
+            echo "matrix={\"project\":$(find terraform -type f -name .terraform.lock.hcl | xargs dirname | jo -a)}" >> "${GITHUB_OUTPUT}"
+          else
+            echo "matrix={\"project\":${{ steps.changed-files.outputs.all_changed_files }}}" >> "${GITHUB_OUTPUT}"
+          fi
+
+  publish:
+    runs-on: ubuntu-22.04
+    needs:
+      - changed-files
+    strategy:
+      matrix: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Tools
+        run: |
+          brew install fluxcd/tap/flux
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase Owner Name
+        env:
+          REPO_OWNER: '${{ github.repository_owner }}'
+        run: |
+          echo "REPO_OWNER_LC=${REPO_OWNER,,}" >>${GITHUB_ENV}
+
+      - name: Publish OCI
+        run: |
+          flux push artifact "oci://ghcr.io/${REPO_OWNER_LC}/terraform/$(basename ${{ matrix.project }}):$(git rev-parse --short HEAD)" \
+            --path="./${{ matrix.project }}" \
+            --source="$(git config --get remote.origin.url)" \
+            --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
+
+      - name: Tag OCI
+        run: |
+          flux tag artifact "oci://ghcr.io/${REPO_OWNER_LC}/terraform/$(basename ${{ matrix.project }}):$(git rev-parse --short HEAD)" \
+            --tag main
