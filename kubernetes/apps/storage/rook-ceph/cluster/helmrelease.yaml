@@ -131,7 +131,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:chess-rook"
           hajimari.io/appName: "Ceph Dashboard"
-          # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         host:
           name: &host rook.${EXTERNAL_DOMAIN}
           path: "/"
