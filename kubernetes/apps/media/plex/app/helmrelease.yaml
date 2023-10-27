@@ -155,7 +155,7 @@ spec:
             main:
               - path: /etc/cont-init.d/41-Plex-Preferences
                 subPath: 41-Plex-Preferences
-        # defaultMode: 493
+        defaultMode: 493
       preferences:
         enabled: true
         type: configMap
@@ -163,7 +163,7 @@ spec:
         readOnly: false
         globalMount:
           - path: /etc/cont-config.d
-        # defaultMode: 493
+        defaultMode: 493
       transcode:
         enabled: true
         type: custom
