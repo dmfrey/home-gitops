@@ -17,6 +17,10 @@ spec:
       interval: 30m
   
   values:
+  
+    defaultPodOptions:
+      enableServiceLinks: false
+
     controllers:
       main:
         type: statefulset
@@ -35,21 +39,6 @@ spec:
               globalMounts:
                 - path: /config
 
-        pod:
-          enableServiceLinks: false
-          securityContext:
-            # runAsUser: 568
-            # runAsGroup: 568
-            # fsGroup: 568
-            # fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 39
-              - 44
-              - 109
-              - 100
-              # - 65542 # gladius:external-services
-              # - 1030
-
         containers:
           main:
             image:
@@ -67,6 +56,19 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 10Gi
+            securityContext:
+            # runAsUser: 568
+            # runAsGroup: 568
+            # fsGroup: 568
+            # fsGroupChangePolicy: "OnRootMismatch"
+              supplementalGroups:
+                - 39
+                - 44
+                - 109
+                - 100
+                # - 65542 # gladius:external-services
+                # - 1030
+
 
     service:
       main:
@@ -159,7 +161,7 @@ spec:
         enabled: true
         type: configMap
         name: plex-preferences
-        globalMount:
+        globalMounts:
           - path: /etc/cont-config.d
             readOnly: false
       transcode:
@@ -184,15 +186,27 @@ spec:
       media:
         enabled: true
         existingClaim: videos-nfs-media
-        readOnly: false
+        advancedMounts:
+          main:
+            main:
+              - path: /media/videos
+                readOnly: false
       music:
         enabled: true
         existingClaim: music-nfs-media
-        readOnly: false
+        advancedMounts:
+          main:
+            main:
+              - path: /media/music
+                readOnly: false
       photos:
         enabled: true
         existingClaim: photos-nfs-media
-        readOnly: false
+        advancedMounts:
+          main:
+            main:
+              - path: /media/photos
+                readOnly: false
       backup:
         enabled: true
         type: custom
@@ -200,8 +214,9 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups
-        mountPath: /config/Backups
-        readOnly: false
+        globalMounts: 
+          - path: /config/Backups
+            readOnly: false
 
     serviceMonitor:
       monitor:
