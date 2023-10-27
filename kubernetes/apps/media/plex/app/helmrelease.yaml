@@ -38,7 +38,7 @@ spec:
         pod:
           enableServiceLinks: false
           nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
+            beta.kubernetes.io/arch: amd64
           securityContext:
             runAsUser: 568
             runAsGroup: 568
@@ -65,11 +65,11 @@ spec:
                   name: plex-secret
             resources:
               requests:
-                gpu.intel.com/i915: 1
+                beta.amd.com/gpu.device-id.1638: 1
                 cpu: 500m
                 memory: 2Gi
               limits:
-                gpu.intel.com/i915: 1
+                beta.amd.com/gpu.device-id.1638: 1
                 memory: 10Gi
 
     service:
