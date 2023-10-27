@@ -141,7 +141,7 @@ spec:
               port: http
         tls:
         - hosts:
-          - *host
+            - *host
           secretName: plex-tls-external
 
     persistence:
