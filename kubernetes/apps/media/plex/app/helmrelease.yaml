@@ -17,7 +17,7 @@ spec:
       interval: 30m
   
   values:
-  
+
     defaultPodOptions:
       enableServiceLinks: false
 
@@ -151,12 +151,10 @@ spec:
         enabled: true
         type: configMap
         name: plex-preferences-bootstrap
-        advancedMounts:
-          main:
-            main:
-              - path: /etc/cont-init.d/41-Plex-Preferences
-                subPath: 41-Plex-Preferences
-                readOnly: false
+        globalMounts:
+          - path: /etc/cont-init.d/41-Plex-Preferences
+            subPath: 41-Plex-Preferences
+            readOnly: false
       preferences:
         enabled: true
         type: configMap
