@@ -133,16 +133,16 @@ spec:
           hajimari.io/icon: "mdi:plex"
           hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
         hosts:
-        - host: &host plex.${EXTERNAL_DOMAIN}
-          paths:
-          - path: /
-            service: 
-              name: main
-              port: http
+          - host: &host plex.${EXTERNAL_DOMAIN}
+            paths:
+            - path: /
+              service: 
+                name: main
+                port: http
         tls:
-        - hosts:
-            - *host
-          secretName: plex-tls-external
+          - hosts:
+              - *host
+            secretName: plex-tls-external
 
     persistence:
       preference-bootstrap:
