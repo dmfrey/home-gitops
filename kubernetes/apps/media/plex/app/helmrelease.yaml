@@ -149,6 +149,7 @@ spec:
         enabled: true
         type: configMap
         name: plex-preferences-bootstrap
+        readOnly: false
         advancedMounts:
           main:
             main:
@@ -159,6 +160,7 @@ spec:
         enabled: true
         type: configMap
         name: plex-preferences
+        readOnly: false
         globalMount:
           - path: /etc/cont-config.d
         # defaultMode: 493
