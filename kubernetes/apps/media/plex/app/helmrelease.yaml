@@ -9,58 +9,68 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
       interval: 30m
+  
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: plexinc/pms-docker
-      tag: 1.32.6.7557-1cf77d501
-
-    env:
-      TZ: "America/New_York"
-      ALLOWED_NETWORKS: "10.0.0.0/8"
-
-    envFrom:
-      - secretRef:
-          name: plex-secret
-
-    ingress:
+    controllers:
       main:
-        enabled: true
-        ingressClassName: external-nginx
+        type: statefulset
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          theme.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:plex"
-          hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
-        hosts:
-        - host: "plex.${EXTERNAL_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
-        tls:
-        - hosts:
-          - "plex.${EXTERNAL_DOMAIN}"
-          secretName: plex-tls-external
+          reloader.stakater.com/auto: "true"
 
-    podSecurityContext:
-      supplementalGroups:
-      - 39
-      - 44
-      - 109
-      - 100
-      # - 1030
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              metadata:
+                annotations:
+                  backup.home.arpa/enabled: "true"
+              accessMode: ReadWriteOnce
+              storageClass: ceph-block
+              size: 35Gi
+              globalMounts:
+                - path: /config
+
+        pod:
+          enableServiceLinks: false
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: "true"
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 39
+              - 44
+              - 109
+              - 100
+              # - 65542 # gladius:external-services
+              # - 1030
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/plex
+              tag: 1.32.6.7557-1cf77d501@sha256:6f87b0811df009af1defc9afad6afa383b9d821a7fcaddc968df41ba445d321e
+            env:
+              TZ: "America/New_York"
+              ALLOWED_NETWORKS: "10.0.0.0/8"
+            envFrom:
+              - secretRef:
+                name: plex-secret
+            resources:
+              requests:
+                gpu.intel.com/i915: 1
+                cpu: 500m
+                memory: 2Gi
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 10Gi
 
     service:
       main:
@@ -114,6 +124,29 @@ spec:
             protocol: UDP
             targetPort: 32414
             nodePort: 32414
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external-nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:plex"
+          hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
+        hosts:
+        - host: &host plex.${EXTERNAL_DOMAIN}
+          paths:
+          - path: /
+            service: 
+              name: main
+              port: http
+        tls:
+        - hosts:
+          - *host
+          secretName: plex-tls-external
 
     persistence:
       preference-bootstrap:
@@ -170,9 +203,6 @@ spec:
         mountPath: /config/Backups
         readOnly: false
 
-    nodeSelector:
-      intel.feature.node.kubernetes.io/gpu: "true"
-
     serviceMonitor:
       monitor:
         enabled: true
@@ -183,22 +213,3 @@ spec:
             path: /metrics
             interval: 10m
             scrapeTimeout: 2m
-
-    resources:
-      requests:
-        gpu.intel.com/i915: 1
-        cpu: 500m
-        memory: 2Gi
-      limits:
-        gpu.intel.com/i915: 1
-        memory: 10Gi
-
-    volumeClaimTemplates:
-      - name: config
-        metadata:
-          annotations:
-            backup.home.arpa/enabled: "true"
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 35Gi
-        storageClass: ceph-block
