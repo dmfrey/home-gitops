@@ -65,11 +65,11 @@ spec:
                   name: plex-secret
             resources:
               requests:
-                beta.amd.com/gpu.device-id.1638: 1
+                # beta.amd.com/gpu.device-id.1638: 1
                 cpu: 500m
                 memory: 2Gi
               limits:
-                beta.amd.com/gpu.device-id.1638: 1
+                # beta.amd.com/gpu.device-id.1638: 1
                 memory: 10Gi
 
     service:
