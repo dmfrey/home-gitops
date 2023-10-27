@@ -62,7 +62,7 @@ spec:
               ALLOWED_NETWORKS: "10.0.0.0/8"
             envFrom:
               - secretRef:
-                name: plex-secret
+                  name: plex-secret
             resources:
               requests:
                 gpu.intel.com/i915: 1
