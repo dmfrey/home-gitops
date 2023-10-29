@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.0.3
+      version: 1.5.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -17,64 +17,58 @@ spec:
       interval: 30m
   
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
 
-    defaultPodOptions:
-      enableServiceLinks: false
+    image:
+      repository: plexinc/pms-docker
+      tag: 1.32.6.7557-1cf77d501
 
-    controllers:
+    env:
+      TZ: "America/New_York"
+      ALLOWED_NETWORKS: "10.0.0.0/8"
+
+    envFrom:
+      - secretRef:
+          name: plex-secret
+
+    ingress:
       main:
-        type: statefulset
+        enabled: true
+        ingressClassName: nginx
         annotations:
-          reloader.stakater.com/auto: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:plex"
+          hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
+        hosts:
+        - host: "plex.${EXTERNAL_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "plex.${EXTERNAL_DOMAIN}"
+          secretName: plex-tls-external
 
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              metadata:
-                annotations:
-                  backup.home.arpa/enabled: "true"
-              accessMode: ReadWriteOnce
-              storageClass: ceph-block
-              size: 35Gi
-              globalMounts:
-                - path: /config
-
-        containers:
-          main:
-            image:
-              repository: plexinc/pms-docker
-              tag: 1.32.6.7557-1cf77d501
-            env:
-              TZ: "America/New_York"
-              ALLOWED_NETWORKS: "10.0.0.0/8"
-            envFrom:
-              - secretRef:
-                  name: plex-secret
-            resources:
-              requests:
-                cpu: 500m
-                memory: 2Gi
-              limits:
-                memory: 10Gi
-            securityContext:
-            # runAsUser: 568
-            # runAsGroup: 568
-            # fsGroup: 568
-            # fsGroupChangePolicy: "OnRootMismatch"
-              supplementalGroups:
-                - 39
-                - 44
-                - 109
-                - 100
-                # - 65542 # gladius:external-services
-                # - 1030
-
+    podSecurityContext:
+      supplementalGroups:
+      - 39
+      - 44
+      - 109
+      - 100
+      - 1030
 
     service:
       main:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
-        loadBalancerIP: ${SVC_PLEX_ADDR}
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVC_PLEX_ADDR}
         ports:
           http:
             port: 32400
@@ -123,49 +117,20 @@ spec:
             targetPort: 32414
             nodePort: 32414
 
-    ingress:
-      main:
-        enabled: true
-        className: external-nginx
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          theme.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:plex"
-          hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
-        hosts:
-          - host: &host plex.${EXTERNAL_DOMAIN}
-            paths:
-            - path: /
-              service: 
-                name: main
-                port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: plex-tls-external
-
     persistence:
       preference-bootstrap:
         enabled: true
         type: configMap
         name: plex-preferences-bootstrap
-        advancedMounts:
-          main:
-            main:
-              - path: /etc/cont-init.d/41-Plex-Preferences
-                subPath: 41-Plex-Preferences
-                readOnly: false
+        mountPath: /etc/cont-init.d/41-Plex-Preferences
+        subPath: 41-Plex-Preferences
+        defaultMode: 493
       preferences:
         enabled: true
         type: configMap
         name: plex-preferences
-        advancedMounts:
-          main:
-            main:
-              - path: /etc/cont-config.d
-                readOnly: false
+        mountPath: /etc/cont-config.d
+        defaultMode: 493
       transcode:
         enabled: true
         type: custom
@@ -185,40 +150,30 @@ spec:
         enabled: true
         type: emptyDir
         sizeLimit: 10Gi
-      media:
+      videos:
         enabled: true
         existingClaim: videos-nfs-media
-        advancedMounts:
-          main:
-            main:
-              - path: /media/videos
-                readOnly: false
+        mountPath: /data/videos
+        readOnly: false
       music:
         enabled: true
         existingClaim: music-nfs-media
-        advancedMounts:
-          main:
-            main:
-              - path: /media/music
-                readOnly: false
+        mountPath: /data/music
+        readOnly: false
       photos:
         enabled: true
         existingClaim: photos-nfs-media
-        advancedMounts:
-          main:
-            main:
-              - path: /media/photos
-                readOnly: false
+        mountPath: /data/videos
+        readOnly: false
       backup:
         enabled: true
         type: custom
         volumeSpec:
           nfs:
-            server: "${QNAP_ADDR}"
+            server: "${SYNOLOGY_ADDR}"
             path: /plexbackups
-        globalMounts: 
-          - path: /config/Backups
-            readOnly: false
+        mountPath: /config/Backups
+        readOnly: false
 
     serviceMonitor:
       monitor:
@@ -230,3 +185,22 @@ spec:
             path: /metrics
             interval: 10m
             scrapeTimeout: 2m
+
+    resources:
+      requests:
+        gpu.intel.com/i915: 1
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 10Gi
+
+    volumeClaimTemplates:
+      - name: config
+        metadata:
+          annotations:
+            backup.home.arpa/enabled: "true"
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 35Gi
+        storageClass: ceph-block
