@@ -151,17 +151,21 @@ spec:
         enabled: true
         type: configMap
         name: plex-preferences-bootstrap
-        globalMounts:
-          - path: /etc/cont-init.d/41-Plex-Preferences
-            subPath: 41-Plex-Preferences
-            readOnly: false
+        advancedMounts:
+          main:
+            main:
+              - path: /etc/cont-init.d/41-Plex-Preferences
+                subPath: 41-Plex-Preferences
+                readOnly: false
       preferences:
         enabled: true
         type: configMap
         name: plex-preferences
-        globalMounts:
-          - path: /etc/cont-config.d
-            readOnly: false
+        advancedMounts:
+          main:
+            main:
+              - path: /etc/cont-config.d
+                readOnly: false
       transcode:
         enabled: true
         type: custom
