@@ -163,7 +163,7 @@ spec:
       photos:
         enabled: true
         existingClaim: photos-nfs-media
-        mountPath: /data/videos
+        mountPath: /data/photos
         readOnly: false
       backup:
         enabled: true
