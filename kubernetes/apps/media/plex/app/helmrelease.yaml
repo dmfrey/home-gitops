@@ -170,7 +170,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "${SYNOLOGY_ADDR}"
+            server: "${QNAP_ADDR}"
             path: /plexbackups
         mountPath: /config/Backups
         readOnly: false
