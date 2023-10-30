@@ -85,7 +85,7 @@ spec:
       usb:
         enabled: true
         type: hostPath
-        hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_516009EA-if01-port0
+        hostPath: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
 
     nodeSelector:
       feature.node.kubernetes.io/zigbee: "true"
