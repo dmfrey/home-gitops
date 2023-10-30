@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: zigbee2mqtt-restic-secret
+  namespace: home
+spec:
+stringData:
+  RESTIC_REPOSITORY: s3:http://${S3_BUCKET_URL}/${S3_BUCKET_NAME}/zigbee2mqtt
+  RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: zigbee2mqtt
+  namespace: home
+spec:
+  sourcePVC: data-zigbee2mqtt-0
+  trigger:
+    schedule: "0 7 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: zigbee2mqtt-restic-secret
+    cacheCapacity: 2Gi
+    volumeSnapshotClassName: ceph-block
+    storageClassName: ceph-block
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      daily: 7
+      within: 3d

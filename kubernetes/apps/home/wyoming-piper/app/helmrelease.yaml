@@ -1,0 +1,56 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: wyoming-piper
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: rhasspy/wyoming-piper
+      tag: latest@sha256:a615bcf919438652fbc515d8e9ffa50a0dfd08de85bbeb9ca18dcbbc4c499372
+
+    args:
+      - --voice=en-gb-southern_english_female-low
+    env:
+      TZ: "America/Chicago"
+
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.31.102
+        ports:
+          http:
+            port: 10200
+            protocol: TCP
+
+    resources:
+      requests:
+        cpu: 500m
+        memory: 250Mi
+      limits:
+        memory: 500Mi
+
+    volumeClaimTemplates:
+      - name: data
+        mountPath: /data
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        storageClass: ceph-block

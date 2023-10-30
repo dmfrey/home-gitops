@@ -1,0 +1,68 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+prometheus:
+  namespace: home-assistant
+
+http:
+  server_host: 0.0.0.0
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.22.0.0/15
+    - 10.0.0.0/9
+    - 192.168.77.0/24
+    - 127.0.0.1
+    - ::1
+
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: ${ORGANIZATION}
+  # Location required to calculate the time the sun rises and sets
+  latitude: !env_var HASS_LATITUDE 
+  longitude: !env_var HASS_LONGITUDE 
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 89
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+  country: US
+  packages: !include_dir_named packages
+  external_url: https://home.${EXTERNAL_DOMAIN}
+  internal_url: http://${SVC_HASS_ADDR}:8123
+
+recorder:
+  db_url: !env_var HASS_RECORDER_DB_URL
+
+automation:
+  - id: update_config_github_push_event
+    alias: Update Configuration on Github Push Event
+
+    trigger:
+    - platform: webhook
+      webhook_id: !env_var HASS_DEPLOY_CONFIG_WEBHOOK_ID
+      local_only: false
+
+    action:
+    - service: shell_command.deploy_config
+    - service: homeassistant.reload_all
+
+shell_command:
+  deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
+# automation: !include_dir_merge_list automations
+script: !include_dir_merge_named scripts
+sensor: !include_dir_merge_list sensors
+binary_sensor: !include_dir_merge_list binary_sensors
+input_boolean: !include_dir_merge_named input_booleans
+scene: !include scenes.yaml
+group: !include_dir_merge_named groups
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+panel_iframe:
+  mass:
+    title: "Music Assistant"
+    url: "https://music.${EXTERNAL_DOMAIN}"
