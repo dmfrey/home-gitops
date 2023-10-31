@@ -41,6 +41,6 @@ data:
     frontend:
       port: 8080
       host: zigbee2mqtt
-      url: 'https://zigbee2mqtt.dmfrey.com'
+      url: 'https://zigbee2mqtt.${EXTERNAL_DOMAIN}'
     experimental:
       new_api: true
