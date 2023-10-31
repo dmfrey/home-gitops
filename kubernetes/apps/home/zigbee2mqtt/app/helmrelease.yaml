@@ -93,8 +93,8 @@ spec:
                 containerPort: &port 8080
               - name: metrics
                 containerPort: &metricsPort 9000
-              - name: &tcpPort tcp
-                containerPort: 9999
+              - name: tcp
+                containerPort: &tcpPort 9999
             resources:
               requests:
                 cpu: 8m
