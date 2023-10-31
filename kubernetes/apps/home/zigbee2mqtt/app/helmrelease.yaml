@@ -45,6 +45,7 @@ spec:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 1.33.1
             env:
+              DEBUG: zigbee-herdsman*
               TZ: "American/New York"
               ZIGBEE2MQTT_DATA: /data
               ZIGBEE2MQTT_CONFIG_MQTT_USER:
