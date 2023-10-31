@@ -72,7 +72,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto.home.svc.cluster.local:1883"
               ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/ttyUSB0
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: "tcp://zigbee2mqtt.home.svc.cluster.local:9999"
               ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: "230400"
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
               ZIGBEE2MQTT_CONFIG_MQTT_USER:
@@ -93,6 +93,8 @@ spec:
                 containerPort: &port 8080
               - name: metrics
                 containerPort: &metricsPort 9000
+              - name: &tcpPort tcp
+                containerPort: 9999
             resources:
               requests:
                 cpu: 8m
@@ -115,6 +117,8 @@ spec:
           metrics:
             enabled: true
             port: *metricsPort
+          tcp:
+            port: *tcpPort
 
     ingress:
       main:
