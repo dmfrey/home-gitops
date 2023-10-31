@@ -10,11 +10,11 @@ spec:
     spec:
       chart: app-template
       version: 2.0.3
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 30m
   
   values:
 
@@ -26,7 +26,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     controllers:
-      
       main:
         type: statefulset
         annotations:
@@ -44,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 1.32.2
+              tag: 1.33.1
             env:
               TZ: "American/New York"
               ZIGBEE2MQTT_DATA: /data
@@ -93,6 +92,11 @@ spec:
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
+            ports:
+              - name: http
+                containerPort: *port
+              - name: metrics
+                containerPort: &metricsPort 9000
             resources:
               requests:
                 cpu: 8m
@@ -114,7 +118,7 @@ spec:
             port: *port
           metrics:
             enabled: true
-            port: 9000
+            port: *metricsPort
 
     ingress:
       main:
