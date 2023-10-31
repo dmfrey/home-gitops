@@ -7,7 +7,6 @@ mqtt:
   keepalive: 60
   version: 5
 serial:
-  # Could be either USB port (/dev/ttyUSB0), network Zigbee adapters (tcp://192.168.1.1:6638) or mDNS adapter (mdns://my-adapter).
   port: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
   adapter: ezsp
   baudrate: 115200
@@ -31,7 +30,6 @@ homeassistant:
   status_topic: homeassistant/status
   legacy_entity_attributes: false
   legacy_triggers: false
-# Will run frontend on port 8080
 frontend:
   port: 8080
   host: zigbee2mqtt

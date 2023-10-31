@@ -147,8 +147,9 @@ spec:
         enabled: true
         type: configMap
         name: zigbee2mqtt-config
-        mountPath: /data/configuration.yaml
-        subPath: configuration.yaml
+        globalMounts:
+          - path: /data/configuration.yaml
+            subPath: configuration.yaml
         defaultMode: 0755
       usb:
         enabled: true
