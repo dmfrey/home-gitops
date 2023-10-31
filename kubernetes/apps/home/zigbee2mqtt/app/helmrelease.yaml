@@ -63,7 +63,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
               ZIGBEE2MQTT_CONFIG_FRONTEND: |
                 {
-                  "port": &port 8080, 
+                  "port": 8080, 
                   "url": "https://zigbee2mqtt.${EXTERNAL_DOMAIN}", 
                   "host": "zigbee2mqtt.${EXTERNAL_DOMAIN}"
                 }
@@ -95,7 +95,7 @@ spec:
                   name: zigbee2mqtt-secret
             ports:
               - name: http
-                containerPort: *port
+                containerPort: &port 8080
               - name: metrics
                 containerPort: &metricsPort 9000
             resources:
