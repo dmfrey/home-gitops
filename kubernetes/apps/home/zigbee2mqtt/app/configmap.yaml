@@ -38,7 +38,6 @@ data:
       status_topic: homeassistant/status
       legacy_entity_attributes: false
       legacy_triggers: false
-    # Will run frontend on port 8080
     frontend:
       port: 8080
       host: zigbee2mqtt
