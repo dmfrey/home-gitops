@@ -122,6 +122,7 @@ spec:
         globalMounts:
           - path: /data/configuration.yaml
             subPath: configuration.yaml
+            readOnly: false
         defaultMode: 0755
       usb:
         enabled: true
