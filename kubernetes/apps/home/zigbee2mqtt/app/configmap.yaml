@@ -44,4 +44,4 @@ data:
     experimental:
       new_api: true
   99-usb-serial.rules: |-
-    SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="224ad850bc96ed11a4dbc098a7669f5d", SYMLINK="ttyUSB0", OWNER="root"
+    KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0666", SYMLINK+="usb_skyconnect"
