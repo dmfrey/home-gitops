@@ -145,6 +145,12 @@ spec:
               - path: /data/configuration.yaml
                 subPath: configuration.yaml
                 readOnly: false
+      device-plugins:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/kubelet/device-plugins
+            readOnly: false
       # udev:
       #   enabled: true
       #   type: configMap
