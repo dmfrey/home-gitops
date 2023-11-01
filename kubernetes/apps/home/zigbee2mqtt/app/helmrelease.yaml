@@ -20,11 +20,11 @@ spec:
 
     defaultPodOptions:
       podSecurityContext:
-        privileged: true
-        # runAsUser: 568
-        # runAsGroup: 568
-        # fsGroup: 568
-        # fsGroupChangePolicy: OnRootMismatch
+        # privileged: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
 
     controllers:
       main:
