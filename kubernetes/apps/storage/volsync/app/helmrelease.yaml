@@ -20,3 +20,6 @@ spec:
     metrics:
       disableAuth: true
 
+    nodeSelector:
+      kubernetes.io/arch: amd64
+
