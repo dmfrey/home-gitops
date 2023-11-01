@@ -99,11 +99,6 @@ spec:
                 enabled: false
 
     service:
-      device-plugins:
-        ports:
-          plugin-metrics:
-            enabled: true
-            port: *pluginMetricsPort
       main:
         ports:
           http:
@@ -113,6 +108,9 @@ spec:
             port: *metricsPort
           tcp:
             port: *tcpPort
+          plugin-metrics:
+            enabled: true
+            port: *pluginMetricsPort
 
     ingress:
       main:
