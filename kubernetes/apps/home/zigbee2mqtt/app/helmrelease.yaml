@@ -62,6 +62,8 @@ spec:
                     - path: /dev/cuaU*
                 - paths:
                     - path: /dev/rfcomm*
+                - paths:
+                    - path: /dev/serial/by-id/usb-*
             - --device
             - |
               name: zwave
