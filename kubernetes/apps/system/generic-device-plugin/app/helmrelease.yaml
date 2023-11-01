@@ -32,8 +32,6 @@ spec:
             args:
               - --log-level
               - debug
-              - --plugin-directory
-              - /var/lib/device-plugins
               # - --device
               # - '{"name": "serial", "groups": [{"paths": [{"path": "/dev/ttyUSB0"}]}]}'
               - --device
