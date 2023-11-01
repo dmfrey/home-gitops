@@ -21,7 +21,7 @@ data:
       last_seen: ISO_8601
       legacy_api: false
       legacy_availability_payload: false
-      log_level: debug
+      log_level: info
       log_output:
         - console
     availability:
