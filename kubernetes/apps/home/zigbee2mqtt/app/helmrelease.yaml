@@ -47,35 +47,7 @@ spec:
               tag: latest
             args:
             - --device
-            - |
-              name: serial
-              groups:
-                - paths:
-                    - path: /dev/ttyUSB*
-            #     - paths:
-            #         - path: /dev/ttyACM*
-            #     - paths:
-            #         - path: /dev/tty.usb*
-            #     - paths:
-            #         - path: /dev/cu.*
-            #     - paths:
-            #         - path: /dev/cuaU*
-            #     - paths:
-            #         - path: /dev/rfcomm*
-            #     - paths:
-            #         - path: /dev/serial/by-id/usb-*
-            # - --device
-            # - |
-            #   name: zwave
-            #   groups:
-            #     - paths: 
-            #         - path: /dev/zwave
-            # - --device
-            # - |
-            #   name: zigbee
-            #   groups:
-            #     - paths: 
-            #         - path: /dev/zigbee
+            - '{"name": "serial", "groups": [{"paths": [{"path": "/dev/ttyUSB0"}]}]}'
 
           main:
             image:
