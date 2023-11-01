@@ -50,6 +50,8 @@ spec:
               - debug
               - --listen
               - :9001
+              - --plugin-directory
+              - /var/lib/device-plugins
               - --device
               - '{"name": "serial", "groups": [{"paths": [{"path": "/dev/ttyUSB0"}]}]}'
             ports:
@@ -149,7 +151,7 @@ spec:
         enabled: true
         type: emptyDir
         globalMounts:
-          - path: /var/lib/kubelet/device-plugins
+          - path: /var/lib/device-plugins
             readOnly: false
       # udev:
       #   enabled: true
