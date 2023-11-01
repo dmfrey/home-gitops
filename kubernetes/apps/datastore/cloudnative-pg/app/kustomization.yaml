@@ -5,6 +5,6 @@ namespace: datastore
 resources:
   - ./helmrelease.yaml
   - ./dashboard
-  # - ./secret-cloudnative-pg.sops.yaml
+  - ./secret-cloudnative-pg.sops.yaml
   - ./prometheusrule.yaml
 
