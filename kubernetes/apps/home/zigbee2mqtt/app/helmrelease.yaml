@@ -47,7 +47,7 @@ spec:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 1.33.1
             env:
-              DEBUG: zigbee-herdsman*
+              # DEBUG: zigbee-herdsman*
               TZ: "American/New York"
               ZIGBEE2MQTT_DATA: /data
               ZIGBEE2MQTT_CONFIG_MQTT_USER:
@@ -129,14 +129,7 @@ spec:
               - path: /data/configuration.yaml
                 subPath: configuration.yaml
                 readOnly: false
-      # usb:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
-      #   globalMounts:
-      #     - path: /dev/ttyUSB0
-      #       readOnly: false
 
-    nodeSelector:
-      feature.node.kubernetes.io/zigbee: "true"
+    # nodeSelector:
+    #   feature.node.kubernetes.io/zigbee: "true"
 
