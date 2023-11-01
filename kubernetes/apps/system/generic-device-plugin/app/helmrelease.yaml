@@ -61,14 +61,10 @@ spec:
       device-plugins:
         enabled: true
         type: hostPath
-        globalMounts:
-          - path: /var/lib/kubelet/device-plugins
-            readOnly: false
+        hostPath: /var/lib/kubelet/device-plugins
+
       dev:
         enabled: true
         type: hostPath
         hostPath: /dev
-        globalMounts:
-          - path: /dev
-            readOnly: false
 
