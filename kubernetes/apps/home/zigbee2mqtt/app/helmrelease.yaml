@@ -62,7 +62,19 @@ spec:
                     - path: /dev/cuaU*
                 - paths:
                     - path: /dev/rfcomm*
-          
+            - --device
+            - |
+              name: zwave
+              groups:
+                - paths: 
+                    - path: /dev/zwave
+            - --device
+            - |
+              name: zigbee
+              groups:
+                - paths: 
+                    - path: /dev/zigbee
+
           main:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
@@ -152,7 +164,7 @@ spec:
       usb:
         enabled: true
         type: hostPath
-        hostPath: /dev/ttyUSB0
+        hostPath: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
 
     nodeSelector:
       feature.node.kubernetes.io/zigbee: "true"
