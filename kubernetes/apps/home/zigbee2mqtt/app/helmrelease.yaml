@@ -40,6 +40,28 @@ spec:
               storageClass: ceph-block
 
         containers:
+          device-plugins:
+            image:
+              repository: squat/generic-device-plugin
+              tag: latest
+            args:
+            - --device
+            - |
+              name: serial
+              groups:
+                - paths:
+                    - path: /dev/ttyUSB*
+                - paths:
+                    - path: /dev/ttyACM*
+                - paths:
+                    - path: /dev/tty.usb*
+                - paths:
+                    - path: /dev/cu.*
+                - paths:
+                    - path: /dev/cuaU*
+                - paths:
+                    - path: /dev/rfcomm*
+          
           main:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
