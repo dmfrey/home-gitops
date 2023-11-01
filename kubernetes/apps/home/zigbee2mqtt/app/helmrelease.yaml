@@ -68,8 +68,6 @@ spec:
                 containerPort: &port 8080
               - name: metrics
                 containerPort: &metricsPort 9000
-              - name: tcp
-                containerPort: &tcpPort 9999
             resources:
               requests:
                 cpu: 8m
@@ -79,9 +77,9 @@ spec:
                 memory: 256Mi
             probes:
               liveness:
-                enabled: false
+                enabled: true
               readiness:
-                enabled: false
+                enabled: true
               startup:
                 enabled: false
 
@@ -89,12 +87,11 @@ spec:
       main:
         ports:
           http:
+            enabled: true
             port: *port
           metrics:
             enabled: true
             port: *metricsPort
-          tcp:
-            port: *tcpPort
 
     ingress:
       main:
@@ -129,7 +126,4 @@ spec:
               - path: /data/configuration.yaml
                 subPath: configuration.yaml
                 readOnly: false
-
-    # nodeSelector:
-    #   feature.node.kubernetes.io/zigbee: "true"
 
