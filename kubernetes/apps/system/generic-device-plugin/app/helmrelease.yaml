@@ -32,8 +32,22 @@ spec:
             args:
               - --log-level
               - debug
-              # - --device
-              # - '{"name": "serial", "groups": [{"paths": [{"path": "/dev/ttyUSB0"}]}]}'
+              - --device
+              - |
+                name: serial
+                groups:
+                  - paths:
+                      - path: /dev/ttyUSB*
+                  - paths:
+                      - path: /dev/ttyACM*
+                  - paths:
+                      - path: /dev/tty.usb*
+                  - paths:
+                      - path: /dev/cu.*
+                  - paths:
+                      - path: /dev/cuaU*
+                  - paths:
+                      - path: /dev/rfcomm*
               - --device
               - '{"name": "skyconnect", "usb": [{"vendor": "10c4", "product": "ea60"}]}'
             ports:
