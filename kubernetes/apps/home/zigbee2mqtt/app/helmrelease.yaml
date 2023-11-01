@@ -161,6 +161,15 @@ spec:
               - path: /data/configuration.yaml
                 subPath: configuration.yaml
                 readOnly: false
+      udev:
+        enabled: true
+        type: configMap
+        name: zigbee2mqtt-config
+        advancedMounts:
+          main:
+            main:
+              - path: /etc/udev/rules.d/99-usb-serial.rules
+                subPath: 99-usb-serial.rules
       usb:
         enabled: true
         type: hostPath
