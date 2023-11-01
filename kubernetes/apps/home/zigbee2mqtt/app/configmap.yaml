@@ -14,7 +14,7 @@ data:
       keepalive: 60
       version: 5
     serial:
-      port: /dev/ttyUSB0
+      port: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
       adapter: ezsp
       baudrate: 115200
     advanced:
@@ -43,5 +43,3 @@ data:
       url: 'https://zigbee2mqtt.${EXTERNAL_DOMAIN}'
     experimental:
       new_api: true
-  99-usb-serial.rules: |-
-    KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0666", SYMLINK+="usb_skyconnect"

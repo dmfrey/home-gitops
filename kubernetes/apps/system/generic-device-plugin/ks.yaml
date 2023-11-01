@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-generic-device-plugin
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/system/generic-device-plugin/app
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  interval: 10m
+  prune: true
+  wait: true # no flux ks dependents
+  postBuild:
+    substituteFrom: []
+  dependsOn: []

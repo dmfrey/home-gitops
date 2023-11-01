@@ -1,0 +1,74 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: generic-device-plugin
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.0.3
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  
+  values:
+
+    controllers:
+      main:
+        type: daemonset
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          main:
+            image:
+              repository: squat/generic-device-plugin
+              tag: latest
+            args:
+              - --log-level
+              - debug
+              - --plugin-directory
+              - /var/lib/device-plugins
+              # - --device
+              # - '{"name": "serial", "groups": [{"paths": [{"path": "/dev/ttyUSB0"}]}]}'
+              - --device
+              - '{"name": "skyconnect", "usb": [{"vendor": "10c4", "product": "ea60"}]}'
+            ports:
+              - name: http
+                containerPort: &port 8080
+            resources:
+              requests:
+                cpu: 50m
+                memory: 10Mi
+              limits:
+                cpu: 50m
+                memory: 20Mi
+            securityContext:
+              privileged: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    persistence:
+      device-plugins:
+        enabled: true
+        type: hostPath
+        globalMounts:
+          - path: /var/lib/kubelet/device-plugins
+            readOnly: false
+      dev:
+        enabled: true
+        type: hostPath
+        hostPath: /dev
+        globalMounts:
+          - path: /dev
+            readOnly: false
+
