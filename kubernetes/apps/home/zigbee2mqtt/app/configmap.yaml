@@ -39,7 +39,7 @@ data:
       legacy_triggers: false
     frontend:
       port: 8080
-      host: zigbee2mqtt
+      host: zigbee2mqtt.home.svc
       url: 'https://zigbee2mqtt.${EXTERNAL_DOMAIN}'
     experimental:
       new_api: true
