@@ -163,19 +163,22 @@ spec:
               - path: /data/configuration.yaml
                 subPath: configuration.yaml
                 readOnly: false
-      udev:
-        enabled: true
-        type: configMap
-        name: zigbee2mqtt-config
-        advancedMounts:
-          main:
-            main:
-              - path: /etc/udev/rules.d/99-usb-serial.rules
-                subPath: 99-usb-serial.rules
+      # udev:
+      #   enabled: true
+      #   type: configMap
+      #   name: zigbee2mqtt-config
+      #   advancedMounts:
+      #     main:
+      #       main:
+      #         - path: /etc/udev/rules.d/99-usb-serial.rules
+      #           subPath: 99-usb-serial.rules
       usb:
         enabled: true
         type: hostPath
         hostPath: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
+        globalMounts:
+          - path: /dev/ttyUSB0
+            readOnly: false
 
     nodeSelector:
       feature.node.kubernetes.io/zigbee: "true"
