@@ -46,8 +46,15 @@ spec:
               repository: squat/generic-device-plugin
               tag: latest
             args:
-            - --device
-            - '{"name": "serial", "groups": [{"paths": [{"path": "/dev/ttyUSB0"}]}]}'
+              - --log-level
+              - debug
+              - --listen
+              - :9001
+              - --device
+              - '{"name": "serial", "groups": [{"paths": [{"path": "/dev/ttyUSB0"}]}]}'
+            ports:
+              - name: plugin-metrics
+                containerPort: &pluginMetricsPort 9001
 
           main:
             image:
@@ -92,6 +99,11 @@ spec:
                 enabled: false
 
     service:
+      device-plugins:
+        ports:
+          plugin-metrics:
+            enabled: true
+            port: *pluginMetricsPort
       main:
         ports:
           http:
