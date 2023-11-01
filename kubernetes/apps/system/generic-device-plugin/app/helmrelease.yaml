@@ -48,8 +48,6 @@ spec:
                       - path: /dev/cuaU*
                   - paths:
                       - path: /dev/rfcomm*
-              - --device
-              - '{"name": "skyconnect", "usb": [{"vendor": "10c4", "product": "ea60"}]}'
             ports:
               - name: http
                 containerPort: &port 8080
