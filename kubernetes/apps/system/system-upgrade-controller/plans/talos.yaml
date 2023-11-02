@@ -2,26 +2,29 @@
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
-  name: talos-upgrade-control-plane
+  name: talos
   namespace: system
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
-  # renovate: datasource=github-releases depName=siderolabs/talos
-  version: "v1.4.6"
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+  version: "v1.5.4"
   serviceAccountName: system-upgrade
   secrets:
     - name: talos-upgrade-api-access
       path: /var/run/secrets/talos.dev
   concurrency: 1
   drain:
-    gracePeriod: 60
-    deleteEmptydirData: true
-    ignoreDaemonSets: true
+    skipWaitForDeleteTimeout: 60
+    deleteLocalData: true
+    force: true
   nodeSelector:
     matchExpressions:
       - key: plan.upgrade.cattle.io/talos
         operator: Exists
+      - key: kubernetes.io/os
+        operator: In
+        values: [linux]
   prepare:
     image: ghcr.io/siderolabs/talosctl
     envs:
@@ -43,5 +46,6 @@ spec:
       - '--nodes=$(NODE_IP)'
       - 'upgrade'
       - '--image=ghcr.io/siderolabs/installer:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)'
+      - '--perserve=true'
       - '--wait=false'
       - '--stage=true'
