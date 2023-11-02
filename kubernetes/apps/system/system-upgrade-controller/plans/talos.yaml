@@ -10,9 +10,9 @@ spec:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
   version: "v1.5.4"
   serviceAccountName: system-upgrade
-  # secrets:
-    # - name: talos-upgrade-api-access
-      # path: /var/run/secrets/talos.dev
+  secrets:
+    - name: talos-upgrade-api-access
+      path: /var/run/secrets/talos.dev
   concurrency: 1
   drain:
     skipWaitForDeleteTimeout: 60
