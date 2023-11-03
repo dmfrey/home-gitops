@@ -15,6 +15,7 @@
     "github>dmfrey/home-gitops//.github/renovate/customManagers.json5",
     "github>dmfrey/home-gitops//.github/renovate/groups.json5",
     "github>dmfrey/home-gitops//.github/renovate/labels.json5",
+    "github>dmfrey/home-gitops//.github/renovate/semanticCommits.json5",
     "helpers:pinGitHubActionDigests"
   ],
 
@@ -46,122 +47,5 @@
       "(^|/)kubernetes/.+\\.ya?ml$",
       "(^|/)talos/.+\\.ya?ml$"
     ]
-  },
-
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true
-    },
-
-    {
-      "description": "Loose versioning for non-semver packages",
-      "matchDatasources": ["docker"],
-      "versioning": "loose",
-      "matchPackagePatterns": ["plex", "qbittorrent"]
-    },
-    {
-      "description": "Custom versioning for i915-ucode and intel-ucode",
-      "matchDatasources": ["docker"],
-      "versioning": "regex:^(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2})\\.?(?<build>\\d+)?$",
-      "matchPackageNames": [
-        "ghcr.io/siderolabs/i915-ucode",
-        "ghcr.io/siderolabs/intel-ucode"
-      ]
-    },
-
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(container)!: "
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "container"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "container"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["digest"],
-      "semanticCommitType": "chore",
-      "semanticCommitScope": "container"
-    },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(helm)!: "
-    },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "helm"
-    },
-
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "helm"
-    },
-    {
-      "matchDatasources": ["terraform-provider"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(terraform)!: "
-    },
-    {
-      "matchDatasources": ["terraform-provider"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "terraform"
-    },
-    {
-      "matchDatasources": ["terraform-provider"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "terraform"
-    },
-    {
-      "matchDatasources": ["github-releases", "github-tags"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(github-release)!: "
-    },
-    {
-      "matchDatasources": ["github-releases", "github-tags"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "github-release"
-    },
-    {
-      "matchDatasources": ["github-releases", "github-tags"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "github-release"
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(github-action)!: "
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "semanticCommitScope": "github-action"
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "github-action"
-    }
-
-  ]
+  }
 }
