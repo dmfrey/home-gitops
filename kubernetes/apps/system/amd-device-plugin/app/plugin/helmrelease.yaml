@@ -30,7 +30,7 @@ spec:
       type: daemonset
     image:
       repository: docker.io/rocm/k8s-device-plugin
-      tag: 1.25.2.4@sha256:b7abbaa0c2ad8492eaeeeeb21d49883e2173d170a3137792c7e078bfc5202e05
+      tag: 1.25.2.5@sha256:a4c3d684756cc2811d660ae98e57aae5c7344322d45a8d66033ef9c514771df8
       pullPolicy: IfNotPresent
     env:
       TZ: ${TIMEZONE}
