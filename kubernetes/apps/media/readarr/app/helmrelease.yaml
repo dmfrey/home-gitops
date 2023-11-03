@@ -38,7 +38,7 @@ spec:
     sidecars:
       exporter:
         name: exporter
-        image: ghcr.io/onedr0p/exportarr:v1.5.3
+        image: ghcr.io/onedr0p/exportarr:v1.6.0
         args: ["readarr"]
         env:
           - name: URL
