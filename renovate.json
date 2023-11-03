@@ -10,6 +10,7 @@
     ":automergeBranch",
     "github>dmfrey/home-gitops//.github/renovate/allowedVersions.json5",
     "github>dmfrey/home-gitops//.github/renovate/autoMerge.json5",
+    "github>dmfrey/home-gitops//.github/renovate/commitMessage.json5",
     "helpers:pinGitHubActionDigests"
   ],
 
@@ -23,10 +24,6 @@
   "ignorePaths": ["archive/**", "homeassistant/*", "bak/*"],
 
   "prHourlyLimit": 3,
-
-  "commitMessageTopic": "{{depName}}",
-  "commitMessageExtra": "to {{newVersion}}",
-  "commitMessageSuffix": "",
 
   "flux": {
     "fileMatch": [
@@ -51,20 +48,6 @@
     {
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
-    },
-
-    {
-      "matchDatasources": ["helm"],
-      "commitMessageTopic": "chart {{depName}}"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "commitMessageTopic": "image {{depName}}"
-    },
-    {
-      "matchDatasources": ["custom.grafana-dashboard.io"],
-      "commitMessageTopic": "dashboard {{depName}}",
-      "commitMessageExtra": "to revision: {{newVersion}}"
     },
 
     {
