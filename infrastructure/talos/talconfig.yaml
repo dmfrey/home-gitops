@@ -139,6 +139,34 @@ nodes:
             extensions:
               - image: ghcr.io/siderolabs/amd-ucode:20230919
               - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
+  - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
+    ipAddress: 192.168.30.32
+    controlPlane: false
+    installDisk: /dev/sda
+    disableSearchDomain: true
+    networkInterfaces:
+      - interface: enx38f7cdc612bc
+        dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
+        vlans:
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 2048
+          - vlanId: 51
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 3072
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/amd-ucode:20230919
+              - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
 
   - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
     controlPlane: false
