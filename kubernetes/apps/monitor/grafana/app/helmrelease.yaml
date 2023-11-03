@@ -148,28 +148,28 @@ spec:
       GF_PANELS_DISABLE_SANATIZE_HTML: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
 
-    # envFromSecrets:
-    #   - name: grafana-secret
+    envFromSecrets:
+      - name: grafana-secret
 
     grafana.ini:
       analytics:
         check_for_updates: false
-      # auth:
-      #   oauth_auto_login: true
-      # auth.generic_oauth:
-      #   enabled: true
-      #   name: Authentik
-      #   icon: signin
-      #   scopes: openid profile email
-      #   empty_scopes: false
-      #   use_pkce: true
-      # auth.generic_oauth.group_mapping:
-      #   org_id: 1
-      #   role_attribute_path: |
-      #     contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
-      auth.basic:
-        # enabled: false
+      auth:
+        oauth_auto_login: true
+      auth.generic_oauth:
         enabled: true
+        name: Authentik
+        icon: signin
+        scopes: openid profile email
+        empty_scopes: false
+        use_pkce: true
+      auth.generic_oauth.group_mapping:
+        org_id: 1
+        role_attribute_path: |
+          contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
+      auth.basic:
+        enabled: false
+        # enabled: true
       auth.anonymous:
         enabled: false
       paths:
