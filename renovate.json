@@ -14,6 +14,7 @@
     "github>dmfrey/home-gitops//.github/renovate/customDatasources.json5",
     "github>dmfrey/home-gitops//.github/renovate/customManagers.json5",
     "github>dmfrey/home-gitops//.github/renovate/groups.json5",
+    "github>dmfrey/home-gitops//.github/renovate/labels.json5",
     "helpers:pinGitHubActionDigests"
   ],
 
@@ -51,47 +52,6 @@
     {
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
-    },
-
-    {
-      "matchUpdateTypes": ["major"],
-      "labels": ["type/major"]
-    },
-    {
-      "matchUpdateTypes": ["minor"],
-      "labels": ["type/minor"]
-    },
-    {
-      "matchUpdateTypes": ["patch"],
-      "labels": ["type/patch"]
-    },
-    {
-      "matchUpdateTypes": ["digest"],
-      "labels": ["type/digest"]
-    },
-    {
-      "matchDatasources": ["docker"],
-      "addLabels": ["renovate/container"]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "addLabels": ["renovate/helm"]
-    },
-    {
-      "matchDatasources": ["terraform-provider"],
-      "addLabels": ["renovate/terraform"]
-    },
-    {
-      "matchDatasources": ["github-releases", "github-tags"],
-      "addLabels": ["renovate/github-release"]
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "addLabels": ["renovate/github-action"]
-    },
-    {
-      "matchDatasources": ["grafana-dashboards", "custom.grafana-dashboards"],
-      "addLabels": ["renovate/grafana-dashboard"]
     },
 
     {
