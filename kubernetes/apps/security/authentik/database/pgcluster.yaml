@@ -1,0 +1,68 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-authentik
+  namespace: security
+  annotations:
+    kyverno.io/ignore: "true"
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.4-17
+  primaryUpdateStrategy: unsupervised # let k8s handle upgrades
+  storage:
+    size: 10Gi
+    storageClass: ceph-block
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
+  monitoring:
+    enablePodMonitor: true
+  # configured according to below link to allow customizing of initdb via Flux
+  # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: authentik
+      owner: authentik
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://cnpg/
+      endpointURL: http://minio.${INTERNAL_DOMAIN}:9000
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY_ID
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY
+
+#  # RECOVERY
+#  bootstrap:
+#    recovery:
+          #      source: &previous-cluster pg-authentik-v0
+#  ## Note: externalClusters is needed when recovering from an existing cnpg cluster
+#  externalClusters:
+#    - name: *previous-cluster
+#      barmanObjectStore:
+#        wal:
+#          compression: bzip2
+#          maxParallel: 8
+#        destinationPath: s3://cnpg/
+          #        endpointURL: http://minio.${INTERNAL_DOMAIN}:9000
+#        s3Credentials:
+#          accessKeyId:
+#            name: cloudnative-pg-secret
+#            key: AWS_ACCESS_KEY_ID
+#          secretAccessKey:
+#            name: cloudnative-pg-secret
+#            key: AWS_SECRET_ACCESS_KEY
+

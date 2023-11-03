@@ -1,0 +1,12 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pg-authentik-backup
+  namespace: security
+spec:
+  schedule: "@weekly"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: pg-authentik

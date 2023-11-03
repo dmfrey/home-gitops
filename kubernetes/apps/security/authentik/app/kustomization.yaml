@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: security
+resources:
+  - ./secret-authentik.sops.yaml
+  - ./helmrelease.yaml
+  - ./clusterpolicy.yaml
+# configMapGenerator:
+#   - name: authentik-branding
+#     files:
+#       - ./branding/davishaus-favicon.png
+#       - ./branding/davishaus-logo.svg
+#     options:
+#       disableNameSuffixHash: true

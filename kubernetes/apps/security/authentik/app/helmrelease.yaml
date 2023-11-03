@@ -1,0 +1,109 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: security
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: authentik
+      version: 2023.10.2
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+        namespace: flux-system
+      interval: 30m
+  values:
+    global:
+      storageClass: ceph-block
+
+    authentik:
+      security_key: ""
+      avatars: "gravatar,initials"
+      log_level: debug
+      error_reporting:
+        enabled: false
+        send_pii: false
+      postgresql:
+        host: pg-authentik-rw
+        port: 5432
+        name: ""
+        user: ""
+        password: ""
+      email:
+        host: "smtp-relay.network.svc.cluster.local"
+        port: 2525
+        use_tls: false
+        from: "authentik@${EXTERNAL_DOMAIN}"
+    envFrom:
+      - secretRef:
+          name: authentik-secret
+    envValueFrom:
+      AUTHENTIK_POSTGRESQL__NAME:
+        secretKeyRef:
+          name: pg-authentik-app
+          key: username
+      AUTHENTIK_POSTGRESQL__USER:
+        secretKeyRef:
+          name: pg-authentik-app
+          key: username
+      AUTHENTIK_POSTGRESQL__PASSWORD:
+        secretKeyRef:
+          name: pg-authentik-app
+          key: password
+
+    geoip:
+      enabled: true
+      accountId: "878850"
+      licenseKey: ${SECRET_MAXMIND_LICENSE_KEY}
+      editionIds: "GeoLite2-City"
+      image: maxmindinc/geoipupdate:v6.0
+      updateInterval: 8
+
+    image:
+      repository: ghcr.io/goauthentik/server
+      tag: 2023.10.2
+      pullPolicy: IfNotPresent
+
+    ingress:
+      enabled: true
+      ingressClassName: external-nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "material-symbols:security-rounded"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+        nginx.org/websocket-services: authentik
+        nginx.ingress.kubernetes.io/enable-global-auth: "false"
+      hosts:
+      - host: auth.${EXTERNAL_DOMAIN}
+        paths:
+        - path: /
+
+      tls:
+      - hosts:
+        - auth.${EXTERNAL_DOMAIN}
+        secretName: authentik-tls-external
+    redis:
+      enabled: true
+      master:
+        securityContext:
+          enabled: true
+
+    prometheus:
+      serviceMonitor:
+        create: true
+      rules:
+        create: true
+
+    blueprints: []
+    # volumes:
+    #   - configMap:
+    #       name: authentik-branding
+    #     name: branding
+    # volumeMounts:
+    #   - mountPath: /media/branding
+    #     name: branding

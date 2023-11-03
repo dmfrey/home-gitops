@@ -1,0 +1,139 @@
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: authentik-provisioner
+  namespace: security
+spec:
+  path: "./"
+  interval: 10m
+  approvePlan: auto
+  backendConfig:
+    disable: true
+  cliConfigSecretRef:
+    name: tf-cloud-token
+    namespace: flux-system
+  cloud:
+    organization: "${ORGANIZATION}"
+    hostname: "app.terraform.io"
+    workspaces:
+      name: "authentik-provisioner"
+  sourceRef:
+    kind: OCIRepository
+    name: oci-terraform-authentik
+    namespace: flux-system
+  varsFrom:
+    - kind: Secret
+      name: authentik-secret
+      varsKeys:
+        - AUTHENTIK_BOOTSTRAP_TOKEN
+        - AUTHENTIK_PLEX_CLIENT_ID
+        - AUTHENTIK_PLEX_TOKEN
+    - kind: Secret
+      name: plex-secret
+      varsKeys:
+        - PLEX_SERVER_ID
+  vars:
+    - name: authentik_host
+      value: https://auth.${EXTERNAL_DOMAIN}
+    - name: external_domain
+      value: ${EXTERNAL_DOMAIN}
+    - name: proxy_applications
+      value:
+        Alert-Manager:
+          url: https://alert-manager.${EXTERNAL_DOMAIN}
+          group: Monitor
+        Bazarr:
+          url: https://bazarr.${EXTERNAL_DOMAIN}
+          group: Media
+        Hajimari:
+          url: https://portal.${EXTERNAL_DOMAIN}
+          group: Home Page
+        Hass-Code:
+          url: https://hass-code.${EXTERNAL_DOMAIN}
+          group: Home
+        Hubble:
+          url: https://hubble.${EXTERNAL_DOMAIN}
+          group: Network
+        Lidarr:
+          url: https://lidarr.${EXTERNAL_DOMAIN}
+          group: Media
+        Loki:
+          url: https://loki.${EXTERNAL_DOMAIN}
+          group: Monitor
+        # OctoPrint:
+        #   url: https://octoprint.${EXTERNAL_DOMAIN}
+        #   group: Network
+        Prometheus:
+          url: https://prometheus.${EXTERNAL_DOMAIN}
+          group: Monitor
+        Prowlarr:
+          url: https://prowlarr.${EXTERNAL_DOMAIN}
+          group: Download
+        RealDebrid-Client:
+          url: https://rdt.${EXTERNAL_DOMAIN}
+          group: Download
+        Readarr:
+          url: https://readarr.${EXTERNAL_DOMAIN}
+          group: Media
+        Radarr:
+          url: https://radarr.${EXTERNAL_DOMAIN}
+          group: Media
+        Rook:
+          url: https://rook.${EXTERNAL_DOMAIN}
+          group: Storage
+        Sonarr:
+          url: https://sonarr.${EXTERNAL_DOMAIN}
+          group: Media
+        Tautulli:
+          url: https://tautulli.${EXTERNAL_DOMAIN}
+          group: Media
+        Tdarr:
+          url: https://tdarr.${EXTERNAL_DOMAIN}
+          group: Media
+        Thanos:
+          url: https://thanos.${EXTERNAL_DOMAIN}
+          group: Monitor
+        Unifi:
+          url: https://unifi.${EXTERNAL_DOMAIN}
+          group: Network
+        Wizarr:
+          url: https://join.${EXTERNAL_DOMAIN}
+          group: Media
+          skip_path_regex: |
+            ^/j/
+            ^/join
+            ^/setup/*
+            ^/static/
+        Zigbee2Mqtt:
+          url: https://zigbee2mqtt.${EXTERNAL_DOMAIN}
+          group: Media
+    - name: oauth2_applications
+      value:
+        Grafana:
+          url: https://grafana.${EXTERNAL_DOMAIN}
+          group: Monitor
+          client_id: grafana
+          client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
+          redirect_uris: 
+            - https://grafana.${EXTERNAL_DOMAIN}/login/generic_oauth
+    - name: groups
+      value:
+        ${ORGANIZATION}-Admins:
+          name: "${ORGANIZATION} Admins"
+          superuser: true
+          parent: "authentik-Admins"
+        Grafana-Admins:
+          name: "Grafana Admins"
+          superuser: false
+          parent: "${ORGANIZATION}-Admins"
+    - name: users
+      value:
+        jefedavis:
+          name: "${FULL_NAME}"
+          email: "${EMAIL_ADDRESS}"
+          groups:
+            - "${ORGANIZATION}-Admins"
+            - "Grafana-Admins"
+
+
