@@ -28,8 +28,6 @@
   "suppressNotifications": ["prIgnoreNotification"],
   "ignorePaths": ["archive/**", "homeassistant/*", "bak/*"],
 
-  "prHourlyLimit": 3,
-
   "flux": {
     "fileMatch": [
       "(^|/)kubernetes/.+\\.ya?ml$",

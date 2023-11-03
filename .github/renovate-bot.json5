@@ -1,0 +1,6 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "username": "klabautermann-bot[bot]",
+  "gitAuthor": "klabautermann-bot <339814+klabautermann-bot[bot]@users.noreply.github.com>",
+  "repositories": ["JefeDavis/k8s-HomeOps"]
+}
