@@ -11,6 +11,8 @@
     "github>dmfrey/home-gitops//.github/renovate/allowedVersions.json5",
     "github>dmfrey/home-gitops//.github/renovate/autoMerge.json5",
     "github>dmfrey/home-gitops//.github/renovate/commitMessage.json5",
+    "github>dmfrey/home-gitops//.github/renovate/customDatasources.json5",
+    "github>dmfrey/home-gitops//.github/renovate/customManagers.json5",
     "helpers:pinGitHubActionDigests"
   ],
 
