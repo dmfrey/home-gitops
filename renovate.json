@@ -8,7 +8,7 @@
     ":semanticCommits",
     ":automergeDigest",
     ":automergeBranch",
-    "github>dmfrey/home-gitops/.github/renovate/allowedVersions.json5",
+    "github>dmfrey/home-gitops//.github/renovate/allowedVersions.json5",
     "helpers:pinGitHubActionDigests"
   ],
 
