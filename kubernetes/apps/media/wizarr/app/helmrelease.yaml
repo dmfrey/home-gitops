@@ -22,7 +22,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/wizarrrr/wizarr
-      tag: 2.2.0@sha256:c7f4b05a3bd3b2232ea93aa41018e637954b3f4bcba44be90aa9622e1ed062f7
+      tag: 3.4.8@sha256:d29f1f6482695ab49624dadf9a652a2ce55edef92c73726fd286e18d73aaca7d
 
     env:
       TZ: America/New_York
