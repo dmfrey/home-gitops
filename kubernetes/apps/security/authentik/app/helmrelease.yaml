@@ -54,13 +54,13 @@ spec:
           name: pg-authentik-app
           key: password
 
-    geoip:
-      enabled: true
-      accountId: "878850"
-      licenseKey: ${SECRET_MAXMIND_LICENSE_KEY}
-      editionIds: "GeoLite2-City"
-      image: maxmindinc/geoipupdate:v6.0
-      updateInterval: 8
+    # geoip:
+    #   enabled: true
+    #   accountId: "878850"
+    #   licenseKey: ${SECRET_MAXMIND_LICENSE_KEY}
+    #   editionIds: "GeoLite2-City"
+    #   image: maxmindinc/geoipupdate:v6.0
+    #   updateInterval: 8
 
     image:
       repository: ghcr.io/goauthentik/server
