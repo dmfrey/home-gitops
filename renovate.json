@@ -9,6 +9,7 @@
     ":automergeDigest",
     ":automergeBranch",
     "github>dmfrey/home-gitops//.github/renovate/allowedVersions.json5",
+    "github>dmfrey/home-gitops//.github/renovate/autoMerge.json5",
     "helpers:pinGitHubActionDigests"
   ],
 
@@ -50,25 +51,6 @@
     {
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
-    },
-
-    {
-      "description": "Auto merge container digests",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "ignoreTests": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["digest"],
-      "matchPackagePatterns": ["ghcr.io/bjw-s", "ghcr.io/onedr0p"]
-    },
-    {
-      "description": "Auto merge GitHub Actions",
-      "matchManagers": ["github-actions"],
-      "matchDatasources": ["github-tags"],
-      "automerge": true,
-      "ignoreTests": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch"]
     },
 
     {
