@@ -142,8 +142,7 @@
       "matchUpdateTypes": ["minor", "patch"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": false
+      }
     },
     {
       "description": "Tekton Group",
@@ -153,8 +152,7 @@
       "matchUpdateTypes": ["minor", "patch"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": false
+      }
     },
     {
       "description": "Talos Group",
