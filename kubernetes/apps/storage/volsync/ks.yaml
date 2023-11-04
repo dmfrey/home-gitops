@@ -16,7 +16,7 @@ spec:
     substituteFrom: []
   timeout: 3m
   dependsOn:
-    - name: cluster-apps-snapshot-controller-webhook
+    - name: cluster-apps-snapshot-controller
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
