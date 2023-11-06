@@ -52,7 +52,6 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
       - changed-files
-    permissions: write-all
     strategy:
       matrix: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
     steps:
