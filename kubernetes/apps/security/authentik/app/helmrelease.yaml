@@ -37,7 +37,8 @@ spec:
         port: 2525
         use_tls: false
         from: "authentik@${EXTERNAL_DOMAIN}"
-      kubernetes_ingress_class_name: external-nginx
+      config:
+        kubernetes_ingress_class_name: external-nginx
     envFrom:
       - secretRef:
           name: authentik-secret
