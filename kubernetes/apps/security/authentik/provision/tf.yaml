@@ -129,7 +129,7 @@ spec:
           parent: "${ORGANIZATION}-Admins"
     - name: users
       value:
-        admin:
+        dmfrey:
           name: "${FULL_NAME}"
           email: "${EMAIL_ADDRESS}"
           groups:
