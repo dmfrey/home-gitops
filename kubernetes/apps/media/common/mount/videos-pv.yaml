@@ -9,6 +9,8 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    name: videos-nfs-media
   nfs:
     server: ${QNAP_ADDR}
     path: "/videos"
