@@ -31,5 +31,5 @@ resource "radarr_naming" "naming" {
 }
 
 resource "radarr_root_folder" "series" {
-  path = "/media/library/movies"
+  path = "/media/library/Movies"
 }
