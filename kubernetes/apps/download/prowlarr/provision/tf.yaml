@@ -10,14 +10,14 @@ spec:
   approvePlan: auto
   backendConfig:
     disable: true
-  cliConfigSecretRef:
-    name: tf-cloud-token
-    namespace: flux-system
-  cloud:
-    organization: ${ORGANIZATION}
-    hostname: "app.terraform.io"
-    workspaces:
-      name: "prowlarr-provisioner"
+  # cliConfigSecretRef:
+  #   name: tf-cloud-token
+  #   namespace: flux-system
+  # cloud:
+  #   organization: ${ORGANIZATION}
+  #   hostname: "app.terraform.io"
+  #   workspaces:
+  #     name: "prowlarr-provisioner"
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-prowlarr
