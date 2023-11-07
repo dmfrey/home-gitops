@@ -114,13 +114,12 @@ spec:
         storageClass: ceph-block
 
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
+      # runAsUser: 568
+      # runAsGroup: 568
+      # fsGroup: 568
+      # fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 65534
-        # - 1030
 
     resources:
       requests:
