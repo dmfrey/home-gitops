@@ -94,6 +94,7 @@ spec:
       media:
         enabled: true
         existingClaim: videos-nfs-media
+        readOnly: false
 
       backups:
         enabled: true
