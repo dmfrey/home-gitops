@@ -119,7 +119,7 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
-        - 65539
+        - 65534
         - 1030
 
     resources:
