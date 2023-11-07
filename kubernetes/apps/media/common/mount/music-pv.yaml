@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: music-nfs-media
 spec:
-  storageClassName: nfs-client
+  storageClassName: media
   capacity:
     storage: 1Mi
   accessModes:

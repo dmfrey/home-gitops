@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: photos-nfs-media
 spec:
-  storageClassName: nfs-client
+  storageClassName: media
   capacity:
     storage: 1Mi
   accessModes:
