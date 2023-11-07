@@ -59,9 +59,8 @@ spec:
       supplementalGroups:
       - 39
       - 44
-      - 109
       - 100
-      - 1030
+      - 65534
 
     service:
       main:
