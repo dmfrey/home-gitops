@@ -11,3 +11,4 @@ spec:
   resources:
     requests:
       storage: 1Mi
+  volumeName: "music-nfs-media"
