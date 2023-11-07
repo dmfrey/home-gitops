@@ -91,14 +91,14 @@ spec:
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
-      # security:
-      #   # Ref: https://grafana.com/grafana/dashboards/14837
-      #   authentik:
-      #     gnetId: 14837
-      #     revision: 2
-      #     datasource:
-      #       - name: "DS_PROMETHEUS"
-      #         value: prometheus
+        security:
+          # Ref: https://grafana.com/grafana/dashboards/14837
+          authentik:
+            gnetId: 14837
+            revision: 2
+            datasource:
+              - name: "DS_PROMETHEUS"
+                value: prometheus
       storage:
         # Ref: https://grafana.com/grafana/dashboards/2842/
         ceph-cluster:
@@ -166,7 +166,7 @@ spec:
       auth.generic_oauth.group_mapping:
         org_id: 1
         role_attribute_path: |
-          contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
+          contains(groups[*], 'Grafana-Admins') && 'Admin' || contains(groups[*], 'Grafana-Editors') && 'Editor' || 'Viewer'
       auth.basic:
         enabled: false
         # enabled: true
