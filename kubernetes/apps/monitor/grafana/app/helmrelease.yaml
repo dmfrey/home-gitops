@@ -166,10 +166,10 @@ spec:
       auth.generic_oauth.group_mapping:
         org_id: 1
         role_attribute_path: |
-          contains(groups[*], 'Grafana-Admins') && 'Admin' || contains(groups[*], 'Grafana-Editors') && 'Editor' || 'Viewer'
+          contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
       auth.basic:
-        enabled: false
-        # enabled: true
+        # enabled: false
+        enabled: true
       auth.anonymous:
         enabled: false
       paths:
