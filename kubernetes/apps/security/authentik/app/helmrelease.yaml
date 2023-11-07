@@ -22,7 +22,7 @@ spec:
     authentik:
       security_key: ""
       avatars: "gravatar,initials"
-      log_level: debug
+      log_level: info
       error_reporting:
         enabled: false
         send_pii: false
@@ -37,8 +37,6 @@ spec:
         port: 2525
         use_tls: false
         from: "authentik@${EXTERNAL_DOMAIN}"
-      config:
-        kubernetes_ingress_class_name: external-nginx
     envFrom:
       - secretRef:
           name: authentik-secret
