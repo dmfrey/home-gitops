@@ -7,8 +7,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: media
+  storageClassName: music
   resources:
     requests:
       storage: 1Mi
-  volumeName: "music-nfs-media"
+

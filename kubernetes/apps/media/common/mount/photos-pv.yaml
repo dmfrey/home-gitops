@@ -3,14 +3,12 @@ kind: PersistentVolume
 metadata:
   name: photos-nfs-media
 spec:
-  storageClassName: media
+  storageClassName: photos
   capacity:
     storage: 1Mi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    name: photos-nfs-media
   nfs:
     server: ${QNAP_ADDR}
     path: "/photos"

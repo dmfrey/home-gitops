@@ -3,14 +3,12 @@ kind: PersistentVolume
 metadata:
   name: videos-nfs-media
 spec:
-  storageClassName: media
+  storageClassName: videos
   capacity:
     storage: 1Mi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    name: videos-nfs-media
   nfs:
     server: ${QNAP_ADDR}
     path: "/videos"

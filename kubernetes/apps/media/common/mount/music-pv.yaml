@@ -3,14 +3,12 @@ kind: PersistentVolume
 metadata:
   name: music-nfs-media
 spec:
-  storageClassName: media
+  storageClassName: music
   capacity:
     storage: 1Mi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  claimRef:
-    name: music-nfs-media
   nfs:
     server: ${QNAP_ADDR}
     path: "/music"
