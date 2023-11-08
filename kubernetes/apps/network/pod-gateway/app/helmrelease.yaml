@@ -23,17 +23,17 @@ spec:
 
     DNS: 172.16.1.1
 
-    # service:
-    #   vpn:
-    #     enabled: true
-    #     type: LoadBalancer
-    #     annotations:
-    #       # io.cilium/lb-ipam-ips: ${SVC_VPN_ADDR}
-    #     externalTrafficPolicy: Cluster
-    #     ports:
-    #       shadowsocks:
-    #         enabled: true
-    #         port: 8388
+    service:
+      vpn:
+        enabled: true
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVC_VPN_ADDR}
+        externalTrafficPolicy: Cluster
+        ports:
+          shadowsocks:
+            enabled: true
+            port: 8388
 
     addons:
       vpn:
@@ -45,23 +45,21 @@ spec:
 
         env:
           - name: VPN_SERVICE_PROVIDER
-            value: custom
+            value: mullvad
           - name: VPN_TYPE
             value: wireguard
           - name: VPN_INTERFACE
             value: wg0
           - name: VPN_ENDPOINT_PORT
-            value: 51821
+            value: 51820
+          - name: SHADOWSOCKS
+            value: "on"
           - name: FIREWALL
-            value: "off"
-          - name: "DNS_KEEP_NAMESERVER"
             value: "off"
           - name: DOT
             value: "off"
-          # - name: SERVER_CITIES
-          #   value: New York NY
-          # - name: SERVER_HOSTNAMES
-          #   value: us167-wireguard
+          - name: SERVER_CITIES
+            value: New York NY
           - name: LOG_LEVEL
             value: debug
           - name: LOG_CONFS
@@ -115,7 +113,7 @@ spec:
       VPN_BLOCK_OTHER_TRAFFIC: true
       VPN_INTERFACE: wg0
       VPN_LOCAL_CIDRS: 10.0.0.0/8 192.168.0.0/16
-      VPN_TRAFFIC_PORT: "51821"
+      VPN_TRAFFIC_PORT: "51820"
       DNS_LOCAL_CIDRS: "local"
       VXLAN_ID: 43
       VXLAN_IP_NETWORK: 172.16.1
