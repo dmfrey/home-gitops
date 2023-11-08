@@ -24,7 +24,8 @@ spec:
         ports:
           http:
             port: 8191
-    # podSecurityContext:
+    podSecurityContext:
+      runAsUser: 0
     #   runAsUser: 568
     #   runAsGroup: 568
     #   fsGroup: 568
