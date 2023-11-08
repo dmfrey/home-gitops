@@ -28,6 +28,9 @@ spec:
     podAnnotations:
       vpn.home.arpa/enabled: "true"
 
+    podSecurityContext:
+      fsGroup: 65534
+
     dnsConfig:
       options:
         - name: ndots
