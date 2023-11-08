@@ -29,11 +29,12 @@ spec:
       vpn.home.arpa/enabled: "true"
 
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
+        - 65533
         - 65534
 
     dnsConfig:
