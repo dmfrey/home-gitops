@@ -15,9 +15,9 @@ resources:
   - ./readarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./radarr/ks.yaml
-  # - ./sonarr/ks.yaml
-  # - ./tautulli/ks.yaml
-  # - ./tdarr/ks.yaml
-  # - ./unpackerr/ks.yaml
-  # - ./wizarr/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./tautulli/ks.yaml
+  - ./tdarr/ks.yaml
+  - ./unpackerr/ks.yaml
+  - ./wizarr/ks.yaml
 
