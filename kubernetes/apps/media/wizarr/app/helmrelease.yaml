@@ -68,11 +68,8 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
-        - 65539
+        - 65534
         - 1030
-
-    nodeSelector:
-      beta.kubernetes.io/arch: amd64
 
     resources:
       requests:
