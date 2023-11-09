@@ -78,10 +78,11 @@ spec:
         storageClass: ceph-block
 
     persistence:
-      media:
+      downloads:
         enabled: true
         existingClaim: nfs-downloads
         mountPath: /data/downloads
+        readOnly: false
 
     resources:
       requests:
