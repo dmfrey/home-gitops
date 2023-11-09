@@ -93,7 +93,8 @@ spec:
     persistence:
       media:
         enabled: true
-        existingClaim: videos-nfs-media
+        existingClaim: nfs-media
+        mountPath: /media/library
         readOnly: false
 
       backups:
@@ -114,12 +115,11 @@ spec:
         storageClass: ceph-block
 
     podSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
-      fsGroup: 0
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
-        - 65533
         - 65534
 
     resources:

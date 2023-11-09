@@ -94,7 +94,8 @@ spec:
     persistence:
       media:
         enabled: true
-        existingClaim: videos-nfs-media
+        existingClaim: nfs-media
+        mountPath: /media/library
         readOnly: false
 
       backups:
@@ -120,8 +121,7 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
-        - 65539
-        - 1030
+        - 65534
 
     resources:
       requests:

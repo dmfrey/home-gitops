@@ -68,7 +68,7 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
-        - 65539
+        - 65534
 
     nodeSelector:
       beta.kubernetes.io/arch: amd64

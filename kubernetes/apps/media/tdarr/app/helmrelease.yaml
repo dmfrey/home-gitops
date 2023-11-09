@@ -82,7 +82,9 @@ spec:
         existingClaim: tdarr-cache
       media:
         enabled: true
-        existingClaim: videos-nfs-media
+        existingClaim: nfs-media
+        mountPath: /media/library
+        readOnly: false
 
       backups:
         enabled: true
@@ -101,6 +103,7 @@ spec:
       supplementalGroups:
         - 34
         - 100
+        - 65534
       fsGroupChangePolicy: "OnRootMismatch"
       capabilities:
         add:

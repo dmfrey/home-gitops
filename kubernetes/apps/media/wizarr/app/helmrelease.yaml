@@ -69,7 +69,6 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 65534
-        - 1030
 
     resources:
       requests:

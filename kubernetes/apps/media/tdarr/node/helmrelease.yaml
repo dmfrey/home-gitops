@@ -55,7 +55,9 @@ spec:
     persistence:
       media:
         enabled: true
-        existingClaim: videos-nfs-media
+        existingClaim: nfs-media
+        mountPath: /media/library
+        readOnly: false
       cache:
         enabled: true
         existingClaim: tdarr-cache
@@ -72,6 +74,7 @@ spec:
         - 44
         - 100
         - 226
+        - 65534
 
     resources:
       requests:
