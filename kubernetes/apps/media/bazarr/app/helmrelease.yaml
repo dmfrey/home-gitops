@@ -67,6 +67,7 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media
+        readOnly: false
 
       backups:
         enabled: true
@@ -92,8 +93,6 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 65534
-        - 1030
-        - 1000
 
     nodeSelector:
       kubernetes.io/arch: amd64

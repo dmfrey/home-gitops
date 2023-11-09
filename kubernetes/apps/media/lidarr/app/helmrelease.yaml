@@ -95,8 +95,9 @@ spec:
     persistence:
       media:
         enabled: true
-        existingClaim: videos-nfs-media
-
+        existingClaim: nfs-media
+        readOnly: false
+        
       backups:
         enabled: true
         type: custom
@@ -121,8 +122,6 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 65534
-        - 1030
-        - 1000
 
     resources:
       requests:
