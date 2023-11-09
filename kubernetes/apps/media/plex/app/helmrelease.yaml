@@ -56,11 +56,14 @@ spec:
           secretName: plex-tls-external
 
     podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
       - 39
       - 44
       - 100
-      - 1000
       - 65534
 
     service:
