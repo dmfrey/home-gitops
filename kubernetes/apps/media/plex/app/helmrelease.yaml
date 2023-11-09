@@ -57,11 +57,7 @@ spec:
 
     podSecurityContext:
       supplementalGroups:
-      - 39
-      - 44
       - 100
-      - 1000
-      - 65533
       - 65534
 
     service:
