@@ -66,7 +66,7 @@ spec:
     persistence:
       media:
         enabled: true
-        existingClaim: videos-nfs-media
+        existingClaim: nfs-media
 
       backups:
         enabled: true
@@ -93,6 +93,7 @@ spec:
       supplementalGroups:
         - 65539
         - 1030
+        - 1000
 
     nodeSelector:
       kubernetes.io/arch: amd64
