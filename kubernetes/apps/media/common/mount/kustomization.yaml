@@ -3,10 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: media
 resources:
-  - ./music-pv.yaml
-  - ./music-pvc.yaml
-  - ./photos-pv.yaml
-  - ./photos-pvc.yaml
-  - ./videos-pv.yaml
-  - ./videos-pvc.yaml
+  # - ./music-pv.yaml
+  # - ./music-pvc.yaml
+  # - ./photos-pv.yaml
+  # - ./photos-pvc.yaml
+  # - ./videos-pv.yaml
+  # - ./videos-pvc.yaml
+  - ./pv.yaml
+  - ./pvc.yaml
   

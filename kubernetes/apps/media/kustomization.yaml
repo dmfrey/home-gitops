@@ -5,7 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # # Flux-Kustomizations
-  # - ./common/ks.yaml
+  - ./common/ks.yaml
   # - ./bazarr/ks.yaml
   # - ./lidarr/ks.yaml
   # - ./music-assistant/ks.yaml
