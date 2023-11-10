@@ -11,4 +11,6 @@ resources:
   # - ./videos-pvc.yaml
   - ./pv.yaml
   - ./pvc.yaml
-  
+  - ./downloads-pv.yaml
+  - ./downloads-pvc.yaml
+

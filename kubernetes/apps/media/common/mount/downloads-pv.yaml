@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-downloads
+  name: media-downloads
 spec:
-  storageClassName: downloads
+  storageClassName: media-downloads
   capacity:
     storage: 1Mi
   accessModes:
