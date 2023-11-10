@@ -35,7 +35,6 @@ resource "authentik_outpost" "outpost" {
     object_naming_template : "ak-outpost-%(name)s"
     kubernetes_replicas : 1
     kubernetes_namespace : "security"
-    kubernetes_ingress_class_name: "external-nginx"
     kubernetes_ingress_annotations : {
       "cert-manager.io/cluster-issuer" : "letsencrypt-prod"
     }
@@ -44,7 +43,7 @@ resource "authentik_outpost" "outpost" {
     kubernetes_disabled_components : [
       "traefik middleware"
     ]
-    kubernetes_ingress_class_name : "nginx"
+    kubernetes_ingress_class_name : "external-nginx"
   })
 }
 
