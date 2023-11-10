@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-downloads
+  namespace: download
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: downloads
+  resources:
+    requests:
+      storage: 1Mi

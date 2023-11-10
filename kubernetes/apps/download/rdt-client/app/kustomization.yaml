@@ -6,4 +6,6 @@ resources:
   - ./helmrelease.yaml
   - ./pv.yaml
   - ./pvc.yaml
+  - ./nfs-downloads-pv.yaml
+  - ./nfs-downloads-pvc.yaml
 
