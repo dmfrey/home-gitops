@@ -98,7 +98,7 @@ spec:
         readOnly: false
       downloads:
         enabled: true
-        existingClaim: nfs-media
+        existingClaim: nfs-downloads
         mountPath: /media/downloads
         readOnly: false
 
