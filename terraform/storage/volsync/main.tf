@@ -5,4 +5,11 @@ terraform {
       version = "~> 0.8.4"
     }
   }
+
+  cloud {
+    organization = "homelab5767"
+    workspaces {
+      name = "volsync-provisioner"
+    }
+  }
 }

@@ -5,4 +5,11 @@ terraform {
       version = "2.1.0"
     }
   }
+
+  cloud {
+    organization = "homelab5767"
+    workspaces {
+      name = "radarr-provisioner"
+    }
+  }
 }
