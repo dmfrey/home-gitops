@@ -78,18 +78,19 @@ spec:
         enabled: true
 
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 65534
+      runAsGroup: 65534
+      fsGroup: 65534
       fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-        - 65534
+      # supplementalGroups:
+      #   - 65534
 
     persistence:
       media:
         enabled: true
         existingClaim: nfs-media
         mountPath: /media/library
+        readOnly: false
 
     resources:
       requests:

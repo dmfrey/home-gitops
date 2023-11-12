@@ -109,9 +109,6 @@ spec:
         add:
           - CHOWN
 
-    nodeSelector:
-      beta.kubernetes.io/arch: amd64
-
     resources:
       requests:
         cpu: 10m
