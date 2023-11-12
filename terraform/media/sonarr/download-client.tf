@@ -12,5 +12,5 @@ resource "sonarr_download_client_qbittorrent" "rdt-client" {
 resource "sonarr_remote_path_mapping" "downloads-path" {
   host        = sonarr_download_client_qbittorrent.rdt-client.host
   remote_path = "/data/downloads/torrents/"
-  local_path  = "/media/library/downloads/torrents/"
+  local_path  = "/media/downloads/torrents/"
 }
