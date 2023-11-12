@@ -38,7 +38,7 @@ spec:
       UN_INTERVAL: "1m"
       UN_WEBSERVER_METRICS: "true"
       UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local:8989
-      UN_SONARR_0_PATHS_0: /media/downloads/torrents/series
+      UN_SONARR_0_PATHS_0: /media/downloads/torrents/tv
       UN_SONARR_0_PATHS_1: /media/downloads/torrents/anime
       UN_SONARR_0_API_KEY:
         valueFrom:
@@ -90,6 +90,11 @@ spec:
         enabled: true
         existingClaim: nfs-media
         mountPath: /media/library
+        readOnly: false
+      downloads:
+        enabled: true
+        existingClaim: media-downloads
+        mountPath: /media/downloads
         readOnly: false
 
     resources:
