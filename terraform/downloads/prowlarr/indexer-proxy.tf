@@ -1,5 +1,6 @@
 resource "prowlarr_tag" "flaresolverr" {
   label = "flaresolverr"
+  app_profile_id  = 1
 }
 
 resource "prowlarr_indexer_proxy_flaresolverr" "flaresolverr" {
