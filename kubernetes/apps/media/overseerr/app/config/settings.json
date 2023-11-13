@@ -63,7 +63,7 @@
    "useSsl": false,
    "activeProfileId": 5,
    "activeProfileName": "Ultra-HD-2160p",
-   "activeDirectory": "/media/library/movies",
+   "activeDirectory": "/media/library/Movies",
    "is4k": false,
    "minimumAvailability": "released",
    "tags": [
@@ -87,11 +87,11 @@
    "activeProfileId": 4,
    "activeLanguageProfileId": 1,
    "activeProfileName": "HD-1080p",
-   "activeDirectory": "/media/library/series",
+   "activeDirectory": "/media/library/TV Shows",
    "activeAnimeProfileId": 7,
    "activeAnimeLanguageProfileId": 1,
    "activeAnimeProfileName": "HD-1080p-Anime",
-   "activeAnimeDirectory": "/media/library/anime",
+   "activeAnimeDirectory": "/media/library/Anime",
    "tags": [
     6
    ],
