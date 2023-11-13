@@ -62,14 +62,6 @@ spec:
         size: 1Gi
         storageClass: ceph-block
 
-    podSecurityContext:
-      runAsUser: 65534
-      runAsGroup: 65534
-      fsGroup: 65534
-      fsGroupChangePolicy: OnRootMismatch
-      # supplementalGroups:
-      #   - 65534
-
     resources:
       requests:
         memory: 350Mi
