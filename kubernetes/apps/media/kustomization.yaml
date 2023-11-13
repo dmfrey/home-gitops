@@ -19,5 +19,5 @@ resources:
   - ./tautulli/ks.yaml
   - ./tdarr/ks.yaml
   - ./unpackerr/ks.yaml
-  # - ./wizarr/ks.yaml
+  - ./wizarr/ks.yaml
 
