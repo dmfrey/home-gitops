@@ -15,20 +15,44 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   values:
+
     image:
       repository: flaresolverr/flaresolverr
       tag: v3.3.9
+
     service:
       main:
         ports:
           http:
             port: 8191
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external-nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:movie-search"
+        hosts:
+          - host: &host flaresolverr.${EXTERNAL_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: flaresolverr-tls-external
+
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
+
     resources:
       requests:
         cpu: 50m
