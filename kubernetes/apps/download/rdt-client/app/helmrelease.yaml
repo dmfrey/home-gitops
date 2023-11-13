@@ -26,8 +26,10 @@ spec:
       tag: 2.0.40
 
     env:
-      - PUID: 65534
-      - PGID: 65534
+      - name: PUID
+        value: 65534
+      - name: PGID
+        value: 65534
 
     podAnnotations:
       vpn.home.arpa/enabled: "true"
