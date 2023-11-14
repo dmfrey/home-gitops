@@ -100,9 +100,6 @@ spec:
           http:
             enabled: true
             port: 8123
-          sonos:
-            enabled: true
-            port: 1400
 
     ingress:
       main:
