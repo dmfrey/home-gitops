@@ -40,7 +40,7 @@ spec:
         [{
           "name":"iot-vlan",
           "namespace": "network",
-          "ips": ["10.0.90.4/24"]
+          "ips": ["192.168.50.1/24"]
         }]
 
     env:
@@ -70,7 +70,7 @@ spec:
 
         volumeMounts:
           - name: deploy-key
-            mountPath: /root/.ssh/id_rsa
+            mountPath: /root/.ssh/id_ed25519
             subPath: ssh-privatekey
           - name: deploy-key
             mountPath: /root/.ssh/known_hosts
@@ -109,12 +109,12 @@ spec:
           hajimari.io/icon: "simple-icons:homeassistant"
         ingressClassName: nginx
         hosts:
-          - host: home.${EXTERNAL_DOMAIN}
+          - host: &host home.${EXTERNAL_DOMAIN}
             paths:
               - path: /
         tls:
           - hosts:
-              - home.${EXTERNAL_DOMAIN}
+              - *host
             secretName: home-assistant-tls-external
 
     serviceMonitor:
@@ -139,7 +139,7 @@ spec:
         defaultMode: 256
         subPath:
           - path: ssh-privatekey
-            mountPath: /root/.ssh/id_rsa
+            mountPath: /root/.ssh/id_ed25519
           - path: known_hosts
             mountPath: /root/.ssh/known_hosts
       configuration:
@@ -153,8 +153,8 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "${SYNOLOGY_ADDR}"
-            path: /volume1/backups/home-assistant
+            server: "${QNAP_ADDR}"
+            path: /homeassistant
         mountPath: /config/backups
         readOnly: false
 
