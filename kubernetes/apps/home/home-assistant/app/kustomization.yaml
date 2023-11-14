@@ -16,5 +16,5 @@ configMapGenerator:
       - ./config/configuration.yaml
     options:
       disableNameSuffixHash: true
-# patchesStrategicMerge:
-#   - ./patches/addons.yaml
+patchesStrategicMerge:
+  - ./patches/addons.yaml
