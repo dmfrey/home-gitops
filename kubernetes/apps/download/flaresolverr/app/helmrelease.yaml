@@ -20,7 +20,7 @@ spec:
 
     image:
       repository: flaresolverr/flaresolverr
-      tag: v3.3.9
+      tag: v3.3.10
 
     service:
       main:
