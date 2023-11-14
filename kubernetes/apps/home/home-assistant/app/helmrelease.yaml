@@ -112,7 +112,7 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:homeassistant"
-        ingressClassName: nginx
+        ingressClassName: external-nginx
         hosts:
           - host: &host home.${EXTERNAL_DOMAIN}
             paths:
