@@ -91,6 +91,9 @@ spec:
           name: home-assistant-secret
         prefix: "HASS_"
 
+    nodeSelector:
+      kubernetes.io/arch: amd64
+    
     service:
       main:
         type: LoadBalancer
