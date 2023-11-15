@@ -11,8 +11,7 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 172.22.0.0/15
-    - 10.0.0.0/9
-    - 192.168.31.0/24
+    - 192.168.0.0/16
     - 127.0.0.1
     - ::1
 
@@ -36,21 +35,21 @@ homeassistant:
 recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
 
-automation:
-  - id: update_config_github_push_event
-    alias: Update Configuration on Github Push Event
+# automation:
+#   - id: update_config_github_push_event
+#     alias: Update Configuration on Github Push Event
 
-    trigger:
-    - platform: webhook
-      webhook_id: !env_var HASS_DEPLOY_CONFIG_WEBHOOK_ID
-      local_only: false
+#     trigger:
+#     - platform: webhook
+#       webhook_id: !env_var HASS_DEPLOY_CONFIG_WEBHOOK_ID
+#       local_only: false
 
-    action:
-    - service: shell_command.deploy_config
-    - service: homeassistant.reload_all
+#     action:
+#     - service: shell_command.deploy_config
+#     - service: homeassistant.reload_all
 
-shell_command:
-  deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
+# shell_command:
+#   deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
 # automation: !include_dir_merge_list automations
 script: !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors

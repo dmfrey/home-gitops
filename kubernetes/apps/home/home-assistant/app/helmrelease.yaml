@@ -62,29 +62,29 @@ spec:
             key: password
       HASS_RECORDER_DB_URL: "postgresql://$(HASS_POSTGRES_USER):$(HASS_POSTGRES_PASS)@pg-home-assistant-rw/home-assistant"
 
-    initContainers:
-      clone-repo:
-        image: alpine/git:latest
-        command:
-          - "/bin/sh"
-          - -c
-          - |
-            cd /config
-            git fetch origin
-            git reset origin/main
+    # initContainers:
+    #   clone-repo:
+    #     image: alpine/git:latest
+    #     command:
+    #       - "/bin/sh"
+    #       - -c
+    #       - |
+    #         cd /config
+    #         git fetch origin
+    #         git reset origin/main
 
-        volumeMounts:
-          - name: deploy-key
-            mountPath: /root/.ssh/id_ed25519
-            subPath: ssh-privatekey
-          - name: deploy-key
-            mountPath: /root/.ssh/known_hosts
-            subPath: known_hosts
-          - name: config
-            mountPath: /config
-          - name: configuration
-            mountPath: /config/configuration.yaml
-            subPath: configuration.yaml
+    #     volumeMounts:
+    #       - name: deploy-key
+    #         mountPath: /root/.ssh/id_ed25519
+    #         subPath: ssh-privatekey
+    #       - name: deploy-key
+    #         mountPath: /root/.ssh/known_hosts
+    #         subPath: known_hosts
+    #       - name: config
+    #         mountPath: /config
+    #       - name: configuration
+    #         mountPath: /config/configuration.yaml
+    #         subPath: configuration.yaml
 
     envFrom:
       - secretRef:
