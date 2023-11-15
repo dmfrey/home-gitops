@@ -151,8 +151,11 @@ spec:
         enabled: true
         type: configMap
         name: hass-config
-        mountPath: /config/configuration.yaml
-        subPath: configuration.yaml
+        subPath:
+          - path: configuration.yaml
+            mountPath: /config/configuration.yaml
+          - path: scenes.yaml
+            mountPath: /config/scenes.yaml            
       backups:
         enabled: true
         type: custom
