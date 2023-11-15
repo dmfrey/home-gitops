@@ -75,7 +75,7 @@ spec:
 
         volumeMounts:
           - name: deploy-key
-            mountPath: /root/.ssh/id_rsa
+            mountPath: /root/.ssh/id_ed25519
             subPath: ssh-privatekey
           - name: deploy-key
             mountPath: /root/.ssh/known_hosts
