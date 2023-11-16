@@ -28,7 +28,7 @@ homeassistant:
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: America/New_York
   country: US
-  packages: !include_dir_named packages
+  # packages: !include_dir_named packages
   external_url: https://home.${EXTERNAL_DOMAIN}
   internal_url: http://${SVC_HASS_ADDR}:8123
 
@@ -50,7 +50,7 @@ recorder:
 
 # shell_command:
 #   deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
-# automation: !include_dir_merge_list automations
+automation: !include_dir_merge_list automations
 script: !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors
 # binary_sensor: !include_dir_merge_list binary_sensors
@@ -58,8 +58,8 @@ sensor: !include_dir_merge_list sensors
 scene: !include scenes.yaml
 group: !include_dir_merge_named groups
 
-frontend:
-  themes: !include_dir_merge_named themes
+# frontend:
+#   themes: !include_dir_merge_named themes
 
 # panel_iframe:
 #   mass:
