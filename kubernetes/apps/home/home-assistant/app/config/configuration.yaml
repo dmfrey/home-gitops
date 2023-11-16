@@ -35,21 +35,21 @@ homeassistant:
 recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
 
-# automation:
-#   - id: update_config_github_push_event
-#     alias: Update Configuration on Github Push Event
+automation:
+  - id: update_config_github_push_event
+    alias: Update Configuration on Github Push Event
 
-#     trigger:
-#     - platform: webhook
-#       webhook_id: !env_var HASS_DEPLOY_CONFIG_WEBHOOK_ID
-#       local_only: false
+    trigger:
+    - platform: webhook
+      webhook_id: !env_var HASS_DEPLOY_CONFIG_WEBHOOK_ID
+      local_only: false
 
-#     action:
-#     - service: shell_command.deploy_config
-#     - service: homeassistant.reload_all
+    action:
+    - service: shell_command.deploy_config
+    - service: homeassistant.reload_all
 
-# shell_command:
-#   deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
+shell_command:
+  deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
 automation: !include_dir_merge_list automations
 script: !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors
@@ -58,8 +58,8 @@ sensor: !include_dir_merge_list sensors
 scene: !include scenes.yaml
 group: !include_dir_merge_named groups
 
-# frontend:
-#   themes: !include_dir_merge_named themes
+frontend:
+  themes: !include_dir_merge_named themes
 
 # panel_iframe:
 #   mass:
