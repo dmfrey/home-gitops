@@ -160,8 +160,8 @@ spec:
         subPath:
           - path: configuration.yaml
             mountPath: /config/configuration.yaml
-          - path: scenes.yaml
-            mountPath: /config/scenes.yaml            
+          # - path: scenes.yaml
+          #   mountPath: /config/scenes.yaml            
       backups:
         enabled: true
         type: custom
