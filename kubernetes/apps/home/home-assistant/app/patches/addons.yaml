@@ -41,5 +41,17 @@ spec:
                 - *host
               secretName: hass-code-tls-external
         volumeMounts:
+          - name: deploy-key
+            mountPath: /root/.ssh/config
+            subPath: config
+          - name: deploy-key
+            mountPath: /root/.ssh/id_ed25519
+            subPath: ssh-privatekey
+          - name: deploy-key
+            mountPath: /root/.ssh/id_ed25519.pub
+            subPath: ssh-publickey
+          - name: deploy-key
+            mountPath: /root/.ssh/known_hosts
+            subPath: known_hosts
           - name: config
             mountPath: /config
