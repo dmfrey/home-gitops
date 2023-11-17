@@ -14,9 +14,10 @@ data:
       keepalive: 60
       version: 5
     serial:
-      port: /dev/ttyUSB0
+      port: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0   # /dev/ttyUSB0
       adapter: ezsp
       baudrate: 115200
+      rtscts: true
     advanced:
       last_seen: ISO_8601
       legacy_api: false
