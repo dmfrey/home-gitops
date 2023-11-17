@@ -98,7 +98,7 @@ spec:
         prefix: "HASS_"
 
     nodeSelector:
-      kubernetes.io/arch: amd64
+      feature.node.kubernetes.io/zigbee: "true"
     
     service:
       main:
@@ -140,7 +140,6 @@ spec:
             bearerTokenSecret:
               name: home-assistant-secret
               key: PROMETHEUS_TOKEN
-
 
     persistence:
       deploy-key:
