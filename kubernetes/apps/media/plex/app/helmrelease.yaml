@@ -28,8 +28,8 @@ spec:
 
     env:
       TZ: "America/New_York"
-      ALLOWED_NETWORKS: "192.168.0.0/16"
-      ADVERTISE_IP: "192.168.0.0/16,172.22.0.0/16"
+      ALLOWED_NETWORKS: "192.168.0.0/16,172.22.0.0/16"
+      ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400,https://plex.${EXTERNAL_DOMAIN}"
 
     envFrom:
       - secretRef:
