@@ -54,8 +54,8 @@ spec:
                 count: 1
                 groups:
                   - usb:
-                    - vendor: EA60
-                      product: 10C4
+                    - vendor: 10c4
+                      product: ea60
             ports:
               - name: http
                 containerPort: &port 8080
