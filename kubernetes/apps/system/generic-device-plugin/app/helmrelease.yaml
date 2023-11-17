@@ -50,12 +50,18 @@ spec:
               #         - path: /dev/rfcomm*
               - --device
               - |
-                name: usb
-                count: 1
+                name: skyconnect
                 groups:
-                  - usb:
-                    - vendor: 10c4
-                      product: ea60
+                  - paths:
+                      - path: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
+              # - --device
+              # - |
+              #   name: usb
+              #   count: 1
+              #   groups:
+              #     - usb:
+              #       - vendor: 10c4
+              #         product: ea60
             ports:
               - name: http
                 containerPort: &port 8080
