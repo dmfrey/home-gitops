@@ -29,6 +29,7 @@ spec:
     env:
       TZ: "America/New_York"
       ALLOWED_NETWORKS: "192.168.0.0/16"
+      ADVERTISE_IP: "192.168.0.0/16,172.22.0.0/16"
 
     envFrom:
       - secretRef:
