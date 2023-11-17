@@ -97,8 +97,8 @@ spec:
           name: home-assistant-secret
         prefix: "HASS_"
 
-    nodeSelector:
-      feature.node.kubernetes.io/zigbee: "true"
+    # nodeSelector:
+    #   feature.node.kubernetes.io/zigbee: "true"
     
     service:
       main:
@@ -190,6 +190,8 @@ spec:
         cpu: 47m
         memory: 1254Mi
       limits:
+        squat.ai/serial: 1
+        squat.ai/skyconnect: 0
         memory: 1254Mi
 
     volumeClaimTemplates:
