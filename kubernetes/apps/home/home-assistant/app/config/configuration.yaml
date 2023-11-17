@@ -50,7 +50,7 @@ automation:
 
 shell_command:
   deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
-automation: !include_dir_merge_list automations
+# automation: !include_dir_merge_list automations
 script: !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors
 # binary_sensor: !include_dir_merge_list binary_sensors
