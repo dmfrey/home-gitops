@@ -51,6 +51,7 @@ spec:
               - --device
               - |
                 name: usb
+                count: 1
                 groups:
                   - usb:
                     - vendor: EA60
