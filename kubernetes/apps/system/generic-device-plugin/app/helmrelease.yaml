@@ -31,7 +31,7 @@ spec:
               tag: latest
             args:
               - --log-level
-              - all
+              - debug
               - --device
               - |
                 name: serial
@@ -48,6 +48,13 @@ spec:
                       - path: /dev/cuaU*
                   - paths:
                       - path: /dev/rfcomm*
+              - --device
+              - |
+                name: usb
+                groups:
+                  - usb:
+                    - vendor: ea60
+                      product: 10c4
             ports:
               - name: http
                 containerPort: &port 8080
