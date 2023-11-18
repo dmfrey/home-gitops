@@ -53,8 +53,8 @@ shell_command:
 # automation: !include_dir_merge_list automations
 script: !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors
-# binary_sensor: !include_dir_merge_list binary_sensors
-# input_boolean: !include_dir_merge_named input_booleans
+binary_sensor: !include_dir_merge_list binary_sensors
+input_boolean: !include_dir_merge_named input_booleans
 scene: !include scenes.yaml
 group: !include_dir_merge_named groups
 
