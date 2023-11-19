@@ -28,7 +28,7 @@ homeassistant:
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: America/New_York
   country: US
-  # packages: !include_dir_named packages
+  packages: !include_dir_named packages
   external_url: https://home.${EXTERNAL_DOMAIN}
   internal_url: http://${SVC_HASS_ADDR}:8123
 
