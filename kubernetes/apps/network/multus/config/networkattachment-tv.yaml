@@ -1,0 +1,28 @@
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: iot-vlan
+  namespace: network
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "tv-vlan",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "master": "eth0.51",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.168.0.0/16", "gw": "10.0.51.1" }
+            ]
+          }
+        }
+      ]
+    }
