@@ -12,7 +12,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-gitops
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -28,7 +28,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-gitops
   wait: true
   dependsOn:
     - name: cluster-apps-multus
