@@ -8,7 +8,7 @@ metadata:
     kyverno.io/ignore: "true"
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:15.4-18
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-4
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   storage:
     size: 10Gi
