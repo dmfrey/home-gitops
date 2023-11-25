@@ -12,7 +12,35 @@ spec:
       "plugins": [
         {
           "type": "macvlan",
-          "master": "enp2s0.50",
+          "master": "enxd6beb99.50",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.0.0.0/8", "gw": "192.168.50.1" }
+            ]
+          }
+        },
+        {
+          "type": "macvlan",
+          "master": "enxd5b7fcb.50",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.0.0.0/8", "gw": "192.168.50.1" }
+            ]
+          }
+        },
+        {
+          "type": "macvlan",
+          "master": "enxd646681.50",
           "mode": "bridge",
           "capabilities": {
             "ips": true
