@@ -113,7 +113,7 @@ nodes:
   #             routeMetric: 4096
   - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
     ipAddress: 192.168.30.31
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
@@ -121,6 +121,8 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
@@ -141,7 +143,7 @@ nodes:
               - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
   - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
     ipAddress: 192.168.30.32
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
@@ -149,6 +151,8 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
