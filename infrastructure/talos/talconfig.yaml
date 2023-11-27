@@ -171,27 +171,13 @@ nodes:
           - vlanId: 50
             addresses:
               - 192.168.50.5/24
-            # routes:
-              # - network: 0.0.0.0/0
-                # gateway: 192.168.50.1
             mtu: 1500
             dhcp: false
-            # dhcpOptions:
-              # ipv4: true
-              # ipv6: false
-              # routeMetric: 4096
           - vlanId: 51
             addresses:
               - 192.168.51.32/24
-            # routes:
-              # - network: 0.0.0.0/0
-                # gateway: 192.168.51.1
             mtu: 1500
             dhcp: false
-            # dhcpOptions:
-              # ipv4: true
-              # ipv6: false
-              # routeMetric: 8192
     patches:
       - |-
         machine:
@@ -206,7 +192,7 @@ nodes:
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
-      - interface: enxc03fd56714ad
+      - interface: eth0   # enxc03fd56714ad
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
@@ -215,12 +201,12 @@ nodes:
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 2048
+              routeMetric: 4096
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 3072
+              routeMetric: 8192
     patches:
       - |-
         machine:
