@@ -45,6 +45,10 @@ spec:
       network:
         provider: host
 
+      mon:
+        allowMultiplePerNode: true
+        count: 3
+        
       mgr:
         modules:
           - name: rook
