@@ -2,7 +2,7 @@
 clusterName: ${CLUSTER_NAME}
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.5.5
+talosVersion: v1.5.4
 kubernetesVersion: 1.28.2
 endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
 
@@ -117,7 +117,7 @@ nodes:
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
-      - interface: enx38f7cdc6139d
+      - interface: eth0 #enx38f7cdc6139d
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
@@ -125,15 +125,29 @@ nodes:
           ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
+            addresses:
+              - 192.168.50.2/24
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 192.168.50.1
             mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 2048
+            dhcp: false
+            # dhcpOptions:
+              # ipv4: true
+              # ipv6: false
+              # routeMetric: 4096
           - vlanId: 51
+            addresses:
+              - 192.168.51.31/24
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 192.168.51.1
             mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 3072
+            dhcp: false
+            # dhcpOptions:
+              # ipv4: true
+              # ipv6: false
+              # routeMetric: 8192
     patches:
       - |-
         machine:
@@ -147,7 +161,7 @@ nodes:
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
-      - interface: enx38f7cdc612bc
+      - interface: eth0 #enx38f7cdc612bc
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
@@ -155,15 +169,29 @@ nodes:
           ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
+            addresses:
+              - 192.168.50.3/24
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 192.168.50.1
             mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 2048
+            dhcp: false
+            # dhcpOptions:
+              # ipv4: true
+              # ipv6: false
+              # routeMetric: 4096
           - vlanId: 51
+            addresses:
+              - 192.168.51.32/24
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 192.168.51.1
             mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 3072
+            dhcp: false
+            # dhcpOptions:
+              # ipv4: true
+              # ipv6: false
+              # routeMetric: 8192
     patches:
       - |-
         machine:
@@ -342,6 +370,8 @@ controlPlane:
         sysctls:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
+          net.ipv6.conf.all.disable_ipv6: "1"
+          net.ipv6.conf.default.disable_ipv6: "1"
 
         time:
           disabled: false
