@@ -115,19 +115,20 @@ spec:
           - name: "dmf-amd-002"
             devices:
               - name: "/dev/nvme0n1"
-          - name: "dmf-rpi-001"
-            devices:
-              - name: "/dev/sda"
-          - name: "dmf-rpi-002"
-            devices:
-              - name: "/dev/sda"
-          - name: "dmf-rpi-003"
-            devices:
-              - name: "/dev/sda"
+          # - name: "dmf-rpi-001"
+          #   devices:
+          #     - name: "/dev/sda"
+          # - name: "dmf-rpi-002"
+          #   devices:
+          #     - name: "/dev/sda"
+          # - name: "dmf-rpi-003"
+          #   devices:
+          #     - name: "/dev/sda"
 
     ingress:
       ingressClassName: external-nginx
       dashboard:
+        ingressClassName: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
