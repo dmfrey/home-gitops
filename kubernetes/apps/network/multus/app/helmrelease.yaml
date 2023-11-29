@@ -39,5 +39,5 @@ spec:
       limits:
         memory: 64M
 
-    # nodeSelector:
-    #   kubernetes.io/arch: arm64
+    nodeSelector:
+      kubernetes.io/arch: amd64
