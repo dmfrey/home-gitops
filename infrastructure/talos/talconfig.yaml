@@ -135,19 +135,19 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        # vlans:
-        #   - vlanId: 50
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       ipv6: false
-        #       routeMetric: 4096
-        #   - vlanId: 51
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       ipv6: false
-        #       routeMetric: 8192
+        vlans:
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              ipv6: false
+              routeMetric: 4096
+          - vlanId: 51
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              ipv6: false
+              routeMetric: 8192
     patches:
       - |-
         machine:
@@ -167,17 +167,17 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        # vlans:
-        #   - vlanId: 50
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       routeMetric: 4096
-        #   - vlanId: 51
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       routeMetric: 8192
+        vlans:
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+          - vlanId: 51
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 8192
     patches:
       - |-
         machine:
@@ -197,17 +197,17 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        # vlans:
-        #   - vlanId: 50
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       routeMetric: 4096
-        #   - vlanId: 51
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       routeMetric: 8192
+        vlans:
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+          - vlanId: 51
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 8192
     patches:
       - |-
         machine:
