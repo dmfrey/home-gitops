@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/network/multus/amd"
+  path: "./kubernetes/apps/network/multus/app"
   postBuild:
     substituteFrom: []
   prune: true
