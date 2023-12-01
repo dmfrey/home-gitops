@@ -240,5 +240,5 @@ spec:
       targetPath: loki.structuredConfig.common.storage.s3.access_key_id
     - kind: Secret
       name: loki-ceph-bucket
-      valuesKey: AWS_ACCESS_KEY_ID
+      valuesKey: AWS_SECRET_ACCESS_KEY
       targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
