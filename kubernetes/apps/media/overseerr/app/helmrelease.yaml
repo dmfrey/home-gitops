@@ -91,7 +91,7 @@ spec:
       metrics:
         ports:
           metrics:
-            port: *metricsPort
+            port: 9850  #*metricsPort
 
     ingress:
       main:
