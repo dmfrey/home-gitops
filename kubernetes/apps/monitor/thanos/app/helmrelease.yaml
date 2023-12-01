@@ -80,6 +80,7 @@ spec:
 
     storegateway:
       enabled: true
+      extraEnvVarsSecret: "thanos-ceph-bucket"
       replicaCount: 3
       resources:
         requests:
