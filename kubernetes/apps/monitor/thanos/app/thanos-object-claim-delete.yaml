@@ -4,5 +4,5 @@ metadata:
   name: thanos-ceph-bucket
   namespace: monitor
 spec:
-  generateBucketName: thanos
+  bucketName: thanos
   storageClassName: ceph-bucket
