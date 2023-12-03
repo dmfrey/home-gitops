@@ -2,7 +2,7 @@
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: iot-vlan
+  name: tv-vlan
   namespace: network
 spec:
   config: |-
@@ -12,7 +12,7 @@ spec:
       "plugins": [
         {
           "type": "macvlan",
-          "master": "eth0.51",
+          "master": "enxd6beb99.51",
           "mode": "bridge",
           "capabilities": {
             "ips": true
@@ -20,7 +20,62 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              { "dst": "192.168.0.0/16", "gw": "10.0.51.1" }
+              { "dst": "192.0.0.0/8", "gw": "192.168.51.1" }
+            ]
+          }
+        },
+        {
+          "type": "macvlan",
+          "master": "enxd5b7fcb.51",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.0.0.0/8", "gw": "192.168.51.1" }
+            ]
+          },
+        {
+          "type": "macvlan",
+          "master": "enxd646681.51",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.0.0.0/8", "gw": "192.168.51.1" }
+            ]
+          }
+        },
+        {
+          "type": "macvlan",
+          "master": "enp2s0.51",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.0.0.0/8", "gw": "192.168.51.1" }
+            ]
+          }
+        },
+        {
+          "type": "macvlan",
+          "master": "eno1.51",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.0.0.0/8", "gw": "192.168.51.1" }
             ]
           }
         }

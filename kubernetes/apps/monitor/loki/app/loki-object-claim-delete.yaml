@@ -4,5 +4,5 @@ metadata:
   name: loki-ceph-bucket
   namespace: monitor
 spec:
-  generateBucketName: loki
+  bucketName: loki
   storageClassName: ceph-bucket

@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: ghcr.io/angelnu/pod-gateway
-      tag: v1.8.1@sha256:690b6365728fe9012ad4cdfca38334992664596513dca187d1b93d2025205776
+      tag: v1.9.0@sha256:eeb60f1910693e24287c7140e6eca781f50c62caded082a290fb33440c9ba229
 
     DNS: 172.16.1.1
 
@@ -127,4 +127,4 @@ spec:
         label: vpn.home.arpa/routed-gateway
       image:
         repository: ghcr.io/angelnu/gateway-admision-controller
-        tag: v3.9.0@sha256:4e169da5af107a9c6c784d3e03c89da07fad45f18358ab5b7177662df12d955a
+        tag: v3.10.0@sha256:a8ed630613de277244dfe203cd11d05905d7eeba8d8c41e399b02ee9a847b2f5

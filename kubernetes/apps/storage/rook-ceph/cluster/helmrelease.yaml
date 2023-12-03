@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.12.8
+      version: v1.12.9
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
@@ -26,21 +26,21 @@ spec:
 
     configOverride: |
       [global]
-      debug ms = 1/5
+      # debug ms = 1/5
       bdev_enable_discard = true
       bdev_async_discard = true
-      [mon]
-      debug mon = 1
-      debug paxos = 1/5
-      debug auth = 2
-      [osd]
-      debug osd = 1/5
-      debug filestore = 1/5
-      debug journal = 1
-      debug monc = 5/20
-      [mds]
-      debug mds = 1
-      debug mds balancer = 1
+      # [mon]
+      # debug mon = 1
+      # debug paxos = 1/5
+      # debug auth = 2
+      # [osd]
+      # debug osd = 1/5
+      # debug filestore = 1/5
+      # debug journal = 1
+      # debug monc = 5/20
+      # [mds]
+      # debug mds = 1
+      # debug mds balancer = 1
     cephClusterSpec:
       network:
         provider: host
@@ -128,6 +128,7 @@ spec:
     ingress:
       ingressClassName: external-nginx
       dashboard:
+        ingressClassName: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"

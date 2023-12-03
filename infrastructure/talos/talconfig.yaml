@@ -3,7 +3,7 @@ clusterName: ${CLUSTER_NAME}
 
 # renovate: datasource=github-releases depName=siderolabs/talos
 talosVersion: v1.5.5
-kubernetesVersion: 1.28.2
+kubernetesVersion: 1.28.3
 endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
 
 allowSchedulingOnMasters: true
@@ -26,6 +26,8 @@ additionalMachineCertSans:
   - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}
 
 nodes:
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
   - hostname: dmf-rpi-001.${INTERNAL_DOMAIN}
     controlPlane: true
     ipAddress: 192.168.30.21
@@ -43,12 +45,18 @@ nodes:
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 2048
+              routeMetric: 4096
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 3072
+              routeMetric: 8192
+    nodeLabels: &controlPlaneLabels
+      plan.upgrade.cattle.io/talos: ""
+      topology.kubernetes.io/region: us-east
+      topology.kubernetes.io/zone: office
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
   - hostname: dmf-rpi-002.${INTERNAL_DOMAIN}
     controlPlane: true
     ipAddress: 192.168.30.22
@@ -59,19 +67,20 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 2048
+              routeMetric: 4096
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 3072
+              routeMetric: 8192
+    nodeLabels: *controlPlaneLabels
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
   - hostname: dmf-rpi-003.${INTERNAL_DOMAIN}
     controlPlane: true
     ipAddress: 192.168.30.23
@@ -89,12 +98,15 @@ nodes:
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 2048
+              routeMetric: 4096
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 3072
+              routeMetric: 8192
+    nodeLabels: *controlPlaneLabels
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
   # - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
   #   disableSearchDomain: true
   #   ipAddress: 192.168.30.13
@@ -111,13 +123,15 @@ nodes:
   #           dhcp: true
   #           dhcpOptions:
   #             routeMetric: 4096
+  
+  # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
   - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
     ipAddress: 192.168.30.31
     controlPlane: false
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
-      - interface: enx38f7cdc6139d
+      - interface: enp2s0   # enx38f7cdc6139d
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
@@ -126,12 +140,14 @@ nodes:
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 2048
+              ipv6: false
+              routeMetric: 4096
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 3072
+              ipv6: false
+              routeMetric: 8192
     patches:
       - |-
         machine:
@@ -139,13 +155,15 @@ nodes:
             extensions:
               - image: ghcr.io/siderolabs/amd-ucode:20230919
               - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
+  
+  # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
   - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
     ipAddress: 192.168.30.32
     controlPlane: false
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
-      - interface: enx38f7cdc612bc
+      - interface: enp2s0   # enx38f7cdc612bc
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
@@ -154,12 +172,12 @@ nodes:
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 2048
+              routeMetric: 4096
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 3072
+              routeMetric: 8192
     patches:
       - |-
         machine:
@@ -168,13 +186,14 @@ nodes:
               - image: ghcr.io/siderolabs/amd-ucode:20230919
               - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
 
+  # Intel NUC /  / 16GB / 256GB SSD / none
   - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
     controlPlane: false
     ipAddress: 192.168.30.41
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
-      - interface: enxc03fd56714ad
+      - interface: eno1   # enxc03fd56714ad
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
@@ -183,12 +202,12 @@ nodes:
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 2048
+              routeMetric: 4096
           - vlanId: 51
             mtu: 1500
             dhcp: true
             dhcpOptions:
-              routeMetric: 3072
+              routeMetric: 8192
     patches:
       - |-
         machine:
@@ -217,8 +236,6 @@ controlPlane:
 
     - |-
       machine:
-        nodeLabels:
-          plan.upgrade.cattle.io/talos: ""
         features:
           kubernetesTalosAPIAccess:
             enabled: true
@@ -247,7 +264,7 @@ controlPlane:
 
         install:
           extensions:
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
+            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
 
         kubelet:
           extraArgs:
@@ -317,7 +334,7 @@ controlPlane:
 
         install:
           extensions:
-            - image: ghcr.io/siderolabs/nut-client:v1.5.4
+            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
 
         kubelet:
           extraArgs:

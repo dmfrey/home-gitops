@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: thanos
-      version: 12.15.0
+      version: 12.16.1
       sourceRef:
         kind: HelmRepository
         name: bitnami
@@ -80,6 +80,7 @@ spec:
 
     storegateway:
       enabled: true
+      extraEnvVarsSecret: "thanos-ceph-bucket"
       replicaCount: 3
       resources:
         requests:

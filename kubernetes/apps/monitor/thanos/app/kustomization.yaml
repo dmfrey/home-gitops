@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: monitor
 resources:
   - ./secret-thanos.sops.yaml
-  # - ./thanos-object-claim-delete.yaml
+  - ./thanos-object-claim-delete.yaml
   - ./helmrelease.yaml
   - ./dashboard
