@@ -6,6 +6,9 @@ metadata:
 
 spec:
 
+  service:
+    type: LoadBalancer
+  
   persistence:
     storageClassName: ceph-block
     storage: 20Gi
