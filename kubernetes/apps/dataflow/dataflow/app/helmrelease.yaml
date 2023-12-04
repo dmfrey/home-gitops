@@ -100,6 +100,9 @@ spec:
         - name: rabbit-dataflow-default-user
           secret:
             secretName: rabbit-dataflow-default-user
+        - name: rabbit-dataflow-erlang-cookie
+          secret:
+            secretName: rabbit-dataflow-erlang-cookie
 
       extraVolumeMounts:
         - name: pg-skipper-app
@@ -107,6 +110,9 @@ spec:
           readOnly: true
         - name: rabbit-dataflow-default-user
           mountPath: /etc/secrets/rabbitmq-cluster
+          readOnly: true
+        - name: rabbit-dataflow-erlang-cookie
+          mountPath: /etc/secrets/rabbitmq-erlang
           readOnly: true
 
     metrics:
@@ -128,6 +134,10 @@ spec:
 
     rabbitmq:
       enabled: false
+      
+      auth:
+        password: ${rabbitmq-cluster.password}
+        erlangCookie: ${rabbitmq-erlang..erlang.cookie}
 
     externalRabbitmq:
       enabled: true
