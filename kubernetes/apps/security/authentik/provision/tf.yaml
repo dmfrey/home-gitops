@@ -40,48 +40,36 @@ spec:
       value: ${EXTERNAL_DOMAIN}
     - name: proxy_applications
       value:
-        Alert-Manager:
-          url: https://alert-manager.${EXTERNAL_DOMAIN}
-          group: Monitor
-        Bazarr:
-          url: https://bazarr.${EXTERNAL_DOMAIN}
-          group: Media
-        Hajimari:
-          url: https://portal.${EXTERNAL_DOMAIN}
-          group: Home Page
-        Hass-Code:
-          url: https://hass-code.${EXTERNAL_DOMAIN}
-          group: Home
-        Hubble:
-          url: https://hubble.${EXTERNAL_DOMAIN}
-          group: Network
-        Lidarr:
-          url: https://lidarr.${EXTERNAL_DOMAIN}
-          group: Media
-        Loki:
-          url: https://loki.${EXTERNAL_DOMAIN}
-          group: Monitor
-        # OctoPrint:
-        #   url: https://octoprint.${EXTERNAL_DOMAIN}
-        #   group: Network
-        Prometheus:
-          url: https://prometheus.${EXTERNAL_DOMAIN}
-          group: Monitor
+        Dataflow:
+          url: https://dataflow.${EXTERNAL_DOMAIN}
+          group: Dataflow
         Prowlarr:
           url: https://prowlarr.${EXTERNAL_DOMAIN}
           group: Download
         RealDebrid-Client:
           url: https://rdt.${EXTERNAL_DOMAIN}
           group: Download
+        Hajimari:
+          url: https://portal.${EXTERNAL_DOMAIN}
+          group: Home Page
+        Hass-Code:
+          url: https://hass-code.${EXTERNAL_DOMAIN}
+          group: Home
+        Zigbee2Mqtt:
+          url: https://zigbee2mqtt.${EXTERNAL_DOMAIN}
+          group: Media
+        Bazarr:
+          url: https://bazarr.${EXTERNAL_DOMAIN}
+          group: Media
+        Lidarr:
+          url: https://lidarr.${EXTERNAL_DOMAIN}
+          group: Media
         Readarr:
           url: https://readarr.${EXTERNAL_DOMAIN}
           group: Media
         Radarr:
           url: https://radarr.${EXTERNAL_DOMAIN}
           group: Media
-        Rook:
-          url: https://rook.${EXTERNAL_DOMAIN}
-          group: Storage
         Sonarr:
           url: https://sonarr.${EXTERNAL_DOMAIN}
           group: Media
@@ -91,12 +79,6 @@ spec:
         Tdarr:
           url: https://tdarr.${EXTERNAL_DOMAIN}
           group: Media
-        Thanos:
-          url: https://thanos.${EXTERNAL_DOMAIN}
-          group: Monitor
-        Unifi:
-          url: https://unifi.${EXTERNAL_DOMAIN}
-          group: Network
         Wizarr:
           url: https://join.${EXTERNAL_DOMAIN}
           group: Media
@@ -105,9 +87,27 @@ spec:
             ^/join
             ^/setup/*
             ^/static/
-        Zigbee2Mqtt:
-          url: https://zigbee2mqtt.${EXTERNAL_DOMAIN}
-          group: Media
+        Alert-Manager:
+          url: https://alert-manager.${EXTERNAL_DOMAIN}
+          group: Monitor
+        Loki:
+          url: https://loki.${EXTERNAL_DOMAIN}
+          group: Monitor
+        Prometheus:
+          url: https://prometheus.${EXTERNAL_DOMAIN}
+          group: Monitor
+        Thanos:
+          url: https://thanos.${EXTERNAL_DOMAIN}
+          group: Monitor
+        Hubble:
+          url: https://hubble.${EXTERNAL_DOMAIN}
+          group: Network
+        Unifi:
+          url: https://unifi.${EXTERNAL_DOMAIN}
+          group: Network
+        Rook:
+          url: https://rook.${EXTERNAL_DOMAIN}
+          group: Storage
     - name: oauth2_applications
       value:
         Grafana:
@@ -135,5 +135,3 @@ spec:
           groups:
             - "${ORGANIZATION}-Admins"
             - "Grafana-Admins"
-
-
