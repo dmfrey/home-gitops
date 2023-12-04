@@ -24,6 +24,8 @@ spec:
         metricsDashboard: grafana.monitor.svc.cluster.local:80
 
       extraEnvVars:
+        - name: SPRING_CONFIG_IMPORT
+          value: configtree:/etc/secrets
         - name: SPRING_DATASOURCE_URL
           valueFrom:
             secretKeyRef:
@@ -67,6 +69,8 @@ spec:
     skipper:
 
       extraEnvVars: 
+        - name: SPRING_CONFIG_IMPORT
+          value: configtree:/etc/secrets
         - name: SPRING_DATASOURCE_URL
           valueFrom:
             secretKeyRef:
@@ -132,6 +136,12 @@ spec:
     mariadb:
       enabled: false
 
+    externalDatabase:
+      dataflow:
+        url: ${postgres.jdbc-url}
+      skipper:
+        url: ${postgres.jdbc-url}
+
     rabbitmq:
       enabled: false
       
@@ -141,3 +151,7 @@ spec:
 
     externalRabbitmq:
       enabled: true
+      host: ${rabbitmq-cluster.host}
+      port: ${rabbitmq-cluster.port}
+      username: ${rabbitmq-cluster.username}
+      password: ${rabbitmq-cluster.password}
