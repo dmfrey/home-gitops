@@ -30,8 +30,6 @@ spec:
               name: pg-dataflow-app
               key: jdbc-url
 
-      extraEnvVarsSecret: pg-dataflow-app
-
       resources:
         limits:
           cpu: "1"
@@ -55,6 +53,16 @@ spec:
         ingressClassName: external-nginx
         hostname: &host dataflow.${EXTERNAL_DOMAIN}
         tls: true
+
+      extraVolumes:
+        - name: pg-dataflow-app
+          secret:
+            secretName: pg-dataflow-app
+
+      extraVolumeMounts:
+        - name: pg-dataflow-app
+          mountPath: /etc/secrets/postgres
+          readOnly: true
 
     skipper:
 
@@ -85,7 +93,21 @@ spec:
               name: rabbit-dataflow-default-user
               key: password
 
-      extraEnvVarsSecret: pg-skipper-app
+      extraVolumes:
+        - name: pg-skipper-app
+          secret:
+            secretName: pg-skipper-app
+        - name: rabbit-dataflow-default-user
+          secret:
+            secretName: rabbit-dataflow-default-user
+
+      extraVolumeMounts:
+        - name: pg-skipper-app
+          mountPath: /etc/secrets/postgres
+          readOnly: true
+        - name: rabbit-dataflow-default-user
+          mountPath: /etc/secrets/rabbitmq
+          readOnly: true
 
     metrics:
       enabled: true
