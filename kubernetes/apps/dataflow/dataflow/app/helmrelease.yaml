@@ -15,6 +15,7 @@ spec:
         name: bitnami
         namespace: flux-system
       interval: 30m
+
   values:
 
     server:
@@ -82,14 +83,22 @@ spec:
               name: rabbit-dataflow-default-user
               key: password
 
+    metrics:
+      enabled: true
+
+      resources:
+        limits:
+          cpu: "100m"
+          memory: 128Mi
+        requests:
+          cpu: "100m"
+          memory: 128Mi
+
+      serviceMonitor:
+        enabled: true
+
     mariadb:
       enabled: false
-
-    # externalDatabase:
-    #   dataflow:
-    #     url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=QvjhDUBO00S8sXX9Ob3Rzg8EOrcXYZDChWh4YXtian87uJaAOUR3pcSbKWBSayyw&user=dataflow   # ${dataflow.jdbcUrl}
-    #   skipper:
-    #     url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=tn22t7FidJdwk22rcaVsf5giPas8DIxOa9mwWvCJCnLxXbObUnZviv1mspsd3tIw&user=skipper      # ${skipper.jdbcUrl}
 
     rabbitmq:
       enabled: false
