@@ -43,10 +43,11 @@ spec:
           hajimari.io/enable: "true"
           # hajimari.io/icon: "simple-icons:homeassistant"
         ingressClassName: external-nginx
-        hosts:
-          - host: &host dataflow.${EXTERNAL_DOMAIN}
-            paths:
-              - path: /
+        hostname: &host dataflow.${EXTERNAL_DOMAIN}
+        # hosts:
+        #   - host: &host dataflow.${EXTERNAL_DOMAIN}
+        #     paths:
+        #       - path: /
         tls: true
           # - hosts:
               # - *host
