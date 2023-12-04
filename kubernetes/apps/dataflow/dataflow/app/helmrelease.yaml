@@ -24,10 +24,10 @@ spec:
 
       resources:
         limits:
-          cpu: 1
+          cpu: "1"
           memory: 1024M
         requests:
-          cpu: 1
+          cpu: "1"
           memory: 1024M
 
       service:
@@ -47,10 +47,10 @@ spec:
           - host: &host dataflow.${EXTERNAL_DOMAIN}
             paths:
               - path: /
-        tls:
-          - hosts:
-              - *host
-            secretName: dataflow-tls-external
+        tls: true
+          # - hosts:
+              # - *host
+            # secretName: dataflow-tls-external
 
     mariadb:
       enabled: false
