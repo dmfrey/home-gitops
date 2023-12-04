@@ -9,27 +9,6 @@ spec:
   service:
     type: ClusterIP
 
-  ingress:
-    main:
-      enabled: true
-      annotations:
-        nginx.org/websocket-services: dataflow-rabbitmq
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        hajimari.io/enable: "true"
-        # hajimari.io/icon: "simple-icons:homeassistant"
-      ingressClassName: external-nginx
-      hosts:
-        - host: &host dataflow-rabbitmq.${EXTERNAL_DOMAIN}
-          paths:
-            - path: /
-              backend:
-                serviceName: rabbit-dataflow
-                servicePort: 15672
-      tls:
-        - hosts:
-            - *host
-          secretName: dataflow-rabbitmq-tls-external
-
   persistence:
     storageClassName: ceph-block
     storage: 20Gi
