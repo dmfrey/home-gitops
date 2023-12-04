@@ -57,11 +57,11 @@ spec:
 
     externalDatabase:
       dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=dnfxVGfWREOa7Ckvf5z7Y6TJfVFaGbMug505AGevaDRL4mVCVBIdMVVJ8ui4thkY&user=dataflow
+        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=FiQHiUa8RYRbhkjchF1ggn2Y5Qz7f9Q4KyxVzGjjki1QIGDQ2xBcOI0paqkYbNfE&user=dataflow
         database: dataflow
         user: dataflow
       skipper:
-        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=BuHtV1rVsEjylP56k484dcG8VnKdSY8ISjdHZSLdayEqzajRsfUY3DHRO2NKQcmM&user=skipper
+        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=PhRcTL87NnnvKdmKCR9RElPaJQFAio4wy9tnRvvOxeRuXu46EK6W4DHwO0YidgeI&user=skipper
         database: skipper
         user: skipper
 
@@ -73,5 +73,5 @@ spec:
 
       host: rabbit-dataflow.dataflow.svc.cluster.local
       port: 5762
-      username: default_user_NpuJXrc04TXbFdFbbpH
+      username: default_user_agG_aZSu2ybddTnOD7_
       existingPasswordSecret: rabbit-dataflow-default-user
