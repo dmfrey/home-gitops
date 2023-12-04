@@ -23,36 +23,11 @@ spec:
         metricsDashboard: grafana.monitor.svc.cluster.local:80
 
       extraEnvVars: &extraEnvVars
-        - name: dataflow.jdbcUrl
+        - name: SPRING_DATASOURCE_URL
           valueFrom:
             secretKeyRef:
               name: pg-dataflow-app
               key: jdbc-url
-        - name: skipper.jdbcUrl
-          valueFrom:
-            secretKeyRef:
-              name: pg-skipper-app
-              key: jdbc-url
-        - name: rabbitmq.host
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: host
-        - name: rabbitmq.port
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: port
-        - name: rabbitmq.username
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: username
-        - name: rabbitmq.password
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: password
 
       resources:
         limits:
@@ -80,24 +55,44 @@ spec:
 
     skipper:
 
-      extraEnvVars: *extraEnvVars
+      extraEnvVars: 
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            secretKeyRef:
+              name: pg-skipper-app
+              key: jdbc-url
+        - name: SPRING_RABBITMQ_HOST
+          valueFrom:
+            secretKeyRef:
+              name: rabbit-dataflow-default-user
+              key: host
+        - name: SPRING_RABBITMQ_PORT
+          valueFrom:
+            secretKeyRef:
+              name: rabbit-dataflow-default-user
+              key: port
+        - name: SPRING_RABBITMQ_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: rabbit-dataflow-default-user
+              key: username
+        - name: SPRING_RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbit-dataflow-default-user
+              key: password
 
     mariadb:
       enabled: false
 
-    externalDatabase:
-      dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=QvjhDUBO00S8sXX9Ob3Rzg8EOrcXYZDChWh4YXtian87uJaAOUR3pcSbKWBSayyw&user=dataflow   # ${dataflow.jdbcUrl}
-      skipper:
-        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=tn22t7FidJdwk22rcaVsf5giPas8DIxOa9mwWvCJCnLxXbObUnZviv1mspsd3tIw&user=skipper      # ${skipper.jdbcUrl}
+    # externalDatabase:
+    #   dataflow:
+    #     url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=QvjhDUBO00S8sXX9Ob3Rzg8EOrcXYZDChWh4YXtian87uJaAOUR3pcSbKWBSayyw&user=dataflow   # ${dataflow.jdbcUrl}
+    #   skipper:
+    #     url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=tn22t7FidJdwk22rcaVsf5giPas8DIxOa9mwWvCJCnLxXbObUnZviv1mspsd3tIw&user=skipper      # ${skipper.jdbcUrl}
 
     rabbitmq:
       enabled: false
 
     externalRabbitmq:
       enabled: true
-
-      host: rabbit-dataflow.dataflow.svc          # ${rabbitmq.host}
-      port: 5672                                  # ${rabbitmq.port}
-      username: default_user_W7v4_AF-3WpglBOuQWN  # ${rabbitmq.username}
-      password: lUItvt1Ipatf_7lCgV77Nn7AZ-cVjHup  # ${rabbitmq.password}
