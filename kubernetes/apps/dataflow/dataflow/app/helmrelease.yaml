@@ -69,7 +69,7 @@ spec:
     rabbitmq:
       enabled: false
 
-    externalRabbit:
+    externalRabbitmq:
       enabled: true
 
       host: rabbit-dataflow.dataflow.svc.cluster.local
