@@ -22,7 +22,7 @@ spec:
       configuration:
         metricsDashboard: grafana.monitor.svc.cluster.local:80
 
-      extraEnvVars:
+      extraEnvVars: &extraEnvVars
         - name: dataflow.jdbcUrl
           valueFrom:
             secretKeyRef:
@@ -77,6 +77,10 @@ spec:
         ingressClassName: external-nginx
         hostname: &host dataflow.${EXTERNAL_DOMAIN}
         tls: true
+
+    skipper:
+
+      extraEnvVars: *extraEnvVars
 
     mariadb:
       enabled: false
