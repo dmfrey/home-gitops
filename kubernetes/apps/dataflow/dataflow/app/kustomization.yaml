@@ -5,5 +5,5 @@ namespace: dataflow
 resources:
   - ./pgcluster.yaml
   - ./rabbitmq-cluster.yaml
-  - ./helmrelease.yaml
+#  - ./helmrelease.yaml
 
