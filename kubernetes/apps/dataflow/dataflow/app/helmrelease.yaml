@@ -23,12 +23,14 @@ spec:
       configuration:
         metricsDashboard: grafana.monitor.svc.cluster.local:80
 
-      extraEnvVars: &extraEnvVars
+      extraEnvVars:
         - name: SPRING_DATASOURCE_URL
           valueFrom:
             secretKeyRef:
               name: pg-dataflow-app
               key: jdbc-url
+
+      extraEnvVarsSecret: pg-dataflow-app
 
       resources:
         limits:
@@ -82,6 +84,8 @@ spec:
             secretKeyRef:
               name: rabbit-dataflow-default-user
               key: password
+
+      extraEnvVarsSecret: pg-skipper-app
 
     metrics:
       enabled: true
