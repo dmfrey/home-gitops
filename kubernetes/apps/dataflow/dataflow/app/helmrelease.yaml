@@ -138,10 +138,8 @@ spec:
 
     externalDatabase:
       dataflow:
-        # url: ${postgres.jdbc-url}
         username: ${postgres.username}
       skipper:
-        # url: ${postgres.jdbc-url}
         username: ${postgres.username}
 
     rabbitmq:
