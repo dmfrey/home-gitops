@@ -26,11 +26,11 @@ spec:
       extraEnvVars:
         - name: SPRING_CONFIG_IMPORT
           value: configtree:/etc/secrets
-        - name: SPRING_DATASOURCE_URL
-          valueFrom:
-            secretKeyRef:
-              name: pg-dataflow-app
-              key: jdbc-url
+        # - name: SPRING_DATASOURCE_URL
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: pg-dataflow-app
+        #       key: jdbc-url
 
       resources:
         limits:
@@ -71,31 +71,31 @@ spec:
       extraEnvVars: 
         - name: SPRING_CONFIG_IMPORT
           value: configtree:/etc/secrets
-        - name: SPRING_DATASOURCE_URL
-          valueFrom:
-            secretKeyRef:
-              name: pg-skipper-app
-              key: jdbc-url
-        - name: SPRING_RABBITMQ_HOST
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: host
-        - name: SPRING_RABBITMQ_PORT
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: port
-        - name: SPRING_RABBITMQ_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: username
-        - name: SPRING_RABBITMQ_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: rabbit-dataflow-default-user
-              key: password
+        # - name: SPRING_DATASOURCE_URL
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: pg-skipper-app
+        #       key: jdbc-url
+        # - name: SPRING_RABBITMQ_HOST
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: rabbit-dataflow-default-user
+        #       key: host
+        # - name: SPRING_RABBITMQ_PORT
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: rabbit-dataflow-default-user
+        #       key: port
+        # - name: SPRING_RABBITMQ_USERNAME
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: rabbit-dataflow-default-user
+        #       key: username
+        # - name: SPRING_RABBITMQ_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: rabbit-dataflow-default-user
+        #       key: password
 
       extraVolumes:
         - name: pg-skipper-app
@@ -113,10 +113,10 @@ spec:
           mountPath: /etc/secrets/postgres
           readOnly: true
         - name: rabbit-dataflow-default-user
-          mountPath: /etc/secrets/rabbitmq-cluster
+          mountPath: /etc/secrets/rabbitmqcluster
           readOnly: true
         - name: rabbit-dataflow-erlang-cookie
-          mountPath: /etc/secrets/rabbitmq-erlang
+          mountPath: /etc/secrets/rabbitmqerlang
           readOnly: true
 
     metrics:
@@ -138,20 +138,22 @@ spec:
 
     externalDatabase:
       dataflow:
-        url: ${postgres.jdbc-url}
+        # url: ${postgres.jdbc-url}
+        username: ${postgres.username}
       skipper:
-        url: ${postgres.jdbc-url}
+        # url: ${postgres.jdbc-url}
+        username: ${postgres.username}
 
     rabbitmq:
       enabled: false
       
       auth:
-        password: ${rabbitmq-cluster.password}
-        erlangCookie: ${rabbitmq-erlang..erlang.cookie}
+        password: ${rabbitmqcluster.password}
+        erlangCookie: ${rabbitmqerlang..erlang.cookie}
 
     externalRabbitmq:
       enabled: true
-      host: ${rabbitmq-cluster.host}
-      port: ${rabbitmq-cluster.port}
-      username: ${rabbitmq-cluster.username}
-      password: ${rabbitmq-cluster.password}
+      host: ${rabbitmqcluster.host}
+      port: ${rabbitmq-luster.port}
+      username: ${rabbitmqcluster.username}
+      password: ${rabbitmqcluster.password}
