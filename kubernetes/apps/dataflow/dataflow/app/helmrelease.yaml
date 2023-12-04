@@ -106,7 +106,7 @@ spec:
           mountPath: /etc/secrets/postgres
           readOnly: true
         - name: rabbit-dataflow-default-user
-          mountPath: /etc/secrets/rabbitmq
+          mountPath: /etc/secrets/rabbitmq-cluster
           readOnly: true
 
     metrics:
