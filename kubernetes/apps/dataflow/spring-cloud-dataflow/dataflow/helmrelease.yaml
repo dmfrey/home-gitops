@@ -122,6 +122,7 @@ spec:
 
     persistence:
       config:
+        enabled: true
         type: configMap
         name: spring-cloud-dataflow-server-config
         globalMounts:
