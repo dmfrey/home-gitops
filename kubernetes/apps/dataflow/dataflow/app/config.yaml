@@ -13,6 +13,8 @@ data:
         url: jdbc:postgresql://$${postgres.host}:$${postgres.port}/$${postgres.dbname}
         username: $${postgres.username}
         password: $${postgres.password}
+    externalDatabase:
+        hibernateDialect: org.hibernate.dialect Class PostgreSQLDialect
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -28,6 +30,8 @@ data:
         url: jdbc:postgresql://$${postgres.host}:$${postgres.port}/$${postgres.dbname}
         username: $${postgres.username}
         password: $${postgres.password}
+    externalDatabase:
+        hibernateDialect: org.hibernate.dialect Class PostgreSQLDialect
     rabbitmq:
       auth:
         password: $${rabbitmqcluster.password}
