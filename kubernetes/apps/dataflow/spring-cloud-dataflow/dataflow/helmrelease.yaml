@@ -126,9 +126,9 @@ spec:
         type: configMap
         name: spring-cloud-dataflow-server-config
         globalMounts:
-          - path: /config/application.properties
+          - path: /config/application.yaml
             readOnly: true
-            subPath: application.properties
+            subPath: application.yaml
       secrets:
         type: secret
         name: pg-dataflow-app
