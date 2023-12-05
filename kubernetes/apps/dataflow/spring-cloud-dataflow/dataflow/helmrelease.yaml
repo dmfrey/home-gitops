@@ -48,7 +48,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: pg-dataflow-app
-                    key: jdbc-url
+                    key: jdbc-uri
             
             probes:
               liveness:
