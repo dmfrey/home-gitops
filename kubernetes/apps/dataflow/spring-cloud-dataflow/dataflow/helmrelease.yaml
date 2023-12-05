@@ -27,7 +27,7 @@ spec:
         supplementalGroups:
           - 65534
 
-  controllers:
+    controllers:
       main:
         type: deployment
         annotations:
