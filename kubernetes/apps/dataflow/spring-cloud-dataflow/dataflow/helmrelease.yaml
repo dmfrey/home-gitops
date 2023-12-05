@@ -127,9 +127,9 @@ spec:
         advancedMounts:
           main:
             main: 
-              - path: /config/application.yaml
+              - path: /config/application.properties
                 readOnly: true
-                subPath: application.yaml
+                subPath: application.properties
       secrets:
         type: secret
         name: pg-dataflow-app

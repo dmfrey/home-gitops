@@ -5,10 +5,8 @@ metadata:
   name: spring-cloud-dataflow-server-config
   namespace: dataflow
 data:
-  application.yaml: |-
-    spring:
-      datasource:
-        driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://${database.host}:${database.port}/${database.dbname}
-        username: ${database.username}
-        password: ${database.password}
+  application.properties: |-
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.datasource.url=jdbc:postgresql://${database.host}:${database.port}/${database.dbname}
+    spring.datasource.username=${database.username}
+    spring.datasource.password=${database.password}
