@@ -2,84 +2,87 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: spring-cloud-dataflow
+  name: dataflow
   namespace: dataflow
 spec:
   interval: 30m
   chart:
     spec:
-      chart: spring-cloud-dataflow
-      version: 25.1.3
+      chart: app-template
+      version: 2.3.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
-        name: bitnami
+        name: bjw-s
         namespace: flux-system
-      interval: 30m
 
   values:
 
-    server:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups:
+          - 65534
 
-      configuration:
-        metricsDashboard: grafana.monitor.svc.cluster.local:80
-
-      resources:
-        limits:
-          cpu: "1"
-          memory: 1024M
-        requests:
-          cpu: "1"
-          memory: 1024M
-
-      service:
-        type: LoadBalancer
-        port: 8080
-
-      ingress:
-        enabled: true
-
+  controllers:
+      main:
+        type: deployment
         annotations:
-          nginx.org/websocket-services: dataflow
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          hajimari.io/enable: "true"
-          # hajimari.io/icon: "simple-icons:"
-        ingressClassName: external-nginx
-        hostname: &host dataflow.${EXTERNAL_DOMAIN}
-        tls: true
+          reloader.stakater.com/auto: "true"
 
-    metrics:
-      enabled: true
+        containers:
+          main:
+            image:
+              repository: docker.io/bitnami/spring-cloud-dataflow
+              tag: 2.11.1-debian-11-r1
+            ports:
+              - name: http
+                containerPort: &port 8080
+            env:
+              - name: SPRING_DATASOURCE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-dataflow-app
+                    key: jdbc-url
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 100m
+                memory: 128Mi
+            securityContext:
+              fsGroup: 1001
+              runAsNonRoot: true
+              runAsUser: 1001
 
-      resources:
-        limits:
-          cpu: "100m"
-          memory: 128Mi
-        requests:
-          cpu: "100m"
-          memory: 128Mi
+    service:
+      main:
+        ports:
+          http:
+            port: *port
 
-      serviceMonitor:
+    ingress:
+      main:
         enabled: true
+        className: external-nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          # hajimari.io/icon: "mdi:alpha-t-box"
+        hosts:
+          - host: &host dataflow.${EXTERNAL_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: dataflow-tls-external
 
-    mariadb:
-      enabled: false
-
-    externalDatabase:
-      dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=9HxgrncRmYIpGnBdxaVDXK7ED4NRvzHREm4Ajht5iHF7xfwRyB5ApkxNFU0H14hl&user=dataflow
-      skipper:
-        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=jtDo0DaFBiAE3Ok50ufgUTcOoKMqeO7ybTTrzca0zerdybCdhFj9blu0PtSNN69v&user=skipper
-    
-    rabbitmq:
-      enabled: false
-      
-      auth:
-        password: -l77Q23VSEn87QTIgw6dTikWnx8NXl3o
-        erlangCookie: 3zZ1f53S24ba-3OogC3hT8hwNtxL2XIF
-
-    externalRabbitmq:
-      enabled: true
-      host: rabbit-dataflow.dataflow.svc
-      port: 5672
-      username: default_user_P_BhFW5H8UAQ27zHvON
-      password: -l77Q23VSEn87QTIgw6dTikWnx8NXl3o
