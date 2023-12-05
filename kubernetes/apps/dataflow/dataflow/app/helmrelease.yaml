@@ -141,7 +141,8 @@ spec:
       #   username: ${postgres.username}
       # skipper:
       #   username: ${postgres.username}
-
+      hibernateDialect: org.hibernate.dialect.PostgreSQLDialect
+    
     rabbitmq:
       enabled: false
       
