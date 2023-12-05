@@ -7,6 +7,6 @@ metadata:
 data:
   application.properties: |-
     spring.datasource.driver-class-name=org.postgresql.Driver
-    spring.datasource.url=jdbc:postgresql://${host}:${port}/${dbname}
-    spring.datasource.username=${username}
-    spring.datasource.password=${password}
+    spring.datasource.url=jdbc:postgresql://$${database.host}:$${database.port}/$${database.dbname}
+    spring.datasource.username=$${database.username}
+    spring.datasource.password=$${database.password}
