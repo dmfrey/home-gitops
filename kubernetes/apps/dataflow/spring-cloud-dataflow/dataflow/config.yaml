@@ -6,7 +6,7 @@ metadata:
   namespace: dataflow
 data:
   application.properties: |-
-    spring.config.import=/etc/secrets
+    spring.config.import=configtree:/etc/secrets
     spring.datasource.driver-class-name=org.postgresql.Driver
     spring.datasource.url=jdbc:postgresql://$${database.host}:$${database.port}/$${database.dbname}
     spring.datasource.username=$${database.username}
