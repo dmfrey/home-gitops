@@ -38,6 +38,9 @@ spec:
       serviceMonitor:
         enabled: true
 
+    waitForBackends:
+      enabled: false
+      
     mariadb:
       enabled: false
 
