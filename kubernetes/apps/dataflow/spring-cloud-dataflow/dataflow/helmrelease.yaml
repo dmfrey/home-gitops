@@ -38,15 +38,36 @@ spec:
             image:
               repository: docker.io/bitnami/spring-cloud-dataflow
               tag: 2.11.1-debian-11-r1
+            
             ports:
               - name: http
                 containerPort: &port 8080
+            
             env:
               - name: SPRING_DATASOURCE_URL
                 valueFrom:
                   secretKeyRef:
                     name: pg-dataflow-app
                     key: jdbc-url
+            
+            probes:
+              liveness:
+                enabled: true
+                initialDelaySeconds: 120
+                timeoutSeconds: 1
+                periodSeconds: 20
+                failureThreshold: 6
+                successThreshold: 1
+              readiness:
+                enabled: true
+                initialDelaySeconds: 120
+                timeoutSeconds: 1
+                periodSeconds: 20
+                failureThreshold: 6
+                successThreshold: 1
+              startup:
+                enabled: false
+
             resources:
               requests:
                 cpu: 100m
@@ -54,6 +75,7 @@ spec:
               limits:
                 cpu: 100m
                 memory: 128Mi
+            
             securityContext:
               fsGroup: 1001
               runAsNonRoot: true
