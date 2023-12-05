@@ -23,6 +23,8 @@ spec:
       configuration:
         metricsDashboard: grafana.monitor.svc.cluster.local:80
 
+      existingConfigmap: spring-cloud-dataflow-server-config
+
       extraEnvVars:
         # - name: SPRING_CONFIG_IMPORT
         #   value: configtree:/etc/secrets
@@ -67,6 +69,8 @@ spec:
           readOnly: true
 
     skipper:
+
+      existingConfigmap: spring-cloud-skipper-server-config
 
       extraEnvVars: 
         # - name: SPRING_CONFIG_IMPORT
@@ -150,8 +154,8 @@ spec:
       #   password: ${rabbitmqcluster.password}
       #   erlangCookie: ${rabbitmqerlang..erlang.cookie}
 
-    # externalRabbitmq:
-    #   enabled: true
+    externalRabbitmq:
+      enabled: true
     #   host: ${rabbitmqcluster.host}
     #   port: ${rabbitmq-luster.port}
     #   username: ${rabbitmqcluster.username}
