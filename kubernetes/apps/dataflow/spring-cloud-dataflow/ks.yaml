@@ -13,9 +13,7 @@ spec:
     name: home-gitops
   wait: true
   postBuild:
-    substituteFrom: 
-      - kind: Secret
-        name: pg-dataflow-app
+    substituteFrom: []
   dependsOn:
     - name: cluster-apps-dataflow-services
 ---

@@ -43,24 +43,24 @@ spec:
               - name: http
                 containerPort: &port 8080
             
-            # env:
-            #   - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-            #     value: org.postgresql.Driver
-            #   - name: SPRING_DATASOURCE_URL
-            #     valueFrom:
-            #       secretKeyRef:
-            #         name: pg-dataflow-app
-            #         key: jdbc-uri
-            #   - name: SPRING_DATASOURCE_USERNAME
-            #     valueFrom:
-            #       secretKeyRef:
-            #         name: pg-dataflow-app
-            #         key: username
-            #   - name: SPRING_DATASOURCE_PASSWORD
-            #     valueFrom:
-            #       secretKeyRef:
-            #         name: pg-dataflow-app
-            #         key: password
+            env:
+              - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+                value: org.postgresql.Driver
+              - name: SPRING_DATASOURCE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-dataflow-app
+                    key: jdbc-uri
+              - name: SPRING_DATASOURCE_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-dataflow-app
+                    key: username
+              - name: SPRING_DATASOURCE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-dataflow-app
+                    key: password
             
             probes:
               liveness:
