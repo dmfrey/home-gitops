@@ -21,14 +21,14 @@ spec:
     server:
 
       configuration:
-        metricsDashboard: grafana.monitor.svc.cluster.local:80
+        metricsDashboard: https://grafana.dmfrey.com:443
 
       resources:
         limits:
           cpu: "1"
-          memory: 1024M
+          memory: 2048M
         requests:
-          cpu: "1"
+          cpu: "0.5"
           memory: 1024M
 
       service:

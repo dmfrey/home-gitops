@@ -8,6 +8,9 @@ data:
   application.yaml: |-
     spring:
       config.import: configtree:/etc/secrets/
+      output:
+        ansi:
+          enabled: NEVER
       datasource:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://$${database.host}:$${database.port}/$${database.dbname}
