@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-cloud-dataflow-server-config
+  namespace: dataflow
+data:
+  application.yaml: |-
+    spring:
+      datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://${database.host}:${database.port}/${database.dbname}
+        username: ${database.username}
+        password: ${database.password}
