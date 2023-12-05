@@ -23,17 +23,6 @@ spec:
       configuration:
         metricsDashboard: grafana.monitor.svc.cluster.local:80
 
-      existingConfigmap: spring-cloud-dataflow-server-config
-
-      extraEnvVars:
-        # - name: SPRING_CONFIG_IMPORT
-        #   value: configtree:/etc/secrets
-        # - name: SPRING_DATASOURCE_URL
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: pg-dataflow-app
-        #       key: jdbc-url
-
       resources:
         limits:
           cpu: "1"
@@ -58,71 +47,6 @@ spec:
         hostname: &host dataflow.${EXTERNAL_DOMAIN}
         tls: true
 
-      extraVolumes:
-        - name: pg-dataflow-app
-          secret:
-            secretName: pg-dataflow-app
-
-      extraVolumeMounts:
-        - name: pg-dataflow-app
-          mountPath: /etc/secrets/postgres
-          readOnly: true
-
-    skipper:
-
-      existingConfigmap: spring-cloud-skipper-server-config
-
-      extraEnvVars: 
-        # - name: SPRING_CONFIG_IMPORT
-        #   value: configtree:/etc/secrets
-        # - name: SPRING_DATASOURCE_URL
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: pg-skipper-app
-        #       key: jdbc-url
-        # - name: SPRING_RABBITMQ_HOST
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: rabbit-dataflow-default-user
-        #       key: host
-        # - name: SPRING_RABBITMQ_PORT
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: rabbit-dataflow-default-user
-        #       key: port
-        # - name: SPRING_RABBITMQ_USERNAME
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: rabbit-dataflow-default-user
-        #       key: username
-        # - name: SPRING_RABBITMQ_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: rabbit-dataflow-default-user
-        #       key: password
-
-      extraVolumes:
-        - name: pg-skipper-app
-          secret:
-            secretName: pg-skipper-app
-        - name: rabbit-dataflow-default-user
-          secret:
-            secretName: rabbit-dataflow-default-user
-        - name: rabbit-dataflow-erlang-cookie
-          secret:
-            secretName: rabbit-dataflow-erlang-cookie
-
-      extraVolumeMounts:
-        - name: pg-skipper-app
-          mountPath: /etc/secrets/postgres
-          readOnly: true
-        - name: rabbit-dataflow-default-user
-          mountPath: /etc/secrets/rabbitmqcluster
-          readOnly: true
-        - name: rabbit-dataflow-erlang-cookie
-          mountPath: /etc/secrets/rabbitmqerlang
-          readOnly: true
-
     metrics:
       enabled: true
 
@@ -141,22 +65,21 @@ spec:
       enabled: false
 
     externalDatabase:
-      # dataflow:
-      #   username: ${postgres.username}
-      # skipper:
-      #   username: ${postgres.username}
-      hibernateDialect: org.hibernate.dialect.PostgreSQLDialect
+      dataflow:
+        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=9HxgrncRmYIpGnBdxaVDXK7ED4NRvzHREm4Ajht5iHF7xfwRyB5ApkxNFU0H14hl&user=dataflow
+      skipper:
+        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=jtDo0DaFBiAE3Ok50ufgUTcOoKMqeO7ybTTrzca0zerdybCdhFj9blu0PtSNN69v&user=skipper
     
     rabbitmq:
       enabled: false
       
-      # auth:
-      #   password: ${rabbitmqcluster.password}
-      #   erlangCookie: ${rabbitmqerlang..erlang.cookie}
+      auth:
+        password: -l77Q23VSEn87QTIgw6dTikWnx8NXl3o
+        erlangCookie: 3zZ1f53S24ba-3OogC3hT8hwNtxL2XIF
 
     externalRabbitmq:
       enabled: true
-    #   host: ${rabbitmqcluster.host}
-    #   port: ${rabbitmq-luster.port}
-    #   username: ${rabbitmqcluster.username}
-    #   password: ${rabbitmqcluster.password}
+      host: rabbit-dataflow.dataflow.svc
+      port: 5672
+      username: default_user_P_BhFW5H8UAQ27zHvON
+      password: -l77Q23VSEn87QTIgw6dTikWnx8NXl3o
