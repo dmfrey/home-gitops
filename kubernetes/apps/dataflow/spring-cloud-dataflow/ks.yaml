@@ -16,7 +16,7 @@ spec:
     provider: sops
   postBuild:
     substituteFrom: 
-      - kind: secret
+      - kind: Secret
         name: pg-dataflow-app
   dependsOn:
     - name: cluster-apps-dataflow-services
