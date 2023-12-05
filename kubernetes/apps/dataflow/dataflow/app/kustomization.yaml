@@ -5,4 +5,3 @@ namespace: dataflow
 resources:
   - ./config.yaml
   - ./helmrelease.yaml
-
