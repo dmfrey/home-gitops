@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-cloud-dataflow-server-config
+  namespace: dataflow
+data:
+  application.yaml: |-
+    spring:
+      config.import: /etc/secrets
+      datasource:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.dbname}
+        username: ${postgres.username}
+        password: ${postgres.password}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-cloud-skipper-server-config
+  namespace: dataflow
+data:
+  application.yaml: |-
+    spring:
+      config.import: /etc/secrets
+      datasource:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.dbname}
+        username: ${postgres.username}
+        password: ${postgres.password}
+    rabbitmq:
+      auth:
+        password: ${rabbitmqcluster.password}
+        erlangCookie: ${rabbitmqerlang..erlang.cookie}
+    externalRabbitmq:
+      enabled: true
+      host: ${rabbitmqcluster.host}
+      port: ${rabbitmq-luster.port}
+      username: ${rabbitmqcluster.username}
+      password: ${rabbitmqcluster.password}
+

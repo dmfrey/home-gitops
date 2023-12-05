@@ -24,8 +24,8 @@ spec:
         metricsDashboard: grafana.monitor.svc.cluster.local:80
 
       extraEnvVars:
-        - name: SPRING_CONFIG_IMPORT
-          value: configtree:/etc/secrets
+        # - name: SPRING_CONFIG_IMPORT
+        #   value: configtree:/etc/secrets
         # - name: SPRING_DATASOURCE_URL
         #   valueFrom:
         #     secretKeyRef:
@@ -69,8 +69,8 @@ spec:
     skipper:
 
       extraEnvVars: 
-        - name: SPRING_CONFIG_IMPORT
-          value: configtree:/etc/secrets
+        # - name: SPRING_CONFIG_IMPORT
+        #   value: configtree:/etc/secrets
         # - name: SPRING_DATASOURCE_URL
         #   valueFrom:
         #     secretKeyRef:
@@ -137,21 +137,21 @@ spec:
       enabled: false
 
     externalDatabase:
-      dataflow:
-        username: ${postgres.username}
-      skipper:
-        username: ${postgres.username}
+      # dataflow:
+      #   username: ${postgres.username}
+      # skipper:
+      #   username: ${postgres.username}
 
     rabbitmq:
       enabled: false
       
-      auth:
-        password: ${rabbitmqcluster.password}
-        erlangCookie: ${rabbitmqerlang..erlang.cookie}
+      # auth:
+      #   password: ${rabbitmqcluster.password}
+      #   erlangCookie: ${rabbitmqerlang..erlang.cookie}
 
-    externalRabbitmq:
-      enabled: true
-      host: ${rabbitmqcluster.host}
-      port: ${rabbitmq-luster.port}
-      username: ${rabbitmqcluster.username}
-      password: ${rabbitmqcluster.password}
+    # externalRabbitmq:
+    #   enabled: true
+    #   host: ${rabbitmqcluster.host}
+    #   port: ${rabbitmq-luster.port}
+    #   username: ${rabbitmqcluster.username}
+    #   password: ${rabbitmqcluster.password}
