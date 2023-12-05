@@ -5,5 +5,5 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./dataflow/ks.yaml
+  - ./spring-cloud-dataflow/ks.yaml
 

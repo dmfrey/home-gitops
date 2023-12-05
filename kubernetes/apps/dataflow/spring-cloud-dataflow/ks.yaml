@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/dataflow/dataflow/app"
+  path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/metrics"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,7 +26,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/dataflow/dataflow/services"
+  path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/services"
   prune: true
   sourceRef:
     kind: GitRepository
