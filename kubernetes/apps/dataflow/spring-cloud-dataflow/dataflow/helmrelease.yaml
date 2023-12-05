@@ -121,15 +121,15 @@ spec:
             secretName: dataflow-tls-external
 
     persistence:
-      config:
-        type: configMap
-        name: spring-cloud-dataflow-server-config
-        advancedMounts:
-          main:
-            main: 
-              - path: /config/application.properties
-                readOnly: true
-                subPath: application.properties
+      # config:
+      #   type: configMap
+      #   name: spring-cloud-dataflow-server-config
+      #   advancedMounts:
+      #     main:
+      #       main: 
+      #         - path: /config/application.properties
+      #           readOnly: true
+      #           subPath: application.properties
       secrets:
         type: secret
         name: pg-dataflow-app
