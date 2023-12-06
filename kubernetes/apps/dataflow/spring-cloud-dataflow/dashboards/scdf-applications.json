@@ -47,7 +47,7 @@
           "rgba(237, 129, 40, 0.89)",
           "#d44a3a"
         ],
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "format": "none",
         "gauge": {
           "maxValue": 100,
@@ -124,7 +124,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 4,
         "gridPos": {
           "h": 5,
@@ -210,7 +210,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 4,
         "gridPos": {
           "h": 5,
@@ -296,7 +296,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 4,
         "gridPos": {
           "h": 5,
@@ -382,7 +382,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 4,
         "gridPos": {
           "h": 5,
@@ -468,7 +468,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 4,
         "gridPos": {
           "h": 5,
@@ -646,7 +646,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -742,7 +742,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -840,7 +840,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -938,7 +938,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -1035,7 +1035,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -1134,7 +1134,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -1233,7 +1233,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -1329,7 +1329,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -1427,7 +1427,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -1525,7 +1525,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -1622,7 +1622,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -1721,7 +1721,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -1820,7 +1820,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -1917,7 +1917,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -2016,7 +2016,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -2115,7 +2115,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -2226,7 +2226,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -2339,7 +2339,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "($application_name)",
         "fill": 1,
         "gridPos": {
@@ -2460,7 +2460,7 @@
             "text": "",
             "value": ""
           },
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "definition": "label_values(stream_name)",
           "hide": 0,
           "includeAll": false,
@@ -2487,7 +2487,7 @@
               "$__all"
             ]
           },
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "definition": "label_values({stream_name=\"$stream_name\"},application_name)",
           "hide": 0,
           "includeAll": true,
@@ -2514,7 +2514,7 @@
               "$__all"
             ]
           },
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "definition": "label_values({stream_name=\"$stream_name\",application_name=~\"$application_name\"},name)",
           "hide": 2,
           "includeAll": true,
@@ -2541,7 +2541,7 @@
               "$__all"
             ]
           },
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "definition": "label_values({application_name=~\"$application_name\",stream_name=~\"$stream_name\"},application_guid)",
           "hide": 0,
           "includeAll": true,
