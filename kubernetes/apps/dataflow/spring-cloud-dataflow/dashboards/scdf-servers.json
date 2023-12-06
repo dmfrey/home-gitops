@@ -3,7 +3,7 @@
       "list": [
         {
           "builtIn": 1,
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "enable": true,
           "hide": true,
           "iconColor": "rgba(0, 211, 255, 1)",
@@ -13,7 +13,7 @@
           "type": "dashboard"
         },
         {
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "enable": true,
           "expr": "resets(process_uptime_seconds{application=\"$application\"}[1m]) > 0",
           "hide": false,
@@ -45,7 +45,7 @@
     "panels": [
       {
         "collapsed": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "gridPos": {
           "h": 1,
           "w": 24,
@@ -58,7 +58,7 @@
         "type": "row"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "The Server's Java virtual machine uptime.",
         "fieldConfig": {
           "defaults": {
@@ -120,7 +120,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "% of heap memory usage.",
         "fieldConfig": {
           "defaults": {
@@ -184,7 +184,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "The % of CPU usage for the Server process.",
         "fieldConfig": {
           "defaults": {
@@ -249,7 +249,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "The number of error level events per minute that made it to the logs .",
         "fieldConfig": {
           "defaults": {
@@ -313,7 +313,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "The number of client HTTP error exceptions per minute.",
         "fieldConfig": {
           "defaults": {
@@ -380,7 +380,7 @@
       },
       {
         "cacheTimeout": null,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "Rate of of log messages emit by the applicaiton",
         "fieldConfig": {
           "defaults": {
@@ -451,7 +451,7 @@
         "type": "bargauge"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {},
@@ -510,7 +510,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "% of non-heap memory usage.",
         "fieldConfig": {
           "defaults": {
@@ -574,7 +574,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "System CPU (%) usage for the Server process.",
         "fieldConfig": {
           "defaults": {
@@ -638,7 +638,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "The number of blocked threads.",
         "fieldConfig": {
           "defaults": {
@@ -698,7 +698,7 @@
         "type": "stat"
       },
       {
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "The number of server HTTP error exceptions per minute.",
         "fieldConfig": {
           "defaults": {
@@ -764,7 +764,7 @@
       },
       {
         "collapsed": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "gridPos": {
           "h": 1,
           "w": 24,
@@ -778,7 +778,7 @@
       },
       {
         "cacheTimeout": null,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "",
         "fieldConfig": {
           "defaults": {
@@ -853,7 +853,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "The request duration within which you have served 95% of requests.",
         "fieldConfig": {
           "defaults": {
@@ -971,7 +971,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -1069,7 +1069,7 @@
       },
       {
         "cacheTimeout": null,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "",
         "fieldConfig": {
           "defaults": {
@@ -1146,7 +1146,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -1240,7 +1240,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -1331,7 +1331,7 @@
       },
       {
         "collapsed": true,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "gridPos": {
           "h": 1,
           "w": 24,
@@ -1341,7 +1341,7 @@
         "id": 11,
         "panels": [
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "he time of the slowest query",
             "fieldConfig": {
               "defaults": {
@@ -1400,7 +1400,7 @@
             "type": "stat"
           },
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "The maximum query time for naturalId queries executed against the database.",
             "fieldConfig": {
               "defaults": {
@@ -1463,7 +1463,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **deletes** - rate of collection deletes.\n* **fetches**  - rate of collection fetches.\n* **loads**  - rate of collection loads.\n* **recreates** - rate of collection recreates.\n* **updates** - rate of collection updates.\n",
             "fieldConfig": {
               "defaults": {
@@ -1597,7 +1597,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "",
             "fieldConfig": {
               "defaults": {
@@ -1704,7 +1704,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "JPA Transactions Rate",
             "fieldConfig": {
               "defaults": {
@@ -1811,7 +1811,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **hit** - rate of timestamps successfully retrieved from cache.\n* **miss** -  rate of of tables for which no update timestamps was not found in cache.\n* **puts** - rate of of timestamps put in cache.",
             "fieldConfig": {
               "defaults": {
@@ -1918,7 +1918,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **total** - rate of the executed queries\n* **max** - the time of the slowest query",
             "fieldConfig": {
               "defaults": {
@@ -2025,7 +2025,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **hit** - rate of cached queries successfully retrieved from cache\n* **miss** - rate of cached queries not found in cache\n* **put** - rate of cacheable queries put in cache",
             "fieldConfig": {
               "defaults": {
@@ -2132,7 +2132,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **hit** - rate of cacheable entities/collections successfully retrieved from the cache\n* **miss** -  rate of cacheable entities/collections not found in the cache and loaded from the database\n* **put** - rate of cacheable entities/collections put in the cache",
             "fieldConfig": {
               "defaults": {
@@ -2239,7 +2239,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "**hit** - rate of cached naturalId lookups successfully retrieved from cache.\n\n**miss** -  rate of cached naturalId lookups not found in cache.\n\n**puts** - rate of cacheable naturalId lookups put in cache.\n\n**query_natural** - rate of of naturalId queries executed against the database.",
             "fieldConfig": {
               "defaults": {
@@ -2355,7 +2355,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **flushes** - rate of flushes executed by sessions (either implicit or explicit).\n* **obtained** -  rate of connections number asked by the sessions. The actual number of connections used may be much smaller depending  whether you use a connection pool or not.",
             "fieldConfig": {
               "defaults": {
@@ -2462,7 +2462,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **prepared** - rate of prepared statements that were acquired.\n* **closed** - rate of prepared statements that were released.",
             "fieldConfig": {
               "defaults": {
@@ -2560,7 +2560,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **deletes** - rate of entity deletes.\n* **inserts** - rate of entity inserts.\n* **fetches** - rate of entity inserts.\n* **loads** - rate of entity loads.\n* **updates** - rate of entity updates.",
             "fieldConfig": {
               "defaults": {
@@ -2695,7 +2695,7 @@
       },
       {
         "collapsed": true,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "gridPos": {
           "h": 1,
           "w": 24,
@@ -2705,7 +2705,7 @@
         "id": 48,
         "panels": [
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "HikariCP Total connections.",
             "fieldConfig": {
               "defaults": {
@@ -2763,7 +2763,7 @@
             "type": "stat"
           },
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "HikariCP Idle Connections",
             "fieldConfig": {
               "defaults": {
@@ -2823,7 +2823,7 @@
             "type": "stat"
           },
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "HikariCP Active Connections",
             "fieldConfig": {
               "defaults": {
@@ -2883,7 +2883,7 @@
             "type": "stat"
           },
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "HikariCP Pending Connections",
             "fieldConfig": {
               "defaults": {
@@ -2943,7 +2943,7 @@
             "type": "stat"
           },
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "HikariCP Max Connections",
             "fieldConfig": {
               "defaults": {
@@ -3003,7 +3003,7 @@
             "type": "stat"
           },
           {
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "HikariCP Min Connections",
             "fieldConfig": {
               "defaults": {
@@ -3067,7 +3067,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "* **acquire** - average connection acquire time per request.\n* **creation** - average connection creation time per request.\n* **usage** - average connection usage time per request.",
             "fieldConfig": {
               "defaults": {
@@ -3185,7 +3185,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "Connection pool, timeout rate",
             "fieldConfig": {
               "defaults": {
@@ -3282,7 +3282,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "ScdfPrometheus",
+            "datasource": "prometheus",
             "description": "",
             "fieldConfig": {
               "defaults": {
@@ -3409,7 +3409,7 @@
       },
       {
         "collapsed": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "gridPos": {
           "h": 1,
           "w": 24,
@@ -3426,7 +3426,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -3563,7 +3563,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -3688,7 +3688,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -3840,7 +3840,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -3939,7 +3939,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -4073,7 +4073,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -4207,7 +4207,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -4342,7 +4342,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -4483,7 +4483,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -4581,7 +4581,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -4690,7 +4690,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -4795,7 +4795,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -4911,7 +4911,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -5029,7 +5029,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -5123,7 +5123,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -5249,7 +5249,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -5366,7 +5366,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -5492,7 +5492,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -5618,7 +5618,7 @@
             "text": "spring-cloud-dataflow-server",
             "value": "spring-cloud-dataflow-server"
           },
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "definition": "label_values(application)",
           "hide": 0,
           "includeAll": false,

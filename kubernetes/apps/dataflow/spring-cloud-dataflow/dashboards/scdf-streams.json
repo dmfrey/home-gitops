@@ -34,7 +34,7 @@
           "rgba(237, 129, 40, 0.89)",
           "#299c46"
         ],
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "decimals": null,
         "description": "Number of  deployed Streams",
         "format": "short",
@@ -116,7 +116,7 @@
           "rgba(237, 129, 40, 0.89)",
           "#d44a3a"
         ],
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "format": "decbytes",
         "gauge": {
           "maxValue": 100,
@@ -196,7 +196,7 @@
           "rgba(237, 129, 40, 0.89)",
           "#d44a3a"
         ],
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "format": "short",
         "gauge": {
           "maxValue": 100,
@@ -272,7 +272,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "Average throughput of the apps in the stream",
         "fill": 1,
         "gridPos": {
@@ -358,7 +358,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "Average throughput of the apps in the stream",
         "fill": 1,
         "gridPos": {
@@ -461,7 +461,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "Average latency of all apps in a stream",
         "fill": 1,
         "gridPos": {
@@ -554,7 +554,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "description": "",
         "fill": 1,
         "gridPos": {
@@ -652,7 +652,7 @@
           "rgba(237, 129, 40, 0.89)",
           "#d44a3a"
         ],
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "decimals": null,
         "description": "Number of active Application Instances",
         "format": "short",
@@ -734,7 +734,7 @@
           "rgba(237, 129, 40, 0.89)",
           "#d44a3a"
         ],
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "format": "percentunit",
         "gauge": {
           "maxValue": 100,
@@ -814,7 +814,7 @@
           "rgba(237, 129, 40, 0.89)",
           "#d44a3a"
         ],
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "format": "short",
         "gauge": {
           "maxValue": 100,
@@ -890,7 +890,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -975,7 +975,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -1060,7 +1060,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -1145,7 +1145,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -1230,7 +1230,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "ScdfPrometheus",
+        "datasource": "prometheus",
         "fill": 1,
         "gridPos": {
           "h": 6,
@@ -1323,7 +1323,7 @@
             "text": "All",
             "value": "$__all"
           },
-          "datasource": "ScdfPrometheus",
+          "datasource": "prometheus",
           "definition": "label_values(stream_name)",
           "hide": 0,
           "includeAll": true,
