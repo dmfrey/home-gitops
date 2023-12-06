@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/dataflow/spring-cloud-gateway/app"
+  path: "./kubernetes/apps/gateway/spring-cloud-gateway/app"
   prune: true
   sourceRef:
     kind: GitRepository
