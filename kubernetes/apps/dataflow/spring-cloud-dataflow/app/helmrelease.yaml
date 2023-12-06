@@ -52,12 +52,14 @@ spec:
 
       resources:
         limits:
-          cpu: "100m"
-          memory: 128Mi
+          cpu: "1.0"
+          memory: 2048Mi
         requests:
-          cpu: "100m"
-          memory: 128Mi
-
+          cpu: "0.5"
+          memory: 1024Mi
+      
+      replicaCount: 3
+      
       serviceMonitor:
         enabled: true
 
