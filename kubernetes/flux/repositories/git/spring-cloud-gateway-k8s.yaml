@@ -1,0 +1,13 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: git-spring-cloud-gateway-k8s
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: git@github.com:dmfrey/spring-cloud-gateway-k8s.git
+  ref:
+    branch: main
+  secretRef:
+    name: github-deploy-key
