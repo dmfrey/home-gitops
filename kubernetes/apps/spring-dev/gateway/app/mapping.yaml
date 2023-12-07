@@ -2,6 +2,7 @@ apiVersion: "tanzu.vmware.com/v1"
 kind: SpringCloudGatewayMapping
 metadata:
   name: spring-dev-gateway-mapping
+  namespace: spring-dev
 spec:
   gatewayRef:
     name: spring-dev-gateway
