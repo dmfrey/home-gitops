@@ -1,0 +1,111 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: time-service
+  namespace: spring-dev
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.3.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups:
+          - 65534
+
+    controllers:
+      main:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/dmfrey/spring-cloud-gateway-k8s/time-service
+              tag: latest
+            
+            ports:
+              - name: http
+                containerPort: &port 8080
+            
+            env:
+              - name: SPRING_PROFILES_ACTIVE
+                value: 'kubernetes'
+            
+            probes:
+              liveness:
+                enabled: true
+                httpGet:
+                  path: /actuator/health
+                  port: *port
+                initialDelaySeconds: 45
+              readiness:
+                enabled: true
+                httpGet:
+                  path: /actuator/health
+                  port: *port
+                initialDelaySeconds: 45
+              startup:
+                enabled: true
+                httpGet:
+                  path: /actuator/health
+                  port: *port
+                failureThreshold: 3
+                timeoutSeconds: 3
+                initialDelaySeconds: 60
+                periodSeconds: 5
+
+            resources:
+              requests:
+                cpu: 0.5
+                memory: 128Mi
+              limits:
+                cpu: 0.5
+                memory: 128Mi
+            
+            securityContext:
+              fsGroup: 1001
+              runAsNonRoot: true
+              runAsUser: 1001
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    # ingress:
+    #   main:
+    #     enabled: true
+    #     className: external-nginx
+    #     annotations:
+    #       cert-manager.io/cluster-issuer: letsencrypt-prod
+    #       auth.home.arpa/enabled: "true"
+    #       hajimari.io/enable: "true"
+    #       # hajimari.io/icon: "mdi:alpha-t-box"
+    #     hosts:
+    #       - host: &host dataflow.${EXTERNAL_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               name: main
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - *host
+    #         secretName: dataflow-tls-external

@@ -6,4 +6,4 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./gateway/ks.yaml
-  # - ./vaultwarden/ks.yaml
+  - ./time-service/ks.yaml
