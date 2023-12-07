@@ -36,8 +36,8 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/dmfrey/spring-cloud-gateway-k8s/time-service
-              tag: latest
+              repository: ghcr.io/dmfrey/time-service
+              tag: 1.0.0
             
             ports:
               - name: http
