@@ -5,3 +5,4 @@ resources:
   - ./gateway-config.yaml
   - ./route-config.yaml
   - ./mapping.yaml
+  - ./ingress.yaml
