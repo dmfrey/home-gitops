@@ -43,6 +43,9 @@ spec:
         Dataflow:
           url: https://dataflow.${EXTERNAL_DOMAIN}
           group: Dataflow
+        Gateway:
+          url: https://spring-dev-gateway.${EXTERNAL_DOMAIN}
+          group: Development
         Prowlarr:
           url: https://prowlarr.${EXTERNAL_DOMAIN}
           group: Download
