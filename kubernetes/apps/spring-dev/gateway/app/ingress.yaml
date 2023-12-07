@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: spring-dev-gateway-ingress
   namespace: spring-dev
-  annotations:
-    kubernetes.io/ingress.class: contour
 spec:
   ingressClassName: internal-nginx
   rules:
