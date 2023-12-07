@@ -24,13 +24,17 @@ metadata:
 spec:
   ingressClassName: external-nginx
   rules:
-    - host: spring-dev-gateway.${EXTERNAL_DOMAIN}
+    - host: &host spring-dev-gateway.${EXTERNAL_DOMAIN}
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: spring-dev-gateway
                 port:
                   number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts: 
+        - *host
+      secretName: spring-dev-gateway-tls-external
