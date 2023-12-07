@@ -1,0 +1,9 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: spring-dev-gateway-routes
+spec:
+  routes:
+    - uri: http://time-service.spring-dev.svc.cluster.local:8080
+      predicates:
+        - Path=/time/**
