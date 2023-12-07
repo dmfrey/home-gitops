@@ -38,6 +38,7 @@ spec:
             image:
               repository: ghcr.io/dmfrey/time-service
               tag: 1.0.0
+              pullPolicy: Always
             
             ports:
               - name: http
@@ -73,10 +74,10 @@ spec:
             resources:
               requests:
                 cpu: 0.5
-                memory: 128Mi
+                memory: 1024Mi
               limits:
-                cpu: 0.5
-                memory: 128Mi
+                cpu: 1.0
+                memory: 1024Mi
             
             securityContext:
               fsGroup: 1001
