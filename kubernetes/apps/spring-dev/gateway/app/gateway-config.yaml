@@ -1,0 +1,6 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGateway
+metadata:
+  name: spring-dev-gateway
+spec:
+  count: 1
