@@ -7,3 +7,9 @@ spec:
   count: 3
   sso:
     secret: spring-dev-gateway-secret
+  observability:
+    metrics:
+      prometheus:
+        enabled: true
+        annotations:
+          enabled: true
