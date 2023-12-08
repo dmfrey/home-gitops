@@ -5,4 +5,3 @@ namespace: gateway
 resources:
   - ./secret-spring-cloud-gateway-image-pull-secret.sops.yaml
   - ./helmrelease.yaml
-  - ./dashboards

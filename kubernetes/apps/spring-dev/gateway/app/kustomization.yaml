@@ -8,3 +8,4 @@ resources:
   - ./route-config.yaml
   - ./mapping.yaml
   - ./ingress.yaml
+  - ./dashboards
