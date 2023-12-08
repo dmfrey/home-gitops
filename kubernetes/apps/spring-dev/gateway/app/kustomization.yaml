@@ -2,6 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ./secret-spring-dev-gateway.sops.yaml
   - ./gateway-config.yaml
   - ./route-config.yaml
   - ./mapping.yaml
