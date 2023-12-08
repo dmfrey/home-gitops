@@ -43,9 +43,6 @@ spec:
         Dataflow:
           url: https://dataflow.${EXTERNAL_DOMAIN}
           group: Dataflow
-        Gateway:
-          url: https://spring-dev-gateway.${EXTERNAL_DOMAIN}
-          group: Development
         Prowlarr:
           url: https://prowlarr.${EXTERNAL_DOMAIN}
           group: Download
@@ -120,6 +117,13 @@ spec:
           client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
           redirect_uris: 
             - https://grafana.${EXTERNAL_DOMAIN}/login/generic_oauth
+        Gateway:
+          url: https://spring-dev-gateway.${EXTERNAL_DOMAIN}
+          group: Development
+          client_id: spring-dev
+          client_secret: ${client-secret}
+          redirect_uris: 
+            - https://spring-dev-gateway.${EXTERNAL_DOMAIN}/login/oauth2/code/sso
     - name: groups
       value:
         ${ORGANIZATION}-Admins:
@@ -130,6 +134,10 @@ spec:
           name: "Grafana Admins"
           superuser: false
           parent: "${ORGANIZATION}-Admins"
+        Developers:
+          name: "Developers"
+          superuser: false
+          parent: "${ORGANIZATION}-Admins"
     - name: users
       value:
         dmfrey:
@@ -138,3 +146,4 @@ spec:
           groups:
             - "${ORGANIZATION}-Admins"
             - "Grafana-Admins"
+            - "Developers"

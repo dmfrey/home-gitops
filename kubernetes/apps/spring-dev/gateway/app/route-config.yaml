@@ -6,5 +6,6 @@ metadata:
 spec:
   routes:
     - uri: http://time-service.spring-dev.svc.cluster.local:8080
+      ssoEnabled: true
       predicates:
         - Path=/time/**

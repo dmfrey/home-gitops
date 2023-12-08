@@ -64,6 +64,8 @@ spec:
     substituteFrom:
       - kind: Secret
         name: grafana-secret
+      - kind: Secret
+        name: spring-dev-gateway-secret
   dependsOn:
     - name: cluster-apps-authentik
     - name: cluster-apps-plex

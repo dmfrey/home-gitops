@@ -4,4 +4,6 @@ metadata:
   name: spring-dev-gateway
   namespace: spring-dev
 spec:
-  count: 1
+  count: 3
+  sso:
+    secret: spring-dev-gateway-secret

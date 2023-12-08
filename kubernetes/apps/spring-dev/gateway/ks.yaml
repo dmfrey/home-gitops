@@ -13,9 +13,4 @@ spec:
     name: home-gitops
   wait: true
   postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: grafana-secret
-  dependsOn:
-    - name: cluster-apps-authentik
-    - name: cluster-apps-plex
+    substituteFrom: []
