@@ -1684,10 +1684,7 @@
     "list": [
       {
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
-        },
+        "datasource": "prometheus",
         "definition": "label_values(spring_cloud_gateway_routes_count, gateway_name)",
         "hide": 0,
         "includeAll": true,
@@ -1707,10 +1704,7 @@
       },
       {
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
-        },
+        "datasource": "prometheus",
         "definition": "label_values(spring_cloud_gateway_routes_count, kubernetes_namespace)",
         "hide": 0,
         "includeAll": true,
