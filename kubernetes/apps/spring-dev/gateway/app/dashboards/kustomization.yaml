@@ -9,6 +9,6 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-    grafana.io/folder: Spring Cloud Gateway for Kubernetes
+    grafana.io/folder: Spring Cloud Gateway
   labels:
     grafana.io/dashboard: "true"
