@@ -1,15 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -52,20 +41,11 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
-        },
+        "datasource": "-- Grafana --",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
@@ -78,10 +58,6 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -129,10 +105,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "spring_cloud_gateway_routes_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}",
           "instant": true,
@@ -152,10 +125,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -200,10 +170,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum (spring_cloud_gateway_requests_seconds_count{outcome=~\"SUCCESSFUL|REDIRECTION\",gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})  * 100",
           "format": "time_series",
@@ -217,10 +184,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -265,10 +229,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum (spring_cloud_gateway_requests_seconds_count{outcome!~\"SUCCESSFUL|REDIRECTION\",gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})  * 100",
           "format": "time_series",
@@ -282,10 +243,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "description": "Rate of requests that were rate limited",
       "fieldConfig": {
         "defaults": {
@@ -336,10 +294,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum (spring_cloud_gateway_requests_seconds_count{status=\"TOO_MANY_REQUESTS\", gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) * 100",
           "instant": false,
@@ -352,10 +307,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -404,10 +356,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum(spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) ",
           "format": "time_series",
@@ -421,10 +370,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -487,10 +433,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum by (httpMethod, path) (spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) /  sum by (httpMethod, path)(spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})",
           "format": "table",
@@ -519,10 +462,7 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -571,10 +511,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "max(spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})",
           "format": "time_series",
@@ -588,10 +525,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -655,10 +589,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "max by (httpMethod,path) (spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})",
           "format": "table",
@@ -687,10 +618,7 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -762,10 +690,7 @@
       "pluginVersion": "8.0.5",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count) ",
           "interval": "",
@@ -777,10 +702,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -852,10 +774,7 @@
       "pluginVersion": "8.0.5",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count) by (path, httpMethod)",
           "interval": "",
@@ -867,10 +786,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -918,10 +834,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count) by (path, httpMethod)",
           "format": "time_series",
@@ -934,10 +847,7 @@
       "type": "bargauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1009,10 +919,7 @@
       "pluginVersion": "8.0.5",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{outcome!~\"SUCCESSFUL|REDIRECTION\"})",
           "interval": "",
@@ -1024,10 +931,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1099,10 +1003,7 @@
       "pluginVersion": "8.0.5",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{outcome!~\"SUCCESSFUL|REDIRECTION\"}) by (path, httpMethod)",
           "interval": "",
@@ -1114,10 +1015,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1165,10 +1063,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{outcome!~\"SUCCESSFUL|REDIRECTION\"}) by (path, httpMethod)",
           "format": "time_series",
@@ -1181,10 +1076,7 @@
       "type": "bargauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1294,10 +1186,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{outcome=~\"SUCCESSFUL|REDIRECTION\", hasAuthenticationFilter=\"true\"}) by (path, httpMethod) ",
           "format": "table",
@@ -1346,10 +1235,7 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1459,10 +1345,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{status=\"FORBIDDEN\"}) by (path, httpMethod) / sum(spring_cloud_gateway_requests_seconds_count) by (path, httpMethod) * 100",
           "format": "table",
@@ -1475,10 +1358,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{status=\"FORBIDDEN\"}) by (path, httpMethod) ",
           "format": "table",
@@ -1523,10 +1403,7 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1636,10 +1513,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{status=\"UNAUTHORIZED\"}) by (path, httpMethod) / sum(spring_cloud_gateway_requests_seconds_count) by (path, httpMethod) * 100",
           "format": "table",
@@ -1652,10 +1526,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum(spring_cloud_gateway_requests_seconds_count{status=\"UNAUTHORIZED\"}) by (path, httpMethod) ",
           "format": "table",
@@ -1700,10 +1571,7 @@
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1766,10 +1634,7 @@
       "pluginVersion": "9.0.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
+          "datasource": "prometheus",
           "exemplar": true,
           "expr": "sum by (name, state) (resilience4j_circuitbreaker_state{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"} > 0)",
           "format": "table",
