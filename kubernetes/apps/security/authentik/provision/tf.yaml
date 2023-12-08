@@ -117,7 +117,7 @@ spec:
           client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
           redirect_uris: 
             - https://grafana.${EXTERNAL_DOMAIN}/login/generic_oauth
-        Gateway:
+        Spring-Dev:
           url: https://spring-dev-gateway.${EXTERNAL_DOMAIN}
           group: Development
           client_id: spring-dev
