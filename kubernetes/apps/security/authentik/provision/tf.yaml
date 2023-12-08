@@ -121,7 +121,7 @@ spec:
           url: https://spring-dev-gateway.${EXTERNAL_DOMAIN}
           group: Development
           client_id: spring-dev
-          client_secret: ${client-secret}
+          client_secret: ${SPRING_DEV_SSO_CLIENT_SECRET}
           redirect_uris: 
             - https://spring-dev-gateway.${EXTERNAL_DOMAIN}/login/oauth2/code/sso
     - name: groups
