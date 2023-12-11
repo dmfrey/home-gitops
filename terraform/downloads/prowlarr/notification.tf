@@ -5,6 +5,7 @@ resource "prowlarr_notification_pushover" "pushover" {
   api_key                   = var.PROWLARR_PUSHOVER_API_KEY
   user_key                  = var.PROWLARR_PUSHOVER_USER_KEY
   priority                  = 2
+  retry                     = 30
 
   on_health_issue           = true
   on_health_restored        = true
