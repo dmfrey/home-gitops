@@ -7,6 +7,6 @@ resource "prowlarr_indexer_proxy_flaresolverr" "flaresolverr" {
   name            = "Flaresolverr"
   request_timeout = 60
   tags = [
-    "flaresolverr"
+    0 = "flaresolverr"
   ]
 }
