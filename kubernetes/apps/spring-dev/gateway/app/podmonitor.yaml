@@ -8,7 +8,11 @@ spec:
   selector:
     matchLabels:
       app: spring-dev-gateway
+      gateway.name: spring-dev-gateway
+  namespaceSelector:
+    matchNames:
+      - spring-dev
   podMetricsEndpoints:
-  - path: /actuator/prometheus
-    targetPort: 8090
-    scheme: http
+    - path: /actuator/prometheus
+      targetPort: 8090
+      scheme: http
