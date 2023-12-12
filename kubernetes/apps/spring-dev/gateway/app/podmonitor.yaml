@@ -10,5 +10,5 @@ spec:
       app: spring-dev-gateway
   podMetricsEndpoints:
   - path: /actuator/prometheus
-    port: "8090"
+    targetPort: 8090
     scheme: http
