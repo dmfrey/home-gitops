@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spring-dev-gateway-metrics
+  namespace: spring-dev
+  labels:
+    app.kubernetes.io/instance: spring-dev-gateway
+    app.kubernetes.io/managed-by: Kustomize
+    app.kubernetes.io/name: spring-dev-gateway
+spec:
+  endpoints:
+  - interval: 10m
+    path: /actuator/prometheus
+    port: 8090
+    scheme: http
+    scrapeTimeout: 2m
+  selector:
+    matchLabels:
+      app.kubernetes.io/service: spring-dev-gateway-metrics
