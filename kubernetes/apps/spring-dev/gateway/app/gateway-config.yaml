@@ -5,8 +5,6 @@ metadata:
   namespace: spring-dev
 spec:
   count: 3
-  service:
-    type: LoadBalancer
   sso:
     secret: spring-dev-gateway-secret
   observability:
