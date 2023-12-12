@@ -6,8 +6,9 @@ resources:
   - ./secret-spring-dev-gateway.sops.yaml
   - ./secret-spring-dev-gateway-authentik.sops.yaml
   - ./gateway-config.yaml
-  - ./metrics-service.yaml
-  - ./metrics-servicemonitor.yaml
+  # - ./metrics-service.yaml
+  # - ./metrics-servicemonitor.yaml
+  - ./podmonitor.yaml
   - ./route-config.yaml
   - ./mapping.yaml
   - ./ingress.yaml

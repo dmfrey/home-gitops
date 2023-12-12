@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: spring-dev-gateway
+  labels:
+    app: spring-dev-gateway
+spec:
+  selector:
+    matchLabels:
+      app: spring-dev-gateway
+  podMetricsEndpoints:
+  - path: /actuator/prometheus
+    port: "8090"
+    scheme: http
+    scrapeTimeout: 2m
