@@ -12,4 +12,3 @@ spec:
   - path: /actuator/prometheus
     port: "8090"
     scheme: http
-    scrapeTimeout: 2m
