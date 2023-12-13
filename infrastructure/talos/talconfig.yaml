@@ -28,83 +28,115 @@ additionalMachineCertSans:
 nodes:
 
   # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
-  - hostname: dmf-rpi-001.${INTERNAL_DOMAIN}
-    controlPlane: true
-    ipAddress: 192.168.30.21
-    installDisk: /dev/mmcblk0
-    disableSearchDomain: true
-    networkInterfaces:
-      - interface: enxd83add4cb8c8
-        dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-        vlans:
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-          - vlanId: 51
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 8192
-    nodeLabels: &controlPlaneLabels
-      plan.upgrade.cattle.io/talos: ""
-      topology.kubernetes.io/region: us-east
-      topology.kubernetes.io/zone: office
+  # - hostname: dmf-rpi-001.${INTERNAL_DOMAIN}
+  #   controlPlane: true
+  #   ipAddress: 192.168.30.21
+  #   installDisk: /dev/mmcblk0
+  #   disableSearchDomain: true
+  #   schematic:
+  #     customization:
+  #       extraKernelArgs:
+  #         - net.ifnames=0
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/nut-client
+  #   networkInterfaces:
+  #     - interface: eth0   # enxd83add4cb8c8
+  #       dhcp: false
+  #       vlans:
+  #         - vlanId: 30
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 1024
+  #           vip:
+  #             ip: ${CLUSTER_ENDPOINT_IP}
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 8192
+  #   nodeLabels: &controlPlaneLabels
+  #     plan.upgrade.cattle.io/talos: ""
+  #     topology.kubernetes.io/region: us-east
+  #     topology.kubernetes.io/zone: office
 
   # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
-  - hostname: dmf-rpi-002.${INTERNAL_DOMAIN}
-    controlPlane: true
-    ipAddress: 192.168.30.22
-    installDisk: /dev/mmcblk0
-    disableSearchDomain: true
-    networkInterfaces:
-      - interface: enxd83add4cb925
-        dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
-        vlans:
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-          - vlanId: 51
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 8192
-    nodeLabels: *controlPlaneLabels
+  # - hostname: dmf-rpi-002.${INTERNAL_DOMAIN}
+  #   controlPlane: true
+  #   ipAddress: 192.168.30.22
+  #   installDisk: /dev/mmcblk0
+  #   disableSearchDomain: true
+  #   schematic:
+  #     customization:
+  #       extraKernelArgs:
+  #         - net.ifnames=0
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/nut-client
+  #   networkInterfaces:
+  #     - interface: eth0   # enxd83add4cb925
+  #       dhcp: false
+  #       vlans:
+  #         - vlanId: 30
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 1024
+  #           vip:
+  #             ip: ${CLUSTER_ENDPOINT_IP}
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 8192
+  #   nodeLabels: *controlPlaneLabels
 
   # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
-  - hostname: dmf-rpi-003.${INTERNAL_DOMAIN}
-    controlPlane: true
-    ipAddress: 192.168.30.23
-    installDisk: /dev/mmcblk0
-    disableSearchDomain: true
-    networkInterfaces:
-      - interface: enxd83add4d7004
-        dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-        vlans:
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-          - vlanId: 51
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 8192
-    nodeLabels: *controlPlaneLabels
+  # - hostname: dmf-rpi-003.${INTERNAL_DOMAIN}
+  #   controlPlane: true
+  #   ipAddress: 192.168.30.23
+  #   installDisk: /dev/mmcblk0
+  #   disableSearchDomain: true
+  #   schematic:
+  #     customization:
+  #       extraKernelArgs:
+  #         - net.ifnames=0
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/nut-client
+  #   networkInterfaces:
+  #     - interface: enxd83add4d7004
+  #       dhcp: false
+  #       vlans:
+  #         - vlanId: 30
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 1024
+  #           vip:
+  #             ip: ${CLUSTER_ENDPOINT_IP}
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 8192
+  #   nodeLabels: *controlPlaneLabels
 
   # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
   # - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
@@ -127,14 +159,28 @@ nodes:
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
   - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
     ipAddress: 192.168.30.31
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/amd-ucode
+            # - siderolabs/amdgpu-firmware
+            - siderolabs/nut-client
     networkInterfaces:
-      - interface: enp2s0   # enx38f7cdc6139d
+      # - interface: eth0   # enp2s0   # enx38f7cdc6139d
+      - deviceSelector:
+          hardwareAddr: "38:f7:cd:*"
+        mtu: 1500
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
@@ -148,25 +194,36 @@ nodes:
             dhcpOptions:
               ipv6: false
               routeMetric: 8192
-    patches:
-      - |-
-        machine:
-          install:
-            extensions:
-              - image: ghcr.io/siderolabs/amd-ucode:20230919
-              - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
-  
+    nodeLabels: &controlPlaneLabels
+      plan.upgrade.cattle.io/talos: ""
+      topology.kubernetes.io/region: us-east
+      topology.kubernetes.io/zone: office
+
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
   - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
     ipAddress: 192.168.30.32
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/amd-ucode
+            # - siderolabs/amdgpu-firmware
+            - siderolabs/nut-client
     networkInterfaces:
-      - interface: enp2s0   # enx38f7cdc612bc
+      # - interface: enp2s0   # enx38f7cdc612bc
+      - deviceSelector:
+          hardwareAddr: "38:f7:cd:*"
+        mtu: 1500
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
@@ -178,25 +235,33 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 8192
-    patches:
-      - |-
-        machine:
-          install:
-            extensions:
-              - image: ghcr.io/siderolabs/amd-ucode:20230919
-              - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
+    nodeLabels: *controlPlaneLabels
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
-  - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
+  - hostname: dmf-amd-003.${INTERNAL_DOMAIN}
     ipAddress: 192.168.30.33
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/amd-ucode
+            # - siderolabs/amdgpu-firmware
+            - siderolabs/nut-client
     networkInterfaces:
-      - interface: enp2s0   # enx38f7cdc612bc
+      # - interface: eth0   # enp2s0   # enx38f7cdc612bc
+      - deviceSelector:
+          hardwareAddr: "38:f7:cd:*"
+        mtu: 1500
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
@@ -208,25 +273,33 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 8192
-    patches:
-      - |-
-        machine:
-          install:
-            extensions:
-              - image: ghcr.io/siderolabs/amd-ucode:20230919
-              - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
+    nodeLabels: *controlPlaneLabels
 
   # Intel NUC /  / 16GB / 256GB SSD / none
   - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
-    controlPlane: false
+    controlPlane: true
     ipAddress: 192.168.30.41
     installDisk: /dev/sda
     disableSearchDomain: true
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+            - siderolabs/i915-ucode
+            - siderolabs/nut-client
     networkInterfaces:
-      - interface: eno1   # enxc03fd56714ad
+      #- interface: # eno1   # enxc03fd56714ad
+      - deviceSelector:
+          hardwareAddr: "c0:3f:d5:67:14:ad"  
+        mtu: 1500
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
           - vlanId: 50
             mtu: 1500
@@ -238,14 +311,7 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 8192
-    patches:
-      - |-
-        machine:
-          install:
-            extensions:
-              - image: ghcr.io/siderolabs/intel-ucode:20230808
-              - image: ghcr.io/siderolabs/i915-ucode:20230919
-              - image: ghcr.io/siderolabs/intel-ice-firmware:20230919
+    nodeLabels: *controlPlaneLabels
 
 controlPlane:
   patches:
@@ -292,9 +358,9 @@ controlPlane:
               MONITOR qnapups@${NAS_SERVER} 1 ${NUT_USER} ${NUT_PASSWORD} slave
               SHUTDOWNCMD "/sbin/poweroff"
 
-        install:
-          extensions:
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
+        # install:
+        #   extensions:
+        #     - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
 
         kubelet:
           extraArgs:
@@ -362,9 +428,9 @@ controlPlane:
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
 
-        install:
-          extensions:
-            - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
+        # install:
+        #   extensions:
+        #     - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
 
         kubelet:
           extraArgs:
