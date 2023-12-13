@@ -11,3 +11,5 @@ spec:
     metrics:
       prometheus:
         enabled: true
+        serviceMonitor:
+          enabled: true

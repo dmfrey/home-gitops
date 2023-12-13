@@ -8,7 +8,7 @@ resources:
   - ./gateway-config.yaml
   # - ./metrics-service.yaml
   # - ./metrics-servicemonitor.yaml
-  - ./podmonitor.yaml
+  # - ./podmonitor.yaml
   - ./route-config.yaml
   - ./mapping.yaml
   - ./ingress.yaml
