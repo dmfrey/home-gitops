@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: arc-home-ops
@@ -39,7 +39,7 @@ spec:
           - name: runner
             image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:e24bb8f3d809b706cd740c47f688dcecbf3886f3ac819d61b7b1f5644a2f091d
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: arc-hass
