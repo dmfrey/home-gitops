@@ -186,6 +186,36 @@ nodes:
               - image: ghcr.io/siderolabs/amd-ucode:20230919
               - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
 
+  # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
+  - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
+    ipAddress: 192.168.30.33
+    controlPlane: false
+    installDisk: /dev/sda
+    disableSearchDomain: true
+    networkInterfaces:
+      - interface: enp2s0   # enx38f7cdc612bc
+        dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
+        vlans:
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+          - vlanId: 51
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 8192
+    patches:
+      - |-
+        machine:
+          install:
+            extensions:
+              - image: ghcr.io/siderolabs/amd-ucode:20230919
+              - image: ghcr.io/siderolabs/amdgpu-firmware:20230919
+
   # Intel NUC /  / 16GB / 256GB SSD / none
   - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
     controlPlane: false
