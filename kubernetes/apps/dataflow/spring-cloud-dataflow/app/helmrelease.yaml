@@ -68,9 +68,9 @@ spec:
 
     externalDatabase:
       dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=9HxgrncRmYIpGnBdxaVDXK7ED4NRvzHREm4Ajht5iHF7xfwRyB5ApkxNFU0H14hl&user=dataflow
+        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=qspKnSGkuDneO9st7fknhNAPUhiR4PZ0wCFtZOq9BHG32dyKVZ7QujR9CTsZ9Mrh&user=dataflow
       skipper:
-        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=jtDo0DaFBiAE3Ok50ufgUTcOoKMqeO7ybTTrzca0zerdybCdhFj9blu0PtSNN69v&user=skipper
+        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=W5VrCniQanEwsAE53qQs8tVofdLXohAoe7mv5y1aKNmvkpAiehg6tVsLwV2rLtI7&user=skipper
     
     rabbitmq:
       enabled: false
