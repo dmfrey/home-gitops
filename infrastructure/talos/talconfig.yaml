@@ -162,38 +162,38 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    schematic:
+    schematic: &schematic
       customization:
-        extraKernelArgs:
-          - net.ifnames=0
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
             # - siderolabs/amdgpu-firmware
             - siderolabs/nut-client
-    networkInterfaces:
-      # - interface: eth0   # enp2s0   # enx38f7cdc6139d
+    networkInterfaces: &networkInterfaces
       - deviceSelector:
           hardwareAddr: "38:f7:cd:*"
         mtu: 1500
         dhcp: true
         dhcpOptions:
+          ipv6: false
           routeMetric: 1024
         vip:
           ip: ${CLUSTER_ENDPOINT_IP}
-        vlans:
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              ipv6: false
-              routeMetric: 4096
-          - vlanId: 51
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              ipv6: false
-              routeMetric: 8192
+        # vlans:
+        #   - vlanId: 30
+        #     mtu: 1500
+        #     dhcp: true
+        #     dhcpOptions:
+        #       ipv6: false
+        #       routeMetric: 1024
+        #     vip:
+        #       ip: ${CLUSTER_ENDPOINT_IP}
+        #   - vlanId: 50
+        #     mtu: 1500
+        #     dhcp: true
+        #     dhcpOptions:
+        #       ipv6: false
+        #       routeMetric: 4096
     nodeLabels: &controlPlaneLabels
       plan.upgrade.cattle.io/talos: ""
       topology.kubernetes.io/region: us-east
@@ -205,36 +205,8 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/amd-ucode
-            # - siderolabs/amdgpu-firmware
-            - siderolabs/nut-client
-    networkInterfaces:
-      # - interface: enp2s0   # enx38f7cdc612bc
-      - deviceSelector:
-          hardwareAddr: "38:f7:cd:*"
-        mtu: 1500
-        dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-        vlans:
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-          - vlanId: 51
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 8192
+    schematic: *schematic
+    networkInterfaces: *networkInterfaces
     nodeLabels: *controlPlaneLabels
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
@@ -243,36 +215,8 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/amd-ucode
-            # - siderolabs/amdgpu-firmware
-            - siderolabs/nut-client
-    networkInterfaces:
-      # - interface: eth0   # enp2s0   # enx38f7cdc612bc
-      - deviceSelector:
-          hardwareAddr: "38:f7:cd:*"
-        mtu: 1500
-        dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-        vlans:
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-          - vlanId: 51
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 8192
+    schematic: *schematic
+    networkInterfaces: *networkInterfaces
     nodeLabels: *controlPlaneLabels
 
   # Intel NUC /  / 16GB / 256GB SSD / none
@@ -283,24 +227,24 @@ nodes:
     disableSearchDomain: true
     schematic:
       customization:
-        extraKernelArgs:
-          - net.ifnames=0
         systemExtensions:
           officialExtensions:
             - siderolabs/intel-ucode
             - siderolabs/i915-ucode
             - siderolabs/nut-client
     networkInterfaces:
-      #- interface: # eno1   # enxc03fd56714ad
       - deviceSelector:
           hardwareAddr: "c0:3f:d5:67:14:ad"  
-        mtu: 1500
-        dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
+        dhcp: false
         vlans:
+          - vlanId: 30
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              ipv6: false
+              routeMetric: 1024
+            vip:
+              ip: ${CLUSTER_ENDPOINT_IP}
           - vlanId: 50
             mtu: 1500
             dhcp: true
@@ -357,76 +301,6 @@ controlPlane:
             content: |-
               MONITOR qnapups@${NAS_SERVER} 1 ${NUT_USER} ${NUT_PASSWORD} slave
               SHUTDOWNCMD "/sbin/poweroff"
-
-        # install:
-        #   extensions:
-        #     - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
-
-        kubelet:
-          extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
-            rotate-server-certificates: "true"
-          extraConfig:
-            maxPods: 250
-          nodeIP:
-            validSubnets:
-              - 192.168.30.0/24
-
-        network:
-          extraHostEntries:
-            - ip: ${CLUSTER_ENDPOINT_IP}
-              aliases:
-                - ${CLUSTER_NAME}.${INTERNAL_DOMAIN}
-
-        sysctls:
-          fs.inotify.max_user_watches: "1048576"
-          fs.inotify.max_user_instances: "8192"
-
-        time:
-          disabled: false
-          servers:
-            - ${NTP_SERVER}
-
-  worker:
-    patches:
-    - |-
-      cluster:
-        proxy:
-          disabled: true
-        etcd:
-          advertisedSubnets:
-            - 192.168.30.0/24
-        # extraManifests:
-        #   - https://raw.githubusercontent.com/dmfrey/home-gitops/main/infrastructure/talos/integrations/cni/cilium.yaml
-        #   - https://raw.githubusercontent.com/dmfrey/home-gitops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
-
-    - |-
-      - op: remove
-        path: /cluster/apiServer/admissionControl
-
-    - |-
-      machine:
-        nodeLabels:
-          plan.upgrade.cattle.io/talos: ""
-        features:
-          kubernetesTalosAPIAccess:
-            enabled: true
-            allowedRoles:
-              - os:admin
-            allowedKubernetesNamespaces:
-              - system
-          kubePrism:
-            enabled: true
-            port: 7445
-
-        files:
-          - op: create
-            path: /etc/cri/conf.d/20-customization.part
-            content: |
-              [plugins]
-                [plugins."io.containerd.grpc.v1.cri"]
-                  enable_unprivileged_ports = true
-                  enable_unprivileged_icmp = true
 
         # install:
         #   extensions:

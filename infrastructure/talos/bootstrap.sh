@@ -15,7 +15,7 @@ talosctl apply-config --insecure -n 192.168.30.41 -f ./clusterconfig/homelab-k8s
 echo "Sleeping..."
 sleep 120
 
-talosctl config node "192.168.30.21"; talosctl config endpoint 192.168.30.21 192.168.30.22 192.168.30.23
+talosctl config node "192.168.30.31"; talosctl config endpoint 192.168.30.31 192.168.30.32 192.168.30.33
 echo "Running bootstrap..."
 talosctl bootstrap
 
