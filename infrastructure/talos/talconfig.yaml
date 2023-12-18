@@ -172,28 +172,25 @@ nodes:
     networkInterfaces: &networkInterfaces
       - deviceSelector:
           hardwareAddr: "38:f7:cd:*"
-        mtu: 1500
-        dhcp: true
-        dhcpOptions:
-          ipv6: false
-          routeMetric: 1024
-        vip:
-          ip: ${CLUSTER_ENDPOINT_IP}
-        # vlans:
-        #   - vlanId: 30
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       ipv6: false
-        #       routeMetric: 1024
-        #     vip:
-        #       ip: ${CLUSTER_ENDPOINT_IP}
-        #   - vlanId: 50
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       ipv6: false
-        #       routeMetric: 4096
+        # mtu: 1500
+        dhcp: false
+        # dhcpOptions:
+          # routeMetric: 1024
+        # vip:
+          # ip: ${CLUSTER_ENDPOINT_IP}
+        vlans:
+          - vlanId: 30
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 1024
+            vip:
+              ip: ${CLUSTER_ENDPOINT_IP}
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
     nodeLabels: &controlPlaneLabels
       plan.upgrade.cattle.io/talos: ""
       topology.kubernetes.io/region: us-east
