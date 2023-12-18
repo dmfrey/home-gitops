@@ -41,11 +41,6 @@ spec:
           "name":"iot-vlan",
           "namespace": "network",
           "ips": ["192.168.50.1/24"]
-        },
-        {
-          "name":"tv-vlan",
-          "namespace": "network",
-          "ips": ["192.168.51.1/24"]
         }]
 
     env:

@@ -4,4 +4,3 @@ kind: Kustomization
 namespace: network
 resources:
   - ./networkattachment-iot.yaml
-  - ./networkattachment-tv.yaml
