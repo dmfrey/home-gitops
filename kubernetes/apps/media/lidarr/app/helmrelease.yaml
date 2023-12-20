@@ -60,7 +60,7 @@ spec:
         volumeMounts:
           - name: config
             mountPath: /config
-            readOnly: true
+            readOnly: false
 
     service:
       main:
