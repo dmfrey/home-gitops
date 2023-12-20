@@ -37,4 +37,4 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-tdarr
-    - name: cluster-apps-intel-device-plugins-gpu
+    # - name: cluster-apps-intel-device-plugins-gpu
