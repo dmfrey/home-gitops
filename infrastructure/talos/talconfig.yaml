@@ -162,9 +162,13 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    schematic: &schematic
+    schematic:
       customization:
-        systemExtensions:
+        extraKernelArgs:
+          - net.ifnames=0 
+          - vlan=eth0.30:eth0
+          - "ip=192.168.30.31::192.168.30.1:255.255.255.0::eth0.30:::::"
+        systemExtensions: &systemExtensions
           officialExtensions:
             - siderolabs/amd-ucode
             # - siderolabs/amdgpu-firmware
@@ -202,7 +206,13 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    schematic: *schematic
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0 
+          - vlan=eth0.30:eth0
+          - "ip=192.168.30.32::192.168.30.1:255.255.255.0::eth0.30:::::"
+        systemExtensions: *systemExtensions
     networkInterfaces: *networkInterfaces
     nodeLabels: *controlPlaneLabels
 
@@ -212,47 +222,53 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    schematic: *schematic
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0 
+          - vlan=eth0.30:eth0
+          - "ip=192.168.30.31::192.168.30.1:255.255.255.0::eth0.30:::::"
+        systemExtensions: *systemExtensions
     networkInterfaces: *networkInterfaces
     nodeLabels: *controlPlaneLabels
 
   # Intel NUC /  / 16GB / 256GB SSD / none
-  - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
-    controlPlane: true
-    ipAddress: 192.168.30.41
-    installDisk: /dev/sda
-    disableSearchDomain: true
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/intel-ucode
-            - siderolabs/i915-ucode
-            - siderolabs/nut-client
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "c0:3f:d5:67:14:ad"  
-        dhcp: false
-        vlans:
-          - vlanId: 30
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              ipv6: false
-              routeMetric: 1024
-            vip:
-              ip: ${CLUSTER_ENDPOINT_IP}
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-          - vlanId: 51
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 8192
-    nodeLabels: *controlPlaneLabels
+  # - hostname: dmf-nuc-001.${INTERNAL_DOMAIN}
+  #   controlPlane: true
+  #   ipAddress: 192.168.30.41
+  #   installDisk: /dev/sda
+  #   disableSearchDomain: true
+  #   schematic:
+  #     customization:
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/intel-ucode
+  #           - siderolabs/i915-ucode
+  #           - siderolabs/nut-client
+  #   networkInterfaces:
+  #     - deviceSelector:
+  #         hardwareAddr: "c0:3f:d5:67:14:ad"  
+  #       dhcp: false
+  #       vlans:
+  #         - vlanId: 30
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             ipv6: false
+  #             routeMetric: 1024
+  #           vip:
+  #             ip: ${CLUSTER_ENDPOINT_IP}
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 8192
+  #   nodeLabels: *controlPlaneLabels
 
 controlPlane:
   patches:
