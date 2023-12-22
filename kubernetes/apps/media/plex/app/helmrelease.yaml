@@ -60,7 +60,6 @@ spec:
       supplementalGroups:
       - 39
       - 44
-      - 109
       - 100
       - 1000
       - 65534
