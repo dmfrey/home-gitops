@@ -62,36 +62,36 @@ spec:
           - name: config
             mountPath: /config
 
-    # sidecars:
-    #   exporter:
-    #     name: exporter
-    #     image: ghcr.io/willfantom/overseerr-exporter:1.2.1
-    #     args:
-    #       - --overseerr.address
-    #       - "http://localhost:5055"
-    #       - --overseerr.api-key
-    #       - "$(OVERSEERR_API_KEY)"
-    #     envFrom:
-    #       - secretRef:
-    #           name: overseerr-secret
+    sidecars:
+      exporter:
+        name: exporter
+        image: ghcr.io/willfantom/overseerr-exporter:1.2.1
+        args:
+          - --overseerr.address
+          - "http://localhost:5055"
+          - --overseerr.api-key
+          - "$(OVERSEERR_API_KEY)"
+        envFrom:
+          - secretRef:
+              name: overseerr-secret
 
-    #     ports:
-    #       - name: metrics
-    #         containerPort: &metricsPort 9850
-    #     volumeMounts:
-    #       - name: config
-    #         mountPath: /config
-    #         readOnly: true
+        ports:
+          - name: metrics
+            containerPort: &metricsPort 9850
+        volumeMounts:
+          - name: config
+            mountPath: /config
+            readOnly: true
 
     service:
       main:
         ports:
           http:
             port: *port
-      # metrics:
-      #   ports:
-      #     metrics:
-      #       port: *metricsPort
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
 
     ingress:
       main:
