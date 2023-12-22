@@ -88,10 +88,10 @@ spec:
         ports:
           http:
             port: *port
-      metrics:
-        ports:
-          metrics:
-            port: *metricsPort
+      # metrics:
+      #   ports:
+      #     metrics:
+      #       port: *metricsPort
 
     ingress:
       main:
