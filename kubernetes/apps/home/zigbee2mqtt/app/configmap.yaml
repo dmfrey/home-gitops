@@ -16,9 +16,9 @@ data:
     serial:
       # port: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0   # /dev/ttyUSB0
       port: /dev/ttyUSB0
-      adapter: ezsp
+      adapter: null # ezsp
       baudrate: 115200
-      rtscts: true
+      rtscts: false
     advanced:
       last_seen: ISO_8601
       legacy_api: false
