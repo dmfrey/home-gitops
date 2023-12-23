@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,18 +10,29 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.0.3
-      interval: 30m
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: mosquitto
+      namespace: default
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: storage
   
   values:
-
-    defaultPodOptions:
-      podSecurityContext:
-        privileged: true
 
     controllers:
       main:
@@ -44,7 +56,7 @@ spec:
               tag: 1.34.0
             env:
               # DEBUG: zigbee-herdsman*
-              TZ: "American/New York"
+              TZ: "American/New_York"
               ZIGBEE2MQTT_DATA: /data
               ZIGBEE2MQTT_CONFIG_MQTT_USER:
                 valueFrom:
@@ -78,9 +90,16 @@ spec:
                 enabled: true
               startup:
                 enabled: false
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
 
-    nodeSelector:
-      feature.node.kubernetes.io/usb-ff_10c4_ea60.present=true
+    # nodeSelector:
+    #   feature.node.kubernetes.io/usb-ff_10c4_ea60.present=true
 
     service:
       main:
@@ -119,10 +138,8 @@ spec:
         enabled: true
         type: configMap
         name: zigbee2mqtt-config
-        advancedMounts:
-          main:
-            main:
-              - path: /data/configuration.yaml
-                subPath: configuration.yaml
-                readOnly: false
+        globalMounts:
+          - path: /data/configuration.yaml
+            subPath: configuration.yaml
+            readOnly: false
 
