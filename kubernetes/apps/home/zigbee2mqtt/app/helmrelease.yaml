@@ -93,17 +93,17 @@ spec:
         pod:
           securityContext:
             privileged: true
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+            # runAsUser: 568
+            # runAsGroup: 568
+            # runAsNonRoot: true
+            # fsGroup: 568
+            # fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
               - 5     # tty
               - 14    # uucp
               - 20    # dialout
               - 65534 # nobody
-              
+
     nodeSelector:
       feature.node.kubernetes.io/usb-ff_10c4_ea60.present=true
 
