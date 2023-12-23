@@ -149,9 +149,9 @@ spec:
             subPath: configuration.yaml
             readOnly: false
 
-      usb:
+      skyconnect:
         enabled: true
         type: hostPath
-        # hostPath: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
-        hostPath: /dev
-        hostPathType: Directory
+        hostPath: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
+        # hostPath: /dev
+        hostPathType: CharDevice
