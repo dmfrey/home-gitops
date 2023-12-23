@@ -26,9 +26,9 @@ spec:
     keepHistory: false
   dependsOn:
     - name: mosquitto
-      namespace: default
+      namespace: home
     - name: rook-ceph-cluster
-      namespace: rook-ceph
+      namespace: storage
     - name: volsync
       namespace: storage
   
