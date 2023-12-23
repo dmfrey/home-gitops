@@ -1,22 +1,22 @@
 ---
+# yaml-language-server: $schema=http://kubernetes-schemas.prymal.info/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: amd-gpu-node-labeller
   namespace: system
 spec:
-  interval: 35m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -28,29 +28,58 @@ spec:
   dependsOn:
     - name: amd-device-plugin
       namespace: system
+  
   values:
-    controller:
-      type: daemonset
-    image:
-      repository: docker.io/rocm/k8s-device-plugin
-      tag: labeller-1.25.2.3@sha256:73eef8e85970897ddda1ae474790e77018382858c324ca6747f391c9ef643319
-      pullPolicy: IfNotPresent
-    command: ["/root/k8s-node-labeller"]
-    args: ["-vram", "-cu-count", "-simd-count", "-device-id", "-family"]
-    env:
-      TZ: ${TIMEZONE}
-      DS_NODE_NAME:
-        valueFrom:
-          fieldRef:
-            fieldPath: spec.nodeName
+    defaultPodOptions:
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+      nodeSelector:
+        feature.node.kubernetes.io/pci-0300_1002.present: "true"
+        kubernetes.io/arch: amd64
+      priorityClassName: system-node-critical
+    controllers:
+      
+      main:
+        type: daemonset
+        
+        containers:
+          main:
+            image:
+              repository: docker.io/rocm/k8s-device-plugin
+              tag: labeller-1.25.2.5@sha256:cd0decbe8e44ff8906fe9c3163b1ae102bcffc23e85edd6213f393beaa8ad78e
+            workingDir: /root
+            command: ["/root/k8s-node-labeller"]
+            args:
+              [
+                "-logtostderr=true",
+                "-stderrthreshold=INFO",
+                "-v=5",
+                "-vram",
+                "-cu-count",
+                "-simd-count",
+                "-device-id",
+                "-family",
+              ]
+            env:
+              TZ: America/New_York
+              DS_NODE_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+            resources:
+              requests:
+                cpu: 25m
+                memory: 10Mi
+              limits:
+                memory: 100Mi
+            securityContext:
+              privileged: true
+              capabilities:
+                drop: ["ALL"]
     serviceAccount:
       create: false
       name: amd-gpu-node-labeller
-    securityContext:
-      privileged: true
-      capabilities:
-        drop: ["ALL"]
-    priorityClassName: system-node-critical
     service:
       main:
         enabled: false
@@ -63,15 +92,3 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /dev
-    tolerations:
-      - key: CriticalAddonsOnly
-        operator: Exists
-    nodeSelector:
-      feature.node.kubernetes.io/pci-0300_1002.present: "true"
-      kubernetes.io/arch: amd64
-    resources:
-      requests:
-        cpu: 10m
-        memory: 10Mi
-      limits:
-        memory: 100Mi
