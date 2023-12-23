@@ -20,7 +20,7 @@ spec:
 
     defaultPodOptions:
       podSecurityContext:
-        # privileged: true
+        privileged: true
         runAsUser: 568
         runAsGroup: 568
         fsGroup: 568
