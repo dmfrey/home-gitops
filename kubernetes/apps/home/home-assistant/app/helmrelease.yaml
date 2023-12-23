@@ -40,7 +40,7 @@ spec:
         [{
           "name":"iot-vlan",
           "namespace": "network",
-          "ips": ["192.168.50.1/24"]
+          "ips": ["192.168.50.4/24"]
         }]
 
     env:
