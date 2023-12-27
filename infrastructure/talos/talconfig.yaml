@@ -182,19 +182,12 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 1024
-            routes:
-              - network: 0.0.0.0/0
-                gateway: 192.168.30.1
             vip:
               ip: ${CLUSTER_ENDPOINT_IP}
           - vlanId: 50
-            # mtu: 1500
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-            # routes:
-              # - network: 0.0.0.0/0
-                # gateway: 192.168.50.1
     nodeLabels: &controlPlaneLabels
       plan.upgrade.cattle.io/talos: ""
       topology.kubernetes.io/region: us-east
