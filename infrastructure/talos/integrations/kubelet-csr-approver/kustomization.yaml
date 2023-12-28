@@ -1,8 +1,19 @@
----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: system
 
-resources:
-  - ../../../../kubernetes/apps/system/namespace.yaml
-  - ./app
+helmCharts:
+- includeCRDs: true
+  name: kubelet-csr-approver
+  namespace: system
+  releaseName: kubelet-csr-approver
+  repo: https://postfinance.github.io/kubelet-csr-approver
+  valuesFile: values.yaml
+  version: 1.0.6
+
+commonAnnotations:
+  meta.helm.sh/release-name: kubelet-csr-approver
+  meta.helm.sh/release-namespace: system
+labels:
+- includeSelectors: true
+  pairs:
+    app.kubernetes.io/managed-by: Helm
