@@ -104,20 +104,10 @@ spec:
                 containerPort: &metricsPort 9000
             resources:
               requests:
-                cpu: 8m
-                memory: 178Mi
+                cpu: 10m
+                memory: 512Mi
               limits:
-                # squat.ai/skyconnect: 1
-                memory: 256Mi
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #     type: HTTP
-            #   readiness:
-            #     enabled: true
-            #     type: HTTP
-            #   startup:
-            #     enabled: false
+                memory: 512Mi
         pod:
           securityContext:
             privileged: true
