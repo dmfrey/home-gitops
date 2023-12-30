@@ -141,15 +141,15 @@ spec:
               - *host
             secretName: zigbee2mqtt-tls-external
 
-    persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: zigbee2mqtt-config
-        globalMounts:
-          - path: /data/configuration.yaml
-            subPath: configuration.yaml
-            readOnly: false
+    # persistence:
+    #   config:
+    #     enabled: true
+    #     type: configMap
+    #     name: zigbee2mqtt-config
+    #     globalMounts:
+    #       - path: /data/configuration.yaml
+    #         subPath: configuration.yaml
+    #         readOnly: false
 
       # skyconnect:
       #   enabled: true
