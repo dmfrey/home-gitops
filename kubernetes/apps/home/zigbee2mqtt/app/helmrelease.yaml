@@ -83,7 +83,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto.home.svc.cluster.local:1883"
               ZIGBEE2MQTT_CONFIG_MQTT_VERSION: "5"
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.30.131:6638 # tcp://192.168.50.171:6638
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.50.171:6638
               ZIGBEE2MQTT_CONFIG_MQTT_USER:
                 valueFrom:
                   secretKeyRef:
@@ -109,6 +109,13 @@ spec:
               limits:
                 memory: 512Mi
         pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.5/24"]
+              }]
           securityContext:
             privileged: true
             runAsUser: 568
