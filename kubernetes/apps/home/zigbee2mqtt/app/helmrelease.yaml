@@ -69,6 +69,8 @@ spec:
                     name: mosquitto-secret
                     key: ZIGBEE2MQTT_MQTT_PASS
             envFrom:
+              - configMapRef:
+                  name: zigbee2mqtt-config
               - secretRef:
                   name: zigbee2mqtt-secret
             ports:
@@ -104,8 +106,8 @@ spec:
               - 20    # dialout
               - 65534 # nobody
 
-    nodeSelector:
-      feature.node.kubernetes.io/usb-ff_10c4_ea60.present=true
+    # nodeSelector:
+    #   feature.node.kubernetes.io/usb-ff_10c4_ea60.present=true
 
     service:
       main:

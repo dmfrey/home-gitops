@@ -4,48 +4,30 @@ metadata:
   name: zigbee2mqtt-config
   namespace: home
 data:
-  configuration.yaml: |-
-    permit_join: false
-    mqtt:
-      server: mqtt://mosquitto.home.svc.cluster.local:1883
-      base_topic: zigbee2mqtt
-      reject_unauthorized: true
-      include_device_information: true
-      keepalive: 60
-      version: 5
-    serial:
-      port: tcp://192.168.50.171:6638
-      # port: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0   # /dev/ttyUSB0
-      # port: /dev/ttyUSB0
-      # adapter: ezsp
-      baudrate: 115200
-      rtscts: false
-    advanced:
-      last_seen: ISO_8601
-      legacy_api: false
-      legacy_availability_payload: false
-      log_level: info
-      log_output:
-        - console
-    availability:
-      active:
-        timeout: 60
-      passive:
-        timeout: 2000
-    device_options:
-      legacy: false
-      retain: true
-    homeassistant:
-      discovery_topic: homeassistant
-      status_topic: homeassistant/status
-      legacy_entity_attributes: false
-      legacy_triggers: false
-    frontend:
-      port: 8080
-      url: 'https://zigbee2mqtt.${EXTERNAL_DOMAIN}'
-    experimental:
-      new_api: true
-
-
-# ls -la /dev/serial/by-id/
-# ls -la /dev
+  ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
+  ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: "false"
+  ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_TRIGGERS: "false"
+  ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
+  ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
+  ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"
+  ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: "false"
+  ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
+  ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
+  ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: "60"
+  ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: "2000"
+  ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: "false"
+  ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+  ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
+  ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: "8080"
+  ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee2mqtt.${EXTERNAL_DOMAIN}
+  ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
+  ZIGBEE2MQTT_CONFIG_MQTT_BASE_TOPIC: zigbee2mqtt
+  ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
+  ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: "60"
+  ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
+  ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto.home.svc.cluster.local:1883"
+  ZIGBEE2MQTT_CONFIG_MQTT_VERSION: "5"
+  ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
+  ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.50.171:6638
+  # ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: "57600"
+  # ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zigbee2mqtt-config
+  namespace: home
+data:
+  configuration.yaml: |-
+    permit_join: false
+    mqtt:
+      server: mqtt://mosquitto.home.svc.cluster.local:1883
+      base_topic: zigbee2mqtt
+      reject_unauthorized: true
+      include_device_information: true
+      keepalive: 60
+      version: 5
+    serial:
+      port: tcp://192.168.50.171:6638
+      # port: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0   # /dev/ttyUSB0
+      # port: /dev/ttyUSB0
+      # adapter: ezsp
+      baudrate: 115200
+      rtscts: false
+    advanced:
+      last_seen: ISO_8601
+      legacy_api: false
+      legacy_availability_payload: false
+      log_level: info
+      log_output:
+        - console
+    availability:
+      active:
+        timeout: 60
+      passive:
+        timeout: 2000
+    device_options:
+      legacy: false
+      retain: true
+    homeassistant:
+      discovery_topic: homeassistant
+      status_topic: homeassistant/status
+      legacy_entity_attributes: false
+      legacy_triggers: false
+    frontend:
+      port: 8080
+      url: 'https://zigbee2mqtt.${EXTERNAL_DOMAIN}'
+    experimental:
+      new_api: true
+
+
+# ls -la /dev/serial/by-id/
+# ls -la /dev
