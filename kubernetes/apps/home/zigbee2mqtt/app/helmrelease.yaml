@@ -109,13 +109,15 @@ spec:
               limits:
                 # squat.ai/skyconnect: 1
                 memory: 256Mi
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: false
+            # probes:
+            #   liveness:
+            #     enabled: true
+            #     type: HTTP
+            #   readiness:
+            #     enabled: true
+            #     type: HTTP
+            #   startup:
+            #     enabled: false
         pod:
           securityContext:
             privileged: true
