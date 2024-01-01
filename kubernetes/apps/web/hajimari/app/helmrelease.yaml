@@ -24,6 +24,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  
   values:
     env:
       TZ: America/New_York
@@ -45,15 +46,18 @@ spec:
       defaultEnable: false
       namespaceSelector:
         matchNames:
+          - dataflow
           - download
           - flux-system
+          - gateway
           - home
           - media
           - monitor
           - network
           - security
-          - self-hosted
+          - spring-dev
           - storage
+    
     ingress:
       main:
         enabled: true
@@ -71,12 +75,15 @@ spec:
           - hosts:
               - *host
             secretName: hajimari-tls-external
+    
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
+    
     persistence:
       data:
         enabled: true
         type: emptyDir
+    
     resources:
       requests:
         cpu: 100m
