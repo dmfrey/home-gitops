@@ -24,20 +24,36 @@ spec:
 
   values:
     
-    controller:
-      replicas: 3
-      strategy: RollingUpdate
+    controllers:
+      main:
+        type: deployment
+      
+      # replicas: 3
+      # strategy: RollingUpdate
 
-    image:
-      repository: ghcr.io/onedr0p/theme-park
-      tag: 1.15.0@sha256:2da2d2f0571f0f1b7fe86000920db0dbc7bddd4e8117320ae98ee00e1a860a19
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/theme-park
+              tag: 1.15.0@sha256:2da2d2f0571f0f1b7fe86000920db0dbc7bddd4e8117320ae98ee00e1a860a19
+
+            ports:
+              - name: http
+                containerPort: &port 8080
+            
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 10Mi
 
     service:
       main:
         ports:
           http:
-            port: 8080
-    
+            port: *port
+
     ingress:
       main:
         enabled: true
@@ -68,18 +84,3 @@ spec:
         name: theme-park-catppuccin-config
         mountPath: /usr/share/nginx/html/css/theme-options/catppuccin-macchiato.css
         subPath: catppuccin-macchiato.css
-    
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
-
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10Mi
-      limits:
-        memory: 10Mi
