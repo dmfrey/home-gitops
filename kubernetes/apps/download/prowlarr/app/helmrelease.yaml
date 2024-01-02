@@ -29,13 +29,6 @@ spec:
 
   values:
     
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 65534
-        runAsGroup: 65534
-        fsGroup: 65534
-        fsGroupChangePolicy: OnRootMismatch
-
     controllers:
       main:
         type: statefulset
@@ -45,13 +38,23 @@ spec:
 
         replicas: 3
         strategy: RollingUpdate
-        
+
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65534
+
         statefuleSet:
           volumeClaimTemplates:
             - name: config
               globalMounts:
                 - path: /config
-                  readOnly: "false"
+                  readOnly: false
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: ceph-block
