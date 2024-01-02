@@ -48,9 +48,15 @@ spec:
             image:
               repository: ghcr.io/onedr0p/theme-park
               tag: 1.15.0@sha256:2da2d2f0571f0f1b7fe86000920db0dbc7bddd4e8117320ae98ee00e1a860a19
+            
+            ports:
+              - name: http
+                containerPort: &port 8080
+
             env:
               - name: TZ
                 value: America/New_York
+            
             probes:
               liveness:
                 enabled: false
@@ -69,7 +75,7 @@ spec:
       main:
         ports:
           http:
-            port: 8080
+            port: *port
 
     ingress:
       main:
