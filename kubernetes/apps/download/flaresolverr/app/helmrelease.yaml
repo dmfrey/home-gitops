@@ -1,36 +1,65 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.zinn.ca/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: flaresolverr
+  name: &app flaresolverr
   namespace: download
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
-      interval: 30m
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
 
   values:
 
-    image:
-      repository: flaresolverr/flaresolverr
-      tag: v3.3.12
+    controllers:
+      main:
+
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+
+        containers:
+          main:
+            image:
+              repository: flaresolverr/flaresolverr
+              tag: v3.3.12
+
+            ports:
+              - name: http
+                containerPort: &port 8191
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 150Mi
+              limits:
+                memory: 300Mi
 
     service:
       main:
         ports:
           http:
-            port: 8191
-
-    resources:
-      requests:
-        cpu: 50m
-        memory: 150Mi
-      limits:
-        memory: 300Mi
+            port: port
