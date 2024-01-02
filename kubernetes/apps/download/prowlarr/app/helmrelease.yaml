@@ -36,7 +36,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        replicas: 3
+        replicas: 1
         strategy: RollingUpdate
 
         pod:
