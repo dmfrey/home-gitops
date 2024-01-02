@@ -9,4 +9,4 @@ resources:
   # Flux-Kustomizations
   - ./flaresolverr/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./rdt-client/ks.yaml
+  # - ./rdt-client/ks.yaml
