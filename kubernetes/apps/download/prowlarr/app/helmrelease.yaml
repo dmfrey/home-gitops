@@ -129,8 +129,9 @@ spec:
             
             volumeMounts:
               - name: config
-                mountPath: /config
-                readOnly: true
+                globalMounts:
+                  - path: /config
+                    readOnly: true
 
     service:
       main:
