@@ -102,12 +102,15 @@ spec:
                 memory: 431Mi
 
           # sidecars:
-          metrics:
+          exporter:
             name: exporter
+            
             image: 
               repository: ghcr.io/onedr0p/exportarr
               tag: v1.6.0
+            
             args: ["prowlarr"]
+            
             env:
               - name: URL
                 value: "http://localhost"
@@ -119,9 +122,11 @@ spec:
                 value: true
               - name: ENABLE_UNKNOWN_QUEUE_ITEMS
                 value: false
+            
             ports:
               - name: metrics
                 containerPort: *metricsPort 
+            
             volumeMounts:
               - name: config
                 mountPath: /config
@@ -133,6 +138,7 @@ spec:
           http:
             port: *port
       metrics:
+        controller: exporter
         ports:
           metrics:
             port: *metricsPort
