@@ -1,5 +1,6 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: cluster-apps-flux-monitoring
@@ -10,7 +11,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  # wait: true
   postBuild:
     substituteFrom: []
   decryption:
@@ -21,7 +22,8 @@ spec:
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack-crds
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: cluster-apps-flux-notifications
@@ -33,13 +35,14 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  # wait: true
   postBuild:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: cluster-apps-flux-webhooks
@@ -50,7 +53,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  # wait: true
   postBuild:
     substituteFrom: []
   decryption:
