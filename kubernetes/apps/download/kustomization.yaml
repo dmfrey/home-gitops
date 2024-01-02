@@ -6,6 +6,6 @@ resources:
   - ./namespace.yaml
   # - ./networkpolicy.yaml
   # Flux-Kustomizations
-  - ./flaresolverr/ks.yaml
+  # - ./flaresolverr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./rdt-client/ks.yaml
