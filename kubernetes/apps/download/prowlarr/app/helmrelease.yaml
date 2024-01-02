@@ -102,38 +102,40 @@ spec:
                 memory: 431Mi
 
           # sidecars:
-          # exporter:
-          #   name: exporter
-          #   image: ghcr.io/onedr0p/exportarr:v1.6.0
-          #   args: ["prowlarr"]
-          #   env:
-          #     - name: URL
-          #       value: "http://localhost"
-          #     - name: CONFIG
-          #       value: "/config/config.xml"
-          #     - name: PORT
-          #       value: &metricsPort 9710
-          #     - name: ENABLE_ADDITIONAL_METRICS
-          #       value: true
-          #     - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-          #       value: false
-          #   ports:
-          #     - name: metrics
-          #       containerPort: *metricsPort 
-          #   volumeMounts:
-          #     - name: config
-          #       mountPath: /config
-          #       readOnly: true
+          exporter:
+            name: exporter
+            image: 
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v1.6.0
+            args: ["prowlarr"]
+            env:
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9710
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
+            ports:
+              - name: metrics
+                containerPort: *metricsPort 
+            volumeMounts:
+              - name: config
+                mountPath: /config
+                readOnly: true
 
     service:
       main:
         ports:
           http:
             port: *port
-      # metrics:
-      #   ports:
-      #     metrics:
-      #       port: *metricsPort
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
 
     ingress:
       main:
