@@ -6,7 +6,7 @@ metadata:
   name: &app sonarr
   namespace: media
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -156,6 +156,6 @@ spec:
           - port: metrics
             scheme: http
             path: /metrics
-            interval: 10m
+            interval: 15m
             scrapeTimeout: 2m
 

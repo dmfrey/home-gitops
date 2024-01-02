@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-node-feature-discovery
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/system/node-feature-discovery/app"
   prune: true
   sourceRef:
@@ -21,7 +21,7 @@ metadata:
   name: cluster-apps-node-feature-discovery-rules
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/system/node-feature-discovery/rules"
   prune: true
   sourceRef:

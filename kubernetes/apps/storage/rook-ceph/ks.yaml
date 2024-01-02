@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-rook-ceph
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/storage/rook-ceph/operator"
   prune: true
   sourceRef:
@@ -24,7 +24,7 @@ metadata:
   name: cluster-apps-rook-ceph-cluster
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/storage/rook-ceph/cluster"
   prune: true
   sourceRef:

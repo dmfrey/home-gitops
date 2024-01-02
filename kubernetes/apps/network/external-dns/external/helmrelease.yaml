@@ -6,7 +6,7 @@ metadata:
   name: externaldns-external
   namespace: network
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes-sigs.github.io/external-dns/
@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-external-dns
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   
   values:
     fullnameOverride: &name externaldns-external

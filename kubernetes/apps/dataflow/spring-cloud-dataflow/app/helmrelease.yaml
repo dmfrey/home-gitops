@@ -6,7 +6,7 @@ metadata:
   name: spring-cloud-dataflow
   namespace: dataflow
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: spring-cloud-dataflow
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-      interval: 30m
+      interval: 15m
 
   values:
 

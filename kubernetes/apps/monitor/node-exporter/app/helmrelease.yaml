@@ -6,7 +6,7 @@ metadata:
   name: node-exporter
   namespace: monitor
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: prometheus-node-exporter
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   values:
     fullnameOverride: node-exporter
 

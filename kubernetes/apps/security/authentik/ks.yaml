@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-authentik-database
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/security/authentik/database"
   prune: true
   sourceRef:
@@ -30,7 +30,7 @@ metadata:
   name: cluster-apps-authentik
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/security/authentik/app"
   prune: true
   sourceRef:
@@ -53,7 +53,7 @@ metadata:
   name: cluster-apps-authentik-provision
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/security/authentik/provision"
   prune: true
   sourceRef:

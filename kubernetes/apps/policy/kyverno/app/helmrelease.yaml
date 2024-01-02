@@ -6,7 +6,7 @@ metadata:
   name: kyverno
   namespace: policy
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: kyverno
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: kyverno
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   install:
     remediation:
       retries: 5

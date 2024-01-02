@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-bazarr
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/media/bazarr/app"
   prune: true
   sourceRef:

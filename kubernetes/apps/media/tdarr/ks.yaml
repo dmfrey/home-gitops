@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-tdarr
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/media/tdarr/app"
   prune: true
   sourceRef:
@@ -26,7 +26,7 @@ metadata:
   name: cluster-apps-tdarr-node
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/media/tdarr/node"
   prune: true
   sourceRef:

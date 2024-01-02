@@ -6,7 +6,7 @@ metadata:
   name: authentik
   namespace: security
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: authentik
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: authentik
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   values:
     global:
       storageClass: ceph-block

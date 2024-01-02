@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-externaldns-shared
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/external-dns/shared"
   prune: true
   sourceRef:
@@ -25,7 +25,7 @@ metadata:
   name: cluster-apps-externaldns-external
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/external-dns/external"
   prune: true
   sourceRef:
@@ -46,7 +46,7 @@ metadata:
   name: cluster-apps-externaldns-internal
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/external-dns/internal"
   prune: true
   sourceRef:

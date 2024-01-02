@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-nfs-subdir
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/storage/nfs-subdir/app"
   prune: true
   sourceRef:

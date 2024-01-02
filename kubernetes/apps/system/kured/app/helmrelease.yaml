@@ -6,7 +6,7 @@ metadata:
   name: kured
   namespace: system
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://kubereboot.github.io/charts
@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: kubereboot
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   install:
     timeout: 10m
     replace: true

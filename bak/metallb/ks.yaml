@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-metallb
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/metallb/app"
   prune: true
   sourceRef:
@@ -23,7 +23,7 @@ metadata:
   name: cluster-apps-metallb-pools
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/metallb/pool"
   prune: true
   sourceRef:

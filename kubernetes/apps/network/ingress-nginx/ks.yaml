@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-nginx-shared
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/ingress-nginx/shared"
   prune: true
   sourceRef:
@@ -24,7 +24,7 @@ metadata:
   name: cluster-apps-nginx-external
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/ingress-nginx/external"
   prune: true
   sourceRef:
@@ -42,7 +42,7 @@ metadata:
   name: cluster-apps-nginx-internal
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/ingress-nginx/internal"
   prune: true
   sourceRef:

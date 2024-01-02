@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: nginx-external
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes.github.io/ingress-nginx
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: ingress-nginx
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   values:
     fullnameOverride: nginx-external
 

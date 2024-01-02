@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-reflector
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/system/reflector/app"
   prune: true
   sourceRef:

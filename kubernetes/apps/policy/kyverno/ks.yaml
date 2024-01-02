@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-kyverno
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/policy/kyverno/app"
   prune: true
   sourceRef:
@@ -33,7 +33,7 @@ spec:
   wait: false # no flux ks dependents
   postBuild:
     substituteFrom: []
-  interval: 30m
+  interval: 15m
   retryInterval: 1m
   timeout: 5m
   dependsOn:

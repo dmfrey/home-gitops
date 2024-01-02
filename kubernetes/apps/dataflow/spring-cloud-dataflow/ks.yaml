@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-dataflow-dashboards
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/dashboards"
   prune: true
   sourceRef:
@@ -21,7 +21,7 @@ metadata:
   name: cluster-apps-dataflow
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/app"
   prune: true
   sourceRef:
@@ -39,7 +39,7 @@ metadata:
   name: cluster-apps-dataflow-services
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/services"
   prune: true
   sourceRef:

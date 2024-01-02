@@ -6,7 +6,7 @@ metadata:
   name: rabbitmq-cluster-operator
   namespace: datastore
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: rabbitmq-cluster-operator
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   install:
     remediation:
       retries: 3

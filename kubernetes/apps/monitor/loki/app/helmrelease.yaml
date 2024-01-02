@@ -6,7 +6,7 @@ metadata:
   name: loki
   namespace: monitor
 spec:
-  interval: 30m
+  interval: 15m
   timeout: 15m
   chart:
     spec:
@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   values:
     loki:
       structuredConfig:
@@ -90,7 +90,7 @@ spec:
         compactor:
           working_directory: /var/loki/boltdb-shipper-compactor
           shared_store: s3
-          compaction_interval: 10m
+          compaction_interval: 15m
           retention_enabled: true
           retention_delete_delay: 2h
           retention_delete_worker_count: 150

@@ -6,12 +6,12 @@ metadata:
   name: time-service
   namespace: spring-dev
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
       version: 2.4.0
-      interval: 30m
+      interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bjw-s

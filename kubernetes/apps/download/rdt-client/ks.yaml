@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-rdt-client
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/download/rdt-client/app"
   prune: true
   sourceRef:

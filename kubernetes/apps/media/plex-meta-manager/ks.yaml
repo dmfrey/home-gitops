@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-plex-meta-manager
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 15m
   path: ./kubernetes/apps/media/plex-meta-manager/app
   postBuild:
     substituteFrom: []

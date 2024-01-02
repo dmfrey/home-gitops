@@ -9,7 +9,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  interval: 10m
+  interval: 15m
   prune: true
   wait: true
   postBuild:
@@ -28,7 +28,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  interval: 30m
+  interval: 15m
   prune: true
   wait: true
   postBuild:

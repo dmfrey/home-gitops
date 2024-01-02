@@ -6,7 +6,7 @@ metadata:
   name: metrics-server
   namespace: monitor
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: metrics-server
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-metrics-server
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   values:
     metrics:
       enabled: true

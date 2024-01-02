@@ -15,7 +15,7 @@ spec:
     substituteFrom: []
   decryption:
     provider: sops
-  interval: 30m
+  interval: 15m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
@@ -27,7 +27,7 @@ metadata:
   name: cluster-apps-flux-notifications
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: ./kubernetes/apps/flux-system/add-ons/notifications
   prune: true
   sourceRef:
@@ -55,7 +55,7 @@ spec:
     substituteFrom: []
   decryption:
     provider: sops
-  interval: 30m
+  interval: 15m
   retryInterval: 1m
   timeout: 5m
   dependsOn:

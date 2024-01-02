@@ -6,7 +6,7 @@ metadata:
   name: descheduler
   namespace: system
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes-sigs.github.io/descheduler
@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-descheduler
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   values:
     kind: Deployment
     replicas: 2

@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-theme-park
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/web/theme-park/app"
   prune: true
   sourceRef:

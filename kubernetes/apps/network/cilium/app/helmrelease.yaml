@@ -9,13 +9,13 @@ spec:
   chart:
     spec:
       chart: cilium
-      interval: 30m
+      interval: 15m
       sourceRef:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
       version: 1.14.5
-  interval: 30m
+  interval: 15m
 
   valuesFrom:
     - kind: ConfigMap

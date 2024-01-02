@@ -13,7 +13,7 @@ spec:
   wait: true
   postBuild:
     substituteFrom: []
-  interval: 30m
+  interval: 15m
   retryInterval: 1m
   timeout: 5m
   dependsOn:
@@ -33,7 +33,7 @@ spec:
 #   wait: true
 #   postBuild:
 #     substituteFrom: []
-#   interval: 30m
+#   interval: 15m
 #   retryInterval: 1m
 #   timeout: 5m
 #   dependsOn:

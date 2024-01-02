@@ -6,7 +6,7 @@ metadata:
   name: nfs-subdir-external-provisioner
   namespace: storage
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: nfs-subdir-external-provisioner
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-nfs-subdir
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   values:
     nfs:
       server: ${QNAP_ADDR}

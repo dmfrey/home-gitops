@@ -6,7 +6,7 @@ metadata:
   name: arc-home-ops
   namespace: dev
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: gha-runner-scale-set
@@ -47,7 +47,7 @@ metadata:
   name: arc-hass
   namespace: dev
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: gha-runner-scale-set

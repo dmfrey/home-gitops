@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: spring-dev-gateway
 spec:
   endpoints:
-  - interval: 10m
+  - interval: 15m
     path: /actuator/prometheus
     port: "8090"
     scheme: http

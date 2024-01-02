@@ -6,7 +6,7 @@ metadata:
   name: node-feature-discovery
   namespace: system
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: node-feature-discovery
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-nfd
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   install:
     crds: CreateReplace
   upgrade:

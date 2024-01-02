@@ -5,6 +5,6 @@ metadata:
   name: kubereboot
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 15m
   url: https://kubereboot.github.io/charts
   timeout: 3m

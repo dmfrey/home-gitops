@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-radarr
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/media/radarr/app"
   prune: true
   sourceRef:
@@ -28,7 +28,7 @@ metadata:
   name: cluster-apps-radarr-provision
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/media/radarr/provision"
   prune: true
   sourceRef:

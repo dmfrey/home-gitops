@@ -6,7 +6,7 @@ metadata:
   name: cert-manager
   namespace: security
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://charts.jetstack.io/
@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: jetstack
         namespace: flux-system
-      interval: 30m
+      interval: 15m
   install:
     crds: CreateReplace
   upgrade:

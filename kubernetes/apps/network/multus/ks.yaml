@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-multus
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/multus/app"
   postBuild:
     substituteFrom: []
@@ -21,7 +21,7 @@ metadata:
   name: cluster-apps-multus-config
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 15m
   path: "./kubernetes/apps/network/multus/config"
   postBuild:
     substituteFrom: []

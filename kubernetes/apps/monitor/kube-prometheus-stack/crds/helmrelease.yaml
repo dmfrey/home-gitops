@@ -6,7 +6,7 @@ metadata:
   name: prometheus-operator-crds
   namespace: monitor
 spec:
-  interval: 10m0s
+  interval: 15m0s
   chart:
     spec:
       chart: prometheus-operator-crds
