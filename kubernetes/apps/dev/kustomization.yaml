@@ -6,5 +6,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./actions-runner/ks.yaml
-  # - ./kubernetes-schemas/ks.yaml
+  - ./kubernetes-schemas/ks.yaml
 
