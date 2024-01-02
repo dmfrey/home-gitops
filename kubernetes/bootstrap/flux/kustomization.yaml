@@ -1,8 +1,8 @@
 # IMPORTANT: This file is not tracked by flux and should never be. Its
 # purpose is to only install the Flux components and CRDs into your cluster.
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta2.json
-apiVersion: kustomize.config.k8s.io/v1beta2
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.config.k8s.io/v1
 kind: Kustomization
 resources:
   - github.com/fluxcd/flux2/manifests/install?ref=v2.2.2
