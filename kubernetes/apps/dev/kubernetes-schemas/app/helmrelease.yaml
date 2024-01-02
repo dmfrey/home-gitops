@@ -43,16 +43,18 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: *app
 
-        image:
-          repository: ghcr.io/dmfrey/kubernetes-schemas
-          tag: latest
+        containers:
+          main:
+            image:
+              repository: ghcr.io/dmfrey/kubernetes-schemas
+              tag: latest
 
-        resources:
-          requests:
-            cpu: 10m
-            memory: 50Mi
-          limits:
-            memory: 100Mi
+            resources:
+              requests:
+                cpu: 10m
+                memory: 50Mi
+              limits:
+                memory: 100Mi
 
     service:
       main:
