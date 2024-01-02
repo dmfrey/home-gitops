@@ -30,8 +30,6 @@ spec:
   values:
     
     defaultPodOptions:
-      annotations:
-        reloader.stakater.com/auto: "true"
       securityContext:
         runAsUser: 65534
         runAsGroup: 65534
@@ -41,7 +39,13 @@ spec:
     controllers:
       main:
         type: statefulset
+    
+        annotations:
+          reloader.stakater.com/auto: "true"
 
+        replicas: 3
+        strategy: RollingUpdate
+        
         statefuleSet:
           volumeClaimTemplates:
             - name: config
