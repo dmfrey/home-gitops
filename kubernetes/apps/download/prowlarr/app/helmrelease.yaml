@@ -102,7 +102,7 @@ spec:
                 memory: 431Mi
 
           # sidecars:
-          exporter:
+          metrics:
             name: exporter
             image: 
               repository: ghcr.io/onedr0p/exportarr
