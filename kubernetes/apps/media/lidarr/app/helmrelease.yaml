@@ -3,10 +3,10 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: lidarr
+  name: &app lidarr
   namespace: media
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -15,8 +15,20 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 30m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
   values:
+
     controller:
       type: statefulset
       annotations:

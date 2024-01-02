@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
   namespace: home
 spec:
   interval: 15m
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 30m
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -26,7 +26,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+
   values:
+
     controller:
       type: statefulset
       annotations:

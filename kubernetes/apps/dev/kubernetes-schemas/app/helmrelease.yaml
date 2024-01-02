@@ -6,7 +6,7 @@ metadata:
   name: &app kubernetes-schemas
   namespace: dev
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -26,7 +26,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  
   values:
+  
     controller:
       replicas: 2
       strategy: RollingUpdate

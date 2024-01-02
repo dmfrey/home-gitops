@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: prowlarr
+  name: &app prowlarr
   namespace: download
 spec:
   interval: 15m
@@ -28,6 +28,7 @@ spec:
     keepHistory: false
 
   values:
+    
     controller:
       type: statefulset
       annotations:

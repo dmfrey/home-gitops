@@ -3,10 +3,10 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: tdarr-node
+  name: &app tdarr-node
   namespace: media
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -25,6 +25,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  
   values:
     controller:
       type: daemonset
