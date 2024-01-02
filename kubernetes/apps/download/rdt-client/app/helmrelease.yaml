@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,51 +29,72 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    defaultPodOptions:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
 
-    image:
-      repository: rogerfar/rdtclient 
-      tag: 2.0.49
+      hostname: rdt
 
-    env:
-      - name: PUID
-        value: 65534
-      - name: PGID
-        value: 65534
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    podAnnotations:
-      vpn.home.arpa/enabled: "true"
+        pod:
+          annotations:
+            vpn.home.arpa/enabled: "true"
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 0
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 911
+              - 65533
+              - 65534
 
-    podSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
-      fsGroup: 0
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-        - 911
-        - 65533
-        - 65534
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              mountPath: /data/db
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: ceph-block
 
-    dnsConfig:
-      options:
-        - name: ndots
-          value: "1"
+        containers:
+          main:
+            image:
+              repository: rogerfar/rdtclient 
+              tag: 2.0.49
 
-    hostname: rdt
+            env:
+              - name: PUID
+                value: 65534
+              - name: PGID
+                value: 65534
+
+            ports:
+              - name: http
+                containerPort: &port 6500
+            
+            resources:
+              requests:
+                cpu: 49m
+                memory: 765M
 
     service:
       main:
         ports:
           http:
-            port: 6500
+            port: *port
 
     ingress:
       main:
         enabled: true
-        ingressClassName: "external-nginx"
+        className: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
@@ -85,26 +106,18 @@ spec:
           - host: &host "rdt.${EXTERNAL_DOMAIN}"
             paths:
               - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: rdt-client-tls-external
 
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /data/db
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block
-
     persistence:
       downloads:
         enabled: true
         existingClaim: nfs-downloads
-        mountPath: /data/downloads
-        readOnly: false
-
-    resources:
-      requests:
-        cpu: 49m
-        memory: 765M
+        globalMounts:
+          - path: /data/downloads
+            readOnly: false
