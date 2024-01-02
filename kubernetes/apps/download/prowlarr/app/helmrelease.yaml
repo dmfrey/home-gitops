@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,51 +29,93 @@ spec:
 
   values:
     
-    controller:
-      type: statefulset
+    defaultPodOptions:
       annotations:
         reloader.stakater.com/auto: "true"
+      securityContext:
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
 
-    image:
-      repository: ghcr.io/onedr0p/prowlarr-develop
-      tag: 1.11.4.4173@sha256:dc649d62dcd09882b7111bd73d9bc664a28ddf073108345063f368da041d29b0
+    controllers:
+      main:
+        type: statefulset
 
-    env:
-      TZ: America/New_York
-      PROWLARR__INSTANCE_NAME: Prowlarr
-      PROWLARR__PORT: &port 9696
-      PROWLARR__AUTHENTICATION_METHOD: External
-      PROWLARR__APPLICATION_URL: "https://prowlarr.${EXTERNAL_DOMAIN}"
-      PROWLARR__LOG_LEVEL: info
-      PROWLARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: starr-apps-secret
-            key: PROWLARR_API_KEY
+        statefuleSet:
+          volumeClaimTemplates:
+            - name: config
+              globalMounts:
+                - path: /config
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/onedr0p/exportarr:v1.6.0
-        args: ["prowlarr"]
-        env:
-          - name: URL
-            value: "http://localhost"
-          - name: CONFIG
-            value: "/config/config.xml"
-          - name: PORT
-            value: &metricsPort 9710
-          - name: ENABLE_ADDITIONAL_METRICS
-            value: true
-          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-            value: false
-        ports:
-          - name: metrics
-            containerPort: *metricsPort 
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: true
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/prowlarr-develop
+              tag: 1.11.4.4173@sha256:dc649d62dcd09882b7111bd73d9bc664a28ddf073108345063f368da041d29b0
+
+            env:
+              TZ: America/New_York
+              PROWLARR__INSTANCE_NAME: Prowlarr
+              PROWLARR__PORT: &port 9696
+              PROWLARR__AUTHENTICATION_METHOD: External
+              PROWLARR__APPLICATION_URL: "https://prowlarr.${EXTERNAL_DOMAIN}"
+              PROWLARR__LOG_LEVEL: info
+              PROWLARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: PROWLARR_API_KEY
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+          # sidecars:
+          exporter:
+            name: exporter
+            image: ghcr.io/onedr0p/exportarr:v1.6.0
+            args: ["prowlarr"]
+            env:
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9710
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
+            ports:
+              - name: metrics
+                containerPort: *metricsPort 
+            volumeMounts:
+              - name: config
+                mountPath: /config
+                readOnly: true
 
     service:
       main:
@@ -84,22 +126,6 @@ spec:
         ports:
           metrics:
             port: *metricsPort
-
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
 
     ingress:
       main:
@@ -129,30 +155,9 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/prowlarr
-        mountPath: /config/Backups
-        readOnly: false
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 65534
-      runAsGroup: 65534
-      fsGroup: 65534
-      fsGroupChangePolicy: OnRootMismatch
-      # supplementalGroups:
-      #   - 65534
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        globalMounts:
+          - path: /config/Backups
+            readOnly: false
 
     serviceMonitor:
       metrics:
