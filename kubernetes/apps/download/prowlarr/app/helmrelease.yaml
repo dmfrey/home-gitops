@@ -47,6 +47,7 @@ spec:
             - name: config
               globalMounts:
                 - path: /config
+                  readOnly: "false"
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: ceph-block
