@@ -53,7 +53,7 @@ spec:
 
             envFrom:
               - secretRef:
-                name: starr-apps-secret
+                  name: starr-apps-secret
 
     service:
       main:
