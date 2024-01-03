@@ -49,16 +49,6 @@ spec:
             supplementalGroups:
               - 65534
 
-        # statefuleSet:
-        #   volumeClaimTemplates:
-        #     - name: config
-        #       globalMounts:
-        #         - path: /config
-        #           readOnly: false
-        #       accessMode: ReadWriteOnce
-        #       size: 1Gi
-        #       storageClass: ceph-block
-
         containers:
           main:
             image:
