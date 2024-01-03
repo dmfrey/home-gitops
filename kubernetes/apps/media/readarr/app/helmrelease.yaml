@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,48 +29,62 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotions:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/onedr0p/readarr-nightly
-      tag: 0.3.14.2354@sha256:f9cddb9d7c656b7cf532a44bd8a080ffc9e4ac4d8b4dc092059d9aa8dad59d7e
-    env:
-      TZ: America/New_York
-      READARR__INSTANCE_NAME: Readarr
-      READARR__PORT: &port 8787
-      READARR__APPLICATION_URL: https://readarr.${EXTERNAL_DOMAIN}
-      READARR__LOG_LEVEL: info
-      READARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: starr-apps-secret
-            key: READARR_API_KEY
+    controllers:
+      main:
+        type: statefulset
+        annotions:
+          reloader.stakater.com/auto: "true"
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/onedr0p/exportarr:v1.6.0
-        args: ["readarr"]
-        env:
-          - name: URL
-            value: "http://localhost"
-          - name: CONFIG
-            value: "/config/config.xml"
-          - name: PORT
-            value: &metricsPort 9711
-          - name: ENABLE_ADDITIONAL_METRICS
-            value: true
-          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-            value: false
-        ports:
-          - name: metrics
-            containerPort: *metricsPort 
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: true
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/readarr-nightly
+              tag: 0.3.14.2354@sha256:f9cddb9d7c656b7cf532a44bd8a080ffc9e4ac4d8b4dc092059d9aa8dad59d7e
+
+            env:
+              TZ: America/New_York
+              READARR__INSTANCE_NAME: Readarr
+              READARR__PORT: &port 8787
+              READARR__APPLICATION_URL: https://readarr.${EXTERNAL_DOMAIN}
+              READARR__LOG_LEVEL: info
+              READARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: READARR_API_KEY
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+          # sidecars:
+          exporter:
+            name: exporter
+            
+            image: 
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v1.6.0
+
+            args: ["readarr"]
+            
+            env:
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9711
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
+            
+            ports:
+              - name: metrics
+                containerPort: *metricsPort 
 
     service:
       main:
@@ -78,6 +92,7 @@ spec:
           http:
             port: *port
       metrics:
+        container: exporter
         ports:
           metrics:
             port: *metricsPort
@@ -85,7 +100,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external-nginx
+        className: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
@@ -96,17 +111,28 @@ spec:
           - host: &host readarr.${EXTERNAL_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: readarr-tls-external
+
     persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
       media:
         enabled: true
         existingClaim: nfs-media
-        mountPath: /media/library
-        readOnly: false
+        globalMounts:
+          - path: /media/library
+            readOnly: false
     
       backups:
         enabled: true
@@ -115,30 +141,9 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/readarr
-        mountPath: /config/Backups
-        readOnly: false
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 65534
-      runAsGroup: 65534
-      fsGroup: 65534
-      fsGroupChangePolicy: OnRootMismatch
-      # supplementalGroups:
-      #  - 65534
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        globalMounts:
+          - path: /config/Backups
+            readOnly: false
 
     serviceMonitor:
       metrics:
