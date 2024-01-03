@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -30,25 +30,30 @@ spec:
 
   values:
 
-    controller:
-      type: cronjob
-      cronjob:
-        schedule: "@daily"
-        ttlSecondsAfterFinished: 86400
+    defaultPodOptions:
+      restartPolicy: OnFailure
 
-    restartPolicy: OnFailure
+    controllers:
+      main:
+        type: cronjob
+  
+        cronjob:
+          schedule: "@daily"
+          ttlSecondsAfterFinished: 86400
 
-    image:
-      repository: ghcr.io/recyclarr/recyclarr
-      tag: edge@sha256:1fcd45797acaf5381fb4ae0d95d60a270112c04cb24d3f996fbc46412a6e7369
+        containers:
+          main:
+            image:
+              repository: ghcr.io/recyclarr/recyclarr
+              tag: edge@sha256:1fcd45797acaf5381fb4ae0d95d60a270112c04cb24d3f996fbc46412a6e7369
 
-    command: ["/app/recyclarr/recyclarr"]
-    args: 
-      - "sync"
+            command: ["/app/recyclarr/recyclarr"]
+            args: 
+              - "sync"
 
-    envFrom:
-      - secretRef:
-          name: starr-apps-secret
+            envFrom:
+              - secretRef:
+                name: starr-apps-secret
 
     service:
       main:
@@ -59,6 +64,7 @@ spec:
         enabled: true
         type: configMap
         name: recyclarr-configmap
-        mountPath: /config/configs
-        defaultMode: 0775
-        readOnly: true
+        globalMounts:
+          - path: /config/configs
+            # defaultMode: 0775
+            readOnly: true
