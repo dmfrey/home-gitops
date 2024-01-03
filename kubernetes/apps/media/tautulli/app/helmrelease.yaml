@@ -31,12 +31,12 @@ spec:
 
     defaultPodOptions:
       podSecurityContext:
-        runAsUser: 65534
-        runAsGroup: 65534
-        fsGroup: 65534
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-        # supplementalGroups:
-        #   - 65534
+        supplementalGroups:
+          - 65534
 
     controllers:
       main:
@@ -49,7 +49,6 @@ spec:
             - name: config
               globalMounts:
                 - path: /config
-                  readOnly: false
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: ceph-block
