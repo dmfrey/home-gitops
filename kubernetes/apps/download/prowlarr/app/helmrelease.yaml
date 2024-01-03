@@ -49,15 +49,15 @@ spec:
             supplementalGroups:
               - 65534
 
-        statefuleSet:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-                  readOnly: false
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
+        # statefuleSet:
+        #   volumeClaimTemplates:
+        #     - name: config
+        #       globalMounts:
+        #         - path: /config
+        #           readOnly: false
+        #       accessMode: ReadWriteOnce
+        #       size: 1Gi
+        #       storageClass: ceph-block
 
         containers:
           main:
@@ -102,41 +102,42 @@ spec:
                 memory: 431Mi
 
           # sidecars:
-          # exporter:
-          #   name: exporter
+          exporter:
+            dependsOn: main
+            name: exporter
             
-          #   image: 
-          #     repository: ghcr.io/onedr0p/exportarr
-          #     tag: v1.6.0
+            image: 
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v1.6.0
             
-          #   args: ["prowlarr"]
+            args: ["prowlarr"]
             
-          #   env:
-          #     - name: URL
-          #       value: "http://localhost"
-          #     - name: CONFIG
-          #       value: "/config/config.xml"
-          #     - name: PORT
-          #       value: &metricsPort 9710
-          #     - name: ENABLE_ADDITIONAL_METRICS
-          #       value: true
-          #     - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-          #       value: false
+            env:
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9710
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
             
-          #   ports:
-          #     - name: metrics
-          #       containerPort: *metricsPort 
+            ports:
+              - name: metrics
+                containerPort: *metricsPort 
             
     service:
       main:
         ports:
           http:
             port: *port
-      # metrics:
-      #   controller: exporter
-      #   ports:
-      #     metrics:
-      #       port: *metricsPort
+      metrics:
+        controller: exporter
+        ports:
+          metrics:
+            port: *metricsPort
 
     ingress:
       main:
@@ -161,6 +162,13 @@ spec:
             secretName: prowlarr-tls-external
 
     persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
       backups:
         enabled: true
         type: custom
@@ -171,16 +179,6 @@ spec:
         globalMounts:
           - path: /config/Backups
             readOnly: false
-      # exporter:
-      #   enabled: true
-      #   type: persistentVolumeClaim
-      #   existingClaim: true
-      #   advancedMounts:
-      #     main:
-      #       exporter:
-      #         - path: /config
-      #           readOnly: true
-
 
     serviceMonitor:
       metrics:
