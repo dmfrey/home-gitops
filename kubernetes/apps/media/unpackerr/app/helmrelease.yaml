@@ -42,7 +42,7 @@ spec:
             # supplementalGroups:
             #   - 65534
 
-        controllers:
+        containers:
           main:
             image:
               repository: docker.io/golift/unpackerr
