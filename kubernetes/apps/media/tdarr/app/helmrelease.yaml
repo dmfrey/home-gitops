@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,19 +27,50 @@ spec:
     keepHistory: false
   
   values:
-    image:
-      repository: ghcr.io/haveagitgat/tdarr_acc
-      tag: 2.00.20.1
 
-    env:
-      TZ: "America/New_York"
-      PUID: "568"
-      PGID: "568"
-      ffmpegPath: "/usr/local/bin/ffmpeg"
-      TDARR_INSTANCE_NAME: Tdarr
-      TDARR__PORT: &port 8265
-      TDARR__APPLICATION_URL: &host "tdarr.${EXTERNAL_DOMAIN}"
-      TDARR__LOG_LEVEL: info
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 100
+        supplementalGroups:
+          - 34
+          - 100
+          - 65534
+        fsGroupChangePolicy: "OnRootMismatch"
+        capabilities:
+          add:
+            - CHOWN
+
+    controllers:
+      main:
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/haveagitgat/tdarr_acc
+              tag: 2.00.20.1
+
+            env:
+              TZ: "America/New_York"
+              PUID: "568"
+              PGID: "568"
+              ffmpegPath: "/usr/local/bin/ffmpeg"
+              TDARR_INSTANCE_NAME: Tdarr
+              TDARR__PORT: &port 8265
+              TDARR__APPLICATION_URL: &host "tdarr.${EXTERNAL_DOMAIN}"
+              TDARR__LOG_LEVEL: info
+
+            ports:
+              - name: http
+                containerPort: &port 8265
+              - name: server
+                containerPort: &serverPort 8266
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
 
     service:
       main:
@@ -48,8 +79,9 @@ spec:
             port: *port
           server:
             enabled: true
+            container: main
             protocol: TCP
-            port: 8266
+            port: *serverPort
 
     ingress:
       main:
@@ -64,7 +96,9 @@ spec:
           - host: *host
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
@@ -74,24 +108,28 @@ spec:
       config:
         enabled: true
         existingClaim: tdarr-config
-        mountPath: /app/configs
+        globalMounts:
+          - path: /app/configs
       data:
         enabled: true
         existingClaim: tdarr-data
-        mountPath: /app/server
+        globalMounts:
+          - path: /app/server
       cache:
         enabled: true
         existingClaim: tdarr-cache
       media:
         enabled: true
         existingClaim: nfs-media
-        mountPath: /media/library
-        readOnly: false
+        globalMounts:
+          - path: /media/library
+            readOnly: false
       downloads:
         enabled: true
         existingClaim: media-downloads
-        mountPath: /media/downloads
-        readOnly: false
+        globalMounts:
+          - path: /media/downloads
+            readOnly: false
 
       backups:
         enabled: true
@@ -100,23 +138,6 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/tdarr
-        mountPath: /app/server/Tdarr/Backups
-        readOnly: false
-        
-    podSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
-      fsGroup: 100
-      supplementalGroups:
-        - 34
-        - 100
-        - 65534
-      fsGroupChangePolicy: "OnRootMismatch"
-      capabilities:
-        add:
-          - CHOWN
-
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
+        globalMounts:
+          - path: /app/server/Tdarr/Backups
+            readOnly: false

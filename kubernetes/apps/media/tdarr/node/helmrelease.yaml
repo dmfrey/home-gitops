@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,24 +27,52 @@ spec:
     keepHistory: false
   
   values:
-    controller:
-      type: daemonset
 
-    image:
-      repository: ghcr.io/haveagitgat/tdarr_node_acc
-      tag: 2.00.20.1
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        capabilities:
+          add:
+            - CHOWN
+        supplementalGroups:
+          - 34
+          - 44
+          - 100
+          - 226
+          - 65534
 
-    env:
-      TZ: "America/New_York"
-      PUID: "1000"
-      PGID: "1000"
-      serverIP: tdarr.media.svc.cluster.local
-      serverPort: 8266
-      ffmpegPath: "/usr/local/bin/ffmpeg"
-      nodeName:
-        valueFrom:
-          fieldRef:
-            fieldPath: spec.nodeName
+    controllers:
+      main:
+        type: daemonset
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/haveagitgat/tdarr_node_acc
+              tag: 2.00.20.1
+
+            env:
+              TZ: "America/New_York"
+              PUID: "1000"
+              PGID: "1000"
+              serverIP: tdarr.media.svc.cluster.local
+              serverPort: 8266
+              ffmpegPath: "/usr/local/bin/ffmpeg"
+              nodeName:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+
+            ports:
+              - name: http
+                containerPort: &port 8265
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
 
     service:
       main:
@@ -52,43 +80,22 @@ spec:
         ports:
           enabled: false
           http:
-            port: 8265
+            port: *port
 
     persistence:
       media:
         enabled: true
         existingClaim: nfs-media
-        mountPath: /media/library
-        readOnly: false
+        globalMounts:
+          - path: /media/library
+            readOnly: false
       downloads:
         enabled: true
         existingClaim: media-downloads
-        mountPath: /media/downloads
-        readOnly: false
+        globalMounts:
+          - path: /media/downloads
+            readOnly: false
       cache:
         enabled: true
         existingClaim: tdarr-cache
 
-    podSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
-      fsGroup: 0
-      capabilities:
-        add:
-          - CHOWN
-      supplementalGroups:
-        - 34
-        - 44
-        - 100
-        - 226
-        - 65534
-
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-        gpu.intel.com/i915: 1
-      limits:
-        gpu.intel.com/i915: 1
-    nodeSelector:
-      intel.feature.node.kubernetes.io/gpu: "true"
