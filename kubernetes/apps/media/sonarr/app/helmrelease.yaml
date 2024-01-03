@@ -68,8 +68,8 @@ spec:
                     key: SONARR_API_KEY
 
             ports:
-              - name: metrics
-                containerPort: *metricsPort 
+              - name: http
+                containerPort: *port 
 
             resources:
               requests:
