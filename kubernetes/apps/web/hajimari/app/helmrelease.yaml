@@ -31,6 +31,7 @@ spec:
       TZ: America/New_York
     hajimari:
       title: Portal
+      lightTheme: espresso
       darkTheme: catppuccin-macchiato
       customThemes:
         - name: catppuccin-macchiato
