@@ -44,15 +44,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-
         containers:
           main:
             image:
@@ -101,6 +92,15 @@ spec:
           - hosts:
               - *host
             secretName: tautulli-tls-external
+
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: tautulli-config
+        globalMounts:
+          - path: /config
+            readOnly: false
 
     serviceMonitor:
       monitor:
