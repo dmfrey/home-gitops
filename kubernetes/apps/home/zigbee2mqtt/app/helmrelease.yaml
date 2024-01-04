@@ -109,13 +109,13 @@ spec:
               limits:
                 memory: 512Mi
         pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.5/24"]
-              }]
+          # annotations:
+          #   k8s.v1.cni.cncf.io/networks: |
+          #     [{
+          #       "name":"iot-vlan",
+          #       "namespace": "network",
+          #       "ips": ["192.168.50.5/24"]
+          #     }]
           securityContext:
             privileged: true
             runAsUser: 568
