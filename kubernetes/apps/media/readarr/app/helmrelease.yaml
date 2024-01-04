@@ -92,7 +92,7 @@ spec:
           http:
             port: *port
       metrics:
-        container: exporter
+        controller: exporter
         ports:
           metrics:
             port: *metricsPort
