@@ -92,7 +92,7 @@ spec:
         type: configMap
         name: pmm-config-template
         globalMounts:
-          - path: "-"
+          - path: /tmp/config-template
             readOnly: true
       scripts:
         enabled: true
