@@ -91,9 +91,9 @@ spec:
         ports:
           http:
             port: *port
-      metrics:
-        controller: exporter
-        ports:
+      # metrics:
+      #   controller: exporter
+      #   ports:
           metrics:
             port: *metricsPort
 
