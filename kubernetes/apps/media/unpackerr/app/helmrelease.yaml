@@ -39,8 +39,6 @@ spec:
             runAsGroup: 65534
             fsGroup: 65534
             fsGroupChangePolicy: OnRootMismatch
-            # supplementalGroups:
-            #   - 65534
 
         containers:
           main:

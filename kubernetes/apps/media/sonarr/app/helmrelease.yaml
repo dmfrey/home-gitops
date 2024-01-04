@@ -78,6 +78,7 @@ spec:
 
           # sidecars:
           exporter:
+            dependsOn: main
             name: exporter
             
             image: 
