@@ -65,8 +65,8 @@ spec:
                   httpGet:
                     path: /
                     port: *port
-                  initialDelaySeconds: 3
-                  periodSeconds: 3
+                  initialDelaySeconds: 30
+                  periodSeconds: 60
               readiness:
                 enabled: true
                 type: HTTP
@@ -74,8 +74,8 @@ spec:
                   httpGet:
                     path: /
                     port: *port
-                  initialDelaySeconds: 3
-                  periodSeconds: 3
+                  initialDelaySeconds: 30
+                  periodSeconds: 60
               startup:
                 enabled: false
             
