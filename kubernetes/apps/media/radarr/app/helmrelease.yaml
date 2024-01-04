@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,56 +29,84 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        type: statefulset
+        
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/onedr0p/radarr
-      tag: 5.2.6.8376@sha256:2de39930de91ae698f9461bb959d93b9d59610f88e0c026e96bc5d9c99aeea89
-    env:
-      TZ: America/New_York
-      RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 7878
-      RADARR__APPLICATION_URL: https://radarr.${EXTERNAL_DOMAIN}
-      RADARR__LOG_LEVEL: info
-      RADARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: starr-apps-secret
-            key: RADARR_API_KEY
+        replicas: 1
+        strategy: RollingUpdate
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/onedr0p/exportarr:v1.6.0
-        args: ["radarr"]
-        env:
-          - name: URL
-            value: "http://localhost"
-          - name: CONFIG
-            value: "/config/config.xml"
-          - name: PORT
-            value: &metricsPort 9708
-          - name: ENABLE_ADDITIONAL_METRICS
-            value: true
-          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-            value: false
-        ports:
-          - name: metrics
-            containerPort: *metricsPort 
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: true
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+            fsGroup: 65534
+            fsGroupChangePolicy: OnRootMismatch
 
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/radarr
+              tag: 5.2.6.8376@sha256:2de39930de91ae698f9461bb959d93b9d59610f88e0c026e96bc5d9c99aeea89
+
+            env:
+              TZ: America/New_York
+              RADARR__INSTANCE_NAME: Radarr
+              RADARR__PORT: &port 7878
+              RADARR__APPLICATION_URL: https://radarr.${EXTERNAL_DOMAIN}
+              RADARR__LOG_LEVEL: info
+              RADARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: RADARR_API_KEY
+
+            ports:
+              - name: http
+                containerPort: *port 
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+          # sidecars:
+          exporter:
+            name: exporter
+            
+            image: ghcr.io/onedr0p/exportarr:v1.6.0
+            
+            args: ["radarr"]
+            
+            env:
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9708
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
+            
+            ports:
+              - name: metrics
+                containerPort: *metricsPort 
+          
     service:
       main:
         ports:
           http:
             port: *port
       metrics:
+        container: exporter
         ports:
           metrics:
             port: *metricsPort
@@ -86,7 +114,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external-nginx
+        className: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
@@ -98,22 +126,34 @@ spec:
           - host: &host radarr.${EXTERNAL_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: radarr-tls-external
+    
     persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
       media:
         enabled: true
         existingClaim: nfs-media
-        mountPath: /media/library
-        readOnly: false
+        globalMounts:
+          - path: /media/library
+            readOnly: false
       downloads:
         enabled: true
         existingClaim: media-downloads
-        mountPath: /media/downloads
-        readOnly: false
+        globalMounts:
+          - path: /media/downloads
+            readOnly: false
 
       backups:
         enabled: true
@@ -122,30 +162,9 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/radarr
-        mountPath: /config/Backups
-        readOnly: false
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 65534
-      runAsGroup: 65534
-      fsGroup: 65534
-      fsGroupChangePolicy: OnRootMismatch
-      # supplementalGroups:
-      #   - 65534
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        globalMounts:
+          - path: /config/Backups
+            readOnly: false
 
     serviceMonitor:
       metrics:
