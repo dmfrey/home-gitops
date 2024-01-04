@@ -12,7 +12,7 @@ resources:
   # - ./music-assistant/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
-  - ./plex-meta-manager/ks.yaml
+  # - ./plex-meta-manager/ks.yaml
   - ./radarr/ks.yaml
   - ./readarr/ks.yaml
   - ./recyclarr/ks.yaml
