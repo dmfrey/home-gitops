@@ -59,9 +59,23 @@ spec:
 
             probes:
               liveness:
-                enabled: false
+                enabled: true
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 3
+                  periodSeconds: 3
               readiness:
-                enabled: false
+                enabled: true
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 3
+                  periodSeconds: 3
               startup:
                 enabled: false
             
