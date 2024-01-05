@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,58 +29,83 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/onedr0p/lidarr
-      tag: 2.0.7.3849@sha256:baba272ee36cfb14103256a9b173a161c5a45ca2959c26dcd170f32cdc57c406
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            fsGroupChangePolicy: OnRootMismatch
 
-    env:
-      TZ: America/New_York
-      LIDARR__INSTANCE_NAME: Lidarr
-      LIDARR__PORT: &port 8686
-      LIDARR__LOG_LEVEL: info
-      LIDARR__ANALYTICS_ENABLED: "False"
-      LIDARR__APPLICATION_URL: "https://lidarr.${EXTERNAL_DOMAIN}"
-      LIDARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: starr-apps-secret
-            key: LIDARR_API_KEY
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/lidarr
+              tag: 2.0.7.3849@sha256:baba272ee36cfb14103256a9b173a161c5a45ca2959c26dcd170f32cdc57c406
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/onedr0p/exportarr:v1.6.0
-        args: ["lidarr"]
-        env:
-          - name: URL
-            value: "http://localhost"
-          - name: CONFIG
-            value: "/config/config.xml"
-          - name: PORT
-            value: &metricsPort 9709
-          - name: ENABLE_ADDITIONAL_METRICS
-            value: true
-          - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-            value: false
-        ports:
-          - name: metrics
-            containerPort: *metricsPort 
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: false
+            env:
+              TZ: America/New_York
+              LIDARR__INSTANCE_NAME: Lidarr
+              LIDARR__PORT: &port 8686
+              LIDARR__LOG_LEVEL: info
+              LIDARR__ANALYTICS_ENABLED: "False"
+              LIDARR__APPLICATION_URL: "https://lidarr.${EXTERNAL_DOMAIN}"
+              LIDARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: LIDARR_API_KEY
 
+            ports:
+              - name: http
+                containerPort: *ort 
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+          # sidecars:
+          exporter:
+            dependsOn: main
+            name: exporter
+            
+            image: 
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v1.6.0
+            
+            args: ["lidarr"]
+            
+            env:
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9709
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
+            
+            ports:
+              - name: metrics
+                containerPort: *metricsPort 
+            
     service:
       main:
         ports:
           http:
             port: *port
       metrics:
+        controller: exporter
         ports:
           metrics:
             port: *metricsPort
@@ -88,7 +113,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external-nginx
+        className: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
@@ -99,18 +124,28 @@ spec:
         - host: &host "lidarr.${EXTERNAL_DOMAIN}"
           paths:
           - path: /
-            pathType: Prefix
+            service:
+              name: main
+              port: http
         tls:
         - hosts:
           - *host
           secretName: lidarr-tls-external
 
     persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
       media:
         enabled: true
         existingClaim: nfs-media
-        mountPath: /media/library
-        readOnly: false
+        globalMounts:
+          - path: /media/library
+            readOnly: false
 
       backups:
         enabled: true
@@ -119,30 +154,9 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/lidarr
-        mountPath: /config/Backups
-        readOnly: false
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-        - 65534
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        globalMounts:
+          - path: /config/Backups
+            readOnly: false
 
     serviceMonitor:
       metrics:
