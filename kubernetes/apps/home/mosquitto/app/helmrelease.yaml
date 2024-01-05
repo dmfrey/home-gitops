@@ -98,6 +98,7 @@ spec:
         globalMounts:
           - path: /mosquitto/config/mosquitto.conf
             subPath: mosquitto.conf
+        defaultMode: 0664
       
       mosquitto-secret:
         enabled: true
@@ -105,6 +106,7 @@ spec:
         name: mosquitto-secret
         globalMounts:
           - path: /data/mosquitto_secret
+        defaultMode: 0664
       
       mosquitto-init-config:
         enabled: true
@@ -120,4 +122,4 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /data/external_config
-
+        defaultMode: 0664
