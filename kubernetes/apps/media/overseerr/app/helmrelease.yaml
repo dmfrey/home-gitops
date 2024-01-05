@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,72 +29,104 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/sct/overseerr
-      tag: 1.33.2
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    env:
-      LOG_LEVEL: "info"
-      PORT: &port 5055
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            fsGroupChangePolicy: OnRootMismatch
 
-    initContainers:
-      config-setup:
-        image: ghcr.io/onedr0p/alpine:3.19.0@sha256:51632d23e56ae28a34f8e90df6fe8d02730b5462697ae52e8b01ad6484497819
-        command:
-          - "/bin/bash"
-          - -c
-          - |
-            envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
-            if [ -s /config/settings.json ]
-            then
-              cp /tmp/settings-resolved.json /config/settings.json
-              # jq -s '.[0] * .[1]' /config/settings.json /tmp/settings-resolved.json | jq > /config/settings.json
-            else
-              cp /tmp/settings-resolved.json /config/settings.json
-            fi
-            exit 0
-        envFrom:
-          - secretRef:
-              name: overseerr-secret
-          - secretRef:
-              name: starr-apps-secret
-          - secretRef:
-              name: plex-secret
-        env:
-          - name: ORGANIZATION
-            value: ${ORGANIZATION}
-          - name: EXTERNAL_DOMAIN
-            value: ${EXTERNAL_DOMAIN}
-        volumeMounts:
-          - name: config-template
-            mountPath: /tmp/config-template
-          - name: config
-            mountPath: /config
+        containers:
+          main:
+            image:
+              repository: ghcr.io/sct/overseerr
+              tag: 1.33.2
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/willfantom/overseerr-exporter:1.2.1
-        args:
-          - --overseerr.address
-          - "http://localhost:5055"
-          - --overseerr.api-key
-          - "$(OVERSEERR_API_KEY)"
-        envFrom:
-          - secretRef:
-              name: overseerr-secret
+            env:
+              LOG_LEVEL: "info"
+              PORT: &port 5055
 
-        ports:
-          - name: metrics
-            containerPort: &metricsPort 9850
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: true
+            ports:
+              - name: http
+                containerPort: *port
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+          # sidecars:
+          exporter:
+            name: exporter
+            
+            image: 
+              repository: ghcr.io/willfantom/overseerr-exporter
+              tag: 1.2.1
+
+            args:
+              - --overseerr.address
+              - "http://localhost:5055"
+              - --overseerr.api-key
+              - "$(OVERSEERR_API_KEY)"
+            
+            envFrom:
+              - secretRef:
+                  name: overseerr-secret
+
+            ports:
+              - name: metrics
+                containerPort: &metricsPort 9850
+            # volumeMounts:
+            #   - name: config
+            #     mountPath: /config
+            #     readOnly: true
+
+        initContainers:
+          config-setup:
+            image: 
+              repository: ghcr.io/onedr0p/alpine
+              tag: 3.19.0@sha256:51632d23e56ae28a34f8e90df6fe8d02730b5462697ae52e8b01ad6484497819
+            
+            command:
+              - "/bin/bash"
+              - -c
+              - |
+                envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
+                if [ -s /config/settings.json ]
+                then
+                  cp /tmp/settings-resolved.json /config/settings.json
+                  # jq -s '.[0] * .[1]' /config/settings.json /tmp/settings-resolved.json | jq > /config/settings.json
+                else
+                  cp /tmp/settings-resolved.json /config/settings.json
+                fi
+                exit 0
+            
+            envFrom:
+              - secretRef:
+                  name: overseerr-secret
+              - secretRef:
+                  name: starr-apps-secret
+              - secretRef:
+                  name: plex-secret
+            
+            env:
+              - name: ORGANIZATION
+                value: ${ORGANIZATION}
+              - name: EXTERNAL_DOMAIN
+                value: ${EXTERNAL_DOMAIN}
+            # volumeMounts:
+            #   - name: config-template
+            #     mountPath: /tmp/config-template
+            #   - name: config
+            #     mountPath: /config
 
     service:
       main:
@@ -102,6 +134,7 @@ spec:
           http:
             port: *port
       metrics:
+        container: exporter
         ports:
           metrics:
             port: *metricsPort
@@ -109,7 +142,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external-nginx
+        className: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
@@ -119,41 +152,39 @@ spec:
           - host: &host "request.${EXTERNAL_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: overseerr-tls-external
 
     persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+        advancedMounts:
+          main:
+            main:
+              - path: /app/config
+            exporter:
+              - path: /config
+                readOnly: true
+            config-setup:
+              - path: /config
+                readOnly: false
+
       config-template:
         enabled: true
         type: configMap
         name: overseerr-config-template
-        readOnly: true
-        mountPath: "-"
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /app/config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 65534
-      runAsGroup: 65534
-      fsGroup: 65534
-      fsGroupChangePolicy: OnRootMismatch
-      # supplementalGroups:
-      #   - 65534
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        globalMounts:
+          - path: /tmp/config-template
+            readOnly: true
 
     serviceMonitor:
       metrics:
