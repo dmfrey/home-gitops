@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,19 +29,42 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: rhasspy/wyoming-piper
-      tag: latest@sha256:4c3c056e043aa15e85bbca1ba4b15b9a866b49d50d9c778475179a747e25f489
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              mountPath: /data
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: ceph-block
 
-    args:
-      - --voice=en-gb-southern_english_female-low
-    env:
-      TZ: "America/Chicago"
+        containers:
+          main:
+            image:
+              repository: rhasspy/wyoming-piper
+              tag: latest@sha256:4c3c056e043aa15e85bbca1ba4b15b9a866b49d50d9c778475179a747e25f489
+
+            args:
+              - --voice=en-gb-southern_english_female-low
+
+            env:
+              TZ: America/New_York
+
+            ports:
+              - name: tcp
+                containerPort: &port 10200 
+
+            resources:
+              requests:
+                cpu: 500m
+                memory: 250Mi
+              limits:
+                memory: 500Mi
 
     service:
       main:
@@ -50,19 +73,5 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.31.102
         ports:
           http:
-            port: 10200
+            port: *port
             protocol: TCP
-
-    resources:
-      requests:
-        cpu: 500m
-        memory: 250Mi
-      limits:
-        memory: 500Mi
-
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /data
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block

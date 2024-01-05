@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -30,22 +30,44 @@ spec:
   values:
 
     controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: rhasspy/wyoming-whisper
-      tag: latest@sha256:8ab98d933feb64b09882574303119176d0dda61d1db2a2fc6972016a1699944c
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              mountPath: /data
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: ceph-block
 
-    args:
-      - --model
-      - small
-      - --language
-      - en
+        containers:
+          main:
+            image:
+              repository: rhasspy/wyoming-whisper
+              tag: latest@sha256:8ab98d933feb64b09882574303119176d0dda61d1db2a2fc6972016a1699944c
 
-    env:
-      TZ: "America/Chicago"
+            args:
+              - --model
+              - small
+              - --language
+              - en
+
+            env:
+              TZ: America/New_York
+
+            ports:
+              - name: tcp
+                containerPort: &port 10300 
+
+            resources:
+              requests:
+                cpu: 500m
+                memory: 250Mi
+              limits:
+                memory: 2500Mi
 
     service:
       main:
@@ -54,19 +76,5 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.31.103
         ports:
           http:
-            port: 10300
+            port: *port
             protocol: TCP
-
-    resources:
-      requests:
-        cpu: 500m
-        memory: 250Mi
-      limits:
-        memory: 2500Mi
-
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /data
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block
