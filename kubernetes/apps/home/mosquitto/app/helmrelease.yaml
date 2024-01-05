@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -30,30 +30,49 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: public.ecr.aws/docker/library/eclipse-mosquitto
-      tag: 2.0.18
+        containers:
+          main:
+            image:
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.18
 
-    initContainers:
-      user-import:
-        image: public.ecr.aws/docker/library/eclipse-mosquitto:2.0.18@sha256:fa9822d3e9bdb12c80f6cb7ddd22922b26c1cd4ffa071815242ac156f9559d7d
-        command:
-          - "/bin/sh"
-          - -c
-        args:
-          - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
-        volumeMounts:
-          - name: mosquitto-secret
-            mountPath: /data/mosquitto_secret
-          - name: mosquitto-init-config
-            mountPath: /data/mosquitto_init
-          - name: external-config
-            mountPath: /data/external_config
+            ports:
+              - name: mqtt
+                containerPort: &mqttPort 1883
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1024Mi
+
+        initContainers:
+          user-import:
+            image: 
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.18@sha256:fa9822d3e9bdb12c80f6cb7ddd22922b26c1cd4ffa071815242ac156f9559d7d
+            
+            command:
+              - "/bin/sh"
+              - -c
+            
+            args:
+              - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
+            
+            # volumeMounts:
+            #   - name: mosquitto-secret
+            #     mountPath: /data/mosquitto_secret
+            #   - name: mosquitto-init-config
+            #     mountPath: /data/mosquitto_init
+            #   - name: external-config
+            #     mountPath: /data/external_config
 
     service:
       main:
@@ -62,41 +81,42 @@ spec:
             enabled: false
           mqtt:
             enabled: true
-            port: 1883
+            port: *mqttPort
 
     persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
       mosquitto-config:
         enabled: true
         type: configMap
         name: mosquitto-config
-        mountPath: /mosquitto/config/mosquitto.conf
-        subPath: mosquitto.conf
+        globalMounts:
+          - path: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+      
       mosquitto-secret:
         enabled: true
         type: secret
         name: mosquitto-secret
-        mountPath: "-"
+        globalMounts:
+          - path: /data/mosquitto_secret
+      
       mosquitto-init-config:
         enabled: true
         type: configMap
         name: mosquitto-init-config
-        mountPath: "-"
-        defaultMode: 0755
+        globalMounts:
+          - path: /data/mosquitto_init
+            defaultMode: 0755
+      
       external-config:
         enabled: true
         type: emptyDir
-        mountPath: /mosquitto/external_config
+        globalMounts:
+          - path: /data/external_config
 
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10Mi
-      limits:
-        memory: 10Mi
-
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /data
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
