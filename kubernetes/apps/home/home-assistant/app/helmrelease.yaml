@@ -124,7 +124,10 @@ spec:
 
         initContainers:
           clone-repo:
-            image: alpine/git:latest
+            image: 
+              repository: alpine/git
+              tag: latest
+              
             command:
               - "/bin/sh"
               - -c
