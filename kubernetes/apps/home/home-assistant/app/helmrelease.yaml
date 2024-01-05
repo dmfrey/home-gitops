@@ -122,19 +122,19 @@ spec:
               - name: code
                 containerPort: &codePort 8081
 
-        initContainers:
-          clone-repo:
-            image: 
-              repository: alpine/git
-              tag: latest
+        # initContainers:
+        #   clone-repo:
+        #     image: 
+        #       repository: alpine/git
+        #       tag: latest
 
-            command:
-              - "/bin/sh"
-              - -c
-              - |
-                cd /config
-                git fetch origin
-                git reset origin/main
+        #     command:
+        #       - "/bin/sh"
+        #       - -c
+        #       - |
+        #         cd /config
+        #         git fetch origin
+        #         git reset origin/main
 
     service:
       main:
