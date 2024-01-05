@@ -111,8 +111,8 @@ spec:
         type: configMap
         name: mosquitto-init-config
         globalMounts:
-          - path: /data/mosquitto_init
-            defaultMode: 0755
+          - path: /data/mosquitto_init/load-users.sh
+            subPath: load-users.sh
       
       external-config:
         enabled: true
