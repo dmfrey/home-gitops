@@ -66,5 +66,5 @@ spec:
         name: recyclarr-configmap
         globalMounts:
           - path: /config/configs
-            # defaultMode: 0775
             readOnly: true
+        defaultMode: 0775

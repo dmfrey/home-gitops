@@ -112,8 +112,8 @@ spec:
         name: mosquitto-init-config
         globalMounts:
           - path: /data/mosquitto_init/load-users.sh
-            defaultMode: 0775
             subPath: load-users.sh
+        defaultMode: 0775
       
       external-config:
         enabled: true

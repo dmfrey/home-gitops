@@ -160,8 +160,8 @@ spec:
         globalMounts:
           - path: /etc/cont-init.d/41-Plex-Preferences
             subPath: 41-Plex-Preferences
-            defaultMode: 493
             readOnly: false
+        defaultMode: 493
       
       preferences:
         enabled: true
@@ -169,8 +169,8 @@ spec:
         name: plex-preferences
         globalMounts:
           - path: /etc/cont-config.d
-            defaultMode: 493
             readOnly: false
+        defaultMode: 493
       
       transcode:
         enabled: true
