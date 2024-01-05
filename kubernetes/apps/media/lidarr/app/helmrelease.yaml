@@ -63,7 +63,7 @@ spec:
 
             ports:
               - name: http
-                containerPort: *ort 
+                containerPort: *port 
 
             resources:
               requests:
