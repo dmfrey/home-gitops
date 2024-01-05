@@ -120,6 +120,9 @@ spec:
       external-config:
         enabled: true
         type: emptyDir
-        globalMounts:
-          - path: /data/external_config
-        defaultMode: 0664
+        advancedMounts:
+          main:
+            main:
+              - path: /mosquitto/external_config
+            user-import:
+              - path: /data/external_config
