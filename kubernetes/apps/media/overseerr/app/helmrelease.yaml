@@ -65,6 +65,7 @@ spec:
 
           # sidecars:
           exporter:
+            dependsOn: main
             name: exporter
             
             image: 
@@ -84,10 +85,6 @@ spec:
             ports:
               - name: metrics
                 containerPort: &metricsPort 9850
-            # volumeMounts:
-            #   - name: config
-            #     mountPath: /config
-            #     readOnly: true
 
         initContainers:
           config-setup:
