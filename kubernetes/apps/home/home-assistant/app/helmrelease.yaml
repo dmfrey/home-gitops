@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,75 +29,110 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/home-assistant/home-assistant
-      tag: 2024.1.0
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.4/24"]
+              }]
 
-    podAnnotations:
-      k8s.v1.cni.cncf.io/networks: |
-        [{
-          "name":"iot-vlan",
-          "namespace": "network",
-          "ips": ["192.168.50.4/24"]
-        }]
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2024.1.0
 
-    env:
-      TZ: "America/New York"
-      HASS_POSTGRES_USER:
-        valueFrom:
-          secretKeyRef:
-            name: pg-home-assistant-app
-            key: username
-      HASS_POSTGRES_PASS:
-        valueFrom:
-          secretKeyRef:
-            name: pg-home-assistant-app
-            key: password
-      HASS_RECORDER_DB_URL: "postgresql://$(HASS_POSTGRES_USER):$(HASS_POSTGRES_PASS)@pg-home-assistant-rw/home-assistant"
+            env:
+              - name: TZ
+                value: America/New_York
+              - name: HASS_POSTGRES_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-home-assistant-app
+                    key: username
+              - name: HASS_POSTGRES_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-home-assistant-app
+                    key: password
+              - name: HASS_RECORDER_DB_URL
+                value: "postgresql://$(HASS_POSTGRES_USER):$(HASS_POSTGRES_PASS)@pg-home-assistant-rw/home-assistant"
 
-    initContainers:
-      clone-repo:
-        image: alpine/git:latest
-        command:
-          - "/bin/sh"
-          - -c
-          - |
-            cd /config
-            git fetch origin
-            git reset origin/main
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
+                prefix: "HASS_"
 
-        volumeMounts:
-          - name: deploy-key
-            mountPath: /root/.ssh/config
-            subPath: config
-          - name: deploy-key
-            mountPath: /root/.ssh/id_ed25519
-            subPath: ssh-privatekey
-          - name: deploy-key
-            mountPath: /root/.ssh/id_ed25519.pub
-            subPath: ssh-publickey
-          - name: deploy-key
-            mountPath: /root/.ssh/known_hosts
-            subPath: known_hosts
-          - name: config
-            mountPath: /config
-          - name: configuration
-            mountPath: /config/configuration.yaml
-            subPath: configuration.yaml
+            ports:
+              - name: http
+                containerPort: &port 8123
 
-    envFrom:
-      - secretRef:
-          name: home-assistant-secret
-        prefix: "HASS_"
+            probes:
+              liveness:
+                custom: true
+                spec:
+                  httpGet:
+                    path: /manifest.json
+                    port: *port
+                  initialDelaySeconds: 3
+                  periodSeconds: 3
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
 
-    # nodeSelector:
-      # feature.node.kubernetes.io/zigbee: "true"
-    
+            resources:
+              requests:
+                cpu: 47m
+                memory: 1254Mi
+              limits:
+                memory: 1254Mi
+
+          code:
+            dependOn: main
+            name: code-server
+
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.20.0
+
+            args:
+              - --auth
+              - "none"
+              - --user-data-dir
+              - "/config/.vscode"
+              - --extensions-dir
+              - "/config/.vscode"
+              - --port
+              - "8081"
+              - "/config"
+
+            env:
+              TZ: America/New_York
+
+            ports:
+              - name: code
+                containerPort: &codePort 8081
+
+        initContainers:
+          clone-repo:
+            image: alpine/git:latest
+            command:
+              - "/bin/sh"
+              - -c
+              - |
+                cd /config
+                git fetch origin
+                git reset origin/main
+
     service:
       main:
         type: LoadBalancer
@@ -106,25 +141,119 @@ spec:
         ports:
           http:
             enabled: true
-            port: 8123
+            port: *port
+      code:
+        controller: main
+        ports:
+          http:
+            port: *codePort
 
     ingress:
       main:
         enabled: true
+        className: external-nginx
         annotations:
           nginx.org/websocket-services: home-assistant
           cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:homeassistant"
-        ingressClassName: external-nginx
         hosts:
           - host: &host home.${EXTERNAL_DOMAIN}
             paths:
               - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: home-assistant-tls-external
+      code:
+        enabled: true
+        className: external-nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:vs-code"
+          hajimari.io/appName: "Hass Config"
+        hosts:
+          - host: &host hass-code.${EXTERNAL_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: hass-code-tls-external
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: home-assistant-config
+        globalMounts:
+          - path: /config
+
+      git-config:
+        enabled: true
+        type: secret
+        name: home-assistant-deploy-key
+        globalMounts:
+          - path: /config/.git/config
+            subPath: git-config
+
+      hass-config:
+        enabled: true
+        type: configMap
+        name: hass-config
+        globalMounts:
+          - path: /config/configuration.yaml
+            subPath: configuration.yaml
+      hass-scenes:
+        enabled: true
+        type: configMap
+        name: hass-config
+        globalMounts:
+          - path: /config/scenes.yaml
+            subPath: scenes.yaml
+
+      ssh-config:
+        enabled: true
+        type: secret
+        name: home-assistant-deploy-key
+        globalMounts:
+          - path: /root/.ssh/config
+            subPath: config
+        defaultMode: 0600
+
+      ssh-privatekey:
+        enabled: true
+        type: secret
+        name: home-assistant-deploy-key
+        globalMounts:
+          - path: /root/.ssh/id_ed25519
+            subPath: ssh-privatekey
+        defaultMode: 0600
+
+      known-hosts:
+        enabled: true
+        type: secret
+        name: home-assistant-deploy-key
+        globalMounts:
+          - path: /root/.ssh/known_hosts
+            subPath: known-hosts
+        defaultMode: 0600
+
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${QNAP_ADDR}"
+            path: /homeassistant
+        globalMounts:
+          - path: /config/backups
+            readOnly: false
 
     serviceMonitor:
       main:
@@ -139,61 +268,3 @@ spec:
               name: home-assistant-secret
               key: PROMETHEUS_TOKEN
 
-    persistence:
-      deploy-key:
-        enabled: true
-        type: secret
-        name: home-assistant-deploy-key
-        defaultMode: 256
-        subPath:
-          - path: ssh-privatekey
-            mountPath: /root/.ssh/id_ed25519
-          - path: known_hosts
-            mountPath: /root/.ssh/known_hosts
-      configuration:
-        enabled: true
-        type: configMap
-        name: hass-config
-        subPath:
-          - path: configuration.yaml
-            mountPath: /config/configuration.yaml
-          # - path: scenes.yaml
-          #   mountPath: /config/scenes.yaml            
-      backups:
-        enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /homeassistant
-        mountPath: /config/backups
-        readOnly: false
-
-    probes:
-      liveness:
-        custom: true
-        spec:
-          httpGet:
-            path: /manifest.json
-            port: 8123
-          initialDelaySeconds: 3
-          periodSeconds: 3
-      readiness:
-        enabled: false
-      startup:
-        enabled: false
-
-    resources:
-      requests:
-        cpu: 47m
-        memory: 1254Mi
-      limits:
-        # squat.ai/skyconnect: 0
-        memory: 1254Mi
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block

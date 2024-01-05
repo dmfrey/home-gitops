@@ -8,6 +8,7 @@ commonLabels:
   app.kubernetes.io/instance: home-assistant
 resources:
   - ./pgcluster.yaml
+  - ./pvc.yaml
   - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
   - ./helmrelease.yaml
@@ -18,5 +19,5 @@ configMapGenerator:
       - ./config/scenes.yaml
     options:
       disableNameSuffixHash: true
-patchesStrategicMerge:
-  - ./patches/addons.yaml
+# patchesStrategicMerge:
+#   - ./patches/addons.yaml
