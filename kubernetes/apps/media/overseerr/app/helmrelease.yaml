@@ -64,27 +64,27 @@ spec:
                 memory: 431Mi
 
           # sidecars:
-          exporter:
-            dependsOn: main
-            name: exporter
+          # exporter:
+          #   dependsOn: main
+          #   name: exporter
             
-            image: 
-              repository: ghcr.io/willfantom/overseerr-exporter
-              tag: 1.2.1
+          #   image: 
+          #     repository: ghcr.io/willfantom/overseerr-exporter
+          #     tag: 1.2.1
 
-            args:
-              - --overseerr.address
-              - "http://localhost:5055"
-              - --overseerr.api-key
-              - "$(OVERSEERR_API_KEY)"
+          #   args:
+          #     - --overseerr.address
+          #     - "http://localhost:5055"
+          #     - --overseerr.api-key
+          #     - "$(OVERSEERR_API_KEY)"
             
-            envFrom:
-              - secretRef:
-                  name: overseerr-secret
+          #   envFrom:
+          #     - secretRef:
+          #         name: overseerr-secret
 
-            ports:
-              - name: metrics
-                containerPort: &metricsPort 9850
+          #   ports:
+          #     - name: metrics
+          #       containerPort: &metricsPort 9850
 
         initContainers:
           config-setup:
@@ -119,22 +119,17 @@ spec:
                 value: ${ORGANIZATION}
               - name: EXTERNAL_DOMAIN
                 value: ${EXTERNAL_DOMAIN}
-            # volumeMounts:
-            #   - name: config-template
-            #     mountPath: /tmp/config-template
-            #   - name: config
-            #     mountPath: /config
 
     service:
       main:
         ports:
           http:
             port: *port
-      metrics:
-        controller: exporter
-        ports:
-          metrics:
-            port: *metricsPort
+      # metrics:
+      #   controller: exporter
+      #   ports:
+      #     metrics:
+      #       port: *metricsPort
 
     ingress:
       main:
