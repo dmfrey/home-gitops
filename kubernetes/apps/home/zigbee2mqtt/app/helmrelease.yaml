@@ -152,7 +152,6 @@ spec:
           - host: &host zigbee2mqtt.${EXTERNAL_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   name: main
                   port: http

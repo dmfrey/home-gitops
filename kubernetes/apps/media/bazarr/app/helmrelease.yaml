@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,26 +29,47 @@ spec:
 
   values:
 
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/onedr0p/bazarr
-      tag: 1.4.0@sha256:18746e21c6959fd3e021d82053ce408d976a65a7316b2aeb5a3215721a5e4e43
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            fsGroupChangePolicy: OnRootMismatch
 
-    env:
-      TZ: America/New_York
-      BAZARR__INSTANCE_NAME: Bazarr
-      BAZARR__PORT: &port 6767
-      BAZARR__APPLICATION_URL: https://bazarr.${EXTERNAL_DOMAIN}
-      BAZARR__LOG_LEVEL: info
-      BAZARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: starr-apps-secret
-            key: BAZARR_API_KEY
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/bazarr
+              tag: 1.4.0@sha256:18746e21c6959fd3e021d82053ce408d976a65a7316b2aeb5a3215721a5e4e43
+
+            env:
+              TZ: America/New_York
+              BAZARR__INSTANCE_NAME: Bazarr
+              BAZARR__PORT: &port 6767
+              BAZARR__APPLICATION_URL: https://bazarr.${EXTERNAL_DOMAIN}
+              BAZARR__LOG_LEVEL: info
+              BAZARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: BAZARR_API_KEY
+
+            ports:
+              - name: http
+                containerPort: *port
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
 
     service:
       main:
@@ -59,7 +80,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external-nginx
+        className: external-nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
@@ -70,18 +91,28 @@ spec:
           - host: &host bazarr.${EXTERNAL_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: bazarr-tls-external
 
     persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
       media:
         enabled: true
         existingClaim: nfs-media
-        mountPath: /media/library
-        readOnly: false
+        globalMounts:
+          - path: /media/library
+            readOnly: false
 
       backups:
         enabled: true
@@ -90,33 +121,9 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/bazarr
-        mountPath: /config/backup
-        readOnly: false
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-        - 65534
-
-    nodeSelector:
-      kubernetes.io/arch: amd64
-    
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        globalMounts:
+          - path: /config/backup
+            readOnly: false
 
     serviceMonitor:
       monitor:
