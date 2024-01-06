@@ -139,6 +139,8 @@ spec:
                   cd /tmp
                   git clone git@github.com:dmfrey/hass-config.git
                   cp -r hass-config/* /config
+                  cp -r hass-config/.git /config
+                  cp hass-config/.gitignore /config
                   ls -la /config
                 else
                   echo Fetching HASS Config repo
@@ -147,7 +149,6 @@ spec:
                   git reset origin/main
                   ls -la
                 fi
-                ls -la
 
     service:
       main:
