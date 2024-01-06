@@ -140,7 +140,8 @@ spec:
                   git init
                   git branch -M main
                   git remote add origin git@github.com:dmfrey/hass-config.git
-                  git fetch
+                  git branch --set-upstream-to=origin/main main
+                  git pull
                 else
                   echo Fetching HASS Config repo
                   git fetch origin
