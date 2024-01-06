@@ -137,11 +137,15 @@ spec:
                 cd /config
                 ls -la .git
                 if [ ! -d .git ]; then
+                  echo Initializing HASS Config repo
                   git init
                   git remote add origin git@github.com:dmfrey/hass-config.git
+                  git fetch
+                else
+                  echo Fetching HASS Config repo
+                  git fetch origin
+                  git reset origin/main
                 fi
-                git fetch origin
-                git reset origin/main
 
     service:
       main:
