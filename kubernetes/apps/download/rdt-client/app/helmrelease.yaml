@@ -68,7 +68,7 @@ spec:
           main:
             image:
               repository: rogerfar/rdtclient 
-              tag: 2.0.52
+              tag: 2.0.53
 
             env:
               - name: PUID
