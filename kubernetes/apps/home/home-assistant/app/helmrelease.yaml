@@ -134,18 +134,18 @@ spec:
               - "/bin/sh"
               - -c
               - |
-                cd /config
-                if [ ! -d .git ]; then
+                if [ ! -d /config/.git ]; then
                   echo Initializing HASS Config repo
-                  git init
-                  git branch -M main
-                  git remote add origin git@github.com:dmfrey/hass-config.git
-                  git branch --set-upstream-to=origin/main main
-                  git pull
+                  cd /tmp
+                  git clone git@github.com:dmfrey/hass-config.git
+                  cp -r hass-config/* /config
+                  ls -la /config
                 else
                   echo Fetching HASS Config repo
+                  cd /config
                   git fetch origin
                   git reset origin/main
+                  ls -la
                 fi
                 ls -la
 
