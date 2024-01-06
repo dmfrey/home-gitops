@@ -6,7 +6,7 @@ metadata:
   namespace: dataflow
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-12
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-13
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
   storage:
@@ -74,7 +74,7 @@ metadata:
   namespace: dataflow
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-12
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.1-13
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
   storage:
