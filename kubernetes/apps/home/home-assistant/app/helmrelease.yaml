@@ -138,7 +138,7 @@ spec:
                 ls -la .git
                 if [ ! -d .git ]; then
                   git init
-                  git remote add origin git@github.com:dmfrey/hass-config.git /config
+                  git remote add origin git@github.com:dmfrey/hass-config.git
                 fi
                 git fetch origin
                 git reset origin/main
