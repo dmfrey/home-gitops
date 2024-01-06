@@ -135,10 +135,10 @@ spec:
               - -c
               - |
                 cd /config
-                ls -la .git
                 if [ ! -d .git ]; then
                   echo Initializing HASS Config repo
                   git init
+                  git branch -M main
                   git remote add origin git@github.com:dmfrey/hass-config.git
                   git fetch
                 else
@@ -146,6 +146,7 @@ spec:
                   git fetch origin
                   git reset origin/main
                 fi
+                ls -la
 
     service:
       main:
@@ -231,7 +232,7 @@ spec:
         name: home-assistant-deploy-key
         globalMounts:
           - path: /root/.ssh/config
-            subPath: config
+            subPath: ssh-config
         defaultMode: 0600
 
       ssh-privatekey:
@@ -251,6 +252,15 @@ spec:
           - path: /root/.ssh/known_hosts
             subPath: known-hosts
         defaultMode: 0600
+
+      dot-gitconfig:
+        enabled: true
+        type: secret
+        name: home-assistant-deploy-key
+        globalMounts:
+          - path: /root/.gitconfig
+            subPath: dot-gitconfig
+        defaultMode: 0700
 
       backups:
         enabled: true
