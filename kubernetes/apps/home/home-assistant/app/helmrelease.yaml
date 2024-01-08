@@ -162,7 +162,7 @@ spec:
       code:
         controller: main
         ports:
-          http:
+          code:
             port: *codePort
 
     ingress:
