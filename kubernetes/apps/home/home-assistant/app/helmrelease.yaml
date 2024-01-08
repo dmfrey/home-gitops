@@ -178,6 +178,7 @@ spec:
           - host: &host home.${EXTERNAL_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   name: main
                   port: http
@@ -198,6 +199,7 @@ spec:
           - host: &host hass-code.${EXTERNAL_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   name: code
                   port: http
