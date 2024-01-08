@@ -101,3 +101,5 @@ spec:
         globalMounts:
           - path: /scripts/run.sh
             subPath: run.sh
+            readOnly: false
+        defaultMode: 0775
