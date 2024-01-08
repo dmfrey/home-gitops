@@ -199,7 +199,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  name: code
                   port: http
         tls:
           - hosts:
