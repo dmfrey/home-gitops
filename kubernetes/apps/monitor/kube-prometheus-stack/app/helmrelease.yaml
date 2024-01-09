@@ -240,11 +240,11 @@ spec:
             honor_timestamps: true
             static_configs:
               - targets:
-                  - nas.${INTERNAL_DOMAIN}:9100
+                  - ${QNAP_ADDR}:9100
           - job_name: minio
             metrics_path: /minio/v2/metrics/cluster
             static_configs:
-              - targets: ["minio.${INTERNAL_DOMAIN}:9000"]
+              - targets: ["${QNAP_ADDR}:9000"]
         enableAdminAPI: true
         # Breaks metrics that have cluster label due to conflict with cnpg
         # externalLabels:

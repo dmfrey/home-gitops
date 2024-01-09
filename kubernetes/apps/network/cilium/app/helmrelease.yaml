@@ -43,7 +43,6 @@ spec:
           annotations:
             grafana.io/folder: Network
 
-
       relay:
         enabled: true
         rollOutPods: true
@@ -51,7 +50,6 @@ spec:
           enabled: true
           serviceMonitor:
             enabled: true
-
 
       ui:
         enabled: true

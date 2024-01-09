@@ -36,7 +36,7 @@ spec:
   #       compression: bzip2
   #       maxParallel: 8
   #     destinationPath: s3://cnpg/
-  #     endpointURL: http://minio.${INTERNAL_DOMAIN}:9000
+  #     endpointURL: http://${QNAP_ADDR}:9000
   #     s3Credentials:
   #       accessKeyId:
   #         name: cloudnative-pg-secret
@@ -57,7 +57,7 @@ spec:
 #          compression: bzip2
 #          maxParallel: 8
 #        destinationPath: s3://cnpg/
-          #        endpointURL: http://minio.${INTERNAL_DOMAIN}:9000
+          #        endpointURL: http://${QNAP_ADDR}:9000
 #        s3Credentials:
 #          accessKeyId:
 #            name: cloudnative-pg-secret
@@ -104,7 +104,7 @@ spec:
   #       compression: bzip2
   #       maxParallel: 8
   #     destinationPath: s3://cnpg/
-  #     endpointURL: http://minio.${INTERNAL_DOMAIN}:9000
+  #     endpointURL: http://${QNAP_ADDR}:9000
   #     s3Credentials:
   #       accessKeyId:
   #         name: cloudnative-pg-secret
@@ -125,7 +125,7 @@ spec:
 #          compression: bzip2
 #          maxParallel: 8
 #        destinationPath: s3://cnpg/
-          #        endpointURL: http://minio.${INTERNAL_DOMAIN}:9000
+          #        endpointURL: http://${QNAP_ADDR}:9000
 #        s3Credentials:
 #          accessKeyId:
 #            name: cloudnative-pg-secret
