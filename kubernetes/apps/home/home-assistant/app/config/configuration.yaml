@@ -1,6 +1,11 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
+updater:
+  include_used_components: true
+
+system_health:
+
 prometheus:
   namespace: home-assistant
 
