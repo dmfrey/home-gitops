@@ -113,9 +113,6 @@ spec:
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
-              - --port
-              - "8081"
-              - "/config"
 
             env:
               TZ: America/New_York
@@ -123,6 +120,8 @@ spec:
             ports:
               - name: code
                 containerPort: &codePort 8081
+
+            workingDir: /config
 
         initContainers:
           clone-repo:
