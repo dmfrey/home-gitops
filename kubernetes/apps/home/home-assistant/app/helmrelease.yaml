@@ -157,12 +157,11 @@ spec:
           io.cilium/lb-ipam-ips: ${SVC_HASS_ADDR}
         ports:
           http:
-            enabled: true
             port: *port
       code:
         controller: main
         ports:
-          code:
+          http:
             port: *codePort
 
     ingress:
@@ -196,16 +195,16 @@ spec:
           hajimari.io/icon: "mdi:vs-code"
           hajimari.io/appName: "Hass Config"
         hosts:
-          - host: &host hass-code.${EXTERNAL_DOMAIN}
+          - host: &codeHost hass-code.${EXTERNAL_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   name: code
-                  port: code
+                  port: http
         tls:
           - hosts:
-              - *host
+              - *codeHost
             secretName: hass-code-tls-external
 
     persistence:
