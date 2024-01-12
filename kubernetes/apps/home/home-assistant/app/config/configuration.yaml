@@ -65,6 +65,8 @@ group: !include_dir_merge_named groups
 frontend:
   themes: !include_dir_merge_named themes
 
+zeroconf:
+
 zone:
   - name: Home
     latitude: !env_var HASS_LATITUDE
@@ -83,14 +85,23 @@ zone:
     icon: mdi:home
   - name: Southern Lehigh High School
     latitude: !env_var HASS_LATITUDE_SCHOOL
-    longitude: !env_var HASS_LATITUDE_SCHOOL
+    longitude: !env_var HASS_LONGITUDE_SCHOOL
     radius: 200
     icon: mdi:school
   - name: West Chester University
     latitude: !env_var HASS_LATITUDE_WU
-    longitude: !env_var HASS_LATITUDE_WU
+    longitude: !env_var HASS_LONGITUDE_WU
     radius: 200
     icon: mdi:school
+
+hue:
+  bridges:
+    - host: 192.168.50.2
+      allow_hue_groups: false
+      allow_unreachable: true
+    - host: 192.168.50.3
+      allow_hue_groups: false
+      allow_unreachable: true
 
 logger:
   default: warning
