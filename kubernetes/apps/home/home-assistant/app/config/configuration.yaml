@@ -94,15 +94,6 @@ zone:
     radius: 200
     icon: mdi:school
 
-hue:
-  bridges:
-    - host: 192.168.50.2
-      allow_hue_groups: false
-      allow_unreachable: true
-    - host: 192.168.50.3
-      allow_hue_groups: false
-      allow_unreachable: true
-
 logger:
   default: warning
   logs:
