@@ -65,6 +65,33 @@ group: !include_dir_merge_named groups
 frontend:
   themes: !include_dir_merge_named themes
 
+zone:
+  - name: Home
+    latitude: !env_var HASS_LATITUDE
+    longitude: !env_var  HASS_LONGITUDE
+    radius: 200
+    icon: mdi:home
+  - name: Frey Home
+    latitude: !env_var HASS_LATITUDE_FREY
+    longitude: !env_var  HASS_LONGITUDE_FREY
+    radius: 200
+    icon: mdi:home
+  - name: Clemmer Home
+    latitude: !env_var HASS_LATITUDE_CLEMMER
+    longitude: !env_var  HASS_LONGITUDE_CLEMMER
+    radius: 200
+    icon: mdi:home
+  - name: Southern Lehigh High School
+    latitude: !env_var HASS_LATITUDE_SCHOOL
+    longitude: !env_var HASS_LATITUDE_SCHOOL
+    radius: 200
+    icon: mdi:school
+  - name: West Chester University
+    latitude: !env_var HASS_LATITUDE_WU
+    longitude: !env_var HASS_LATITUDE_WU
+    radius: 200
+    icon: mdi:school
+
 logger:
   default: warning
   logs:
