@@ -13,7 +13,7 @@ resources:
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./plex-meta-manager/ks.yaml
-  # - ./radarr/ks.yaml
+  - ./radarr/ks.yaml
   - ./readarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
