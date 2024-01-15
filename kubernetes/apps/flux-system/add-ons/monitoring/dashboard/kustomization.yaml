@@ -12,6 +12,6 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-    grafana.io/folder: "true"
+    grafana.io/folder: Flux
   labels:
-    grafana.io/dashboard: Flux
+    grafana.io/dashboard: "true"
