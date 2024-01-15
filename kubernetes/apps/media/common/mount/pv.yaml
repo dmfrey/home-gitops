@@ -17,5 +17,5 @@ spec:
     - tcp
     - intr
     - hard
-    - noatime
-    - nodiratime
+    # - noatime
+    # - nodiratime
