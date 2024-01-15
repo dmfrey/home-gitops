@@ -13,9 +13,9 @@ spec:
     server: ${QNAP_ADDR}
     path: "/media"
   mountOptions:
-    - nfsvers=4.1
+    - nfsvers=3
     - tcp
     - intr
     - hard
-    # - noatime
-    # - nodiratime
+    - noatime
+    - nodiratime
