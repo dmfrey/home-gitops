@@ -28,6 +28,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
+  timeout: 2m
   path: "./kubernetes/apps/download/prowlarr/provision"
   prune: true
   sourceRef:
