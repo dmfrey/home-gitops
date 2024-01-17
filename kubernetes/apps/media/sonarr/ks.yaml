@@ -29,6 +29,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
+  timeout: 2m
   path: "./kubernetes/apps/media/sonarr/provision"
   prune: true
   sourceRef:
