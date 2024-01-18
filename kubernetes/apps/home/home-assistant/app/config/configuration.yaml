@@ -71,17 +71,17 @@ zone:
   - name: Home
     latitude: !env_var HASS_LATITUDE
     longitude: !env_var  HASS_LONGITUDE
-    radius: 200
+    radius: 100
     icon: mdi:home
   - name: Frey Home
     latitude: !env_var HASS_LATITUDE_FREY
     longitude: !env_var  HASS_LONGITUDE_FREY
-    radius: 200
+    radius: 100
     icon: mdi:home
   - name: Clemmer Home
     latitude: !env_var HASS_LATITUDE_CLEMMER
     longitude: !env_var  HASS_LONGITUDE_CLEMMER
-    radius: 200
+    radius: 100
     icon: mdi:home
   - name: Southern Lehigh High School
     latitude: !env_var HASS_LATITUDE_SCHOOL
