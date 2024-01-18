@@ -8,6 +8,7 @@ spec:
   path: "./"
   interval: 15m
   approvePlan: auto
+  disableDriftDetection: true
   backendConfig:
     disable: true
   cliConfigSecretRef:
