@@ -8,6 +8,8 @@ metadata:
     hajimari.io/enable: "true"
 spec:
   ingressClassName: external-nginx
+  annotations:
+    external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
   rules:
     - host: &host spring-dev-gateway.${EXTERNAL_DOMAIN}
       http:

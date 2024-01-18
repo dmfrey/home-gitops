@@ -81,6 +81,7 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:invite"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
           - host: &host "join.${EXTERNAL_DOMAIN}"
             paths:

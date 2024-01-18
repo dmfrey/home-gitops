@@ -133,6 +133,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:plex"
           hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
         - host: &host plex.${EXTERNAL_DOMAIN}
           paths:

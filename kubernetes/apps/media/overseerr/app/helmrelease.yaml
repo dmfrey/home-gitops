@@ -140,6 +140,7 @@ spec:
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:eye-circle-outline"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
           - host: &host "request.${EXTERNAL_DOMAIN}"
             paths:

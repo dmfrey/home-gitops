@@ -66,6 +66,7 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
           - host: &host alert-manager.${EXTERNAL_DOMAIN}
             paths:

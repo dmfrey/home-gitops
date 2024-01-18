@@ -139,6 +139,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:chess-rook"
           hajimari.io/appName: "Ceph Dashboard"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         host:
           name: &host rook.${EXTERNAL_DOMAIN}

@@ -87,6 +87,7 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "solar:subtitles-outline"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
           - host: &host bazarr.${EXTERNAL_DOMAIN}
             paths:
