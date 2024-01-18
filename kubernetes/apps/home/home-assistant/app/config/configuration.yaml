@@ -86,27 +86,27 @@ zone:
   - name: Southern Lehigh High School
     latitude: !env_var HASS_LATITUDE_SCHOOL
     longitude: !env_var HASS_LONGITUDE_SCHOOL
-    radius: 200
+    radius: 100
     icon: mdi:school
   - name: West Chester University
     latitude: !env_var HASS_LATITUDE_WU
     longitude: !env_var HASS_LONGITUDE_WU
-    radius: 200
+    radius: 150
     icon: mdi:school
   - name: Giant
     latitude: 40.51722
     longitude: -75.38427
-    radius: 20
+    radius: 40
     icon: mdi:cart
   - name: The Fresh Market
     latitude: 40.55840
     longitude: -75.41265
-    radius: 5
+    radius: 20
     icon: mdi:cart
   - name: Wawa
     latitude: 40.52300
     longitude: -75.38884
-    radius: 5
+    radius: 20
     icon: mdi:gas-pump
 
 logger:
