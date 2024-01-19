@@ -12,4 +12,7 @@ terraform {
       name = "prowlarr-provisioner"
     }
   }
+
+  required_version = ">= 1.7.0"
+
 }
