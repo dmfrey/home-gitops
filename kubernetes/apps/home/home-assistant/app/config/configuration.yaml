@@ -61,7 +61,13 @@ input_boolean: !include_dir_merge_named input_booleans
 input_number: !include_dir_merge_named input_numbers
 scene: !include scenes.yaml
 group: !include_dir_merge_named groups
-notify: !include_dir_merge_named notify
+
+notify:
+  - name: parent_devices
+    platform: group
+    services:
+      - service: mobile_app_pixel_8_pro
+      - service: mobile_app_pixel_7
 
 frontend:
   themes: !include_dir_merge_named themes
