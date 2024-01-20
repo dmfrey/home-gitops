@@ -115,6 +115,10 @@ zone:
     longitude: -75.38884
     radius: 40
     icon: mdi:gas-pump
+  - name: Starbucks
+    latitude: 40.56067014317348
+    longitude: -75.41091951409241
+    radius: 30
 
 logger:
   default: warning
