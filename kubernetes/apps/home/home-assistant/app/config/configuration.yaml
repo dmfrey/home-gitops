@@ -61,6 +61,7 @@ input_boolean: !include_dir_merge_named input_booleans
 input_number: !include_dir_merge_named input_numbers
 scene: !include scenes.yaml
 group: !include_dir_merge_named groups
+notify: !include_dir_merge_named notify
 
 frontend:
   themes: !include_dir_merge_named themes
