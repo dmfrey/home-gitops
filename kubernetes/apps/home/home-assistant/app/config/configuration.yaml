@@ -93,7 +93,7 @@ zone:
   - name: Southern Lehigh High School
     latitude: !env_var HASS_LATITUDE_SCHOOL
     longitude: !env_var HASS_LONGITUDE_SCHOOL
-    radius: 100
+    radius: 150
     icon: mdi:school
   - name: West Chester University
     latitude: !env_var HASS_LATITUDE_WU
@@ -123,7 +123,7 @@ zone:
 logger:
   default: warning
   logs:
-    homeassistant.components.mqtt: info
+    homeassistant.components.mqtt: warning
     
 # panel_iframe:
 #   mass:
