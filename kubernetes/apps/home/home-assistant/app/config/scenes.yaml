@@ -1,5 +1,4 @@
   - name: 'Security Lights On'
-    unique_id: '98482822-bd6b-4911-8884-462815127be1'
     entities:
       light.back_door_light: &config
         state: "on"
