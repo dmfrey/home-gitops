@@ -73,17 +73,13 @@ spec:
                   name: home-assistant-secret
                 prefix: "HASS_"
 
-            ports:
-              - name: http
-                containerPort: &port 8123
-
             probes:
               liveness:
                 custom: true
                 spec:
                   httpGet:
                     path: /manifest.json
-                    port: *port
+                    port: 8123
                   initialDelaySeconds: 3
                   periodSeconds: 3
               readiness:
@@ -100,7 +96,6 @@ spec:
 
           code:
             dependOn: main
-            name: code-server
 
             image:
               repository: ghcr.io/coder/code-server
@@ -116,10 +111,6 @@ spec:
 
             env:
               TZ: America/New_York
-
-            ports:
-              - name: code
-                containerPort: &codePort 8081
 
             workingDir: /config
 
@@ -156,12 +147,12 @@ spec:
           io.cilium/lb-ipam-ips: ${SVC_HASS_ADDR}
         ports:
           http:
-            port: *port
+            port: 8123
       code:
         controller: main
         ports:
           http:
-            port: *codePort
+            port: 8081
 
     ingress:
       main:
@@ -196,7 +187,7 @@ spec:
           hajimari.io/appName: "Hass Config"
           external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
-          - host: &codeHost hass-code.${EXTERNAL_DOMAIN}
+          - host: &host-code hass-code.${EXTERNAL_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -205,7 +196,7 @@ spec:
                   port: http
         tls:
           - hosts:
-              - *codeHost
+              - *host-code
             secretName: hass-code-tls-external
 
     persistence:
