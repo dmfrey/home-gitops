@@ -1,5 +1,5 @@
 scene:
-  - name: Security Lights On
+  - name: "Security Lights On"
     entities:
       light.back_door_light: &config
         state: "on"
