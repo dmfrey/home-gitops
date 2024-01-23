@@ -123,7 +123,7 @@ zone:
 logger:
   default: warning
   logs:
-    homeassistant.components.mqtt: debug
+    homeassistant.components.mqtt: info
     
 # panel_iframe:
 #   mass:

@@ -1,0 +1,21 @@
+scene:
+  - name: Security Lights On
+    entities:
+      light.back_door_light: &config
+        state: "on"
+        transition: 2
+        kelvin: 2700
+        brightness_pct: 30
+      light.back_yard_security_light_1: *config
+      light.back_yard_security_light_2: *config
+      light.barn_door_light: *config
+      light.driveway_security_light: *config
+      light.front_door_light: *config
+      light.front_yard_security_light_1: *config
+      light.front_yard_security_light_2: *config
+      light.garden_security_light_1: *config
+      light.garden_security_light_2: *config
+      light.side_yard_security_light_1: *config
+      light.side_yard_security_light_2: *config
+      light.side_yard_security_light_3: *config
+      light.side_yard_security_light_4: *config
