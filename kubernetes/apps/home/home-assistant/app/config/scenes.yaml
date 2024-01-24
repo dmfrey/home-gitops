@@ -4,7 +4,7 @@
         state: "on"
         transition: 2
         kelvin: 2700
-        brightness_pct: 30
+        brightness_pct: 50
       light.back_yard_security_light_1: *config
       light.back_yard_security_light_2: *config
       light.barn_door_light: *config
