@@ -47,7 +47,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/readarr-nightly
-              tag: 0.3.16.2387@sha256:bb6aba1e2442daa9abe299a20c1d0f760e3eef631be3c565e11a60b150b4bd7a
+              tag: 0.3.17.2406@sha256:4121692e5dc6e29a726ef17cdf0e3b0361894709b4bf93bfcdcc44d2dc9ec938
 
             env:
               TZ: America/New_York
