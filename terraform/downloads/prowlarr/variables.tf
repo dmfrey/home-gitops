@@ -3,16 +3,6 @@ variable "PROWLARR_API_KEY" {
   sensitive = true
 }
 
-variable "PROWLARR_PUSHOVER_API_KEY" {
-  type      = string
-  sensitive = true
-}
-
-variable "PROWLARR_PUSHOVER_USER_KEY" {
-  type      = string
-  sensitive = true
-}
-
 variable "LIDARR_API_KEY" {
   type      = string
   sensitive = true
