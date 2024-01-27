@@ -74,7 +74,7 @@ spec:
                 memory: 350Mi
                 cpu: 5m
               limits:
-                memory: 431Mi
+                memory: 1024Mi
 
           # sidecars:
           exporter:
