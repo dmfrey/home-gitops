@@ -68,6 +68,13 @@ notify:
     services:
       - service: mobile_app_pixel_8_pro
       - service: mobile_app_pixel_7
+  - name: family_devices
+    platform: group
+    services:
+      - service: mobile_app_pixel_8_pro
+      - service: mobile_app_pixel_7
+      - service: mobile_app_pixel_6a
+      - service: mobile_app_pixel_6a_2
 
 frontend:
   themes: !include_dir_merge_named themes
