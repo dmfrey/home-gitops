@@ -79,7 +79,7 @@ spec:
             
             image: 
               repository: ghcr.io/onedr0p/exportarr
-              tag: v1.6.0
+              tag: v1.6.1
             
             args: ["lidarr"]
             
