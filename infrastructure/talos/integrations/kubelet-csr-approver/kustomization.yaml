@@ -9,7 +9,7 @@ helmCharts:
   releaseName: kubelet-csr-approver
   repo: https://postfinance.github.io/kubelet-csr-approver
   valuesFile: values.yaml
-  version: 1.0.6
+  version: 1.0.7
 
 commonAnnotations:
   meta.helm.sh/release-name: kubelet-csr-approver
