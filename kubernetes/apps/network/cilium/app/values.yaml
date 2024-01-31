@@ -1,5 +1,5 @@
 ---
-autoDirectNodeRoutes: true
+autoDirectNodeRoutes: false
 
 bgpControlPlane:
   enabled: true
@@ -80,5 +80,5 @@ securityContext:
       - SYS_ADMIN
       - SYS_RESOURCE
 
-tunnel: "disabled"
+tunnel: vxlan
 
