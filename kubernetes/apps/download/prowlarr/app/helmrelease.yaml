@@ -43,7 +43,7 @@ spec:
           securityContext:
             runAsUser: 0
             runAsGroup: 0
-            runAsNonRoot: true
+            # runAsNonRoot: true
             fsGroup: 0
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
