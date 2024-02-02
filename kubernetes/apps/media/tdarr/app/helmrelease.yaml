@@ -30,9 +30,9 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 100
+        runAsUser: 1568
+        runAsGroup: 568
+        fsGroup: 568
         supplementalGroups:
           - 34
           - 100
@@ -53,7 +53,7 @@ spec:
 
             env:
               TZ: "America/New_York"
-              PUID: "568"
+              PUID: "1568"
               PGID: "568"
               ffmpegPath: "/usr/local/bin/ffmpeg"
               TDARR_INSTANCE_NAME: Tdarr
