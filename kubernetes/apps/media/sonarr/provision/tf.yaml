@@ -6,7 +6,7 @@ metadata:
   namespace: media
 spec:
   approvePlan: auto
-  interval: 1m
+  interval: 15m
   path: ./
   sourceRef:
     kind: OCIRepository
