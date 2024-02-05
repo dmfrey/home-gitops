@@ -149,15 +149,6 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media
-        globalMounts:
-          - path: /media/library
-            readOnly: false
-      downloads:
-        enabled: true
-        existingClaim: media-downloads
-        globalMounts:
-          - path: /media/downloads
-            readOnly: false
 
       backups:
         enabled: true

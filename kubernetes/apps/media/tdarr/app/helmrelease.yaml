@@ -30,9 +30,9 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        # runAsUser: 1568
-        # runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 34
@@ -122,15 +122,6 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media
-        globalMounts:
-          - path: /media/library
-            readOnly: false
-      downloads:
-        enabled: true
-        existingClaim: media-downloads
-        globalMounts:
-          - path: /media/downloads
-            readOnly: false
 
       backups:
         enabled: true

@@ -37,7 +37,11 @@ spec:
           backup.home.arpa/enabled: "true"
 
         pod:
-          securityContext:
+         securityContext:
+            runAsUser: 1568
+            runAsGroup: 1568
+            fsGroup: 1568
+            fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
             - 39
             - 44
@@ -197,9 +201,6 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media
-        globalMounts:
-          - path: /data/library
-            readOnly: false
       
       backup:
         enabled: true

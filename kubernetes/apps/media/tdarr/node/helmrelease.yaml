@@ -30,9 +30,9 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 0
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
         capabilities:
           add:
             - CHOWN
@@ -55,8 +55,6 @@ spec:
 
             env:
               TZ: "America/New_York"
-              PUID: "1000"
-              PGID: "1000"
               serverIP: tdarr.media.svc.cluster.local
               serverPort: 8266
               ffmpegPath: "/usr/local/bin/ffmpeg"
@@ -86,15 +84,6 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media
-        globalMounts:
-          - path: /media/library
-            readOnly: false
-      downloads:
-        enabled: true
-        existingClaim: media-downloads
-        globalMounts:
-          - path: /media/downloads
-            readOnly: false
       cache:
         enabled: true
         existingClaim: tdarr-cache

@@ -45,8 +45,6 @@ spec:
 
             env:
               TZ: "America/New_York"
-              # PUID: "1000"
-              # PGID: "1000"
 
             command:
               - /scripts/run.sh

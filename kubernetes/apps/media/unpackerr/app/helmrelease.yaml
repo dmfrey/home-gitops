@@ -35,10 +35,12 @@ spec:
 
         pod:
           securityContext:
-            runAsUser: 65534
-            runAsGroup: 65534
-            fsGroup: 65534
+            runAsUser: 1568
+            runAsGroup: 1568
+            fsGroup: 1568
             fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65534
 
         containers:
           main:
@@ -105,12 +107,3 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media
-        globalMounts:
-          - path: /media/library
-            readOnly: false
-      downloads:
-        enabled: true
-        existingClaim: media-downloads
-        globalMounts:
-          - path: /media/downloads
-            readOnly: false

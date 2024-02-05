@@ -16,7 +16,7 @@ resource "radarr_media_management" "settings" {
   extra_file_extensions                       = "srt"
   file_date                                   = "none"
   recycle_bin_cleanup_days                    = 7
-  recycle_bin                                 = "/media/library/trash"
+  recycle_bin                                 = "/media/trash"
   rescan_after_refresh                        = "always"
 }
 
@@ -31,5 +31,5 @@ resource "radarr_naming" "naming" {
 }
 
 resource "radarr_root_folder" "series" {
-  path = "/media/library/Movies"
+  path = "/media/Movies"
 }
