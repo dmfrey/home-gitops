@@ -8,16 +8,10 @@ spec:
   path: "./"
   interval: 15m
   approvePlan: disable
+  writeOutputsToSecret:
+    name: radarr-tfstate
   backendConfig:
     disable: true
-  cliConfigSecretRef:
-    name: tf-cloud-token
-    namespace: flux-system
-  cloud:
-    organization: "${ORGANIZATION}"
-    hostname: "app.terraform.io"
-    workspaces:
-      name: "radarr-provisioner"
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-radarr
