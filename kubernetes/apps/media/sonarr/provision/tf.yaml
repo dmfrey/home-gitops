@@ -5,17 +5,15 @@ metadata:
   name: sonarr-provisioner
   namespace: media
 spec:
-  path: "./"
-  interval: 15m
   approvePlan: auto
-  writeOutputsToSecret:
-    name: sonarr-tfstate
-  backendConfig:
-    disable: true
+  interval: 1m
+  path: ./
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-sonarr
     namespace: flux-system
+  writeOutputsToSecret:
+    name: sonarr-tfstate
   varsFrom:
     - kind: Secret
       name: starr-apps-secret

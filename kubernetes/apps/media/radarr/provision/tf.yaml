@@ -5,17 +5,15 @@ metadata:
   name: radarr-provisioner
   namespace: media
 spec:
-  path: "./"
-  interval: 15m
   approvePlan: auto
-  writeOutputsToSecret:
-    name: radarr-tfstate
-  backendConfig:
-    disable: true
+  interval: 1m
+  path: "./"
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-radarr
     namespace: flux-system
+  writeOutputsToSecret:
+    name: radarr-tfstate
   varsFrom:
     - kind: Secret
       name: starr-apps-secret
