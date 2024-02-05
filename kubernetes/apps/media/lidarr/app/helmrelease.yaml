@@ -146,9 +146,6 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media
-        globalMounts:
-          - path: /media/library
-            readOnly: false
 
       backups:
         enabled: true
