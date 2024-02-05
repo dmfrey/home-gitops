@@ -38,15 +38,12 @@ spec:
 
         pod:
          securityContext:
-            runAsUser: 1568
-            runAsGroup: 1568
-            fsGroup: 1568
-            fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
             - 39
             - 44
             - 100
             - 1000
+            - 1568
             - 65534
 
 
