@@ -14,5 +14,5 @@ spec:
   wait: true
   postBuild:
     substituteFrom: []
-  dependsOn: []
-    # - name: cluster-apps-pod-gateway
+  dependsOn: 
+    - name: cluster-apps-pod-gateway

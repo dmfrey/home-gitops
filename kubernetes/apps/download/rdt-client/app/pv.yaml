@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: ${QNAP_ADDR}
-    path: "/downloads"
+    path: "/media/downloads"
   mountOptions:
     - nfsvers=3
     - tcp
