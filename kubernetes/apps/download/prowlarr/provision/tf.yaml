@@ -5,25 +5,15 @@ metadata:
   name: prowlarr-provisioner
   namespace: download
 spec:
-  path: "./"
-  interval: 15m
   approvePlan: auto
-  writeOutputsToSecret:
-    name: prowlarr-tfstate
-  backendConfig:
-    disable: true
-  # cliConfigSecretRef:
-  #   name: tf-cloud-token
-  #   namespace: flux-system
-  # cloud:
-  #   organization: ${ORGANIZATION}
-  #   hostname: "app.terraform.io"
-  #   workspaces:
-  #     name: "prowlarr-provisioner"
+  interval: 15m
+  path: "./"
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-prowlarr
     namespace: flux-system
+  writeOutputsToSecret:
+    name: prowlarr-tfstate
   varsFrom:
     - kind: Secret
       name: starr-apps-secret
