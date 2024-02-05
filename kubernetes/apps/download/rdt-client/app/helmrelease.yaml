@@ -37,11 +37,6 @@ spec:
 
       hostname: rdt
 
-      securityContext:
-        supplementalGroups:
-          - 65534
-          - 1568
-
     controllers:
       main:
         type: statefulset
