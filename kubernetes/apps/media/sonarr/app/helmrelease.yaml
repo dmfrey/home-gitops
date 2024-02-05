@@ -41,17 +41,18 @@ spec:
 
         pod:
           securityContext:
-            runAsUser: 65534
-            runAsGroup: 65534
-            runAsNonRoot: true
-            fsGroup: 65534
+            runAsUser: 1568
+            runAsGroup: 1568
+            fsGroup: 1568
             fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65534
 
         containers:
           main:
             image:
-              repository: ghcr.io/onedr0p/sonarr-develop
-              tag: 4.0.1.1047@sha256:69dc3cf877077dc4a8827f433e20aa2e953b87bcdb3a04437c82dabc7ef216db
+              repository: ghcr.io/onedr0p/sonarr
+              tag: 4.0.1.929
 
             env:
               TZ: America/New_York
