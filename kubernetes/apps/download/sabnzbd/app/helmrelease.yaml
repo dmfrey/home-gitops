@@ -133,13 +133,23 @@ spec:
             args: ["sabnzbd"]
             
             env:
-              PORT: &metricsPort 9707
-              URL: "https://sabnzbd.${EXTERNAL_DOMAIN}"
-              APIKEY: ${API_KEY_SABNZBD}
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9710
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
+              # PORT: &metricsPort 9707
+              # URL: "https://sabnzbd.${EXTERNAL_DOMAIN}"
+              # APIKEY: ${API_KEY_SABNZBD}
             
-            envFrom:
-              - secretRef:
-                  name: sabnzbd-secret
+            # envFrom:
+              # - secretRef:
+                  # name: sabnzbd-secret
 
            resources:
               requests:
