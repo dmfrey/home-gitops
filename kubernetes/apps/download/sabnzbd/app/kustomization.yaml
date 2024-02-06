@@ -2,12 +2,9 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: download
 resources:
-  # Pre Flux-Kustomizations
-  - ./namespace.yaml
-  # - ./networkpolicy.yaml
-  # Flux-Kustomizations
-  - ./flaresolverr/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./rdt-client/ks.yaml
-  - ./sabnzbd/ks.yaml
+  - ./secret-sabnzbd.sops.yaml
+  - ./cm.yaml
+  - ./helmrelease.yaml
+ 
