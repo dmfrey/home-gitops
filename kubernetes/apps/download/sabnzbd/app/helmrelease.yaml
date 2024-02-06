@@ -83,11 +83,10 @@ spec:
               SABNZBD__NZB_KEY: ${API_KEY_NZBGEEK}
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 {{ .Release.Name }},
-                {{ .Release.Name }}.media,
-                {{ .Release.Name }}.media.svc,
-                {{ .Release.Name }}.media.svc.cluster,
-                {{ .Release.Name }}.media.${CLUSTER_DOMAIN},
-                {{ .Release.Name }}.${K8S_GATEWAY_DOMAIN}
+                {{ .Release.Name }}.download,
+                {{ .Release.Name }}.download.svc,
+                {{ .Release.Name }}.download.svc.cluster,
+                {{ .Release.Name }}.${EXTERNAL_DOMAIN}
 
             envFrom:
               - secretRef:
