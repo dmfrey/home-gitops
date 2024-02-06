@@ -122,27 +122,27 @@ spec:
               limits:
                 memory: 8000Mi
 
-          exporter:
-            dependsOn: main
-            name: exporter
+          # exporter:
+          #   dependsOn: main
+          #   name: exporter
             
-            image:
-              repository: ghcr.io/onedr0p/exportarr
-              tag: v1.6.1
+          #   image:
+          #     repository: ghcr.io/onedr0p/exportarr
+          #     tag: v1.6.1
 
-            args: ["sabnzbd"]
+          #   args: ["sabnzbd"]
             
-            env:
-              - name: URL
-                value: "http://localhost"
-              - name: CONFIG
-                value: "/config/config.xml"
-              - name: PORT
-                value: &metricsPort 9707
-              - name: ENABLE_ADDITIONAL_METRICS
-                value: true
-              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-                value: false
+          #   env:
+          #     - name: URL
+          #       value: "http://localhost"
+          #     - name: CONFIG
+          #       value: "/config/config.xml"
+          #     - name: PORT
+          #       value: &metricsPort 9707
+          #     - name: ENABLE_ADDITIONAL_METRICS
+          #       value: true
+          #     - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+          #       value: false
               # PORT: &metricsPort 9707
               # URL: "https://sabnzbd.${EXTERNAL_DOMAIN}"
               # APIKEY: ${API_KEY_SABNZBD}
@@ -157,11 +157,11 @@ spec:
         ports:
           http:
             port: *port
-      metrics:
-        controller: exporter
-        ports:
-          metrics:
-            port: *metricsPort
+      # metrics:
+      #   controller: exporter
+      #   ports:
+      #     metrics:
+      #       port: *metricsPort
 
     ingress:
       main:
@@ -183,11 +183,11 @@ spec:
                 service:
                   name: main
                   port: http
-              - path: /metrics
-                pathType: Prefix
-                service:
-                  name: secondary
-                  port: metrics
+              # - path: /metrics
+              #   pathType: Prefix
+              #   service:
+              #     name: metrics
+              #     port: metrics
         tls:
           - hosts:
               - *host
