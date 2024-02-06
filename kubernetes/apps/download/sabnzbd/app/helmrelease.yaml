@@ -89,6 +89,10 @@ spec:
                 {{ .Release.Name }}.media.${CLUSTER_DOMAIN},
                 {{ .Release.Name }}.${K8S_GATEWAY_DOMAIN}
 
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-secret
+
             probes:
               liveness: &probes
                 enabled: true
