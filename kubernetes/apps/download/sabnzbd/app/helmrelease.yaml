@@ -122,16 +122,21 @@ spec:
               limits:
                 memory: 8000Mi
 
-          secondary:
+          exporter:
+            dependsOn: main
+            name: exporter
+            
             image:
               repository: ghcr.io/onedr0p/exportarr
               tag: v1.6.1
+
+            args: ["sabnzbd"]
+            
             env:
               PORT: &metricsPort 9707
               URL: "https://sabnzbd.${EXTERNAL_DOMAIN}"
               APIKEY: ${API_KEY_SABNZBD}
-            args: ["sabnzbd"]
-
+            
             resources:
               requests:
                 cpu: 10m
