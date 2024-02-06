@@ -137,7 +137,11 @@ spec:
               URL: "https://sabnzbd.${EXTERNAL_DOMAIN}"
               APIKEY: ${API_KEY_SABNZBD}
             
-            resources:
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-secret
+
+           resources:
               requests:
                 cpu: 10m
                 memory: 100Mi
