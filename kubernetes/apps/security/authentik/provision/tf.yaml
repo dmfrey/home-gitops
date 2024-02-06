@@ -49,6 +49,9 @@ spec:
         RealDebrid-Client:
           url: https://rdt.${EXTERNAL_DOMAIN}
           group: Download
+        SABNZBD-Client:
+          url: https://sabnzbd.${EXTERNAL_DOMAIN}
+          group: Download
         Hajimari:
           url: https://portal.${EXTERNAL_DOMAIN}
           group: Home Page
