@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: rabbitmq-cluster-operator
-      version: 3.15.3
+      version: 3.15.4
       sourceRef:
         kind: HelmRepository
         name: bitnami
