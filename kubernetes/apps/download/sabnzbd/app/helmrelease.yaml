@@ -138,7 +138,7 @@ spec:
               - name: CONFIG
                 value: "/config/config.xml"
               - name: PORT
-                value: &metricsPort 9710
+                value: &metricsPort 9707
               - name: ENABLE_ADDITIONAL_METRICS
                 value: true
               - name: ENABLE_UNKNOWN_QUEUE_ITEMS
@@ -151,22 +151,14 @@ spec:
               # - secretRef:
                   # name: sabnzbd-secret
 
-           resources:
-              requests:
-                cpu: 10m
-                memory: 100Mi
-              limits:
-                memory: 125Mi
-
     service:
       main:
         primary: true
         ports:
           http:
             port: *port
-      secondary:
-        nameOverride: metrics
-        controller: main
+      metrics:
+        controller: exporter
         ports:
           metrics:
             port: *metricsPort
