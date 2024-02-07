@@ -46,12 +46,20 @@ spec:
 
       hostname: sabnzbd
 
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        fsGroupChangePolicy: "OnRootMismatch"
+
     controllers:
       main:
         enabled: true
         type: statefulset
+
         annotations:
           reloader.stakater.com/auto: "true"
+
         replicas: 1
 
         statefulset:
@@ -64,11 +72,6 @@ spec:
 
         pod:
           enableServiceLinks: false
-          securityContext:
-            runAsUser: 1568
-            runAsGroup: 1568
-            fsGroup: 1568
-            fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
           main:
@@ -76,6 +79,7 @@ spec:
               repository: ghcr.io/onedr0p/sabnzbd
               tag: 4.2.2
               pullPolicy: IfNotPresent
+
             env:
               TZ: America/New_York
               SABNZBD__PORT: &port 8080
@@ -193,6 +197,17 @@ spec:
             secretName: sabnzbd-client-tls-external
 
     persistence:
+      sabnzbd_config:
+        enabled: true
+        type: configMap
+        name: sabnzbd-config
+        advancedMounts:
+          main:
+            main:
+              - path: /config/sabnzbd.ini
+                readOnly: false
+                subPath: sabnzbd.ini
+
       downloads:
         enabled: true
         existingClaim: nfs-downloads
