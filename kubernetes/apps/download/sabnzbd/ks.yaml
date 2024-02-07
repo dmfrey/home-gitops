@@ -34,7 +34,7 @@ spec:
       - kind: Secret
         name: sabnzbd-secret
   dependsOn:
-    - name: cluster-apps-rook-sabnzbd-common
+    - name: cluster-apps-sabnzbd-common
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
