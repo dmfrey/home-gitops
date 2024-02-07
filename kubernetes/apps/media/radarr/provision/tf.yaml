@@ -17,3 +17,5 @@ spec:
   varsFrom:
     - kind: Secret
       name: starr-apps-secret
+    - kind: Secret
+      name: sabnzbd-secret
