@@ -96,6 +96,10 @@ spec:
               - secretRef:
                   name: sabnzbd-secret
 
+            ports:
+              - name: http
+                containerPort: &port 8080
+
             probes:
               liveness: &probes
                 enabled: true
