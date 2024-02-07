@@ -15,5 +15,5 @@ resource "sonarr_download_client_sabnzbd" "sabnzbd" {
   url_base = "/sabnzbd/"
   port     = 8080
   api_key  = var.SABNZBD_API_KEY
-  category = "series"
+  tv_category = "series"
 }
