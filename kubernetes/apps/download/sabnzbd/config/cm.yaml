@@ -352,24 +352,16 @@ data:
     dir = ""
     newzbin = ""
     priority = -100
-    [[tv]]
-    name = tv
+    [[series]]
+    name = series
     order = 0
     pp = ""
     script = Default
     dir = ""
     newzbin = ""
     priority = -100
-    [[audio]]
-    name = audio
-    order = 0
-    pp = ""
-    script = Default
-    dir = ""
-    newzbin = ""
-    priority = -100
-    [[software]]
-    name = software
+    [[music]]
+    name = music
     order = 0
     pp = ""
     script = Default
