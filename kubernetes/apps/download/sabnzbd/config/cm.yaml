@@ -389,7 +389,7 @@ data:
     quota = ""
     usage_at_start = 0
     send_group = 0
-    priority = 0
+    priority = 1
     notes = ""
     [[nzbplanet.net]]
     name = nzbplanet.net
@@ -411,5 +411,5 @@ data:
     quota = ""
     usage_at_start = 0
     send_group = 0
-    priority = 0
+    priority = 10
     notes = ""
