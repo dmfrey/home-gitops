@@ -14,7 +14,9 @@ spec:
   wait: true
   postBuild:
     substituteFrom: []
-  dependsOn: []
+  dependsOn:
+    - name: cluster-apps-reflector
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

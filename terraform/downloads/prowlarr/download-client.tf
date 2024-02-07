@@ -5,3 +5,14 @@ resource "prowlarr_download_client_qbittorrent" "rdt-client" {
   port     = 6500
   category = "misc"
 }
+
+resource "prowlarr_download_client_sabnzbd" "example" {
+  enable   = true
+  priority = 1
+  name     = "sabnzbd"
+  host     = "sabnzbd.download.svc.cluster.local"
+  url_base = "/sabnzbd/"
+  port     = 8080
+  api_key  = var.SABNZBD_API_KEY
+  category = "misc"
+}

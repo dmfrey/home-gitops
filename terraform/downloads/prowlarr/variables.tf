@@ -23,6 +23,11 @@ variable "SONARR_API_KEY" {
   sensitive = true
 }
 
+variable "SABNZBD_API_KEY" {
+  type      = string
+  sensitive = true
+}
+
 variable "prowlarr_url" {
   type    = string
   default = "http://prowlarr.download.svc.cluster.local:9696"
