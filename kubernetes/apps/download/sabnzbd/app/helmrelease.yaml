@@ -44,6 +44,10 @@ spec:
                         - plex
                 topologyKey: "kubernetes.io/hostname"
 
+      annotations:
+        configmap.reloader.stakater.com/reload: sabnzbd-config
+        secret.reloader.stakater.com/reload: sabnzbd-secret
+
       hostname: sabnzbd
 
       securityContext:
