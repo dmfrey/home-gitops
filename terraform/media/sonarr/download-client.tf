@@ -7,3 +7,13 @@ resource "sonarr_download_client_qbittorrent" "rdt-client" {
   remove_completed_downloads = true
 }
 
+resource "prowlarr_download_client_sabnzbd" "sabnzbd" {
+  enable   = true
+  priority = 1
+  name     = "sabnzbd"
+  host     = "sabnzbd.download.svc.cluster.local"
+  url_base = "/sabnzbd/"
+  port     = 8080
+  api_key  = var.SABNZBD_API_KEY
+  category = "tv"
+}

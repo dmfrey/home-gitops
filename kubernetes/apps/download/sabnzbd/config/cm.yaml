@@ -146,7 +146,7 @@ data:
     empty_postproc = 0
     wait_for_dfolder = 0
     rss_filenames = 0
-    api_logging = 1
+    api_logging = 3
     html_login = 1
     osx_menu = 1
     osx_speed = 1
