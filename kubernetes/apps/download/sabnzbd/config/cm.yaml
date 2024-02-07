@@ -336,6 +336,14 @@ data:
     dir = ""
     newzbin = ""
     priority = 0
+    [[misc]]
+    name = misc
+    order = 0
+    pp = ""
+    script = Default
+    dir = ""
+    newzbin = ""
+    priority = -100
     [[movies]]
     name = movies
     order = 0
