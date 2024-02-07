@@ -7,7 +7,7 @@ resource "sonarr_download_client_qbittorrent" "rdt-client" {
   remove_completed_downloads = true
 }
 
-resource "prowlarr_download_client_sabnzbd" "sabnzbd" {
+resource "sonarr_download_client_sabnzbd" "sabnzbd" {
   enable   = true
   priority = 1
   name     = "sabnzbd"
