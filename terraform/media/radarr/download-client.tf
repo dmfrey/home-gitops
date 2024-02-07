@@ -6,3 +6,14 @@ resource "radarr_download_client_qbittorrent" "rdt-client" {
   movie_category             = "movies"
   remove_completed_downloads = true
 }
+
+resource "radarr_download_client_sabnzbd" "sabnzbd" {
+  enable   = true
+  priority = 1
+  name     = "sabnzbd"
+  host     = "sabnzbd.download.svc.cluster.local"
+  url_base = "/sabnzbd/"
+  port     = 8080
+  api_key  = var.SABNZBD_API_KEY
+  category = "movie"
+}
