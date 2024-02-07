@@ -13,7 +13,7 @@ resource "sonarr_auto_tag" "series" {
       implementation = "RootFolderSpecification"
       negate         = false
       required       = false
-      value          = "/media/library/TV Shows"
+      value          = "/media/library/tv_shows"
     }
   ]
 }
