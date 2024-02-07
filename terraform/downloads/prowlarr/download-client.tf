@@ -6,7 +6,7 @@ resource "prowlarr_download_client_qbittorrent" "rdt-client" {
   category = "misc"
 }
 
-resource "prowlarr_download_client_sabnzbd" "example" {
+resource "prowlarr_download_client_sabnzbd" "sabnzbd" {
   enable   = true
   priority = 1
   name     = "sabnzbd"
