@@ -40,7 +40,7 @@ spec:
                     - key: app.kubernetes.io/name
                       operator: In
                       values:
-                        - jellyfin
+                        # - jellyfin
                         - plex
                 topologyKey: "kubernetes.io/hostname"
 
@@ -193,18 +193,6 @@ spec:
             secretName: sabnzbd-client-tls-external
 
     persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: sabnzbd-config
-        advancedMounts:
-          main:
-            main:
-              - path: /config/sabnzbd.ini
-                readOnly: false
-                subPath: sabnzbd.ini
-
-
       downloads:
         enabled: true
         existingClaim: nfs-downloads
