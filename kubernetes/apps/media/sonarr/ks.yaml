@@ -37,7 +37,9 @@ spec:
     name: home-gitops
   wait: true
   postBuild:
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: sabnzbd-secret
   dependsOn:
     - name: cluster-apps-sonarr
     - name: cluster-apps-tf-controller
