@@ -20,6 +20,6 @@ resource "radarr_download_client_sabnzbd" "sabnzbd" {
 
 resource "radarr_remote_path_mapping" "sabnzbd" {
   host        = radarr_download_client_sabnzbd.sabnzbd.host
-  remote_path = "/data/downloads/nzb/complete"
-  local_path  = "/media/downloads/nzb/complete"
+  remote_path = "/data/downloads/nzb/complete/"
+  local_path  = "/media/downloads/nzb/complete/"
 }
