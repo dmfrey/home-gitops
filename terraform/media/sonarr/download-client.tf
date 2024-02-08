@@ -17,3 +17,9 @@ resource "sonarr_download_client_sabnzbd" "sabnzbd" {
   api_key  = var.SABNZBD_API_KEY
   tv_category = "series"
 }
+
+resource "sonarr_remote_path_mapping" "sabnzbd" {
+  host        = sonarr_download_client_sabnzbd.sabnzbd.host
+  remote_path = "/data/downloads/nzb/complete"
+  local_path  = "/media/downloads/nzb/complete"
+}
