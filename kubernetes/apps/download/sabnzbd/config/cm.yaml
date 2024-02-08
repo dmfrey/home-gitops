@@ -12,7 +12,7 @@ data:
     pre_script = None
     queue_complete = ""
     queue_complete_pers = 0
-    bandwidth_perc = 100
+    bandwidth_perc = 50
     refresh_rate = 1
     interface_settings = ""
     queue_limit = 20
@@ -29,7 +29,7 @@ data:
     https_port = ""
     username = ""
     password = ""
-    bandwidth_max = "400"
+    bandwidth_max = "1024"
     cache_limit = 1G
     web_dir = Glitter
     web_color = ""
