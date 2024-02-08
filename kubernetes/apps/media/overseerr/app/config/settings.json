@@ -63,7 +63,7 @@
    "useSsl": false,
    "activeProfileId": 5,
    "activeProfileName": "Ultra-HD-2160p",
-   "activeDirectory": "/media/library/Movies",
+   "activeDirectory": "/media/movies",
    "is4k": false,
    "minimumAvailability": "released",
    "tags": [

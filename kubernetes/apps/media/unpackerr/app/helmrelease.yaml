@@ -53,29 +53,29 @@ spec:
               UN_INTERVAL: "1m"
               UN_WEBSERVER_METRICS: "true"
               UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local:8989
-              UN_SONARR_0_PATHS_0: /media/downloads/torrents/tv
-              UN_SONARR_0_PATHS_1: /media/downloads/torrents/anime
+              UN_SONARR_0_PATHS_0: /media/downloads/series
+              UN_SONARR_0_PATHS_1: /media/downloads/anime
               UN_SONARR_0_API_KEY:
                 valueFrom:
                   secretKeyRef:
                     name: starr-apps-secret
                     key: SONARR_API_KEY
               UN_RADARR_0_URL: http://radarr.media.svc.cluster.local:7878
-              UN_RADARR_0_PATHS_0: /media/downloads/torrents/movies
+              UN_RADARR_0_PATHS_0: /media/downloads/movies
               UN_RADARR_0_API_KEY:
                 valueFrom:
                   secretKeyRef:
                     name: starr-apps-secret
                     key: RADARR_API_KEY
               UN_LIDARR_0_URL: http://lidarr.media.svc.cluster.local:8686
-              UN_LIDARR_0_PATHS_0: /media/downloads/torrents/music
+              UN_LIDARR_0_PATHS_0: /media/downloads/music
               UN_LIDARR_0_API_KEY:
                 valueFrom:
                   secretKeyRef:
                     name: starr-apps-secret
                     key: LIDARR_API_KEY
               UN_READARR_0_URL: http://readarr.media.svc.cluster.local:8787
-              UN_READARR_0_PATHS_0: /media/downloads/torrents/books
+              UN_READARR_0_PATHS_0: /media/downloads/books
               UN_READARR_0_API_KEY:
                 valueFrom:
                   secretKeyRef:

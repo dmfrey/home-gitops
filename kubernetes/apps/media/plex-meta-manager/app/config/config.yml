@@ -67,7 +67,7 @@ tmdb:
 #   token: ${RADARR_API_KEY}
 #   add_missing: false
 #   add_existing: false
-#   root_folder_path: /media/library/movies
+#   root_folder_path: /media/movies
 #   monitor: true
 #   availability: announced
 #   quality_profile: Remux-1080p
