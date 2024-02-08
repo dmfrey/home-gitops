@@ -13,7 +13,7 @@ resource "radarr_auto_tag" "movie" {
       implementation = "RootFolderSpecification"
       negate         = false
       required       = false
-      value          = "/media/library/movies"
+      value          = "/media/movies"
     }
   ]
 }
