@@ -124,7 +124,7 @@ data:
     movie_sort_string = ""
     movie_sort_extra = -cd%1
     movie_extra_folder = 0
-    movie_categories = movies,
+    movie_categories = movie,
     enable_date_sorting = 0
     date_sort_string = ""
     date_categories = tv,
@@ -344,8 +344,8 @@ data:
     dir = ""
     newzbin = ""
     priority = -100
-    [[movies]]
-    name = movies
+    [[movie]]
+    name = movie
     order = 0
     pp = ""
     script = Default
