@@ -87,11 +87,11 @@
    "activeProfileId": 4,
    "activeLanguageProfileId": 1,
    "activeProfileName": "HD-1080p",
-   "activeDirectory": "/media/library/TV Shows",
+   "activeDirectory": "/media/tv_shows",
    "activeAnimeProfileId": 7,
    "activeAnimeLanguageProfileId": 1,
    "activeAnimeProfileName": "HD-1080p-Anime",
-   "activeAnimeDirectory": "/media/library/Anime",
+   "activeAnimeDirectory": "/media/anime",
    "tags": [
     6
    ],
