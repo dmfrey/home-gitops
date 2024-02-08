@@ -29,7 +29,7 @@ data:
     https_port = ""
     username = ""
     password = ""
-    bandwidth_max = ""
+    bandwidth_max = "400"
     cache_limit = 1G
     web_dir = Glitter
     web_color = ""
