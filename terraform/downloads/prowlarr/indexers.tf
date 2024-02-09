@@ -10,27 +10,27 @@ resource "prowlarr_indexer" "nzbplanet" {
   fields = [
     {
       name       = "baseUrl"
-      set_value = "https://api.nzbplanet.net"
+      text_value = "https://api.nzbplanet.net"
     },
     {
       name       = "apiPath"
-      set_value = "/api"
+      text_value = "/api"
     },
     {
       name      = "apiKey"
-      set_value = var.NZBPLANET_API_KEY
+      text_value = var.NZBPLANET_API_KEY
     },
     {
       name       = "vipExpiration"
-      set_value = "2025-02-05"
+      text_value = "2025-02-05"
     },
     {
       name         = "baseSettings.queryLimit"
-      set_value = 20000
+      number_value = 20000
     },
     {
       name         = "baseSettings.limitsUnit"
-      set_value = 0
+      number_value = 0
     }
   ]
 }
