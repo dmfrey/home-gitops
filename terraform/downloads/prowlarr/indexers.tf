@@ -10,11 +10,11 @@ resource "prowlarr_indexer" "nzbplanet" {
   fields = [
     {
       name       = "baseUrl"
-      text_value = "https://api.nzbplanet.net"
+      set_value = "https://api.nzbplanet.net"
     },
     {
       name       = "apiPath"
-      text_value = "/api"
+      set_value = "/api"
     },
     {
       name      = "apiKey"
@@ -22,15 +22,15 @@ resource "prowlarr_indexer" "nzbplanet" {
     },
     {
       name       = "vipExpiration"
-      text_value = "2025-02-05"
+      set_value = "2025-02-05"
     },
     {
       name         = "baseSettings.queryLimit"
-      number_value = 20000
+      set_value = 20000
     },
     {
       name         = "baseSettings.limitsUnit"
-      number_value = 0
+      set_value = 0
     }
   ]
 }
