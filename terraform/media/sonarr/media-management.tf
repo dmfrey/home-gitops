@@ -1,5 +1,5 @@
 resource "sonarr_media_management" "settings" {
-  unmonitor_previous_episodes = false
+  unmonitor_previous_episodes = true
   hardlinks_copy              = true
   create_empty_folders        = false
   delete_empty_folders        = false
@@ -9,8 +9,8 @@ resource "sonarr_media_management" "settings" {
   skip_free_space_check       = false
   minimum_free_space          = 100
   recycle_bin_days            = 7
-  chmod_folder                = "755"
-  chown_group                 = "nobody"
+  chmod_folder                = "775"
+  chown_group                 = "1568"
   download_propers_repacks    = "doNotPrefer"
   episode_title_required      = "always"
   extra_file_extensions       = "srt"
