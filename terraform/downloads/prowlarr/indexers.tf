@@ -27,11 +27,11 @@ resource "prowlarr_indexer" "nzbplanet" {
     },
     {
       name         = "baseSettings.queryLimit"
-      set_value = 20000
+      set_value = [20000]
     },
     {
       name         = "baseSettings.limitsUnit"
-      set_value = 0
+      set_value = [0]
     }
   ]
 }
