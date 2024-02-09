@@ -18,6 +18,8 @@ spec:
     - kind: Secret
       name: starr-apps-secret
     - kind: Secret
+      name: prowlarr-secret
+    - kind: Secret
       name: sabnzbd-secret
   runnerPodTemplate:
     metadata:
