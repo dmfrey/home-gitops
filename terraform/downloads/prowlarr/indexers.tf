@@ -4,6 +4,7 @@ resource "prowlarr_indexer" "nzbplanet" {
   implementation  = "Newznab"
   config_contract = "NewznabSettings"
   protocol        = "usenet"
+  app_profile_id  = 1
   priority        = 10
   tags            = []
 
@@ -26,11 +27,11 @@ resource "prowlarr_indexer" "nzbplanet" {
     },
     {
       name         = "baseSettings.queryLimit"
-      number_value = 20000
+      set_value = 20000
     },
     {
       name         = "baseSettings.limitsUnit"
-      number_value = 0
+      set_value = 0
     }
   ]
 }
