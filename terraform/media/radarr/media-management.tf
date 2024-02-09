@@ -1,5 +1,5 @@
 resource "radarr_media_management" "settings" {
-  unmonitor_previously_downloaded_movies = false
+  auto_unmonitor_previously_downloaded_movies = true
   copy_using_hardlinks                        = true
   create_empty_movie_folders                  = false
   delete_empty_folders                        = false
