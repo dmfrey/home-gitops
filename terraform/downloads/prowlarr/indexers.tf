@@ -26,11 +26,11 @@ resource "prowlarr_indexer" "nzbplanet" {
       text_value = "2025-02-05"
     },
     {
-      name         = "queryLimit"
+      name         = "baseSettings.queryLimit"
       number_value = "20000"
     },
     {
-      name         = "limitsUnit"
+      name         = "baseSettings.limitsUnit"
       number_value = "0"
     }
   ]
