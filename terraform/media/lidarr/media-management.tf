@@ -1,7 +1,7 @@
 resource "lidarr_media_management" "settings" {
   unmonitor_previous_tracks                   = true
   hardlinks_copy                              = true
-  create_empty_movie_folders                  = false
+  create_empty_folders                        = false
   delete_empty_folders                        = false
   watch_library_for_changes                   = true
   import_extra_files                          = true
