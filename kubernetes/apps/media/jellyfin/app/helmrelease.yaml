@@ -110,7 +110,7 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:plex"
+          hajimari.io/icon: simple-icons:jellyfin
           hajimari.io/url: "https://jellyfin.${EXTERNAL_DOMAIN}/web"
           external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
