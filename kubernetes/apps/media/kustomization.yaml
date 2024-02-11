@@ -8,6 +8,7 @@ resources:
   # Flux-Kustomizations
   - ./common/ks.yaml
   - ./bazarr/ks.yaml
+  - ./jellyfin/ks.yaml
   - ./lidarr/ks.yaml
   # - ./music-assistant/ks.yaml
   - ./overseerr/ks.yaml

@@ -1,0 +1,158 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app jellyfin
+  namespace: media
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  
+  values:
+
+    defaultPodOptions:
+      enableServiceLinks: false
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44 # video
+          - 109 # render
+          - 911
+          - 65534
+
+    controllers:
+
+      main:
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+
+          main:
+
+            image:
+              repository: ghcr.io/onedr0p/jellyfin
+              tag: 10.8.11@sha256:926e2a9f6677a0c7b12feba29f36c954154869318d6a52df72f72ff9c74cf494
+
+            env:
+              DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+              JELLYFIN_FFmpeg__probesize: 50000000
+              JELLYFIN_FFmpeg__analyzeduration: 50000000
+              JELLYFIN_PublishedServerUrl: https://jellyfin.${EXTERNAL_DOMAIN}
+              TZ: ${TIMEZONE}
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8096
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                # gpu.intel.com/i915: 1
+                cpu: 1
+                memory: 1Gi
+              limits:
+                # gpu.intel.com/i915: 1
+                memory: 3Gi
+
+    service:
+      main:
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVC_JELLYFIN_ADDR}
+        ports:
+          http:
+            port: 8096
+
+    ingress:
+      main:
+        enabled: true
+        className: external-nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          theme.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:plex"
+          hajimari.io/url: "https://jellyfin.${EXTERNAL_DOMAIN}/web"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+        hosts:
+          - host: &host "jellyfin.${EXTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+        - hosts:
+          - *host
+          secretName: jellyfin-tls-external
+
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 20Gi
+        storageClass: ceph-block
+      
+      media:
+        enabled: true
+        existingClaim: nfs-media
+
+      transcode:
+        enabled: true
+        type: custom
+        volumeSpec:
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                storageClassName: ceph-block
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+                  limits:
+                    storage: 500Gi
+
+      cache:
+        enabled: true
+        type: emptyDir

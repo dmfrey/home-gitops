@@ -56,6 +56,9 @@ spec:
         Bazarr:
           url: https://bazarr.${EXTERNAL_DOMAIN}
           group: Media
+        Jellyfin:
+          url: https://jellyfin.${EXTERNAL_DOMAIN}
+          group: Media
         Lidarr:
           url: https://lidarr.${EXTERNAL_DOMAIN}
           group: Media
