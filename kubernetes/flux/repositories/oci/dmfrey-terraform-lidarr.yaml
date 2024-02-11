@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: oci-terraform-lidarr
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: oci://ghcr.io/dmfrey/terraform/lidarr
+  ref:
+    tag: main

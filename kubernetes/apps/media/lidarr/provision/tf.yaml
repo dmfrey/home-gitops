@@ -1,0 +1,21 @@
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: lidarr-provisioner
+  namespace: media
+spec:
+  approvePlan: auto
+  interval: 15m
+  path: "./"
+  sourceRef:
+    kind: OCIRepository
+    name: oci-terraform-lidarr
+    namespace: flux-system
+  writeOutputsToSecret:
+    name: lidarr-tfstate
+  varsFrom:
+    - kind: Secret
+      name: starr-apps-secret
+    - kind: Secret
+      name: sabnzbd-secret
