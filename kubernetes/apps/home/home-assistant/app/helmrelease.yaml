@@ -50,7 +50,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-assistant/home-assistant
-              tag: 2024.1.6
+              tag: 2024.2.1
 
             env:
               - name: TZ
@@ -99,7 +99,7 @@ spec:
 
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.21.0
+              tag: 4.21.1
 
             args:
               - --auth
