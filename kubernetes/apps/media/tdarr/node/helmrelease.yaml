@@ -30,12 +30,9 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        capabilities:
-          add:
-            - CHOWN
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
         supplementalGroups:
           - 34
           - 44
@@ -45,6 +42,9 @@ spec:
           - 911
           - 1568
           - 65534
+        capabilities:
+          add:
+            - CHOWN
 
     controllers:
       main:

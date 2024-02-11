@@ -30,14 +30,13 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 100
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 34
           - 44
-          - 100
           - 109
           - 911
           - 1568
