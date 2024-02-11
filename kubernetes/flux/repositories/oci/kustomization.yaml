@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - dmfrey-terraform-authentik.yaml
   - dmfrey-terraform-prowlarr.yaml
+  - dmfrey-terraform-lidarr.yaml
   - dmfrey-terraform-radarr.yaml
   - dmfrey-terraform-sonarr.yaml
   - dmfrey-terraform-volsync.yaml
