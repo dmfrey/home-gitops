@@ -9,7 +9,7 @@ resources:
   - ./common/ks.yaml
   - ./bazarr/ks.yaml
   - ./jellyfin/ks.yaml
-  - ./lidarr/ks.yaml
+  # - ./lidarr/ks.yaml
   # - ./music-assistant/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
@@ -19,7 +19,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
-  - ./tdarr/ks.yaml
+  # - ./tdarr/ks.yaml
   - ./unpackerr/ks.yaml
   - ./wizarr/ks.yaml
 
