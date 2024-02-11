@@ -137,7 +137,7 @@ spec:
         enabled: true
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
-        size: 1Gi
+        size: 5Gi
         storageClass: ceph-block
 
       media:
