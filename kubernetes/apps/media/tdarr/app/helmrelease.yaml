@@ -57,8 +57,8 @@ spec:
 
             env:
               TZ: "America/New_York"
-              PUID: "1568"
-              PGID: "1568"
+              PUID: "568"
+              PGID: "568"
               ffmpegPath: "/usr/local/bin/ffmpeg"
               TDARR_INSTANCE_NAME: Tdarr
               TDARR__PORT: &port 8265
