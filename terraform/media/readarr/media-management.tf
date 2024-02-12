@@ -1,7 +1,6 @@
 resource "readarr_media_management" "settings" {
   allow_fingerprinting                        = false
   unmonitor_previous_books                    = true
-  default_monitor_new_item_option             = true
   hardlinks_copy                              = true
   create_empty_author_folders                 = false
   delete_empty_folders                        = false
@@ -13,6 +12,7 @@ resource "readarr_media_management" "settings" {
   chown_group                                 = "1568"
   import_extra_files                          = true
   file_date                                   = "none"
+  extra_file_extensions                       = "srt"
   recycle_bin_days                            = 7
   recycle_bin_path                            = "/media/trash"
   rescan_after_refresh                        = "always"
@@ -31,8 +31,9 @@ resource "readarr_root_folder" "books" {
   name                        = "Books"
   path                        = "/media/books"
   default_metadata_profile_id = 1
-  default_quality_profile_id  = 1
+  default_monitor_new_item_option = "all"
   default_monitor_option      = "all"
+  default_quality_profile_id  = 1
   is_calibre_library          = false
   output_profile              = "default"
 }
