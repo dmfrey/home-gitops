@@ -19,7 +19,7 @@ resource "prowlarr_indexer" "nzbplanet" {
     },
     {
       name      = "apiKey"
-      sensitive_value = var.NZBPLANET_API_KEY
+      text_value = var.NZBPLANET_API_KEY
     },
     {
       name       = "vipExpiration"
