@@ -7,7 +7,7 @@ resource "radarr_media_management" "settings" {
   download_propers_and_repacks                = "doNotPrefer"
   skip_free_space_check_when_importing        = false
   minimum_free_space_when_importing           = 100
-  set_permissions_linux                       = false
+  set_permissions_linux                       = true
   chmod_folder                                = "775"
   chown_group                                 = "1568"
   paths_default_static                        = false
