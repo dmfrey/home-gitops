@@ -368,6 +368,14 @@ data:
     dir = ""
     newzbin = ""
     priority = -100
+    [[book]]
+    name = book
+    order = 0
+    pp = ""
+    script = Default
+    dir = ""
+    newzbin = ""
+    priority = -100
     [servers]
     [[news.frugalusenet.com]]
     name = news.frugalusenet.com
