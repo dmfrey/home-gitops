@@ -10,7 +10,7 @@ variable "SABNZBD_API_KEY" {
 
 variable "readarr_url" {
   type    = string
-  default = "http://readarr.media.svc.cluster.local:7878"
+  default = "http://readarr.media.svc.cluster.local:8787"
 }
 
 
