@@ -1,5 +1,7 @@
 resource "readarr_media_management" "settings" {
+  allow_fingerprinting                        = false
   unmonitor_previous_books                    = true
+  default_monitor_new_item_option             = true
   hardlinks_copy                              = true
   create_empty_author_folders                 = false
   delete_empty_folders                        = false
@@ -11,9 +13,10 @@ resource "readarr_media_management" "settings" {
   chown_group                                 = "1568"
   import_extra_files                          = true
   file_date                                   = "none"
-  recycle_bin_cleanup_days                    = 7
-  recycle_bin                                 = "/media/trash"
+  recycle_bin_days                            = 7
+  recycle_bin_path                            = "/media/trash"
   rescan_after_refresh                        = "always"
+  watch_ibrary_for_changes                    = true
 }
 
 resource "readarr_naming" "naming" {
