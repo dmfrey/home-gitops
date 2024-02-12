@@ -1,5 +1,5 @@
 resource "readarr_media_management" "settings" {
-  allow_fingerprinting                        = false
+  allow_fingerprinting                        = "never"
   unmonitor_previous_books                    = true
   hardlinks_copy                              = true
   create_empty_author_folders                 = false
