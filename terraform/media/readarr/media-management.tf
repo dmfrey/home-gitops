@@ -3,7 +3,7 @@ resource "readarr_media_management" "settings" {
   hardlinks_copy                              = true
   create_empty_author_folders                 = false
   delete_empty_folders                        = false
-  download_propers_and_repacks                = "preferAndUpgrade"
+  download_propers_repacks                    = "preferAndUpgrade"
   skip_free_space_check                       = false
   minimum_free_space                          = 100
   set_permissions                             = true
