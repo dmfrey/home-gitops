@@ -44,7 +44,7 @@ spec:
               app.kubernetes.io/name: "{{ name }}"
               app.kubernetes.io/instance: "{{request.object.metadata.labels.\"app.kubernetes.io/instance\"}}"
           stringData:
-            # RESTIC_REPOSITORY: "s3:http://{{ base64_decode(resticSecret.S3_BUCKET_URL) }}{{ base64_decode(resticSecret.S3_BUCKET_NAME) }}/{{ name }}"
+            RESTIC_REPOSITORY: "s3:http://{{ base64_decode(resticSecret.S3_BUCKET_URL) }}{{ base64_decode(resticSecret.S3_BUCKET_NAME) }}/{{ name }}"
             RESTIC_PASSWORD: "{{ base64_decode(resticSecret.RESTIC_PASSWORD) }}"
             GOOGLE_PROJECT_ID: "{{ base64_decode(resticSecret.GOOGLE_PROJECT_ID) }}"
             GOOGLE_APPLICATION_CREDENTIALS: "{{ base64_decode(resticSecret.GOOGLE_APPLICATION_CREDENTIALS) }}"
