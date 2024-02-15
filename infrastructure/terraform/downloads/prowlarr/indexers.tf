@@ -34,4 +34,9 @@ resource "prowlarr_indexer" "nzbplanet" {
       number_value = "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
+
 }
