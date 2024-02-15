@@ -7,7 +7,7 @@ resources:
   # - ./serviceaccount.yaml
   - ./secret-talos-upgrade-api-access.sops.yaml
   # renovate: datasource=docker image=rancher/system-upgrade-controller
-  - https://github.com/rancher/system-upgrade-controller/releases/download/v0.11.0/crd.yaml
+  - https://github.com/rancher/system-upgrade-controller/releases/download/0.13.2/crd.yaml
   - https://github.com/rancher/system-upgrade-controller?ref=v0.13.2
 images:
   - name: rancher/system-upgrade-controller
