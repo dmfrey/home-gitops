@@ -25,6 +25,135 @@ additionalApiServerCertSans: &san
 additionalMachineCertSans: *san
 
 nodes:
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
+  # - hostname: dmf-rpi-001.${INTERNAL_DOMAIN}
+  #   controlPlane: true
+  #   ipAddress: 192.168.30.21
+  #   installDisk: /dev/mmcblk0
+  #   disableSearchDomain: true
+  #   schematic:
+  #     customization:
+  #       extraKernelArgs:
+  #         - net.ifnames=0
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/nut-client
+  #   networkInterfaces:
+  #     - interface: eth0   # enxd83add4cb8c8
+  #       dhcp: false
+  #       vlans:
+  #         - vlanId: 30
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 1024
+  #           vip:
+  #             ip: ${CLUSTER_ENDPOINT_IP}
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 8192
+  #   nodeLabels: &controlPlaneLabels
+  #     plan.upgrade.cattle.io/talos: ""
+  #     topology.kubernetes.io/region: us-east
+  #     topology.kubernetes.io/zone: office
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
+  # - hostname: dmf-rpi-002.${INTERNAL_DOMAIN}
+  #   controlPlane: true
+  #   ipAddress: 192.168.30.22
+  #   installDisk: /dev/mmcblk0
+  #   disableSearchDomain: true
+  #   schematic:
+  #     customization:
+  #       extraKernelArgs:
+  #         - net.ifnames=0
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/nut-client
+  #   networkInterfaces:
+  #     - interface: eth0   # enxd83add4cb925
+  #       dhcp: false
+  #       vlans:
+  #         - vlanId: 30
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 1024
+  #           vip:
+  #             ip: ${CLUSTER_ENDPOINT_IP}
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 8192
+  #   nodeLabels: *controlPlaneLabels
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
+  # - hostname: dmf-rpi-003.${INTERNAL_DOMAIN}
+  #   controlPlane: true
+  #   ipAddress: 192.168.30.23
+  #   installDisk: /dev/mmcblk0
+  #   disableSearchDomain: true
+  #   schematic:
+  #     customization:
+  #       extraKernelArgs:
+  #         - net.ifnames=0
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/nut-client
+  #   networkInterfaces:
+  #     - interface: enxd83add4d7004
+  #       dhcp: false
+  #       vlans:
+  #         - vlanId: 30
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 1024
+  #           vip:
+  #             ip: ${CLUSTER_ENDPOINT_IP}
+  #         - vlanId: 50
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
+  #         - vlanId: 51
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 8192
+  #   nodeLabels: *controlPlaneLabels
+
+  # Raspberry Pi 4 / Quad-core ARM Cortex-A72 / 8GB / 64GB microSD / 512GB Nvme
+  # - hostname: dmf-rpi-004.${INTERNAL_DOMAIN}
+  #   disableSearchDomain: true
+  #   ipAddress: 192.168.30.13
+  #   controlPlane: true
+  #   installDisk: /dev/mmcblk0
+  #   networkInterfaces:
+  #     - interface: eth0
+  #       dhcp: true
+  #       vip:
+  #         ip: 192.168.30.4
+  #       vlans:
+  #         - vlanId: 90
+  #           mtu: 1500
+  #           dhcp: true
+  #           dhcpOptions:
+  #             routeMetric: 4096
   
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
   - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
@@ -53,12 +182,9 @@ nodes:
             dhcpOptions:
               routeMetric: 4096
     nodeLabels: &controlPlaneLabels
-      topology.kubernetes.io/region: dmf
-      topology.kubernetes.io/zone: dmf-u
-      # Needed because Labels are limited to 63 Characters
-      factory.talos.dev/schematic-prefix: 2e487eb3f6f561c5f20dfb47c19cdce6
-      factory.talos.dev/schematic-suffix: d18d263e7e29448a4d506a179a4589c2 
-
+      plan.upgrade.cattle.io/talos: ""
+      topology.kubernetes.io/region: us-east
+      topology.kubernetes.io/zone: office
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
   - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
