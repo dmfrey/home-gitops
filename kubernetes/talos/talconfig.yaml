@@ -56,8 +56,8 @@ nodes:
       topology.kubernetes.io/region: dmf
       topology.kubernetes.io/zone: dmf-u
       # Needed because Labels are limited to 63 Characters
-      factory.talos.dev/schematic-prefix: 2e487eb3f6f561c5f20dfb47c19cdce6
-      factory.talos.dev/schematic-suffix: d18d263e7e29448a4d506a179a4589c2 
+      factory.talos.dev/schematic-prefix: 7df9c60ce73ad18b705e5ebaddba6bd9
+      factory.talos.dev/schematic-suffix: f15cd7f14ba33095d10ed15821096239 
 
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 256GB SSD / 512GB Nvme
