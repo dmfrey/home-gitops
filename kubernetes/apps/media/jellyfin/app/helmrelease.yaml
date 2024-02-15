@@ -111,7 +111,7 @@ spec:
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
-          hajimari.io/url: "https://jellyfin.${EXTERNAL_DOMAIN}/web"
+          hajimari.io/url: "https://jellyfin.${EXTERNAL_DOMAIN}/web/index.html"
           external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
           - host: &host "jellyfin.${EXTERNAL_DOMAIN}"
