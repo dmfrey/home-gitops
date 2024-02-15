@@ -1,20 +1,13 @@
 ---
-root:
-- changed-files:
-  - any-glob-to-any-file: '*'
-  
 area/github:
 - changed-files:
   - any-glob-to-any-file: .github/**/*
-
 area/kubernetes:
-- changed-files:
-  - any-glob-to-any-file: kubernetes/**/*
-
-area/hack:
-- changed-files:
-  - any-glob-to-any-file: hack/**/*
-
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/**/*
+area/talos:
+  - changed-files:
+      - any-glob-to-any-file: talos/**/*
 area/terraform:
-- changed-files:
-  - any-glob-to-any-file: terraform/**/*
+  - changed-files:
+      - any-glob-to-any-file: terraform/**/*
