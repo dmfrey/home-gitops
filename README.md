@@ -5,8 +5,6 @@
 - [actions-runner-controller](https://github.com/actions/actions-runner-controller): Self-hosted Github runners.
 - [cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
 - [external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records for my cluster.
-- [metallb](https://metallb.universe.tf/): Bare-Metal Load-balancer
-implementation.
 - [ingress-nginx](https://github.com/kubernetes/ingress-nginx/): Ingress controller to expose HTTP traffic to pods over DNS.
 - [sops](https://toolkit.fluxcd.io/guides/mozilla-sops/): Managed secrets for Kubernetes, Ansible and Terraform which are commited to Git.
 - [tf-controller](https://github.com/weaveworks/tf-controller): Additional Flux component used to run Terraform from within a Kubernetes cluster.
