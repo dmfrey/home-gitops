@@ -33,7 +33,7 @@ jobs:
           dir_names: true
           json: true
           files: |
-            terraform/**
+            infrastructure/terraform/**
 
       - name: List all changed files
         run: |
