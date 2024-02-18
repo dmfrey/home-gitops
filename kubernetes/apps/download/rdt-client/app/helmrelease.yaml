@@ -59,7 +59,7 @@ spec:
           main:
             image:
               repository: rogerfar/rdtclient 
-              tag: 2.0.61
+              tag: 2.0.62
 
             ports:
               - name: http
