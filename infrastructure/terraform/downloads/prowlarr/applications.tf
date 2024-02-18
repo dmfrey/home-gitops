@@ -5,11 +5,6 @@ resource "prowlarr_application_lidarr" "lidarr" {
   prowlarr_url    = var.prowlarr_url
   api_key         = var.LIDARR_API_KEY
   sync_categories = [3000, 3010, 3030, 3040, 3050, 3060]
-
-  lifecycle {
-    ignore_changes = all
-  }
-
 }
 
 resource "prowlarr_application_readarr" "readarr" {
@@ -19,11 +14,6 @@ resource "prowlarr_application_readarr" "readarr" {
   prowlarr_url    = var.prowlarr_url
   api_key         = var.READARR_API_KEY
   sync_categories = [3030, 7000, 7010, 7020, 7030, 7040, 7050, 7060]
-
-  lifecycle {
-    ignore_changes = all
-  }
-
 }
 
 resource "prowlarr_application_radarr" "radarr" {
@@ -33,11 +23,6 @@ resource "prowlarr_application_radarr" "radarr" {
   prowlarr_url    = var.prowlarr_url
   api_key         = var.RADARR_API_KEY
   sync_categories = [2000, 2010, 2020, 2030, 2040, 2045, 2050, 2060, 2070, 2080]
-
-  lifecycle {
-    ignore_changes = all
-  }
-
 }
 
 resource "prowlarr_application_sonarr" "sonarr" {
@@ -47,9 +32,4 @@ resource "prowlarr_application_sonarr" "sonarr" {
   prowlarr_url    = var.prowlarr_url
   api_key         = var.SONARR_API_KEY
   sync_categories = [5000, 5010, 5020, 5030, 5040, 5045, 5050]
-
-  lifecycle {
-    ignore_changes = all
-  }
-
 }

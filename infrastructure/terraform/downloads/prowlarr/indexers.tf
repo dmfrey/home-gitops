@@ -1,42 +1,37 @@
-resource "prowlarr_indexer" "nzbplanet" {
+resource "prowlarr_indexer" "usenet_nzbplanet" {
   enable          = true
   name            = "NzbPlanet"
   implementation  = "Newznab"
   config_contract = "NewznabSettings"
-  protocol        = "usenet"
   app_profile_id  = 1
-  priority        = 10
+  protocol        = "usenet"
+  priority        = 1
   tags            = []
 
   fields = [
     {
-      name       = "baseUrl"
-      text_value = "https://api.nzbplanet.net"
+      name: "baseUrl"
+      text_value: "https://api.nzbplanet.net"
     },
     {
-      name       = "apiPath"
-      text_value = "/api"
+      name: "apiPath"
+      text_value: "/api"
     },
     {
-      name      = "apiKey"
-      text_value = var.NZBPLANET_API_KEY
+      name: "apiKey"
+      text_value: var.NZBPLANET_API_KEY
     },
     {
-      name       = "vipExpiration"
-      text_value = "2025-02-05"
+      name: "vipExpiration"
+      text_value: "2025-02-05"
     },
     {
-      name         = "baseSettings.queryLimit"
-      number_value = "20000"
+      name: "baseSettings.queryLimit"
+      number_value: "20000"
     },
     {
-      name         = "baseSettings.limitsUnit"
-      number_value = "0"
+      name: "baseSettings.limitsUnit"
+      number_value: "0"
     }
   ]
-
-  lifecycle {
-    ignore_changes = all
-  }
-
 }

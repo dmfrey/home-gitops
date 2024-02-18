@@ -15,9 +15,4 @@ resource "prowlarr_download_client_sabnzbd" "sabnzbd" {
   port     = 8080
   api_key  = var.SABNZBD_API_KEY
   category = "misc"
-
-  lifecycle {
-    ignore_changes = all
-  }
-
 }
