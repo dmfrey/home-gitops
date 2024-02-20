@@ -27,6 +27,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    allowBreakTheGlass: true
     installCRDs: true
     metrics:
       enabled: true
