@@ -37,8 +37,8 @@ spec:
     runner:
       serviceAccount:
         create: true
-        allowedNamespaces:
-          - download
-          - media
-          - security
-          - storage
+      allowedNamespaces:
+        - download
+        - media
+        - security
+        - storage

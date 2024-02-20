@@ -5,6 +5,7 @@ metadata:
   name: prowlarr-provisioner
   namespace: download
 spec:
+  allowBreakTheGlass: true    
   approvePlan: auto
   interval: 15m
   path: "./"
@@ -26,4 +27,5 @@ spec:
       labels:
         vpn.home.arpa/enabled: "false"
   tfstate:
-    forceUnlock: "auto"
+    forceUnlock: "yes"
+    lockIdentifier: 3b8c0f3e-cc52-3390-b7a5-ae1faa9d01e1
