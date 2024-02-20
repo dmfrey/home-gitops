@@ -56,6 +56,7 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups:
+          - 911
           - 1568
           - 65534
 
