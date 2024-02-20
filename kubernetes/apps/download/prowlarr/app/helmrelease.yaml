@@ -56,7 +56,7 @@ spec:
               tag: 1.13.3.4273
 
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 9696
               PROWLARR__AUTHENTICATION_METHOD: External
