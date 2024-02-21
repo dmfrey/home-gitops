@@ -9,6 +9,6 @@ resources:
   # Flux-Kustomizations
   - ./common/ks.yaml
   - ./flaresolverr/ks.yaml
-  # - ./sabnzbd/ks.yaml
-  # - ./rdt-client/ks.yaml
+  - ./sabnzbd/ks.yaml
+  - ./rdt-client/ks.yaml
   # - ./prowlarr/ks.yaml
