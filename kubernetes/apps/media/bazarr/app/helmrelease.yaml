@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,21 +29,20 @@ spec:
 
   values:
 
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65534
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 1568
-              - 65534
 
         containers:
           main:
@@ -52,7 +51,7 @@ spec:
               tag: 1.4.2@sha256:f100d67c9dc885fee58262dc0b24d6b8c877a6d441ca8b1264486bf3a4f3e77c
 
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
               BAZARR__INSTANCE_NAME: Bazarr
               BAZARR__PORT: &port 6767
               BAZARR__APPLICATION_URL: https://bazarr.${EXTERNAL_DOMAIN}

@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -28,6 +28,18 @@ spec:
     keepHistory: false
   
   values:
+    
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        supplementalGroups:
+          - 39
+          - 44
+          - 100
+          - 1000
+          - 65534
 
     controllers:
       main:
@@ -36,17 +48,6 @@ spec:
           reloader.stakater.com/auto: "true"
           backup.home.arpa/enabled: "true"
 
-        pod:
-         securityContext:
-            supplementalGroups:
-            - 39
-            - 44
-            - 100
-            - 911
-            - 1000
-            - 1568
-            - 65534
-
         containers:
           main:
             image:
@@ -54,7 +55,7 @@ spec:
               tag: 1.32.7.7621-871adbd44
 
               env:
-                TZ: "America/New_York"
+                TZ: ${TIMEZONE}
                 ALLOWED_NETWORKS: "192.0.0.0/8" #,172.22.0.0/16"
                 # ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400,https://plex.${EXTERNAL_DOMAIN}:443"
 

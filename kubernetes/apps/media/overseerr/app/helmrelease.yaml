@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,22 +29,20 @@ spec:
 
   values:
 
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65534
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 911
-              - 1568
-              - 65534
 
         containers:
           main:

@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,6 +29,16 @@ spec:
 
   values:
 
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 100
+          - 65534
+
     controllers:
       main:
         type: statefulset
@@ -39,18 +49,6 @@ spec:
         replicas: 1
         strategy: RollingUpdate
 
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 100
-              - 911
-              - 1568
-              - 65534
-
         containers:
           main:
             image:
@@ -58,7 +56,7 @@ spec:
               tag: 4.0.1.929
 
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
               SONARR__INSTANCE_NAME: Sonarr
               SONARR__PORT: &port 8989
               SONARR__APPLICATION_URL: https://sonarr.${EXTERNAL_DOMAIN}

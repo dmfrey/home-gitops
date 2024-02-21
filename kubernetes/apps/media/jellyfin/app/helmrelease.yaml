@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -35,15 +35,13 @@ spec:
       #   intel.feature.node.kubernetes.io/gpu: "true"
 
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 44 # video
           - 109 # render
-          - 911
-          - 1568
           - 65534
 
     controllers:
@@ -62,11 +60,11 @@ spec:
               tag: 10.8.11@sha256:926e2a9f6677a0c7b12feba29f36c954154869318d6a52df72f72ff9c74cf494
 
             env:
+              TZ: ${TIMEZONE}
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
               JELLYFIN_PublishedServerUrl: https://jellyfin.${EXTERNAL_DOMAIN}
-              TZ: ${TIMEZONE}
 
             probes:
               liveness: &probes

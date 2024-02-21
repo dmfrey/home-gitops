@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,6 +29,15 @@ spec:
 
   values:
 
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65534
+
     controllers:
       main:
         type: statefulset
@@ -39,16 +48,6 @@ spec:
         replicas: 1
         strategy: RollingUpdate
 
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 1568
-              - 65534
-
         containers:
           main:
             image:
@@ -56,7 +55,7 @@ spec:
               tag: 5.3.6.8612@sha256:d0786b4c22ab3a9a34cef30671a471c89df2beb95a7d50ba60e2f21dea5e0b28
 
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
               RADARR__APPLICATION_URL: https://radarr.${EXTERNAL_DOMAIN}

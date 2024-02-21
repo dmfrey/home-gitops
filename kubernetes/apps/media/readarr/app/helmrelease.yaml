@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,23 +29,21 @@ spec:
 
   values:
 
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 100
+          - 65534
+
     controllers:
       main:
         type: statefulset
         annotions:
           reloader.stakater.com/auto: "true"
-
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 100
-              - 911
-              - 1568
-              - 65534
 
         containers:
           main:
@@ -54,7 +52,7 @@ spec:
               tag: 0.3.19.2437@sha256:c1ebe8d64d3503ec42110df8163621404a9a00a871a72c5508c044ed92b426b7
 
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
               READARR__INSTANCE_NAME: Readarr
               READARR__PORT: &port 8787
               READARR__APPLICATION_URL: https://readarr.${EXTERNAL_DOMAIN}
