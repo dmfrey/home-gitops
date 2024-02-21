@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.5.0
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -40,7 +40,7 @@ spec:
                     - key: app.kubernetes.io/name
                       operator: In
                       values:
-                        # - jellyfin
+                        - jellyfin
                         - plex
                 topologyKey: "kubernetes.io/hostname"
 
