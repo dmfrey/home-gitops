@@ -1,0 +1,76 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app admin
+  namespace: download
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+
+    defaultPodOptions:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "5"
+
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        supplementalGroups:
+          - 1568
+          - 65534
+
+    controllers:
+      main:
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          main:
+            image:
+              repository: docker.io/library/busybox
+              tag: latest
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 150Mi
+              limits:
+                memory: 300Mi
+
+    service:
+      main:
+        enabled: false
+
+    persistence:
+      downloads:
+        enabled: true
+        existingClaim: nfs-downloads
+        globalMounts:
+          - path: /data/downloads
+            readOnly: false

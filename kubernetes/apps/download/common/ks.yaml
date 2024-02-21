@@ -16,3 +16,21 @@ spec:
     substituteFrom: []
   dependsOn: 
     - name: cluster-apps-nfs-subdir
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-download-admin
+  namespace: flux-system
+spec:
+  interval: 15m
+  path: "./kubernetes/apps/download/common/admin"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  dependsOn: 
+    - name: cluster-apps-nfs-subdir
