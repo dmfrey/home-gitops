@@ -60,6 +60,11 @@ spec:
               repository: rogerfar/rdtclient 
               tag: 2.0.62
 
+            env:
+              TZ: ${TIMEZONE}
+              PUID: "1568"
+              PGID: "1568"
+
             ports:
               - name: http
                 containerPort: &port 6500
