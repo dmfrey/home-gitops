@@ -56,6 +56,10 @@ spec:
               repository: docker.io/library/busybox
               tag: latest
 
+            command:
+              - sleep
+              - "3600"
+
             resources:
               requests:
                 cpu: 50m
