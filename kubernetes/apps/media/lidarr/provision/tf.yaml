@@ -19,3 +19,6 @@ spec:
       name: starr-apps-secret
     - kind: Secret
       name: sabnzbd-secret
+  tfstate:
+    forceUnlock: "yes"
+    lockIdentifier: 664c7a46-4f48-9b33-2778-a7655c6bb32f
