@@ -30,6 +30,9 @@ spec:
   values:
 
     defaultPodOptions:
+      annotations:
+        vpn.home.arpa/enabled: "true"
+
       dnsConfig:
         options:
           - name: ndots
@@ -42,10 +45,6 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-
-        pod:
-          annotations:
-            vpn.home.arpa/enabled: "true"
 
         statefulset:
           volumeClaimTemplates:

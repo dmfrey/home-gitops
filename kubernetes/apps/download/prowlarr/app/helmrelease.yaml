@@ -29,6 +29,16 @@ spec:
 
   values:
     
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 1568
+          - 65534
+
     controllers:
       main:
         type: statefulset
@@ -38,16 +48,6 @@ spec:
 
         replicas: 1
         strategy: RollingUpdate
-
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 1568
-              - 65534
 
         containers:
           main:

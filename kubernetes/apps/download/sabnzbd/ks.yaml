@@ -54,6 +54,7 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
+    - name: cluster-apps-download-common-mount
     - name: cluster-apps-sabnzbd-config
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-pod-gateway
