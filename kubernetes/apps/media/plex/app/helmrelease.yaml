@@ -33,8 +33,9 @@ spec:
       securityContext:
         supplementalGroups:
           - 39
-          - 44
+          - 44 # video
           - 100
+          - 109 # render
           - 1000
           - 1568
           - 65534
@@ -66,6 +67,7 @@ spec:
                   cpu: 500m
                   memory: 2Gi
                 limits:
+                  amd.com/gpu: 1
                   memory: 10Gi
 
     service:
