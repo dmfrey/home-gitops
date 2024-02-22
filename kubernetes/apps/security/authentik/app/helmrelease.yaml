@@ -80,9 +80,9 @@ spec:
     #   image: ghcr.io/maxmind/geoipupdate:v6.0.0
     #   updateInterval: 8
 
-    blueprints: 
-      configMaps: []
-      secrets: []
+    # blueprints: 
+    #   configMaps: []
+    #   secrets: []
 
     prometheus:
       rules:
