@@ -31,19 +31,19 @@ spec:
         - secretRef:
             name: authentik-secret
       
-      envValueFrom:
-        AUTHENTIK_POSTGRESQL__NAME:
-          secretKeyRef:
-            name: pg-authentik-app
-            key: username
-        AUTHENTIK_POSTGRESQL__USER:
-          secretKeyRef:
-            name: pg-authentik-app
-            key: username
-        AUTHENTIK_POSTGRESQL__PASSWORD:
-          secretKeyRef:
-            name: pg-authentik-app
-            key: password
+      # envValueFrom:
+      #   AUTHENTIK_POSTGRESQL__NAME:
+      #     secretKeyRef:
+      #       name: pg-authentik-app
+      #       key: username
+      #   AUTHENTIK_POSTGRESQL__USER:
+      #     secretKeyRef:
+      #       name: pg-authentik-app
+      #       key: username
+      #   AUTHENTIK_POSTGRESQL__PASSWORD:
+      #     secretKeyRef:
+      #       name: pg-authentik-app
+      #       key: password
 
       # volumes:
       #   - configMap:
@@ -61,11 +61,10 @@ spec:
         enabled: false
         send_pii: false
       postgresql:
-        host: pg-authentik-rw
+        host: file:///postgres-creds/host
         port: 5432
-        name: ""
-        user: ""
-        password: ""
+        user: file:///postgres-creds/username
+        password: file:///postgres-creds/password
       email:
         host: "smtp-relay.network.svc.cluster.local"
         port: 2525
@@ -123,3 +122,15 @@ spec:
         serviceMonitor:
           enabled: true
     
+      volumes: &postgresCredsVolume
+        - name: postgres-creds
+          secret:
+            secretName: pg-authentik-app
+      volumeMounts: &postgresCredsVolumeMounts
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true
+
+    worker:
+      volumes: *postgresCredsVolume
+      volumeMounts: *postgresCredsVolumeMounts
