@@ -1,7 +1,7 @@
 variable "authentik_url" {
   type        = string
   description = "authentik url used to connect"
-  default     = "http://authentik.security.svc.cluster.local:80"
+  default     = "http://authentik-server.security.svc.cluster.local:80"
 }
 
 variable "AUTHENTIK_BOOTSTRAP_TOKEN" {
