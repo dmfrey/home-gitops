@@ -16,9 +16,42 @@ spec:
         name: authentik
         namespace: flux-system
       interval: 15m
+  
   values:
+    
     global:
       storageClass: ceph-block
+
+      image:
+        repository: ghcr.io/goauthentik/server
+        tag: 2024.2.0
+        pullPolicy: IfNotPresent
+
+      envFrom:
+        - secretRef:
+            name: authentik-secret
+      
+      envValueFrom:
+        AUTHENTIK_POSTGRESQL__NAME:
+          secretKeyRef:
+            name: pg-authentik-app
+            key: username
+        AUTHENTIK_POSTGRESQL__USER:
+          secretKeyRef:
+            name: pg-authentik-app
+            key: username
+        AUTHENTIK_POSTGRESQL__PASSWORD:
+          secretKeyRef:
+            name: pg-authentik-app
+            key: password
+
+      # volumes:
+      #   - configMap:
+      #       name: authentik-branding
+      #     name: branding
+      # volumeMounts:
+      #   - mountPath: /media/branding
+      #     name: branding
 
     authentik:
       security_key: ""
@@ -38,74 +71,54 @@ spec:
         port: 2525
         use_tls: false
         from: "authentik@${EXTERNAL_DOMAIN}"
-    envFrom:
-      - secretRef:
-          name: authentik-secret
-    envValueFrom:
-      AUTHENTIK_POSTGRESQL__NAME:
-        secretKeyRef:
-          name: pg-authentik-app
-          key: username
-      AUTHENTIK_POSTGRESQL__USER:
-        secretKeyRef:
-          name: pg-authentik-app
-          key: username
-      AUTHENTIK_POSTGRESQL__PASSWORD:
-        secretKeyRef:
-          name: pg-authentik-app
-          key: password
-
+    
     # geoip:
     #   enabled: true
     #   accountId: "878850"
     #   licenseKey: ${SECRET_MAXMIND_LICENSE_KEY}
     #   editionIds: "GeoLite2-City"
-    #   image: maxmindinc/geoipupdate:v6.0
+    #   image: ghcr.io/maxmind/geoipupdate:v6.0.0
     #   updateInterval: 8
 
-    image:
-      repository: ghcr.io/goauthentik/server
-      tag: 2024.2.0
-      pullPolicy: IfNotPresent
+    blueprints: 
+      configMaps: []
+      secrets: []
 
-    ingress:
-      enabled: true
-      ingressClassName: external-nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "material-symbols:security-rounded"
-        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-        nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-        nginx.org/websocket-services: authentik
-        nginx.ingress.kubernetes.io/enable-global-auth: "false"
-        external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
-      hosts:
-      - host: auth.${EXTERNAL_DOMAIN}
-        paths:
-        - path: /
+    prometheus:
+      rules:
+        create: true
 
-      tls:
-      - hosts:
-        - auth.${EXTERNAL_DOMAIN}
-        secretName: authentik-tls-external
     redis:
       enabled: true
       master:
         securityContext:
           enabled: true
 
-    prometheus:
-      serviceMonitor:
-        create: true
-      rules:
-        create: true
+    server:
 
-    blueprints: []
-    # volumes:
-    #   - configMap:
-    #       name: authentik-branding
-    #     name: branding
-    # volumeMounts:
-    #   - mountPath: /media/branding
-    #     name: branding
+      ingress:
+        enabled: true
+        ingressClassName: external-nginx
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "material-symbols:security-rounded"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+          nginx.org/websocket-services: authentik
+          nginx.ingress.kubernetes.io/enable-global-auth: "false"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+        hosts:
+        - host: auth.${EXTERNAL_DOMAIN}
+          paths:
+          - path: /
+
+        tls:
+        - hosts:
+          - auth.${EXTERNAL_DOMAIN}
+          secretName: authentik-tls-external
+
+      metrics:
+        serviceMonitor:
+          enabled: true
+    
