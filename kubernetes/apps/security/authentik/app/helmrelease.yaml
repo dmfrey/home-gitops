@@ -109,8 +109,9 @@ spec:
           nginx.ingress.kubernetes.io/enable-global-auth: "false"
           external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hosts:
-        - host: auth.${EXTERNAL_DOMAIN}
-          paths:
+        - auth.${EXTERNAL_DOMAIN}
+        pathType: "Prefix"
+        paths:
           - path: /
 
         tls:
