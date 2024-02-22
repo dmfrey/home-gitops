@@ -112,7 +112,7 @@ spec:
         - auth.${EXTERNAL_DOMAIN}
         pathType: "Prefix"
         paths:
-          - path: /
+          - "/"
 
         tls:
         - hosts:
