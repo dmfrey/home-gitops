@@ -86,7 +86,7 @@ spec:
 
     prometheus:
       rules:
-        create: true
+        enabled: true
 
     redis:
       enabled: true
