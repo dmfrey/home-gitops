@@ -32,7 +32,7 @@ spec:
       securityContext:
         runAsUser: 0
         runAsGroup: 0
-        fsGroup: 100
+        fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 34
@@ -55,8 +55,8 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-              PUID: "568"
-              PGID: "568"
+              PUID: "1000"
+              PGID: "1000"
               ffmpegPath: "/usr/local/bin/ffmpeg"
               TDARR_INSTANCE_NAME: Tdarr
               TDARR__PORT: &port 8265
