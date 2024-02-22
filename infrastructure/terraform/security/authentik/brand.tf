@@ -1,8 +1,8 @@
-data "authentik_tenant" "authentik-default" {
+data "authentik_brand" "authentik-default" {
   domain = "authentik-default"
 }
 
-resource "authentik_tenant" "homelab5767" {
+resource "authentik_brand" "homelab5767" {
   domain              = var.external_domain
   default             = false
   branding_title      = "homelab5767"
