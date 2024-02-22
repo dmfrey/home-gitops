@@ -65,7 +65,7 @@ spec:
 
     image:
       repository: ghcr.io/goauthentik/server
-      tag: 2023.10.7
+      tag: 2024.2.0
       pullPolicy: IfNotPresent
 
     ingress:
