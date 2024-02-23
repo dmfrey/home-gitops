@@ -67,6 +67,9 @@ spec:
                   fieldRef:
                     fieldPath: spec.nodeName
 
+            nodeSelector:
+              feature.node.kubernetes.io/pci-0300_1002.present: "true"
+
             ports:
               - name: http
                 containerPort: &port 8265
