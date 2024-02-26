@@ -134,7 +134,7 @@ spec:
       dashboard:
         ingressClassName: nginx-internal
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          cert-manager.io/cluster-issuer: selfsigned-issuer
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: "simple-icons:chess-rook"
           hajimari.io/enable: "true"
