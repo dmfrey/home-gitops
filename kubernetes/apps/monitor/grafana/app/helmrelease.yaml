@@ -140,7 +140,23 @@ spec:
               implementation: prometheus
 
     deploymentStrategy:
-      type: Recreate
+      type: RollingUpdate
+
+    readinessProbe:
+      httpGet:
+        path: /api/health
+        port: 3000
+      initialDelaySeconds: 60
+      timeoutSeconds: 30
+      failureThreshold: 10
+
+    livenessProbe:
+      httpGet:
+        path: /api/health
+        port: 3000
+      initialDelaySeconds: 60
+      timeoutSeconds: 30
+      failureThreshold: 10
 
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
