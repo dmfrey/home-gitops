@@ -259,8 +259,6 @@ spec:
 
     rbac:
       create: true
-      # useExistingRole: cluster-admin
-      # namespaced: false
 
     resources:
       limits:
@@ -279,36 +277,36 @@ spec:
     serviceMonitor:
       enabled: true
 
-    sidecar:
-      logLevel: INFO
-      alerts:
-        enabled: true
-        label: grafana.io/alert
-        labelValue: "true"
-      dashboards:
-        enabled: true
-        label: grafana.io/dashboard
-        labelValue: "true"
-        folderAnnotation: "grafana.io/folder"
-        searchNamespace: ALL
-        provider:
-          disableDelete: true
-          foldersFromFilesStructure: true
-      datasources:
-        enabled: true
-        label: grafana.io/datasource
-        labelValue: "true"
-        searchNamespace: ALL
-      notifiers:
-        enabled: true
-        label: grafana.io/notifier
-        labelValue: "true"
-        searchNamespace: ALL
-      plugins:
-        enabled: true
-        label: grafana.io/plugin
-        labelValue: "true"
-        searchNamespace: ALL
+    # sidecar:
+    #   logLevel: INFO
+    #   alerts:
+    #     enabled: true
+    #     label: grafana.io/alert
+    #     labelValue: "true"
+    #   dashboards:
+    #     enabled: true
+    #     label: grafana.io/dashboard
+    #     labelValue: "true"
+    #     folderAnnotation: "grafana.io/folder"
+    #     searchNamespace: ALL
+    #     provider:
+    #       disableDelete: true
+    #       foldersFromFilesStructure: true
+    #   datasources:
+    #     enabled: true
+    #     label: grafana.io/datasource
+    #     labelValue: "true"
+    #     searchNamespace: ALL
+    #   notifiers:
+    #     enabled: true
+    #     label: grafana.io/notifier
+    #     labelValue: "true"
+    #     searchNamespace: ALL
+    #   plugins:
+    #     enabled: true
+    #     label: grafana.io/plugin
+    #     labelValue: "true"
+    #     searchNamespace: ALL
 
     topologySpreadConstraints:
       - maxSkew: 2
