@@ -259,8 +259,8 @@ spec:
 
     rbac:
       create: true
-      # useExistingClusterRole: cluster-admin
-      # namespaced: false
+      useExistingRole: cluster-admin
+      namespaced: false
 
     resources:
       limits:
