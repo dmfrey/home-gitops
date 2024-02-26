@@ -236,6 +236,13 @@ spec:
         cpu: 23m
         memory: 127Mi
 
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 80
+      targetPort: 3000
+      portName: service
+
     serviceMonitor:
       enabled: true
 
