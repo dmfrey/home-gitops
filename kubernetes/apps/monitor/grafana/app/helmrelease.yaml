@@ -182,7 +182,7 @@ spec:
         enabled: false
       database:
         type: postgres
-        url: $__file{/etc/secrets/db/uri}
+        host: $__file{/etc/secrets/db/host}:$__file{/etc/secrets/db/port}
         name: $__file{/etc/secrets/db/dbname}
         user: $__file{/etc/secrets/db/username}
         password: $__file{/etc/secrets/db/password}
