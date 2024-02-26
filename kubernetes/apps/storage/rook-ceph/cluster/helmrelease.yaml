@@ -52,7 +52,9 @@ spec:
             enabled: true
           - name: pg_autoscaler
             enabled: true
-
+          - name: prometheus
+            enabled: true
+            
       resources:
         mgr:
           requests:
@@ -119,15 +121,6 @@ spec:
           - name: "dmf-amd-003"
             devices:
               - name: "/dev/nvme0n1"
-          # - name: "dmf-rpi-001"
-          #   devices:
-          #     - name: "/dev/sda"
-          # - name: "dmf-rpi-002"
-          #   devices:
-          #     - name: "/dev/sda"
-          # - name: "dmf-rpi-003"
-          #   devices:
-          #     - name: "/dev/sda"
 
     ingress:
       ingressClassName: nginx-internal

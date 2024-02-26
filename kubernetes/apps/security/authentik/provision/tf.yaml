@@ -103,9 +103,6 @@ spec:
         Unifi:
           url: https://unifi.${EXTERNAL_DOMAIN}
           group: Network
-        Rook:
-          url: https://rook.${EXTERNAL_DOMAIN}
-          group: Storage
     - name: oauth2_applications
       value:
         Grafana:
