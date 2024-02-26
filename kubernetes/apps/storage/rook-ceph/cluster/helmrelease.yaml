@@ -134,7 +134,7 @@ spec:
       dashboard:
         ingressClassName: nginx-internal
         annotations:
-          cert-manager.io/cluster-issuer: selfsigned-issuer
+          cert-manager.io/cluster-issuer: homelab-k8s-001-internal-issuer
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: "simple-icons:chess-rook"
           hajimari.io/enable: "true"
