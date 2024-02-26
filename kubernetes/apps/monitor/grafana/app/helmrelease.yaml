@@ -142,22 +142,6 @@ spec:
     deploymentStrategy:
       type: Recreate
 
-    readinessProbe:
-      httpGet:
-        path: /api/health
-        port: 3000
-      # initialDelaySeconds: 60
-      # timeoutSeconds: 30
-      # failureThreshold: 10
-
-    livenessProbe:
-      httpGet:
-        path: /api/health
-        port: 3000
-      initialDelaySeconds: 60
-      timeoutSeconds: 30
-      failureThreshold: 10
-
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
@@ -258,7 +242,7 @@ spec:
       secret.reloader.stakater.com/reload: grafana-secrets,pg-grafana-app
 
     rbac:
-      create: true
+      pspEnable: false
 
     resources:
       limits:
@@ -277,12 +261,12 @@ spec:
     serviceMonitor:
       enabled: true
 
-    # sidecar:
-    #   logLevel: INFO
-    #   alerts:
-    #     enabled: true
-    #     label: grafana.io/alert
-    #     labelValue: "true"
+    sidecar:
+      logLevel: INFO
+      alerts:
+        enabled: true
+        label: grafana.io/alert
+        labelValue: "true"
     #   dashboards:
     #     enabled: true
     #     label: grafana.io/dashboard
