@@ -152,6 +152,13 @@ spec:
     envFromSecrets:
       - name: grafana-secret
 
+    extraSecretMounts:
+      - name: pg-grafana-app-secret
+        mountPath: /etc/secrets/db
+        secretName: pg-grafana-app
+        defaultMode: 0444
+        readOnly: true
+
     grafana.ini:
       analytics:
         check_for_updates: false
@@ -173,6 +180,12 @@ spec:
         enabled: true
       auth.anonymous:
         enabled: false
+      database:
+        type: postgres
+        url: $__file{/etc/secrets/db/uri}
+        name: $__file{/etc/secrets/db/dbname}
+        user: $__file{/etc/secrets/db/username}
+        password: $__file{/etc/secrets/db/password}
       paths:
         data: /var/lib/grafana/data
       server:
@@ -214,7 +227,7 @@ spec:
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: grafana
-      # secret.reloader.stakater.com/reload: grafana-secrets
+      secret.reloader.stakater.com/reload: grafana-secrets,pg-grafana-app
 
     resources:
       limits:
