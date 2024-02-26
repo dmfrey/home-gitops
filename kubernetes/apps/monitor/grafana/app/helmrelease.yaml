@@ -257,6 +257,11 @@ spec:
       configmap.reloader.stakater.com/reload: grafana
       secret.reloader.stakater.com/reload: grafana-secrets,pg-grafana-app
 
+    rbac:
+      create: true
+      useExistingClusterRole: cluster-admin
+      namespaced: false
+
     resources:
       limits:
         memory: 219Mi
