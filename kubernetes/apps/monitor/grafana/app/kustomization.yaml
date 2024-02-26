@@ -6,4 +6,5 @@ namespace: monitor
 resources:
   - ./secret-grafana.sops.yaml
   - ./pgcluster.yaml
+  - ./pvc.yaml
   - ./helmrelease.yaml
