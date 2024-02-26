@@ -20,17 +20,19 @@ spec:
     fullnameOverride: nginx-internal
 
     controller:
-      allowSnippetAnnotations: true
       replicaCount: 3
 
       updateStrategy:
         type: RollingUpdate
 
+      allowSnippetAnnotations: true
+      enableAnnotationValidations: true
+
       service:
         enabled: true
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "ingress-int.dmfrey.com"
+          external-dns.alpha.kubernetes.io/hostname: "ingress-int.${INTERNAL_DOMAIN}"
           io.cilium/lb-ipam-ips: ${SVC_INTERNAL_NGINX_ADDR}
         externalTrafficPolicy: Cluster
 
@@ -38,7 +40,7 @@ spec:
         enabled: true
 
       ingressClassResource:
-        name: internal-nginx
+        name: nginx-internal
         default: true
         controllerValue: k8s.io/ingress-nginx-internal
 
@@ -48,14 +50,14 @@ spec:
             - key: ingress-class
               operator: In
               values:
-                - internal-nginx
+                - nginx-internal
 
       config:
         block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
         client-header-timeout: 120
         client-body-buffer-size: "100M"
-        client-body-size: "10M"
         client-body-timeout: 120
+        custom-http-errors: 404,401,403,500,503
         enable-brotli: "true"
         enable-ocsp: "true"
         enable-real-ip: "true"
@@ -100,10 +102,16 @@ spec:
       resources:
         requests:
           cpu: 100m
-          memory: 256M
+          memory: 768M
         limits:
           cpu: 500m
-          memory: 1024M
+          memory: 768M
 
     defaultBackend:
-      enabled: false
+      enabled: true
+      image:
+        repository: ghcr.io/tarampampam/error-pages
+        tag: 2.26.0
+      extraEnvs:
+        - { name: TEMPLATE_NAME, value: lost-in-space }
+        - { name: SHOW_DETAILS, value: "false" }

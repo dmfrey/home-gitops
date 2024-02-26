@@ -20,8 +20,10 @@ spec:
     fullnameOverride: nginx-external
 
     controller:
-      allowSnippetAnnotations: true
       replicaCount: 3
+
+      allowSnippetAnnotations: true
+      enableAnnotationValidations: true
 
       updateStrategy:
         type: RollingUpdate
@@ -30,7 +32,7 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "ingress-ext.dmfrey.com"
+          external-dns.alpha.kubernetes.io/hostname: "ingress-ext.${EXTERNAL_DOMAIN}"
           io.cilium/lb-ipam-ips: ${SVC_EXTERNAL_NGINX_ADDR}
         externalTrafficPolicy: Cluster
 
@@ -38,7 +40,7 @@ spec:
         enabled: true
 
       ingressClassResource:
-        name: external-nginx
+        name: nginx-external
         default: false
         controllerValue: k8s.io/ingress-nginx-external
 
@@ -48,14 +50,14 @@ spec:
             - key: ingress-class
               operator: In
               values:
-                - external-nginx
+                - nginx-external
 
       config:
         block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
         client-header-timeout: 120
         client-body-buffer-size: "100M"
-        client-body-size: "10M"
         client-body-timeout: 120
+        custom-http-errors: 404,401,403,500,503
         enable-brotli: "true"
         enable-ocsp: "true"
         enable-real-ip: "true"
@@ -74,7 +76,7 @@ spec:
           "http_user_agent": "$http_user_agent"}
         proxy-body-size: 0
         proxy-buffer-size: "16k"
-        ssl-protocols: "TLSv1.2 TLSv1.3"  # TLSv1 TLSv1.1
+        ssl-protocols: "TLSv1.3 TLSv1.2"  # TLSv1 TLSv1.1
         use-forwarded-headers: "true"
 
       metrics:
@@ -100,10 +102,16 @@ spec:
       resources:
         requests:
           cpu: 100m
-          memory: 256M
+          memory: 768M
         limits:
           cpu: 500m
-          memory: 1024M
+          memory: 768M
 
     defaultBackend:
-      enabled: false
+      enabled: true
+      image:
+        repository: ghcr.io/tarampampam/error-pages
+        tag: 2.26.0
+      extraEnvs:
+        - { name: TEMPLATE_NAME, value: lost-in-space }
+        - { name: SHOW_DETAILS, value: "false" }
