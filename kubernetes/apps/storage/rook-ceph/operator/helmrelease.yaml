@@ -17,10 +17,18 @@ spec:
         name: rook-ceph
         namespace: flux-system
   values:
+    
     crds:
       enabled: true
 
     csi:
+      provisioner:
+        image: registry.k8s.io/sig-storage/csi-provisioner:v4.0.0
+        
+      enableLiveness: true
+      serviceMonitor:
+        enabled: true
+        
       kubeletDirPath: /var/lib/kubelet
       enableCSIHostNetwork: true
       pluginTolerations:

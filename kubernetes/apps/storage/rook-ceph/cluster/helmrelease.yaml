@@ -15,7 +15,9 @@ spec:
         kind: HelmRepository
         name: rook-ceph
         namespace: flux-system
+  
   values:
+  
     toolbox:
       enabled: true
 
@@ -27,21 +29,9 @@ spec:
 
     configOverride: |
       [global]
-      # debug ms = 1/5
       bdev_enable_discard = true
       bdev_async_discard = true
-      # [mon]
-      # debug mon = 1
-      # debug paxos = 1/5
-      # debug auth = 2
-      # [osd]
-      # debug osd = 1/5
-      # debug filestore = 1/5
-      # debug journal = 1
-      # debug monc = 5/20
-      # [mds]
-      # debug mds = 1
-      # debug mds balancer = 1
+
     cephClusterSpec:
       network:
         provider: host
@@ -54,7 +44,7 @@ spec:
             enabled: true
           - name: prometheus
             enabled: true
-            
+
       resources:
         mgr:
           requests:
