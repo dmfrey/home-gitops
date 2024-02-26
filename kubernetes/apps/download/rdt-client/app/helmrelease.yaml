@@ -83,7 +83,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: external-nginx
+        className: nginx-external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"

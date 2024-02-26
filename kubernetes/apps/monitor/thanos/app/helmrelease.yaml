@@ -46,7 +46,7 @@ spec:
           hajimari.io/icon: "mdi:alpha-t-box"
           external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         hostname: &host thanos.${EXTERNAL_DOMAIN}
-        ingressClassName: external-nginx
+        ingressClassName: nginx-external
         tls: false
         extraTls:
           - hosts:

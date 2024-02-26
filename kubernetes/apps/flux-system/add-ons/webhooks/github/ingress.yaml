@@ -7,7 +7,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  ingressClassName: external-nginx
+  ingressClassName: nginx-external
   annotations:
     external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
   rules:
