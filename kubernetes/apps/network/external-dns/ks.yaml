@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-externaldns-shared
+  name: cluster-apps-external-dns-crds
   namespace: flux-system
 spec:
   interval: 15m
-  path: "./kubernetes/apps/network/external-dns/shared"
+  path: "./kubernetes/apps/network/external-dns/crds"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -18,27 +18,6 @@ spec:
   decryption:
     provider: sops
   dependsOn: []
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-externaldns-external
-  namespace: flux-system
-spec:
-  interval: 15m
-  path: "./kubernetes/apps/network/external-dns/external"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
-  postBuild:
-    substituteFrom: []
-  decryption:
-    provider: sops
-  dependsOn:
-    - name: cluster-apps-externaldns-shared
-    - name: cluster-apps-kube-prometheus-stack-crds
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -58,5 +37,26 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-externaldns-shared
     - name: cluster-apps-kube-prometheus-stack-crds
+    - name: cluster-apps-externaldns-crds
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-external-dns-external
+  namespace: flux-system
+spec:
+  interval: 15m
+  path: "./kubernetes/apps/network/external-dns/external"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: cluster-apps-externaldns-crds

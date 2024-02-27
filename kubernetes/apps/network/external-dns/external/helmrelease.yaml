@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: externaldns-external
+  name: &name external-dns-external
   namespace: network
 spec:
   interval: 15m
@@ -19,18 +19,18 @@ spec:
       interval: 15m
   
   values:
-    fullnameOverride: &name externaldns-external
-
-    interval: 10s
+    
+    fullnameOverride: *name
 
     domainFilters:
       - ${EXTERNAL_DOMAIN}
+      - ${PROFESSIONAL_DOMAIN}
 
     env:
       - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
-            name: externaldns-external-secret
+            name: external-dns-external-secret
             key: cloudflare_api_token
 
     extraArgs:
@@ -39,9 +39,14 @@ spec:
       - --cloudflare-proxied
       - --cloudflare-dns-records-per-page=5000
       - --ingress-class=nginx-external
+      - --exclude-target-net=172.16.0.0/12
+      - --exclude-target-net=192.168.0.0/16
+      - --exclude-domains=${INTERNAL_DOMAIN}
+
+    interval: 10s
 
     podAnnotations:
-      secret.reloader.stakater.com/reload: external-dns-secret
+      secret.reloader.stakater.com/reload: external-dns-external-secret
 
     policy: sync
     provider: cloudflare
@@ -57,10 +62,11 @@ spec:
       enabled: true
   
     sources:
-      - ingress
       - crd
+      - ingress
+      - service
 
-    txtPrefix: "homelab-k8s-001-"
+    txtPrefix: "${CLUSTER_NAME}-"
 
   postRenderers:
     - kustomize:
