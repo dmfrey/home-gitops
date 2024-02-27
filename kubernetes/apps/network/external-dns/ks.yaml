@@ -38,7 +38,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack-crds
-    - name: cluster-apps-externaldns-crds
+    - name: cluster-apps-external-dns-crds
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -59,4 +59,4 @@ spec:
     provider: sops
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack-crds
-    - name: cluster-apps-externaldns-crds
+    - name: cluster-apps-external-dns-crds
