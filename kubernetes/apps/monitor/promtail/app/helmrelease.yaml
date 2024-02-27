@@ -34,9 +34,9 @@ spec:
   
   values:
 
-    image:
-      registry: ghcr.io
-      repository: k8s-at-home/promtail
+    # image:
+    #   registry: ghcr.io
+    #   repository: k8s-at-home/promtail
 
     config:
       lokiAddress: http://loki-gateway.monitor.svc.cluster.local:80/loki/api/v1/push
