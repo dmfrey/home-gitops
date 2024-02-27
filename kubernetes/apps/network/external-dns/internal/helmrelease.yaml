@@ -32,6 +32,7 @@ spec:
       - --rfc2136-port=53
       - --rfc2136-zone=${INTERNAL_DOMAIN}
       - --rfc2136-tsig-axfr
+      - --rfc2136-insecure
       - --ingress-class=nginx-internal
       - --txt-owner-id=${INTERNAL_DOMAIN}
 
