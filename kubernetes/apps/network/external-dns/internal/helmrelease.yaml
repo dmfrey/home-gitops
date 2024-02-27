@@ -19,22 +19,22 @@ spec:
       interval: 15m
   
   values:
+    
     fullnameOverride: &name externaldns-internal
     
-    interval: 10s
-
     domainFilters:
-      - ${EXTERNAL_DOMAIN}
+      - ${INTERNAL_DOMAIN}
+
+    extraArgs:
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --rfc2136-host=${DNS_ADDR}
+      - --rfc2136-port=53
+      - --rfc2136-zone=${INTERNAL_DOMAIN}
+      - --rfc2136-tsig-axfr
+      - --ingress-class=nginx-internal
 
     env:
-      - name: EXTERNAL_DNS_RFC2136_HOST
-        value: "192.168.30.3"
-      - name: EXTERNAL_DNS_RFC2136_PORT
-        value: "53"
-      - name: EXTERNAL_DNS_RFC2136_ZONE
-        value: "dmfrey.com"
-      - name: EXTERNAL_DNS_RFC2136_TSIG_AXFR
-        value: "true"
       - name: EXTERNAL_DNS_RFC2136_TSIG_KEYNAME
         value: externaldns
       - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET_ALG
@@ -48,11 +48,15 @@ spec:
             name: externaldns-internal-secret
             key: bind_rndc_secret
 
+    interval: 10s
+
     podAnnotations:
       secret.reloader.stakater.com/reload: externaldns-internal-secret
 
     policy: sync
     provider: rfc2136
+    registry: txt
+    txtPrefix: "${CLUSTER_NAME}-"
 
     resources:
       requests:
@@ -65,10 +69,9 @@ spec:
       enabled: true
   
     sources:
+      - crd
       - ingress
       - service
-
-    txtPrefix: "homelab-k8s-001-"
 
   postRenderers:
     - kustomize:
@@ -79,5 +82,7 @@ spec:
               name: *name
             patch: |
               - op: add
-                path: /spec/template/spec/enableServiceLinks
-                value: false
+                path: /spec/template/spec/containers/0/envFrom
+                value:
+                  - secretRef:
+                      name: externaldns-internal-secret
