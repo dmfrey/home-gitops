@@ -4,5 +4,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: network
 resources:
-  - ./secret-externaldns-internal.sops.yaml
+  - ./secret-external-dns-internal.sops.yaml
   - ./helmrelease.yaml

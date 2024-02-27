@@ -43,7 +43,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-externaldns-internal
+  name: cluster-apps-external-dns-internal
   namespace: flux-system
 spec:
   interval: 15m
