@@ -26,6 +26,7 @@ spec:
       - ${INTERNAL_DOMAIN}
 
     extraArgs:
+      - --log-level=debug 
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --rfc2136-host=${DNS_ADDR}
