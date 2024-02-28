@@ -34,7 +34,7 @@ resources:
   - prometheus-community.yaml
   - rook-ceph.yaml
   - stakater.yaml
-  - synology-csi.yaml
+  # - synology-csi.yaml
   - tf-controller.yaml
-  - weave-gitops.yaml
+  # - weave-gitops.yaml
   - zalando-postgres-operator.yaml
