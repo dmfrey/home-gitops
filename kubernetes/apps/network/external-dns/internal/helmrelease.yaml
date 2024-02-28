@@ -25,17 +25,14 @@ spec:
     domainFilters:
       - ${INTERNAL_DOMAIN}
 
-    args:
-      - --log-level=debug
-
     extraArgs:
+      - --debug
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --rfc2136-host=${DNS_ADDR}
       - --rfc2136-port=53
       - --rfc2136-zone=${INTERNAL_DOMAIN}
       - --rfc2136-tsig-axfr
-      - --rfc2136-insecure
       - --ingress-class=nginx-internal
       - --txt-owner-id=${INTERNAL_DOMAIN}
 
