@@ -40,7 +40,7 @@ spec:
           main:
             image:
               repository: flaresolverr/flaresolverr
-              tag: v3.3.15
+              tag: v3.3.16
 
             ports:
               - name: http
