@@ -6,39 +6,70 @@ metadata:
   name: arc-home-ops
   namespace: dev
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: gha-runner-scale-set
-      version: 0.8.1
+      version: 0.8.2
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
+  
+  valuesFrom:
+    - targetPath: github-app-credentials.github_app_id
+      kind: Secret
+      name: actions-runner-controller-auth-secret
+      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_APP_ID
+    - targetPath: github-app-credentials.github_app_installation_id
+      kind: Secret
+      name: actions-runner-controller-auth-secret
+      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_INSTALLATION_ID
+    - targetPath: github-app-credentials.github_app_private_key
+      kind: Secret
+      name: actions-runner-controller-auth-secret
+      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY
+
   values:
+
     runnerScaleSetName: arc-home-ops
+
     githubConfigUrl: https://github.com/dmfrey/home-gitops
-    githubConfigSecret: github-app-credentials
+
     minRunners: 1
     maxRunners: 3
+
     containerMode:
       type: dind
+
     template:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/onedr0p/actions-runner:2.314.1
+            image: ghcr.io/onedr0p/actions-runner:2.314.1@sha256:338d851a66c4942f7a33d4dc3d0ff1459e05e31e258153242521e9f8e4c64dd7
+            command: ["/home/runner/run.sh"]
+    
+    controllerServiceAccount:
+      name: actions-runner-controller-gha-rs-controller
+      namespace: dev
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
@@ -47,36 +78,66 @@ metadata:
   name: arc-hass
   namespace: dev
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: gha-runner-scale-set
-      version: 0.8.1
+      version: 0.8.2
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
+
   maxHistory: 2
+
   install:
     createNamespace: true
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+
   uninstall:
     keepHistory: false
+
+  valuesFrom:
+    - targetPath: github-app-credentials.github_app_id
+      kind: Secret
+      name: actions-runner-controller-auth-secret
+      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_APP_ID
+    - targetPath: github-app-credentials.github_app_installation_id
+      kind: Secret
+      name: actions-runner-controller-auth-secret
+      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_INSTALLATION_ID
+    - targetPath: github-app-credentials.github_app_private_key
+      kind: Secret
+      name: actions-runner-controller-auth-secret
+      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY
+
   values:
+
     runnerScaleSetName: arc-hass
+
     githubConfigUrl: https://github.com/dmfrey/hass-config
-    githubConfigSecret: github-app-credentials
+
     minRunners: 1
     maxRunners: 3
+
     containerMode:
       type: dind
+
     template:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/onedr0p/actions-runner:2.314.1
+            image: ghcr.io/onedr0p/actions-runner:2.314.1@sha256:338d851a66c4942f7a33d4dc3d0ff1459e05e31e258153242521e9f8e4c64dd7
+            command: ["/home/runner/run.sh"]
+    
+    controllerServiceAccount:
+      name: actions-runner-controller-gha-rs-controller
+      namespace: dev

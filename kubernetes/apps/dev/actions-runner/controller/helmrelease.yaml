@@ -6,27 +6,35 @@ metadata:
   name: actions-runner-controller
   namespace: dev
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: gha-runner-scale-set-controller
-      version: 0.8.1
+      version: 0.8.2
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     crds: CreateReplace
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
+  
   values:
+
     fullnameOverride: arc-scale-set-controller
