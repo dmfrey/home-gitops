@@ -33,25 +33,12 @@ spec:
   uninstall:
     keepHistory: false
   
-  valuesFrom:
-    - targetPath: githubConfigSecret.github_app_id
-      kind: Secret
-      name: github-app-credentials
-      valuesKey: github_app_id
-    - targetPath: githubConfigSecret.github_app_installation_id
-      kind: Secret
-      name: github-app-credentials
-      valuesKey: github_app_installation_id
-    - targetPath: githubConfigSecret.github_app_private_key
-      kind: Secret
-      name: github-app-credentials
-      valuesKey: github_app_private_key
-
   values:
 
     runnerScaleSetName: arc-home-ops
 
     githubConfigUrl: https://github.com/dmfrey/home-gitops
+    githubConfigSecret: github-app-credentials
 
     minRunners: 1
     maxRunners: 3
@@ -105,25 +92,12 @@ spec:
   uninstall:
     keepHistory: false
 
-  valuesFrom:
-    - targetPath: githubConfigSecret.github_app_id
-      kind: Secret
-      name: github-app-credentials
-      valuesKey: github_app_id
-    - targetPath: githubConfigSecret.github_app_installation_id
-      kind: Secret
-      name: github-app-credentials
-      valuesKey: github_app_installation_id
-    - targetPath: githubConfigSecret.github_app_private_key
-      kind: Secret
-      name: github-app-credentials
-      valuesKey: github_app_private_key
-
   values:
 
     runnerScaleSetName: arc-hass
 
     githubConfigUrl: https://github.com/dmfrey/hass-config
+    githubConfigSecret: github-app-credentials
 
     minRunners: 1
     maxRunners: 3
