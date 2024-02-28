@@ -32,9 +32,6 @@ spec:
       - --rfc2136-port=53
       - --rfc2136-zone=${INTERNAL_DOMAIN}
       - --rfc2136-tsig-axfr
-      - --rfc2136-tsig-secret=${EXTERNAL_DNS_RFC2136_TSIG_SECRET}
-      - --rfc2136-tsig-secret-alg=${EXTERNAL_DNS_RFC2136_TSIG_SECRET_ALG}
-      - --rfc2136-tsig-keyname=${EXTERNAL_DNS_RFC2136_TSIG_KEYNAME}
       - --ingress-class=nginx-internal
       - --txt-owner-id=${INTERNAL_DOMAIN}
 
