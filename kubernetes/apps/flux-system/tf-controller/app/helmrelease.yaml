@@ -6,7 +6,9 @@ metadata:
   name: tf-controller
   namespace: flux-system
 spec:
+  
   interval: 30m
+  
   chart:
     spec:
       chart: tf-controller
@@ -15,26 +17,34 @@ spec:
         kind: HelmRepository
         name: tf-controller
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
+  
   values:
+  
     allowBreakTheGlass: true
     installCRDs: true
+  
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
         endpoint:
           interval: 1m
+  
     runner:
       serviceAccount:
         create: true
