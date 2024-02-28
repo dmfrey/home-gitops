@@ -6,6 +6,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./actions-runner/ks.yaml
+  # - ./actions-runner/ks.yaml
   - ./kubernetes-schemas/ks.yaml
 
