@@ -54,7 +54,7 @@ spec:
             command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
-      name: arc-home-ops-gha-rs-no-permission
+      name: arc-scale-set-controller
       namespace: dev
 
 ---
@@ -113,5 +113,5 @@ spec:
             command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
-      name: arc-hass-gha-rs-no-permission
+      name: arc-scale-set-controller
       namespace: dev
