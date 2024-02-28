@@ -94,6 +94,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
+          external-dns.alpha.kubernetes.io/hostname: jellyfin.${INTERNAL_DOMAIN}
           io.cilium/lb-ipam-ips: ${SVC_JELLYFIN_ADDR}
         ports:
           http:
