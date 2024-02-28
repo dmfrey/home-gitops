@@ -26,7 +26,6 @@ spec:
       - ${INTERNAL_DOMAIN}
 
     extraArgs:
-      - --debug
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --rfc2136-host=${DNS_ADDR}
@@ -37,6 +36,8 @@ spec:
       - --txt-owner-id=${INTERNAL_DOMAIN}
 
     interval: 10s
+
+    logLevel: debug
 
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-internal-secret
