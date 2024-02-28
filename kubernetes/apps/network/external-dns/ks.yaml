@@ -33,7 +33,9 @@ spec:
     name: home-gitops
   wait: true
   postBuild:
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: external-dns-internal-secret
   decryption:
     provider: sops
   dependsOn:
