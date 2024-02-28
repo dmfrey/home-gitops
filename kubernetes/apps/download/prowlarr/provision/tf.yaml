@@ -25,6 +25,6 @@ spec:
     metadata:
       labels:
         vpn.home.arpa/enabled: "false"
-  tfstate:
-    forceUnlock: "yes"
-    lockIdentifier: 3b8c0f3e-cc52-3390-b7a5-ae1faa9d01e1
+  # tfstate:
+  #   forceUnlock: "yes"
+  #   lockIdentifier: 3b8c0f3e-cc52-3390-b7a5-ae1faa9d01e1
