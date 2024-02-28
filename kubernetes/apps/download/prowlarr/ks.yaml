@@ -19,23 +19,23 @@ spec:
     - name: cluster-apps-reflector
     - name: cluster-apps-kube-prometheus-stack-crds
     - name: cluster-apps-pod-gateway
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-prowlarr-provision
-  namespace: flux-system
-spec:
-  interval: 15m
-  timeout: 2m
-  path: "./kubernetes/apps/download/prowlarr/provision"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
-  postBuild:
-    substituteFrom: []
-  dependsOn:
-    - name: cluster-apps-tf-controller
-    - name: cluster-apps-prowlarr
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: cluster-apps-prowlarr-provision
+#   namespace: flux-system
+# spec:
+#   interval: 15m
+#   timeout: 2m
+#   path: "./kubernetes/apps/download/prowlarr/provision"
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: true
+#   postBuild:
+#     substituteFrom: []
+#   dependsOn:
+#     - name: cluster-apps-tf-controller
+#     - name: cluster-apps-prowlarr
