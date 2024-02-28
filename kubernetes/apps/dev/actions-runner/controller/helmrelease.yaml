@@ -34,7 +34,4 @@ spec:
   
   uninstall:
     keepHistory: false
-  
-  values:
 
-    fullnameOverride: arc-scale-set-controller

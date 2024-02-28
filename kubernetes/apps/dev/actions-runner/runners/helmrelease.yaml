@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: arc-home-ops
+  name: arc-home-gitops
   namespace: dev
 spec:
   
@@ -35,7 +35,7 @@ spec:
   
   values:
 
-    runnerScaleSetName: arc-home-ops
+    runnerScaleSetName: arc-runner-set-home-gitops
 
     githubConfigUrl: https://github.com/dmfrey/home-gitops
     githubConfigSecret: github-app-credentials
@@ -54,7 +54,7 @@ spec:
             command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
-      name: arc-scale-set-controller
+      name: actions-runner-controller-gha-rs-controller
       namespace: dev
 
 ---
@@ -62,7 +62,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: arc-hass
+  name: arc-hass-config
   namespace: dev
 spec:
 
@@ -94,7 +94,7 @@ spec:
 
   values:
 
-    runnerScaleSetName: arc-hass
+    runnerScaleSetName: arc-runner-set-hass-config
 
     githubConfigUrl: https://github.com/dmfrey/hass-config
     githubConfigSecret: github-app-credentials
@@ -113,5 +113,5 @@ spec:
             command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
-      name: arc-scale-set-controller
+      name: actions-runner-controller-gha-rs-controller
       namespace: dev
