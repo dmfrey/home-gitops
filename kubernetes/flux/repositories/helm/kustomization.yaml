@@ -19,7 +19,7 @@ resources:
   - hashicorp.yaml
   - influxdata.yaml
   - ingress-nginx.yaml
-  - intel.yaml
+  # - intel.yaml
   - jetstack.yaml
   - kubereboot.yaml
   - kubernetes-sigs-descheduler.yaml
@@ -28,7 +28,7 @@ resources:
   - kubernetes-sigs-nfd.yaml
   - kubernetes-sigs-nfs-subdir.yaml
   - kyverno.yaml
-  - metallb.yaml
+  # - metallb.yaml
   - piraeus.yaml
   - postfinance.yaml
   - prometheus-community.yaml
@@ -37,4 +37,4 @@ resources:
   # - synology-csi.yaml
   - tf-controller.yaml
   # - weave-gitops.yaml
-  - zalando-postgres-operator.yaml
+  # - zalando-postgres-operator.yaml
