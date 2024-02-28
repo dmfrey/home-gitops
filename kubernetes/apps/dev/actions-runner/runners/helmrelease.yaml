@@ -67,7 +67,7 @@ spec:
             command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
-      name: actions-runner-controller-gha-rs-controller
+      name: arc-home-ops-gha-rs-no-permission
       namespace: dev
 
 ---
@@ -139,5 +139,5 @@ spec:
             command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
-      name: actions-runner-controller-gha-rs-controller
+      name: arc-hass-gha-rs-no-permission
       namespace: dev
