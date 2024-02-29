@@ -38,35 +38,11 @@ spec:
       name: pg-dataflow-app
       valuesKey: jdbc-uri
       targetPath: externalDatabase.dataflow.url
-    - kind: Secret
-      name: pg-dataflow-app
-      valuesKey: dbname
-      targetPath: externalDatabase.dataflow.database
-    - kind: Secret
-      name: pg-dataflow-app
-      valuesKey: username
-      targetPath: externalDatabase.dataflow.username
-    - kind: Secret
-      name: pg-dataflow-app
-      valuesKey: username
-      targetPath: externalDatabase.dataflow.password
     
     - kind: Secret
       name: pg-skipper-app
       valuesKey: jdbc-uri
       targetPath: externalDatabase.skipper.url
-    - kind: Secret
-      name: pg-skipper-app
-      valuesKey: dbname
-      targetPath: externalDatabase.skipper.database
-    - kind: Secret
-      name: pg-skipper-app
-      valuesKey: username
-      targetPath: externalDatabase.skipper.username
-    - kind: Secret
-      name: pg-skipper-app
-      valuesKey: username
-      targetPath: externalDatabase.skipper.password
 
     - kind: Secret
       name: rabbit-dataflow-default-user
@@ -102,12 +78,12 @@ spec:
         metricsDashboard: https://grafana.dmfrey.com:443
 
       resources:
-        limits:
-          cpu: "1"
-          memory: 2048M
         requests:
           cpu: "0.5"
           memory: 1024M
+        limits:
+          cpu: "1"
+          memory: 2048M
 
       service:
         type: LoadBalancer
@@ -137,7 +113,7 @@ spec:
           cpu: "0.5"
           memory: 1024Mi
       
-      replicaCount: 3
+      replicaCount: 1
       
       serviceMonitor:
         enabled: true
