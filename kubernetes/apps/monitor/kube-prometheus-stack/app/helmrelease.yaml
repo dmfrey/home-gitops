@@ -6,7 +6,9 @@ metadata:
   name: kube-prometheus-stack
   namespace: monitor
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: kube-prometheus-stack
@@ -15,10 +17,16 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
+  
   maxHistory: 2
+  
   uninstall:
     keepHistory: false
+  
   values:
+  
+    cleanPrometheusOperatorObjectNames: true
+
     alertmanager:
       config:
         global:
@@ -110,19 +118,20 @@ spec:
               resources:
                 requests:
                   storage: 1Gi              
+    
     grafana:
       enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          label: grafana.io/dashboard
-          labelValue: "true"
-          multicluster:
-            etcd:
-              enabled: true
-        datasources:
-          label: grafana.io/datasource
-          labelValue: "true"
+      # forceDeployDashboards: true
+      # sidecar:
+      #   dashboards:
+      #     label: grafana.io/dashboard
+      #     labelValue: "true"
+      #     multicluster:
+      #       etcd:
+      #         enabled: true
+      #   datasources:
+      #     label: grafana.io/datasource
+      #     labelValue: "true"
 
     kubeStateMetrics:
       enabled: true
