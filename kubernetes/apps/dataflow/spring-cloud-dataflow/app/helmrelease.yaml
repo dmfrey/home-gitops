@@ -6,7 +6,7 @@ metadata:
   name: spring-cloud-dataflow
   namespace: dataflow
 spec:
-  interval: 15m
+  interval: 5m
   chart:
     spec:
       chart: spring-cloud-dataflow
@@ -15,7 +15,23 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-      interval: 15m
+
+  maxHistory: 2
+
+  install:
+    createNamespace: true
+    timeout: 1m
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    timeout: 1m
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
 
   valuesFrom:
     - kind: Secret
@@ -105,6 +121,9 @@ spec:
     mariadb:
       enabled: false
 
+    externalDatabase:
+      enabled: true
+      
     rabbitmq:
       enabled: false
       
