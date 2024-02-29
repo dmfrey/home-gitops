@@ -22,10 +22,37 @@ spec:
       name: pg-dataflow-app
       valuesKey: jdbc-uri
       targetPath: externalDatabase.dataflow.url
+    
     - kind: Secret
       name: pg-skipper-app
       valuesKey: jdbc-uri
       targetPath: externalDatabase.skipper.url
+
+    - kind: Secret
+      name: rabbit-dataflow-default-user
+      valuesKey: password
+      targetPath: rabbit.auth.password
+    - kind: Secret
+      name: rabbit-dataflow-erlang-cookie
+      valuesKey: .erlang.cookie
+      targetPath: rabbit.auth.erlangCookie
+
+    - kind: Secret
+      name: rabbit-dataflow-default-user
+      valuesKey: host
+      targetPath: externalRabbit.host
+    - kind: Secret
+      name: rabbit-dataflow-default-user
+      valuesKey: port
+      targetPath: externalRabbit.port
+    - kind: Secret
+      name: rabbit-dataflow-default-user
+      valuesKey: username
+      targetPath: externalRabbit.username
+    - kind: Secret
+      name: rabbit-dataflow-default-user
+      valuesKey: password
+      targetPath: externalRabbit.password
 
   values:
 
@@ -81,13 +108,5 @@ spec:
     rabbitmq:
       enabled: false
       
-      auth:
-        password: xdfZC_hLJWxgZWSykcjMX0ZBnyyKquiy
-        erlangCookie: ukRqiEE9N0j-9a1FDek4sdNUuueHoCOg
-
     externalRabbitmq:
       enabled: true
-      host: rabbit-dataflow.dataflow.svc
-      port: 5672
-      username: default_user_HktklERc08siwnP3o4e
-      password: xdfZC_hLJWxgZWSykcjMX0ZBnyyKquiy
