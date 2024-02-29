@@ -30,6 +30,9 @@ spec:
   wait: true
   postBuild:
     substituteFrom: []
+  dependsOn:
+    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-cloudnative-pg
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
