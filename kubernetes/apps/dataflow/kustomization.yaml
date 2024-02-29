@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  - ./notification.yaml
   # Flux-Kustomizations
-  # - ./spring-cloud-dataflow/ks.yaml
+  - ./spring-cloud-dataflow/ks.yaml
 
