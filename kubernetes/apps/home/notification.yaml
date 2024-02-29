@@ -3,7 +3,7 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: media
+  name: home
   namespace: flux-system
 spec:
   providerRef:
@@ -11,5 +11,5 @@ spec:
   eventSeverity: info
   eventSources:
     - kind: Kustomization
-      name: media
+      name: home
       namespace: flux-system
