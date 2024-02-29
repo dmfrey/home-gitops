@@ -17,24 +17,22 @@ spec:
         namespace: flux-system
       interval: 15m
 
+  valuesFrom:
+    - kind: Secret
+      name: pg-dataflow-app
+      valuesKey: jdbc-uri
+      targetPath: externalDatabase.dataflow.url
+    - kind: Secret
+      name: pg-skipper-app
+      valuesKey: jdbc-uri
+      targetPath: externalDatabase.skipper.url
+
   values:
 
     server:
 
       configuration:
         metricsDashboard: https://grafana.dmfrey.com:443
-
-      env:
-        - name: EXTERNAL_DATABASE_DATAFLOW_URL
-          valueFrom:
-            secretKeyRef:
-              name: pg-dataflow-app
-              key: jdbc-uri
-        - name: EXTERNAL_DATABASE_SKIPPER_URL
-          valueFrom:
-            secretKeyRef:
-              name: pg-dataflow-app
-              key: jdbc-uri
 
       resources:
         limits:
