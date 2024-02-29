@@ -24,6 +24,18 @@ spec:
       configuration:
         metricsDashboard: https://grafana.dmfrey.com:443
 
+      env:
+        - name: EXTERNAL_DATABASE_DATAFLOW_URL
+          valueFrom:
+            secretKeyRef:
+              name: pg-dataflow-app
+              key: jdbc-uri
+        - name: EXTERNAL_DATABASE_SKIPPER_URL
+          valueFrom:
+            secretKeyRef:
+              name: pg-dataflow-app
+              key: jdbc-uri
+
       resources:
         limits:
           cpu: "1"
@@ -68,12 +80,6 @@ spec:
     mariadb:
       enabled: false
 
-    externalDatabase:
-      dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow?password=ssW1CWDN7HbDHUV5VK2InEMdMURuXnJ2885GmkPMsgUvngjABySsqfv1zbyK3wWd&user=dataflow
-      skipper:
-        url: jdbc:postgresql://pg-skipper-rw:5432/skipper?password=lIbnGBUD8EmvDBK7nzYCFhYwE5GdQEBDdgdM3x7WnCC8W20M3QOtvNZd2PvcgCiQ&user=skipper
-    
     rabbitmq:
       enabled: false
       
