@@ -33,6 +33,7 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-cloudnative-pg
+    - name: cluster-apps-rabbitmq-cluster-operator
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
