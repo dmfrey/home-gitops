@@ -5,4 +5,6 @@ kind: Kustomization
 namespace: monitor
 resources:
   - ./secret-grafana.sops.yaml
+  - ./secret-grafana-token.sops.yaml
+  - ./notification.yaml
   - ./helmrelease.yaml

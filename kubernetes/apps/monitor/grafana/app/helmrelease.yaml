@@ -159,14 +159,6 @@ spec:
         defaultMode: 0444
         readOnly: true
 
-    # extraVolumeMounts:
-    #   - name: grafana-pvc
-    #     mountPath: /var/lib/grafana
-
-    # extraVolumes:
-    #   - name: grafana-pvc
-    #     existingClaim: grafana
-
     grafana.ini:
       analytics:
         check_for_updates: false
