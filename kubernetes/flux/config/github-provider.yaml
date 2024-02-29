@@ -1,0 +1,11 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  type: github
+  address: ssh://git@github.com/dmfrey/home-gitops.git
+  secretRef:
+    name: github-deploy-key

@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./flux.yaml
   - ./cluster.yaml
+  - ./github-provider.yaml
