@@ -38,11 +38,35 @@ spec:
       name: pg-dataflow-app
       valuesKey: jdbc-uri
       targetPath: externalDatabase.dataflow.url
+    - kind: Secret
+      name: pg-dataflow-app
+      valuesKey: dbname
+      targetPath: externalDatabase.dataflow.database
+    - kind: Secret
+      name: pg-dataflow-app
+      valuesKey: username
+      targetPath: externalDatabase.dataflow.username
+    - kind: Secret
+      name: pg-dataflow-app
+      valuesKey: username
+      targetPath: externalDatabase.dataflow.password
     
     - kind: Secret
       name: pg-skipper-app
       valuesKey: jdbc-uri
       targetPath: externalDatabase.skipper.url
+    - kind: Secret
+      name: pg-skipper-app
+      valuesKey: dbname
+      targetPath: externalDatabase.skipper.database
+    - kind: Secret
+      name: pg-skipper-app
+      valuesKey: username
+      targetPath: externalDatabase.skipper.username
+    - kind: Secret
+      name: pg-skipper-app
+      valuesKey: username
+      targetPath: externalDatabase.skipper.password
 
     - kind: Secret
       name: rabbit-dataflow-default-user
