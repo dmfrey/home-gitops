@@ -1,7 +1,7 @@
 CLUSTER_NAME: ENC[AES256_GCM,data:Air2iEik8qYMVilVAKG4,iv:CX5nFnhVRuf3dfW9KEp05cnyuWlLY+/noussdjoRUXo=,tag:sAUGLBlmx6vnIpqEMyaJMg==,type:str]
 EXTERNAL_CLUSTER_NAME: ENC[AES256_GCM,data:JPTqCHBVKQ==,iv:b20dTkdB0O6g4X26fOxRNWLwlTtmWjhfvqA4V3WAhPU=,tag:rHns3CnPwepQbtystMU1Gg==,type:str]
 CLUSTER_ENDPOINT_IP: ENC[AES256_GCM,data:uEU2CYvcOoFvkMKRRw==,iv:obvChVoNsZbndz6veiIc7tQSmlwEN+5pDCf+XNKUMaA=,tag:CBeslEowgKWZuCE/zmVGTg==,type:str]
-INTERNAL_DOMAIN: ENC[AES256_GCM,data:jaMo/J50oyY=,iv:UUKJqsxYSmpE9qlzmbJ+83qZ3iUHvwbf+yk708SDS6M=,tag:/hKsBTZPnsaV9IwbVe17AQ==,type:str]
+INTERNAL_DOMAIN: ENC[AES256_GCM,data:8EeOqolV0j4L353g2M0GvA==,iv:XokEi4R0lcY3USUjGGqEu8a54QZz7V7TowsBgIDlwoI=,tag:aEsDmMmvMvPzyi+Ij93wJQ==,type:str]
 EXTERNAL_DOMAIN: ENC[AES256_GCM,data:9slTKNGREc9zgw==,iv:L6s0JasX5AgfSum1WVQ3cIhpru87DSH60zr4mSmlEhg=,tag:AJkJbH7i+Hm8slkIKfcUaA==,type:str]
 DNS_SERVER: ENC[AES256_GCM,data:2spRPvGdjTR7zP+w,iv:IG3DFN6KcPhfEzq7W7oqwQOXc/IpAyszAaDTzMRnnvM=,tag:APclnoPJNm4W+6BbRMOeLw==,type:str]
 NTP_SERVER: ENC[AES256_GCM,data:Y025fLGhtJWNfcYB,iv:wxwTLTazpsANQhWkHQTMR3VqtDFDvLIYaaV6i0tSsiU=,tag:lNOr8sGSu4m0s6ksD6sIUA==,type:str]
@@ -26,8 +26,8 @@ sops:
             SFY2cFZUUWpVM05DMWttQVhGODJGM2sKm1Q1XPA7mTzxQUP9y5s0lRA07by1OPOl
             UoPvSxiDO6vXvkf1CAimIz2kIjYmhwKePHZ8aSsJZlffuLaciTAwqw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-10-23T02:33:31Z"
-    mac: ENC[AES256_GCM,data:t7e670vDJqUt0JmFXNq58wjfH6JggUV7YFo+SV5aJUv6TBcyRfaxoZm7L+kcjWl4kRyEQRvgvzME9TvOyO+YbfR1jm/MhejE4A7TtAn4/icXEjbXoA5S0dcrFID+nGZlv2HiVAqSeXxY5M9ZlE4OzrHEVZQMl+8JPEGrcxU0dLg=,iv:+n50qHncvwa+6rPITcOU2WyAyiZq2ei7wxhCtkTEAas=,tag:/GbUYDmCPT2Dzrlv5nHUJA==,type:str]
+    lastmodified: "2024-03-01T14:33:32Z"
+    mac: ENC[AES256_GCM,data:3++iW/sE/8ErcvM07q/WgY9c/aIPi6pn6Sy3Ab+0p5Zy1mR7TCer2wI95pgOTfyhOZOls+a2e264AJKvr8Q3keOMrjAiJMYyRiy4VEYl9EDjSdrdU1SzGh7ZjdCX55QqA1+/Q81j11ZlJvwkeT5yIFbGoNGybqQ4LWgq0TuO234=,iv:1aOARA5J/oFCia7Tr/PFh4zoNXNNGDYq+gLzMqpmVIA=,tag:rqcs4R30rwRHXNdlWJvVdw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
-    version: 3.8.0
+    version: 3.8.1

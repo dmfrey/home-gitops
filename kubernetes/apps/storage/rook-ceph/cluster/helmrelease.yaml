@@ -193,7 +193,6 @@ spec:
     cephFileSystemVolumeSnapshotClass:
       enabled: true
 
-
     cephObjectStores:
       - name: ceph-objectstore
         spec:

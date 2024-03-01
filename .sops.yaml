@@ -34,7 +34,7 @@ creation_rules:
           - age19tytvakhpucnqygj898axa8v5uw86uhr0eld7s89uqka737c23msw54kpr
         gcp_kms:
           - resource_id: projects/homelab5767/locations/global/keyRings/homelab5767-keyring/cryptoKeys/sops
-  - path_regex: infrastructure/.*\.sops\.yaml
+  - path_regex: talos/.*\.sops\.yaml
     key_groups:
       - age:
           - age19tytvakhpucnqygj898axa8v5uw86uhr0eld7s89uqka737c23msw54kpr
