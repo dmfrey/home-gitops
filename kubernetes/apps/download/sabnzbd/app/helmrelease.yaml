@@ -157,6 +157,12 @@ spec:
                 value: true
               - name: ENABLE_UNKNOWN_QUEUE_ITEMS
                 value: false
+              - name: API_KEY
+                valueFrom:
+                  secret:
+                    secretKeyRef:
+                      name: sabnzbd-secret
+                      key: SABNZBD_API_KEY
             
             ports:
               - name: metrics
