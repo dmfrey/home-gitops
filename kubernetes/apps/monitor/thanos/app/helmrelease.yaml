@@ -39,6 +39,15 @@ spec:
     queryFrontend:
       enabled: true
       replicaCount: 3
+      config: &config |-
+        type: REDIS
+        config:
+          addr: >-
+            thanos-redis-replicas-0.redis-headless.monitor.svc.cluster.local:6379,
+            thanos-redis-replicas-1.redis-headless.monitor.svc.cluster.local:6379,
+            thanos-redis-replicas-2.redis-headless.monitor.svc.cluster.local:6379
+          db: 13
+          master_name: thanos-redis-master
       ingress:
         enabled: true
         annotations:
@@ -86,6 +95,7 @@ spec:
       enabled: true
       extraEnvVarsSecret: "thanos-ceph-bucket"
       replicaCount: 3
+      config: *config
       resources:
         requests:
           cpu: 23m
