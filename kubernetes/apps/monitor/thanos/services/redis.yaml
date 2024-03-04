@@ -12,19 +12,6 @@ spec:
     requests:
       storage: 8Gi
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: thanos-redis-replica-pvc
-  namespace: monitor
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: ceph-block
-  resources:
-    requests:
-      storage: 8Gi
----
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
@@ -115,7 +102,9 @@ spec:
 
       persistence:
         enabled: true
-        existingClaim: thanos-redis-replica-pvc
+        storageClass: ceph-block
+        accessModes:
+          - ReadWriteOnce
 
     metrics:
       enabled: true
