@@ -6,7 +6,10 @@ metadata:
   name: thanos
   namespace: monitor
 spec:
+
   interval: 15m
+  timeout: 15m
+
   chart:
     spec:
       chart: thanos
@@ -15,8 +18,19 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-      interval: 15m
   
+  install:
+    remediation:
+      retries: 3
+  
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  
+  uninstall:
+    keepHistory: false
+ 
   values:
   
     existingObjstoreSecret: thanos-secret

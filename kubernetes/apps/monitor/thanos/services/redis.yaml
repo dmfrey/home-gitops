@@ -19,7 +19,9 @@ metadata:
   name: &name thanos-redis
   namespace: monitor
 spec:
+  
   interval: 5m
+  
   chart:
     spec:
       chart: redis
