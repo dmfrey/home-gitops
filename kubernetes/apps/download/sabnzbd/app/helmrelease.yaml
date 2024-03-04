@@ -198,17 +198,24 @@ spec:
                 service:
                   name: main
                   port: http
-              # - path: /metrics
-              #   pathType: Prefix
-              #   service:
-              #     name: metrics
-              #     port: metrics
+              - path: /metrics
+                pathType: Prefix
+                service:
+                  name: metrics
+                  port: metrics
         tls:
           - hosts:
               - *host
             secretName: sabnzbd-client-tls-external
 
     persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
       sabnzbd-config:
         enabled: true
         type: configMap
