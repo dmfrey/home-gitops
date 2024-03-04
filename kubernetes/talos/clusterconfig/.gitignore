@@ -5,3 +5,6 @@ homelab-k8s-001-dmf-amd-003.frey.dev.yaml
 homelab-k8s-001-dmf-amd-001.homelab.frey.dev.yaml
 homelab-k8s-001-dmf-amd-002.homelab.frey.dev.yaml
 homelab-k8s-001-dmf-amd-003.homelab.frey.dev.yaml
+homelab-k8s-001-dmf-amd-001.homelab.frey.home.yaml
+homelab-k8s-001-dmf-amd-002.homelab.frey.home.yaml
+homelab-k8s-001-dmf-amd-003.homelab.frey.home.yaml
