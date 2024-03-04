@@ -135,34 +135,32 @@ spec:
               limits:
                 memory: 8000Mi
 
-          # exporter:
-          #   dependsOn: main
-          #   name: exporter
+          # sidecars:
+          exporter:
+            dependsOn: main
+            name: exporter
             
-          #   image:
-          #     repository: ghcr.io/onedr0p/exportarr
-          #     tag: v1.6.2
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v2.0.0
 
-          #   args: ["sabnzbd"]
+            args: ["sabnzbd"]
             
-          #   env:
-          #     - name: URL
-          #       value: "http://localhost"
-          #     - name: CONFIG
-          #       value: "/config/config.xml"
-          #     - name: PORT
-          #       value: &metricsPort 9707
-          #     - name: ENABLE_ADDITIONAL_METRICS
-          #       value: true
-          #     - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-          #       value: false
-              # PORT: &metricsPort 9707
-              # URL: "https://sabnzbd.${EXTERNAL_DOMAIN}"
-              # APIKEY: ${API_KEY_SABNZBD}
+            env:
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9707
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
             
-            # envFrom:
-              # - secretRef:
-                  # name: sabnzbd-secret
+            ports:
+              - name: metrics
+                containerPort: *metricsPort 
 
     service:
       main:
@@ -170,11 +168,11 @@ spec:
         ports:
           http:
             port: *port
-      # metrics:
-      #   controller: exporter
-      #   ports:
-      #     metrics:
-      #       port: *metricsPort
+      metrics:
+        controller: exporter
+        ports:
+          metrics:
+            port: *metricsPort
 
     ingress:
       main:
