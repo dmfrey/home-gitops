@@ -16,7 +16,9 @@ spec:
         name: bitnami
         namespace: flux-system
       interval: 15m
+  
   values:
+  
     existingObjstoreSecret: thanos-secret
 
     query:
