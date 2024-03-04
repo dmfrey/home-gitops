@@ -150,7 +150,7 @@ spec:
               - name: CONFIG
                 value: "/config/config.xml"
               - name: PORT
-                value: &metricsPort 9707
+                value: &metricsPort 9712
               - name: ENABLE_ADDITIONAL_METRICS
                 value: true
               - name: ENABLE_UNKNOWN_QUEUE_ITEMS
