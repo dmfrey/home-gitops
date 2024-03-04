@@ -87,16 +87,14 @@ spec:
               pullPolicy: IfNotPresent
 
             env:
-              TZ: America/New_York
-              # SABNZBD__PORT: &port 8080
-              # SABNZBD__API_KEY: ${API_KEY_SABNZBD}
-              # SABNZBD__NZB_KEY: ${API_KEY_NZBGEEK}
-              # SABNZBD__HOST_WHITELIST_ENTRIES: >-
-              #   {{ .Release.Name }},
-              #   {{ .Release.Name }}.download,
-              #   {{ .Release.Name }}.download.svc,
-              #   {{ .Release.Name }}.download.svc.cluster,
-              #   {{ .Release.Name }}.${EXTERNAL_DOMAIN}
+              TZ: ${TIMEZONE}
+              SABNZBD__PORT: &port 8080
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                {{ .Release.Name }},
+                {{ .Release.Name }}.download,
+                {{ .Release.Name }}.download.svc,
+                {{ .Release.Name }}.download.svc.cluster,
+                {{ .Release.Name }}.${EXTERNAL_DOMAIN}
 
             envFrom:
               - secretRef:
@@ -104,7 +102,7 @@ spec:
 
             ports:
               - name: http
-                containerPort: &port 8080
+                containerPort: *port
 
             probes:
               liveness: &probes
