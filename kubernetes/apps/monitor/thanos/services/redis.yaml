@@ -1,16 +1,16 @@
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: thanos-redis-master-pvc
-  namespace: monitor
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: ceph-block
-  resources:
-    requests:
-      storage: 8Gi
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: thanos-redis-master-pvc
+#   namespace: monitor
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: ceph-block
+#   resources:
+#     requests:
+#       storage: 8Gi
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
@@ -54,70 +54,27 @@ spec:
     fullnameOverride: &name
 
     auth:
-      existingSecret: thanos-redis-secret
-      existingSecretPasswordKey: password
+      enabled: false
+      sentinel: false
+      # existingSecret: thanos-redis-secret
+      # existingSecretPasswordKey: password
     
-    ## @param commonConfiguration [string] Common configuration to be added into the ConfigMap
-    ## ref: https://redis.io/topics/config
-    ##
-    commonConfiguration: |-
-      # Enable AOF https://redis.io/topics/persistence#append-only-file
-      appendonly yes
-      # Disable RDB persistence, AOF persistence already enabled.
-      save ""
-
     master:
-      ## @param master.count Number of Redis&reg; master instances to deploy (experimental, requires additional configuration)
-      ##
-      count: 1
-
-      resources:
-        requests:
-          cpu: 1
-          memory: 1024Mi
-        limits:
-          cpu: 2
-          memory: 2048Mi
-
       persistence:
-        enabled: true
-        existingClaim: thanos-redis-master-pvc
+        enabled: false
+        # existingClaim: thanos-redis-master-pvc
 
     replica:
-      ## @param replica.kind Use either DaemonSet or StatefulSet (default)
-      ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
-      ##
-      kind: StatefulSet
-      ## @param replica.replicaCount Number of Redis&reg; replicas to deploy
-      ##
-      replicaCount: 3
-  
-      resources:
-        requests:
-          cpu: 0.5
-          memory: 512Mi
-        limits:
-          cpu: 1
-          memory: 1024Mi
-
       persistence:
-        enabled: true
-        storageClass: ceph-block
-        accessModes:
-          - ReadWriteOnce
+        enabled: false
+        # storageClass: ceph-block
+        # accessModes:
+        #   - ReadWriteOnce
 
     metrics:
       enabled: true
 
-      resourcesPreset: "medium"
-
       serviceMonitor:
         enabled: true
-
-      podMonitor:
-        enabled: true
-
-      prometheusRule:
-        enalbed: true
-
+        interval: 1m
       
