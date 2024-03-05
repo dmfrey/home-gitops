@@ -72,19 +72,19 @@ spec:
         enabled: false
         # existingClaim: thanos-redis-master-pvc
 
-      sidecars:
-        - name: p3x-redis-ui
-          image: patrikx3/p3x-redis-ui:latest
-          imagePullPolicy: Always
-          ports:
-            - name: redis-ui
-              containerPort: &redisUiPort 7843
+      # sidecars:
+      #   - name: p3x-redis-ui
+      #     image: patrikx3/p3x-redis-ui:latest
+      #     imagePullPolicy: Always
+      #     ports:
+      #       - name: redis-ui
+      #         containerPort: &redisUiPort 7843
 
-      service:
-        extraPorts:
-          - name: redis-ui
-            port: *redisUiPort
-            targetPort: *redisUiPort
+      # service:
+      #   extraPorts:
+      #     - name: redis-ui
+      #       port: *redisUiPort
+      #       targetPort: *redisUiPort
 
     replica:
 
