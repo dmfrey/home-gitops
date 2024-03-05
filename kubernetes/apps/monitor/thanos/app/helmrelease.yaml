@@ -144,7 +144,8 @@ spec:
 
     storegateway:
       enabled: true
-      extraEnvVarsSecret: "thanos-ceph-bucket"
+      # extraEnvVarsSecret: "thanos-ceph-bucket"
+      logLevel: debug
       replicaCount: 3
       config: *config
       networkPolicy: *networkPolicy
