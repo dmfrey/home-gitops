@@ -81,7 +81,8 @@ spec:
 
       service:
         extraPorts:
-          - redis-ui: *redisUiPort
+          - name: redis-ui
+            port: *redisUiPort
 
     replica:
 
