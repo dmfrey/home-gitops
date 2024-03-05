@@ -31,15 +31,48 @@ spec:
   uninstall:
     keepHistory: false
  
+  valuesFrom:
+    - targetPath: objstoreConfig.config.bucket
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_NAME
+    - targetPath: objstoreConfig.config.endpoint
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_HOST
+    - targetPath: objstoreConfig.config.region
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_REGION
+    - targetPath: objstoreConfig.config.access_key
+      kind: Secret
+      name: thanos-ceph-bucket
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: objstoreConfig.config.secret_key
+      kind: Secret
+      name: thanos-ceph-bucket
+      valuesKey: AWS_SECRET_ACCESS_KEY
+
   values:
   
-    existingObjstoreSecret: thanos-secret
+    # existingObjstoreSecret: thanos-secret
+
+    objstoreConfig:
+      type: s3
+      config:
+        insecure: true
+
+    receive:
+      enabled: false
+      networkPolicy: &networkPolicy
+        enabled: false
 
     query:
       enabled: true
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitor
+      networkPolicy: *networkPolicy
       replicaCount: 3
       replicaLabel:
         - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
@@ -49,6 +82,8 @@ spec:
           memory: 64M
         # limits:
         #   memory: 99M
+      stores:
+        - thanos-storagegateway:10901
 
     queryFrontend:
       enabled: true
@@ -80,6 +115,7 @@ spec:
 
     bucketweb:
       enabled: true
+      networkPolicy: *networkPolicy
       replicaCount: 3
       resources:
         requests:
@@ -91,6 +127,7 @@ spec:
       extraFlags:
         - "--compact.concurrency=4"
         - "--delete-delay=30m"
+      networkPolicy: *networkPolicy
       retentionResolutionRaw: 14d
       retentionResolution5m: 14d
       retentionResolution1h: 30d
@@ -110,6 +147,7 @@ spec:
       extraEnvVarsSecret: "thanos-ceph-bucket"
       replicaCount: 3
       config: *config
+      networkPolicy: *networkPolicy
       resources:
         requests:
           cpu: 23m
@@ -127,14 +165,20 @@ spec:
         - http://alert-manager.monitor.svc.cluster.local:9093
       # Breaks metrics that have cluster label due to conflict with cnpg
       # clusterName: ${CLUSTER_NAME} # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
+      networkPolicy: *networkPolicy
       replicaLabel: __replica__
       replicaCount: 3
       config: |-
         groups:
-          - name: "PrometheusWatcher"
+          - name: PrometheusWatcher
             rules:
-              - alert: "PrometheusDown"
+              - alert: PrometheusDown
+                annotations:
+                  summary: A Prometheus has disappeared from Prometheus target discovery
                 expr: absent(up{job="kube-prometheus-stack-prometheus"})
+                for: 5m
+                labels:
+                  severity: critical
       dnsDiscovery:
         enabled: true
       persistence:
