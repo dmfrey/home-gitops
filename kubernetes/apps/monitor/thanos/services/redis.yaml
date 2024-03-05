@@ -20,7 +20,8 @@ metadata:
   namespace: monitor
 spec:
   
-  interval: 5m
+  interval: 15m
+  timeout: 15m
   
   chart:
     spec:
