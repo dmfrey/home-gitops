@@ -13,5 +13,5 @@ resources:
   - ./loki/ks.yaml
   - ./metrics-server/ks.yaml
   - ./node-exporter/ks.yaml
-  # - ./thanos/ks.yaml
+  - ./thanos/ks.yaml
   - ./promtail/ks.yaml

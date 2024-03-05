@@ -60,6 +60,13 @@ spec:
       # existingSecretPasswordKey: password
     
     master:
+
+      livenessProbe: &livenessProbe
+        initialDelaySeconds: 45
+
+      readinessProbe: &readinessProbe
+        initialDelaySeconds: 45
+
       persistence:
         enabled: false
         # existingClaim: thanos-redis-master-pvc
@@ -70,9 +77,18 @@ spec:
           imagePullPolicy: always
           ports:
             - name: redis-ui
-              containerPort: 7843
+              containerPort: &redisUiPort 7843
+
+      service:
+        extraPorts:
+          - redis-ui: *redisUiPort
 
     replica:
+
+      livenessProbe: *livenessProbe
+
+      readinessProbe: *readinessProbe
+
       persistence:
         enabled: false
         # storageClass: ceph-block
