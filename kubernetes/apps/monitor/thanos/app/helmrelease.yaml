@@ -148,6 +148,9 @@ spec:
       logLevel: debug
       replicaCount: 3
       config: *config
+      containerPorts:
+        http: 10902
+        grpc: 10901
       networkPolicy: *networkPolicy
       resources:
         requests:
@@ -159,6 +162,10 @@ spec:
         enabled: true
         storageClass: "ceph-block"
         size: 1Gi
+      service:
+        ports:
+          http: 10902
+          grpc: 10901
 
     ruler:
       enabled: true
