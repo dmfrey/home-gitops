@@ -64,6 +64,14 @@ spec:
         enabled: false
         # existingClaim: thanos-redis-master-pvc
 
+      sidecars:
+        - name: p3x-redis-ui
+          image: patrikx3/p3x-redis-ui:latest
+          imagePullPolicy: always
+          ports:
+            - name: redis-ui
+              containerPort: 7843
+
     replica:
       persistence:
         enabled: false
