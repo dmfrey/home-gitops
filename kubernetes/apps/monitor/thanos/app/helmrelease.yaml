@@ -8,7 +8,7 @@ metadata:
 spec:
 
   interval: 15m
-  timeout: 15m
+  timeout: 2m
 
   chart:
     spec:
