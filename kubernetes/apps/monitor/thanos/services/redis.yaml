@@ -35,13 +35,11 @@ spec:
 
   install:
     createNamespace: true
-    timeout: 1m
     remediation:
       retries: 3
 
   upgrade:
     cleanupOnFail: true
-    timeout: 1m
     remediation:
       retries: 3
 
