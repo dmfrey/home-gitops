@@ -75,7 +75,7 @@ spec:
       sidecars:
         - name: p3x-redis-ui
           image: patrikx3/p3x-redis-ui:latest
-          imagePullPolicy: always
+          imagePullPolicy: Always
           ports:
             - name: redis-ui
               containerPort: &redisUiPort 7843
