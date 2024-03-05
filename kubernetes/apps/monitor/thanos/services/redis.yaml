@@ -82,7 +82,7 @@ spec:
       service:
         extraPorts:
           - name: redis-ui
-            port: *redisUiPort
+            targetPort: *redisUiPort
 
     replica:
 
