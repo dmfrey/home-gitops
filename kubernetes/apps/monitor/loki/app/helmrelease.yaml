@@ -6,8 +6,10 @@ metadata:
   name: loki
   namespace: monitor
 spec:
+  
   interval: 15m
   timeout: 15m
+  
   chart:
     spec:
       chart: loki
@@ -17,8 +19,29 @@ spec:
         name: grafana
         namespace: flux-system
       interval: 15m
+  
+  valuesFrom:
+    - kind: ConfigMap
+      name: loki-ceph-bucket
+      valuesKey: BUCKET_NAME
+      targetPath: loki.structuredConfig.common.storage.s3.bucketnames
+    - kind: ConfigMap
+      name: loki-ceph-bucket
+      valuesKey: BUCKET_HOST
+      targetPath: loki.structuredConfig.common.storage.s3.endpoint
+    - kind: Secret
+      name: loki-ceph-bucket
+      valuesKey: AWS_ACCESS_KEY_ID
+      targetPath: loki.structuredConfig.common.storage.s3.access_key_id
+    - kind: Secret
+      name: loki-ceph-bucket
+      valuesKey: AWS_SECRET_ACCESS_KEY
+      targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
+
   values:
+  
     loki:
+  
       structuredConfig:
         auth_enabled: false
 
@@ -40,10 +63,10 @@ spec:
           reject_old_samples_max_age: 168h
           max_cache_freshness_per_query: 10m
           split_queries_by_interval: 15m
-          per_stream_rate_limit: 64M
-          per_stream_rate_limit_burst: 128M
-          ingestion_rate_mb: 64
-          ingestion_burst_size_mb: 128
+          per_stream_rate_limit: 5M
+          per_stream_rate_limit_burst: 20M
+          ingestion_rate_mb: 50
+          ingestion_burst_size_mb: 1000
           shard_streams:
             enabled: true
 
@@ -90,7 +113,7 @@ spec:
         compactor:
           working_directory: /var/loki/boltdb-shipper-compactor
           shared_store: s3
-          compaction_interval: 15m
+          compaction_interval: 10m
           retention_enabled: true
           retention_delete_delay: 2h
           retention_delete_worker_count: 150
@@ -106,27 +129,15 @@ spec:
           reporting_enabled: false
 
       podAnnotations:
-        secret.reloader.stakater.com/reload: loki-secret,loki-ceph-bucket
+        secret.reloader.stakater.com/reload: loki-ceph-bucket
+        configmao.reloader.stakater.com/reload: loki-ceph-bucket
 
     gateway:
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
       enabled: true
-      image:
-        registry: ghcr.io
-        repository: nginxinc/nginx-unprivileged
-        tag: 1.25-alpine
       ingress:
         enabled: true
-        ingressClassName: "nginx-external"
+        ingressClassName: nginx-external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
@@ -144,30 +155,12 @@ spec:
 
     write:
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.writeSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
       persistence:
         size: 20Gi
         storageClass: ceph-block
 
     read:
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.readSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
@@ -180,15 +173,6 @@ spec:
 
     backend:
       replicas: 3
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.backendSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake
@@ -221,25 +205,3 @@ spec:
         enabled: false
     test:
       enabled: false
-
-  valuesFrom:
-    - kind: Secret
-      name: loki-secret
-      valuesKey: S3_BUCKET_NAME
-      targetPath: loki.structuredConfig.common.storage.s3.bucketnames
-    - kind: Secret
-      name: loki-secret
-      valuesKey: S3_BUCKET_HOST
-      targetPath: loki.structuredConfig.common.storage.s3.endpoint
-    - kind: Secret
-      name: loki-secret
-      valuesKey: S3_BUCKET_REGION
-      targetPath: loki.structuredConfig.common.storage.s3.region
-    - kind: Secret
-      name: loki-ceph-bucket
-      valuesKey: AWS_ACCESS_KEY_ID
-      targetPath: loki.structuredConfig.common.storage.s3.access_key_id
-    - kind: Secret
-      name: loki-ceph-bucket
-      valuesKey: AWS_SECRET_ACCESS_KEY
-      targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
