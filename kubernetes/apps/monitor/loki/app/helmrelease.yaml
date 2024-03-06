@@ -152,7 +152,7 @@ spec:
         configmao.reloader.stakater.com/reload: loki-ceph-bucket
 
     gateway:
-      replicas: 3
+      replicas: 2
       enabled: true
       ingress:
         enabled: true
@@ -173,13 +173,13 @@ spec:
             secretName: loki-tls-external
 
     write:
-      replicas: 3
+      replicas: 2
       persistence:
         size: 20Gi
         storageClass: ceph-block
 
     read:
-      replicas: 3
+      replicas: 2
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
@@ -191,7 +191,7 @@ spec:
         storageClass: ceph-block
 
     backend:
-      replicas: 3
+      replicas: 2
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake
