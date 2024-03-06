@@ -7,8 +7,8 @@ metadata:
   namespace: monitor
 spec:
   
-  interval: 15m
-  timeout: 15m
+  interval: 5m
+  timeout: 5m
   
   chart:
     spec:
@@ -18,7 +18,6 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-      interval: 15m
 
   maxHistory: 2
 
