@@ -8,7 +8,7 @@ metadata:
 spec:
 
   interval: 15m
-  timeout: 4m
+  timeout: 15m
 
   chart:
     spec:
@@ -125,8 +125,8 @@ spec:
     compactor:
       enabled: true
       extraFlags:
-        - "--compact.concurrency=4"
-        - "--delete-delay=30m"
+        - --compact.concurrency=4
+        - --delete-delay=30m
       networkPolicy: *networkPolicy
       retentionResolutionRaw: 14d
       retentionResolution5m: 14d
@@ -151,6 +151,8 @@ spec:
       containerPorts:
         http: 10902
         grpc: 10901
+      readinessProbe:
+        initialDelaySeconds: 300
       networkPolicy: *networkPolicy
       resources:
         requests:
