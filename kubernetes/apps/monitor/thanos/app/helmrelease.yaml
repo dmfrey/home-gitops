@@ -151,6 +151,8 @@ spec:
       containerPorts:
         http: 10902
         grpc: 10901
+      livenessProbe:
+        initialDelaySeconds: 300
       readinessProbe:
         initialDelaySeconds: 300
       networkPolicy: *networkPolicy
