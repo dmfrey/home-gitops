@@ -4,5 +4,7 @@ metadata:
   name: loki-ceph-bucket
   namespace: monitor
 spec:
-  bucketName: loki
+  generateBucketName: loki
   storageClassName: ceph-bucket
+  additionalConfig:
+    maxSize: "10G"
