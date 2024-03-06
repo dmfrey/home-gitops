@@ -4,5 +4,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitor
 resources:
-  - ./helmrelease.yaml
-  - ./prometheusrule.yaml
+  - ./loki-object-claim-delete.yaml
