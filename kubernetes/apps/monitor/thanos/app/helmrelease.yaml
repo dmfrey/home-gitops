@@ -152,12 +152,12 @@ spec:
         http: 10902
         grpc: 10901
       networkPolicy: *networkPolicy
-      resources:
-        requests:
-          cpu: 23m
-          memory: 204M
-        # limits:
-        #   memory: 226M
+      # resources:
+      #   requests:
+      #     cpu: 23m
+      #     memory: 204M
+      #   # limits:
+      #   #   memory: 226M
       persistence:
         enabled: true
         storageClass: "ceph-block"
