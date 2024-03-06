@@ -126,7 +126,8 @@ spec:
           - name: prometheus
             type: prometheus
             access: proxy
-            url: http://thanos-query.monitor.svc.cluster.local:9090
+            # url: http://thanos-query.monitor.svc.cluster.local:9090
+            url: http://kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
             isDefault: true
           - name: Loki
             access: proxy
