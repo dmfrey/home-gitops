@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: "${ORGANIZATION}-tls-internal"
   issuerRef:
-    name: letsencrypt-prod
+    name: homelab-k8s-001-internal-issuer
     kind: ClusterIssuer
   dnsNames:
     - "*.${INTERNAL_DOMAIN}"

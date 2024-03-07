@@ -1,7 +1,7 @@
 CLUSTER_NAME: ENC[AES256_GCM,data:Air2iEik8qYMVilVAKG4,iv:CX5nFnhVRuf3dfW9KEp05cnyuWlLY+/noussdjoRUXo=,tag:sAUGLBlmx6vnIpqEMyaJMg==,type:str]
 EXTERNAL_CLUSTER_NAME: ENC[AES256_GCM,data:JPTqCHBVKQ==,iv:b20dTkdB0O6g4X26fOxRNWLwlTtmWjhfvqA4V3WAhPU=,tag:rHns3CnPwepQbtystMU1Gg==,type:str]
 CLUSTER_ENDPOINT_IP: ENC[AES256_GCM,data:uEU2CYvcOoFvkMKRRw==,iv:obvChVoNsZbndz6veiIc7tQSmlwEN+5pDCf+XNKUMaA=,tag:CBeslEowgKWZuCE/zmVGTg==,type:str]
-INTERNAL_DOMAIN: ENC[AES256_GCM,data:fdYALVMxE90P1vuIkj8Rol0=,iv:HARG6ZV2Amm0rtDiK8SFbl07D5xlZSvsRz/gh7COPLc=,tag:s0RhbWX7OKA78E2BtfWwTA==,type:str]
+INTERNAL_DOMAIN: ENC[AES256_GCM,data:w52MI6nwy3VdEJHEGCKyFrE=,iv:u5ZIhaAn5huWikcxghu5UbfxLOKptxVYwvkCHFYoUUg=,tag:/eskYt71OUOK9uNmYoJ4tA==,type:str]
 EXTERNAL_DOMAIN: ENC[AES256_GCM,data:9slTKNGREc9zgw==,iv:L6s0JasX5AgfSum1WVQ3cIhpru87DSH60zr4mSmlEhg=,tag:AJkJbH7i+Hm8slkIKfcUaA==,type:str]
 DNS_SERVER: ENC[AES256_GCM,data:2spRPvGdjTR7zP+w,iv:IG3DFN6KcPhfEzq7W7oqwQOXc/IpAyszAaDTzMRnnvM=,tag:APclnoPJNm4W+6BbRMOeLw==,type:str]
 NTP_SERVER: ENC[AES256_GCM,data:Y025fLGhtJWNfcYB,iv:wxwTLTazpsANQhWkHQTMR3VqtDFDvLIYaaV6i0tSsiU=,tag:lNOr8sGSu4m0s6ksD6sIUA==,type:str]
@@ -26,8 +26,8 @@ sops:
             SFY2cFZUUWpVM05DMWttQVhGODJGM2sKm1Q1XPA7mTzxQUP9y5s0lRA07by1OPOl
             UoPvSxiDO6vXvkf1CAimIz2kIjYmhwKePHZ8aSsJZlffuLaciTAwqw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-03-04T01:39:49Z"
-    mac: ENC[AES256_GCM,data:b49Ajo1rGsavbYmKqr5sShj09aKHfG+L9uQXkZkif5wnDys7tPcNZzn6+9vSdHHXWeK1wybmwa/u5xBzRLw2euE7hyDW/khK2dfb6X0qqQpMb/e9uG8Fm9M70s0lvEXYjd/qjscbbDCdKWuQOFnyNmeqk6e55G+i0K+NKnUy3vs=,iv:RXZvFCCf3iGeeCzWF/RZAQl2jcKFnG9Pk9oHi4kDEbI=,tag:ea/PRd08LWHYNGDf8ylXfQ==,type:str]
+    lastmodified: "2024-03-07T15:45:18Z"
+    mac: ENC[AES256_GCM,data:0vcodIRzzKa5Mcptkg2KYYmHUTVcmhPamlnrHPJPkbkLW3JV+0i19jflvt2mxdN/WTHsjAQRahUxFv+8OQiGSK5wG125kCQOL+R+53CEroklNqEJGA38AdObejCZry0+TgjQAApZpP+xI4bErc9/U4yy0oFMU8WimA7IY2FND1U=,iv:wgYGvGwu0xcDzwP4X+W/u5JOjplbbOAXm7TyYAefZOk=,tag:tgRS430rLQhN6xhbvCedfw==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.8.1
