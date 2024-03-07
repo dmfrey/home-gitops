@@ -55,7 +55,7 @@ spec:
               TZ: ${TIMEZONE}
               READARR__INSTANCE_NAME: Readarr
               READARR__PORT: &port 8787
-              READARR__APPLICATION_URL: https://readarr.${EXTERNAL_DOMAIN}
+              READARR__APPLICATION_URL: https://readarr.${SECRET_DOMAIN}
               READARR__LOG_LEVEL: info
               READARR__API_KEY:
                 valueFrom:
@@ -118,9 +118,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "material-symbols:book-outline-rounded"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host readarr.${EXTERNAL_DOMAIN}
+          - host: &host readarr.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

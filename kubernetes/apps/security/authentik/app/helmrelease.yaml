@@ -69,7 +69,7 @@ spec:
         host: "smtp-relay.network.svc.cluster.local"
         port: 2525
         use_tls: false
-        from: "authentik@${EXTERNAL_DOMAIN}"
+        from: "authentik@${SECRET_DOMAIN}"
     
     # geoip:
     #   enabled: true
@@ -106,16 +106,16 @@ spec:
           nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
           nginx.org/websocket-services: authentik
           nginx.ingress.kubernetes.io/enable-global-auth: "false"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-        - auth.${EXTERNAL_DOMAIN}
+        - auth.${SECRET_DOMAIN}
         pathType: "Prefix"
         paths:
           - "/"
 
         tls:
         - hosts:
-          - auth.${EXTERNAL_DOMAIN}
+          - auth.${SECRET_DOMAIN}
           secretName: authentik-tls-external
 
       metrics:

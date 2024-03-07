@@ -54,7 +54,7 @@ spec:
               TZ: ${TIMEZONE}
               BAZARR__INSTANCE_NAME: Bazarr
               BAZARR__PORT: &port 6767
-              BAZARR__APPLICATION_URL: https://bazarr.${EXTERNAL_DOMAIN}
+              BAZARR__APPLICATION_URL: https://bazarr.${SECRET_DOMAIN}
               BAZARR__LOG_LEVEL: info
               BAZARR__API_KEY:
                 valueFrom:
@@ -89,9 +89,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "solar:subtitles-outline"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host bazarr.${EXTERNAL_DOMAIN}
+          - host: &host bazarr.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

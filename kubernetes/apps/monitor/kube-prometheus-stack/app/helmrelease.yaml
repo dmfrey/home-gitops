@@ -101,9 +101,9 @@ spec:
       #     hajimari.io/enable: "true"
       #     hajimari.io/icon: "mdi:alert-decagram-outline"
       #     hajimari.io/appName: "Alert Manager"
-      #     external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+      #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       #   hosts:
-      #     - &host alert-manager.${EXTERNAL_DOMAIN}
+      #     - &host alert-manager.${SECRET_DOMAIN}
       #   tls:
       #     - hosts:
       #         - *host
@@ -228,10 +228,10 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:prometheus"
           hajimari.io/appName: "Prometheus"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         pathType: Prefix
         hosts:
-          - &host prometheus.${EXTERNAL_DOMAIN}
+          - &host prometheus.${SECRET_DOMAIN}
         tls:
           - hosts:
               - *host

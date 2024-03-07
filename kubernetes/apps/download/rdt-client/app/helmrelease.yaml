@@ -91,9 +91,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "rdt.${EXTERNAL_DOMAIN}"
+          - host: &host "rdt.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

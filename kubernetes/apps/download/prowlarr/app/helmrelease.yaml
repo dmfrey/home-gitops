@@ -60,7 +60,7 @@ spec:
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 9696
               PROWLARR__AUTHENTICATION_METHOD: External
-              PROWLARR__APPLICATION_URL: "https://prowlarr.${EXTERNAL_DOMAIN}"
+              PROWLARR__APPLICATION_URL: "https://prowlarr.${SECRET_DOMAIN}"
               PROWLARR__LOG_LEVEL: info
               PROWLARR__API_KEY:
                 valueFrom:
@@ -139,9 +139,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:movie-search"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host prowlarr.${EXTERNAL_DOMAIN}
+          - host: &host prowlarr.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

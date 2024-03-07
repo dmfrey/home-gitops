@@ -94,7 +94,7 @@ spec:
                 {{ .Release.Name }}.download,
                 {{ .Release.Name }}.download.svc,
                 {{ .Release.Name }}.download.svc.cluster,
-                {{ .Release.Name }}.${EXTERNAL_DOMAIN}
+                {{ .Release.Name }}.${SECRET_DOMAIN}
 
             envFrom:
               - secretRef:
@@ -188,9 +188,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "sabnzbd.${EXTERNAL_DOMAIN}"
+          - host: &host "sabnzbd.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

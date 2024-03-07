@@ -137,9 +137,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           # hajimari.io/icon: "mdi:alpha-t-box"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host dataflow.${EXTERNAL_DOMAIN}
+          - host: &host dataflow.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

@@ -163,7 +163,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             172.22.0.0/12,192.168.0.0/16
         hosts:
-          - host: &host "loki.${EXTERNAL_DOMAIN}"
+          - host: &host "loki.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

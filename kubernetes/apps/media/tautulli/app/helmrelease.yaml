@@ -81,9 +81,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:chart-bar"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host tautulli.${EXTERNAL_DOMAIN}
+          - host: &host tautulli.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

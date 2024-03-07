@@ -9,9 +9,9 @@ metadata:
 spec:
   ingressClassName: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   rules:
-    - host: &host spring-dev-gateway.${EXTERNAL_DOMAIN}
+    - host: &host spring-dev-gateway.${SECRET_DOMAIN}
       http:
         paths:
           - backend:

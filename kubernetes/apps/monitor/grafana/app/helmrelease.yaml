@@ -190,7 +190,7 @@ spec:
       paths:
         data: /var/lib/grafana/data
       server:
-        root_url: https://grafana.${EXTERNAL_DOMAIN}
+        root_url: https://grafana.${SECRET_DOMAIN}
 
     imageRenderer:
       enabled: true
@@ -204,14 +204,14 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/enable: "true"
         hajimari.io/icon: "simple-icons:grafana"
-        external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       hosts:
-        - &host grafana.${EXTERNAL_DOMAIN}
-        - monitor.${EXTERNAL_DOMAIN}
+        - &host grafana.${SECRET_DOMAIN}
+        - monitor.${SECRET_DOMAIN}
       tls:
         - hosts:
             - *host
-            - monitor.${EXTERNAL_DOMAIN}
+            - monitor.${SECRET_DOMAIN}
           secretName: grafana-tls-external
 
     persistence:

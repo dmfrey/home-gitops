@@ -15,7 +15,7 @@ spec:
     #       class: nginx
     #   selector:
     #     dnsZones:
-    #       - '${EXTERNAL_DOMAIN}'
+    #       - '${SECRET_DOMAIN}'
     - dns01:
         cloudflare:
           email: ${EMAIL_ADDRESS}
@@ -39,7 +39,7 @@ spec:
     #       class: nginx
     #   selector:
     #     dnsZones:
-    #       - '${EXTERNAL_DOMAIN}'
+    #       - '${SECRET_DOMAIN}'
     - dns01:
         cloudflare:
           email: ${EMAIL_ADDRESS}

@@ -23,7 +23,7 @@ spec:
     fullnameOverride: *name
 
     domainFilters:
-      - ${EXTERNAL_DOMAIN}
+      - ${SECRET_DOMAIN}
       - ${PROFESSIONAL_DOMAIN}
 
     env:

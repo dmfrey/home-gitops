@@ -60,7 +60,7 @@ spec:
               ffmpegPath: "/usr/local/bin/ffmpeg"
               TDARR_INSTANCE_NAME: Tdarr
               TDARR__PORT: &port 8265
-              TDARR__APPLICATION_URL: &host "tdarr.${EXTERNAL_DOMAIN}"
+              TDARR__APPLICATION_URL: &host "tdarr.${SECRET_DOMAIN}"
               TDARR__LOG_LEVEL: info
 
             ports:
@@ -94,7 +94,7 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: clarity:media-changer-solid
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: *host
             paths:

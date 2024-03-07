@@ -64,7 +64,7 @@ spec:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
-              JELLYFIN_PublishedServerUrl: https://jellyfin.${EXTERNAL_DOMAIN}
+              JELLYFIN_PublishedServerUrl: https://jellyfin.${SECRET_DOMAIN}
 
             probes:
               liveness: &probes
@@ -109,10 +109,10 @@ spec:
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
-          hajimari.io/url: "https://jellyfin.${EXTERNAL_DOMAIN}/web/index.html"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          hajimari.io/url: "https://jellyfin.${SECRET_DOMAIN}/web/index.html"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "jellyfin.${EXTERNAL_DOMAIN}"
+          - host: &host "jellyfin.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

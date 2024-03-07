@@ -61,7 +61,7 @@ spec:
             cert-manager.io/cluster-issuer: letsencrypt-prod
             auth.home.arpa/enabled: "true"
           hosts:
-            - &host hubble.${EXTERNAL_DOMAIN}
+            - &host hubble.${SECRET_DOMAIN}
           tls:
             - hosts:
                 - *host

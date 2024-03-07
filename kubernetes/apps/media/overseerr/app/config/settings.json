@@ -50,7 +50,7 @@
     "lastScan": 1687450500047
    }
   ],
-  "webAppUrl": "https://plex.${EXTERNAL_DOMAIN}/web",
+  "webAppUrl": "https://plex.${SECRET_DOMAIN}/web",
   "machineId": "${PLEX_SERVER_ID}"
  },
  "tautulli": {},
@@ -70,7 +70,7 @@
     1
    ],
    "isDefault": true,
-   "externalUrl": "https://radarr.${EXTERNAL_DOMAIN}",
+   "externalUrl": "https://radarr.${SECRET_DOMAIN}",
    "syncEnabled": true,
    "preventSearch": false,
    "tagRequests": false,
@@ -101,7 +101,7 @@
    "is4k": false,
    "isDefault": true,
    "enableSeasonFolders": true,
-   "externalUrl": "https://sonarr.${EXTERNAL_DOMAIN}",
+   "externalUrl": "https://sonarr.${SECRET_DOMAIN}",
    "syncEnabled": true,
    "preventSearch": false,
    "tagRequests": false,

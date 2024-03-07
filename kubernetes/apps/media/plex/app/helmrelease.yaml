@@ -56,7 +56,7 @@ spec:
               env:
                 TZ: ${TIMEZONE}
                 ALLOWED_NETWORKS: "192.0.0.0/8" #,172.22.0.0/16"
-                # ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400,https://plex.${EXTERNAL_DOMAIN}:443"
+                # ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400,https://plex.${SECRET_DOMAIN}:443"
 
               envFrom:
                 - secretRef:
@@ -136,10 +136,10 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:plex"
-          hajimari.io/url: "https://plex.${EXTERNAL_DOMAIN}/web"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          hajimari.io/url: "https://plex.${SECRET_DOMAIN}/web"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-        - host: &host plex.${EXTERNAL_DOMAIN}
+        - host: &host plex.${SECRET_DOMAIN}
           paths:
           - path: /
             service:

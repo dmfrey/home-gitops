@@ -104,8 +104,8 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
-        hostname: &host thanos.${EXTERNAL_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        hostname: &host thanos.${SECRET_DOMAIN}
         ingressClassName: external
         tls: false
         extraTls:

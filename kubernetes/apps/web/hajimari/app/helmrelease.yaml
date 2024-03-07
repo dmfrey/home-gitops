@@ -68,9 +68,9 @@ spec:
           cert-manager.io/cluster-issuer: "letsencrypt-prod"
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "false"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host portal.${EXTERNAL_DOMAIN}
+          - host: &host portal.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix

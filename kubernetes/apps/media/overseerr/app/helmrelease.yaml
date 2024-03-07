@@ -120,7 +120,7 @@ spec:
               - name: ORGANIZATION
                 value: ${ORGANIZATION}
               - name: EXTERNAL_DOMAIN
-                value: ${EXTERNAL_DOMAIN}
+                value: ${SECRET_DOMAIN}
 
     service:
       main:
@@ -142,9 +142,9 @@ spec:
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:eye-circle-outline"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "request.${EXTERNAL_DOMAIN}"
+          - host: &host "request.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

@@ -27,58 +27,58 @@ spec:
         - PLEX_SERVER_ID
   vars:
     - name: authentik_host
-      value: https://auth.${EXTERNAL_DOMAIN}
+      value: https://auth.${SECRET_DOMAIN}
     - name: external_domain
-      value: ${EXTERNAL_DOMAIN}
+      value: ${SECRET_DOMAIN}
     - name: proxy_applications
       value:
         Dataflow:
-          url: https://dataflow.${EXTERNAL_DOMAIN}
+          url: https://dataflow.${SECRET_DOMAIN}
           group: Dataflow
         Prowlarr:
-          url: https://prowlarr.${EXTERNAL_DOMAIN}
+          url: https://prowlarr.${SECRET_DOMAIN}
           group: Download
         RealDebrid-Client:
-          url: https://rdt.${EXTERNAL_DOMAIN}
+          url: https://rdt.${SECRET_DOMAIN}
           group: Download
         SABNZBD-Client:
-          url: https://sabnzbd.${EXTERNAL_DOMAIN}
+          url: https://sabnzbd.${SECRET_DOMAIN}
           group: Download
         Hajimari:
-          url: https://portal.${EXTERNAL_DOMAIN}
+          url: https://portal.${SECRET_DOMAIN}
           group: Home Page
         Hass-Code:
-          url: https://hass-code.${EXTERNAL_DOMAIN}
+          url: https://hass-code.${SECRET_DOMAIN}
           group: Home
         Zigbee2Mqtt:
-          url: https://zigbee2mqtt.${EXTERNAL_DOMAIN}
+          url: https://zigbee2mqtt.${SECRET_DOMAIN}
           group: Media
         Bazarr:
-          url: https://bazarr.${EXTERNAL_DOMAIN}
+          url: https://bazarr.${SECRET_DOMAIN}
           group: Media
         Jellyfin:
-          url: https://jellyfin.${EXTERNAL_DOMAIN}
+          url: https://jellyfin.${SECRET_DOMAIN}
           group: Media
         Lidarr:
-          url: https://lidarr.${EXTERNAL_DOMAIN}
+          url: https://lidarr.${SECRET_DOMAIN}
           group: Media
         Readarr:
-          url: https://readarr.${EXTERNAL_DOMAIN}
+          url: https://readarr.${SECRET_DOMAIN}
           group: Media
         Radarr:
-          url: https://radarr.${EXTERNAL_DOMAIN}
+          url: https://radarr.${SECRET_DOMAIN}
           group: Media
         Sonarr:
-          url: https://sonarr.${EXTERNAL_DOMAIN}
+          url: https://sonarr.${SECRET_DOMAIN}
           group: Media
         Tautulli:
-          url: https://tautulli.${EXTERNAL_DOMAIN}
+          url: https://tautulli.${SECRET_DOMAIN}
           group: Media
         Tdarr:
-          url: https://tdarr.${EXTERNAL_DOMAIN}
+          url: https://tdarr.${SECRET_DOMAIN}
           group: Media
         Wizarr:
-          url: https://join.${EXTERNAL_DOMAIN}
+          url: https://join.${SECRET_DOMAIN}
           group: Media
           skip_path_regex: |
             ^/j/
@@ -86,39 +86,39 @@ spec:
             ^/setup/*
             ^/static/
         Alert-Manager:
-          url: https://alert-manager.${EXTERNAL_DOMAIN}
+          url: https://alert-manager.${SECRET_DOMAIN}
           group: Monitor
         Loki:
-          url: https://loki.${EXTERNAL_DOMAIN}
+          url: https://loki.${SECRET_DOMAIN}
           group: Monitor
         Prometheus:
-          url: https://prometheus.${EXTERNAL_DOMAIN}
+          url: https://prometheus.${SECRET_DOMAIN}
           group: Monitor
         Thanos:
-          url: https://thanos.${EXTERNAL_DOMAIN}
+          url: https://thanos.${SECRET_DOMAIN}
           group: Monitor
         Hubble:
-          url: https://hubble.${EXTERNAL_DOMAIN}
+          url: https://hubble.${SECRET_DOMAIN}
           group: Network
         Unifi:
-          url: https://unifi.${EXTERNAL_DOMAIN}
+          url: https://unifi.${SECRET_DOMAIN}
           group: Network
     - name: oauth2_applications
       value:
         Grafana:
-          url: https://grafana.${EXTERNAL_DOMAIN}
+          url: https://grafana.${SECRET_DOMAIN}
           group: Monitor
           client_id: grafana
           client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
           redirect_uris: 
-            - https://grafana.${EXTERNAL_DOMAIN}/login/generic_oauth
+            - https://grafana.${SECRET_DOMAIN}/login/generic_oauth
         Spring-Dev:
-          url: https://spring-dev-gateway.${EXTERNAL_DOMAIN}
+          url: https://spring-dev-gateway.${SECRET_DOMAIN}
           group: Development
           client_id: spring-dev
           client_secret: ${SPRING_DEV_SSO_CLIENT_SECRET}
           redirect_uris: 
-            - https://spring-dev-gateway.${EXTERNAL_DOMAIN}/login/oauth2/code/sso
+            - https://spring-dev-gateway.${SECRET_DOMAIN}/login/oauth2/code/sso
     - name: groups
       value:
         ${ORGANIZATION}-Admins:

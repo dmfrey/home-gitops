@@ -44,9 +44,9 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           # hajimari.io/icon: "simple-icons:"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         ingressClassName: external
-        hostname: &host dataflow.${EXTERNAL_DOMAIN}
+        hostname: &host dataflow.${SECRET_DOMAIN}
         tls: true
 
     metrics:

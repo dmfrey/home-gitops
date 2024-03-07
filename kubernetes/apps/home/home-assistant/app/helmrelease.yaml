@@ -165,9 +165,9 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:homeassistant"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host home.${EXTERNAL_DOMAIN}
+          - host: &host home.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -187,9 +187,9 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:vs-code"
           hajimari.io/appName: "Hass Config"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host-code hass-code.${EXTERNAL_DOMAIN}
+          - host: &host-code hass-code.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix

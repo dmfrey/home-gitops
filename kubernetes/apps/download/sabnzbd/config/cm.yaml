@@ -177,7 +177,7 @@ data:
     nomedia_marker = ""
     ipv6_servers = 1
     url_base = /sabnzbd
-    host_whitelist = sabnzbd-0, sabnzbd, sabnzbd.download, sabnzbd.download.svc, sabnzbd.download.svc.cluster, sabnzbd.download.svc.cluster.local, sabnzbd.${EXTERNAL_DOMAIN}
+    host_whitelist = sabnzbd-0, sabnzbd, sabnzbd.download, sabnzbd.download.svc, sabnzbd.download.svc.cluster, sabnzbd.download.svc.cluster.local, sabnzbd.${SECRET_DOMAIN}
     max_url_retries = 10
     downloader_sleep_time = 10
     ssdp_broadcast_interval = 15

@@ -9,9 +9,9 @@ metadata:
 spec:
   ingressClassName: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   rules:
-    - host: &host flux-webhook.${EXTERNAL_DOMAIN}
+    - host: &host flux-webhook.${SECRET_DOMAIN}
       http:
         paths:
           - path: /hook/

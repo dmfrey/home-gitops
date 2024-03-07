@@ -56,7 +56,7 @@ spec:
               LIDARR__PORT: &port 8686
               LIDARR__LOG_LEVEL: info
               LIDARR__ANALYTICS_ENABLED: "False"
-              LIDARR__APPLICATION_URL: "https://lidarr.${EXTERNAL_DOMAIN}"
+              LIDARR__APPLICATION_URL: "https://lidarr.${SECRET_DOMAIN}"
               LIDARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -122,9 +122,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:headphones"
-          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-        - host: &host "lidarr.${EXTERNAL_DOMAIN}"
+        - host: &host "lidarr.${SECRET_DOMAIN}"
           paths:
           - path: /
             service:

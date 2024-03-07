@@ -32,7 +32,7 @@ homeassistant:
   time_zone: America/New_York
   country: US
   packages: !include_dir_named packages
-  external_url: https://home.${EXTERNAL_DOMAIN}
+  external_url: https://home.${SECRET_DOMAIN}
   internal_url: http://${SVC_HASS_ADDR}:8123
 
 recorder:
@@ -135,4 +135,4 @@ logger:
 # panel_iframe:
 #   mass:
 #     title: "Music Assistant"
-#     url: "https://music.${EXTERNAL_DOMAIN}"
+#     url: "https://music.${SECRET_DOMAIN}"

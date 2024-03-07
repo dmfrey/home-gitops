@@ -32,9 +32,9 @@ spec:
             hajimari.io/enable: "true"
             hajimari.io/icon: "mdi:vs-code"
             hajimari.io/appName: "Hass Config"
-            external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
+            external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           hosts:
-            - host: &host hass-code.${EXTERNAL_DOMAIN}
+            - host: &host hass-code.${SECRET_DOMAIN}
               paths:
                 - path: /
                   pathType: Prefix
