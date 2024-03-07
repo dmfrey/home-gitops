@@ -113,16 +113,17 @@ spec:
               - name: "/dev/nvme0n1"
 
     ingress:
-      ingressClassName: nginx-internal
+      ingressClassName: nginx-external
       dashboard:
-        ingressClassName: nginx-internal
+        ingressClassName: nginx-external
         annotations:
           cert-manager.io/cluster-issuer: homelab-k8s-001-internal-issuer
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: "simple-icons:chess-rook"
           hajimari.io/enable: "true"
+          external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
         host:
-          name: &host rook.${INTERNAL_DOMAIN}
+          name: &host rook.${EXTERNAL_DOMAIN}
           path: "/"
         tls:
           - hosts:
