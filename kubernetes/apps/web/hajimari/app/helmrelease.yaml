@@ -28,7 +28,7 @@ spec:
   
   values:
     env:
-      TZ: America/New_York
+      TZ: ${TIMEZONE}
     hajimari:
       title: Portal
       lightTheme: espresso

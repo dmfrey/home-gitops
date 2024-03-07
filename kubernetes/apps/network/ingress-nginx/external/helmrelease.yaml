@@ -41,6 +41,9 @@ spec:
       allowSnippetAnnotations: true
       enableAnnotationValidations: true
 
+      publishService:
+        enabled: true
+
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"

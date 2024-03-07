@@ -37,6 +37,9 @@ spec:
       allowSnippetAnnotations: true
       enableAnnotationValidations: true
 
+      publishService:
+        enabled: true
+
       service:
         annotations:
           io.cilium/lb-ipam-ips: ${SVC_INTERNAL_NGINX_ADDR}
