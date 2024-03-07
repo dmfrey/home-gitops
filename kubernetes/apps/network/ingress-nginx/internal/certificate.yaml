@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${ORGANIZATION}-internal"
+spec:
+  secretName: "${ORGANIZATION}-tls-internal"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.${INTERNAL_DOMAIN}"

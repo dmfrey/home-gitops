@@ -17,6 +17,7 @@ spec:
         namespace: flux-system
       interval: 15m
   values:
+    
     fullnameOverride: nginx-internal
 
     controller:
@@ -88,7 +89,7 @@ spec:
             any: true
 
       extraArgs:
-        default-ssl-certificate: "network/dmfrey-com-tls-external"
+        default-ssl-certificate: "network/${ORGANIZATION}-internal"
 
       topologySpreadConstraints:
         - maxSkew: 2

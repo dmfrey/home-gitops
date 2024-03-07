@@ -88,7 +88,7 @@ spec:
             any: true
 
       extraArgs:
-        default-ssl-certificate: "network/dmfrey-com-tls-external"
+        default-ssl-certificate: "network/${ORGANIZATION}-external"
 
       topologySpreadConstraints:
         - maxSkew: 2
