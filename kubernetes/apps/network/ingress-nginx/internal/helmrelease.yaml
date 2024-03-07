@@ -34,6 +34,9 @@ spec:
     controller:
       replicaCount: 1
 
+      allowSnippetAnnotations: true
+      enableAnnotationValidations: true
+
       service:
         annotations:
           io.cilium/lb-ipam-ips: ${SVC_INTERNAL_NGINX_ADDR}
@@ -70,7 +73,8 @@ spec:
         proxy-body-size: 0
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
-
+        use-forwarded-headers: "true"
+      
       metrics:
         enabled: true
         serviceMonitor:
