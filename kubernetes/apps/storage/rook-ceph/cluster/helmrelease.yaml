@@ -121,7 +121,7 @@ spec:
           hajimari.io/icon: "mdi:chess-rook"
           hajimari.io/enable: "true"
         host:
-          name: &host rook.${INTERNAL_DOMAIN}
+          name: &host rook.${SECRET_DOMAIN}
           path: "/"
         tls:
           - hosts:
