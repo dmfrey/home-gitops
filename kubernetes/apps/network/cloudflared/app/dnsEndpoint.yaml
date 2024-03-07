@@ -6,6 +6,6 @@ metadata:
   namespace: network
 spec:
   endpoints:
-    - dnsName: ingress-ext.dmfrey.com
+    - dnsName: "ingress-ext.${EXTERNAL_DOMAIN}"
       recordType: CNAME
-      targets: ["ba66fa70-2c9e-43a5-b8c2-92a47aab365a.cfargotunnel.com"]
+      targets: ["${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]

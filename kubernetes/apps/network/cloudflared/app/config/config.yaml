@@ -1,15 +1,10 @@
 ---
 originRequest:
-  http2Origin: true
+  originServerName: "ingress-ext.${EXTERNAL_DOMAIN}"
 
 ingress:
-  - hostname: "dmfrey.com"
+  - hostname: "${EXTERNAL_DOMAIN}"
     service: https://nginx-external-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: ingress-ext.dmfrey.com
-  - hostname: "*.dmfrey.com"
+  - hostname: "*.${EXTERNAL_DOMAIN}"
     service: https://nginx-external-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: ingress-ext.dmfrey.com
-    noTLSVerify: true
   - service: http_status:404
