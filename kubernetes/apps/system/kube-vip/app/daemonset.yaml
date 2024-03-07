@@ -34,7 +34,7 @@ spec:
             - name: cp_enable
               value: "true"
             - name: cp_namespace
-              value: kube-system
+              value: system
             - name: vip_ddns
               value: "false"
             - name: svc_enable
