@@ -40,12 +40,12 @@ spec:
 
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "ingress-ext.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: ${SVC_EXTERNAL_NGINX_ADDR}
         externalTrafficPolicy: Cluster
 
       ingressClassResource:
-        name: nginx-external
+        name: external
         default: false
         controllerValue: k8s.io/external
 
@@ -54,11 +54,7 @@ spec:
           matchExpressions:
             - key: ingress-class
               operator: In
-              values:
-                - nginx-external
-
-      allowSnippetAnnotations: true
-      enableAnnotationValidations: true
+              values: ["external"]
 
       config:
         client-body-buffer-size: 100M
