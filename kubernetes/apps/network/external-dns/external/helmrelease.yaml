@@ -38,7 +38,7 @@ spec:
       - --crd-source-kind=DNSEndpoint
       - --cloudflare-proxied
       - --cloudflare-dns-records-per-page=5000
-      - --ingress-class=nginx-external
+      - --ingress-class=external
       - --exclude-target-net=172.16.0.0/12
       - --exclude-target-net=192.168.0.0/16
       - --exclude-domains=${INTERNAL_DOMAIN}

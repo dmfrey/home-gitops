@@ -114,7 +114,7 @@ spec:
 
     ingress:
       dashboard:
-        ingressClassName: nginx-internal
+        ingressClassName: internal
         annotations:
           cert-manager.io/cluster-issuer: homelab-k8s-001-internal-issuer
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"

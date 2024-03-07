@@ -159,7 +159,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: nginx-external
+        className: external
         annotations:
           nginx.org/websocket-services: home-assistant
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -180,7 +180,7 @@ spec:
             secretName: home-assistant-tls-external
       code:
         enabled: true
-        className: nginx-external
+        className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"

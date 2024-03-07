@@ -43,7 +43,7 @@ resource "authentik_outpost" "outpost" {
     kubernetes_disabled_components : [
       "traefik middleware"
     ]
-    kubernetes_ingress_class_name : "nginx-external"
+    kubernetes_ingress_class_name : "external"
   })
 }
 

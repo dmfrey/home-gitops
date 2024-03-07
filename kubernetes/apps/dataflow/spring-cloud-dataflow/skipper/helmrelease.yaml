@@ -45,7 +45,7 @@ spec:
           hajimari.io/enable: "true"
           # hajimari.io/icon: "simple-icons:"
           external-dns.alpha.kubernetes.io/target: ingress-ext.dmfrey.com
-        ingressClassName: nginx-external
+        ingressClassName: external
         hostname: &host dataflow.${EXTERNAL_DOMAIN}
         tls: true
 

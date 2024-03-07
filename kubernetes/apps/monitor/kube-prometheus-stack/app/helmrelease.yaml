@@ -94,7 +94,7 @@ spec:
       # ingress:
       #   enabled: true
       #   pathType: Prefix
-      #   ingressClassName: nginx-external
+      #   ingressClassName: external
       #   annotations:
       #     cert-manager.io/cluster-issuer: letsencrypt-prod
       #     auth.home.arpa/enabled: "true"
@@ -221,7 +221,7 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: nginx-external
+        ingressClassName: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
