@@ -17,6 +17,7 @@ resources:
   - hashicorp.yaml
   - ingress-nginx.yaml
   - jetstack.yaml
+  - k8s-gateway.yaml
   - kubereboot.yaml
   - kubernetes-sigs-descheduler.yaml
   - kubernetes-sigs-external-dns.yaml
