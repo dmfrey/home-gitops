@@ -70,9 +70,8 @@ spec:
           grpc_server_max_send_msg_size: 8388608
 
         memberlist:
+          abort_if_cluster_join_fails: false
           join_members: ["loki-memberlist"]
-          service: 
-            publishNotReadyAddresses: false 
 
         limits_config:
           retention_period: 14d
