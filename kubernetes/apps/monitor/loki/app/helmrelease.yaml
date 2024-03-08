@@ -96,9 +96,6 @@ spec:
               index:
                 prefix: loki_index_
                 period: 24h
-              # chunks:
-              #   prefix: loki_chunk_
-              #   period: 24h
 
         common:
           path_prefix: /var/loki
