@@ -44,6 +44,8 @@ spec:
             enabled: true
           - name: prometheus
             enabled: true
+            server_addr: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
+            server_port: 9090
 
       resources:
         mgr:
