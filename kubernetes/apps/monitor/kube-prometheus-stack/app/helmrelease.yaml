@@ -204,10 +204,10 @@ spec:
             secretName: prometheus-tls-external
 
       thanosService:
-        enabled: false
+        enabled: true
 
       thanosServiceMonitor:
-        enabled: false
+        enabled: true
 
       prometheusSpec:
         replicas: 3
