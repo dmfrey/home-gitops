@@ -71,6 +71,8 @@ spec:
 
         memberlist:
           join_members: ["loki-memberlist"]
+          service: 
+            publishNotReadyAddresses: false 
 
         limits_config:
           retention_period: 14d
@@ -222,5 +224,6 @@ spec:
           installOperator: false
       lokiCanary:
         enabled: false
+    
     test:
       enabled: false
