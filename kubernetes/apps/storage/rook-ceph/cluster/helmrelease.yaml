@@ -95,6 +95,8 @@ spec:
       dashboard:
         enabled: true
         urlPrefix: /
+        prometheusEndpoint: http://kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+        prometheusEndpointSSLVerify: false
 
       storage:
         useAllNodes: false
