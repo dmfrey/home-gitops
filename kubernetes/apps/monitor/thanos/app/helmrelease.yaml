@@ -92,9 +92,9 @@ spec:
         type: REDIS
         config:
           addr: >-
-            thanos-redis-replicas-0.thanos-redis-headless.monitor.svc.cluster.local:6379,
-            thanos-redis-replicas-1.thanos-redis-headless.monitor.svc.cluster.local:6379,
-            thanos-redis-replicas-2.thanos-redis-headless.monitor.svc.cluster.local:6379
+            thanos-redis-node-0.thanos-redis-headless.monitor.svc.cluster.local:6379,
+            thanos-redis-node-1.thanos-redis-headless.monitor.svc.cluster.local:6379,
+            thanos-redis-node-2.thanos-redis-headless.monitor.svc.cluster.local:6379
           db: 13
           master_name: thanos-redis-master
       ingress:
