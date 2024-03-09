@@ -88,15 +88,15 @@ spec:
     queryFrontend:
       enabled: false
       replicaCount: 3
-      config: &config |-
-        type: REDIS
-        config:
-          addr: >-
-            thanos-redis-node-0.thanos-redis-headless.monitor.svc.cluster.local:6379,
-            thanos-redis-node-1.thanos-redis-headless.monitor.svc.cluster.local:6379,
-            thanos-redis-node-2.thanos-redis-headless.monitor.svc.cluster.local:6379
-          db: 13
-          master_name: thanos-redis
+      # config: &config |-
+      #   type: REDIS
+      #   config:
+      #     addr: >-
+      #       thanos-redis-node-0.thanos-redis-headless.monitor.svc.cluster.local:6379,
+      #       thanos-redis-node-1.thanos-redis-headless.monitor.svc.cluster.local:6379,
+      #       thanos-redis-node-2.thanos-redis-headless.monitor.svc.cluster.local:6379
+      #     db: 13
+      #     master_name: thanos-redis
       ingress:
         enabled: true
         annotations:
@@ -147,7 +147,7 @@ spec:
       # extraEnvVarsSecret: "thanos-ceph-bucket"
       logLevel: debug
       replicaCount: 3
-      config: *config
+      # config: *config
       containerPorts:
         http: 10902
         grpc: 10901
