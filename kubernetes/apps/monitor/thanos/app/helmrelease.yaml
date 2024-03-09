@@ -96,7 +96,7 @@ spec:
             thanos-redis-node-1.thanos-redis-headless.monitor.svc.cluster.local:6379,
             thanos-redis-node-2.thanos-redis-headless.monitor.svc.cluster.local:6379
           db: 13
-          master_name: thanos-redis-master
+          master_name: thanos-redis
       ingress:
         enabled: true
         annotations:
