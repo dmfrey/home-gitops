@@ -152,9 +152,9 @@ spec:
         http: 10902
         grpc: 10901
       livenessProbe:
-        initialDelaySeconds: 300
+        initialDelaySeconds: 30
       readinessProbe:
-        initialDelaySeconds: 300
+        initialDelaySeconds: 30
       networkPolicy: *networkPolicy
       resources:
         requests:
