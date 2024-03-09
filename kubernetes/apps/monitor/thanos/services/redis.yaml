@@ -59,7 +59,12 @@ spec:
       sentinel: false
       # existingSecret: thanos-redis-secret
       # existingSecretPasswordKey: password
-    
+
+    image:
+      registry: docker.io
+      repository: bitnami/redis
+      tag: 6.2.14
+
     master:
 
       livenessProbe: &livenessProbe
