@@ -220,19 +220,19 @@ spec:
         externalLabels:
           cluster: ${CLUSTER_NAME}
 
-        # thanos:
-        #   image: quay.io/thanos/thanos:v0.34.1@sha256:567346c3f6ff2927c2c6c0daad977b2213f62d45eca54d48afd19e6deb902181
-        #   objectStorageConfig:
-        #     name: thanos-secret
-        #     key: objstore.yml
-        #   # renovate: datasource=docker depName=quay.io/thanos/thanos
-        #   version: "v0.32.4"
+        thanos:
+          image: quay.io/thanos/thanos:v0.34.1@sha256:567346c3f6ff2927c2c6c0daad977b2213f62d45eca54d48afd19e6deb902181
+          objectStorageConfig:
+            name: thanos-secret
+            key: objstore.yml
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "v0.32.4"
 
-        # alertingEnpoints:
-        #   - namespace: monitor
-        #     name: alertmanager
-        #     port: 9093
-        #     apiVersion: v2
+        alertingEnpoints:
+          - namespace: monitor
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
 
         podAffinity: hard
         ruleSelectorNilUsesHelmValues: false
