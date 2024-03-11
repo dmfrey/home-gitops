@@ -40,4 +40,4 @@ spec:
 #     substituteFrom: []
 #   dependsOn:
 #     - name: cluster-apps-radarr
-#     - name: cluster-apps-tf-controller
+#     - name: cluster-apps-tofu-controller
