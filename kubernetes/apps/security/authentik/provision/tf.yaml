@@ -103,6 +103,9 @@ spec:
         Unifi:
           url: https://unifi.${SECRET_DOMAIN}
           group: Network
+        Rook-Ceph:
+          url: https://rook.${SECRET_DOMAIN}
+          group: Storage
     - name: oauth2_applications
       value:
         Grafana:
