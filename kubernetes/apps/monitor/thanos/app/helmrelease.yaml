@@ -86,7 +86,7 @@ spec:
         - thanos-storagegateway:10901
 
     queryFrontend:
-      enabled: false
+      enabled: true
       replicaCount: 3
       # config: &config |-
       #   type: REDIS
