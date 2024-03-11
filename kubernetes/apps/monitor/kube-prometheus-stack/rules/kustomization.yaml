@@ -13,5 +13,7 @@ configMapGenerator:
       labels:
         app.kubernetes.io/part-of: flux
         app.kubernetes.io/component: monitoring
+generatorOptions:
+  disableNameSuffixHash: true
 configurations:
   - kustomizeconfig.yaml
