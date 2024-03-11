@@ -11,6 +11,13 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-2
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart
+  resources:
+    requests:
+      memory: 1024Mi
+      cpu: 1
+    limits:
+      memory: 2048Mi
+      cpu: 2
   storage:
     size: 10Gi
     storageClass: ceph-block
