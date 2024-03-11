@@ -28,6 +28,11 @@ spec:
   uninstall:
     keepHistory: false
   
+  valuesFrom:
+    - kind: ConfigMap
+      name: flux-kube-state-metrics-config
+      valuesKey: kube-state-metrics-config.yaml
+
   values:
   
     cleanPrometheusOperatorObjectNames: true
@@ -124,21 +129,21 @@ spec:
                 requests:
                   storage: 1Gi              
     
-    kube-state-metrics:
-      metricLabelsAllowlist:
-        - "pods=[*]"
-        - "deployments=[*]"
-        - "statefulsets=[*]"
-        - "persistentvolumeclaims=[*]"
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
-              targetLabel: kubernetes_node
+    # kube-state-metrics:
+    #   metricLabelsAllowlist:
+    #     - "pods=[*]"
+    #     - "deployments=[*]"
+    #     - "statefulsets=[*]"
+    #     - "persistentvolumeclaims=[*]"
+    #   prometheus:
+    #     monitor:
+    #       enabled: true
+    #       relabelings:
+    #         - action: replace
+    #           regex: (.*)
+    #           replacement: $1
+    #           sourceLabels: ["__meta_kubernetes_pod_node_name"]
+    #           targetLabel: kubernetes_node
 
     grafana:
       enabled: false

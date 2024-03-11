@@ -22,6 +22,28 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: cluster-apps-prometheus-rules
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/monitor/kube-prometheus-stack/rules
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: cluster-apps-kube-prometheus-stack-crds
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: cluster-apps-kube-prometheus-stack
   namespace: flux-system
 spec:
@@ -42,25 +64,4 @@ spec:
     - name: cluster-apps-kube-prometheus-stack-crds
     - name: cluster-apps-cert-manager
     - name: cluster-apps-rook-ceph-cluster
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-prometheus-rules
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/monitor/kube-prometheus-stack/rules
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
-  postBuild:
-    substituteFrom: []
-  interval: 15m
-  retryInterval: 1m
-  timeout: 5m
-  decryption:
-    provider: sops
-  dependsOn:
-    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: cluster-apps-prometheus-rules
