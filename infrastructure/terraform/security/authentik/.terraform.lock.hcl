@@ -1,24 +1,11 @@
-# This file is maintained automatically by "terraform init".
+# This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
-provider "registry.terraform.io/goauthentik/authentik" {
+provider "registry.opentofu.org/goauthentik/authentik" {
   version     = "2024.2.0"
   constraints = "2024.2.0"
   hashes = [
-    "h1:1A5eVbC4U39PiRKZjGMn0hU63KPSs96xdyHj4U4d2W0=",
-    "h1:5HvOf9hkHynoJI8SQCseVkLAZFP88aqWneN+Hp/iA9c=",
-    "h1:AeyEcplt1WTQijM1d2E1pBPemcL57WC5bZr7y1XNui4=",
-    "h1:EdZozU/P2enGqcd7duvwgk8ROxiGxmLXnOoCEMWuJWI=",
-    "h1:FZpj1qXWTRFT5NLh7AiA2q4EuGk2KyLYDi9gYHOZWVM=",
-    "h1:NEmGTsRBQhJIGUT/Ffcn0/6xetkr83roV/OTRq6AjFw=",
-    "h1:UC0zDNyhAc51FAecYRRAUKUWMDjXUEtpK/zauVuChTg=",
-    "h1:j7OldrJkTVhZSL/WGJHu0QJjoKD02wKGHReabvnc6g4=",
-    "h1:jT2j9JCK1n5RtK/F7LLeudkSkn4FSuRS1JezQytbPF0=",
     "h1:kxxwtM45+KNPbMfNieNTTPyce8t67wXNEswMInkNU+w=",
-    "h1:laMdR1tAkqUYOQLOxPwnrhy8wwlxeP+xQPNLGba+BaM=",
-    "h1:mNgQEFvPNrwF15LnwwxBh1iLu7FN1VUM5/sLVOR3crU=",
-    "h1:pHHvum2Y3AqmCjUcjGnzL9lfJaP9wtqPh3Os+IYzYCg=",
-    "h1:wjlvN4h16hukq7jBYFEY61r+KMSsvzNn2yXhw7Pom/4=",
     "zh:03b13879c66d1536f250c91f61ba078cc34af2fec271ea19c838a719dd4f1baa",
     "zh:1c4d93aa3de72e4b00ac33fc0d4134fc5a641b863e9cd9afdc1105a4024fc8f0",
     "zh:50d2f5b71ea5410633dbc8b143bef6fa77a9670a07a3fd85f9921e1094ab416e",
