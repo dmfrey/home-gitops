@@ -4,6 +4,9 @@ kind: Cluster
 metadata:
   name: pg-grafana
   namespace: monitor
+  annotations:
+    kyverno.io/ignore: "true"
+
 spec:
   
   instances: 3

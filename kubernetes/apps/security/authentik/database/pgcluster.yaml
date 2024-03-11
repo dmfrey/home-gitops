@@ -6,12 +6,13 @@ metadata:
   namespace: security
   annotations:
     kyverno.io/ignore: "true"
+
 spec:
   
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-2
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
-  primaryUpdateMethod: restart
+  primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
   
   resources:
     requests:
