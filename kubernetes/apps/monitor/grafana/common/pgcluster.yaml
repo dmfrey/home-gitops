@@ -5,21 +5,26 @@ metadata:
   name: pg-grafana
   namespace: monitor
 spec:
-  instances: 1
+  
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-2
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
+  
   storage:
     size: 25Gi
     storageClass: ceph-block
+  
   postgresql:
     parameters:
       max_connections: "600"
       shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
+  
   monitoring:
     enablePodMonitor: true
   # configured according to below link to allow customizing of initdb via Flux
   # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
+  
   bootstrap:
     initdb:
       dataChecksums: true
@@ -29,21 +34,21 @@ spec:
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
 
-  # backup:
-  #   retentionPolicy: 30d
-  #   barmanObjectStore:
-  #     wal:
-  #       compression: bzip2
-  #       maxParallel: 8
-  #     destinationPath: s3://cnpg/
-  #     endpointURL: http://${QNAP_ADDR}:9000
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: cloudnative-pg-secret
-  #         key: AWS_SECRET_ACCESS_KEY_ID
-  #       secretAccessKey:
-  #         name: cloudnative-pg-secret
-  #         key: AWS_SECRET_ACCESS_KEY
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      destinationPath: s3://cnpg/
+      endpointURL: http://${QNAP_ADDR}:9000
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY_ID
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+        maxParallel: 8
 
 #  # RECOVERY
 #  bootstrap:

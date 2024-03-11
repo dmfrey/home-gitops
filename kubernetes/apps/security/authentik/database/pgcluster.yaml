@@ -7,10 +7,12 @@ metadata:
   annotations:
     kyverno.io/ignore: "true"
 spec:
+  
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-2
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart
+  
   resources:
     requests:
       memory: 1024Mi
@@ -18,17 +20,21 @@ spec:
     limits:
       memory: 2048Mi
       cpu: 2
+  
   storage:
     size: 10Gi
     storageClass: ceph-block
+  
   postgresql:
     parameters:
       max_connections: "600"
       shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
+  
   monitoring:
     enablePodMonitor: true
   # configured according to below link to allow customizing of initdb via Flux
   # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
+  
   bootstrap:
     initdb:
       dataChecksums: true
@@ -37,6 +43,7 @@ spec:
       encoding: "UTF8"
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
+  
   backup:
     retentionPolicy: 30d
     barmanObjectStore:
