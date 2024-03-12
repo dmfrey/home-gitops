@@ -84,6 +84,7 @@ spec:
 
             resources:
               requests:
+                amd.com/gpu: 1
                 cpu: 1
                 memory: 1Gi
               limits:
@@ -94,7 +95,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: jellyfin.${INTERNAL_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: jellyfin.${SECRET_DOMAIN}
           io.cilium/lb-ipam-ips: ${SVC_JELLYFIN_ADDR}
         ports:
           http:
