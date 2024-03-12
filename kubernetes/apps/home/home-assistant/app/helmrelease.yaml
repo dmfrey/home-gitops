@@ -54,7 +54,7 @@ spec:
 
             env:
               - name: TZ
-                value: America/New_York
+                value: ${TIMEZONE}
               - name: HASS_POSTGRES_USER
                 valueFrom:
                   secretKeyRef:

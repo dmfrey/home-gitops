@@ -29,7 +29,7 @@ homeassistant:
   # metric for Metric, imperial for Imperial
   unit_system: imperial
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: America/New_York
+  time_zone: ${TIMEZONE}
   country: US
   packages: !include_dir_named packages
   external_url: https://home.${SECRET_DOMAIN}
@@ -110,17 +110,17 @@ zone:
   - name: Giant
     latitude: 40.51722
     longitude: -75.38427
-    radius: 60
+    radius: 50
     icon: mdi:cart
   - name: The Fresh Market
     latitude: 40.55840
     longitude: -75.41265
-    radius: 60
+    radius: 40
     icon: mdi:cart
   - name: Wawa
     latitude: 40.52300
     longitude: -75.38884
-    radius: 40
+    radius: 20
     icon: mdi:gas-pump
   - name: Starbucks
     latitude: 40.56067014317348
