@@ -56,7 +56,7 @@ spec:
               tag: 1.36.0
             env:
               # DEBUG: zigbee-herdsman*
-              TZ: "American/New_York"
+              TZ: "${TIMEZONE}"
               ZIGBEE2MQTT_DATA: /data
               ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
               ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: "false"
