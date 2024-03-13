@@ -61,7 +61,10 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
+              PUID: 1568
+              PGID: 1568
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
+              JELLYFIN_CACHE_DIR: /cache
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
               JELLYFIN_PublishedServerUrl: https://jellyfin.${SECRET_DOMAIN}
