@@ -35,13 +35,14 @@ spec:
       #   intel.feature.node.kubernetes.io/gpu: "true"
 
       securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 44 # video
           - 109 # render
+          - 1568
           - 65534
 
     controllers:
