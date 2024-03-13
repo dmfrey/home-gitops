@@ -81,7 +81,7 @@ spec:
               PLEX_BASEURL: "https://plex.media.svc.cluster.local:32400"
               ## Plex token https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/
               #PLEX_TOKEN: "SuperSecretToken"
-              PLEX_TOKEN: "${PLEX_TOKEN}"
+              #PLEX_TOKEN: "${PLEX_TOKEN}"
               ## If not using plex token then use username and password of the server admin along with the servername
               #PLEX_USERNAME: ""
               #PLEX_PASSWORD: ""
@@ -93,7 +93,7 @@ spec:
               JELLYFIN_BASEURL: "http://jellyfin.media.svc.cluster.local:8096"
               ## Jellyfin api token, created manually by logging in to the jellyfin server admin dashboard and creating an api key
               #JELLYFIN_TOKEN: "SuperSecretToken"
-              JELLYFIN_TOKEN: "${JELLYFIN_TOKEN}"
+              #JELLYFIN_TOKEN: "${JELLYFIN_TOKEN}"
               ## Blacklisting/Whitelisting libraries, library types such as Movies/TV Shows, and users. Mappings apply so if the mapping for the user or library exist then both will be excluded.
               #BLACKLIST_LIBRARY: ""
               WHITELIST_LIBRARY: "Movies,TV-Shows,Shows"
