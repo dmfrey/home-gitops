@@ -103,9 +103,9 @@ spec:
               #WHITELIST_USERS: "testuser1,testuser2"
 
             envFrom:
-              - secretRef:
+              - secretKeyRef:
                   name: jellyplex-watched-secret
-              - secretRef:
+              - secretKeyRef:
                   name: pmm-secret
     
             resources:
