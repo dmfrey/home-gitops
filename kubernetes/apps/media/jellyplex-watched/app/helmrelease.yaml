@@ -56,7 +56,7 @@ spec:
               tag: 4.5.0
     
             env:
-              TZ: "${TIMEZONE}"
+              TZ: "America/New_York"
               ## Do not mark any shows/movies as played and instead just output to log if they would of been marked.
               DRYRUN: "False"
               ## Additional logging information
