@@ -35,14 +35,13 @@ spec:
       #   intel.feature.node.kubernetes.io/gpu: "true"
 
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1568
+        runAsGroup: 1568
+        fsGroup: 1568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 44 # video
           - 109 # render
-          - 1568
           - 65534
 
     controllers:
@@ -74,7 +73,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: &port 8096
+                    port: 8096
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
