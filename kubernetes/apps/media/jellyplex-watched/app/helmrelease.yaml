@@ -56,7 +56,7 @@ spec:
               tag: 4.5.0
     
             env:
-              TZ: "America/New_York"
+              TZ: "${TIMEZONE}"
               ## Do not mark any shows/movies as played and instead just output to log if they would of been marked.
               DRYRUN: "False"
               ## Additional logging information
@@ -70,7 +70,7 @@ spec:
               LOGFILE: "log.log"
               ## Map usernames between plex and jellyfin in the event that they are different, order does not matter
               #USER_MAPPING: { "testuser2": "testuser3" }
-              USER_MAPPING: '{ "dmfrey": "Daniel-Frey" }'
+              USER_MAPPING: '{ "Daniel-Frey": "dmfrey" }'
               ## Map libraries between plex and jellyfin in the even that they are different, order does not matter
               LIBRARY_MAPPING: '{ "Movies": "Movies", "TV Shows": "TV Shows" }'
               #LIBRARY_MAPPING: '{ "Shows": "TV-Shows" }'
@@ -96,11 +96,13 @@ spec:
               #JELLYFIN_TOKEN: "${JELLYFIN_TOKEN}"
               ## Blacklisting/Whitelisting libraries, library types such as Movies/TV Shows, and users. Mappings apply so if the mapping for the user or library exist then both will be excluded.
               #BLACKLIST_LIBRARY: ""
-              WHITELIST_LIBRARY: "Movies,TV Shows,Shows"
+              WHITELIST_LIBRARY: "Movies,TV Shows"
               #BLACKLIST_LIBRARY_TYPE: ""
               #WHITELIST_LIBRARY_TYPE: ""
               #BLACKLIST_USERS: ""
-              #WHITELIST_USERS: "testuser1,testuser2"
+              WHITELIST_USERS: "dmfrey"
+              SYNC_FROM_PLEX_TO_JELLYFIN: "True"
+              SYNC_FROM_JELLYFIN_TO_PLEX: "True"
 
             envFrom:
               - secretRef: 
