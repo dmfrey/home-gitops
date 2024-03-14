@@ -30,4 +30,4 @@ resources:
   - prometheus-community.yaml
   - rook-ceph.yaml
   - stakater.yaml
-  - tofu-controller.yaml
+  - tf-controller.yaml

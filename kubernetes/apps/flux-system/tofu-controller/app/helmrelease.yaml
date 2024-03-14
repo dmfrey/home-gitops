@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: tofu-controller
+  name: &name tf-controller
   namespace: flux-system
 spec:
   
@@ -34,7 +34,9 @@ spec:
     keepHistory: false
   
   values:
-  
+    
+    fullnameOverride: *name
+
     allowBreakTheGlass: true
     allowCrossNamespaceRefs: true
     
