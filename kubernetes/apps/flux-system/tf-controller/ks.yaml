@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-tf-controller
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/flux-system/tofu-controller/app
+  path: ./kubernetes/apps/flux-system/tf-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
