@@ -6,7 +6,9 @@ metadata:
   name: spring-cloud-dataflow
   namespace: dataflow
 spec:
+  
   interval: 5m
+  
   chart:
     spec:
       chart: spring-cloud-dataflow
@@ -69,12 +71,12 @@ spec:
       enabled: true
 
       resources:
-        limits:
-          cpu: "1.0"
-          memory: 2048Mi
         requests:
           cpu: "0.5"
           memory: 1024Mi
+        limits:
+          cpu: "1.0"
+          memory: 2048Mi
       
       replicaCount: 1
       
@@ -87,12 +89,12 @@ spec:
     externalDatabase:
       driver: org.postgresql.Driver
       dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw.dataflow.svc.cluster.local:5432/dataflow
+        url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow
         username: dataflow
         existingSecret: pg-dataflow-app
         existingSecretPasswordKey: password
       skipper:
-        url: jdbc:postgresql://pg-skipper-rw.dataflow.svc.cluster.local:5432/skipper
+        url: jdbc:postgresql://pg-skipper-rw:5432/skipper
         username: skipper
         existingSecret: pg-skipper-app
         existingSecretPasswordKey: password
