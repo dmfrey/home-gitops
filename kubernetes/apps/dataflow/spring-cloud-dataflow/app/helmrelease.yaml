@@ -89,12 +89,12 @@ spec:
     externalDatabase:
       driver: org.postgresql.Driver
       dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw.dataflow:5432/dataflow
+        url: jdbc:postgresql://pg-dataflow-rw.dataflow.svc.cluster.local:5432/dataflow
         username: dataflow
         existingSecret: pg-dataflow-app
         existingSecretPasswordKey: password
       skipper:
-        url: jdbc:postgresql://pg-skipper-rw.dataflow:5432/skipper
+        url: jdbc:postgresql://pg-skipper-rw.dataflow.svc.cluster.local:5432/skipper
         username: skipper
         existingSecret: pg-skipper-app
         existingSecretPasswordKey: password
