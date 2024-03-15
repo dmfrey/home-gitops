@@ -5,7 +5,7 @@ metadata:
   name: pg-dataflow
   namespace: dataflow
 spec:
-  instances: 1
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-2
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
@@ -29,21 +29,21 @@ spec:
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
 
-  # backup:
-  #   retentionPolicy: 30d
-  #   barmanObjectStore:
-  #     wal:
-  #       compression: bzip2
-  #       maxParallel: 8
-  #     destinationPath: s3://cnpg/
-  #     endpointURL: http://${QNAP_ADDR}:9000
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: cloudnative-pg-secret
-  #         key: AWS_SECRET_ACCESS_KEY_ID
-  #       secretAccessKey:
-  #         name: cloudnative-pg-secret
-  #         key: AWS_SECRET_ACCESS_KEY
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      destinationPath: s3://cnpg/
+      endpointURL: http://${QNAP_ADDR}:9000
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY_ID
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+        maxParallel: 8
 
 #  # RECOVERY
 #  bootstrap:
@@ -73,7 +73,7 @@ metadata:
   name: pg-skipper
   namespace: dataflow
 spec:
-  instances: 1
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.2-2
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
@@ -97,21 +97,21 @@ spec:
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
 
-  # backup:
-  #   retentionPolicy: 30d
-  #   barmanObjectStore:
-  #     wal:
-  #       compression: bzip2
-  #       maxParallel: 8
-  #     destinationPath: s3://cnpg/
-  #     endpointURL: http://${QNAP_ADDR}:9000
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: cloudnative-pg-secret
-  #         key: AWS_SECRET_ACCESS_KEY_ID
-  #       secretAccessKey:
-  #         name: cloudnative-pg-secret
-  #         key: AWS_SECRET_ACCESS_KEY
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      destinationPath: s3://cnpg/
+      endpointURL: http://${QNAP_ADDR}:9000
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY_ID
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+        maxParallel: 8
 
 #  # RECOVERY
 #  bootstrap:
