@@ -91,15 +91,15 @@ spec:
       dataflow:
         url: jdbc:postgresql://pg-dataflow-rw:5432/dataflow
         username: dataflow
-        password: XPdcX7jCYXHgl8NOjJtvXJkxiMDH4vqi0bYJrvxIuo3eBg648ZSdG5fTpISKLdf5
-        # existingSecret: pg-dataflow-app
-        # existingSecretPasswordKey: password
+        # password: XPdcX7jCYXHgl8NOjJtvXJkxiMDH4vqi0bYJrvxIuo3eBg648ZSdG5fTpISKLdf5
+        existingSecret: pg-dataflow-app
+        existingSecretPasswordKey: password
       skipper:
         url: jdbc:postgresql://pg-skipper-rw:5432/skipper
         username: skipper
-        password: AaqGU7o7DUpJjC9xBjuv9SHRkLYUMFJMk2OjDEBe28sbefx3vafTA3M4szIdnqEn
-        # existingSecret: pg-skipper-app
-        # existingSecretPasswordKey: password
+        # password: AaqGU7o7DUpJjC9xBjuv9SHRkLYUMFJMk2OjDEBe28sbefx3vafTA3M4szIdnqEn
+        existingSecret: pg-skipper-app
+        existingSecretPasswordKey: password
 
     rabbitmq:
       enabled: false
