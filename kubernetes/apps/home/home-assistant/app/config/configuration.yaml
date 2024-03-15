@@ -110,21 +110,25 @@ zone:
   - name: Giant
     latitude: 40.51722
     longitude: -75.38427
-    radius: 50
+    radius: 40
     icon: mdi:cart
   - name: The Fresh Market
     latitude: 40.55840
     longitude: -75.41265
-    radius: 40
+    radius: 30
     icon: mdi:cart
   - name: Wawa
     latitude: 40.52300
     longitude: -75.38884
-    radius: 20
+    radius: 10
     icon: mdi:gas-pump
   - name: Starbucks
     latitude: 40.56067014317348
     longitude: -75.41091951409241
+    radius: 10
+  - name: Steel Club
+    latitude: 40.58725509209406
+    longitude: -75.33159711617732
     radius: 30
 
 logger:
