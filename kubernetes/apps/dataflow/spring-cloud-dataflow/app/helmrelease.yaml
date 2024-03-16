@@ -40,6 +40,9 @@ spec:
       configuration:
         metricsDashboard: https://grafana.dmfrey.com:443
 
+      extraEnvVars:
+        - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC: debug
+
       resources:
         requests:
           cpu: "0.5"
@@ -49,7 +52,7 @@ spec:
           memory: 2048M
 
       service:
-        type: LoadBalancer
+        type: ClusterIP
         port: 8080
 
       ingress:
@@ -64,6 +67,11 @@ spec:
         ingressClassName: external
         hostname: &host dataflow.${SECRET_DOMAIN}
         tls: true
+
+    skipper:
+
+      extraEnvVars:
+        - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC: debug
 
     metrics:
       enabled: true
