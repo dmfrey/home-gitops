@@ -42,7 +42,7 @@ spec:
 
       extraEnvVars:
         - name: DEBUG
-          value: true
+          value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
 
@@ -75,7 +75,7 @@ spec:
 
       extraEnvVars:
         - name: DEBUG
-          value: true
+          value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
 
