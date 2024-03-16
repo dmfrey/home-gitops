@@ -41,7 +41,8 @@ spec:
         metricsDashboard: https://grafana.dmfrey.com:443
 
       extraEnvVars:
-        - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC: debug
+        - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
+          value: debug
 
       resources:
         requests:
@@ -71,7 +72,8 @@ spec:
     skipper:
 
       extraEnvVars:
-        - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC: debug
+        - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
+          value: debug
 
     metrics:
       enabled: true
