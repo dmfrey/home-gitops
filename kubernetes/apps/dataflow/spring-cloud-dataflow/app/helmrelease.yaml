@@ -115,15 +115,11 @@ spec:
 
     rabbitmq:
       enabled: false
-      auth:
-        password: 7vsVlY_wBpXblhH1RQp5w0bVmcR4vwxb
-        erlangCookie: vH0E6743_pZBL1ccbVbO1V22wKTaLZ6_
       
     externalRabbitmq:
       enabled: true
       host: rabbit-dataflow.dataflow.svc.cluster.local
       port: 5672
       username: default_user_4DqLnJ1GCSZriIF9VG-
-      # password: 7vsVlY_wBpXblhH1RQp5w0bVmcR4vwxb
       existingSecret: rabbit-dataflow-default-user
       existingSecretPasswordKey: password
