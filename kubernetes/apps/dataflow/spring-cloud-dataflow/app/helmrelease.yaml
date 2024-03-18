@@ -77,7 +77,7 @@ spec:
           command:
             - sh
             - -c
-            - until nslookup pg-dataflow-rw.dataflow.svc; do echo waiting for pg-dataflow-rw.dataflow.svc; sleep 2; done
+            - until nslookup -q=A pg-dataflow-rw.dataflow.svc; do echo waiting for pg-dataflow-rw.dataflow.svc; sleep 2; done
 
     skipper:
 
@@ -93,7 +93,7 @@ spec:
           command:
             - sh
             - -c
-            - until nslookup pg-skipper-rw.dataflow.svc; do echo waiting for pg-skipper-rw.dataflow.svc; sleep 2; done
+            - until nslookup -q=A pg-skipper-rw.dataflow.svc; do echo waiting for pg-skipper-rw.dataflow.svc; sleep 2; done
 
     metrics:
       enabled: true
