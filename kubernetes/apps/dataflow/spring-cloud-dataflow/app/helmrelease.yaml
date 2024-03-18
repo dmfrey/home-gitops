@@ -71,6 +71,14 @@ spec:
         hostname: &host dataflow.${SECRET_DOMAIN}
         tls: true
 
+      initContainers:
+        - name: check-db
+          image: busybox
+          command:
+            - sh
+            - -c
+            - until nslookup pg-dataflow-rw; do echo waiting for pg-dataflow-rw; sleep 2; done
+
     skipper:
 
       extraEnvVars:
@@ -78,6 +86,14 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
+
+      initContainers:
+        - name: check-db
+          image: busybox
+          command:
+            - sh
+            - -c
+            - until nslookup pg-skipper-rw; do echo waiting for pg-skipper-rw; sleep 2; done
 
     metrics:
       enabled: true
