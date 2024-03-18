@@ -117,13 +117,13 @@ spec:
     externalDatabase:
       driver: org.postgresql.Driver
       dataflow:
-        url: jdbc:postgresql://pg-dataflow-rw.dataflow.svc.cluster.local:5432/dataflow
+        url: jdbc:postgresql://pg-dataflow-rw.dataflow.svc:5432/dataflow
         username: dataflow
         password: RzoIoDLJSvBvA42WGOCamhI3B7ibBdUPKJXEki8v0B6kIioLpAU5hLuG91seVOVm
         # existingSecret: pg-dataflow-app
         # existingSecretPasswordKey: password
       skipper:
-        url: jdbc:postgresql://pg-skipper-rw.dataflow.svc.cluster.local:5432/skipper
+        url: jdbc:postgresql://pg-skipper-rw.dataflow.svc:5432/skipper
         username: skipper
         password: CIrVojmE9WW6tG5BJZ3t4CuWoXHStgTB7IfjHrbGBRlQmAaRY05MXBxrTG3g4NFm
         # existingSecret: pg-skipper-app
@@ -134,7 +134,7 @@ spec:
       
     externalRabbitmq:
       enabled: true
-      host: rabbit-dataflow.dataflow.svc.cluster.local
+      host: rabbit-dataflow.dataflow.svc
       port: 5672
       username: default_user_4DqLnJ1GCSZriIF9VG-
       existingSecret: rabbit-dataflow-default-user
