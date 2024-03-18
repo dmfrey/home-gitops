@@ -124,4 +124,6 @@ spec:
       host: rabbit-dataflow.dataflow.svc.cluster.local
       port: 5672
       username: default_user_4DqLnJ1GCSZriIF9VG-
-      password: 7vsVlY_wBpXblhH1RQp5w0bVmcR4vwxb
+      # password: 7vsVlY_wBpXblhH1RQp5w0bVmcR4vwxb
+      existingSecret: rabbit-dataflow-default-user
+      existingSecretPasswordKey: password
