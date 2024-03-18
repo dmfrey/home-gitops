@@ -71,13 +71,13 @@ spec:
         hostname: &host dataflow.${SECRET_DOMAIN}
         tls: true
 
-      initContainers:
-        - name: check-db
-          image: busybox
-          command:
-            - sh
-            - -c
-            - until nc -zv -w 5 pg-dataflow-rw.dataflow.svc.cluster.local 5432; do echo waiting for pg-dataflow-rw.dataflow.svc.cluster.local; sleep 2; done
+      # initContainers:
+      #   - name: check-db
+      #     image: busybox
+      #     command:
+      #       - sh
+      #       - -c
+      #       - until nslookup -q=A pg-dataflow-rw.dataflow.svc.cluster.local; do echo waiting for pg-dataflow-rw.dataflow.svc.cluster.local; sleep 2; done
 
     skipper:
 
@@ -87,13 +87,13 @@ spec:
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
 
-      initContainers:
-        - name: check-db
-          image: busybox
-          command:
-            - sh
-            - -c
-            - until nc -zv -w 5 pg-skipper-rw.dataflow.svc.cluster.local 5432; do echo waiting for pg-skipper-rw.dataflow.svc.cluster.local; sleep 2; done
+      # initContainers:
+      #   - name: check-db
+      #     image: busybox
+      #     command:
+      #       - sh
+      #       - -c
+      #       - until nslookup -q=A pg-skipper-rw.dataflow.svc.cluster.local; do echo waiting for pg-skipper-rw.dataflow.svc.cluster.local; sleep 2; done
 
     metrics:
       enabled: true
