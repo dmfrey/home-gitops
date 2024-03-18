@@ -77,7 +77,7 @@ spec:
           command:
             - sh
             - -c
-            - until nslookup -q=A pg-dataflow-rw.dataflow.svc.cluster.local; do echo waiting for pg-dataflow-rw.dataflow.svc.cluster.local; sleep 2; done
+            - until nc -zv pg-dataflow-rw.dataflow.svc.cluster.local 5432; do echo waiting for pg-dataflow-rw.dataflow.svc.cluster.local; sleep 2; done
 
     skipper:
 
@@ -93,7 +93,7 @@ spec:
           command:
             - sh
             - -c
-            - until nslookup -q=A pg-skipper-rw.dataflow.svc.cluster.local; do echo waiting for pg-skipper-rw.dataflow.svc.cluster.local; sleep 2; done
+            - until nc -zv pg-skipper-rw.dataflow.svc.cluster.local 5432; do echo waiting for pg-skipper-rw.dataflow.svc.cluster.local; sleep 2; done
 
     metrics:
       enabled: true
