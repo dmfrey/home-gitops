@@ -167,6 +167,7 @@ spec:
 
     service:
       main:
+        controller: main
         primary: true
         ports:
           http:
@@ -195,13 +196,13 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
-                  port: http
+                  identifier: main
+                  port: *port
               - path: /metrics
                 pathType: Prefix
                 service:
-                  name: metrics
-                  port: metrics
+                  identifier: metrics
+                  port: *metricsPort
         tls:
           - hosts:
               - *host

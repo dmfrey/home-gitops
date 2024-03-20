@@ -73,6 +73,7 @@ spec:
 
     service:
       main:
+        controller: main
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
@@ -80,7 +81,7 @@ spec:
           io.cilium/lb-ipam-ips: ${SVC_PLEX_ADDR}
         ports:
           http:
-            port: 32400
+            port: &port 32400
             targetPort: 32400
             nodePort: 32400
           dnla-tcp:
@@ -143,8 +144,8 @@ spec:
           paths:
           - path: /
             service:
-              name: main
-              port: http
+              identifier: main
+              port: *port
         tls:
         - hosts:
           - *host

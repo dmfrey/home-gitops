@@ -109,7 +109,7 @@ spec:
 
     serviceMonitor:
       main:
-        enabled: true
+        enabled: false
         serviceName: *app
 
     persistence:

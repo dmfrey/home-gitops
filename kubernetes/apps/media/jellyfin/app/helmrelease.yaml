@@ -95,6 +95,7 @@ spec:
 
     service:
       main:
+        controller: main
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
@@ -102,7 +103,7 @@ spec:
           io.cilium/lb-ipam-ips: ${SVC_JELLYFIN_ADDR}
         ports:
           http:
-            port: 8096
+            port: &port 8096
 
     ingress:
       main:
@@ -120,8 +121,8 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
-                  port: http
+                  identifier: main
+                  port: *port
         tls:
         - hosts:
           - *host

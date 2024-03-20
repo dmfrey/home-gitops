@@ -131,6 +131,7 @@ spec:
 
     service:
       main:
+        controller: main
         ports:
           http:
             enabled: true
@@ -154,8 +155,8 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
-                  port: http
+                  identifier: main
+                  port: *port
         tls:
           - hosts:
               - *host

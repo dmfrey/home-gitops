@@ -70,6 +70,7 @@ spec:
     service:
       main:
         enabled: false
+        controller: main
 
     persistence:
       downloads:

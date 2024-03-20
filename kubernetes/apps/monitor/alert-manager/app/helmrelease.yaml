@@ -53,9 +53,10 @@ spec:
 
     service:
       main:
+        controller: main
         ports:
           http:
-            port: 9093
+            port: &port 9093
 
     ingress:
       main:
@@ -72,8 +73,8 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
-                  port: http
+                  identifier: main
+                  port: *port
         tls:
           - hosts:
               - *host

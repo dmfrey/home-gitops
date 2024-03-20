@@ -95,13 +95,15 @@ spec:
 
     service:
       main:
+        controller: main
         ports:
           http:
             port: *port
 
     serviceMonitor:
       main:
-        enabled: true
+        enabled: false
+        serviceName: *app
 
     persistence:
       media:

@@ -86,6 +86,7 @@ spec:
     service:
       main:
         enabled: false
+        controller: main
         ports:
           enabled: false
           http:

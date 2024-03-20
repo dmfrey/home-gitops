@@ -79,7 +79,7 @@ spec:
                 spec:
                   httpGet:
                     path: /manifest.json
-                    port: 8123
+                    port: &port 8123
                   initialDelaySeconds: 3
                   periodSeconds: 3
               readiness:
@@ -113,7 +113,7 @@ spec:
               - "/config"
 
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
 
         initContainers:
           clone-repo:
@@ -143,18 +143,19 @@ spec:
 
     service:
       main:
+        controller: main
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: home.${INTERNAL_DOMAIN}
           io.cilium/lb-ipam-ips: ${SVC_HASS_ADDR}
         ports:
           http:
-            port: 8123
+            port: *port
       code:
         controller: main
         ports:
           http:
-            port: 8081
+            port: &codePort 8081
 
     ingress:
       main:
@@ -172,8 +173,8 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
-                  port: http
+                  identifier: main
+                  port: *port
         tls:
           - hosts:
               - *host
@@ -194,8 +195,8 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: code
-                  port: http
+                  identifier: code
+                  port: *codePort
         tls:
           - hosts:
               - *host-code
@@ -273,6 +274,7 @@ spec:
     serviceMonitor:
       main:
         enabled: true
+        serviceName: *app
         endpoints:
           - port: http
             scheme: http

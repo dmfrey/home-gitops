@@ -76,6 +76,7 @@ spec:
 
     service:
       main:
+        controller: main
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: mqtt.${INTERNAL_DOMAIN}
