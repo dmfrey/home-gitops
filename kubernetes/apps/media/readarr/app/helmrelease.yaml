@@ -46,6 +46,9 @@ spec:
         annotions:
           reloader.stakater.com/auto: "true"
 
+        replicas: 1
+        strategy: RollingUpdate
+
         containers:
           main:
             image:
