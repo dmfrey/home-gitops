@@ -6,7 +6,9 @@ metadata:
   name: &app smtp-relay
   namespace: home
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: app-template
@@ -15,15 +17,19 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
 
@@ -71,6 +77,8 @@ spec:
 
     service:
       main:
+        enabled: true
+        controller: main
         type: LoadBalancer
         loadBalancerIP: ${SVC_SMTP_RELAY_ADDR}
         externalTrafficPolicy: Local
@@ -84,6 +92,7 @@ spec:
     serviceMonitor:
       main:
         enabled: true
+        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http
@@ -105,4 +114,5 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 1Gi
-        mountPath: /dev/shm
+        globalMounts:
+          - path: /dev/shm
