@@ -63,25 +63,31 @@ spec:
             probes:
               liveness:
                 enabled: true
-                httpGet:
-                  path: /actuator/health
-                  port: *port
-                initialDelaySeconds: 45
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health
+                    port: *port
+                  initialDelaySeconds: 45
               readiness:
                 enabled: true
-                httpGet:
-                  path: /actuator/health
-                  port: *port
-                initialDelaySeconds: 45
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health
+                    port: *port
+                  initialDelaySeconds: 45
               startup:
                 enabled: true
-                httpGet:
-                  path: /actuator/health
-                  port: *port
-                failureThreshold: 3
-                timeoutSeconds: 3
-                initialDelaySeconds: 60
-                periodSeconds: 5
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health
+                    port: *port
+                  failureThreshold: 3
+                  timeoutSeconds: 3
+                  initialDelaySeconds: 60
+                  periodSeconds: 5
 
             resources:
               requests:
