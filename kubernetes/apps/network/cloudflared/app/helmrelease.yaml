@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: cloudflared
+  name: &app cloudflared
   namespace: network
 spec:
   
@@ -101,6 +101,8 @@ spec:
 
     service:
       main:
+        enabled: true
+        container: main
         ports:
           http:
             port: *port
@@ -108,6 +110,7 @@ spec:
     serviceMonitor:
       main:
         enabled: true
+        serviceName: *app
 
     persistence:
       
