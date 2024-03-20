@@ -40,9 +40,9 @@ spec:
           - 109
           - 1568
           - 65534
-        capabilities:
-          add:
-            - CHOWN
+        # capabilities:
+        #   add:
+        #     - CHOWN
 
     controllers:
       main:
