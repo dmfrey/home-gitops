@@ -42,10 +42,6 @@ spec:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18
 
-            ports:
-              - name: mqtt
-                containerPort: &mqttPort 1883
-
             resources:
               requests:
                 cpu: 100m
@@ -83,10 +79,7 @@ spec:
           io.cilium/lb-ipam-ips: ${SVC_MQTT_ADDR}
         ports:
           http:
-            enabled: false
-          mqtt:
-            enabled: true
-            port: *mqttPort
+            port: 1883
 
     persistence:
       data:
