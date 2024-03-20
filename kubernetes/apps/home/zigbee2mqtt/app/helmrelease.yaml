@@ -118,7 +118,6 @@ spec:
           #       "ips": ["192.168.50.5/24"]
           #     }]
           securityContext:
-            privileged: true
             runAsUser: 568
             runAsGroup: 568
             runAsNonRoot: true
