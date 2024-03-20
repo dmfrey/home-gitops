@@ -43,7 +43,7 @@ spec:
       main:
         type: statefulset
 
-        annotions:
+        annotations:
           reloader.stakater.com/auto: "true"
 
         replicas: 1
