@@ -38,7 +38,8 @@ spec:
         statefulset:
           volumeClaimTemplates:
             - name: data
-              mountPath: /data
+              globalMounts:
+                - path: /data
               accessMode: ReadWriteOnce
               size: 5Gi
               storageClass: ceph-block
@@ -56,7 +57,7 @@ spec:
               - en
 
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
 
             ports:
               - name: tcp
