@@ -53,23 +53,23 @@ spec:
               repository: plexinc/pms-docker
               tag: 1.32.7.7621-871adbd44
 
-              env:
-                TZ: ${TIMEZONE}
-                ALLOWED_NETWORKS: "192.0.0.0/8" #,172.22.0.0/16"
-                # ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400,https://plex.${SECRET_DOMAIN}:443"
+            env:
+              TZ: ${TIMEZONE}
+              ALLOWED_NETWORKS: "192.0.0.0/8" #,172.22.0.0/16"
+              # ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400,https://plex.${SECRET_DOMAIN}:443"
 
-              envFrom:
-                - secretRef:
-                    name: plex-secret
+            envFrom:
+              - secretRef:
+                  name: plex-secret
 
-              resources:
-                requests:
-                  amd.com/gpu: 1
-                  cpu: 500m
-                  memory: 2Gi
-                limits:
-                  amd.com/gpu: 1
-                  memory: 10Gi
+            resources:
+              requests:
+                amd.com/gpu: 1
+                cpu: 500m
+                memory: 2Gi
+              limits:
+                amd.com/gpu: 1
+                memory: 10Gi
 
     service:
       main:
