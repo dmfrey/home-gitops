@@ -31,7 +31,8 @@ spec:
   values:
   
     controllers:
-      main:
+      
+      cloudflared:
         replicas: 2
         strategy: RollingUpdate
       
@@ -39,7 +40,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: docker.io/cloudflare/cloudflared
               tag: 2024.3.0
@@ -100,17 +101,11 @@ spec:
             runAsNonRoot: true
 
     service:
-      main:
-        enabled: true
-        controller: main
+      app:
+        controller: cloudflared
         ports:
           http:
             port: *port
-
-    serviceMonitor:
-      main:
-        enabled: false
-        serviceName: *app
 
     persistence:
       
