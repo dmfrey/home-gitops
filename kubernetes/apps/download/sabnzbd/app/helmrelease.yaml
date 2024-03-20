@@ -173,7 +173,7 @@ spec:
           http:
             port: *port
       metrics:
-        controller: exporter
+        controller: main
         ports:
           metrics:
             port: *metricsPort
