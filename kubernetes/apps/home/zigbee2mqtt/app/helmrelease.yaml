@@ -43,7 +43,8 @@ spec:
         statefulset:
           volumeClaimTemplates:
             - name: data
-              mountPath: /data
+              globalMounts:
+                - path: /data
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: ceph-block
