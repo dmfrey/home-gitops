@@ -45,7 +45,7 @@ spec:
           volumeClaimTemplates:
             - name: config
               globalMounts:
-                path: /data/database
+                - path: /data/database
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: ceph-block
