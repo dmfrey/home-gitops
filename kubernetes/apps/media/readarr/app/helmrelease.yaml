@@ -30,6 +30,8 @@ spec:
   values:
 
     defaultPodOptions:
+      annotions:
+        reloader.stakater.com/auto: "true"
       securityContext:
         runAsUser: 1568
         runAsGroup: 1568
@@ -42,8 +44,6 @@ spec:
     controllers:
       main:
         type: statefulset
-        annotions:
-          reloader.stakater.com/auto: "true"
 
         containers:
           main:
