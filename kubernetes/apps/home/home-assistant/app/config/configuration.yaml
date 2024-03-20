@@ -40,7 +40,7 @@ recorder:
 
 automation:
   - id: update_config_github_push_event
-    alias: Update Configuration on Github Push Event
+    alias: Event | GitHub | Push
 
     trigger:
     - platform: webhook
@@ -58,7 +58,11 @@ script: !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors
 binary_sensor: !include_dir_merge_list binary_sensors
 input_boolean: !include_dir_merge_named input_booleans
+input_button: !include_dir_merge_named input_buttons
+input_datetime: !include_dir_merge_named input_datetimes
 input_number: !include_dir_merge_named input_numbers
+input_select: !include_dir_merge_named input_selects
+input_text: !include_dir_merge_named input_texts
 scene: !include scenes.yaml
 group: !include_dir_merge_named groups
 
