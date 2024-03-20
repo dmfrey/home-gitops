@@ -64,6 +64,7 @@ spec:
     service:
       main:
         enabled: false
+        controller: main
     
     persistence:
       sys:
