@@ -30,6 +30,7 @@ spec:
       namespace: system
   
   values:
+    
     defaultPodOptions:
       tolerations:
         - key: CriticalAddonsOnly
@@ -38,6 +39,7 @@ spec:
         feature.node.kubernetes.io/pci-0300_1002.present: "true"
         kubernetes.io/arch: amd64
       priorityClassName: system-node-critical
+    
     controllers:
       
       main:
@@ -77,12 +79,16 @@ spec:
               privileged: true
               capabilities:
                 drop: ["ALL"]
+    
     serviceAccount:
       create: false
       name: amd-gpu-node-labeller
+    
     service:
       main:
         enabled: false
+        controller: main
+    
     persistence:
       sys:
         enabled: true
