@@ -80,9 +80,10 @@ spec:
         ports:
           http:
             port: *port
-          server:
-            enabled: true
-            container: main
+      server:
+        controller: main
+        ports:
+          http:
             protocol: TCP
             port: *serverPort
 
