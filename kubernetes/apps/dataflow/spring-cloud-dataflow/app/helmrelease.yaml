@@ -119,15 +119,13 @@ spec:
       dataflow:
         url: jdbc:postgresql://pg-dataflow-rw.dataflow.svc.cluster.local:5432/dataflow
         username: dataflow
-        password: RzoIoDLJSvBvA42WGOCamhI3B7ibBdUPKJXEki8v0B6kIioLpAU5hLuG91seVOVm
-        # existingSecret: pg-dataflow-app
-        # existingSecretPasswordKey: password
+        existingSecret: pg-dataflow-app
+        existingSecretPasswordKey: password
       skipper:
         url: jdbc:postgresql://pg-skipper-rw.dataflow.svc.cluster.local:5432/skipper
         username: skipper
-        password: CIrVojmE9WW6tG5BJZ3t4CuWoXHStgTB7IfjHrbGBRlQmAaRY05MXBxrTG3g4NFm
-        # existingSecret: pg-skipper-app
-        # existingSecretPasswordKey: password
+        existingSecret: pg-skipper-app
+        existingSecretPasswordKey: password
 
     rabbitmq:
       enabled: false
