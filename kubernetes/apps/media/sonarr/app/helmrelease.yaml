@@ -81,7 +81,6 @@ spec:
           # sidecars:
           exporter:
             dependsOn: main
-            name: exporter
             
             image: 
               repository: ghcr.io/onedr0p/exportarr
