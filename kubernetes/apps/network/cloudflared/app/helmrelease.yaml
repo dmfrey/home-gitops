@@ -102,7 +102,7 @@ spec:
     service:
       main:
         enabled: true
-        container: main
+        controller: main
         ports:
           http:
             port: *port
