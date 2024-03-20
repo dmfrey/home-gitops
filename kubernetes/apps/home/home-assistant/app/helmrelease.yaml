@@ -201,7 +201,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: code
+                  name: code
                   port: http
         tls:
           - hosts:
