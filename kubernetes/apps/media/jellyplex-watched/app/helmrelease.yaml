@@ -70,8 +70,7 @@ spec:
               ## Debugging level, "info" is default, "debug" is more verbose
               DEBUG_LEVEL: "debug"
               ## How often to run the script in seconds
-              #SLEEP_DURATION: "3600"
-              SLEEP_DURATION: "21600"
+              SLEEP_DURATION: "300"
               ## Log file where all output will be written to
               LOGFILE: "log.log"
               ## Map usernames between plex and jellyfin in the event that they are different, order does not matter
