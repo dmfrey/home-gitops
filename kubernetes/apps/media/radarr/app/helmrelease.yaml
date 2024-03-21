@@ -105,6 +105,7 @@ spec:
           
     service:
       main:
+        nameOverride: radarr
         controller: main
         ports:
           http:

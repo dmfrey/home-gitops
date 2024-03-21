@@ -75,6 +75,7 @@ spec:
 
     service:
       main:
+        nameOverride: bazarr
         controller: main
         ports:
           http:

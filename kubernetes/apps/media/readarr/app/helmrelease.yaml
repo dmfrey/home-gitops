@@ -102,6 +102,7 @@ spec:
 
     service:
       main:
+        nameOverride: readarr
         controller: main
         ports:
           http:

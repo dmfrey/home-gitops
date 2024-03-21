@@ -167,6 +167,7 @@ spec:
 
     service:
       main:
+        nameOverride: sabnzbd
         controller: main
         primary: true
         ports:

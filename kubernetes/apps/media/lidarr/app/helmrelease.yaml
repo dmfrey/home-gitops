@@ -102,6 +102,7 @@ spec:
             
     service:
       main:
+        nameOverride: lidarr
         controller: main
         ports:
           http:
