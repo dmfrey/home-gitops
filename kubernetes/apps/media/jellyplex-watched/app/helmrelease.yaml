@@ -36,7 +36,10 @@ spec:
     fullnameOverride: *name
     
     # App runs as root
-    #defaultPodOptions:
+    defaultPodOptions:
+      annotations:
+        secret.reloader.stakater.com/reload: jellyplex-watched-secret,pmm-secret
+
       #securityContext:
         #runAsUser: 1000
         #runAsGroup: 1000
@@ -46,7 +49,10 @@ spec:
     controllers:
     
       main:
-    
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
         containers:
     
           main:
