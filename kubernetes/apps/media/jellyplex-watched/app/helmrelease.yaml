@@ -70,7 +70,7 @@ spec:
               LOGFILE: "log.log"
               ## Map usernames between plex and jellyfin in the event that they are different, order does not matter
               #USER_MAPPING: { "testuser2": "testuser3" }
-              #USER_MAPPING: '{ "dmfrey": "dmfrey" }'
+              USER_MAPPING: '{ "${PLEX_USER_1}": "${JELLYFIN_USER_1}" }'
               ## Map libraries between plex and jellyfin in the even that they are different, order does not matter
               LIBRARY_MAPPING: '{ "Movies": "Movies", "TV Shows": "TV Shows" }'
               #LIBRARY_MAPPING: '{ "Shows": "TV-Shows" }'
@@ -100,7 +100,7 @@ spec:
               #BLACKLIST_LIBRARY_TYPE: ""
               #WHITELIST_LIBRARY_TYPE: ""
               #BLACKLIST_USERS: ""
-              WHITELIST_USERS: "dmfrey"
+              WHITELIST_USERS: ""
               SYNC_FROM_PLEX_TO_JELLYFIN: "True"
               SYNC_FROM_JELLYFIN_TO_PLEX: "True"
 
