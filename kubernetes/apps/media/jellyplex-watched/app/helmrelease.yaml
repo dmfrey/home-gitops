@@ -70,7 +70,7 @@ spec:
               LOGFILE: "log.log"
               ## Map usernames between plex and jellyfin in the event that they are different, order does not matter
               #USER_MAPPING: { "testuser2": "testuser3" }
-              USER_MAPPING: '{ "${PLEX_USER_1}": "${JELLYFIN_USER_1}" }'
+              #USER_MAPPING: '{ "${PLEX_USER_1}": "${JELLYFIN_USER_1}" }'
               ## Map libraries between plex and jellyfin in the even that they are different, order does not matter
               LIBRARY_MAPPING: '{ "Movies": "Movies", "TV Shows": "TV Shows" }'
               #LIBRARY_MAPPING: '{ "Shows": "TV-Shows" }'
