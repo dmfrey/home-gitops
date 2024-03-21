@@ -106,6 +106,7 @@ spec:
 
     service:
       main:
+        nameOverride: sonarr
         controller: main
         ports:
           http:
