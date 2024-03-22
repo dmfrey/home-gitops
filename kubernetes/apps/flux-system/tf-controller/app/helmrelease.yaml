@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: tf-controller
-      version: main-786da834
+      version: 0.16.0-rc.4
       sourceRef:
         kind: HelmRepository
         name: tofu-controller
