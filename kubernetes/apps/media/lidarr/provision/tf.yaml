@@ -9,7 +9,7 @@ spec:
   interval: 15m
   path: "./"
     
-  approvePlan: ''
+  approvePlan: auto
   
   sourceRef:
     kind: OCIRepository
