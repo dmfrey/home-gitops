@@ -9,9 +9,9 @@ spec:
   interval: 15m
   path: "./"
 
-  breakTheGlass: true
+  # breakTheGlass: true
   approvePlan: auto
-  destroyResourcesOnDeletion: true
+  # destroyResourcesOnDeletion: true
 
   sourceRef:
     kind: OCIRepository
