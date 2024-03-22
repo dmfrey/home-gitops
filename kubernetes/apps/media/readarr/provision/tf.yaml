@@ -9,7 +9,8 @@ spec:
   interval: 15m
   path: "./"
 
-  approvePlan: ''
+  approvePlan: auto
+  destroyResourcesOnDeletion: true
 
   sourceRef:
     kind: OCIRepository
