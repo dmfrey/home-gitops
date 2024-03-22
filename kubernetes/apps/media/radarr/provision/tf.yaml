@@ -5,15 +5,20 @@ metadata:
   name: radarr-provisioner
   namespace: media
 spec:
-  approvePlan: auto
+
   interval: 15m
   path: "./"
+
+  approvePlan: auto
+
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-radarr
     namespace: flux-system
+
   writeOutputsToSecret:
     name: radarr-tfstate
+
   varsFrom:
     - kind: Secret
       name: starr-apps-secret

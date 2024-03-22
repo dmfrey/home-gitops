@@ -5,15 +5,20 @@ metadata:
   name: readarr-provisioner
   namespace: media
 spec:
-  approvePlan: auto
+
   interval: 15m
   path: "./"
+
+  approvePlan: auto
+
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-readarr
     namespace: flux-system
+
   writeOutputsToSecret:
     name: readarr-tfstate
+
   varsFrom:
     - kind: Secret
       name: starr-apps-secret
