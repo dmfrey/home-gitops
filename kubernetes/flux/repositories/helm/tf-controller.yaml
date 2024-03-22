@@ -6,4 +6,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 2h
-  url: https://ghcr.io/flux-iac/charts/
+  url: https://ghcr.io/flux-iac/charts/tf-controller
