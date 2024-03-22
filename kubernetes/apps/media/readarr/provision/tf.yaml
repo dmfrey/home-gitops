@@ -9,6 +9,7 @@ spec:
   interval: 15m
   path: "./"
 
+  breakTheGlass: true
   approvePlan: auto
   destroyResourcesOnDeletion: true
 
@@ -27,5 +28,5 @@ spec:
       name: sabnzbd-secret
 
   tfstate:
-    forceUnlock: "yes"
+    forceUnlock: "auto"
     lockIdentifier: 001eb6ed-85d1-39b0-31a5-4bd8703eae7f
