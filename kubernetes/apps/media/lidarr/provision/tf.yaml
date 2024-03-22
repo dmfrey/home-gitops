@@ -5,20 +5,22 @@ metadata:
   name: lidarr-provisioner
   namespace: media
 spec:
-  approvePlan: auto
+  
   interval: 15m
   path: "./"
+    
+  approvePlan: ''
+  
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-lidarr
     namespace: flux-system
+  
   writeOutputsToSecret:
     name: lidarr-tfstate
+  
   varsFrom:
     - kind: Secret
       name: starr-apps-secret
     - kind: Secret
       name: sabnzbd-secret
-  tfstate:
-    forceUnlock: "yes"
-    lockIdentifier: 664c7a46-4f48-9b33-2778-a7655c6bb32f
