@@ -22,12 +22,15 @@ spec:
             "routes": [
               { 
                 "dst": "192.168.50.0/24", 
-                "gateway": "192.168.50.1" 
+                "gw": "192.168.50.1" 
               }
             ],
             "gateway": "192.168.50.1",
             "capabilities": { "mac": true }
           }
+        },
+        {
+          "type": "sbr"
         }
       ]
     }
