@@ -20,16 +20,14 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              { "dst": "192.0.0.0/8", "gw": "192.168.50.1" }
-            ]
+              { 
+                "dst": "192.168.50.0/24", 
+                "gateway": "192.168.50.1" 
+              }
+            ],
+            "gateway": "192.168.50.1",
+            "capabilities": { "mac": true }
           }
-        },
-        {
-          "capabilities": { "mac": true },
-          "type": "tuning"
-        },
-        {
-          "type": "sbr"
         }
       ]
     }
