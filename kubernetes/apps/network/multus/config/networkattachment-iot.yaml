@@ -21,12 +21,18 @@ spec:
             "type": "static",
             "routes": [
               { "dst": "192.0.0.0/8", "gw": "192.168.50.1" }
-            ]
+            ],
+            "dns": {
+              "nameservers" : ["192.168.30.3"]
+            }
           }
         },
         {
           "capabilities": { "mac": true },
           "type": "tuning"
+        },
+        {
+          "type": "sbr"
         }
       ]
     }
