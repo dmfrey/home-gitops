@@ -25,7 +25,9 @@ spec:
                 "gw": "192.168.50.1" 
               }
             ],
-            "gateway": "192.168.50.1",
+            "gateway": [
+              "192.168.50.1"
+            ],
             "capabilities": { "mac": true }
           }
         }
