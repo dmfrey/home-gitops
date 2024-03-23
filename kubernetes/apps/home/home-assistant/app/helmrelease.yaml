@@ -50,8 +50,7 @@ spec:
                 "namespace": "network",
                 "ips": ["192.168.50.4/24"],
                 "mac": "a6:60:f7:86:74:12",
-                "gateway": "192.168.50.1",
-                "default-route": [ "192.168.50.1" ]
+                "gateway": "192.168.50.1"
               }]
 
         containers:
