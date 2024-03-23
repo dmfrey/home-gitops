@@ -48,8 +48,11 @@ spec:
             k8s.v1.cni.cncf.io/networks: |
               [{
                 "name":"iot-vlan",
+                "interface": "eth1",
                 "namespace": "network",
-                "ips": ["192.168.50.4/24"]
+                "ips": ["192.168.50.4/24"],
+                "mac": "a6:60:f7:86:74:12",
+                "gateway": "192.168.50.1"
               }]
 
         containers:
