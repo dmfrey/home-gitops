@@ -97,7 +97,7 @@ spec:
       dashboard:
         enabled: true
         ssl: false
-        port: 8080
+        port: 7000
         urlPrefix: /
         prometheusEndpoint: http://thanos-query.monitor.svc.cluster.local:9090
         prometheusEndpointSSLVerify: false
