@@ -155,6 +155,9 @@ spec:
                     storage: 1Gi
                   limits:
                     storage: 500Gi
+        globalMounts:
+          - path: /config/transcodes
+            readOnly: false
 
       cache:
         enabled: true
