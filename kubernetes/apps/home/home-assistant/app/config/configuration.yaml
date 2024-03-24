@@ -70,15 +70,15 @@ notify:
   - name: parent_devices
     platform: group
     services:
-      - service: mobile_app_pixel_8_pro
-      - service: mobile_app_pixel_7
+      - service: mobile_app_dan_s_pixel_8_pro
+      - service: mobile_app_steph_s_pixel_7
   - name: family_devices
     platform: group
     services:
-      - service: mobile_app_pixel_8_pro
-      - service: mobile_app_pixel_7
-      - service: mobile_app_pixel_6a
-      - service: mobile_app_pixel_6a_2
+      - service: mobile_app_dan_s_pixel_8_pro
+      - service: mobile_app_steph_s_pixel_7
+      - service: mobile_app_camdyn_s_pixel_6a
+      - service: mobile_app_molly_s_pixel_6a
 
 frontend:
   themes: !include_dir_merge_named themes
