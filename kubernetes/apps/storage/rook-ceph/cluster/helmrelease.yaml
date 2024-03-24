@@ -96,11 +96,11 @@ spec:
 
       dashboard:
         enabled: true
-        ssl: false
-        port: 7000
-        urlPrefix: /
-        prometheusEndpoint: http://thanos-query.monitor.svc.cluster.local:9090
-        prometheusEndpointSSLVerify: false
+        ssl: true
+        # port: 8443
+        # urlPrefix: /
+        # prometheusEndpoint: http://thanos-query.monitor.svc.cluster.local:9090
+        # prometheusEndpointSSLVerify: false
 
       storage:
         useAllNodes: false
@@ -123,7 +123,7 @@ spec:
         ingressClassName: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
-          # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: "mdi:chess-rook"
           hajimari.io/enable: "true"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
