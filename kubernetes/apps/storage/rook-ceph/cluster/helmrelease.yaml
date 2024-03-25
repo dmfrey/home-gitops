@@ -122,7 +122,7 @@ spec:
       dashboard:
         ingressClassName: internal
         annotations:
-          cert-manager.io/cluster-issuer: homelab-k8s-001-internal-issuer
+          # cert-manager.io/cluster-issuer: homelab-k8s-001-internal-issuer
           # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: "mdi:chess-rook"
           hajimari.io/enable: "true"
@@ -130,10 +130,10 @@ spec:
         host:
           name: &host rook.${INTERNAL_DOMAIN}
           path: "/"
-        tls:
-          - hosts:
-              - *host
-            secretName: rook-ceph-tls-secret
+        # tls:
+        #   - hosts:
+        #       - *host
+        #     secretName: rook-ceph-tls-secret
 
     cephBlockPools:
       - name: ceph-blockpool
