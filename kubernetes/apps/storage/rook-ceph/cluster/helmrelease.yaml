@@ -120,7 +120,7 @@ spec:
 
     ingress:
       dashboard:
-        ingressClassName: internal
+        ingressClassName: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
