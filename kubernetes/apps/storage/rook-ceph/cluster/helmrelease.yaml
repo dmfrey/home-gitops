@@ -120,15 +120,15 @@ spec:
 
     ingress:
       dashboard:
-        ingressClassName: external
+        ingressClassName: internal
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: "mdi:chess-rook"
           hajimari.io/enable: "true"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         host:
-          name: &host rook.${SECRET_DOMAIN}
+          name: &host rook.${INTERNAL_DOMAIN}
           path: "/"
         tls:
           - hosts:
