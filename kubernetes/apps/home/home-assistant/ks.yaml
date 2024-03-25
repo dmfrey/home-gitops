@@ -13,7 +13,9 @@ spec:
     name: home-gitops
   wait: true
   postBuild:
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
