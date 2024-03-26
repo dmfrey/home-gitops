@@ -67,73 +67,61 @@ scene: !include scenes.yaml
 group: !include_dir_merge_named groups
 
 notify: !include notify.yaml
-  # - name: parent_devices
-  #   platform: group
-  #   services:
-  #     - service: mobile_app_dan_s_pixel_8_pro
-  #     - service: mobile_app_steph_s_pixel_7
-  # - name: family_devices
-  #   platform: group
-  #   services:
-  #     - service: mobile_app_dan_s_pixel_8_pro
-  #     - service: mobile_app_steph_s_pixel_7
-  #     - service: mobile_app_camdyn_s_pixel_6a
-  #     - service: mobile_app_molly_s_pixel_6a
 
 frontend:
   themes: !include_dir_merge_named themes
 
 zeroconf:
 
-zone:
-  - name: Home
-    latitude: !env_var HASS_LATITUDE
-    longitude: !env_var  HASS_LONGITUDE
-    radius: 100
-    icon: mdi:home
-  - name: Frey Home
-    latitude: !env_var HASS_LATITUDE_FREY
-    longitude: !env_var  HASS_LONGITUDE_FREY
-    radius: 100
-    icon: mdi:home
-  - name: Clemmer Home
-    latitude: !env_var HASS_LATITUDE_CLEMMER
-    longitude: !env_var  HASS_LONGITUDE_CLEMMER
-    radius: 100
-    icon: mdi:home
-  - name: Southern Lehigh High School
-    latitude: !env_var HASS_LATITUDE_SCHOOL
-    longitude: !env_var HASS_LONGITUDE_SCHOOL
-    radius: 150
-    icon: mdi:school
-  - name: West Chester University
-    latitude: !env_var HASS_LATITUDE_WU
-    longitude: !env_var HASS_LONGITUDE_WU
-    radius: 150
-    icon: mdi:school
-  - name: Giant
-    latitude: 40.51722
-    longitude: -75.38427
-    radius: 40
-    icon: mdi:cart
-  - name: The Fresh Market
-    latitude: 40.55840
-    longitude: -75.41265
-    radius: 30
-    icon: mdi:cart
-  - name: Wawa
-    latitude: 40.52300
-    longitude: -75.38884
-    radius: 10
-    icon: mdi:gas-pump
-  - name: Starbucks
-    latitude: 40.56067014317348
-    longitude: -75.41091951409241
-    radius: 10
-  - name: Steel Club
-    latitude: 40.58725509209406
-    longitude: -75.33159711617732
-    radius: 30
+zone: !include zone.yaml
+  # - name: Home
+  #   latitude: !env_var HASS_LATITUDE
+  #   longitude: !env_var  HASS_LONGITUDE
+  #   radius: 100
+  #   icon: mdi:home
+  # - name: Frey Home
+  #   latitude: !env_var HASS_LATITUDE_FREY
+  #   longitude: !env_var  HASS_LONGITUDE_FREY
+  #   radius: 100
+  #   icon: mdi:home
+  # - name: Clemmer Home
+  #   latitude: !env_var HASS_LATITUDE_CLEMMER
+  #   longitude: !env_var  HASS_LONGITUDE_CLEMMER
+  #   radius: 100
+  #   icon: mdi:home
+  # - name: Southern Lehigh High School
+  #   latitude: !env_var HASS_LATITUDE_SCHOOL
+  #   longitude: !env_var HASS_LONGITUDE_SCHOOL
+  #   radius: 150
+  #   icon: mdi:school
+  # - name: West Chester University
+  #   latitude: !env_var HASS_LATITUDE_WU
+  #   longitude: !env_var HASS_LONGITUDE_WU
+  #   radius: 150
+  #   icon: mdi:school
+  # - name: Giant
+  #   latitude: 40.51722
+  #   longitude: -75.38427
+  #   radius: 40
+  #   icon: mdi:cart
+  # - name: The Fresh Market
+  #   latitude: 40.55840
+  #   longitude: -75.41265
+  #   radius: 30
+  #   icon: mdi:cart
+  # - name: Wawa
+  #   latitude: 40.52300
+  #   longitude: -75.38884
+  #   radius: 10
+  #   icon: mdi:gas-pump
+  # - name: Starbucks
+  #   latitude: 40.56067014317348
+  #   longitude: -75.41091951409241
+  #   radius: 10
+  # - name: Steel Club
+  #   latitude: 40.58725509209406
+  #   longitude: -75.33159711617732
+  #   radius: 30
 
 logger:
   default: warning
