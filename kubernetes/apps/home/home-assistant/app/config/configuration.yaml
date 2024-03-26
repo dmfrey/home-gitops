@@ -88,19 +88,15 @@ schedule: #!include schedule.yaml
   nighttime_schedule_test:
     name: "Nighttime Schedule"
     monday: &nighttimeSchedule
-      - from: "00:00:00"
-        to: "07:00:00"
       - from: "23:00:00"
-        to: "00:00:00"
+        to: "07:00:00"
     tuesday: *nighttimeSchedule
     wednesday: *nighttimeSchedule
     thursday: *nighttimeSchedule
     friday: *nighttimeSchedule
     saturday: &weekendNighttimeSchedule
-      - from: "00:00:00"
-        to: "08:00:00"
       - from: "23:00:00"
-        to: "00:00:00"
+        to: "08:00:00"
     sunday: *weekendNighttimeSchedule
 
 zeroconf:
