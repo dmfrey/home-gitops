@@ -66,19 +66,19 @@ input_text: !include_dir_merge_named input_texts
 scene: !include scenes.yaml
 group: !include_dir_merge_named groups
 
-notify:
-  - name: parent_devices
-    platform: group
-    services:
-      - service: mobile_app_dan_s_pixel_8_pro
-      - service: mobile_app_steph_s_pixel_7
-  - name: family_devices
-    platform: group
-    services:
-      - service: mobile_app_dan_s_pixel_8_pro
-      - service: mobile_app_steph_s_pixel_7
-      - service: mobile_app_camdyn_s_pixel_6a
-      - service: mobile_app_molly_s_pixel_6a
+notify: !include notify.yaml
+  # - name: parent_devices
+  #   platform: group
+  #   services:
+  #     - service: mobile_app_dan_s_pixel_8_pro
+  #     - service: mobile_app_steph_s_pixel_7
+  # - name: family_devices
+  #   platform: group
+  #   services:
+  #     - service: mobile_app_dan_s_pixel_8_pro
+  #     - service: mobile_app_steph_s_pixel_7
+  #     - service: mobile_app_camdyn_s_pixel_6a
+  #     - service: mobile_app_molly_s_pixel_6a
 
 frontend:
   themes: !include_dir_merge_named themes
