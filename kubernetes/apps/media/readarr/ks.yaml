@@ -21,23 +21,23 @@ spec:
     - name: cluster-apps-media-common-mounts
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-kube-prometheus-stack-crds
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: cluster-apps-readarr-provision
-#   namespace: flux-system
-# spec:
-#   interval: 15m
-#   timeout: 2m
-#   path: "./kubernetes/apps/media/readarr/provision"
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: home-gitops
-#   wait: true
-#   postBuild:
-#     substituteFrom: []
-#   dependsOn:
-#     - name: cluster-apps-readarr
-#     - name: cluster-apps-tf-controller
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-readarr-provision
+  namespace: flux-system
+spec:
+  interval: 15m
+  timeout: 2m
+  path: "./kubernetes/apps/media/readarr/provision"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+    - name: cluster-apps-readarr
+    - name: cluster-apps-tf-controller
