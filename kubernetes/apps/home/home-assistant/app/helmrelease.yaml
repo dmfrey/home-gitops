@@ -222,13 +222,13 @@ spec:
         globalMounts:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
-      hass-scenes:
-        enabled: true
-        type: configMap
-        name: hass-config
-        globalMounts:
-          - path: /config/scenes.yaml
-            subPath: scenes.yaml
+      # hass-scenes:
+      #   enabled: true
+      #   type: configMap
+      #   name: hass-config
+      #   globalMounts:
+      #     - path: /config/scenes.yaml
+      #       subPath: scenes.yaml
 
       ssh-config:
         enabled: true
