@@ -71,7 +71,30 @@ notify: !include notify.yaml
 frontend:
   themes: !include_dir_merge_named themes
 
-# schedule: !include schedule.yaml
+schedule: #!include schedule.yaml
+  daytime_schedule_test:
+    name: "Daytime Schedule"
+    monday:
+      - from: "07:00:00"
+        to: "23:00:00"
+    tuesday:
+      - from: "07:00:00"
+        to: "23:00:00"
+    wednesday:
+      - from: "07:00:00"
+        to: "23:00:00"
+    thursday:
+      - from: "07:00:00"
+        to: "23:00:00"
+    friday:
+      - from: "07:00:00"
+        to: "23:00:00"
+    saturday:
+      - from: "08:00:00"
+        to: "23:00:00"
+    sunday:
+      - from: "08:00:00"
+        to: "23:00:00"
 
 zeroconf:
 
