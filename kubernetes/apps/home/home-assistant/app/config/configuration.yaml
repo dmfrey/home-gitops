@@ -71,37 +71,37 @@ notify: !include notify.yaml
 frontend:
   themes: !include_dir_merge_named themes
 
-schedule: #!include schedule.yaml
-  daytime_schedule_test:
-    name: "Daytime Schedule"
-    monday: &daytimeSchedule
-      - from: "07:00:00"
-        to: "23:00:00"
-    tuesday: *daytimeSchedule
-    wednesday: *daytimeSchedule
-    thursday: *daytimeSchedule
-    friday: *daytimeSchedule
-    saturday: &weekendDaytimeSchedule
-      - from: "08:00:00"
-        to: "23:00:00"
-    sunday: *weekendDaytimeSchedule
-  nighttime_schedule_test:
-    name: "Nighttime Schedule"
-    monday: &nighttimeSchedule
-      - from: "23:00:00"
-        to: "23:59:59"
-      - from: "00:00:00"
-        to: "06:59:59"
-    tuesday: *nighttimeSchedule
-    wednesday: *nighttimeSchedule
-    thursday: *nighttimeSchedule
-    friday: *nighttimeSchedule
-    saturday: &weekendNighttimeSchedule
-      - from: "23:00:00"
-        to: "23:59:59"
-      - from: "00:00:00"
-        to: "07:59:59"
-    sunday: *weekendNighttimeSchedule
+schedule: !include_dir_merge_named schedule/
+  # daytime_schedule_test:
+  #   name: "Daytime Schedule"
+  #   monday: &daytimeSchedule
+  #     - from: "07:00:00"
+  #       to: "23:00:00"
+  #   tuesday: *daytimeSchedule
+  #   wednesday: *daytimeSchedule
+  #   thursday: *daytimeSchedule
+  #   friday: *daytimeSchedule
+  #   saturday: &weekendDaytimeSchedule
+  #     - from: "08:00:00"
+  #       to: "23:00:00"
+  #   sunday: *weekendDaytimeSchedule
+  # nighttime_schedule_test:
+  #   name: "Nighttime Schedule"
+  #   monday: &nighttimeSchedule
+  #     - from: "23:00:00"
+  #       to: "23:59:59"
+  #     - from: "00:00:00"
+  #       to: "06:59:59"
+  #   tuesday: *nighttimeSchedule
+  #   wednesday: *nighttimeSchedule
+  #   thursday: *nighttimeSchedule
+  #   friday: *nighttimeSchedule
+  #   saturday: &weekendNighttimeSchedule
+  #     - from: "23:00:00"
+  #       to: "23:59:59"
+  #     - from: "00:00:00"
+  #       to: "07:59:59"
+  #   sunday: *weekendNighttimeSchedule
 
 zeroconf:
 
