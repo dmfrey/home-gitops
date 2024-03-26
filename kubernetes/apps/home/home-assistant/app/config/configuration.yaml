@@ -74,27 +74,34 @@ frontend:
 schedule: #!include schedule.yaml
   daytime_schedule_test:
     name: "Daytime Schedule"
-    monday:
+    monday: &daytimeSchedule
       - from: "07:00:00"
         to: "23:00:00"
-    tuesday:
-      - from: "07:00:00"
-        to: "23:00:00"
-    wednesday:
-      - from: "07:00:00"
-        to: "23:00:00"
-    thursday:
-      - from: "07:00:00"
-        to: "23:00:00"
-    friday:
-      - from: "07:00:00"
-        to: "23:00:00"
-    saturday:
+    tuesday: *daytimeSchedule
+    wednesday: *daytimeSchedule
+    thursday: *daytimeSchedule
+    friday: *daytimeSchedule
+    saturday: &weekendDaytimeSchedule
       - from: "08:00:00"
         to: "23:00:00"
-    sunday:
-      - from: "08:00:00"
-        to: "23:00:00"
+    sunday: *weekendDaytimeSchedule
+  nighttime_schedule_test:
+    name: "Nighttime Schedule"
+    monday: &nighttimeSchedule
+      - from: "00:00:00"
+        to: "07:00:00"
+      - from: "23:00:00"
+        to: "00:00:00"
+    tuesday: *nighttimeSchedule
+    wednesday: *nighttimeSchedule
+    thursday: *nighttimeSchedule
+    friday: *nighttimeSchedule
+    saturday: &weekendNighttimeSchedule
+      - from: "00:00:00"
+        to: "08:00:00"
+      - from: "23:00:00"
+        to: "00:00:00"
+    sunday: *weekendNighttimeSchedule
 
 zeroconf:
 
