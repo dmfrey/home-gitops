@@ -8,7 +8,7 @@ resources:
   - ./notification.yaml
   # Flux-Kustomizations
   - ./common/ks.yaml
-  # - ./bazarr/ks.yaml
+  - ./bazarr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyplex-watched/ks.yaml
   - ./lidarr/ks.yaml
