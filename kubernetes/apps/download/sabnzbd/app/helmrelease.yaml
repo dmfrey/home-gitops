@@ -60,8 +60,6 @@ spec:
 
     controllers:
       main:
-        enabled: true
-        type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
