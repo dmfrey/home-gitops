@@ -31,18 +31,9 @@ spec:
 
     controllers:
       main:
-        type: statefulset
+
         annotations:
           reloader.stakater.com/auto: "true"
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: data
-              globalMounts:
-                - path: /data
-              accessMode: ReadWriteOnce
-              size: 5Gi
-              storageClass: ceph-block
 
         containers:
           main:
@@ -80,3 +71,13 @@ spec:
           http:
             port: *port
             protocol: TCP
+
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /data
+        storageClass: ceph-block
