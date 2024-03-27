@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: gha-runner-scale-set
-      version: 0.8.3
+      version: 0.9.0
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
@@ -52,7 +52,6 @@ spec:
     runnerScaleSetName: arc-runner-set-home-gitops
 
     githubConfigUrl: https://github.com/dmfrey/home-gitops
-    # githubConfigSecret: github-app-credentials
 
     minRunners: 1
     maxRunners: 2
@@ -85,7 +84,7 @@ spec:
   chart:
     spec:
       chart: gha-runner-scale-set
-      version: 0.8.3
+      version: 0.9.0
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
@@ -125,7 +124,6 @@ spec:
     runnerScaleSetName: arc-runner-set-hass-config
 
     githubConfigUrl: https://github.com/dmfrey/hass-config
-    # githubConfigSecret: github-app-credentials
 
     minRunners: 1
     maxRunners: 2
