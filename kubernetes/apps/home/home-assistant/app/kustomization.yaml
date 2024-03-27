@@ -17,8 +17,5 @@ configMapGenerator:
   - name: hass-config
     files:
       - ./config/configuration.yaml
-      # - ./config/scenes.yaml
     options:
       disableNameSuffixHash: true
-# patchesStrategicMerge:
-#   - ./patches/addons.yaml

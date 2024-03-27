@@ -19,19 +19,9 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
-        statefulset:
-          volumeClaimTemplates:
-            - name: storage
-              accessMode: ReadWriteOnce
-              size: 50Mi
-              storageClass: ceph-block
-              globalMounts: 
-                - path: /alertmanager
-        
         containers:
           main:
             image:
@@ -87,6 +77,14 @@ spec:
         name: alertmanager-configmap
         globalMounts: 
           - path: /etc/alertmanager
+      alertmanager:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 50Mi
+        globalMounts:
+          - path: /alertmanager
+        storageClass: ceph-block
       secrets:
         type: secret
         name: alert-manager-secret
