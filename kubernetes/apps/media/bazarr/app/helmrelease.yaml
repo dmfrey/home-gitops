@@ -28,8 +28,10 @@ spec:
     keepHistory: false
 
   values:
-
+    
+    # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.0.4/charts/library/common/values.schema.json
     defaultPodOptions:
+      enableServiceLinks: true
       securityContext:
         runAsUser: 1568
         runAsGroup: 1568
@@ -39,12 +41,13 @@ spec:
           - 65534
 
     controllers:
-      main:
+      bazarr:
+        
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/bazarr
               tag: 1.4.2@sha256:bbf61475c2d2dbc22206b19322b5955f1de2266c7e4a06c49e5e27e460b14574
@@ -73,16 +76,14 @@ spec:
                 memory: 431Mi
 
     service:
-      main:
-        nameOverride: bazarr
-        controller: main
+      app:
+        controller: bazarr
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -96,7 +97,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
@@ -105,18 +106,15 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: ceph-block
 
       media:
-        enabled: true
         existingClaim: nfs-media
 
       backups:
-        enabled: true
         type: custom
         volumeSpec:
           nfs:
@@ -128,7 +126,6 @@ spec:
 
     serviceMonitor:
       monitor:
-        enabled: true
         serviceName: bazarr-monitor
         endpoints:
           - port: http
