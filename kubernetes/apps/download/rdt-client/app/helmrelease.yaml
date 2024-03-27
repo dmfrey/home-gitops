@@ -41,13 +41,13 @@ spec:
       hostname: rdt
 
     controllers:
-      main:
+      rdt-client:
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: rogerfar/rdtclient 
               tag: 2.0.63
@@ -67,16 +67,14 @@ spec:
                 memory: 765M
 
     service:
-      main:
-        nameOverride: rdt-client
-        controller: main
+      app:
+        controller: rdt-client
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -91,7 +89,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
