@@ -37,15 +37,15 @@ spec:
     - targetPath: githubConfigSecret.github_app_id
       kind: Secret
       name: github-app-credentials
-      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_APP_ID
+      valuesKey: github_app_id
     - targetPath: githubConfigSecret.github_app_installation_id
       kind: Secret
       name: github-app-credentials
-      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_INSTALLATION_ID
+      valuesKey: github_app_installation_id
     - targetPath: githubConfigSecret.github_app_private_key
       kind: Secret
       name: github-app-credentials
-      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY
+      valuesKey: github_app_private_key
 
   values:
 
@@ -110,15 +110,15 @@ spec:
     - targetPath: githubConfigSecret.github_app_id
       kind: Secret
       name: github-app-credentials
-      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_APP_ID
+      valuesKey: github_app_id
     - targetPath: githubConfigSecret.github_app_installation_id
       kind: Secret
       name: github-app-credentials
-      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_INSTALLATION_ID
+      valuesKey: github_app_installation_id
     - targetPath: githubConfigSecret.github_app_private_key
       kind: Secret
       name: github-app-credentials
-      valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY
+      valuesKey: github_app_private_key
 
   values:
 
