@@ -37,19 +37,10 @@ spec:
 
     controllers:
       main:
-        type: statefulset
+
         annotations:
           reloader.stakater.com/auto: "true"
     
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /data/database
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-
         containers:
           main:
             image:
@@ -112,3 +103,13 @@ spec:
             path: /metrics
             interval: 15m
             scrapeTimeout: 2m
+
+    persistence:
+      config:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        globalMounts:
+          - path: /data/database
+        storageClass: ceph-block
