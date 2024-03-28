@@ -85,6 +85,29 @@ template:
     binary_sensor:
       - name: "School Day"
         state: "{{ trigger.calendar_event.all_day and 'School Day' in trigger.calendar_event.summary }}"
+        auto_off:
+          hours: 14
+          minutes: 20
+  - trigger:
+      - platform: calendar
+        event: start
+        entity_id: calendar.school_calendar
+    binary_sensor:
+      - name: "Holiday"
+        state: "{{ trigger.calendar_event.all_day and 'Holiday' in trigger.calendar_event.summary }}"
+        auto_off:
+          hours: 23
+          minutes: 59
+  - trigger:
+      - platform: calendar
+        event: start
+        entity_id: calendar.school_calendar
+    binary_sensor:
+      - name: "Snow Day"
+        state: "{{ trigger.calendar_event.all_day and 'Snow Day' in trigger.calendar_event.summary }}"
+        auto_off:
+          hours: 23
+          minutes: 59
 
 logger:
   default: warning
