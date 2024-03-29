@@ -77,43 +77,43 @@ zeroconf:
 
 zone: !include zone.yaml
 
-template:
-  - trigger:
-      - platform: time
-        at: "00:00"
-    action: 
-      - service: calendar.get_events
-        target:
-          entity_id: calendar.school_calendar
-        data: 
-          duration: 
-            minutes: 5
-        response_variable: calendar
-      - variables: 
-          events: >
-            {{ 
-              calendar['calendar.school_calendar'].events
-              | map(attribute='summary')
-              | list
-            }} 
-    binary_sensor:
-      - name: "School Day"
-        state: "{{ 'School Day' in events }}"
-        auto_off:
-          hours: 14
-          minutes: 20
-    binary_sensor:
-      - name: "Holiday"
-        state: "{{ 'Holiday' in events }}"
-        auto_off:
-          hours: 23
-          minutes: 59
-    binary_sensor:
-      - name: "Snow Day"
-        state: "{{ 'Snow Day' in events }}"
-        auto_off:
-          hours: 23
-          minutes: 59
+template: !include_dir_merge_list templates
+  # - trigger:
+  #     - platform: time
+  #       at: "00:00"
+  #   action: 
+  #     - service: calendar.get_events
+  #       target:
+  #         entity_id: calendar.school_calendar
+  #       data: 
+  #         duration: 
+  #           minutes: 5
+  #       response_variable: calendar
+  #     - variables: 
+  #         events: >
+  #           {{ 
+  #             calendar['calendar.school_calendar'].events
+  #             | map(attribute='summary')
+  #             | list
+  #           }} 
+  #   binary_sensor:
+  #     - name: "School Day"
+  #       state: "{{ 'School Day' in events }}"
+  #       auto_off:
+  #         hours: 14
+  #         minutes: 20
+  #   binary_sensor:
+  #     - name: "Holiday"
+  #       state: "{{ 'Holiday' in events }}"
+  #       auto_off:
+  #         hours: 23
+  #         minutes: 59
+  #   binary_sensor:
+  #     - name: "Snow Day"
+  #       state: "{{ 'Snow Day' in events }}"
+  #       auto_off:
+  #         hours: 23
+  #         minutes: 59
 
 logger:
   default: warning
