@@ -79,32 +79,38 @@ zone: !include zone.yaml
 
 template:
   - trigger:
-      - platform: calendar
-        event: start
-        entity_id: calendar.school_calendar
+      - platform: time
+        at: "00:00"
+    action: 
+      - service: calendar.get_events
+        target:
+          entity_id: calendar.school_calendar
+        data: 
+          duration: 
+            minutes: 5
+        response_variable: calendar
+      - variables: 
+          events: >
+            {{ 
+              calendar['calendar.school_calendar'].events
+              | map(attribute='summary')
+              | list
+            }} 
     binary_sensor:
       - name: "School Day"
-        state: "{{ trigger.calendar_event.all_day and 'School Day' in trigger.calendar_event.summary }}"
+        state: "{{ 'School Day' in events }}"
         auto_off:
           hours: 14
           minutes: 20
-  - trigger:
-      - platform: calendar
-        event: start
-        entity_id: calendar.school_calendar
     binary_sensor:
       - name: "Holiday"
-        state: "{{ trigger.calendar_event.all_day and 'Holiday' in trigger.calendar_event.summary }}"
+        state: "{{ 'Holiday' in events }}"
         auto_off:
           hours: 23
           minutes: 59
-  - trigger:
-      - platform: calendar
-        event: start
-        entity_id: calendar.school_calendar
     binary_sensor:
       - name: "Snow Day"
-        state: "{{ trigger.calendar_event.all_day and 'Snow Day' in trigger.calendar_event.summary }}"
+        state: "{{ 'Snow Day' in events }}"
         auto_off:
           hours: 23
           minutes: 59
