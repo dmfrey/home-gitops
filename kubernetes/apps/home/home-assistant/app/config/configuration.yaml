@@ -53,67 +53,29 @@ automation:
 
 shell_command:
   deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
+
 # automation: !include_dir_merge_list automations
-script: !include_dir_merge_named scripts
-sensor: !include_dir_merge_list sensors
 binary_sensor: !include_dir_merge_list binary_sensors
+group: !include_dir_merge_named groups
 input_boolean: !include_dir_merge_named input_booleans
 input_button: !include_dir_merge_named input_buttons
 input_datetime: !include_dir_merge_named input_datetimes
 input_number: !include_dir_merge_named input_numbers
 input_select: !include_dir_merge_named input_selects
 input_text: !include_dir_merge_named input_texts
-scene: !include scenes.yaml
-group: !include_dir_merge_named groups
-
 notify: !include notify.yaml
+scene: !include scenes.yaml
+schedule: !include_dir_merge_named schedule
+script: !include_dir_merge_named scripts
+sensor: !include_dir_merge_list sensors
+template: !include_dir_merge_list templates
 
 frontend:
   themes: !include_dir_merge_named themes
 
-schedule: !include_dir_merge_named schedule
-
 zeroconf:
 
 zone: !include zone.yaml
-
-template: !include_dir_merge_list templates
-  # - trigger:
-  #     - platform: time
-  #       at: "00:00"
-  #   action: 
-  #     - service: calendar.get_events
-  #       target:
-  #         entity_id: calendar.school_calendar
-  #       data: 
-  #         duration: 
-  #           minutes: 5
-  #       response_variable: calendar
-  #     - variables: 
-  #         events: >
-  #           {{ 
-  #             calendar['calendar.school_calendar'].events
-  #             | map(attribute='summary')
-  #             | list
-  #           }} 
-  #   binary_sensor:
-  #     - name: "School Day"
-  #       state: "{{ 'School Day' in events }}"
-  #       auto_off:
-  #         hours: 14
-  #         minutes: 20
-  #   binary_sensor:
-  #     - name: "Holiday"
-  #       state: "{{ 'Holiday' in events }}"
-  #       auto_off:
-  #         hours: 23
-  #         minutes: 59
-  #   binary_sensor:
-  #     - name: "Snow Day"
-  #       state: "{{ 'Snow Day' in events }}"
-  #       auto_off:
-  #         hours: 23
-  #         minutes: 59
 
 logger:
   default: warning
