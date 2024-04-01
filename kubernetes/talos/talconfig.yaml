@@ -2,7 +2,7 @@
 clusterName: ${CLUSTER_NAME}
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.6.5
+talosVersion: v1.6.7
 kubernetesVersion: 1.29.2
 endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
 
