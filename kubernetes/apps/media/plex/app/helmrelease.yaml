@@ -41,8 +41,10 @@ spec:
           - 65534
 
     controllers:
-      main:
 
+      main:
+        type: statefulset
+        
         annotations:
           reloader.stakater.com/auto: "true"
           backup.home.arpa/enabled: "true"
