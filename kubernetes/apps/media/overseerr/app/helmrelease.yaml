@@ -39,7 +39,10 @@ spec:
           - 65534
 
     controllers:
+
       main:
+        type: statefulset
+        
         annotations:
           reloader.stakater.com/auto: "true"
 
