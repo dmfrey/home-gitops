@@ -41,8 +41,10 @@ spec:
       hostname: rdt
 
     controllers:
+      
       rdt-client:
-
+        type: statefulset
+        
         annotations:
           reloader.stakater.com/auto: "true"
 
