@@ -6,7 +6,7 @@ namespace: system
 helmCharts:
 - name: kubelet-csr-approver
   repo: https://postfinance.github.io/kubelet-csr-approver
-  version: 1.0.7
+  version: 1.1.0
   releaseName: kubelet-csr-approver
   namespace: system
   valuesFile: values.yaml
