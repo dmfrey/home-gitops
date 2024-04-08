@@ -49,7 +49,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/lidarr
-              tag: 2.1.7.4030@sha256:6b9564037159c2b90f32a2ee34683275783a4b8eff4b609e2d2b1c0654c94bac
+              tag: 2.1.7.4030@sha256:3e6ce814f44c32c953fab3a4865a7d5b4c993964a7face3a36bc66058d3e7825
 
             env:
               TZ: ${TIMEZONE}
@@ -81,7 +81,7 @@ spec:
             
             image: 
               repository: ghcr.io/onedr0p/exportarr
-              tag: v2.0.0
+              tag: v2.0.1
             
             args: ["lidarr"]
             
