@@ -58,7 +58,7 @@ spec:
   
       podAnnotations:
         secret.reloader.stakater.com/reload: loki-ceph-bucket
-        configmao.reloader.stakater.com/reload: loki-ceph-bucket
+        configmap.reloader.stakater.com/reload: loki-ceph-bucket
 
       schemaConfig:
         configs:
