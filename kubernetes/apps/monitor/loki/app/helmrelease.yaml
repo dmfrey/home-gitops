@@ -56,7 +56,7 @@ spec:
   
     loki:
   
-      schema_config:
+      schemaConfig:
         configs:
           - from: "2024-04-01"
             store: tsdb
