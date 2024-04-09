@@ -56,6 +56,22 @@ spec:
   
     loki:
   
+        schema_config:
+          configs:
+            - from: "2024-04-01"
+              store: tsdb
+              object_store: s3
+              schema: v13
+              index:
+                prefix: loki_index_
+                period: 24h
+
+        storage:
+          type: s3
+          s3:
+            s3ForcePathStyle: true
+            insecure: true
+
       structuredConfig:
         auth_enabled: false
 
@@ -63,7 +79,6 @@ spec:
           log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
-
           grpc_server_max_recv_msg_size: 8388608
           grpc_server_max_send_msg_size: 8388608
 
@@ -72,66 +87,49 @@ spec:
           join_members: ["loki-memberlist"]
 
         limits_config:
-          retention_period: 14d
-          # enforce_metric_name: false
+          ingestion_burst_size_mb: 128
+          ingestion_rate_mb: 64
+          max_query_parallelism: 100
+          per_stream_rate_limit: 64M
+          per_stream_rate_limit_burst: 128M
           reject_old_samples: true
           reject_old_samples_max_age: 168h
-          max_cache_freshness_per_query: 10m
-          split_queries_by_interval: 15m
-          per_stream_rate_limit: 5M
-          per_stream_rate_limit_burst: 20M
-          ingestion_rate_mb: 50
-          ingestion_burst_size_mb: 1000
+          retention_period: 30d
           shard_streams:
             enabled: true
+          split_queries_by_interval: 1h
 
-        schema_config:
-          configs:
-            - from: "2024-01-01"
-              store: boltdb-shipper
-              object_store: s3
-              schema: v11
-              index:
-                prefix: loki_index_
-                period: 24h
-            - from: "2024-04-08"
-              store: tsdb
-              object_store: s3
-              schema: v13
-              index:
-                prefix: loki_index_
-                period: 24h
+        query_scheduler:
+          max_outstanding_requests_per_tenant: 4096
+        
+        frontend:
+          max_outstanding_per_tenant: 4096
 
         common:
           path_prefix: /var/loki
-          replication_factor: 3
-          storage:
-            s3:
-              s3: null
-              insecure: true
-              s3forcepathstyle: true
+          replication_factor: 2
           ring:
             kvstore:
               store: memberlist
 
-        storage_config:
-          # Old boltdb-shipper configuration. Included in example for reference but does not need changing.
-          boltdb_shipper:
-            active_index_directory: /data/index
-            build_per_tenant_index: true
-            cache_location: /data/boltdb-cache
-            # index_gateway_client:
-              # only applicable if using microservices where index-gateways are independently deployed.
-              # This example is using kubernetes-style naming.
-              # server_address: dns:///index-gateway.<namespace>.svc.cluster.local:9095
-          # New tsdb-shipper configuration
-          tsdb_shipper:
-            active_index_directory: /data/tsdb-index
-            cache_location: /data/tsdb-cache
-            # index_gateway_client:
-              # only applicable if using microservices where index-gateways are independently deployed.
-              # This example is using kubernetes-style naming.
-              # server_address: dns:///index-gateway.<namespace>.svc.cluster.local:9095
+        # storage_config:
+        #   # Old boltdb-shipper configuration. Included in example for reference but does not need changing.
+        #   boltdb_shipper:
+        #     active_index_directory: /data/index
+        #     build_per_tenant_index: true
+        #     cache_location: /data/boltdb-cache
+        #     # index_gateway_client:
+        #       # only applicable if using microservices where index-gateways are independently deployed.
+        #       # This example is using kubernetes-style naming.
+        #       # server_address: dns:///index-gateway.<namespace>.svc.cluster.local:9095
+        #   # New tsdb-shipper configuration
+        #   tsdb_shipper:
+        #     active_index_directory: /data/tsdb-index
+        #     cache_location: /data/tsdb-cache
+        #     # index_gateway_client:
+        #       # only applicable if using microservices where index-gateways are independently deployed.
+        #       # This example is using kubernetes-style naming.
+        #       # server_address: dns:///index-gateway.<namespace>.svc.cluster.local:9095
 
         ruler:
           enable_api: true
@@ -228,22 +226,22 @@ spec:
         size: 20Gi
         storageClass: ceph-block
 
-    monitoring:
-      dashboards:
-        annotations:
-          grafana.io/folder: Loki
-        labels:
-          grafana.io/dashboard: "true"
-      serviceMonitor:
-        enabled: false
-        metricsInstance:
-          enabled: false
-      selfMonitoring:
-        enabled: false
-        grafanaAgent:
-          installOperator: false
-      lokiCanary:
-        enabled: false
+    # monitoring:
+    #   dashboards:
+    #     annotations:
+    #       grafana.io/folder: Loki
+    #     labels:
+    #       grafana.io/dashboard: "true"
+    #   serviceMonitor:
+    #     enabled: false
+    #     metricsInstance:
+    #       enabled: false
+    #   selfMonitoring:
+    #     enabled: false
+    #     grafanaAgent:
+    #       installOperator: false
+    #   lokiCanary:
+    #     enabled: false
     
     test:
       enabled: false
