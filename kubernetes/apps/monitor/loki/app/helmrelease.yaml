@@ -38,19 +38,19 @@ spec:
     - kind: ConfigMap
       name: loki-ceph-bucket
       valuesKey: BUCKET_NAME
-      targetPath: loki.structuredConfig.common.storage.s3.bucketnames
+      targetPath: loki.storage.bucketnames
     - kind: ConfigMap
       name: loki-ceph-bucket
       valuesKey: BUCKET_HOST
-      targetPath: loki.structuredConfig.common.storage.s3.endpoint
+      targetPath: loki.storage.endpoint
     - kind: Secret
       name: loki-ceph-bucket
       valuesKey: AWS_ACCESS_KEY_ID
-      targetPath: loki.structuredConfig.common.storage.s3.access_key_id
+      targetPath: loki.storage.access_key_id
     - kind: Secret
       name: loki-ceph-bucket
       valuesKey: AWS_SECRET_ACCESS_KEY
-      targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
+      targetPath: loki.storage.secret_access_key
 
   values:
   
