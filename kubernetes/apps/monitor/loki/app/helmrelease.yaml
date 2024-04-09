@@ -73,7 +73,7 @@ spec:
 
         limits_config:
           retention_period: 14d
-          enforce_metric_name: false
+          # enforce_metric_name: false
           reject_old_samples: true
           reject_old_samples_max_age: 168h
           max_cache_freshness_per_query: 10m
@@ -94,6 +94,13 @@ spec:
               index:
                 prefix: loki_index_
                 period: 24h
+            - from: "2024-04-08"
+              store: tsdb
+              object_store: s3
+              schema: v13
+              index:
+                prefix: loki_index_
+                period: 24h
 
         common:
           path_prefix: /var/loki
@@ -106,6 +113,25 @@ spec:
           ring:
             kvstore:
               store: memberlist
+
+        storage_config:
+          # Old boltdb-shipper configuration. Included in example for reference but does not need changing.
+          boltdb_shipper:
+            active_index_directory: /data/index
+            build_per_tenant_index: true
+            cache_location: /data/boltdb-cache
+            # index_gateway_client:
+              # only applicable if using microservices where index-gateways are independently deployed.
+              # This example is using kubernetes-style naming.
+              # server_address: dns:///index-gateway.<namespace>.svc.cluster.local:9095
+          # New tsdb-shipper configuration
+          tsdb_shipper:
+            active_index_directory: /data/tsdb-index
+            cache_location: /data/tsdb-cache
+            # index_gateway_client:
+              # only applicable if using microservices where index-gateways are independently deployed.
+              # This example is using kubernetes-style naming.
+              # server_address: dns:///index-gateway.<namespace>.svc.cluster.local:9095
 
         ruler:
           enable_api: true
@@ -127,7 +153,7 @@ spec:
 
         compactor:
           working_directory: /var/loki/boltdb-shipper-compactor
-          shared_store: s3
+          # shared_store: s3
           compaction_interval: 10m
           retention_enabled: true
           retention_delete_delay: 2h
