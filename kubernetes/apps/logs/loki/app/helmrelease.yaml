@@ -82,7 +82,7 @@ spec:
         type: s3
         bucketNames:
           chunks: logs/chunks
-          rules: logs/rules
+          ruler: logs/ruler
           admin: logs/admin
         s3:
           s3ForcePathStyle: true
