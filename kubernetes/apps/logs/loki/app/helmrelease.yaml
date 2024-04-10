@@ -138,8 +138,8 @@ spec:
           reporting_enabled: false
 
       podAnnotations:
-        secret.reloader.stakater.com/reload: loki-ceph-bucket
-        configmap.reloader.stakater.com/reload: loki-ceph-bucket
+        secret.reloader.stakater.com/reload: loki-secret
+        # configmap.reloader.stakater.com/reload: loki-ceph-bucket
 
     gateway:
       replicas: 2
