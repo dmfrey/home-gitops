@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
-  path: "./kubernetes/apps/monitor/loki/services"
+  path: "./kubernetes/apps/logs/loki/services"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -25,7 +25,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
-  path: "./kubernetes/apps/monitor/loki/app"
+  path: "./kubernetes/apps/logs/loki/app"
   prune: true
   sourceRef:
     kind: GitRepository

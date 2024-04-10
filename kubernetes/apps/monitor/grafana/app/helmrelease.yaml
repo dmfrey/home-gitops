@@ -132,7 +132,7 @@ spec:
           - name: Loki
             access: proxy
             type: loki
-            url: http://loki-gateway.monitor.svc.cluster.local
+            url: http://loki-gateway.logs.svc.cluster.local
           - name: Alertmanager
             type: alertmanager
             access: proxy
