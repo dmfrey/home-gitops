@@ -7,5 +7,5 @@ resources:
   - ./namespace.yaml
   - ./notification.yaml
   # Flux-Kustomizations
-  - ./loki/ks.yaml
+  # - ./loki/ks.yaml
   - ./promtail/ks.yaml
