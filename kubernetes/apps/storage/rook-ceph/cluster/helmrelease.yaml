@@ -104,9 +104,9 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          # - name: "dmf-amd-001"
-          #   devices:
-          #     - name: "/dev/nvme0n1"
+          - name: "dmf-amd-001"
+            devices:
+              - name: "/dev/nvme0n1"
           - name: "dmf-amd-002"
             devices:
               - name: "/dev/nvme0n1"
