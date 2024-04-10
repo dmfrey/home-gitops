@@ -37,15 +37,15 @@ spec:
   valuesFrom:
     - targetPath: loki.storage.bucketNames.chunks
       kind: ConfigMap
-      name: loki-s3-bucket-chunks
+      name: loki-ceph-bucket
       valuesKey: BUCKET_NAME
     - targetPath: loki.storage.bucketNames.ruler
       kind: ConfigMap
-      name: loki-s3-bucket-ruler
+      name: loki-ceph-bucket
       valuesKey: BUCKET_NAME
     - targetPath: loki.storage.bucketNames.admin
       kind: ConfigMap
-      name: loki-s3-bucket-admin
+      name: loki-ceph-bucket
       valuesKey: BUCKET_NAME
     - targetPath: loki.storage.s3.endpoint
       kind: ConfigMap
