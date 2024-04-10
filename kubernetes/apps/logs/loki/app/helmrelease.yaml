@@ -35,17 +35,17 @@ spec:
     keepHistory: false
   
   valuesFrom:
-    - targetPath: loki.storage.bucketnames.chunks
+    - targetPath: loki.storage.bucketNames.chunks
       kind: ConfigMap
-      name: loki-ceph-bucket
+      name: loki-s3-bucket-chunks
       valuesKey: BUCKET_NAME
-    - targetPath: loki.storage.bucketnames.ruler
+    - targetPath: loki.storage.bucketNames.ruler
       kind: ConfigMap
-      name: loki-ceph-bucket
+      name: loki-s3-bucket-ruler
       valuesKey: BUCKET_NAME
-    - targetPath: loki.storage.bucketnames.admin
+    - targetPath: loki.storage.bucketNames.admin
       kind: ConfigMap
-      name: loki-ceph-bucket
+      name: loki-s3-bucket-admin
       valuesKey: BUCKET_NAME
     - targetPath: loki.storage.s3.endpoint
       kind: ConfigMap
