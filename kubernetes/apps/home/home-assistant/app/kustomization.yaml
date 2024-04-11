@@ -8,6 +8,7 @@ commonLabels:
   app.kubernetes.io/instance: home-assistant
 resources:
   - ./pgcluster.yaml
+  - ./scheduledbackup.yaml
   - ./pvc.yaml
   - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
