@@ -5,4 +5,5 @@ kind: Kustomization
 namespace: monitor
 resources:
   - ./pgcluster.yaml
+  - ./scheduledbackup.yaml
   - ./pvc.yaml
