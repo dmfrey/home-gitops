@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app unpoller
+  namespace: monitor
+spec:
+  
+  interval: 15m
+  
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  
+  maxHistory: 2
+  
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  
+  uninstall:
+    keepHistory: false
+  
+  values:
+  
+    controllers:
+      unpoller:
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/unpoller/unpoller
+              tag: v2.10.0
+  
+            env:
+              TZ: ${TIMEZONE}
+              UP_UNIFI_DEFAULT_ROLE: home-ops
+              UP_UNIFI_DEFAULT_VERIFY_SSL: false
+              UP_INFLUXDB_DISABLE: true
+    
+            envFrom:
+              - secretRef:
+                  name: unpoller-secret
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+
+    service:
+      endpoint:
+        controller: unpoller
+        ports:
+          http:
+            port: 9130
+    
+    serviceMonitor:
+      monitor:
+        serviceName: *app
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 2m # Unifi API only polls at 2m intervals
+            scrapeTimeout: 5s
