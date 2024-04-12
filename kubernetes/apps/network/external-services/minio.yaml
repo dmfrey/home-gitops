@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: minio
+  namespace: network
+subsets:
+  - addresses:
+    - ip: ${QNAP_ADDR}
+    ports:
+    - name: http
+      port: 9090
+    - name: minio
+      port: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: network
+spec:
+ ports:
+   - name: http
+     port: 9090
+     protocol: TCP
+     targetPort: 9090
+   - name: minio
+     port: 9000
+     protocol: TCP
+     targetPort: 9000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "simple-icons:minio"
+  labels:
+    app.kubernetes.io/instance: minio
+    app.kubernetes.io/name: minio
+  name: minio
+  namespace: network
+spec:
+  ingressClassName: external
+  rules:
+  - host: &host minio.${SECRET_DOMAIN}
+    http:
+      paths:
+      - backend:
+          service:
+            name: minio
+            port:
+              number: 9090
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - *host
+    secretName: minio-tls-internal
+
