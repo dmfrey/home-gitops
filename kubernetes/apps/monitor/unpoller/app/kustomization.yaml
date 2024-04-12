@@ -5,3 +5,4 @@ namespace: monitor
 resources:
   - ./secret-unpoller.sops.yaml
   - ./helmrelease.yaml
+  - ./dashboard
