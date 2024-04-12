@@ -35,6 +35,10 @@ spec:
   
   values:
   
+    defaultPodOptions:
+      annotations:
+        secret.reloader.stakater.com/reload: unpoller-secret
+    
     controllers:
       unpoller:
 
