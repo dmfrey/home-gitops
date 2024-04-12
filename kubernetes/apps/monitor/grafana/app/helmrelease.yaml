@@ -92,6 +92,27 @@ spec:
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11314
+        sites:
+          gnetId: 11311
+          revision: 5
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11314
+        usg:
+          gnetId: 11313
+          revision: 9
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11314
+        dpi:
+          gnetId: 11310
+          revision: 5
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
         security:
           # Ref: https://grafana.com/grafana/dashboards/14837
           authentik:
