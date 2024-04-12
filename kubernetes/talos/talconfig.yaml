@@ -36,9 +36,9 @@ nodes:
     #   customization:
     #     extraKernelArgs:
     #       - vlan=enp2s0.30:enp2s0
-    #       - ip=192.168.30.31::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.2
-    networkInterfaces: &networkInterfaces
-      - interface: enp2s0
+    #       - ip=192.168.30.31::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.5
+    networkInterfaces:
+      - interface: eth0
         dhcp: false
         vlans:
           - vlanId: 30
@@ -70,8 +70,18 @@ nodes:
     #   customization:
     #     extraKernelArgs:
     #       - vlan=enp2s0.30:enp2s0
-    #       - ip=192.168.30.32::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.2
-    networkInterfaces: *networkInterfaces
+    #       - ip=192.168.30.32::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.5
+    networkInterfaces: &networkInterfaces
+      - interface: eth0
+        dhcp: false
+        vlans:
+          - vlanId: 30
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 1024
+            vip:
+              ip: ${CLUSTER_ENDPOINT_IP}
     nodeLabels: *controlPlaneLabels
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
@@ -84,7 +94,7 @@ nodes:
     #   customization:
     #     extraKernelArgs:
     #       - vlan=enp2s0.30:enp2s0
-    #       - ip=192.168.30.33::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.2
+    #       - ip=192.168.30.33::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.5
     networkInterfaces: *networkInterfaces
     nodeLabels: *controlPlaneLabels
 
@@ -93,12 +103,13 @@ controlPlane:
     customization:
       extraKernelArgs:
         - net.ifnames=0
+        - vlan=eth0.30:eth0
+        - ip=eth0.30:dhcp
       systemExtensions:
         officialExtensions:
           - siderolabs/amd-ucode
           - siderolabs/amdgpu-firmware
           - siderolabs/nut-client
-          - siderolabs/util-linux-tools
 
   patches:
     - |-

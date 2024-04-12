@@ -15,5 +15,5 @@ resources:
   - ./smtp-relay/ks.yaml
   - ./multus/ks.yaml
   # # Standard Resources
-  # - ./external-services
+  - ./external-services
 

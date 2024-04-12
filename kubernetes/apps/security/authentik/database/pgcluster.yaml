@@ -23,9 +23,13 @@ spec:
       cpu: 2
   
   storage:
-    size: 10Gi
     storageClass: ceph-block
+    size: 10Gi
   
+  walStorage:
+    storageClass: ceph-block
+    size: 10Gi
+
   postgresql:
     parameters:
       max_connections: "600"
@@ -47,6 +51,8 @@ spec:
   
   backup:
     retentionPolicy: 30d
+    volumeSnapshot:
+      className: ceph-block
     barmanObjectStore:
       destinationPath: s3://cnpg/
       endpointURL: http://${QNAP_ADDR}:9000

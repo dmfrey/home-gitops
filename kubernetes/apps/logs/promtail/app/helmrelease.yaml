@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: promtail
-  namespace: monitor
+  namespace: logs
 spec:
   interval: 15m
   chart:
@@ -17,16 +17,19 @@ spec:
         name: grafana
         namespace: flux-system
       interval: 5m
+  
   install:
     timeout: 10m
     remediation:
       retries: 3
+  
   upgrade:
     timeout: 10m
     remediation:
       retries: 3
       remediateLastFailure: true
     cleanupOnFail: true
+  
   rollback:
     timeout: 10m
     recreate: true
@@ -34,12 +37,8 @@ spec:
   
   values:
 
-    # image:
-    #   registry: ghcr.io
-    #   repository: k8s-at-home/promtail
-
     config:
-      lokiAddress: http://loki-gateway.monitor.svc.cluster.local:80/loki/api/v1/push
+      lokiAddress: http://loki-gateway.logs.svc.cluster.local:80/loki/api/v1/push
       snippets:
         extraScrapeConfigs: |
           - job_name: journal

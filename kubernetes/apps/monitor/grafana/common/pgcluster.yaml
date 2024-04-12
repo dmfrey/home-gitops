@@ -15,8 +15,12 @@ spec:
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
   
   storage:
-    size: 25Gi
     storageClass: ceph-block
+    size: 25Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 25Gi
   
   postgresql:
     parameters:
@@ -39,6 +43,8 @@ spec:
 
   backup:
     retentionPolicy: 30d
+    volumeSnapshot:
+      className: ceph-block
     barmanObjectStore:
       destinationPath: s3://cnpg/
       endpointURL: http://${QNAP_ADDR}:9000

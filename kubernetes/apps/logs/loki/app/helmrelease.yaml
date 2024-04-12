@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: loki
-  namespace: monitor
+  namespace: logs
 spec:
   
   interval: 30m
@@ -35,31 +35,39 @@ spec:
     keepHistory: false
   
   valuesFrom:
-    - kind: ConfigMap
+    - targetPath: loki.storage.bucketNames.chunks
+      kind: ConfigMap
       name: loki-ceph-bucket
       valuesKey: BUCKET_NAME
-      targetPath: loki.storage.bucketnames
-    - kind: ConfigMap
+    - targetPath: loki.storage.bucketNames.ruler
+      kind: ConfigMap
       name: loki-ceph-bucket
-      valuesKey: BUCKET_HOST
-      targetPath: loki.storage.endpoint
-    - kind: Secret
+      valuesKey: BUCKET_NAME
+    - targetPath: loki.storage.bucketNames.admin
+      kind: ConfigMap
+      name: loki-ceph-bucket
+      valuesKey: BUCKET_NAME
+    - targetPath: loki.storage.s3.endpoint
+      kind: ConfigMap
+      name: loki-ceph-bucket
+      valuesKey: BUCKET_HOST   
+    - targetPath: loki.storage.s3.accessKeyId
+      kind: Secret
       name: loki-ceph-bucket
       valuesKey: AWS_ACCESS_KEY_ID
-      targetPath: loki.storage.access_key_id
-    - kind: Secret
+    - targetPath: loki.storage.s3.secretAccessKey
+      kind: Secret
       name: loki-ceph-bucket
       valuesKey: AWS_SECRET_ACCESS_KEY
-      targetPath: loki.storage.secret_access_key
 
   values:
   
+    deploymentMode: SimpleScalable
+    
     loki:
+      ingester:
+        chunk_encoding: snappy
   
-      podAnnotations:
-        secret.reloader.stakater.com/reload: loki-ceph-bucket
-        configmap.reloader.stakater.com/reload: loki-ceph-bucket
-
       schemaConfig:
         configs:
           - from: "2024-04-01"
@@ -72,9 +80,14 @@ spec:
 
       storage:
         type: s3
+        # bucketNames:
+        #   chunks: logs/chunks
+        #   ruler: logs/ruler
+        #   admin: logs/admin
         s3:
           s3ForcePathStyle: true
           insecure: true
+          # s3: http://${QNAP_ADDR}:9000
 
       structuredConfig:
         auth_enabled: false
@@ -83,12 +96,9 @@ spec:
           log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
+
           grpc_server_max_recv_msg_size: 8388608
           grpc_server_max_send_msg_size: 8388608
-
-        memberlist:
-          abort_if_cluster_join_fails: false
-          join_members: ["loki-memberlist"]
 
         limits_config:
           ingestion_burst_size_mb: 128
@@ -103,18 +113,16 @@ spec:
             enabled: true
           split_queries_by_interval: 1h
 
+        compactor:
+          working_directory: /var/loki/compactor/retention
+          delete_request_store: s3
+          retention_enabled: true
+          
         query_scheduler:
           max_outstanding_requests_per_tenant: 4096
         
         frontend:
           max_outstanding_per_tenant: 4096
-
-        common:
-          path_prefix: /var/loki
-          replication_factor: 2
-          ring:
-            kvstore:
-              store: memberlist
 
         ruler:
           enable_api: true
@@ -125,24 +133,13 @@ spec:
             local:
               directory: /rules
           rule_path: /rules
-          ring:
-            kvstore:
-              store: memberlist
-
-        distributor:
-          ring:
-            kvstore:
-              store: memberlist
-
-        ingester:
-          max_chunk_age: 1h
-          lifecycler:
-            ring:
-              kvstore:
-                store: memberlist
 
         analytics:
           reporting_enabled: false
+
+      podAnnotations:
+        secret.reloader.stakater.com/reload: loki-ceph-bucket
+        configmap.reloader.stakater.com/reload: loki-ceph-bucket
 
     gateway:
       replicas: 2
@@ -155,6 +152,9 @@ spec:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/whitelist-source-range: |
             172.22.0.0/12,192.168.0.0/16
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:loki"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: &host "loki.${SECRET_DOMAIN}"
             paths:
@@ -173,48 +173,30 @@ spec:
 
     read:
       replicas: 2
-      extraVolumeMounts:
-        - name: rules
-          mountPath: /rules
-      extraVolumes:
-        - name: rules
-          emptyDir: {}
-      persistence:
-        size: 20Gi
-        storageClass: ceph-block
 
     backend:
       replicas: 2
-      extraVolumeMounts:
-        - name: rules
-          mountPath: /rules/fake
-        - name: scratch
-          mountPath: /tmp/scratch
-      extraVolumes:
-        - name: rules
-          emptyDir: {}
-        - name: scratch
-          emptyDir: {}
       persistence:
         size: 20Gi
         storageClass: ceph-block
 
-    # monitoring:
-    #   dashboards:
-    #     annotations:
-    #       grafana.io/folder: Loki
-    #     labels:
-    #       grafana.io/dashboard: "true"
-    #   serviceMonitor:
-    #     enabled: false
-    #     metricsInstance:
-    #       enabled: false
-    #   selfMonitoring:
-    #     enabled: false
-    #     grafanaAgent:
-    #       installOperator: false
-    #   lokiCanary:
-    #     enabled: false
+    monitoring:
+      dashboards:
+        annotations:
+          grafana.io/folder: Loki
+        labels:
+          grafana.io/dashboard: "true"
+      serviceMonitor:
+        enabled: false
+        metricsInstance:
+          enabled: false
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+    
+    lokiCanary:
+      enabled: false
     
     test:
       enabled: false

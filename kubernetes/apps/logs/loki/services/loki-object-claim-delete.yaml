@@ -2,9 +2,7 @@ apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
   name: loki-ceph-bucket
-  namespace: monitor
+  namespace: logs
 spec:
-  generateBucketName: loki
+  bucketName: loki
   storageClassName: ceph-bucket
-  additionalConfig:
-    maxSize: "10G"

@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
-  path: "./kubernetes/apps/monitor/promtail/app"
+  path: "./kubernetes/apps/logs/promtail/app"
   prune: true
   sourceRef:
     kind: GitRepository
