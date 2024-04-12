@@ -3,13 +3,23 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 configMapGenerator:
-  - name: unifi-poller-prometheus
+  - name: unifi-poller3a-client-insights-prometheus
     files:
       - unifi-poller3a-client-insights-prometheus.json=./11315_rev9.json
+  - name: unifi-poller3a-uap-insights-prometheus
+    files:
       - unifi-poller3a-uap-insights-prometheus.json=./11314_rev10.json
+  - name: unifi-poller3a-usw-insights-prometheus
+    files:
       - unifi-poller3a-usw-insights-prometheus=./11312_rev9.json
+  - name: unifi-poller3a-network-sites-prometheus
+    files:
       - unifi-poller3a-network-sites-prometheus=./11311_rev5.json
+  - name: unifi-poller3a-usg-insights-prometheus
+    files:
       - unifi-poller3a-usg-insights-prometheus=./11313_rev9.json
+  - name: unifi-poller3a-client-dpi-prometheus
+    files:
       - unifi-poller3a-client-dpi-prometheus=./11310_rev5.json
 generatorOptions:
   disableNameSuffixHash: true
