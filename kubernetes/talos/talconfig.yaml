@@ -1,9 +1,11 @@
 ---
 clusterName: ${CLUSTER_NAME}
 
-# renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.6.7
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+talosVersion: v1.6.5
+# renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
 kubernetesVersion: 1.29.2
+
 endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
 
 allowSchedulingOnMasters: true
@@ -13,6 +15,7 @@ clusterPodNets:
   - 172.22.0.0/16
 clusterSvcNets:
   - 172.23.0.0/16
+
 cniConfig:
   name: none
 
@@ -28,17 +31,12 @@ nodes:
   
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
   - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
-    ipAddress: 192.168.30.31
     controlPlane: true
+    ipAddress: 192.168.30.31
     installDisk: /dev/sda
     disableSearchDomain: true
-    # schematic:
-    #   customization:
-    #     extraKernelArgs:
-    #       - vlan=enp2s0.30:enp2s0
-    #       - ip=192.168.30.31::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.5
     networkInterfaces:
-      - interface: eth0
+      - interface: enp2s0
         dhcp: false
         vlans:
           - vlanId: 30
@@ -49,15 +47,16 @@ nodes:
             vip:
               ip: ${CLUSTER_ENDPOINT_IP}
           - vlanId: 50
+            mtu: 1500
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-    nodeLabels: &controlPlaneLabels
+    nodeLabels:
       topology.kubernetes.io/region: dmf
       topology.kubernetes.io/zone: dmf-u
       # Needed because Labels are limited to 63 Characters
-      factory.talos.dev/schematic-prefix: 7df9c60ce73ad18b705e5ebaddba6bd9
-      factory.talos.dev/schematic-suffix: f15cd7f14ba33095d10ed15821096239 
+      factory.talos.dev/schematic-prefix: 323dba38c87ba0d379a6f706ae691ba9
+      factory.talos.dev/schematic-suffix: 50025ed87869a89325321f1eff050067
 
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
@@ -66,13 +65,8 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    # schematic:
-    #   customization:
-    #     extraKernelArgs:
-    #       - vlan=enp2s0.30:enp2s0
-    #       - ip=192.168.30.32::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.5
-    networkInterfaces: &networkInterfaces
-      - interface: eth0
+    networkInterfaces:
+      - interface: enp2s0
         dhcp: false
         vlans:
           - vlanId: 30
@@ -82,7 +76,17 @@ nodes:
               routeMetric: 1024
             vip:
               ip: ${CLUSTER_ENDPOINT_IP}
-    nodeLabels: *controlPlaneLabels
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels:
+      topology.kubernetes.io/region: dmf
+      topology.kubernetes.io/zone: dmf-u
+      # Needed because Labels are limited to 63 Characters
+      factory.talos.dev/schematic-prefix: 323dba38c87ba0d379a6f706ae691ba9
+      factory.talos.dev/schematic-suffix: 50025ed87869a89325321f1eff050067
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
   - hostname: dmf-amd-003.${INTERNAL_DOMAIN}
@@ -90,21 +94,32 @@ nodes:
     controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
-    # schematic:
-    #   customization:
-    #     extraKernelArgs:
-    #       - vlan=enp2s0.30:enp2s0
-    #       - ip=192.168.30.33::192.168.30.1:255.255.255.0::enp2s0.30::192.168.30.3:192.168.86.1:192.168.30.5
-    networkInterfaces: *networkInterfaces
-    nodeLabels: *controlPlaneLabels
+    networkInterfaces:
+      - interface: enp2s0
+        dhcp: false
+        vlans:
+          - vlanId: 30
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 1024
+            vip:
+              ip: ${CLUSTER_ENDPOINT_IP}
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels:
+      topology.kubernetes.io/region: dmf
+      topology.kubernetes.io/zone: dmf-u
+      # Needed because Labels are limited to 63 Characters
+      factory.talos.dev/schematic-prefix: 323dba38c87ba0d379a6f706ae691ba9
+      factory.talos.dev/schematic-suffix: 50025ed87869a89325321f1eff050067
 
 controlPlane:
   schematic:
     customization:
-      extraKernelArgs:
-        - net.ifnames=0
-        - vlan=eth0.30:eth0
-        - ip=eth0.30:dhcp
       systemExtensions:
         officialExtensions:
           - siderolabs/amd-ucode
@@ -145,6 +160,7 @@ controlPlane:
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
+          
           - op: create
             path: /var/etc/nut/upsmon.conf
             permissions: 0o600
