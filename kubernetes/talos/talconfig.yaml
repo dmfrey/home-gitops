@@ -35,87 +35,46 @@ nodes:
     ipAddress: 192.168.30.31
     installDisk: /dev/sda
     disableSearchDomain: true
-    networkInterfaces:
+    networkInterfaces: &networkInterfaces
       - interface: enp2s0
         dhcp: false
         vlans:
           - vlanId: 30
-            mtu: 1500
             dhcp: true
+            mtu: 1500
             dhcpOptions:
               routeMetric: 1024
             vip:
               ip: ${CLUSTER_ENDPOINT_IP}
           - vlanId: 50
-            mtu: 1500
             dhcp: true
+            mtu: 1500
             dhcpOptions:
               routeMetric: 4096
-    nodeLabels:
+    nodeLabels: &nodeLabels
       topology.kubernetes.io/region: dmf
       topology.kubernetes.io/zone: dmf-u
       # Needed because Labels are limited to 63 Characters
       factory.talos.dev/schematic-prefix: 323dba38c87ba0d379a6f706ae691ba9
       factory.talos.dev/schematic-suffix: 50025ed87869a89325321f1eff050067
-
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
   - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
-    ipAddress: 192.168.30.32
     controlPlane: true
+    ipAddress: 192.168.30.32
     installDisk: /dev/sda
     disableSearchDomain: true
-    networkInterfaces:
-      - interface: enp2s0
-        dhcp: false
-        vlans:
-          - vlanId: 30
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 1024
-            vip:
-              ip: ${CLUSTER_ENDPOINT_IP}
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-    nodeLabels:
-      topology.kubernetes.io/region: dmf
-      topology.kubernetes.io/zone: dmf-u
-      # Needed because Labels are limited to 63 Characters
-      factory.talos.dev/schematic-prefix: 323dba38c87ba0d379a6f706ae691ba9
-      factory.talos.dev/schematic-suffix: 50025ed87869a89325321f1eff050067
+    networkInterfaces: *networkInterfaces
+    nodeLabels: *nodeLabels
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
   - hostname: dmf-amd-003.${INTERNAL_DOMAIN}
-    ipAddress: 192.168.30.33
     controlPlane: true
+    ipAddress: 192.168.30.33
     installDisk: /dev/sda
     disableSearchDomain: true
-    networkInterfaces:
-      - interface: enp2s0
-        dhcp: false
-        vlans:
-          - vlanId: 30
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 1024
-            vip:
-              ip: ${CLUSTER_ENDPOINT_IP}
-          - vlanId: 50
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
-    nodeLabels:
-      topology.kubernetes.io/region: dmf
-      topology.kubernetes.io/zone: dmf-u
-      # Needed because Labels are limited to 63 Characters
-      factory.talos.dev/schematic-prefix: 323dba38c87ba0d379a6f706ae691ba9
-      factory.talos.dev/schematic-suffix: 50025ed87869a89325321f1eff050067
+    networkInterfaces: *networkInterfaces
+    nodeLabels: *nodeLabels
 
 controlPlane:
   schematic:
