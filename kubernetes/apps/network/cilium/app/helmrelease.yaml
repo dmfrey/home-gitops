@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,13 +8,13 @@ spec:
   chart:
     spec:
       chart: cilium
-      interval: 15m
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
       version: 1.15.3
-  interval: 15m
+  interval: 30m
 
   valuesFrom:
     - kind: ConfigMap
@@ -43,6 +42,7 @@ spec:
           annotations:
             grafana.io/folder: Network
 
+
       relay:
         enabled: true
         rollOutPods: true
@@ -51,17 +51,18 @@ spec:
           serviceMonitor:
             enabled: true
 
+
       ui:
         enabled: true
         rollOutPods: true
         ingress:
           enabled: true
-          className: external
+          className: nginx-external
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-prod
             auth.home.arpa/enabled: "true"
           hosts:
-            - &host hubble.${SECRET_DOMAIN}
+            - &host hubble.${EXTERNAL_DOMAIN}
           tls:
             - hosts:
                 - *host
