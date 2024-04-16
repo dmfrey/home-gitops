@@ -7,6 +7,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./rook-ceph/ks.yaml
-  - ./nfs-subdir/ks.yaml
+  # - ./nfs-subdir/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./volsync/ks.yaml
