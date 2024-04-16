@@ -54,7 +54,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/sonarr
-              tag: 4.0.3.1413
+              tag: 4.0.4.1491
 
             env:
               TZ: ${TIMEZONE}
