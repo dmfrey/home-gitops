@@ -28,8 +28,7 @@ spec:
             "gateway": [
               "192.168.50.1"
             ],
-            "capabilities": { "mac": true },
-            "type": "tuning"
+            "capabilities": { "mac": true }
           }
         }
       ]
