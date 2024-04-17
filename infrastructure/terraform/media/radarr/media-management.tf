@@ -21,10 +21,8 @@ resource "radarr_media_management" "settings" {
 }
 
 resource "radarr_naming" "naming" {
-  include_quality            = false
   rename_movies              = true
   replace_illegal_characters = false
-  replace_spaces             = false
   colon_replacement_format   = "dash"
   standard_movie_format      = "{Movie CleanTitle} {(Release Year)} {imdb-{ImdbId}} {edition-{Edition Tags}} {[Custom Formats]}{[Quality Full]}{[MediaInfo 3D]}{[MediaInfo VideoDynamicRangeType]}{[Mediainfo AudioCodec}{ Mediainfo AudioChannels}]{MediaInfo AudioLanguages}[{MediaInfo VideoBitDepth}bit][{Mediainfo VideoCodec}]{-Release Group}"
   movie_folder_format        = "{Movie CleanTitle} ({Release Year})"
