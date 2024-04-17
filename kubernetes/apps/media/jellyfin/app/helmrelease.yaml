@@ -31,8 +31,6 @@ spec:
 
     defaultPodOptions:
       enableServiceLinks: false
-      # nodeSelector:
-      #   intel.feature.node.kubernetes.io/gpu: "true"
 
       securityContext:
         runAsUser: 1568
@@ -57,8 +55,9 @@ spec:
           main:
 
             image:
-              repository: ghcr.io/onedr0p/jellyfin
-              tag: 10.8.11@sha256:926e2a9f6677a0c7b12feba29f36c954154869318d6a52df72f72ff9c74cf494
+              repository: jellyfin/jellyfin
+              tag: 10.8.13-1
+              pullPolicy: IfNotPresent
 
             env:
               TZ: ${TIMEZONE}
