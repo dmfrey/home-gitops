@@ -63,8 +63,8 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:97b74a2c9ae3f573e5168a247d3e0a14bd18aaf1e7b1003192090f4a089a8c07 #ghcr.io/onedr0p/actions-runner:2.315.0@sha256:9e37504faa193a347e0d860a81b3dcbf0dc2570e57f9f1ce51740dba536dc547
-            # command: ["/home/runner/run.sh"]
+            image: ghcr.io/onedr0p/actions-runner:2.315.0@sha256:9e37504faa193a347e0d860a81b3dcbf0dc2570e57f9f1ce51740dba536dc547
+            command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
       name: actions-runner-controller-gha-rs-controller
@@ -135,8 +135,8 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:97b74a2c9ae3f573e5168a247d3e0a14bd18aaf1e7b1003192090f4a089a8c07 # ghcr.io/onedr0p/actions-runner:2.315.0@sha256:9e37504faa193a347e0d860a81b3dcbf0dc2570e57f9f1ce51740dba536dc547
-            # command: ["/home/runner/run.sh"]
+            image: ghcr.io/onedr0p/actions-runner:2.315.0@sha256:9e37504faa193a347e0d860a81b3dcbf0dc2570e57f9f1ce51740dba536dc547
+            command: ["/home/runner/run.sh"]
     
     controllerServiceAccount:
       name: actions-runner-controller-gha-rs-controller
