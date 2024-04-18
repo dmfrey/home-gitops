@@ -12,7 +12,7 @@ spec:
 
   chart:
     spec:
-      chart: tempo
+      chart: tempo-distributed
       version: 1.9.2
       sourceRef:
         kind: HelmRepository
