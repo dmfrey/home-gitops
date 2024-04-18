@@ -41,9 +41,9 @@ spec:
           - 226
           - 1568
           - 65534
-        capabilities:
-          add:
-            - CHOWN
+        # capabilities:
+        #   add:
+        #     - CHOWN
 
     controllers:
       main:
@@ -67,8 +67,8 @@ spec:
                   fieldRef:
                     fieldPath: spec.nodeName
 
-            nodeSelector:
-              feature.node.kubernetes.io/pci-0300_1002.present: "true"
+            # nodeSelector:
+            #   feature.node.kubernetes.io/pci-0300_1002.present: "true"
 
             ports:
               - name: http
@@ -83,20 +83,20 @@ spec:
                 amd.com/gpu: 1
                 memory: 4096Mi
 
-    service:
-      main:
-        enabled: false
-        controller: main
-        ports:
-          enabled: false
-          http:
-            port: *port
+    # service:
+    #   main:
+    #     enabled: false
+    #     controller: main
+    #     ports:
+    #       enabled: false
+    #       http:
+    #         port: *port
 
     persistence:
       media:
-        enabled: true
+        # enabled: true
         existingClaim: nfs-media
       cache:
-        enabled: true
+        # enabled: true
         existingClaim: tdarr-cache
 
