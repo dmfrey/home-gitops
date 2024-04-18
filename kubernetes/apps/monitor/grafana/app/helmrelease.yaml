@@ -154,6 +154,10 @@ spec:
             access: proxy
             type: loki
             url: http://loki-gateway.logs.svc.cluster.local
+          - name: Tempo
+            access: proxy
+            type: tempo
+            url: http://tempo-gateway.trace.svc.cluster.local
           - name: Alertmanager
             type: alertmanager
             access: proxy
