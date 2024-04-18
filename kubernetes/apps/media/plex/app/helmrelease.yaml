@@ -57,8 +57,7 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-              ALLOWED_NETWORKS: "192.0.0.0/8" #,172.22.0.0/16"
-              # ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400,https://plex.${SECRET_DOMAIN}:443"
+              ALLOWED_NETWORKS: "192.168.0.0/16"
 
             envFrom:
               - secretRef:
