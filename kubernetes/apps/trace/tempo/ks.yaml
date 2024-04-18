@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-tempo-services
+  namespace: flux-system
+spec:
+  interval: 15m
+  path: "./kubernetes/apps/trace/tempo/services"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+    - name: cluster-apps-rook-ceph-cluster
+    # - name: cluster-apps-rabbitmq-cluster-operator
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-tempo
+  namespace: flux-system
+spec:
+  interval: 15m
+  path: "./kubernetes/apps/trace/tempo/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+    - name: cluster-apps-tempo-services

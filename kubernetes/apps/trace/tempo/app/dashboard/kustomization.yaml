@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+  - name: tempo-operational-dashboard
+    files:
+      - tempo-operational.json=https://raw.githubusercontent.com/grafana/tempo/main/operations/tempo-mixin/dashboards/tempo-operational.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Tempo
+  labels:
+    grafana.io/dashboard: "true"
