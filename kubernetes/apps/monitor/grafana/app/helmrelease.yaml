@@ -150,20 +150,30 @@ spec:
             url: http://thanos-query.monitor.svc.cluster.local:9090
             # url: http://kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
             isDefault: true
+            uid: prometheus
           - name: Loki
             access: proxy
             type: loki
             url: http://loki-gateway.logs.svc.cluster.local
+            uid: loki
           - name: Tempo
             access: proxy
             type: tempo
             url: http://tempo-gateway.trace.svc.cluster.local
+            jsonData:
+              httpMethod: GET
+              serviceMap:
+                datasourceUid: prometheus
+              tracesToLogsV2:
+                datasourceUid: loki
+            uid: tempo
           - name: Alertmanager
             type: alertmanager
             access: proxy
             url: http://alert-manager.monitor.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+            uid: alertmanager
 
     deploymentStrategy:
       type: Recreate
