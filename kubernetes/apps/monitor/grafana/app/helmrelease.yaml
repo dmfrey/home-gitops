@@ -156,6 +156,12 @@ spec:
             type: loki
             url: http://loki-gateway.logs.svc.cluster.local
             uid: loki
+            jsonData:
+              derivedFields:
+                - matcherRegex: "\\w-\\w"
+                  name: TraceID
+                  url: '$${__value.raw}'
+                  urlDisplayLabel: 'View Trace'
           - name: Tempo
             access: proxy
             type: tempo
@@ -166,11 +172,6 @@ spec:
                 datasourceUid: prometheus
               tracesToLogsV2:
                 datasourceUid: loki
-              derivedFields:
-                - matcherRegex: "\\w-\\w"
-                  name: TraceID
-                  url: '$${__value.raw}'
-                  urlDisplayLabel: 'View Trace'
             uid: tempo
           - name: Alertmanager
             type: alertmanager
