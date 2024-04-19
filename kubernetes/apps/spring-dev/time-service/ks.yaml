@@ -2,6 +2,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: cluster-apps-spring-dev-time-service-services
+  namespace: flux-system
+spec:
+  interval: 15m
+  path: "./kubernetes/apps/spring-dev/time-service/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: cluster-apps-spring-dev-time-service
   namespace: flux-system
 spec:
@@ -14,3 +30,5 @@ spec:
   wait: true
   postBuild:
     substituteFrom: []
+  dependsOn:
+    - name: cluster-apps-spring-dev-time-service-services
