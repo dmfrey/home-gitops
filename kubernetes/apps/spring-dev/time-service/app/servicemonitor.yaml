@@ -5,7 +5,6 @@ metadata:
   name: time-service
   namespace: spring-dev
   labels:
-    app.kubernetes.io/component: main
     app.kubernetes.io/instance: time-service
     app.kubernetes.io/name: time-service
 spec:
@@ -17,6 +16,5 @@ spec:
       - spring-dev
   selector:                                                                                                                                                                                                                                                                                                                       
     matchLabels:                                                                                                                                                                                                                                                                                                                  
-      app.kubernetes.io/component: main
       app.kubernetes.io/instance: time-service
       app.kubernetes.io/name: time-service
