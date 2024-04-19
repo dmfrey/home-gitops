@@ -1,0 +1,21 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: time-service-service-monitor
+  namespace: spring-dev
+  labels:
+    app.kubernetes.io/name: time-service
+spec:
+  selector:
+    matchLabels:
+      deploymentconfig: time-service
+  namespaceSelector:
+    matchNames:
+      - spring-dev
+  endpoints:
+    - port: http
+      scheme: http
+      path: '/actuator/prometheus'
+      interval: 15s
+      honorLabels: false
