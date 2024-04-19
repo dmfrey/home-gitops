@@ -158,7 +158,7 @@ spec:
             jsonData:
               derivedFields:
                 - datasourceUid: tempo
-                  matcherRegex: "[0-9a-f]{32}"
+                  matcherRegex: '([0-9a-f]{32})'
                   name: TraceID
                   url: '$${__value.raw}'
                   urlDisplayLabel: 'View Trace'
