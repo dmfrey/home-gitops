@@ -20,4 +20,3 @@ spec:
       app.kubernetes.io/component: main
       app.kubernetes.io/instance: time-service
       app.kubernetes.io/name: time-service
-      prometheus-operator/monitor: "true"  
