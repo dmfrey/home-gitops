@@ -157,7 +157,8 @@ spec:
             uid: loki
             jsonData:
               derivedFields:
-                - matcherRegex: "[0-9a-f]{32}-[0-9a-f]{16}"
+                - datasourceUid: tempo
+                  matcherRegex: "[0-9a-f]{32}"
                   name: TraceID
                   url: '$${__value.raw}'
                   urlDisplayLabel: 'View Trace'
