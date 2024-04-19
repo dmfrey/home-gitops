@@ -6,7 +6,9 @@ metadata:
   name: time-service
   namespace: spring-dev
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: app-template
@@ -16,15 +18,19 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
 
@@ -49,7 +55,7 @@ spec:
           main:
             image:
               repository: ghcr.io/dmfrey/time-service
-              tag: 1.0.0
+              tag: 1.1.0
               pullPolicy: Always
             
             ports:
@@ -57,9 +63,19 @@ spec:
                 containerPort: &port 8080
             
             env:
-              - name: SPRING_PROFILES_ACTIVE
-                value: 'kubernetes'
-            
+              SPRING_PROFILES_ACTIVE: kubernetes
+              SPRING_DATASOURCE_URL: jdbc:postgresql://pg-time-service-rw:5432/time-service
+              SPRING_DATASOURCE_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-time-service-app
+                    key: username
+              SPRING_DATASOURCE_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-time-service-app
+                    key: password
+
             probes:
               liveness:
                 enabled: true
