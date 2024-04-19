@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
-  path: "./kubernetes/apps/spring-dev/time-service/app"
+  path: "./kubernetes/apps/spring-dev/time-service/services"
   prune: true
   sourceRef:
     kind: GitRepository
