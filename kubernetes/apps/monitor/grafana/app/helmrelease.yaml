@@ -151,6 +151,10 @@ spec:
         spring-boot-2-1:
           gnetId: 10280
           revision: 1
+        # Ref: https://grafana.com/grafana/dashboards/19004-spring-boot-statistics/
+        spring-boot-3:
+          gnetId: 19004
+          revision: 1
         # Ref: https://grafana.com/grafana/dashboards/6083-spring-boot-hikaricp-jdbc/
         hikaricp:
           gnetId: 6083
