@@ -148,7 +148,6 @@ spec:
             type: prometheus
             access: proxy
             url: http://thanos-query.monitor.svc.cluster.local:9090
-            # url: http://kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
             isDefault: true
             uid: prometheus
           - name: Loki
@@ -158,7 +157,7 @@ spec:
             uid: loki
             jsonData:
               derivedFields:
-                - matcherRegex: "\\w-\\w"
+                - matcherRegex: "[0-9a-f]{32}-[0-9a-f]{16}"
                   name: TraceID
                   url: '$${__value.raw}'
                   urlDisplayLabel: 'View Trace'
