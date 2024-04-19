@@ -134,6 +134,23 @@ spec:
         ceph-pools:
           gnetId: 5342
           revision: 9
+      spring-boot:
+        # Ref: https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
+        jvm:
+          gnetId: 4701
+          revision: 10
+        # Ref: https://grafana.com/grafana/dashboards/10280-microservices-spring-boot-2-1/
+        spring-boot-2-1:
+          gnetId: 10280
+          revision: 1
+        # Ref: https://grafana.com/grafana/dashboards/6083-spring-boot-hikaricp-jdbc/
+        hikaricp:
+          gnetId: 6083
+          revision: 5
+        # Ref: https://grafana.com/grafana/dashboards/2-prometheus-stats/
+        prometheus:
+          gnetId: 2
+          revision: 2
 
     datasources:
       datasources.yaml:
@@ -150,6 +167,11 @@ spec:
             url: http://thanos-query.monitor.svc.cluster.local:9090
             isDefault: true
             uid: prometheus
+            jsonData:
+              httpMethod: POST
+              exemplarTraceIdDestinations:
+                - name: trace_id
+                  datasourceUid: tempo
           - name: Loki
             access: proxy
             type: loki
@@ -168,10 +190,19 @@ spec:
             url: http://tempo-gateway.trace.svc.cluster.local
             jsonData:
               httpMethod: GET
+              traceToMetrics:
+                datasourceUid: prometheus
+              tracesToLogs:
+                datasourceUid: loki
+                mapTagNamesEnabled: true
+                filterByTraceID: true
+                filterBySpanID: false
+              lokiSearch:
+                datasourceUid: loki
               serviceMap:
                 datasourceUid: prometheus
-              tracesToLogsV2:
-                datasourceUid: loki
+              nodeGraph:
+                enabled: true
             uid: tempo
           - name: Alertmanager
             type: alertmanager
