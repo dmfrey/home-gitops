@@ -63,6 +63,7 @@ spec:
                 containerPort: &port 8080
             
             env:
+              LOGGING_LEVEL_IO_MICROMETER: debug
               SPRING_PROFILES_ACTIVE: kubernetes
               MANAGEMENT_TRACING_ENABLED: true
               MANAGEMENT_OTLP_TRACING_ENDPOINT: http://tempo-distributor.trace.svc.cluster.local:3100
