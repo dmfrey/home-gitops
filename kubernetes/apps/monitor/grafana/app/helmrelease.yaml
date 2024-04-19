@@ -193,7 +193,7 @@ spec:
               derivedFields:
                 - datasourceUid: tempo
                   matcherRegex: '([0-9a-f]{32})'
-                  name: TraceID
+                  name: traceID
                   url: '$${__value.raw}'
                   urlDisplayLabel: 'View Trace'
           - name: Tempo
