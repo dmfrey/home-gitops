@@ -54,7 +54,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/readarr-nightly
-              tag: 0.3.23.2506@sha256:73e50375764324dc1423c0af239ec446be8b9c9b0b0fe417f12b4bd8f1f12fc4
+              tag: 0.3.24.2509@sha256:9cbdb54f4ff5ab43037416888d4d90eded15bd40038940dc526d820cbd8a7352
 
             env:
               TZ: ${TIMEZONE}
