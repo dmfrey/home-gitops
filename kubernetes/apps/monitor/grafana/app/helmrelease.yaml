@@ -166,6 +166,12 @@ spec:
                 datasourceUid: prometheus
               tracesToLogsV2:
                 datasourceUid: loki
+              derivedFields:
+                - datasourceUid: tempo
+                  matcherRegex: "\\w-\\w"
+                  name: TraceID
+                  url: '$${__value.raw}'
+                  urlDisplayLabel: 'View Trace'
             uid: tempo
           - name: Alertmanager
             type: alertmanager
