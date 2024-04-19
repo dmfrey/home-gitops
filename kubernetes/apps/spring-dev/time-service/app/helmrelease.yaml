@@ -66,8 +66,8 @@ spec:
               LOGGING_LEVEL_IO_MICROMETER: debug
               SPRING_PROFILES_ACTIVE: kubernetes
               MANAGEMENT_TRACING_ENABLED: true
-              MANAGEMENT_OTLP_METRICS_EXPORT_URL: http://tempo-distributor.trace.svc.cluster.local:4318/v1/metrics
-              MANAGEMENT_OTLP_TRACING_ENDPOINT: http://tempo-distributor.trace.svc.cluster.local:4318/v1/traces
+              # MANAGEMENT_OTLP_METRICS_EXPORT_URL: http://tempo-distributor.trace.svc.cluster.local:4318/v1/metrics
+              MANAGEMENT_OTLP_TRACING_ENDPOINT: http://tempo-distributor.trace.svc.cluster.local:4317
               SPRING_DATASOURCE_URL: jdbc:postgresql://pg-time-service-rw:5432/time-service
               SPRING_DATASOURCE_USERNAME:
                 valueFrom:
