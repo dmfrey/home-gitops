@@ -63,9 +63,10 @@ spec:
             image:
               repository: ghcr.io/onedr0p/readarr-develop
               tag: 0.3.23.2506@sha256:de8fd287c5810945bd8148caa4b5aadca3571f4d142ab972f32da006491de9bd
-              
+
             env:
               TZ: ${TIMEZONE}
+              COMPlus_EnableDiagnostics: 0
               READARR__INSTANCE_NAME: *app
               READARR__PORT: &port 8787
               READARR__APPLICATION_URL: https://readarr.${SECRET_DOMAIN}
