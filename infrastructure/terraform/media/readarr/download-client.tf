@@ -7,7 +7,7 @@ resource "readarr_download_client_qbittorrent" "rdt-client" {
   book_category              = "book"
   remove_completed_downloads = true
   first_and_last             = true
-  tags                       = ["book"]
+  tags                       = [1]
 }
 
 resource "readarr_download_client_sabnzbd" "sabnzbd" {
@@ -19,7 +19,7 @@ resource "readarr_download_client_sabnzbd" "sabnzbd" {
   url_base                   = "/sabnzbd/"
   api_key                    = var.SABNZBD_API_KEY
   book_category              = "book"
-  tags                       = ["book"]
+  tags                       = [1]
 }
 
 resource "readarr_remote_path_mapping" "sabnzbd" {
