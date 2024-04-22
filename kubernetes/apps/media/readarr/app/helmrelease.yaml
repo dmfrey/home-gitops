@@ -127,6 +127,7 @@ spec:
 
     service:
       app:
+        nameOverride: *app
         controller: readarr
         ports:
           http:
