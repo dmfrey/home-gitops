@@ -6,24 +6,30 @@ metadata:
   name: &app readarr
   namespace: media
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
 
@@ -31,17 +37,19 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
+        runAsUser: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 100
+          - 1568
           - 65534
 
     controllers:
       
-      main:
+      readarr:
         type: statefulset
         
         annotations:
@@ -51,14 +59,14 @@ spec:
         strategy: RollingUpdate
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/readarr-develop
-              tag: 0.3.23.2506
+              tag: 0.3.22.2499@sha256:c0a5ebba791aac0372872c97394ebc07d023e063b2b92586db694bf45a6970be
 
             env:
               TZ: ${TIMEZONE}
-              READARR__INSTANCE_NAME: Readarr
+              READARR__INSTANCE_NAME: *app
               READARR__PORT: &port 8787
               READARR__APPLICATION_URL: https://readarr.${SECRET_DOMAIN}
               READARR__LOG_LEVEL: info
@@ -67,13 +75,27 @@ spec:
                   secretKeyRef:
                     name: starr-apps-secret
                     key: READARR_API_KEY
+            
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
 
             resources:
               requests:
                 memory: 350Mi
-                cpu: 5m
+                cpu: 15m
               limits:
-                memory: 431Mi
+                memory: 1Gi
+                cpu: 800m
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              readOnlyRootFilesystem: true
 
           # sidecars:
           exporter:
@@ -83,7 +105,8 @@ spec:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
 
-            args: ["readarr"]
+            args:
+              - *app
             
             env:
               - name: URL
@@ -102,21 +125,19 @@ spec:
                 containerPort: *metricsPort 
 
     service:
-      main:
-        nameOverride: readarr
-        controller: main
+      app:
+        controller: readarr
         ports:
           http:
             port: *port
       metrics:
-        controller: main
+        controller: readarr
         ports:
           metrics:
             port: *metricsPort
 
     ingress:
       main:
-        enabled: true
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -130,8 +151,8 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
-                  port: *port
+                  identifier: app
+                  port: http
         tls:
           - hosts:
               - *host
