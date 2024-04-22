@@ -137,7 +137,7 @@ spec:
             port: *metricsPort
 
     ingress:
-      main:
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
