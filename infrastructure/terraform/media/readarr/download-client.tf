@@ -1,7 +1,7 @@
 resource "readarr_download_client_qbittorrent" "rdt-client" {
   name                       = "rdt-client"
   enable                     = true
-  priortity                  = 25
+  priority                   = 25
   host                       = "rdt-client.download.svc.cluster.local"
   port                       = 6500
   book_category              = "book"
