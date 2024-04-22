@@ -53,8 +53,8 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/onedr0p/readarr-nightly
-              tag: 0.3.24.2509@sha256:9cbdb54f4ff5ab43037416888d4d90eded15bd40038940dc526d820cbd8a7352
+              repository: ghcr.io/onedr0p/readarr-develop
+              tag: 0.3.24.2509
 
             env:
               TZ: ${TIMEZONE}
