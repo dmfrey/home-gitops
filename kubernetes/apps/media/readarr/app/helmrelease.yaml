@@ -37,14 +37,13 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
+        runAsUser: 1568
+        runAsGroup: 1568
         runAsNonRoot: true
-        fsGroup: 568
+        fsGroup: 1568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 100
-          - 1568
           - 65534
 
     controllers:
