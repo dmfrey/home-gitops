@@ -37,16 +37,17 @@ spec:
     image:
       repository: otel/opentelemetry-collector-k8s
 
+    presets:
+      logsCollection:
+        enabled: true
+      kubernetesAttributes:
+        enabled: true
+      kubeletMetrics:
+        enabled: true
+      hostMetrics:
+        enabled: true
+
     config:
-      presets:
-        logsCollection:
-          enabled: true
-        kubernetesAttributes:
-          enabled: true
-        kubeletMetrics:
-          enabled: true
-        hostMetrics:
-          enabled: true
 
       extensions:
         health_check: {}
