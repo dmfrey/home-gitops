@@ -68,7 +68,7 @@ spec:
 
       exporters:
         otlp:
-          endpoint: tempo-distributed.trace.svc.cluster.local
+          endpoint: tempo-distributed.trace.svc.cluster.local:4317
 
         # prometheusremotewrite:
           # endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
