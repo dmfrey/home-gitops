@@ -38,42 +38,43 @@ spec:
     image:
       repository: otel/opentelemetry-collector-k8s
 
-    presets:
-      logsCollection:
-        enabled: true
-      kubernetesAttributes:
-        enabled: true
-      kubeletMetrics:
-        enabled: true
-      hostMetrics:
-        enabled: true
+    config:
+      presets:
+        logsCollection:
+          enabled: true
+        kubernetesAttributes:
+          enabled: true
+        kubeletMetrics:
+          enabled: true
+        hostMetrics:
+          enabled: true
 
-    extensions:
-      health_check: {}
-      memory_ballast:
-        size_in_percentage: 40
+      extensions:
+        health_check: {}
+        memory_ballast:
+          size_in_percentage: 40
 
-    processors:
-      batch: {}
-      memory_limiter:
-        check_interval: 5s
-        limit_percentage: 80
-        spike_limit_percentage: 25
+      processors:
+        batch: {}
+        memory_limiter:
+          check_interval: 5s
+          limit_percentage: 80
+          spike_limit_percentage: 25
 
-    receivers:
-      jaeger: null
-      otlp:
-      zipkin: null
+      receivers:
+        jaeger: null
+        otlp:
+        zipkin: null
 
-    exporters:
-      otlp:
-        endpoint: tempo-distributed.trace.svc.cluster.local
+      exporters:
+        otlp:
+          endpoint: tempo-distributed.trace.svc.cluster.local
 
-      prometheusremotewrite:
-        endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
+        prometheusremotewrite:
+          endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
 
-      loki:
-        endpoint: loki-write.logs.svc.cluster.local
+        loki:
+          endpoint: loki-write.logs.svc.cluster.local
 
     service:
       pipelines:
