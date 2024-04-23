@@ -73,8 +73,8 @@ spec:
         prometheusremotewrite:
           endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
 
-        loki:
-          endpoint: loki-write.logs.svc.cluster.local
+        # loki:
+        #   endpoint: loki-write.logs.svc.cluster.local
 
       service:
         pipelines:
@@ -91,4 +91,4 @@ spec:
           logs:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch,attributes/logs ]
-            exporters: [ loki ]
+            exporters: [ otlp ]
