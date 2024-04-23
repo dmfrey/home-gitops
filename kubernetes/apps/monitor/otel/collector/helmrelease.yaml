@@ -68,6 +68,7 @@ spec:
         
         jaeger: null
         
+        # Data sources: traces, metrics, logs
         otlp:
           protocols:
             grpc:
