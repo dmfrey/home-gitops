@@ -32,4 +32,59 @@ spec:
     keepHistory: false
  
   values:
-  
+
+    mode: daemonset
+
+    presets:
+      logsCollection:
+        enabled: true
+      kubernetesAttributes:
+        enabled: true
+      kubeletMetrics:
+        enabled: true
+      hostMetrics:
+        enabled: true
+
+    extensions:
+      health_check: {}
+      memory_ballast:
+        size_in_percentage: 40
+
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+
+    receivers:
+      jaeger: null
+      otlp:
+      zipkin: null
+
+    exporters:
+      otlp:
+        endpoint: tempo-distributed.trace.svc.cluster.local
+
+      prometheusremotewrite:
+        endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
+
+      loki:
+        endpoint: loki-write.logs.svc.cluster.local
+
+    service:
+      pipelines:
+        traces:
+          receivers: [ otlp ]
+          processors: [ memory_limiter,batch ]
+          exporters: [ otlp ]
+
+        metrics:
+          receivers: [ otlp ]
+          processors: [ memory_limiter,batch,attributes/metrics ]
+          exporters: [ prometheusremotewrite ]
+
+        logs:
+          receivers: [ otlp ]
+          processors: [ memory_limiter,batch,attributes/logs ]
+          exporters: [ loki ]
