@@ -65,9 +65,17 @@ spec:
           spike_limit_percentage: 25
 
       receivers:
+        
         jaeger: null
+        
         otlp:
-        zipkin:
+          protocols:
+            grpc:
+              endpoint: 0.0.0.0:4317
+            http:
+              endpoint: 0.0.0.0:4318
+
+        zipkin: null
 
       exporters:
 
