@@ -31,3 +31,4 @@ resources:
   - rook-ceph.yaml
   - stakater.yaml
   - tf-controller.yaml
+  - opentelemetry-charts.yaml
