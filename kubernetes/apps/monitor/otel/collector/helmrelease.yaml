@@ -70,8 +70,8 @@ spec:
         otlp:
           endpoint: tempo-distributed.trace.svc.cluster.local
 
-        prometheusremotewrite:
-          endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
+        # prometheusremotewrite:
+          # endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local
 
         # loki:
         #   endpoint: loki-write.logs.svc.cluster.local
@@ -86,7 +86,7 @@ spec:
           metrics:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch,attributes/metrics ]
-            exporters: [ prometheusremotewrite ]
+            exporters: [ otlp ]
 
           logs:
             receivers: [ otlp ]
