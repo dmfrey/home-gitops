@@ -204,9 +204,10 @@ spec:
               httpMethod: GET
               traceToMetrics:
                 datasourceUid: prometheus
-              tracesToLogs:
+                tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+              tracesToLogsV2:
                 datasourceUid: loki
-                mapTagNamesEnabled: true
+                tags: ['job', 'instance', 'pod', 'namespace', 'app']
                 filterByTraceID: true
                 filterBySpanID: false
               lokiSearch:
@@ -215,6 +216,11 @@ spec:
                 datasourceUid: prometheus
               nodeGraph:
                 enabled: true
+              traceQuery:
+                timeShiftEnabled: true
+              spanBar:
+                type: 'Tag'
+                tag: 'http.path'
             uid: tempo
           - name: Alertmanager
             type: alertmanager
