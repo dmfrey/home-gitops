@@ -34,6 +34,9 @@ spec:
 
     mode: daemonset
 
+    annotations:
+      configmap.reloader.stakater.com/reload: otel-collector-opentelemetry-collector-agent
+
     image:
       repository: otel/opentelemetry-collector-k8s
 
