@@ -76,19 +76,19 @@ spec:
         loki:
           endpoint: loki-write.logs.svc.cluster.local
 
-    service:
-      pipelines:
-        traces:
-          receivers: [ otlp ]
-          processors: [ memory_limiter,batch ]
-          exporters: [ otlp ]
+      service:
+        pipelines:
+          traces:
+            receivers: [ otlp ]
+            processors: [ memory_limiter,batch ]
+            exporters: [ otlp ]
 
-        metrics:
-          receivers: [ otlp ]
-          processors: [ memory_limiter,batch,attributes/metrics ]
-          exporters: [ prometheusremotewrite ]
+          metrics:
+            receivers: [ otlp ]
+            processors: [ memory_limiter,batch,attributes/metrics ]
+            exporters: [ prometheusremotewrite ]
 
-        logs:
-          receivers: [ otlp ]
-          processors: [ memory_limiter,batch,attributes/logs ]
-          exporters: [ loki ]
+          logs:
+            receivers: [ otlp ]
+            processors: [ memory_limiter,batch,attributes/logs ]
+            exporters: [ loki ]
