@@ -120,8 +120,8 @@ spec:
           #   insecure: true
 
         # Data sources: traces
-        zipkin:
-          endpoint: http://tempo-distributed.trace.svc.cluster.local:9411/api/v2/spans
+        # zipkin:
+        #   endpoint: http://tempo-distributed.trace.svc.cluster.local:9411/api/v2/spans
 
       service:
         pipelines:
