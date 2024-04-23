@@ -67,7 +67,7 @@ spec:
       receivers:
         jaeger: null
         otlp:
-        zipkin: null
+        zipkin:
 
       exporters:
 
