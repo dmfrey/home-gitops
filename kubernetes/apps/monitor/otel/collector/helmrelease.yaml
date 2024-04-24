@@ -73,7 +73,6 @@ spec:
           protocols:
             grpc:
               endpoint: 0.0.0.0:4317
-              insecure: true
             http:
               endpoint: 0.0.0.0:4318
 
