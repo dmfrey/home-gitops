@@ -139,7 +139,7 @@ spec:
             processors: [ memory_limiter,batch ]
             exporters: [ otlphttp ]
 
-          metrics: null
+          # metrics: null
             # receivers: [ otlp ]
             # processors: [ memory_limiter,batch ]
             # exporters: [ otlphttp ]
