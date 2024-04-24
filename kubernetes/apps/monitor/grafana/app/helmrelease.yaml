@@ -151,26 +151,9 @@ spec:
           gnetId: 5342
           revision: 9
       spring-boot:
-        # Ref: https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
-        # jvm:
-        #   gnetId: 4701
-        #   revision: 10
-        # Ref: https://grafana.com/grafana/dashboards/10280-microservices-spring-boot-2-1/
-        # spring-boot-2-1:
-        #   gnetId: 10280
-        #   revision: 1
-        # Ref: https://grafana.com/grafana/dashboards/19004-spring-boot-statistics/
         spring-boot-3:
           gnetId: 19004
           revision: 1
-        # Ref: https://grafana.com/grafana/dashboards/6083-spring-boot-hikaricp-jdbc/
-        # hikaricp:
-        #   gnetId: 6083
-        #   revision: 5
-        # Ref: https://grafana.com/grafana/dashboards/2-prometheus-stats/
-        # prometheus:
-        #   gnetId: 2
-        #   revision: 2
       apm:
         # Ref: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
         apm:
@@ -207,7 +190,7 @@ spec:
                 - datasourceUid: tempo
                   matcherRegex: '([0-9a-f]{32})'
                   name: traceId
-                  query: "$${__value.raw}"
+                  url: "$${__value.raw}"
                   urlDisplayLabel: 'View Trace'
           - name: Tempo
             access: proxy
