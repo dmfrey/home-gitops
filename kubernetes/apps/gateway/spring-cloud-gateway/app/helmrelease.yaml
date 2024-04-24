@@ -6,11 +6,13 @@ metadata:
   name: spring-cloud-gateway
   namespace: gateway
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: ./
-      version: 2.1.5
+      version: 2.2.3
       sourceRef:
         kind: GitRepository
         name: git-spring-cloud-gateway-k8s
