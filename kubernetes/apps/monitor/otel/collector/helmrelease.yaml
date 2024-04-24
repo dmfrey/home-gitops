@@ -136,15 +136,15 @@ spec:
         pipelines:
           traces:
             receivers: [ otlp ]
-            processors: [ memory_limiter,batch ]
+            processors: [ batch ]
             exporters: [ otlphttp ]
 
           metrics:
             receivers: [ otlp ]
-            processors: [ memory_limiter,batch ]
+            processors: [ batch ]
             exporters: [ otlphttp ]
 
           logs:
             receivers: [ otlp ]
-            processors: [ memory_limiter,batch ]
+            processors: [ batch ]
             exporters: [ otlphttp ]
