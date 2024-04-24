@@ -107,7 +107,8 @@ spec:
         # Data sources: traces, metrics, logs
         otlp:
           endpoint: tempo-distributor.trace.svc.cluster.local:4317
-          # tls:
+          tls:
+            insecure: true
           #   cert_file: cert.pem
           #   key_file: cert-key.pem
 
@@ -137,7 +138,7 @@ spec:
           traces:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch ]
-            exporters: [ otlphttp ]
+            exporters: [ otlp ]
 
           # metrics: 
           #   receivers: [ otlp ]
