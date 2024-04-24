@@ -5,8 +5,8 @@ kind: HelmRelease
 metadata:
   name: grafana
   namespace: monitor
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled
+  # annotations:
+  #   kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   interval: 15m
   chart:
