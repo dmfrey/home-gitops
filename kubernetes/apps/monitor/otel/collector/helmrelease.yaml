@@ -148,3 +148,7 @@ spec:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch ]
             exporters: [ otlphttp ]
+
+    service:
+      enabled: true
+      type: ClusterIP
