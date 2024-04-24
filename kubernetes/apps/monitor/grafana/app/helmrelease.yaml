@@ -70,6 +70,14 @@ spec:
               path: /var/lib/grafana/dashboards/spring-boot
             orgId: 1
             type: file
+          - name: apm
+            disableDeletion: false
+            editable: true
+            folder: "Application Performance"
+            options:
+              path: /var/lib/grafana/dashboards/apm
+            orgId: 1
+            type: file
 
     dashboards:
       device:
@@ -163,6 +171,11 @@ spec:
         prometheus:
           gnetId: 2
           revision: 2
+      apm:
+        # Ref: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
+        apm:
+          gnetId: 19419
+          revision: 3
 
     datasources:
       datasources.yaml:
