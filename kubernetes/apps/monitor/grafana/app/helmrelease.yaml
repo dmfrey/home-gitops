@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: grafana
   namespace: monitor
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   interval: 15m
   chart:
@@ -165,6 +167,8 @@ spec:
         apiVersion: 1
         deleteDatasources:
           - name: Loki
+            orgId: 1
+          - name: Tempo
             orgId: 1
           - name: Alertmanager
             orgId: 1
