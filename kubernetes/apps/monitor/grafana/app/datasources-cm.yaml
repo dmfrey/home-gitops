@@ -12,7 +12,7 @@ data:
   datasource.yaml: |-
     apiVersion: 1
     deleteDatasources:
-      - name: Prometheus
+      - name: prometheus
         orgId: 1
       - name: Loki
         orgId: 1
@@ -21,7 +21,7 @@ data:
       - name: Alertmanager
         orgId: 1
     datasources:
-      - name: Prometheus
+      - name: prometheus
         type: prometheus
         access: proxy
         url: http://thanos-query.monitor.svc.cluster.local:9090
