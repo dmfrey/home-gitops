@@ -141,10 +141,10 @@ spec:
 
           metrics:
             receivers: [ otlp ]
-            processors: [ memory_limiter,batch,attributes/metrics ]
+            processors: [ memory_limiter,batch ]
             exporters: [ otlp ]
 
           logs:
             receivers: [ otlp ]
-            processors: [ memory_limiter,batch,attributes/logs ]
+            processors: [ memory_limiter,batch ]
             exporters: [ otlp ]
