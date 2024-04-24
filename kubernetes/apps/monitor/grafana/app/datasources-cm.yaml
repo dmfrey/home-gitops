@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource
+  labels:
+     grafana_datasource: "1"
+     namespace: monitor
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+data:
+  datasource.yaml: |-
+    apiVersion: 1
+    deleteDatasources:
+      - name: Prometheus
+        orgId: 1
+      - name: Loki
+        orgId: 1
+      - name: Tempo
+        orgId: 1
+      - name: Alertmanager
+        orgId: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://thanos-query.monitor.svc.cluster.local:9090
+        isDefault: true
+        uid: prometheus
+        jsonData:
+          httpMethod: POST
+          exemplarTraceIdDestinations:
+            - name: trace_id
+              datasourceUid: tempo
+      - name: Loki
+        access: proxy
+        type: loki
+        url: http://loki-gateway.logs.svc.cluster.local
+        uid: loki
+        jsonData:
+          derivedFields:
+            - datasourceUid: tempo
+              matcherRegex: '([0-9a-f]{32})'
+              name: traceId
+              url: "$${__value.raw}"
+              urlDisplayLabel: 'View Trace'
+      - name: Tempo
+        access: proxy
+        type: tempo
+        url: http://tempo-gateway.trace.svc.cluster.local
+        jsonData:
+          httpMethod: GET
+          traceToMetrics:
+            datasourceUid: prometheus
+          tracesToLogs:
+            datasourceUid: loki
+            filterByTraceID: true
+            filterBySpanID: false
+          nodeGraph:
+            enabled: true
+        uid: tempo
+      - name: Alertmanager
+        type: alertmanager
+        access: proxy
+        url: http://alert-manager.monitor.svc.cluster.local:9093
+        jsonData:
+          implementation: prometheus
+        uid: alertmanager
