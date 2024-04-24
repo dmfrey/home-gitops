@@ -207,7 +207,7 @@ spec:
                 - datasourceUid: tempo
                   matcherRegex: '([0-9a-f]{32})'
                   name: traceId
-                  url: '$${__value.raw}'
+                  url: "$${__value.raw}"
                   urlDisplayLabel: 'View Trace'
           - name: Tempo
             access: proxy
