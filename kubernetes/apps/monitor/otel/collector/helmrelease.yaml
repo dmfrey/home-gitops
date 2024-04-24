@@ -121,8 +121,8 @@ spec:
         #   namespace: default
 
         # Data sources: metrics
-        prometheusremotewrite:
-          endpoint: http://kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090/api/v1/write
+        # prometheusremotewrite:
+        #   endpoint: http://kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090/api/v1/write
           # When using the official Prometheus (running via Docker)
           # endpoint: 'http://prometheus:9090/api/v1/write', add:
           # tls:
@@ -139,10 +139,10 @@ spec:
             processors: [ memory_limiter,batch ]
             exporters: [ otlphttp ]
 
-          metrics: 
-            receivers: [ otlp ]
-            processors: [ memory_limiter,batch ]
-            exporters: [ prometheusremotewrite ]
+          # metrics: 
+          #   receivers: [ otlp ]
+          #   processors: [ memory_limiter,batch ]
+          #   exporters: [ prometheusremotewrite ]
 
           logs:
             receivers: [ otlp ]
