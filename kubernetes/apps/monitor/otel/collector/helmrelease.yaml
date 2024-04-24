@@ -106,14 +106,14 @@ spec:
 
         # Data sources: traces, metrics, logs
         otlp:
-          endpoint: tempo-distributed.trace.svc.cluster.local:4317
+          endpoint: tempo-distributor.trace.svc.cluster.local:4317
           # tls:
           #   cert_file: cert.pem
           #   key_file: cert-key.pem
 
         # Data sources: traces, metrics
         otlphttp:
-          endpoint: http://tempo-distributed.trace.svc.cluster.local:4318
+          endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
         # Data sources: metrics
         # prometheus:
@@ -130,7 +130,7 @@ spec:
 
         # Data sources: traces
         # zipkin:
-        #   endpoint: http://tempo-distributed.trace.svc.cluster.local:9411/api/v2/spans
+        #   endpoint: http://tempo-distributor.trace.svc.cluster.local:9411/api/v2/spans
 
       service:
         pipelines:
