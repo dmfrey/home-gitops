@@ -137,14 +137,14 @@ spec:
           traces:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch ]
-            exporters: [ otlp ]
+            exporters: [ otlphttp ]
 
           metrics:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch ]
-            exporters: [ otlp ]
+            exporters: [ otlphttp ]
 
           logs:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch ]
-            exporters: [ otlp ]
+            exporters: [ otlphttp ]
