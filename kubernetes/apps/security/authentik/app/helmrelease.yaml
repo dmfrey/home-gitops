@@ -67,9 +67,6 @@ spec:
       #   - mountPath: /media/branding
       #     name: branding
 
-    annotations:
-      secret.reloader.stakater.com/reload: pg-authentik-app
-
     authentik:
       security_key: ""
       avatars: "gravatar,initials"
@@ -111,6 +108,9 @@ spec:
           enabled: true
 
     server:
+
+      deploymentAnnotations:
+        secret.reloader.stakater.com/reload: pg-authentik-app
 
       ingress:
         enabled: true
