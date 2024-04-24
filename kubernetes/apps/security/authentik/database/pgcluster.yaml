@@ -6,6 +6,7 @@ metadata:
   namespace: security
   annotations:
     kyverno.io/ignore: "true"
+    secret.reloader.stakater.com/reload: cloudnative-pg-secret
 
 spec:
   
