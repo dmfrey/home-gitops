@@ -17,5 +17,26 @@ spec:
         kind: GitRepository
         name: git-spring-cloud-gateway-k8s
         namespace: flux-system
-      interval: 15m
 
+  maxHistory: 2
+  
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  
+  uninstall:
+    keepHistory: false
+
+values:
+
+  scg-operator:
+    image: ghcr.io/dmfrey/spring-cloud-gateway-k8s/gateway:2.2.3
+
+  gateway:
+    image: ghcr.io/dmfrey/spring-cloud-gateway-k8s/scg-operator:2.2.3
