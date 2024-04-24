@@ -5,8 +5,11 @@ kind: HelmRelease
 metadata:
   name: authentik
   namespace: security
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: authentik
@@ -15,8 +18,19 @@ spec:
         kind: HelmRepository
         name: authentik
         namespace: flux-system
-      interval: 15m
+
+  install:
+    remediation:
+      retries: 3
   
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  
+  uninstall:
+    keepHistory: false
+
   values:
     
     global:
@@ -52,6 +66,9 @@ spec:
       # volumeMounts:
       #   - mountPath: /media/branding
       #     name: branding
+
+    annotations:
+      secret.reloader.stakater.com/reload: pg-authentik-app
 
     authentik:
       security_key: ""
