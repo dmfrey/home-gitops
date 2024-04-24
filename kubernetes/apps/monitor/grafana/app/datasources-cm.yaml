@@ -4,6 +4,7 @@ metadata:
   name: grafana-datasource
   labels:
      grafana_datasource: "1"
+     grafana.io/datasource: "true"
      namespace: monitor
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
