@@ -36,7 +36,7 @@ spec:
 values:
 
   scg-operator:
-    image: ghcr.io/dmfrey/spring-cloud-gateway-k8s/gateway:2.2.3
+    image: ghcr.io/dmfrey/spring-cloud-gateway-k8s/scg-operator:2.2.3
 
   gateway:
-    image: ghcr.io/dmfrey/spring-cloud-gateway-k8s/scg-operator:2.2.3
+    image: ghcr.io/dmfrey/spring-cloud-gateway-k8s/gateway:2.2.3
