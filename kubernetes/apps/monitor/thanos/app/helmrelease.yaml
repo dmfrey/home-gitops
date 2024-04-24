@@ -55,8 +55,6 @@ spec:
 
   values:
   
-    # existingObjstoreSecret: thanos-secret
-
     objstoreConfig:
       type: s3
       config:
