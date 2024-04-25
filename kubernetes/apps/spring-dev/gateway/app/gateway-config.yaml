@@ -14,6 +14,8 @@ spec:
       value: "1.0"
     - name: spring.cloud.gateway.metrics.enabled
       value: "true"
+    - name: spring.sleuth.trace-id128
+      value: "true"
 
   healthCheck:
     enabled: true
