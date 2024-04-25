@@ -4,12 +4,20 @@ metadata:
   name: spring-dev-gateway
   namespace: spring-dev
 spec:
+
   count: 3
+
   sso:
     secret: spring-dev-gateway-secret
+
   observability:
     metrics:
       prometheus:
         enabled: true
         serviceMonitor:
           enabled: true
+
+    tracing:
+      zipkin:
+        enabled: true
+        url: "http://otel-collector-opentelemetry-collector.monitor.svc.cluster.local:9411/api/v2/spans"

@@ -76,7 +76,7 @@ spec:
             http:
               endpoint: 0.0.0.0:4318
 
-        zipkin: null
+        zipkin:
 
       exporters:
 
