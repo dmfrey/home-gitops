@@ -131,15 +131,15 @@ spec:
           #   insecure: true
 
         # Data sources: traces
-        zipkin:
-          endpoint: http://tempo-distributor.trace.svc.cluster.local:9411/api/v2/spans
+        # zipkin:
+        #   endpoint: http://tempo-distributor.trace.svc.cluster.local:9411/api/v2/spans
 
       service:
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
             processors: [ memory_limiter,batch ]
-            exporters: [ otlp, zipkin ]
+            exporters: [ otlp, debug ]
 
           # metrics: 
           #   receivers: [ otlp ]
@@ -149,7 +149,7 @@ spec:
           logs:
             receivers: [ otlp ]
             processors: [ memory_limiter,batch ]
-            exporters: [ otlphttp ]
+            exporters: [ otlphttp, debug ]
 
     service:
       enabled: true
