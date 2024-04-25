@@ -10,6 +10,10 @@ spec:
   env:
     - name: logging.level.org.springframework.web
       value: debug
+    - name: management.tracing.sampling.probability
+      value: 1.0
+    - name: spring.cloud.gateway.metrics.enabled
+      value: true
 
   healthCheck:
     enabled: true
