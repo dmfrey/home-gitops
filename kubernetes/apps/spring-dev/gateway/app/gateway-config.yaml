@@ -10,7 +10,10 @@ spec:
   env:
     - name: logging.level.org.springframework.web
       value: debug
-      
+
+  healthCheck:
+    enabled: true
+
   sso:
     secret: spring-dev-gateway-secret
 
