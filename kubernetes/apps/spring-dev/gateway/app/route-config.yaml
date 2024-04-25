@@ -9,3 +9,5 @@ spec:
       ssoEnabled: true
       predicates:
         - Path=/time/**
+      filters:
+        - TokenRelay=

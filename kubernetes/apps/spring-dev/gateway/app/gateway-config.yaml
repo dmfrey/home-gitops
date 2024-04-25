@@ -7,6 +7,10 @@ spec:
 
   count: 3
 
+  env:
+    - name: logging.level.org.springframework.web
+      value: debug
+      
   sso:
     secret: spring-dev-gateway-secret
 
