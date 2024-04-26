@@ -90,9 +90,8 @@ spec:
         enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
-              - path: /config
+          app:
+            - path: /config
       secrets:
         type: secret
         name: secret-esphome
