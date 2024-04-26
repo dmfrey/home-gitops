@@ -1,0 +1,112 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: esphome
+spec:
+  
+  interval: 30m
+  
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+  
+    controllers:
+      esphome:
+        type: statefulset
+        annotations:
+          secret.reloader.stakater.com/reload: secret-esphome,home-assistant-deploykey
+
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.3/24"],
+                "gateway": ["192.168.50.1"]
+              }]
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/esphome/esphome
+              tag: 2024.4.1
+            env:
+              - name: ESPHOME_DASHBOARD_USE_PING
+                value: "true"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 5m
+                memory: 1374M
+              limits:
+                memory: 2048M
+
+    service:
+      app:
+        controller: esphome
+        ports:
+          http:
+            port: 6052
+
+    ingress:
+      main:
+        enabled: true
+        className: nginx-external
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "chip"
+        hosts:
+          - host: &hostname esphome.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *hostname
+            secretName: esphome-tls-external
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+      secrets:
+        type: secret
+        name: secret-esphome
+        globalMounts:
+          - path: /config/secrets.yaml
+            subPath: secrets.yaml
+      esphome-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /config/.esphome
+      deploy-key:
+        type: secret
+        name: home-assistant-deploy-key
+        defaultMode: 256
+        globalMounts:
+          - path: /root/.ssh/id_rsa
+            subPath: id_rsa
