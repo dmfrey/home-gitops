@@ -30,9 +30,9 @@ spec:
   uninstall:
     keepHistory: false
  
-  values:
+values:
 
-    manager:
-      collectorImage:
-        repository: otel/opentelemetry-collector-k8s
+  manager:
+    collectorImage:
+      repository: otel/opentelemetry-collector-k8s
   
