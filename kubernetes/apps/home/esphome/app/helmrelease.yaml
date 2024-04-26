@@ -87,11 +87,11 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          app:
-            - path: /config
+          esphome:
+            app:
+              - path: /config
       secrets:
         type: secret
         name: secret-esphome
