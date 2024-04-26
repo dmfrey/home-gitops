@@ -31,5 +31,5 @@ spec:
     - name: cluster-apps-home-assistant
     - name: cluster-apps-mosquitto
     - name: cluster-apps-multus-config
-    - name: cluster-apps-multus-rook-ceph-cluster
+    - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
