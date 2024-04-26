@@ -65,9 +65,9 @@ spec:
             port: 6052
 
     ingress:
-      main:
+      app:
         enabled: true
-        className: nginx-external
+        className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
