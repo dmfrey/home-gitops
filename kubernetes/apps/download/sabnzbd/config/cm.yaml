@@ -41,7 +41,7 @@ data:
     local_ranges = ,
     api_key = ${SABNZBD_API_KEY}
     nzb_key = ${SABNZBD_NZB_KEY}
-    permissions = ""
+    permissions = "775"
     download_dir = /data/downloads/nzb/incomplete-downloads
     download_free = ""
     complete_dir = /data/downloads/nzb/complete
