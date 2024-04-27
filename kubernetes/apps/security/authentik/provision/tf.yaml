@@ -35,6 +35,9 @@ spec:
         Dataflow:
           url: https://dataflow.${SECRET_DOMAIN}
           group: Dataflow
+        EspHome:
+          url: https://esphome.${SECRET_DOMAIN}
+          group: Home
         Prowlarr:
           url: https://prowlarr.${SECRET_DOMAIN}
           group: Download
