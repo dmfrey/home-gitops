@@ -54,7 +54,7 @@ spec:
           main:
             image:
               repository: ghcr.io/wizarrrr/wizarr
-              tag: 3.5.1
+              tag: 3.6.0
 
             env:
               TZ: ${TIMEZONE}
