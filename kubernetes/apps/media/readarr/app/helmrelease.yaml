@@ -61,7 +61,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/readarr-develop
-              tag: 0.3.23.2506@sha256:de8fd287c5810945bd8148caa4b5aadca3571f4d142ab972f32da006491de9bd
+              tag: 0.3.24.2510@sha256:a94b605730648aeffd2f8f636ae439b3065f553fa54cd64af0dd8345b22eb6a5
 
             env:
               TZ: ${TIMEZONE}
