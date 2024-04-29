@@ -55,7 +55,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/time-service
-              tag: 1.1.5
+              tag: 1.1.6
               pullPolicy: Always
             
             ports:
