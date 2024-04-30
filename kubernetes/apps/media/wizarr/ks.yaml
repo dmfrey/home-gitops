@@ -5,14 +5,24 @@ metadata:
   name: cluster-apps-wizarr
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &app wizarr
   path: "./kubernetes/apps/media/wizarr/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 2Gi
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-plex
+    - name: cluster-apps-overseerr

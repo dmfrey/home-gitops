@@ -34,18 +34,17 @@ spec:
   uninstall:
     keepHistory: false
 
-  values:
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage
+    - name: volsync
+      namespace: storage
 
-    defaultPodOptions:
-      securityContext:
-        supplementalGroups:
-          - 1568
-          - 65534
+  values:
 
     controllers:
       
       wizarr:
-        type: statefulset
         
         annotations:
           reloader.stakater.com/auto: "true"
@@ -58,28 +57,21 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-              APP_URL: https://join.${SECRET_DOMAIN}
-              APP_PORT: &port 5690
               DISABLE_BUILTIN_AUTH: "true"
-
-            ports:
-              - name: http
-                containerPort: *port
 
             resources:
               requests:
-                memory: 350Mi
-                cpu: 5m
+                memory: 180Mi
+                cpu: 15m
               limits:
-                memory: 431Mi
+                memory: 350Mi
 
     service:
       app:
-        nameOverride: *app
         controller: wizarr
         ports:
           http:
-            port: *port
+            port: &port 5690
 
     ingress:
       app:
@@ -91,7 +83,7 @@ spec:
           hajimari.io/icon: "mdi:invite"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "join.${SECRET_DOMAIN}"
+          - host: &host join.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -115,10 +107,6 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
+        existingClaim: *app
         globalMounts:
           - path: /data/database
-        storageClass: ceph-block
