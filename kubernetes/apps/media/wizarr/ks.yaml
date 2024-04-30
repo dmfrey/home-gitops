@@ -22,6 +22,9 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 2Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-plex
