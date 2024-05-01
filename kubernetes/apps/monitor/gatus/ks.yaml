@@ -32,7 +32,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: &app gatus
-  path: ./kubernetes/main/apps/monitor/gatus/app
+  path: ./kubernetes/apps/monitor/gatus/app
   prune: true
   sourceRef:
     kind: GitRepository
