@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: monitor
 resources:
   - ./secret-gatus.sops.yaml
-  - ./helmrelase.yaml
+  - ./helmrelease.yaml
   - ./rbac.yaml
   - ./dashboard
   - ../../../../templates/gatus/external
