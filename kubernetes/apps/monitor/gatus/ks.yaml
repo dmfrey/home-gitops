@@ -48,3 +48,4 @@ spec:
       GATUS_SUBDOMAIN: status
   dependsOn:
     - name: cluster-apps-gatus-services
+    - name: cluster-apps-authentik
