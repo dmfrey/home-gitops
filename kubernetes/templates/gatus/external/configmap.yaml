@@ -16,8 +16,6 @@ data:
           dns-resolver: tcp://1.1.1.1:53
         conditions:
           - "[STATUS] == ${GATUS_STATUS:-200}"
-          - "[BODY].status == UP"
-          - "[RESPONSE_TIME] < 300"
         alerts:
           - type: pushover
             failure-threshold: 3
