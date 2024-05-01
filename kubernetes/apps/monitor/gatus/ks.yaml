@@ -20,3 +20,31 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg
     - name: cluster-apps-kube-prometheus-stack-crds
+---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-gatus
+  namespace: flux-system
+spec:
+  targetNamespace: monitor
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &app gatus
+  path: ./kubernetes/main/apps/monitor/gatus/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substituteFrom: []
+    substitute:
+      APP: *app
+      GATUS_SUBDOMAIN: status
+  dependsOn:
+    - name: cluster-apps-gatus-services
