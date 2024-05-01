@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-grafana-common
   namespace: flux-system
 spec:
+  targetNamespace: monitor
   path: ./kubernetes/apps/monitor/grafana/common
   prune: true
   sourceRef:
@@ -26,16 +27,22 @@ metadata:
   name: cluster-apps-grafana
   namespace: flux-system
 spec:
+  targetNamespace: monitor
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &app grafana
   path: ./kubernetes/apps/monitor/grafana/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
-  postBuild:
-    substituteFrom: []
   interval: 15m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substituteFrom: []
+    substitute:
+      APP: *app
   dependsOn:
     - name: cluster-apps-grafana-common

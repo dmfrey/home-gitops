@@ -9,3 +9,4 @@ resources:
   - ./notification.yaml
   - ./datasources-cm.yaml
   - ./helmrelease.yaml
+  - ../../../../templates/gatus/external
