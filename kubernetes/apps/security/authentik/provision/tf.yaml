@@ -91,6 +91,9 @@ spec:
         Alert-Manager:
           url: https://alert-manager.${SECRET_DOMAIN}
           group: Monitor
+        Gatus:
+          url: https://status.${SECRET_DOMAIN}
+          group: Monitor
         Loki:
           url: https://loki.${SECRET_DOMAIN}
           group: Monitor
@@ -111,13 +114,13 @@ spec:
           group: Storage
     - name: oauth2_applications
       value:
-        Gatus:
-          url: https://status.${SECRET_DOMAIN}
-          group: Monitor
-          client_id: gatus
-          client_secret: ${GATUS_SSO_CLIENT_SECRET}
-          redirect_uris: 
-            - https://status.${SECRET_DOMAIN}/authorization-code/callback
+        # Gatus:
+        #   url: https://status.${SECRET_DOMAIN}
+        #   group: Monitor
+        #   client_id: gatus
+        #   client_secret: ${GATUS_SSO_CLIENT_SECRET}
+        #   redirect_uris: 
+        #     - https://status.${SECRET_DOMAIN}/authorization-code/callback
         Grafana:
           url: https://grafana.${SECRET_DOMAIN}
           group: Monitor

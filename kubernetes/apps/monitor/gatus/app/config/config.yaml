@@ -6,7 +6,7 @@ storage:
 
 metrics: true
 
-debug: false
+debug: true
 
 ui:
   title: Health Status
@@ -28,10 +28,10 @@ remote:
     - endpoint-prefix: ""
       url: "${BASE_URL}/api/v1/endpoints/statuses"
 
-security:
-  oidc:
-    issuer-url: "${GATUS_SSO_ISSUER_URL}"
-    redirect-url: "${BASE_URL}/authorization-code/callback"
-    client-id: "${GATUS_SSO_CLIENT_ID}"
-    client-secret: "${GATUS_SSO_CLIENT_SECRET}"
-    scopes: ["openid"]
+# security:
+#   oidc:
+#     issuer-url: "${GATUS_SSO_ISSUER_URL}"
+#     redirect-url: "${BASE_URL}/authorization-code/callback"
+#     client-id: "${GATUS_SSO_CLIENT_ID}"
+#     client-secret: "${GATUS_SSO_CLIENT_SECRET}"
+#     scopes: ["openid"]

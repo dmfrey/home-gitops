@@ -21,4 +21,8 @@ data:
         conditions:
           - "len([BODY]) == 0"
         alerts:
-          - type: discord
+          - type: pushover
+            failure-threshold: 3
+            success-threshold: 5
+            send-on-resolved: true
+            description: "healthcheck failed"
