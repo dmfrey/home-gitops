@@ -77,8 +77,6 @@ spec:
                 value: /config
               - name: GATUS_DELAY_START_SECONDS
                 value: 5
-              - name: CUSTOM_WEB_PORT
-                value: &port 80
               - name: POSTGRES_URI
                 secretKeyRef:
                   name: pg-gatus-app
@@ -95,7 +93,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: *port
+                    port: &port 8080
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
