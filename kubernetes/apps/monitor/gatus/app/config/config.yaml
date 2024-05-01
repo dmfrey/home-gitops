@@ -35,6 +35,6 @@ security:
   oidc:
     issuer-url: "https://auth.${SECRET_DOMAIN}"
     redirect-url: "https://status.${SECRET_DOMAIN}/authorization-code/callback"
-    client-id: "gatuw"
+    client-id: "gatus"
     client-secret: "${GATUS_SSO_CLIENT_SECRET}"
     scopes: ["openid"]
