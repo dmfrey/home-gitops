@@ -71,6 +71,8 @@ spec:
             env:
               - name: TZ
                 value: ${TIMEZONE}
+              - name: BASE_URL
+                value: https://status.${SECRET_DOMAIN}
               - name: GATUS_CONFIG_PATH
                 value: /config
               - name: GATUS_DELAY_START_SECONDS

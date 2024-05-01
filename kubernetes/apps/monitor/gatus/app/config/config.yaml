@@ -29,12 +29,12 @@ connectivity:
 remote:
   instances:
     - endpoint-prefix: ""
-      url: "https://status.${SECRET_DOMAIN}/api/v1/endpoints/statuses"
+      url: "${BASE_URL}/api/v1/endpoints/statuses"
 
 security:
   oidc:
-    issuer-url: "https://auth.${SECRET_DOMAIN}"
-    redirect-url: "https://status.${SECRET_DOMAIN}/authorization-code/callback"
-    client-id: "gatus"
+    issuer-url: "${GATUS_SSO_ISSUER_URL}"
+    redirect-url: "${BASE_URL}/authorization-code/callback"
+    client-id: "${GATUS_SSO_CLIENT_ID}"
     client-secret: "${GATUS_SSO_CLIENT_SECRET}"
     scopes: ["openid"]
