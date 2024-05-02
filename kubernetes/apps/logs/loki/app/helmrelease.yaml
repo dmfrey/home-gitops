@@ -112,6 +112,7 @@ spec:
           shard_streams:
             enabled: true
           split_queries_by_interval: 1h
+          allow_structured_metadata: true
 
         compactor:
           working_directory: /var/loki/compactor/retention
