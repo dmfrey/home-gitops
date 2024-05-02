@@ -1,0 +1,37 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otelcol-traces
+spec:
+  mode: daemonset
+  config: |
+    presets:
+      # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
+      kubernetesAttributes:
+        enabled: true
+      # enables the kubeletstatsreceiver and adds it to the metrics pipelines
+      # kubeletMetrics:
+      #   enabled: true
+      # Enables the filelogreceiver and adds it to the logs pipelines
+      # logsCollection:
+      #   enabled: true
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      zipkin:
+        endpoint: 0.0.0.0:9411
+    processors:
+      batch: {}
+    exporters:
+      otlphttp:
+        endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
+    service:
+      pipelines:
+        traces:
+          receivers: [ otlp, zipkin ]
+          processors: [ batch ]
+          exporters: [ otlphttp ]
