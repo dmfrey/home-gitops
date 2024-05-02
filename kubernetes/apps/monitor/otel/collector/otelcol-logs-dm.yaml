@@ -30,6 +30,6 @@ spec:
     service:
       pipelines:
         logs:
-          # receivers: [ otlp ]
+          receivers: [ otlp ]
           processors: [ batch ]
           exporters: [ otlphttp, debug ]
