@@ -41,7 +41,6 @@ spec:
         endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
       prometheusremotewrite:
         endpoint: http://thanos-receive.monitor.svc.cluster.local:10902/api/v1/write
-        insecure: true
     service:
       pipelines:
         logs:
