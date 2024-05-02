@@ -1,0 +1,29 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otelcol-logs
+spec:
+  mode: daemonset
+  config: |
+    presets:
+      # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
+      # kubernetesAttributes:
+      #   enabled: true
+      # enables the kubeletstatsreceiver and adds it to the metrics pipelines
+      # kubeletMetrics:
+      #   enabled: true
+      # Enables the filelogreceiver and adds it to the logs pipelines
+      logsCollection:
+        enabled: true
+    # receivers:
+    processors:
+      batch:
+    exporters:
+      otlphttp:
+        endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/oltp
+    service:
+      pipelines:
+        logs:
+          # receivers: [otlp]
+          processors: [batch]
+          exporters: [otlphttp]
