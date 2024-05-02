@@ -1,7 +1,7 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  name: otelcol-logs
+  name: otelcol-metrics
 spec:
   mode: daemonset
   config: |
@@ -10,26 +10,21 @@ spec:
       kubernetesAttributes:
         enabled: true
       # enables the kubeletstatsreceiver and adds it to the metrics pipelines
-      # kubeletMetrics:
-      #   enabled: true
-      # Enables the filelogreceiver and adds it to the logs pipelines
-      logsCollection:
+      kubeletMetrics:
         enabled: true
+      # Enables the filelogreceiver and adds it to the logs pipelines
+      # logsCollection:
+      #   enabled: true
     receivers:
-      otlp:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:4317
-          http:
-            endpoint: 0.0.0.0:4318
+      prometheus:
     processors:
       batch: {}
     exporters:
-      otlphttp:
-        endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/oltp
+      prometheusremotewrite:
+        endpoint: http://thanos-receive.monitor.svc.cluster.local:10902/api/v1/write
     service:
       pipelines:
-        logs:
-          receivers: [ otlp ]
+        traces:
+          receivers: [ prometheus ]
           processors: [ batch ]
-          exporters: [ otlphttp ]
+          exporters: [ prometheusremotewrite ]

@@ -1,7 +1,7 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  name: otelcol-logs
+  name: otelcol-dm
 spec:
   mode: daemonset
   config: |
@@ -10,26 +10,49 @@ spec:
       kubernetesAttributes:
         enabled: true
       # enables the kubeletstatsreceiver and adds it to the metrics pipelines
-      # kubeletMetrics:
-      #   enabled: true
+      kubeletMetrics:
+        enabled: true
       # Enables the filelogreceiver and adds it to the logs pipelines
       logsCollection:
         enabled: true
     receivers:
+      prometheus:
+        config:
+          global:
+            scrape_interval: 15s # Adjust this interval as needed
+          scrape_configs:
+            - job_name: 'prometheus'
+              static_configs:
+                - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
       otlp:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
+      zipkin:
+        endpoint: 0.0.0.0:9411
     processors:
       batch: {}
     exporters:
       otlphttp:
         endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/oltp
+      otlphttp/trace:
+        endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
+      prometheusremotewrite:
+        endpoint: http://thanos-receive.monitor.svc.cluster.local:10902/api/v1/write
     service:
       pipelines:
         logs:
           receivers: [ otlp ]
           processors: [ batch ]
           exporters: [ otlphttp ]
+        metrics:
+          receivers: [ prometheus ]
+          processors: [ batch ]
+          exporters: [ prometheusremotewrite ]
+        traces:
+          receivers: [ otlp, zipkin ]
+          processors: [ batch ]
+          exporters: [ otlphttp/trace ]
+
