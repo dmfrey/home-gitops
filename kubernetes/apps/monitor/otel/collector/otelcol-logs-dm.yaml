@@ -32,4 +32,4 @@ spec:
         logs:
           receivers: [ otlp ]
           processors: [ batch ]
-          exporters: [ otlphttp, debug ]
+          exporters: [ otlphttp ]
