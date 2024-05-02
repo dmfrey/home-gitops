@@ -40,7 +40,7 @@ spec:
       otlphttp/trace:
         endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
       prometheusremotewrite:
-        endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/write
+        endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
     service:
       pipelines:
         logs:
