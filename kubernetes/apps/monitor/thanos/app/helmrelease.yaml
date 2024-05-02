@@ -61,7 +61,8 @@ spec:
         insecure: true
 
     receive:
-      enabled: false
+      enabled: true
+      replicaCount: 3
       networkPolicy: &networkPolicy
         enabled: false
 
