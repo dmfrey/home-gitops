@@ -19,7 +19,9 @@ spec:
   retryInterval: 1m
   timeout: 5m
   postBuild:
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
     substitute:
       APP: *appname
       VOLSYNC_CLAIM: sabnzbd-config
