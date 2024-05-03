@@ -2,59 +2,29 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-sabnzbd-common
-  namespace: flux-system
-spec:
-  interval: 15m
-  path: "./kubernetes/apps/download/sabnzbd/common"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
-  postBuild:
-    substituteFrom: []
-  dependsOn:
-    - name: cluster-apps-reflector
-
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-sabnzbd-config
-  namespace: flux-system
-spec:
-  interval: 15m
-  path: "./kubernetes/apps/download/sabnzbd/config"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: sabnzbd-secret
-  dependsOn:
-    - name: cluster-apps-sabnzbd-common
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: cluster-apps-sabnzbd
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: download
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname sabnzbd
   path: "./kubernetes/apps/download/sabnzbd/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substituteFrom: []
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: sabnzbd-config
+      GATUS_SUBDOMAIN: download
   dependsOn:
-    - name: cluster-apps-download-common-mount
-    - name: cluster-apps-sabnzbd-config
+    # - name: cluster-apps-download-common-mount
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-pod-gateway

@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -29,80 +29,44 @@ spec:
 
   values:
 
-    defaultPodOptions:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 80
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values:
-                        - jellyfin
-                        - plex
-                topologyKey: "kubernetes.io/hostname"
-
-      annotations:
-        configmap.reloader.stakater.com/reload: sabnzbd-config
-        secret.reloader.stakater.com/reload: sabnzbd-secret
-
-      hostname: sabnzbd
-
-      securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
-        fsGroupChangePolicy: "OnRootMismatch"
-        supplementalGroups:
-          - 65534
-
     controllers:
-      main:
-        type: statefulset
+
+      sabnzbd:
 
         annotations:
           reloader.stakater.com/auto: "true"
-
-        replicas: 1
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-              accessMode: ReadWriteOnce
-              size: 5Gi
-              storageClass: ceph-block
+          configmap.reloader.stakater.com/reload: sabnzbd-config
+          secret.reloader.stakater.com/reload: sabnzbd-secret
 
         pod:
-          enableServiceLinks: false
+          securityContext:
+            runAsUser: 1568
+            runAsGroup: 1568
+            runAsNonRoot: true
+            fsGroup: 1568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 65534
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/sabnzbd
-              tag: 4.2.3
-              pullPolicy: IfNotPresent
+              tag: 4.3.0@sha256:5fdbb4feed00e55ac97f99c21c71a5d56a9ede4a2eae7586f160bdd01a47a350
 
             env:
               TZ: ${TIMEZONE}
               SABNZBD__PORT: &port 8080
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
-                {{ .Release.Name }},
-                {{ .Release.Name }}.download,
-                {{ .Release.Name }}.download.svc,
-                {{ .Release.Name }}.download.svc.cluster,
-                {{ .Release.Name }}.${SECRET_DOMAIN}
+                sabnzbd,
+                sabnzbd.download,
+                sabnzbd.download.svc,
+                sabnzbd.download.svc.cluster,
+                sabnzbd.${SECRET_DOMAIN}
 
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
-
-            ports:
-              - name: http
-                containerPort: *port
 
             probes:
               liveness: &probes
@@ -122,6 +86,7 @@ spec:
 
             securityContext:
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
@@ -129,57 +94,52 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 479Mi
+                memory: 1024Mi
               limits:
                 memory: 8000Mi
 
           # sidecars:
-          exporter:
-            dependsOn: main
+          # exporter:
+          #   dependsOn: app
             
-            image:
-              repository: ghcr.io/onedr0p/exportarr
-              tag: v2.0.1
+          #   image:
+          #     repository: ghcr.io/onedr0p/exportarr
+          #     tag: v2.0.1
 
-            args: ["sabnzbd"]
+          #   args: ["sabnzbd"]
             
-            env:
-              - name: URL
-                value: "http://localhost"
-              - name: CONFIG
-                value: "/config/config.xml"
-              - name: PORT
-                value: &metricsPort 9712
-              - name: ENABLE_ADDITIONAL_METRICS
-                value: true
-              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-                value: false
-              - name: API_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: sabnzbd-secret
-                    key: SABNZBD_API_KEY
+          #   env:
+          #     - name: URL
+          #       value: "http://localhost"
+          #     - name: CONFIG
+          #       value: "/config/config.xml"
+          #     - name: PORT
+          #       value: &metricsPort 9712
+          #     - name: ENABLE_ADDITIONAL_METRICS
+          #       value: true
+          #     - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+          #       value: false
+          #     - name: API_KEY
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: sabnzbd-secret
+          #           key: SABNZBD__API_KEY
             
-            ports:
-              - name: metrics
-                containerPort: *metricsPort 
-
     service:
-      main:
-        nameOverride: sabnzbd
-        controller: main
+      app:
+        controller: sabnzbd
         primary: true
         ports:
           http:
             port: *port
-      metrics:
-        controller: main
-        ports:
-          metrics:
-            port: *metricsPort
+      # metrics:
+      #   controller: main
+      #   ports:
+      #     metrics:
+      #       port: *metricsPort
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -194,15 +154,15 @@ spec:
           - host: &host "sabnzbd.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                # pathType: Prefix
                 service:
-                  identifier: main
-                  port: *port
-              - path: /metrics
-                pathType: Prefix
-                service:
-                  identifier: metrics
-                  port: *metricsPort
+                  identifier: app
+                  port: http
+              # - path: /metrics
+              #   pathType: Prefix
+              #   service:
+              #     identifier: metrics
+              #     port: *metricsPort
         tls:
           - hosts:
               - *host
@@ -210,26 +170,35 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
-      sabnzbd-config:
-        enabled: true
-        type: configMap
-        name: sabnzbd-config
+        existingClaim: sabnzbd-config
         advancedMounts:
-          main:
-            main:
-              - path: /config/sabnzbd.ini
-                readOnly: false
-                subPath: sabnzbd.ini
+          sabnzbd:
+            app:
+              - path: /config
+
+      # sabnzbd-config:
+      #   enabled: true
+      #   type: configMap
+      #   name: sabnzbd-config
+      #   advancedMounts:
+      #     main:
+      #       main:
+      #         - path: /config/sabnzbd.ini
+      #           readOnly: false
+      #           subPath: sabnzbd.ini
 
       downloads:
-        enabled: true
-        existingClaim: nfs-downloads
+        type: nfs
+        server: ${QNAP_ADDR}
+        path: /media/downloads
         globalMounts:
           - path: /data/downloads
             readOnly: false
+
+      temp:
+        type: emptyDir
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /tmp
+              
