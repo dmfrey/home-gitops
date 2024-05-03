@@ -150,10 +150,10 @@ spec:
         ceph-pools:
           gnetId: 5342
           revision: 9
-      spring-boot:
-        spring-boot-3:
-          gnetId: 19004
-          revision: 1
+      # spring-boot:
+      #   spring-boot-3:
+      #     gnetId: 19004
+      #     revision: 1
       apm:
         # Ref: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
         apm:

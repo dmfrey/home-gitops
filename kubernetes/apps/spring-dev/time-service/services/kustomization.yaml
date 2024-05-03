@@ -6,3 +6,4 @@ namespace: spring-dev
 resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
+  - ./dashboard
