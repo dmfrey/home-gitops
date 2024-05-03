@@ -6,6 +6,6 @@ namespace: monitor
 resources:
   # - ./helmrelease.yaml
   - ./otelcol-dm.yaml
-  - ./otelcol-dp.yaml
+  # - ./otelcol-dp.yaml
   # - ./otelcol-logs-dm.yaml
   # - ./otelcol-traces-dm.yaml
