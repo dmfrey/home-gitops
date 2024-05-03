@@ -1,7 +1,7 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  name: otelcol-dm
+  name: otelcol-dp
 spec:
   mode: deployment
   config: |
