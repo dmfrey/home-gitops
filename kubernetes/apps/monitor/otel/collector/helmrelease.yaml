@@ -3,8 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: otel-collector
-  namespace: monitor
+  name: otelcol-dm
 spec:
 
   interval: 15m
@@ -38,14 +37,17 @@ spec:
       configmap.reloader.stakater.com/reload: otel-collector-opentelemetry-collector-agent
 
     image:
-      repository: otel/opentelemetry-collector-k8s
+      repository: otel/opentelemetry-collector-contrib
 
     presets:
-      logsCollection:
-        enabled: true
+      # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
       kubernetesAttributes:
         enabled: true
+      # enables the kubeletstatsreceiver and adds it to the metrics pipelines
       kubeletMetrics:
+        enabled: true
+      # Enables the filelogreceiver and adds it to the logs pipelines
+      logsCollection:
         enabled: true
       hostMetrics:
         enabled: true
@@ -65,9 +67,16 @@ spec:
           spike_limit_percentage: 25
 
       receivers:
-        
-        jaeger: null
-        
+
+        prometheus:
+          config:
+            global:
+              scrape_interval: 15s # Adjust this interval as needed
+            scrape_configs:
+              - job_name: 'prometheus'
+                static_configs:
+                  - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
+
         # Data sources: traces, metrics, logs
         otlp:
           protocols:
@@ -82,28 +91,9 @@ spec:
       exporters:
 
         # Data sources: traces, metrics, logs
-        # file:
-        #   path: ./filename.json
-   
-        # Data sources: traces
-        # otlp/jaeger:
-        #   endpoint: jaeger-server:4317
-        #   tls:
-        #     cert_file: cert.pem
-        #     key_file: cert-key.pem
-
-        # Data sources: traces, metrics, logs
-        # kafka:
-        #   protocol_version: 2.0.0
-
-        # Data sources: traces, metrics, logs
         # NOTE: Prior to v0.86.0 use `logging` instead of `debug`
-        # debug:
-        #   verbosity: detailed
-
-        # Data sources: traces, metrics
-        # opencensus:
-        #   endpoint: otelcol2:55678
+        debug:
+          verbosity: detailed
 
         # Data sources: traces, metrics, logs
         otlp:
@@ -115,6 +105,8 @@ spec:
 
         # Data sources: traces, metrics
         otlphttp:
+          endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/oltp
+        otlphttp/trace:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
         # Data sources: metrics
@@ -123,12 +115,8 @@ spec:
         #   namespace: default
 
         # Data sources: metrics
-        # prometheusremotewrite:
-        #   endpoint: http://kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090/api/v1/write
-          # When using the official Prometheus (running via Docker)
-          # endpoint: 'http://prometheus:9090/api/v1/write', add:
-          # tls:
-          #   insecure: true
+        prometheusremotewrite:
+          endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
 
         # Data sources: traces
         # zipkin:
@@ -139,12 +127,12 @@ spec:
           traces:
             receivers: [ otlp, zipkin ]
             processors: [ memory_limiter,batch ]
-            exporters: [ otlp, debug ]
+            exporters: [ otlphttp/trace, debug ]
 
-          # metrics: 
-          #   receivers: [ otlp ]
-          #   processors: [ memory_limiter,batch ]
-          #   exporters: [ prometheusremotewrite ]
+          metrics: 
+            receivers: [ otlp ]
+            processors: [ memory_limiter, batch ]
+            exporters: [ prometheusremotewrite, debug ]
 
           logs:
             receivers: [ otlp ]
