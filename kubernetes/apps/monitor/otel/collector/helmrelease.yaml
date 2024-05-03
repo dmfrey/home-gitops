@@ -126,17 +126,140 @@ spec:
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
-            processors: [ memory_limiter,batch ]
+            processors: [ memory_limiter, batch ]
             exporters: [ otlphttp/trace, debug ]
 
           metrics: 
-            receivers: [ otlp ]
+            receivers: [ prometheus ]
             processors: [ memory_limiter, batch ]
             exporters: [ prometheusremotewrite, debug ]
 
           logs:
-            receivers: [ otlp ]
-            processors: [ memory_limiter,batch ]
+            # receivers: [ otlp ]
+            processors: [ memory_limiter, batch ]
+            exporters: [ otlphttp, debug ]
+
+    service:
+      enabled: true
+      type: ClusterIP
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: otelcol-dp
+spec:
+
+  interval: 15m
+
+  chart:
+    spec:
+      chart: opentelemetry-collector
+      version: 0.90.1
+      sourceRef:
+        kind: HelmRepository
+        name: opentelemetry-charts
+        namespace: flux-system
+  
+  install:
+    remediation:
+      retries: 3
+  
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  
+  uninstall:
+    keepHistory: false
+ 
+  values:
+
+    mode: deployment
+
+    replicaCount: 1
+
+    annotations:
+      configmap.reloader.stakater.com/reload: otel-collector-opentelemetry-collector-agent
+
+    image:
+      repository: otel/opentelemetry-collector-contrib
+
+    presets:
+      # enables the k8sclusterreceiver and adds it to the metrics pipelines
+      clusterMetrics:
+        enabled: true
+      # enables the k8sobjectsreceiver to collect events only and adds it to the logs pipelines
+      kubernetesEvents:
+        enabled: true
+
+    config:
+
+      extensions:
+        health_check: {}
+        memory_ballast:
+          size_in_percentage: 40
+
+      processors:
+        batch: {}
+        memory_limiter:
+          check_interval: 5s
+          limit_percentage: 80
+          spike_limit_percentage: 25
+
+      receivers:
+
+        prometheus:
+          config:
+            global:
+              scrape_interval: 15s # Adjust this interval as needed
+            scrape_configs:
+              - job_name: 'prometheus'
+                static_configs:
+                  - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
+
+        # Data sources: traces, metrics, logs
+        otlp:
+          protocols:
+            grpc:
+              endpoint: 0.0.0.0:4317
+            http:
+              endpoint: 0.0.0.0:4318
+
+        zipkin:
+          endpoint: 0.0.0.0:9411
+      
+      exporters:
+
+        # Data sources: traces, metrics, logs
+        # NOTE: Prior to v0.86.0 use `logging` instead of `debug`
+        debug:
+          verbosity: detailed
+
+        # Data sources: traces, metrics, logs
+        otlp:
+          endpoint: tempo-distributor.trace.svc.cluster.local:4317
+          tls:
+            insecure: true
+
+        # Data sources: traces, metrics
+        otlphttp:
+          endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/oltp
+
+        # Data sources: metrics
+        prometheusremotewrite:
+          endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+
+      service:
+        pipelines:
+          metrics: 
+            receivers: [ prometheus ]
+            processors: [ memory_limiter, batch ]
+            exporters: [ prometheusremotewrite, debug ]
+
+          logs:
+            # receivers: [ otlp ]
+            processors: [ memory_limiter, batch ]
             exporters: [ otlphttp, debug ]
 
     service:
