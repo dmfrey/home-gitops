@@ -1,0 +1,41 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otelcol-dm
+spec:
+  mode: deployment
+  config: |
+    presets:
+      # enables the k8sclusterreceiver and adds it to the metrics pipelines
+      clusterMetrics:
+        enabled: true
+      # enables the k8sobjectsreceiver to collect events only and adds it to the logs pipelines
+      kubernetesEvents:
+        enabled: true
+    receivers:
+      prometheus:
+        config:
+          global:
+            scrape_interval: 15s # Adjust this interval as needed
+          scrape_configs:
+            - job_name: 'prometheus'
+              static_configs:
+                - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
+    processors:
+      batch: {}
+    exporters:
+      otlphttp:
+        endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/oltp
+      prometheusremotewrite:
+        endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+    service:
+      pipelines:
+        logs:
+          receivers: [ k8sobjectsreceiver ]
+          processors: [ batch ]
+          exporters: [ otlphttp ]
+        metrics:
+          receivers: [ k8sclusterreceiver ]
+          processors: [ batch ]
+          exporters: [ prometheusremotewrite ]
+
