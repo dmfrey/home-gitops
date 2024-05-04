@@ -22,8 +22,6 @@ spec:
               operator: NotIn,
               values: ["will-match-and-announce-all-services"],
             }
-      serviceAdvertisements: # <-- specify the service types to advertise
-        - ExternalIP
       neighbors:
         - peerAddress: "192.168.30.1/32" # unlike bgp-config ConfigMap, peerAddress needs to be in CIDR notation
           peerASN: 65510
