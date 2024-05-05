@@ -2,7 +2,7 @@ terraform {
   required_providers {
     lidarr = {
       source  = "devopsarr/lidarr"
-      version = "1.11.0"
+      version = "1.12.0"
     }
   }
 }
