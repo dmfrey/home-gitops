@@ -5,7 +5,7 @@ resource "sonarr_media_management" "settings" {
   delete_empty_folders        = false
   enable_media_info           = true
   import_extra_files          = true
-  set_permissions             = false
+  set_permissions             = true
   skip_free_space_check       = false
   minimum_free_space          = 100
   recycle_bin_days            = 7
