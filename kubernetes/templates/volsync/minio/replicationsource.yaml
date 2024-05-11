@@ -17,9 +17,9 @@ spec:
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-ceph-block}"
     moverSecurityContext:
-      runAsUser: ${APP_UID:-568}
-      runAsGroup: ${APP_GID:-568}
-      fsGroup: ${APP_GID:-568}
+      runAsUser: ${APP_UID:-1568}
+      runAsGroup: ${APP_GID:-1568}
+      fsGroup: ${APP_GID:-1568}
     pruneIntervalDays: 7
     retain:
       hourly: 24
