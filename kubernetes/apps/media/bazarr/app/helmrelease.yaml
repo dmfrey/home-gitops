@@ -107,10 +107,16 @@ spec:
 
     persistence:
       config:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
+        advancedMounts:
+          bazarr:
+            app:
+              - path: /config
+
+        # type: persistentVolumeClaim
+        # accessMode: ReadWriteOnce
+        # size: 1Gi
+        # storageClass: ceph-block
 
       media:
         existingClaim: nfs-media
