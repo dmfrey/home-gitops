@@ -9,8 +9,8 @@ resources:
   # Flux-Kustomizations
   - ./common/ks.yaml
   - ./bazarr/ks.yaml
-  - ./jellyfin/ks.yaml
-  - ./jellyplex-watched/ks.yaml
+  # - ./jellyfin/ks.yaml
+  # - ./jellyplex-watched/ks.yaml
   - ./lidarr/ks.yaml
   # - ./music-assistant/ks.yaml
   - ./overseerr/ks.yaml
