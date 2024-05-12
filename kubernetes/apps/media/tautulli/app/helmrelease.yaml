@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -40,14 +40,14 @@ spec:
 
     controllers:
       
-      main:
+      tautulli:
         type: statefulset
         
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/tautulli
               tag: 2.13.4@sha256:633a57b2f8634feb67811064ec3fa52f40a70641be927fdfda6f5d91ebbd5d73
@@ -68,14 +68,14 @@ spec:
                 memory: 431Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: tautulli
         ports:
           http:
             port: *port
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
