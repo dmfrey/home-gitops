@@ -8,7 +8,7 @@ resources:
   # - ./networkpolicy.yaml
   # Flux-Kustomizations
   - ./common/ks.yaml
-  - ./flaresolverr/ks.yaml
+  # - ./flaresolverr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./rdt-client/ks.yaml
   - ./prowlarr/ks.yaml

@@ -5,6 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app flaresolverr
   namespace: download
+
 spec:
   
   interval: 15m
