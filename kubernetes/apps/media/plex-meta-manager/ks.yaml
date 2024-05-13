@@ -23,7 +23,9 @@ spec:
       APP: *appname
       VOLSYNC_CLAIM: pmm-config
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
