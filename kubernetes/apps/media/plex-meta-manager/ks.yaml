@@ -5,19 +5,30 @@ metadata:
   name: cluster-apps-plex-meta-manager
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname plex-meta-manager
   path: ./kubernetes/apps/media/plex-meta-manager/app
-  postBuild:
-    substituteFrom: []
   prune: true
-  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: home-gitops
+  wait: false
+  interval: 10m
+  retryInterval: 1m
   timeout: 5m
-  wait: true
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: pmm-config
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
     - name: cluster-apps-plex
     - name: cluster-apps-tautulli
     - name: cluster-apps-radarr

@@ -58,9 +58,9 @@ tmdb:
   cache_expiration: 60
   region:
 
-# tautulli:
-#   url: http://tautulli.media.svc.cluster.local:8181
-#   apikey: ${TAUTULLI_API_KEY}
+tautulli:
+  url: http://tautulli.media.svc.cluster.local:8181
+  apikey: ${TAUTULLI_API_KEY}
 
 # radarr:
 #   url: http://radarr.media.svc.cluster.local:7878
@@ -82,7 +82,7 @@ tmdb:
 #   token: ${SONARR_API_KEY}
 #   add_missing: false
 #   add_existing: false
-#   root_folder_path: /media/library/series
+#   root_folder_path: /media/tv_shows
 #   monitor: all
 #   quality_profile: Web-1080p
 #   language_profile: English

@@ -6,30 +6,36 @@ metadata:
   name: &app plex-meta-manager
   namespace: media
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
   
   values:
   
     controllers:
-      main:
+      plex-meta-manager:
         type: cronjob
         annotations:
           secret.reloader.stakater.com/reload: &secret pmm-secret
@@ -38,7 +44,7 @@ spec:
           schedule: 0 6 * * *
 
         containers:
-          main:
+          app:
             image:
               repository: docker.io/meisnate12/plex-meta-manager
               tag: v1.21.0
@@ -70,14 +76,15 @@ spec:
                   name: pmm-secret
     
     service:
-      main:
+      app:
         enabled: false
-        controller: main
+        controller: plex-meta-manager
     
     persistence:
       config:
         enabled: true
         existingClaim: pmm-config
+      
       config-prerolls:
         enabled: true
         type: configMap
@@ -86,6 +93,7 @@ spec:
           - path: /config/pre-rolls.yml
             subPath: pre-rolls.yml
             readOnly: true
+      
       config-template:
         enabled: true
         type: configMap
@@ -93,6 +101,7 @@ spec:
         globalMounts:
           - path: /tmp/config-template
             readOnly: true
+      
       scripts:
         enabled: true
         type: configMap
