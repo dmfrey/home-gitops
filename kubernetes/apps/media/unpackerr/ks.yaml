@@ -9,7 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: &appname unpackerr
-      app.kubernetes.io/instance: *appname
   path: "./kubernetes/apps/media/unpackerr/app"
   prune: true
   sourceRef:

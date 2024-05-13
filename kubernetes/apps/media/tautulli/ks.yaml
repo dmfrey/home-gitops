@@ -9,7 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: &appname tautulli
-      app.kubernetes.io/instance: *appname
   interval: 10m
   path: "./kubernetes/apps/media/tautulli/app"
   prune: true

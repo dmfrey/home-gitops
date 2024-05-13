@@ -9,7 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: &appname bazarr
-      app.kubernetes.io/instance: *appname
   path: "./kubernetes/apps/media/bazarr/app"
   prune: true
   sourceRef:
