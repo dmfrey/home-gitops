@@ -10,13 +10,15 @@ spec:
     labels:
       app.kubernetes.io/name: &appname bazarr
       app.kubernetes.io/instance: *appname
-  interval: 10m
   path: "./kubernetes/apps/media/bazarr/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substitute:
       APP: *appname
@@ -33,3 +35,4 @@ spec:
     - name: cluster-apps-media-common
     - name: cluster-apps-media-common-mounts
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync

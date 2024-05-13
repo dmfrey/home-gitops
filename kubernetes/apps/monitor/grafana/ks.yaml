@@ -30,19 +30,19 @@ spec:
   targetNamespace: monitor
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &app grafana
+      app.kubernetes.io/name: &appname grafana
   path: ./kubernetes/apps/monitor/grafana/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
-  interval: 15m
+  interval: 10m
   retryInterval: 1m
   timeout: 5m
   postBuild:
     substituteFrom: []
     substitute:
-      APP: *app
+      APP: *appname
   dependsOn:
     - name: cluster-apps-grafana-common

@@ -5,6 +5,4 @@ kind: Kustomization
 namespace: media
 resources:
   - ./helmrelease.yaml
-commonLabels:
-  app.kubernetes.io/name: unpackerr
-  app.kubernetes.io/instance: unpackerr
+  - ../../../../templates/gatus/external

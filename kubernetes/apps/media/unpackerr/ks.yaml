@@ -5,17 +5,30 @@ metadata:
   name: cluster-apps-unpackerr
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname unpackerr
+      app.kubernetes.io/instance: *appname
   path: "./kubernetes/apps/media/unpackerr/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
     substituteFrom: []
   decryption:
     provider: sops
   dependsOn:
+    - name: cluster-apps-media-common
+    - name: cluster-apps-media-common-mounts
+    - name: cluster-apps-lidarr
     - name: cluster-apps-sonarr
     - name: cluster-apps-radarr
+    - name: cluster-apps-readarr
