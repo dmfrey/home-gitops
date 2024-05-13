@@ -11,7 +11,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
   postBuild:
     substituteFrom: []
   dependsOn: 
