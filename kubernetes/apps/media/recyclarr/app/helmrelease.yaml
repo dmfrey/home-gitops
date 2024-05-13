@@ -6,25 +6,31 @@ metadata:
   name: &app recyclarr
   namespace: media
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
 
@@ -34,7 +40,7 @@ spec:
       restartPolicy: OnFailure
 
     controllers:
-      main:
+      recyclarr:
         type: cronjob
   
         cronjob:
@@ -42,12 +48,13 @@ spec:
           ttlSecondsAfterFinished: 86400
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: edge@sha256:3f9eb092f8a5576739606a00b936f4f9b2300c6f2e35bf7ad10c710cc1da31fb
 
-            command: ["/app/recyclarr/recyclarr"]
+            command: [ "/app/recyclarr/recyclarr" ]
+            
             args: 
               - "sync"
 
@@ -56,9 +63,9 @@ spec:
                   name: starr-apps-secret
 
     service:
-      main:
+      app:
         enabled: false
-        controller: main
+        controller: recyclarr
 
     persistence:
       config:

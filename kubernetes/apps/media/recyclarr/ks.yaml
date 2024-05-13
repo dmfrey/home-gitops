@@ -5,14 +5,22 @@ metadata:
   name: cluster-apps-recyclarr
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname recyclarr
   path: "./kubernetes/apps/media/recyclarr/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
     substituteFrom: []
   decryption:
     provider: sops

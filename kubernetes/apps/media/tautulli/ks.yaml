@@ -9,13 +9,15 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: &appname tautulli
-  interval: 10m
   path: "./kubernetes/apps/media/tautulli/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substitute:
       APP: *appname

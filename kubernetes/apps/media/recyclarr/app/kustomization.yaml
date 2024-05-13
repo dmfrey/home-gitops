@@ -2,7 +2,6 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: media
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
@@ -10,7 +9,6 @@ configMapGenerator:
     files:
       - ./config/radarr.yml
       - ./config/sonarr.yml
-      # - ./config/sonarr-anime.yml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
