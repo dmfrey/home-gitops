@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secret-plex-meta-manager.sops.yaml
+  - ../../../../templates/volsync
 configMapGenerator:
   - name: pmm-config-template
     files:
