@@ -1,8 +1,8 @@
 ---
 libraries:
   Movies:
-    metadata_path:
-      - file: config/pre-rolls.yml
+    collection_files:
+      - default: config/pre-rolls.yml
 
 settings:
   cache: true
