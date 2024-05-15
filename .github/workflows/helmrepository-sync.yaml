@@ -59,6 +59,7 @@ jobs:
             repos+=("${repoName}:${repoNamespace}")
           done
           repos=($(for r in ${repos[@]}; do echo $r; done | sort -u))
+          echo ${repos}
           for repo in ${repos[@]}; do
             flux --namespace "${repo##*:}" reconcile source helm "${repo%%:*}"
           done
