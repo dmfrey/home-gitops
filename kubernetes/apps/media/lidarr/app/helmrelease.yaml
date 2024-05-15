@@ -115,7 +115,7 @@ spec:
           http:
             port: *port
       metrics:
-        controller: lidar
+        controller: lidarr
         ports:
           metrics:
             port: *metricsPort
