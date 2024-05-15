@@ -13,7 +13,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -46,14 +46,14 @@ spec:
           - 65534
 
     controllers:
-      main:
+      lidarr:
         type: statefulset
         
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/lidarr
               tag: 2.3.3.4204@sha256:f24377b110208fc13ca6256e8f533916f855bbe18f8cbb1d34befb1f782f355a
@@ -90,7 +90,7 @@ spec:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
             
-            args: ["lidarr"]
+            args: [ "lidarr" ]
             
             env:
               - name: URL
@@ -109,14 +109,13 @@ spec:
                 containerPort: *metricsPort 
             
     service:
-      main:
-        nameOverride: lidarr
-        controller: main
+      app:
+        controller: lidarr
         ports:
           http:
             port: *port
       metrics:
-        controller: main
+        controller: lidar
         ports:
           metrics:
             port: *metricsPort
@@ -137,7 +136,7 @@ spec:
           paths:
           - path: /
             service:
-              identifier: main
+              identifier: app
               port: *port
         tls:
         - hosts:
@@ -146,11 +145,7 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
 
       media:
         enabled: true
