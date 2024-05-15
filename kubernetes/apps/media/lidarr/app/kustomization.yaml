@@ -6,6 +6,7 @@ namespace: media
 resources:
   - ./helmrelease.yaml
   - ./replicationsource.yaml
+  - ./replicationdestination.yaml
 commonLabels:
   app.kubernetes.io/name: lidarr
   app.kubernetes.io/instance: lidarr
