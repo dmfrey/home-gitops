@@ -23,7 +23,7 @@ spec:
       APP: *appname
       APP_UID: "1568"
       APP_GID: "1568"
-      VOLSYNC_CLAIM: readdarr-config
+      VOLSYNC_CLAIM: readarr-config
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret
