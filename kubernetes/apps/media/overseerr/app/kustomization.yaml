@@ -7,6 +7,9 @@ resources:
   - ./helmrelease.yaml
   - ./secret-overseerr.sops.yaml
   - ./dashboard
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
+  - ./secret-overseerr-volsync-minio.sops.yaml
 configMapGenerator:
   - name: overseerr-config-template
     files:
