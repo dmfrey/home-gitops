@@ -5,7 +5,9 @@ kind: Kustomization
 namespace: media
 resources:
   - ./helmrelease.yaml
-  # - ./volsync.yaml
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
+  - ./secret-radarr-volsync-minio.sops.yaml
 commonLabels:
   app.kubernetes.io/name: radarr
   app.kubernetes.io/instance: radarr
