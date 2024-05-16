@@ -6,5 +6,5 @@ resources:
   - ./helmrelease.yaml
   - ./replicationsource.yaml
   - ./replicationdestination.yaml
-  - ./secret-sabnzb-volsync-minio.sops.yaml
+  - ./secret-sabnzbd-volsync-minio.sops.yaml
  
