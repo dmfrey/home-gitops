@@ -110,6 +110,7 @@ spec:
             
     service:
       app:
+        nameOverride: *app
         controller: lidarr
         ports:
           http:
