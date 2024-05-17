@@ -6,4 +6,6 @@ namespace: download
 resources:
   - ./secret-prowlarr.sops.yaml
   - ./helmrelease.yaml
-
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
+  - ./secret-prowlarr-volsync-minio.sops.yaml
