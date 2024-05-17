@@ -5,8 +5,11 @@ kind: HelmRelease
 metadata:
   name: volsync
   namespace: storage
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: volsync
@@ -15,8 +18,10 @@ spec:
         kind: HelmRepository
         name: backube
         namespace: flux-system
-      interval: 15m
+
   values:
+
     manageCRDs: true
+
     metrics:
       disableAuth: true
