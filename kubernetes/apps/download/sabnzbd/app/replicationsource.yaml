@@ -17,7 +17,9 @@ spec:
   restic:                                                                                                                                                                                                                                                                                          
     cacheCapacity: 1Gi                                                                                                                                                                                                                                                                             
     cacheStorageClassName: ceph-block                                                                                                                                                                                                                                                              
-    copyMethod: Snapshot                                                                                                                                                                                                                                                                           
+    copyMethod: Snapshot
+    moverPodLabels:
+      setGateway: false
     moverSecurityContext:                                                                                                                                                                                                                                                                          
       fsGroup: 1568                                                                                                                                                                                                                                                                                
       runAsGroup: 1568                                                                                                                                                                                                                                                                             
