@@ -6,6 +6,9 @@ namespace: home
 resources:
   - ./helmrelease.yaml
   - ./secret-mosquitto.sops.yaml
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
+  - ./secret-mosquitto-volsync-minio.sops.yaml
 commonLabels:
   app.kubernetes.io/name: mosquitto
   app.kubernetes.io/instance: mosquitto
