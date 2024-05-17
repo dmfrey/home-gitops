@@ -13,7 +13,10 @@ resources:
   - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
   - ./helmrelease.yaml
-  - ./volsync.yaml
+  # - ./volsync.yaml
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
+  - ./secret-home-assistant-volsync-minio.sops.yaml
 configMapGenerator:
   - name: hass-config
     files:
