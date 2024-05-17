@@ -5,6 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app theme-park
   namespace: web
+
 spec:
   
   interval: 15m
@@ -12,7 +13,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -36,7 +37,7 @@ spec:
   values:
     
     controllers:
-      main:
+      theme-park:
         replicas: 1
         strategy: RollingUpdate
 
@@ -50,14 +51,14 @@ spec:
                   app.kubernetes.io/name: *app
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/theme-park
               tag: 1.16.2@sha256:e3e2050760a3cd7fba05a9ec0e9504a1a96c90029fc5fbe681b49e01d3959e61
             
             env:
               - name: TZ
-                value: America/New_York
+                value: ${TIMEZONE}
             
             ports:
               - name: http
@@ -93,15 +94,14 @@ spec:
                 memory: 500Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: theme-park
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -113,7 +113,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
@@ -127,6 +127,7 @@ spec:
         name: theme-park-rdt-client-config
         globalMounts:
           - path: /usr/share/nginx/html/css/base/rdt-client/
+      
       catppuccin-themes:
         enabled: true
         type: configMap

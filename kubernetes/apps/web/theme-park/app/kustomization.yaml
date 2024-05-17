@@ -2,13 +2,10 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: web
 resources:
   - ./helmrelease.yaml
   - ./clusterpolicy.yaml
-commonLabels:
-  app.kubernetes.io/name: theme-park
-  app.kubernetes.io/instance: theme-park
+  - ../../../../templates/gatus/external
 configMapGenerator:
   - name: theme-park-rdt-client-config
     files:

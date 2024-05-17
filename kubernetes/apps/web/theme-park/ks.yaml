@@ -5,14 +5,22 @@ metadata:
   name: cluster-apps-theme-park
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: web
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname theme-park
   path: "./kubernetes/apps/web/theme-park/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-kyverno
