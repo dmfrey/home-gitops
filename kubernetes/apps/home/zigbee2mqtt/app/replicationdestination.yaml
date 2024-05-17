@@ -6,11 +6,11 @@ metadata:
   # creationTimestamp: "2024-05-11T00:49:08Z"                                                                                                                                                                                                                                                        
   # generation: 1                                                                                                                                                                                                                                                                                    
   labels:                                                                                                                                                                                                                                                                                          
-    app.kubernetes.io/name: mosquitto                                                                                                                                                                                                                                                                 
-    kustomize.toolkit.fluxcd.io/name: cluster-apps-mosquitto                                                                                                                                                                                                                                          
+    app.kubernetes.io/name: zigbee2mqtt                                                                                                                                                                                                                                                                 
+    kustomize.toolkit.fluxcd.io/name: cluster-apps-zigbee2mqtt                                                                                                                                                                                                                                          
     kustomize.toolkit.fluxcd.io/namespace: flux-system                                                                                                                                                                                                                                             
-  name: mosquitto-bootstrap                                                                                                                                                                                                                                                                           
-  namespace: home
+  name: zigbee2mqtt-bootstrap                                                                                                                                                                                                                                                                           
+  namespace: home                                                                                                                                                                                                                                                                                 
   # resourceVersion: "28017447"                                                                                                                                                                                                                                                                      
   # uid: 1eba483f-4151-4909-ace3-ec5ed9b019b3                                                                                                                                                                                                                                                        
 spec:                                                                                                                                                                                                                                                                                              
@@ -24,10 +24,10 @@ spec:
     moverPodLabels:
       vpn.home.arpa/enabled: "false"
     moverSecurityContext:                                                                                                                                                                                                                                                                          
-      fsGroup: 0
-      runAsGroup: 0
-      runAsUser: 0
-    repository: mosquitto-volsync-minio                                                                                                                                                                                                                                                               
+      fsGroup: 568
+      runAsGroup: 568
+      runAsUser: 568
+    repository: zigbee2mqtt-volsync-minio                                                                                                                                                                                                                                                               
     storageClassName: ceph-block                                                                                                                                                                                                                                                                   
     volumeSnapshotClassName: ceph-block                                                                                                                                                                                                                                                            
   trigger:                                                                                                                                                                                                                                                                                         

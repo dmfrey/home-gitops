@@ -7,5 +7,8 @@ resources:
   - ./secret-zigbee2mqtt.sops.yaml
   - ./configmap.yaml
   - ./helmrelease.yaml
-  - ./volsync.yaml
+  # - ./volsync.yaml
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
+  - ./secret-zigbee2mqtt-volsync-minio.sops.yaml
 
