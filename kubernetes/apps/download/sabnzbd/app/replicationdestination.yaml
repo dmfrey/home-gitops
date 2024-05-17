@@ -22,7 +22,7 @@ spec:
     capacity: 1Gi                                                                                                                                                                                                                                                                                  
     copyMethod: Snapshot                                                                                                                                                                                                                                                                           
     moverPodLabels:
-      setGateway: "false"
+      vpn.home.arpa/enabled: "false"
     moverSecurityContext:                                                                                                                                                                                                                                                                          
       fsGroup: 1568                                                                                                                                                                                                                                                                                
       runAsGroup: 1568                                                                                                                                                                                                                                                                             
