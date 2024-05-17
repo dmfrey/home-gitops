@@ -3,8 +3,6 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name: ${APP}
-  annotations:
-    vpn.home.arpa/enabled: "false"
 spec:
   sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
@@ -16,6 +14,8 @@ spec:
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-ceph-block}"
+    moverPodLabels:
+      vpn.home.arpa/enabled: "false"
     moverSecurityContext:
       runAsUser: ${APP_UID:-1568}
       runAsGroup: ${APP_GID:-1568}
