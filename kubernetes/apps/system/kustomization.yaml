@@ -9,7 +9,7 @@ resources:
   - ./descheduler/ks.yaml
   - ./amd-device-plugin/ks.yaml
   # - ./intel-device-plugins/ks.yaml
-  - ./generic-device-plugin/ks.yaml
+  # - ./generic-device-plugin/ks.yaml
   # - ./kube-vip/ks.yaml
   - ./kured/ks.yaml
   - ./kubelet-csr-approver/ks.yaml

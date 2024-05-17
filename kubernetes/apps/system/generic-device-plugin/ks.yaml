@@ -5,13 +5,21 @@ metadata:
   name: cluster-apps-generic-device-plugin
   namespace: flux-system
 spec:
+  targetNamespace: system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname generic-device-plugin
   path: ./kubernetes/apps/system/generic-device-plugin/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  interval: 15m
-  prune: true
-  wait: true # no flux ks dependents
+  wait: false # no flux ks dependents
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
     substituteFrom: []
   dependsOn: []
