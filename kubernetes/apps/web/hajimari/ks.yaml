@@ -20,7 +20,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: portal
     substituteFrom: []
   dependsOn: 
     - name: cluster-apps-authentik
