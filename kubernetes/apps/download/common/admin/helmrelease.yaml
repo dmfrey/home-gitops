@@ -41,6 +41,10 @@ spec:
         options:
           - name: ndots
             value: "5"
+      
+      labels:
+        vpn.home.arpa/enabled: "false"
+
 
       securityContext:
         runAsUser: 0
