@@ -7,5 +7,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./hajimari/ks.yaml
-  - ./theme-park/ks.yaml
+  # - ./theme-park/ks.yaml
 
