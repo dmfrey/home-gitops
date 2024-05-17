@@ -5,25 +5,32 @@ kind: HelmRelease
 metadata:
   name: &app admin
   namespace: download
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   maxHistory: 2
+
   install:
     createNamespace: true
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+
   uninstall:
     keepHistory: false
 
@@ -44,14 +51,14 @@ spec:
           - 65534
 
     controllers:
-      main:
+      admin:
         replicas: 1
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: docker.io/library/busybox
               tag: latest
@@ -68,9 +75,9 @@ spec:
                 memory: 300Mi
 
     service:
-      main:
+      app:
         enabled: false
-        controller: main
+        controller: admin
 
     persistence:
       downloads:
