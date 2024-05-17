@@ -6,20 +6,24 @@ metadata:
   name: dataflow
   namespace: dataflow
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   install:
     createNamespace: true
     remediation:
       retries: 5
+  
   upgrade:
     remediation:
       retries: 5
@@ -36,13 +40,13 @@ spec:
           - 65534
 
     controllers:
-      main:
+      dataflow:
         type: deployment
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: docker.io/bitnami/spring-cloud-dataflow
               tag: 2.11.2-debian-12-r18
@@ -123,14 +127,14 @@ spec:
               runAsUser: 1001
 
     service:
-      main:
+      app:
+        controller: dataflow
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -143,8 +147,8 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
-                  port: http
+                  identifier: app
+                  port: *port
         tls:
           - hosts:
               - *host
@@ -159,6 +163,7 @@ spec:
           - path: /config/application.yaml
             readOnly: true
             subPath: application.yaml
+      
       secrets:
         type: secret
         name: pg-dataflow-app
