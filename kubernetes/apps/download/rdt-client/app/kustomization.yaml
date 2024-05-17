@@ -5,4 +5,6 @@ kind: Kustomization
 namespace: download
 resources:
   - ./helmrelease.yaml
-
+  - ./replicationsource.yaml
+  - ./replicationdestination.yaml
+  - ./secret-rdt-client-volsync-minio.sops.yaml
