@@ -5,16 +5,21 @@ metadata:
   name: cluster-apps-hajimari
   namespace: flux-system
 spec:
+  targetNamespace: web
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname hajimari
   path: ./kubernetes/apps/web/hajimari/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
-  postBuild:
-    substituteFrom: []
-  interval: 15m
+  wait: false
+  interval: 10m
   retryInterval: 1m
   timeout: 5m
-  dependsOn: []
-    # - name: cluster-apps-authentik
+  postBuild:
+    APP: *appname
+    substituteFrom: []
+  dependsOn: 
+    - name: cluster-apps-authentik
