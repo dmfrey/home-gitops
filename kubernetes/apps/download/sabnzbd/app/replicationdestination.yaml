@@ -22,7 +22,7 @@ spec:
     capacity: 1Gi                                                                                                                                                                                                                                                                                  
     copyMethod: Snapshot                                                                                                                                                                                                                                                                           
     moverPodLabels:
-      setGateway: false
+      setGateway: "false"
     moverSecurityContext:                                                                                                                                                                                                                                                                          
       fsGroup: 1568                                                                                                                                                                                                                                                                                
       runAsGroup: 1568                                                                                                                                                                                                                                                                             
