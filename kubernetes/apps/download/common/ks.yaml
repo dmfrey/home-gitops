@@ -33,6 +33,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: &appname admin
+      vpn.home.arpa/enabled: "false"
   path: "./kubernetes/apps/download/common/admin"
   prune: true
   sourceRef:
