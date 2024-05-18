@@ -5,25 +5,32 @@ kind: HelmRelease
 metadata:
   name: &app sabnzbd
   namespace: download
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
 
+  maxHistory: 2
+
   install:
     createNamespace: true
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+
   uninstall:
     keepHistory: false
 
@@ -40,7 +47,7 @@ spec:
                     - key: app.kubernetes.io/name
                       operator: In
                       values:
-                        - jellyfin
+                        # - jellyfin
                         - plex
                 topologyKey: "kubernetes.io/hostname"
 
@@ -59,7 +66,7 @@ spec:
           - 65534
 
     controllers:
-      main:
+      sabnzbd:
         type: statefulset
 
         annotations:
@@ -67,20 +74,20 @@ spec:
 
         replicas: 1
 
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /config
-              accessMode: ReadWriteOnce
-              size: 5Gi
-              storageClass: ceph-block
+        # statefulset:
+        #   volumeClaimTemplates:
+        #     - name: config
+        #       globalMounts:
+        #         - path: /config
+        #       accessMode: ReadWriteOnce
+        #       size: 5Gi
+        #       storageClass: ceph-block
 
         pod:
           enableServiceLinks: false
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/sabnzbd
               tag: 4.2.3
@@ -135,7 +142,7 @@ spec:
 
           # sidecars:
           exporter:
-            dependsOn: main
+            dependsOn: app
             
             image:
               repository: ghcr.io/onedr0p/exportarr
@@ -165,9 +172,9 @@ spec:
                 containerPort: *metricsPort 
 
     service:
-      main:
+      app:
         nameOverride: sabnzbd
-        controller: main
+        controller: sabnzbd
         primary: true
         ports:
           http:
@@ -179,8 +186,7 @@ spec:
             port: *metricsPort
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -196,7 +202,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
               - path: /metrics
                 pathType: Prefix
@@ -210,11 +216,7 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
 
       sabnzbd-config:
         enabled: true
