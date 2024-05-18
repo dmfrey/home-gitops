@@ -223,8 +223,8 @@ spec:
         type: configMap
         name: sabnzbd-config
         advancedMounts:
-          main:
-            main:
+          sabnzbd:
+            app:
               - path: /config/sabnzbd.ini
                 readOnly: false
                 subPath: sabnzbd.ini
