@@ -3,54 +3,60 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: alert-manager
+  name: &app alert-manager
   namespace: monitor
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
-      interval: 15m
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   values:
+
     controllers:
-      main:
+      alert-manager:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: quay.io/prometheus/alertmanager
               tag: main
+            
             ports:
               - name: http
                 containerPort: 9093
+            
             resources:
               requests:
                 cpu: 11m
                 memory: 50M
               limits:
                 memory: 99M
+            
             securityContext:
               fsGroup: 2000
               runAsNonRoot: true
               runAsUser: 1000
 
     service:
-      main:
-        controller: main
+      app:
+        controller: alert-manager
         ports:
           http:
             port: &port 9093
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -63,7 +69,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
@@ -77,14 +83,12 @@ spec:
         name: alertmanager-configmap
         globalMounts: 
           - path: /etc/alertmanager
+
       alertmanager:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 50Mi
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /alertmanager
-        storageClass: ceph-block
+
       secrets:
         type: secret
         name: alert-manager-secret
