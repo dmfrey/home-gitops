@@ -20,7 +20,8 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: rdt-client
+      GATUS_SUBDOMAIN: rdt
       APP_UID: "1568"
       APP_GID: "1568"
       VOLSYNC_CLAIM: rdt-client-config
