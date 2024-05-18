@@ -2,14 +2,16 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: media
 resources:
   - ./helmrelease.yaml
   - ./secret-overseerr.sops.yaml
   - ./dashboard
-  - ./replicationsource.yaml
-  - ./replicationdestination.yaml
-  - ./secret-overseerr-volsync-minio.sops.yaml
+  - ../../../../templates/volsync
+  - ../../../../templates/gatus/external
+
+  # - ./replicationsource.yaml
+  # - ./replicationdestination.yaml
+  # - ./secret-overseerr-volsync-minio.sops.yaml
 configMapGenerator:
   - name: overseerr-config-template
     files:
@@ -19,7 +21,4 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
 generatorOptions:
   disableNameSuffixHash: true
-commonLabels:
-  app.kubernetes.io/name: overseerr
-  app.kubernetes.io/instance: overseerr
 
