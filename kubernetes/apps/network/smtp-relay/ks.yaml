@@ -5,16 +5,24 @@ metadata:
   name: cluster-apps-smtp-relay
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname smtp-relay
   path: "./kubernetes/apps/network/smtp-relay/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   decryption:
     provider: sops
-  wait: true
+  postBuild:
+    substitute:
+      APP: *appname
+    substituteFrom: []
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack-crds
-  postBuild:
-    substituteFrom: []
