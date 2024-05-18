@@ -22,8 +22,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_UID: "0"
-      APP_GID: "0"
+      APP_UID: "1568"
+      APP_GID: "1568"
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
