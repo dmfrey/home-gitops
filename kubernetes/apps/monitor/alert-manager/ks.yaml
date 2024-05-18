@@ -23,6 +23,8 @@ spec:
       APP: *appname
       VOLSYNC_CLAIM: alert-manager
       VOLSYNC_CAPACITY: 50Mi
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
