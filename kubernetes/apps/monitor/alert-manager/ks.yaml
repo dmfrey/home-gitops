@@ -21,7 +21,7 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      VOLSYNC_CLAIM: alertmanager
+      VOLSYNC_CLAIM: alert-manager
       VOLSYNC_CAPACITY: 50Mi
     substituteFrom: []
   dependsOn:
