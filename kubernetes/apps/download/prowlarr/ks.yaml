@@ -5,20 +5,37 @@ metadata:
   name: cluster-apps-prowlarr
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: download
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname prowlarr
   path: "./kubernetes/apps/download/prowlarr/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *appname
+      APP_UID: "568"
+      APP_GID: "568"
+      VOLSYNC_CLAIM: prowlarr-config
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
   dependsOn:
     - name: cluster-apps-media-common-mounts
     - name: cluster-apps-reflector
     - name: cluster-apps-kube-prometheus-stack-crds
     - name: cluster-apps-pod-gateway
+    - name: cluster-apps-volsync
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -26,14 +43,16 @@ metadata:
   name: cluster-apps-prowlarr-provision
   namespace: flux-system
 spec:
-  interval: 15m
-  timeout: 2m
+  targetNamespace: download
   path: "./kubernetes/apps/download/prowlarr/provision"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substituteFrom: []
   dependsOn:
