@@ -5,15 +5,31 @@ metadata:
   name: cluster-apps-rdt-client
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: download
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname rdt-client
   path: "./kubernetes/apps/download/rdt-client/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *appname
+      APP_UID: "1568"
+      APP_GID: "1568"
+      VOLSYNC_CLAIM: rdt-client-config
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
   dependsOn:
     - name: cluster-apps-download-common-mount
     - name: cluster-apps-rook-ceph-cluster
