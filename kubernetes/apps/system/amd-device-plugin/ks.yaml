@@ -5,14 +5,22 @@ metadata:
   name: cluster-apps-amd-device-plugin
   namespace: flux-system
 spec:
+  targetNamespace: system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname amd-device-plugin
   path: ./kubernetes/apps/system/amd-device-plugin/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  interval: 15m
-  prune: true
-  wait: true # no flux ks dependents
+  wait: false # no flux ks dependents
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-node-feature-discovery-rules

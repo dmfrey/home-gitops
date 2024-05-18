@@ -3,28 +3,36 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: amd-gpu-node-labeller
+  name: &app amd-gpu-node-labeller
   namespace: system
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
+  
   dependsOn:
     - name: amd-device-plugin
       namespace: system
@@ -42,16 +50,19 @@ spec:
     
     controllers:
       
-      main:
+      amd-gpu-node-labeller:
         type: daemonset
         
         containers:
-          main:
+          app:
             image:
               repository: docker.io/rocm/k8s-device-plugin
               tag: labeller-1.25.2.5@sha256:cd0decbe8e44ff8906fe9c3163b1ae102bcffc23e85edd6213f393beaa8ad78e
+            
             workingDir: /root
+            
             command: ["/root/k8s-node-labeller"]
+            
             args:
               [
                 "-logtostderr=true",
@@ -63,18 +74,21 @@ spec:
                 "-device-id",
                 "-family",
               ]
+            
             env:
-              TZ: America/New_York
+              TZ: ${TIMEZONE}
               DS_NODE_NAME:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
+            
             resources:
               requests:
                 cpu: 25m
                 memory: 10Mi
               limits:
                 memory: 100Mi
+            
             securityContext:
               privileged: true
               capabilities:
@@ -85,15 +99,16 @@ spec:
       name: amd-gpu-node-labeller
     
     service:
-      main:
+      app:
         enabled: false
-        controller: main
+        controller: amd-gpu-node-labeller
     
     persistence:
       sys:
         enabled: true
         type: hostPath
         hostPath: /sys
+      
       dev:
         enabled: true
         type: hostPath

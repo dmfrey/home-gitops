@@ -7,7 +7,7 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./descheduler/ks.yaml
-  - ./amd-device-plugin/ks.yaml
+  # - ./amd-device-plugin/ks.yaml
   # - ./intel-device-plugins/ks.yaml
   - ./generic-device-plugin/ks.yaml
   # - ./kube-vip/ks.yaml
