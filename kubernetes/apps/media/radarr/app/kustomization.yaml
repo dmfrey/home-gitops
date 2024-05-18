@@ -2,13 +2,12 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: media
 resources:
   - ./helmrelease.yaml
-  - ./replicationsource.yaml
-  - ./replicationdestination.yaml
-  - ./secret-radarr-volsync-minio.sops.yaml
-commonLabels:
-  app.kubernetes.io/name: radarr
-  app.kubernetes.io/instance: radarr
+  - ../../../../templates/volsync
+  - ../../../../templates/gatus/external
+
+  # - ./replicationsource.yaml
+  # - ./replicationdestination.yaml
+  # - ./secret-radarr-volsync-minio.sops.yaml
 

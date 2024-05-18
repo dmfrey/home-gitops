@@ -4,26 +4,32 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app radarr
-  namespace: media
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   maxHistory: 2
+
   install:
     createNamespace: true
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+
   uninstall:
     keepHistory: false
 
@@ -40,7 +46,7 @@ spec:
 
     controllers:
       
-      main:
+      radarr:
         type: statefulset
                 
         annotations:
@@ -50,7 +56,7 @@ spec:
         strategy: RollingUpdate
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/radarr
               tag: 5.6.0.8846@sha256:3c75c2adc6ce547131a74b10fec4e0101658113810dba11b96878a0c3990c641
@@ -80,7 +86,7 @@ spec:
 
           # sidecars:
           exporter:
-            dependsOn: main
+            dependsOn: app
             
             image: 
               repository: ghcr.io/onedr0p/exportarr
@@ -105,20 +111,20 @@ spec:
                 containerPort: *metricsPort 
           
     service:
-      main:
+      app:
         nameOverride: radarr
-        controller: main
+        controller: radarr
         ports:
           http:
             port: *port
       metrics:
-        controller: main
+        controller: radarr
         ports:
           metrics:
             port: *metricsPort
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -134,7 +140,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
@@ -143,11 +149,7 @@ spec:
     
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
 
       media:
         enabled: true
