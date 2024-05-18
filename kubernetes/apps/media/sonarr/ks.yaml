@@ -5,22 +5,36 @@ metadata:
   name: cluster-apps-sonarr
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname sonarr
   path: "./kubernetes/apps/media/sonarr/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *appname
+      APP_UID: "1568"
+      APP_GID: "1568"
+      VOLSYNC_CLAIM: sonarr-config
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
     - name: cluster-apps-media-common
     - name: cluster-apps-media-common-mounts
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: cluster-apps-volsync
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -28,14 +42,16 @@ metadata:
   name: cluster-apps-sonarr-provision
   namespace: flux-system
 spec:
-  interval: 15m
-  timeout: 2m
+  targetNamespace: media
   path: "./kubernetes/apps/media/sonarr/provision"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substituteFrom: []
   dependsOn:

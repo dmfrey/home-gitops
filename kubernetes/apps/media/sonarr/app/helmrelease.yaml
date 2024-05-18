@@ -6,24 +6,30 @@ metadata:
   name: &app sonarr
   namespace: media
 spec:
+  
   interval: 15m
+  
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
 
@@ -41,7 +47,7 @@ spec:
 
     controllers:
       
-      main:
+      sonarr:
         type: statefulset
         
         annotations:
@@ -51,7 +57,7 @@ spec:
         strategy: RollingUpdate
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/sonarr
               tag: 4.0.4.1491
@@ -81,7 +87,7 @@ spec:
 
           # sidecars:
           exporter:
-            dependsOn: main
+            dependsOn: app
             
             image: 
               repository: ghcr.io/onedr0p/exportarr
@@ -106,21 +112,20 @@ spec:
                 containerPort: *metricsPort 
 
     service:
-      main:
+      app:
         nameOverride: sonarr
-        controller: main
+        controller: sonarr
         ports:
           http:
             port: *port
       metrics:
-        controller: main
+        controller: sonarr
         ports:
           metrics:
             port: *metricsPort
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -134,7 +139,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
@@ -143,11 +148,7 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
 
       media:
         enabled: true
