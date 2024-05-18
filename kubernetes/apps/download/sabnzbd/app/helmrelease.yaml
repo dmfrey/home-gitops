@@ -218,16 +218,16 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
 
-      # sabnzbd-config:
-      #   enabled: true
-      #   type: configMap
-      #   name: sabnzbd-config
-      #   advancedMounts:
-      #     sabnzbd:
-      #       app:
-      #         - path: /config/sabnzbd.ini
-      #           readOnly: false
-      #           subPath: sabnzbd.ini
+      sabnzbd-config:
+        enabled: true
+        type: configMap
+        name: sabnzbd-config
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /tmp/sabnzbd.ini
+                readOnly: false
+                subPath: sabnzbd.ini
 
       downloads:
         enabled: true
