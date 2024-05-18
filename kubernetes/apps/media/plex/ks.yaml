@@ -6,17 +6,33 @@ metadata:
   name: cluster-apps-plex
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname plex
   path: "./kubernetes/apps/media/plex/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *appname
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: plex-config
+      VOLSYNC_CAPACITY: 35Gi
+      VOLSYNC_CACHE_CAPACITY: 20Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
     - name: cluster-apps-media-common-mounts
