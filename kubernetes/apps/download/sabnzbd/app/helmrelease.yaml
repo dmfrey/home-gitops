@@ -180,7 +180,7 @@ spec:
           http:
             port: *port
       metrics:
-        controller: main
+        controller: sabnzbd
         ports:
           metrics:
             port: *metricsPort
