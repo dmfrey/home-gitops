@@ -9,17 +9,18 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: cloudflared
-  dependsOn:
-    - name: cluster-apps-external-dns-external
   path: "./kubernetes/apps/network/cloudflared/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
-  interval: 30m
+  interval: 10m
   retryInterval: 1m
   timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
     substituteFrom: []
-
+  dependsOn:
+    - name: cluster-apps-external-dns-external
