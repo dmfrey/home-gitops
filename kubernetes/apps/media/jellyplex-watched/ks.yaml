@@ -6,15 +6,25 @@ metadata:
   name: cluster-apps-jellyplex-watched
   namespace: flux-system
 spec:
-  interval: 30m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname jellyplex-watched
   path: ./kubernetes/apps/media/jellyplex-watched/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
     substituteFrom: []
   decryption:
     provider: sops
-  dependsOn: []
+  dependsOn:
+    - name: cluster-apps-plex
+    - name: cluster-apps-jellyfin
