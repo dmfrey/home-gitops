@@ -5,25 +5,32 @@ kind: HelmRelease
 metadata:
   name: &app jellyfin
   namespace: media
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
   
@@ -44,7 +51,7 @@ spec:
 
     controllers:
 
-      main:
+      jellyfin:
         type: statefulset
         
         annotations:
@@ -52,7 +59,7 @@ spec:
 
         containers:
 
-          main:
+          app:
 
             image:
               repository: jellyfin/jellyfin
@@ -94,8 +101,8 @@ spec:
                 memory: 3Gi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: jellyfin
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
@@ -106,8 +113,7 @@ spec:
             port: &port 8096
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -121,7 +127,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
         - hosts:
@@ -130,11 +136,7 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 20Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
       
       media:
         enabled: true

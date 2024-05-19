@@ -6,18 +6,32 @@ metadata:
   name: cluster-apps-jellyfin
   namespace: flux-system
 spec:
-  interval: 30m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname jellyfin
   path: ./kubernetes/apps/media/jellyfin/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *appname
+      APP_UID: "1568"
+      APP_GID: "1568"
+      VOLSYNC_CLAIM: jellyfin-config
+      VOLSYNC_CAPACITY: 20Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-media-common-mounts
+    - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
