@@ -84,11 +84,7 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
 
       mosquitto-config:
         enabled: true
