@@ -5,16 +5,31 @@ metadata:
   name: cluster-apps-mosquitto
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname mosquitto
   path: ./kubernetes/apps/home/mosquitto/app
-  postBuild:
-    substituteFrom: []
   prune: true
-  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: home-gitops
+  wait: false
+  interval: 10m
+  retryInterval: 1m
   timeout: 5m
-  wait: true
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: mosquitto-data
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync

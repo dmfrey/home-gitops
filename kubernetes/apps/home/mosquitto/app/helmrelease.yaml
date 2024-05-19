@@ -5,26 +5,33 @@ kind: HelmRelease
 metadata:
   name: &app mosquitto
   namespace: home
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     createNamespace: true
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
 
@@ -32,14 +39,14 @@ spec:
 
     controllers:
       
-      main:
+      mosquitto:
         type: statefulset
         
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18
@@ -65,8 +72,8 @@ spec:
               - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
             
     service:
-      main:
-        controller: main
+      app:
+        controller: mosquitto
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: mqtt.${INTERNAL_DOMAIN}
@@ -113,8 +120,8 @@ spec:
         enabled: true
         type: emptyDir
         advancedMounts:
-          main:
-            main:
+          mosquitto:
+            app:
               - path: /mosquitto/external_config
             user-import:
               - path: /data/external_config
