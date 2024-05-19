@@ -5,20 +5,35 @@ metadata:
   name: cluster-apps-tdarr
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname tdarr
   path: "./kubernetes/apps/media/tdarr/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *appname
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: tdarr-config
+      VOLSYNC_CAPACITY: 4Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
     - name: cluster-apps-media-common-mounts
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -26,13 +41,19 @@ metadata:
   name: cluster-apps-tdarr-node
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname tdarr-node
   path: "./kubernetes/apps/media/tdarr/node"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substituteFrom: []
   dependsOn:

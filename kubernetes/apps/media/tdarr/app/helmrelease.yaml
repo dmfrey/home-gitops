@@ -5,24 +5,31 @@ kind: HelmRelease
 metadata:
   name: &app tdarr
   namespace: media
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  
   maxHistory: 2
+  
   install:
     remediation:
       retries: 3
+  
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
   
@@ -45,10 +52,10 @@ spec:
         #     - CHOWN
 
     controllers:
-      main:
+      tdarr:
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/haveagitgat/tdarr_acc
               tag: 2.00.20.1
@@ -75,21 +82,20 @@ spec:
                 memory: 250Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: tdarr
         ports:
           http:
             port: *port
       server:
-        controller: main
+        controller: tdarr
         ports:
           http:
             protocol: TCP
             port: *serverPort
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -102,7 +108,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
@@ -113,16 +119,14 @@ spec:
       config:
         enabled: true
         existingClaim: tdarr-config
-        globalMounts:
-          - path: /app/configs
-      data:
-        enabled: true
-        existingClaim: tdarr-data
-        globalMounts:
-          - path: /app/server
-      cache:
-        enabled: true
-        existingClaim: tdarr-cache
+        advancedMounts:
+          tdarr:
+            app:
+              - path: /app/configs
+                subPath: config
+              - path: /app/server
+                subPath: server
+      
       media:
         enabled: true
         existingClaim: nfs-media
