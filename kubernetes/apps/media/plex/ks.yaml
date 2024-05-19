@@ -22,6 +22,7 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      GATUS_PATH: /identity
       APP_UID: "1568"
       APP_GID: "1568"
       VOLSYNC_CLAIM: plex-config
