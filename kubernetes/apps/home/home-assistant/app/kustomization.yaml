@@ -8,7 +8,7 @@ resources:
   # - ./pvc.yaml
   - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
-  # - ./helmrelease.yaml
+  - ./helmrelease.yaml
   - ../../../../templates/volsync
   # - ../../../../templates/gatus/external
 
