@@ -10,7 +10,7 @@ resources:
   - ./secret-deploy-key.sops.yaml
   - ./helmrelease.yaml
   - ../../../../templates/volsync
-  # - ../../../../templates/gatus/external
+  - ../../../../templates/gatus/external
 
 
   # - ./volsync.yaml
