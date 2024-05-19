@@ -5,25 +5,32 @@ kind: HelmRelease
 metadata:
   name: &app wyoming-whisper
   namespace: home
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   maxHistory: 2
+
   install:
     createNamespace: true
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+
   uninstall:
     keepHistory: false
 
@@ -31,14 +38,14 @@ spec:
 
     controllers:
       
-      main:
+      wyoming-whisper:
         type: statefulset
         
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: rhasspy/wyoming-whisper
               tag: latest@sha256:ceaa162ec05e53b8fa883182cdbceb72e6a1422740ec35be038c9faa278323b3
@@ -64,8 +71,8 @@ spec:
                 memory: 2500Mi
 
     service:
-      main:
-        controller: main
+      app:
+        controller: wyoming-whisper
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.31.103
@@ -75,11 +82,5 @@ spec:
             protocol: TCP
 
     persistence:
-      config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        globalMounts:
-          - path: /data
-        storageClass: ceph-block
+      data:
+        existingClaim: ${VOLSYNC_CLAIM}

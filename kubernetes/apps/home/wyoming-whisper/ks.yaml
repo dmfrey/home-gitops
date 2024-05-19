@@ -5,16 +5,31 @@ metadata:
   name: cluster-apps-wyoming-whisper
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname wyoming-whisper
   path: "./kubernetes/apps/home/wyoming-whisper/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *appname
+      APP_UID: "568"
+      APP_GID: "568"
+      VOLSYNC_CLAIM: wyoming-whisper-data
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
