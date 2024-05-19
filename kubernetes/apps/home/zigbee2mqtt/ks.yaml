@@ -5,18 +5,32 @@ metadata:
   name: cluster-apps-zigbee2mqtt
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname zigbee2mqtt
   path: "./kubernetes/apps/home/zigbee2mqtt/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "568"
+      APP_GID: "568"
+      VOLSYNC_CLAIM: data-zigbee2mqtt-0
+      VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CACHE_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-mosquitto
     - name: cluster-apps-node-feature-discovery-rules
-    - name: cluster-apps-volsync-policy
+    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync

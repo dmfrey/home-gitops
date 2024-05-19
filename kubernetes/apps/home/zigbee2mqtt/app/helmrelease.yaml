@@ -5,25 +5,34 @@ kind: HelmRelease
 metadata:
   name: zigbee2mqtt
   namespace: home
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
+  maxHistory: 2
+
   install:
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+  
   uninstall:
     keepHistory: false
+  
   dependsOn:
     - name: mosquitto
       namespace: home
@@ -35,26 +44,28 @@ spec:
   values:
 
     controllers:
-      main:
+      zigbee2mqtt:
         type: statefulset
+        
         annotations:
           reloader.stakater.com/auto: "true"
 
-        statefulset:
-          volumeClaimTemplates:
-            - name: data
-              globalMounts:
-                - path: /data
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
+        # statefulset:
+        #   volumeClaimTemplates:
+        #     - name: data
+        #       globalMounts:
+        #         - path: /data
+        #       accessMode: ReadWriteOnce
+        #       size: 1Gi
+        #       storageClass: ceph-block
 
         containers:
 
-          main:
+          zigbee2mqtt:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 1.37.1
+            
             env:
               # DEBUG: zigbee-herdsman*
               TZ: "${TIMEZONE}"
@@ -95,28 +106,25 @@ spec:
                   secretKeyRef:
                     name: mosquitto-secret
                     key: ZIGBEE2MQTT_MQTT_PASS
+            
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
+            
             ports:
               - name: http
                 containerPort: &port 8080
               - name: metrics
                 containerPort: &metricsPort 9000
+            
             resources:
               requests:
                 cpu: 10m
                 memory: 512Mi
               limits:
                 memory: 512Mi
+        
         pod:
-          # annotations:
-          #   k8s.v1.cni.cncf.io/networks: |
-          #     [{
-          #       "name":"iot-vlan",
-          #       "namespace": "network",
-          #       "ips": ["192.168.50.5/24"]
-          #     }]
           securityContext:
             runAsUser: 568
             runAsGroup: 568
@@ -130,8 +138,8 @@ spec:
               - 65534 # nobody
 
     service:
-      main:
-        controller: main
+      app:
+        controller: zigbee2mqtt
         ports:
           http:
             enabled: true
@@ -141,8 +149,7 @@ spec:
             port: *metricsPort
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -155,9 +162,15 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: main
+                  identifier: app
                   port: *port
         tls:
           - hosts:
               - *host
             secretName: zigbee2mqtt-tls-external
+
+    persistence:
+      data:
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+          - path: /data
