@@ -34,4 +34,4 @@ spec:
     volumeSnapshotClassName: ceph-block                                                                                                                                                                                                                                                            
   sourcePVC: home-assistant-config
   trigger:
-    schedule: 0 * * * *
+    schedule: 40 * * * *
