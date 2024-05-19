@@ -2,21 +2,21 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: home
-commonLabels:
-  app.kubernetes.io/name: home-assistant
-  app.kubernetes.io/instance: home-assistant
 resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
-  - ./pvc.yaml
+  # - ./pvc.yaml
   - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
-  - ./helmrelease.yaml
+  # - ./helmrelease.yaml
+  - ../../../../templates/volsync
+  # - ../../../../templates/gatus/external
+
+
   # - ./volsync.yaml
-  - ./replicationsource.yaml
-  - ./replicationdestination.yaml
-  - ./secret-home-assistant-volsync-minio.sops.yaml
+  # - ./replicationsource.yaml
+  # - ./replicationdestination.yaml
+  # - ./secret-home-assistant-volsync-minio.sops.yaml
 configMapGenerator:
   - name: hass-config
     files:

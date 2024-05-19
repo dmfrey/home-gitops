@@ -5,6 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app home-assistant
   namespace: home
+
 spec:
   
   interval: 5m
@@ -12,7 +13,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -37,7 +38,7 @@ spec:
 
     controllers:
       
-      main:
+      home-assistant:
         type: statefulset
         
         annotations:
@@ -55,7 +56,7 @@ spec:
               }]
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2024.5.4
@@ -103,7 +104,7 @@ spec:
                 memory: 1254Mi
 
           code:
-            dependOn: main
+            dependOn: app
 
             image:
               repository: ghcr.io/coder/code-server
@@ -150,8 +151,9 @@ spec:
                 fi
 
     service:
-      main:
-        controller: main
+      app:
+        nameOverride: &app
+        controller: home-assistant
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: home.${INTERNAL_DOMAIN}
@@ -160,14 +162,14 @@ spec:
           http:
             port: *port
       code:
-        controller: main
+        nameOverride: code-server
+        controller: home-assistant
         ports:
           http:
             port: &codePort 8081
 
     ingress:
-      main:
-        enabled: true
+      app:
         className: external
         annotations:
           nginx.org/websocket-services: home-assistant
@@ -181,14 +183,13 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
             secretName: home-assistant-tls-external
       code:
-        enabled: true
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -203,7 +204,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: code
+                  identifier: code
                   port: http
         tls:
           - hosts:
@@ -212,8 +213,7 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        existingClaim: home-assistant-config
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /config
 
@@ -273,7 +273,7 @@ spec:
             readOnly: false
 
     serviceMonitor:
-      main:
+      app:
         enabled: true
         serviceName: *app
         endpoints:

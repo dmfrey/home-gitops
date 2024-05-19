@@ -5,14 +5,28 @@ metadata:
   name: cluster-apps-home-assistant
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &appname home-assistant
   path: "./kubernetes/apps/home/home-assistant/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
+    substitute:
+      APP: *appname
+      GATUS_SUBDOMAIN: home
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: home-assistant-config
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CACHE_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: flux-volsync-secret
@@ -22,3 +36,4 @@ spec:
     - name: cluster-apps-cloudnative-pg
     - name: cluster-apps-mosquitto
     - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
