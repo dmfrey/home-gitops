@@ -49,7 +49,7 @@ spec:
           app:
             image:
               repository: docker.io/bitnami/spring-cloud-dataflow
-              tag: 2.11.2-debian-12-r18
+              tag: 2.11.3-debian-12-r0
             
             env:
               - name: LANG
