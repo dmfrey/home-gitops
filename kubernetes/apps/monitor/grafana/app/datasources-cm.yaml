@@ -20,6 +20,8 @@ data:
         orgId: 1
       - name: Alertmanager
         orgId: 1
+      - name: blocky-pgcluster
+        orgId: 1
     datasources:
       - name: prometheus
         type: prometheus
@@ -66,3 +68,18 @@ data:
         jsonData:
           implementation: prometheus
         uid: alertmanager
+      - name: blocky-pgcluster
+        type: postgres
+        url: pg-blocky-ro.network.svc.cluster.local:5432
+        user: blocky
+        secureJsonData:
+          password: $__file{/etc/secrets/blocky/password}
+        jsonData:
+          database: blocky
+          sslmode: 'disable' # disable/require/verify-ca/verify-full
+          maxOpenConns: 100 # Grafana v5.4+
+          maxIdleConns: 100 # Grafana v5.4+
+          maxIdleConnsAuto: true # Grafana v9.5.1+
+          connMaxLifetime: 14400 # Grafana v5.4+
+          postgresVersion: 15 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
+          timescaledb: false
