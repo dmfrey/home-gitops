@@ -6,6 +6,9 @@ metadata:
   namespace: network
   annotations:
     kyverno.io/ignore: "true"
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: monitor
     secret.reloader.stakater.com/reload: cloudnative-pg-secret
 
 spec:

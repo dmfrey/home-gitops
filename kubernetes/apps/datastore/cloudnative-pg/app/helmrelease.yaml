@@ -5,8 +5,11 @@ kind: HelmRelease
 metadata:
   name: cloudnative-pg
   namespace: datastore
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: cloudnative-pg
@@ -16,20 +19,27 @@ spec:
         name: cloudnative-pg
         namespace: flux-system
       interval: 15m
+
   install:
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
+
   uninstall:
     keepHistory: false
+
   values:
+
     crds:
       create: true
+
     config:
       data:
-        INHERITED_ANNOTATIONS: kyverno.io/ignore
+        INHERITED_ANNOTATIONS: kyverno.io/ignore, reflector.v1.k8s.emberstack.com/*
+
     monitoring:
       podMonitorEnabled: true
