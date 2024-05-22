@@ -5,15 +5,17 @@ metadata:
   name: cluster-apps-blocky
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: network
   path: "./kubernetes/apps/network/blocky/services"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   postBuild:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-cloudnative-pg
-    - name: cluster-apps-cert-manager-issuers
