@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-blocky-lb
+  namespace: network
+  annotations:
+    cnpg.io/operatorVersion: 1.23.1                                                                                                                                                                                                                                                                                     
+    kyverno.io/ignore: "true"                                                                                                                                                                                                                                                                                           
+  labels:
+    cnpg.io/cluster: pg-blocky
+spec:
+
+  selector:
+    cnpg.io/cluster: pg-blocky
+    role: primary
+
+  ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+
+  externalTrafficPolicy: Local
+
+  type: LoadBalancer
+  loadBalancerIP: ${SVC_BLOCKY_ADDR}
