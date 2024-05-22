@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./pgcluster.yaml
   - ./blocky-lb.yaml
-  - ./dashboard
+  # - ./dashboard
