@@ -1,0 +1,82 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-blocky
+  namespace: network
+  annotations:
+    kyverno.io/ignore: "true"
+    secret.reloader.stakater.com/reload: cloudnative-pg-secret
+
+spec:
+  
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.2-2
+  primaryUpdateStrategy: unsupervised # let k8s handle upgrades
+  primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
+  
+  storage:
+    storageClass: ceph-block
+    size: 5Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi
+  
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
+  
+  monitoring:
+    enablePodMonitor: true
+  # configured according to below link to allow customizing of initdb via Flux
+  # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
+  
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: blocky
+      owner: blocky
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+
+  backup:
+    retentionPolicy: 10d
+    volumeSnapshot:
+      className: ceph-block
+    barmanObjectStore:
+      destinationPath: s3://cnpg/
+      endpointURL: http://${QNAP_ADDR}:9000
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY_ID
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: AWS_SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+        maxParallel: 8
+
+#  # RECOVERY
+#  bootstrap:
+#    recovery:
+          #      source: &previous-cluster pg-blocky-v0
+#  ## Note: externalClusters is needed when recovering from an existing cnpg cluster
+#  externalClusters:
+#    - name: *previous-cluster
+#      barmanObjectStore:
+#        wal:
+#          compression: gzip
+#          maxParallel: 8
+#        destinationPath: s3://cnpg/
+          #        endpointURL: http://${QNAP_ADDR}:9000
+#        s3Credentials:
+#          accessKeyId:
+#            name: cloudnative-pg-secret
+#            key: AWS_ACCESS_KEY_ID
+#          secretAccessKey:
+#            name: cloudnative-pg-secret
+#            key: AWS_SECRET_ACCESS_KEY

@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+configMapGenerator:
+  - name: blocky-grafana-dashboard
+    files:
+      - blocky-grafana.json=https://github.com/0xERR0R/blocky/blob/main/docs/blocky-grafana.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Network
+  labels:
+    grafana.io/dashboard: "true"

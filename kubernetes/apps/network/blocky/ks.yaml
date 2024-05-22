@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-blocky
+  namespace: flux-system
+spec:
+  interval: 15m
+  path: "./kubernetes/apps/network/blocky/services"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+    - name: cluster-apps-cloudnative-pg
+    - name: cluster-apps-cert-manager-issuers
