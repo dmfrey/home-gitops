@@ -52,27 +52,18 @@ spec:
             probes:
               liveness: &probes
                 enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &port 8080
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
               readiness: *probes
             
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 256Mi
+            # resources:
+            #   requests:
+            #     cpu: 10m
+            #   limits:
+            #     memory: 256Mi
         
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+            # securityContext:
+            #   allowPrivilegeEscalation: false
+            #   readOnlyRootFilesystem: true
+            #   capabilities: { drop: ["ALL"] }
             
     service:
       app:
