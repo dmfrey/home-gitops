@@ -208,6 +208,15 @@ spec:
               - *host
             secretName: prometheus-tls-external
 
+      prometheusSpec:
+        additionalScrapeConfigs:
+          - job_name: blocky-metrics
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps:
+              - targets:
+                - ${SVC_BLOCKY_ADDR}:4000
+
       thanosService:
         enabled: true
 
