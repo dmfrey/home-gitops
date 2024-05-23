@@ -13,7 +13,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.1.0
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -40,9 +40,9 @@ spec:
       enableServiceLinks: false
 
       securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 44 # video
