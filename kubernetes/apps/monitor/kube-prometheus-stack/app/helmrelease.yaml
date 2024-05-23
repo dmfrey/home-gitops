@@ -219,13 +219,6 @@ spec:
         replicaExternalLabelName: __replica__
         externalLabels:
           cluster: ${CLUSTER_NAME}
-        additionalScrapeConfigs:
-          - job_name: blocky-metrics
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps:
-              - targets:
-                - ${SVC_BLOCKY_ADDR}:4000
 
         thanos:
           image: quay.io/thanos/thanos:v0.35.0@sha256:fa1d28718df00b68d6ad85d7c7d4703bd9f59e5cd8be8da6540ea398cf701a1f
@@ -279,6 +272,13 @@ spec:
             metrics_path: /minio/v2/metrics/cluster
             static_configs:
               - targets: ["${QNAP_ADDR}:9000"]
+
+          - job_name: blocky-metrics
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps:
+              - targets:
+                - ${SVC_BLOCKY_ADDR}:4000
 
       prometheusConfigReloader:
         # resource config for prometheusConfigReloader
