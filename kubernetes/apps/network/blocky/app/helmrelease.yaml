@@ -49,6 +49,8 @@ spec:
             env:
               - name: API_URL
                 value: http://${SVC_BLOCKY_ADDR}:4000
+              - name: NODE_ENV
+                value: production
 
             probes:
               liveness: &probes
