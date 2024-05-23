@@ -276,9 +276,10 @@ spec:
           - job_name: blocky-metrics
             scrape_interval: 1m
             scrape_timeout: 10s
-            honor_timestamps:
+            honor_timestamps: true
+            static_configs:
               - targets:
-                - ${SVC_BLOCKY_ADDR}:4000
+                - ${DNS_ADDR}:4000
 
       prometheusConfigReloader:
         # resource config for prometheusConfigReloader

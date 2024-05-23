@@ -6,4 +6,4 @@ metadata:
   namespace: dataflow
 data:
   env: |-
-    API_URL: http://${SVC_BLOCKY_ADDR}:4000
+    API_URL: http://${DNS_ADDR}:4000
