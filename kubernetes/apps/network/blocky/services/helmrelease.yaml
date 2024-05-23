@@ -30,9 +30,10 @@ spec:
   values:
 
     controllers:
-      blocky-frontent:
+      blocky-frontend:
         replicas: 1
         strategy: RollingUpdate
+        
         annotations:
           reloader.stakater.com/auto: "true"
 
