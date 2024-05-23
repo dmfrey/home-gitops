@@ -86,10 +86,15 @@ spec:
         enabled: true
         type: configMap
         name: blocky-frontend
-        globalMounts:
-          - path: "/srv/.env"
-            readOnly: true
-            subPath: env
+        advancedMounts:
+          blocky-frontend:
+            app:
+              - path: "/srv/.env"
+                readOnly: true
+                subPath: env
+              - path: "/app/.env"
+                readOnly: true
+                subPath: env
 
     serviceAccount:
       create: true
