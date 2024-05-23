@@ -97,6 +97,9 @@ spec:
               - path: "/app/.env"
                 readOnly: true
                 subPath: env
+              - path: "/root/.env"
+                readOnly: true
+                subPath: env
 
     serviceAccount:
       create: true
