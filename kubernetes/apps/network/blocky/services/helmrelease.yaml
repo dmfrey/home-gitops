@@ -47,7 +47,7 @@ spec:
         
             env:
               - name: API_URL
-                value: http://${SVC_BLOCKY_ADDR}:4000/api
+                value: http://${SVC_BLOCKY_ADDR}:4000
 
             probes:
               liveness: &probes
