@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: spring-cloud-dataflow
-      version: 28.1.2
+      version: 28.2.0
       sourceRef:
         kind: HelmRepository
         name: bitnami
