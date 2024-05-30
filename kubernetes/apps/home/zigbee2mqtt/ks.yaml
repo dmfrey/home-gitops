@@ -30,7 +30,7 @@ spec:
       - kind: Secret
         name: flux-volsync-secret
   dependsOn:
-    - name: cluster-apps-mosquitto
+    - name: mosquitto
     - name: cluster-apps-node-feature-discovery-rules
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync

@@ -8,9 +8,3 @@ resources:
   - ./helmrelease.yaml
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
-
-
-  # - ./replicationsource.yaml
-  # - ./replicationdestination.yaml
-  # - ./secret-zigbee2mqtt-volsync-minio.sops.yaml
-

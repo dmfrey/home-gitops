@@ -6,11 +6,6 @@ resources:
   - ./helmrelease.yaml
   - ./secret-mosquitto.sops.yaml
   - ../../../../templates/volsync
-
-
-  # - ./replicationsource.yaml
-  # - ./replicationdestination.yaml
-  # - ./secret-mosquitto-volsync-minio.sops.yaml
 configMapGenerator:
   - name: mosquitto-config
     files:
