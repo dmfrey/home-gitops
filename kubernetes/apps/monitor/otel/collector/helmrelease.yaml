@@ -11,24 +11,24 @@ spec:
   chart:
     spec:
       chart: opentelemetry-collector
-      version: 0.90.1
+      version: 0.92.0
       sourceRef:
         kind: HelmRepository
         name: opentelemetry-charts
         namespace: flux-system
-  
+
   install:
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
- 
+
   values:
 
     mode: daemonset
@@ -87,7 +87,7 @@ spec:
 
         zipkin:
           endpoint: 0.0.0.0:9411
-      
+
       exporters:
 
         # Data sources: traces, metrics, logs
@@ -129,7 +129,7 @@ spec:
             processors: [ memory_limiter, batch ]
             exporters: [ otlphttp/trace, debug ]
 
-          metrics: 
+          metrics:
             receivers: [ prometheus ]
             processors: [ memory_limiter, batch ]
             exporters: [ prometheusremotewrite, debug ]
@@ -155,24 +155,24 @@ spec:
   chart:
     spec:
       chart: opentelemetry-collector
-      version: 0.90.1
+      version: 0.92.0
       sourceRef:
         kind: HelmRepository
         name: opentelemetry-charts
         namespace: flux-system
-  
+
   install:
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
- 
+
   values:
 
     mode: deployment
@@ -228,7 +228,7 @@ spec:
 
         zipkin:
           endpoint: 0.0.0.0:9411
-      
+
       exporters:
 
         # Data sources: traces, metrics, logs
@@ -252,7 +252,7 @@ spec:
 
       service:
         pipelines:
-          metrics: 
+          metrics:
             receivers: [ prometheus ]
             processors: [ memory_limiter, batch ]
             exporters: [ prometheusremotewrite, debug ]
