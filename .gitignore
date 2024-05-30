@@ -14,7 +14,17 @@ bin
 *.iso
 
 # Sops
+*.agekey
 .decrypted~*
+*.pub
+*.key
+
+# Ansible
+.venv*
+
+# Private
+.private
+.bin
 
 # Terraform
 ## Local .terraform directories
@@ -46,3 +56,7 @@ scratch/*
 Untitled-1.sh
 
 bak/*
+
+age.key
+
+.bak
