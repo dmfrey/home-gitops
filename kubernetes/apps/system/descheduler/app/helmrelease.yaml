@@ -4,9 +4,10 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: descheduler
-  namespace: system
 spec:
+
   interval: 15m
+
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes-sigs.github.io/descheduler
@@ -16,8 +17,24 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-descheduler
         namespace: flux-system
-      interval: 15m
-  values:
+
+  maxHistory: 2
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
+values:
+
     kind: Deployment
     replicas: 2
 
@@ -35,44 +52,51 @@ spec:
         memory: 35M
 
     deschedulerPolicy:
-      strategies:
-        RemoveDuplicates:
-          enabled: true
 
-        RemovePodsViolatingNodeTaints:
-          enabled: true
+      # https://github.com/kubernetes-sigs/descheduler/blob/release-1.30/README.md
+      profiles:
+        - name: default
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                nodeFit: true
+                ignorePvcPods: true
+            - name: RemoveDuplicates
+              args:
+                excludeOwnerKinds:
+                  - ReplicaSet
+            - name: RemovePodsHavingTooManyRestarts
+              args:
+                podRestartThreshold: 80
+                includingInitContainers: true
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                  - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingInterPodAntiAffinity
+              args:
+                labelSelector:
+                  matchExpressions:
+                    - key: "app.kubernetes.io/name"
+                      operator: In
+                      values:
+                        - emqx
+                        - vault
+                        - prometheus
+                        - loki
 
-        RemovePodsViolatingNodeAffinity:
-          enabled: true
-          params:
-            nodeAffinityType:
-              - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingTopologySpreadConstraint
 
-        RemovePodsViolatingTopologySpreadConstraint:
-          enabled: true
-          params:
-            includeSoftConstraints: true
-
-        RemovePodsViolatingInterPodAntiAffinity:
-          enabled: true
-          params:
-            nodeFit: true
-
-        LowNodeUtilization:
-          enabled: false
-
-        RemoveFailedPods:
-          enabled: true
-          params:
-            failedPods:
-              includingInitContainers: true
-              excludeOwnerKinds:
-                - "Job"
-              minPodLifetimeSeconds: 3600
-
-        RemovePodsHavingTooManyRestarts:
-          enabled: true
-          params:
-            podsHavingTooManyRestarts:
-              podRestartThreshold: 100
-              includingInitContainers: true
+          plugins:
+            balance:
+              enabled:
+                - RemovePodsViolatingTopologySpreadConstraint
+                - LowNodeUtilization
+                # - RemoveDuplicates
+            deschedule:
+              enabled:
+                - RemovePodsHavingTooManyRestarts
+                - RemovePodsViolatingNodeTaints
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingInterPodAntiAffinity
