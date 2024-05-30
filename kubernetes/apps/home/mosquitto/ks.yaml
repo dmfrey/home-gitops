@@ -23,8 +23,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      APP_UID: 0
-      APP_GID: 0
+      APP_UID: "0"
+      APP_GID: "0"
       VOLSYNC_CLAIM: mosquitto-data
     substituteFrom:
       - kind: Secret
