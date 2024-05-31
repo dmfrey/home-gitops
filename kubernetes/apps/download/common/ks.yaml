@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-download-common-mount
+  name: &app download-common-mount
   namespace: flux-system
 spec:
   targetNamespace: download
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname common-mount
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/download/common/mount"
   prune: true
   sourceRef:
@@ -18,21 +18,23 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
+  decryption:
+    provider: sops
   postBuild:
     substituteFrom: []
-  dependsOn: 
+  dependsOn:
     - name: cluster-apps-nfs-subdir
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-download-admin
+  name: &app download-admin
   namespace: flux-system
 spec:
   targetNamespace: download
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname admin
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/download/common/admin"
   prune: true
   sourceRef:
@@ -42,7 +44,9 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
+  decryption:
+    provider: sops
   postBuild:
     substituteFrom: []
-  dependsOn: 
+  dependsOn:
     - name: cluster-apps-nfs-subdir

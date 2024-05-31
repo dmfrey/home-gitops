@@ -85,7 +85,7 @@ spec:
       - kind: Secret
         name: flux-volsync-secret
   dependsOn:
-    - name: cluster-apps-download-common-mount
+    - name: download-common-mount
     - name: sabnzbd-config
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
