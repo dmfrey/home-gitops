@@ -64,7 +64,7 @@ spec:
           zigbee2mqtt:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 1.37.1
+              tag: 1.38.0
             
             env:
               # DEBUG: zigbee-herdsman*
