@@ -10,7 +10,7 @@ spec:
     copyMethod: Snapshot
     repository: "${APP}-volsync-minio"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-ceph-block}"
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1G}"
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-ceph-block}"
     moverPodLabels:
@@ -21,4 +21,4 @@ spec:
       fsGroup: ${APP_GID:-1568}
     accessModes:
       - "${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"
-    capacity: "${VOLSYNC_CAPACITY:-1Gi}"
+    capacity: "${VOLSYNC_CAPACITY:-1G}"
