@@ -34,21 +34,21 @@ spec:
       blocky-frontend:
         replicas: 1
         strategy: RollingUpdate
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-        
+
           app:
-        
+
             image:
               repository: ghcr.io/mozart409/blocky-frontend
               tag: v0.2.1
-        
+
             env:
               - name: API_URL
-                value: http://${DNS_ADDR}:4000
+                value: http://blocky.network.svc.cluster.local:4000
               - name: NODE_ENV
                 value: production
 
@@ -56,14 +56,14 @@ spec:
               liveness: &probes
                 enabled: false
               readiness: *probes
-                        
+
     service:
       app:
         controller: *app
         ports:
           http:
             port: 8002
-    
+
     ingress:
       app:
         className: external

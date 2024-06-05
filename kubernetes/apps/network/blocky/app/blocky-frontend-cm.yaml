@@ -6,4 +6,4 @@ metadata:
   namespace: dataflow
 data:
   env: |-
-    API_URL: http://${DNS_ADDR}:4000
+    API_URL: http://blocky.network.svc.cluster.local:4000
