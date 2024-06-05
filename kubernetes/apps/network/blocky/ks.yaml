@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-blocky
+  name: blocky-services
   namespace: flux-system
 spec:
   targetNamespace: network
@@ -23,7 +23,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-blocky-frontend
+  name: blocky
   namespace: flux-system
 spec:
   targetNamespace: network
@@ -39,4 +39,4 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-blocky
+    - name: blocky-services

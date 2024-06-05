@@ -1,9 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app blocky-frontend
-
+  name: &app blocky
 spec:
 
   interval: 30m
@@ -17,96 +17,153 @@ spec:
         name: bjw-s
         namespace: flux-system
 
-  install:
-    remediation:
-      retries: 3
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
-
   values:
-    # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.2.0/charts/other/app-template/values.schema.json
 
     controllers:
-      blocky-frontend:
-        replicas: 1
+      *app :
+        type: deployment
+        replicas: 2
         strategy: RollingUpdate
-        
+        rollingUpdate:
+          unavailable: "90%"
+
         annotations:
           reloader.stakater.com/auto: "true"
 
-        containers:
-        
-          app:
-        
-            image:
-              repository: ghcr.io/mozart409/blocky-frontend
-              tag: v0.2.1
-        
-            env:
-              - name: API_URL
-                value: http://${DNS_ADDR}:4000
-              - name: NODE_ENV
-                value: production
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
 
+        initContainers:
+          configure:
+            image:
+              repository: ghcr.io/onedr0p/alpine
+              tag: 3.19.1@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
+            command:
+              - "/bin/bash"
+              - -c
+              - envsubst < /tmp/config.yml > /config/config.yml
+            env:
+              - name: BLOCKY_DATABASE_URI
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-blocky-app
+                    key: uri
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/0xerr0r/blocky
+              tag: v0.24@sha256:9a82e0235c52ef3048586f8006add06e52132adaae70d02f980569dae16421a2
+            args: ["--config", &dir "/config"]
+            env:
+              TZ: ${TIMEZONE}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                add: ["NET_BIND_SERVICE"]
+                drop: ["ALL"]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
             probes:
               liveness: &probes
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /app/blocky
+                      - healthcheck
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               readiness: *probes
-                        
+              startup:
+                enabled: false
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        seccompProfile: { type: "RuntimeDefault" }
+
     service:
-      app:
+      *app :
         controller: *app
         ports:
           http:
-            port: 8002
-    
+            port: &port 4000
+
+      dns:
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${DNS_ADDR}
+        ports:
+          dns-tcp:
+            port: &dnsPort 53
+            protocol: TCP
+          dns-udp:
+            port: *dnsPort
+            protocol: UDP
+
     ingress:
-      app:
-        className: external
+      internal:
+        className: internal
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
-          hajimari.io/enable: "true"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host blocky.${SECRET_DOMAIN}
+          - host: &host dns.${INTERNAL_DOMAIN}
             paths:
-            - path: /
-              service:
-                identifier: app
-                port: http
+              - path: /dns-query
+                service:
+                  identifier: *app
+                  port: *port
         tls:
           - hosts:
               - *host
-            secretName: gatus-tls-external
+            secretName: dns-tls-internal
 
     persistence:
-      srv-env:
-        enabled: true
+      config-tpl:
         type: configMap
-        name: blocky-frontend
+        name: blocky-configmap
         advancedMounts:
-          blocky-frontend:
-            app:
-              - path: "/srv/.env"
+          *app :
+            configure:
+              - path: /tmp/config.yml
+                subPath: config.yml
                 readOnly: true
-                subPath: env
-              - path: "/app/.env"
-                readOnly: true
-                subPath: env
-              - path: "/root/.env"
-                readOnly: true
-                subPath: env
 
-    serviceAccount:
-      create: true
-      name: *app
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /config
 
     serviceMonitor:
       app:
-        enabled: false
         serviceName: *app
-
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
