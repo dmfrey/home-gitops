@@ -13,6 +13,9 @@ upstreams:
       - tcp-tls:family.cloudflare-dns.com
       # DNS-over-HTTPS (DoH)
       # - https://1.1.1.1/dns-query
+    ${IOT_CIDR}:
+      - tcp-tls:1dot1dot1dot1.cloudflare-dns.com
+      - tcp-tls:dns.quad9.net
   # optional: Determines what strategy blocky uses to choose the upstream servers.
   # accepted: parallel_best, strict, random
   # default: parallel_best
