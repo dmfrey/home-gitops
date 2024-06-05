@@ -128,7 +128,7 @@ blocking:
   # definition of allowlist groups.
   # Note: if the same group has both allow/denylists, allowlists take precedence. Meaning if a domain is both blocked and allowed, it will be allowed.
   # If a group has only allowlist entries, only domains from this list are allowed, and all others be blocked.
-  allowLists:
+  allowlists:
     ads: &whiteList
       - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
       - https://raw.githubusercontent.com/drag0n141/Lists-AdGuard-or-Pihole/master/Whitelists/whitelist.txt
