@@ -18,22 +18,22 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
-  
+
   values:
 
     defaultPodOptions:
@@ -53,7 +53,7 @@ spec:
 
       jellyfin:
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -63,13 +63,13 @@ spec:
 
             image:
               repository: jellyfin/jellyfin
-              tag: 10.8.13-1
+              tag: 10.9.4@sha256:e6b71e6cd18fa272ffaf5c376ac0db1113dab0bddf60e889a65eab05e17cfb73
               pullPolicy: IfNotPresent
 
             env:
               TZ: ${TIMEZONE}
-              PUID: 1568
-              PGID: 1568
+              PUID: 568
+              PGID: 568
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
@@ -137,7 +137,7 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-      
+
       media:
         enabled: true
         existingClaim: nfs-media
