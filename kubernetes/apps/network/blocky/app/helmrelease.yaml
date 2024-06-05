@@ -116,7 +116,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${DNS_ADDR}
+          io.cilium/lb-ipam-ips: ${SVC_BLOCKY_ADDR}
         ports:
           dns-tcp:
             port: &dnsPort 53
