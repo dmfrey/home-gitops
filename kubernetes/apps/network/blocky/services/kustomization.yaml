@@ -6,5 +6,5 @@ resources:
   - ./dragonfly.yaml
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
-  - ./blocky-lb.yaml
+  # - ./blocky-lb.yaml
   - ./dashboard
