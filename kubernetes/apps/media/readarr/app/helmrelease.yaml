@@ -6,9 +6,9 @@ metadata:
   name: &app readarr
   namespace: media
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
@@ -17,40 +17,29 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        runAsNonRoot: true
-        fsGroup: 1568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 100
-          - 65534
-
     controllers:
-      
-      readarr:
+
+      *app :
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -75,12 +64,6 @@ spec:
                   secretKeyRef:
                     name: starr-apps-secret
                     key: READARR_API_KEY
-            
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
 
             resources:
               requests:
@@ -92,22 +75,22 @@ spec:
 
             securityContext:
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities:
                 drop:
-                - ALL
-              readOnlyRootFilesystem: true
+                  - ALL
 
           # sidecars:
           exporter:
-            dependsOn: app
-            
-            image: 
+
+            image:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
 
             args:
               - *app
-            
+              - --enable-additional-metrics
+
             env:
               - name: URL
                 value: "http://localhost"
@@ -115,30 +98,41 @@ spec:
                 value: "/config/config.xml"
               - name: PORT
                 value: &metricsPort 9711
-              - name: ENABLE_ADDITIONAL_METRICS
-                value: true
-              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-                value: false
-            
-            ports:
-              - name: metrics
-                containerPort: *metricsPort 
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
-      app:
-        nameOverride: *app
-        controller: readarr
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
-      metrics:
-        controller: readarr
-        ports:
+            primary: true
           metrics:
             port: *metricsPort
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -152,8 +146,8 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: http
+                  identifier: *app
+                  port: *port
         tls:
           - hosts:
               - *host
@@ -161,16 +155,12 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block
+        existingClaim: ${VOLSYNC_CLAIM}
 
       media:
         enabled: true
         existingClaim: nfs-media
-    
+
       backups:
         enabled: true
         type: custom
@@ -182,13 +172,19 @@ spec:
           - path: /config/Backups
             readOnly: false
 
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            app:
+              - path: /tmp
+
     serviceMonitor:
       metrics:
-        enabled: true
-        serviceName: readarr-metrics
+        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http
             path: /metrics
-            interval: 15m
-            scrapeTimeout: 2m
+            interval: 10m
+            scrapeTimeout: 10s

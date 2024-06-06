@@ -8,8 +8,8 @@ resource "readarr_media_management" "settings" {
   skip_free_space_check                       = false
   minimum_free_space                          = 100
   set_permissions                             = true
-  chmod_folder                                = "775"
-  chown_group                                 = "1568"
+  chmod_folder                                = "755"
+  chown_group                                 = "kah"
   import_extra_files                          = true
   file_date                                   = "none"
   extra_file_extensions                       = "srt"
