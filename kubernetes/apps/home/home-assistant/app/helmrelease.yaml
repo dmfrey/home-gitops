@@ -56,50 +56,50 @@ spec:
               }]
 
         initContainers:
-          # clone-repo:
-          #   image:
-          #     repository: alpine/git
-          #     tag: latest
-
-          #   command:
-          #     - "/bin/sh"
-          #     - -c
-          #     - |
-          #       if [ ! -d /config/.git ]; then
-          #         echo Initializing HASS Config repo
-          #         cd /tmp
-          #         git clone git@github.com:dmfrey/hass-config.git
-          #         cp -r hass-config/* /config
-          #         cp -r hass-config/.git /config
-          #         cp hass-config/.gitignore /config
-          #         ls -la /config
-          #       else
-          #         echo Fetching HASS Config repo
-          #         cd /config
-          #         git fetch origin
-          #         git reset origin/main
-          #         ls -la
-          #       fi
-          git-sync:
-            env:
-              GITSYNC_REPO: https://github.com/dmfrey/hass-config
-              GITSYNC_REF: main
-              GITSYNC_PERIOD: 10s # 1 day
-              GITSYNC_ROOT: /config
-              GITSYNC_ADD_USER: ${UID}
+          clone-repo:
             image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.2.3@sha256:19cc7c317d125c5737ecb9a9159d00b5d97f39c45225c6483de365d62fc09fa8
-            restartPolicy: Always
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
-            securityContext:
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
+              repository: alpine/git
+              tag: latest
+
+            command:
+              - "/bin/sh"
+              - -c
+              - |
+                if [ ! -d /config/.git ]; then
+                  echo Initializing HASS Config repo
+                  cd /tmp
+                  git clone git@github.com:dmfrey/hass-config.git
+                  cp -r hass-config/* /config
+                  cp -r hass-config/.git /config
+                  cp hass-config/.gitignore /config
+                  ls -la /config
+                else
+                  echo Fetching HASS Config repo
+                  cd /config
+                  git fetch origin
+                  git reset origin/main
+                  ls -la
+                fi
+          # git-sync:
+          #   env:
+          #     GITSYNC_REPO: https://github.com/dmfrey/hass-config
+          #     GITSYNC_REF: main
+          #     GITSYNC_PERIOD: 10s # 1 day
+          #     GITSYNC_ROOT: /config
+          #     GITSYNC_ADD_USER: ${UID}
+          #   image:
+          #     repository: registry.k8s.io/git-sync/git-sync
+          #     tag: v4.2.3@sha256:19cc7c317d125c5737ecb9a9159d00b5d97f39c45225c6483de365d62fc09fa8
+          #   restartPolicy: Always
+          #   resources:
+          #     requests:
+          #       cpu: 10m
+          #     limits:
+          #       memory: 128Mi
+          #   securityContext:
+          #     readOnlyRootFilesystem: true
+          #     allowPrivilegeEscalation: false
+          #     capabilities: { drop: ["ALL"] }
 
         containers:
           app:
@@ -323,9 +323,9 @@ spec:
           - path: /config/backups
             readOnly: false
 
-      tmp:
-        type: emptyDir
-        advancedMounts:
-          *app :
-            git-sync:
-              - path: /tmp
+      # tmp:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     *app :
+      #       git-sync:
+      #         - path: /tmp
