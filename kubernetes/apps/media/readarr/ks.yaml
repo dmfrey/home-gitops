@@ -20,7 +20,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
       VOLSYNC_CLAIM: readarr-config
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
