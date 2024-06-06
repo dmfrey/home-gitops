@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-bazarr
+  name: &app bazarr
   namespace: flux-system
 spec:
   targetNamespace: media
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname bazarr
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/media/bazarr/app"
   prune: true
   sourceRef:
@@ -20,9 +20,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
-      APP_UID: "1568"
-      APP_GID: "1568"
+      APP: *app
       VOLSYNC_CLAIM: bazarr-config
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom:

@@ -6,9 +6,9 @@ metadata:
   name: &app bazarr
   namespace: media
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
@@ -17,39 +17,28 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
-    
-    # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.1.0/charts/library/common/values.schema.json
-    defaultPodOptions:
-      enableServiceLinks: true
-      securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 65534
 
     controllers:
-      bazarr:
+      *app :
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -61,7 +50,7 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-              BAZARR__INSTANCE_NAME: Bazarr
+              BAZARR__INSTANCE_NAME: *app
               BAZARR__PORT: &port 6767
               BAZARR__APPLICATION_URL: https://bazarr.${SECRET_DOMAIN}
               BAZARR__LOG_LEVEL: info
@@ -82,12 +71,62 @@ spec:
               limits:
                 memory: 431Mi
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+          exporter:
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v2.0.1
+
+            args:
+              - bazarr
+              - --enable-additional-metrics
+
+            env:
+              URL: "http://localhost"
+              PORT: &metricsPort 9710
+              APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: BAZARR_API_KEY
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
     service:
       app:
-        controller: bazarr
+        controller: *app
         ports:
           http:
             port: *port
+            primary: true
+          metrics:
+            port: *metricsPort
 
     ingress:
       app:
@@ -115,7 +154,7 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
-          bazarr:
+          *app :
             app:
               - path: /config
 
@@ -128,16 +167,26 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/bazarr
-        globalMounts:
-          - path: /config/backup
-            readOnly: false
+        advancedMounts:
+          *app :
+            app:
+              - path: /config/backup
+                readOnly: false
+
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            app:
+              - path: /tmp
 
     serviceMonitor:
-      monitor:
-        serviceName: bazarr-monitor
+      metrics:
+        enabled: true
+        serviceName: *app
         endpoints:
-          - port: http
+          - port: metrics
             scheme: http
             path: /metrics
-            interval: 15m
-            scrapeTimeout: 2m
+            interval: 10m
+            scrapeTimeout: 10s
