@@ -35,7 +35,7 @@ spec:
     keepHistory: false
 
   values:
-    
+
     defaultPodOptions:
       securityContext:
         runAsUser: 568
@@ -47,10 +47,10 @@ spec:
           - 65534
 
     controllers:
-      
+
       prowlarr:
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -61,7 +61,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/prowlarr
-              tag: 1.18.0.4543
+              tag: 1.17.2.4511
 
             env:
               TZ: ${TIMEZONE}
@@ -102,13 +102,13 @@ spec:
           # sidecars:
           exporter:
             dependsOn: app
-            
-            image: 
+
+            image:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
-            
+
             args: ["prowlarr"]
-            
+
             env:
               - name: URL
                 value: "http://localhost"
@@ -120,11 +120,11 @@ spec:
                 value: true
               - name: ENABLE_UNKNOWN_QUEUE_ITEMS
                 value: false
-            
+
             ports:
               - name: metrics
-                containerPort: *metricsPort 
-            
+                containerPort: *metricsPort
+
     service:
       app:
         nameOverride: prowlarr
