@@ -27,7 +27,7 @@ spec:
   dependsOn:
     - name: cluster-apps-media-common
     - name: cluster-apps-media-common-mounts
-    - name: cluster-apps-lidarr
+    - name: lidarr
     - name: cluster-apps-sonarr
     - name: cluster-apps-radarr
-    - name: cluster-apps-readarr
+    - name: readarr
