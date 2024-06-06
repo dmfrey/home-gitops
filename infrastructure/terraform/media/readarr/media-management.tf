@@ -35,5 +35,4 @@ resource "readarr_root_folder" "books" {
   default_monitor_option      = "all"
   default_quality_profile_id  = 1
   is_calibre_library          = false
-  output_profile              = "default"
 }
