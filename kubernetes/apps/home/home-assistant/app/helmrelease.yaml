@@ -55,6 +55,52 @@ spec:
                 "gateway": ["192.168.50.1"]
               }]
 
+        initContainers:
+          # clone-repo:
+          #   image:
+          #     repository: alpine/git
+          #     tag: latest
+
+          #   command:
+          #     - "/bin/sh"
+          #     - -c
+          #     - |
+          #       if [ ! -d /config/.git ]; then
+          #         echo Initializing HASS Config repo
+          #         cd /tmp
+          #         git clone git@github.com:dmfrey/hass-config.git
+          #         cp -r hass-config/* /config
+          #         cp -r hass-config/.git /config
+          #         cp hass-config/.gitignore /config
+          #         ls -la /config
+          #       else
+          #         echo Fetching HASS Config repo
+          #         cd /config
+          #         git fetch origin
+          #         git reset origin/main
+          #         ls -la
+          #       fi
+          git-sync:
+            env:
+              GITSYNC_REPO: https://github.com/dmfrey/hass-config
+              GITSYNC_REF: main
+              GITSYNC_PERIOD: 10s # 1 day
+              GITSYNC_ROOT: /config
+              GITSYNC_ADD_USER: ${UID}
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.2.3@sha256:19cc7c317d125c5737ecb9a9159d00b5d97f39c45225c6483de365d62fc09fa8
+            restartPolicy: Always
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+
         containers:
           app:
             image:
@@ -68,20 +114,6 @@ spec:
                   secretKeyRef:
                     name: pg-home-assistant-app
                     key: uri
-              # - name: TZ
-              #   value: ${TIMEZONE}
-              # - name: HASS_POSTGRES_USER
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: pg-home-assistant-app
-              #       key: username
-              # - name: HASS_POSTGRES_PASS
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: pg-home-assistant-app
-              #       key: password
-              # - name: HASS_RECORDER_DB_URL
-              #   value: "postgresql://$(HASS_POSTGRES_USER):$(HASS_POSTGRES_PASS)@pg-home-assistant-rw/home-assistant"
 
             envFrom:
               - secretRef:
@@ -130,32 +162,6 @@ spec:
             env:
               TZ: ${TIMEZONE}
 
-        initContainers:
-          clone-repo:
-            image:
-              repository: alpine/git
-              tag: latest
-
-            command:
-              - "/bin/sh"
-              - -c
-              - |
-                if [ ! -d /config/.git ]; then
-                  echo Initializing HASS Config repo
-                  cd /tmp
-                  git clone git@github.com:dmfrey/hass-config.git
-                  cp -r hass-config/* /config
-                  cp -r hass-config/.git /config
-                  cp hass-config/.gitignore /config
-                  ls -la /config
-                else
-                  echo Fetching HASS Config repo
-                  cd /config
-                  git fetch origin
-                  git reset origin/main
-                  ls -la
-                fi
-
     service:
       app:
         nameOverride: *app
@@ -195,6 +201,7 @@ spec:
           - hosts:
               - *host
             secretName: home-assistant-tls-external
+
       code:
         className: external
         annotations:
@@ -217,67 +224,6 @@ spec:
               - *host-code
             secretName: hass-code-tls-external
 
-    persistence:
-      config:
-        existingClaim: ${VOLSYNC_CLAIM}
-        globalMounts:
-          - path: /config
-
-      hass-config:
-        enabled: true
-        type: configMap
-        name: hass-config
-        globalMounts:
-          - path: /config/configuration.yaml
-            subPath: configuration.yaml
-
-      ssh-config:
-        enabled: true
-        type: secret
-        name: home-assistant-deploy-key
-        globalMounts:
-          - path: /root/.ssh/config
-            subPath: ssh-config
-        defaultMode: 0600
-
-      ssh-privatekey:
-        enabled: true
-        type: secret
-        name: home-assistant-deploy-key
-        globalMounts:
-          - path: /root/.ssh/id_ed25519
-            subPath: ssh-privatekey
-        defaultMode: 0600
-
-      known-hosts:
-        enabled: true
-        type: secret
-        name: home-assistant-deploy-key
-        globalMounts:
-          - path: /root/.ssh/known_hosts
-            subPath: known-hosts
-        defaultMode: 0600
-
-      dot-gitconfig:
-        enabled: true
-        type: secret
-        name: home-assistant-deploy-key
-        globalMounts:
-          - path: /root/.gitconfig
-            subPath: dot-gitconfig
-        defaultMode: 0700
-
-      backups:
-        enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /homeassistant
-        globalMounts:
-          - path: /config/backups
-            readOnly: false
-
     serviceMonitor:
       app:
         enabled: true
@@ -292,3 +238,94 @@ spec:
               name: home-assistant-secret
               key: PROMETHEUS_TOKEN
 
+    persistence:
+      config:
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+          - path: /config
+
+      deploy-key:
+        type: secret
+        name: home-assistant-deploy-key
+        defaultMode: 256
+        advancedMounts:
+          *app :
+            git-sync:
+              - path: /etc/git-secret/ssh
+                subPath: ssh-privatekey
+                readOnly: true
+              - path: /etc/git-secret/known_hosts
+                subPath: known_hosts
+            app: &sshmounts
+              - path: /root/.ssh/id_ed25519
+                subPath: ssh-privatekey
+                readOnly: true
+              - path: /root/.ssh/known_hosts
+                subPath: known_hosts
+              - path: /root/.gitconfig
+                subPath: dot-gitconfig
+              - path: /root/.ssh/config
+                subPath: ssh-config
+            code: *sshmounts
+
+      hass-config:
+        enabled: true
+        type: configMap
+        name: hass-config
+        globalMounts:
+          - path: /config/configuration.yaml
+            subPath: configuration.yaml
+
+      # ssh-config:
+      #   enabled: true
+      #   type: secret
+      #   name: home-assistant-deploy-key
+      #   globalMounts:
+      #     - path: /root/.ssh/config
+      #       subPath: ssh-config
+      #   defaultMode: 0600
+
+      # ssh-privatekey:
+      #   enabled: true
+      #   type: secret
+      #   name: home-assistant-deploy-key
+      #   globalMounts:
+      #     - path: /root/.ssh/id_ed25519
+      #       subPath: ssh-privatekey
+      #   defaultMode: 0600
+
+      # known-hosts:
+      #   enabled: true
+      #   type: secret
+      #   name: home-assistant-deploy-key
+      #   globalMounts:
+      #     - path: /root/.ssh/known_hosts
+      #       subPath: known-hosts
+      #   defaultMode: 0600
+
+      # dot-gitconfig:
+      #   enabled: true
+      #   type: secret
+      #   name: home-assistant-deploy-key
+      #   globalMounts:
+      #     - path: /root/.gitconfig
+      #       subPath: dot-gitconfig
+      #   defaultMode: 0700
+
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${QNAP_ADDR}"
+            path: /homeassistant
+        globalMounts:
+          - path: /config/backups
+            readOnly: false
+
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            git-sync:
+              - path: /tmp
