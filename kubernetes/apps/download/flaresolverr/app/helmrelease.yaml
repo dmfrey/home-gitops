@@ -7,9 +7,9 @@ metadata:
   namespace: download
 
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
@@ -18,40 +18,33 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
 
     controllers:
-      flaresolverr:
-        replicas: 2
-        strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
+
+      *app :
 
         containers:
           app:
             image:
               repository: flaresolverr/flaresolverr
               tag: v3.3.19
-
-            ports:
-              - name: http
-                containerPort: &port 8191
 
             resources:
               requests:
@@ -61,8 +54,8 @@ spec:
                 memory: 300Mi
 
     service:
-      app:
-        controller: flaresolverr
+      *app :
+        controller: *app
         ports:
           http:
-            port: *port
+            port: 8191
