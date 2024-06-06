@@ -46,6 +46,12 @@ spec:
               repository: flaresolverr/flaresolverr
               tag: v3.3.19
 
+            env:
+              TZ: ${TIMEZONE}
+              TEST_URL: https://www.google.com
+              PROMETHEUS_ENABLED: "true"
+              PROMETHEUS_PORT: &metricsPort 8192
+
             resources:
               requests:
                 cpu: 50m
@@ -59,3 +65,15 @@ spec:
         ports:
           http:
             port: 8191
+          metrics:
+            port: *metricsPort
+
+    serviceMonitor:
+      metrics:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 10s
