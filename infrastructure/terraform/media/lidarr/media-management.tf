@@ -6,8 +6,8 @@ resource "lidarr_media_management" "settings" {
   watch_library_for_changes                   = true
   import_extra_files                          = true
   set_permissions                             = false
-  chmod_folder                                = "775"
-  chown_group                                 = "1568"
+  chmod_folder                                = "755"
+  chown_group                                 = "kah"
   skip_free_space_check                       = false
   minimum_free_space                          = 100
   download_propers_repacks                    = "preferAndUpgrade"

@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-lidarr
+  name: &app lidarr
   namespace: flux-system
 spec:
   targetNamespace: media
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname lidarr
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/media/lidarr/app"
   prune: true
   sourceRef:
@@ -20,9 +20,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
-      APP_UID: "1568"
-      APP_GID: "1568"
+      APP: *app
       VOLSYNC_CLAIM: lidarr-config
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
@@ -39,7 +37,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-lidarr-provision
+  name: lidarr-provision
   namespace: flux-system
 spec:
   interval: 15m
@@ -54,4 +52,4 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-tf-controller
-    - name: cluster-apps-lidarr
+    - name: lidarr
