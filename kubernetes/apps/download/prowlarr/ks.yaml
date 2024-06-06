@@ -21,8 +21,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      APP_UID: "568"
-      APP_GID: "568"
       VOLSYNC_CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom:

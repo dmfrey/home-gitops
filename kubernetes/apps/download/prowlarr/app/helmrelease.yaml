@@ -36,26 +36,13 @@ spec:
 
   values:
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 1568
-          - 65534
-
     controllers:
 
-      prowlarr:
+      *app :
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
-
-        replicas: 1
-        strategy: RollingUpdate
 
         containers:
           app:
@@ -65,7 +52,7 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-              PROWLARR__INSTANCE_NAME: Prowlarr
+              PROWLARR__INSTANCE_NAME: *app
               PROWLARR__PORT: &port 9696
               PROWLARR__AUTHENTICATION_METHOD: External
               PROWLARR__APPLICATION_URL: "https://prowlarr.${SECRET_DOMAIN}"
@@ -99,47 +86,63 @@ spec:
               limits:
                 memory: 431Mi
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
           # sidecars:
           exporter:
-            dependsOn: app
 
             image:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
 
-            args: ["prowlarr"]
+            args:
+              - *app
+              - --enable-additional-metrics
 
             env:
-              - name: URL
-                value: "http://localhost"
-              - name: CONFIG
-                value: "/config/config.xml"
-              - name: PORT
-                value: &metricsPort 9710
-              - name: ENABLE_ADDITIONAL_METRICS
-                value: true
-              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-                value: false
+              URL: "http://localhost"
+              CONFIG: "/config/config.xml"
+              PORT: &metricsPort 9710
 
-            ports:
-              - name: metrics
-                containerPort: *metricsPort
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
+        seccompProfile: { type: RuntimeDefault }
 
     service:
-      app:
-        nameOverride: prowlarr
-        controller: prowlarr
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
-      metrics:
-        controller: prowlarr
-        ports:
+            primary: true
           metrics:
             port: *metricsPort
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -178,10 +181,10 @@ spec:
     serviceMonitor:
       metrics:
         enabled: true
-        serviceName: prowlarr-metrics
+        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http
             path: /metrics
-            interval: 15m
-            scrapeTimeout: 2m
+            interval: 1m
+            scrapeTimeout: 10s
