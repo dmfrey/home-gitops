@@ -8,7 +8,7 @@ spec:
   targetNamespace: home
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname home-assistant
+      app.kubernetes.io/name: &app home-assistant
   path: "./kubernetes/apps/home/home-assistant/app"
   prune: true
   sourceRef:
@@ -20,7 +20,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
       GATUS_SUBDOMAIN: home
       APP_UID: "0"
       APP_GID: "0"

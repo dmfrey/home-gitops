@@ -62,20 +62,26 @@ spec:
               tag: 2024.6.0
 
             env:
-              - name: TZ
-                value: ${TIMEZONE}
-              - name: HASS_POSTGRES_USER
+              TZ: ${TIMEZONE}
+              HASS_RECORDER_DB_URL:
                 valueFrom:
                   secretKeyRef:
                     name: pg-home-assistant-app
-                    key: username
-              - name: HASS_POSTGRES_PASS
-                valueFrom:
-                  secretKeyRef:
-                    name: pg-home-assistant-app
-                    key: password
-              - name: HASS_RECORDER_DB_URL
-                value: "postgresql://$(HASS_POSTGRES_USER):$(HASS_POSTGRES_PASS)@pg-home-assistant-rw/home-assistant"
+                    key: uri
+              # - name: TZ
+              #   value: ${TIMEZONE}
+              # - name: HASS_POSTGRES_USER
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: pg-home-assistant-app
+              #       key: username
+              # - name: HASS_POSTGRES_PASS
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: pg-home-assistant-app
+              #       key: password
+              # - name: HASS_RECORDER_DB_URL
+              #   value: "postgresql://$(HASS_POSTGRES_USER):$(HASS_POSTGRES_PASS)@pg-home-assistant-rw/home-assistant"
 
             envFrom:
               - secretRef:
