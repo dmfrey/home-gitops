@@ -19,7 +19,7 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-cloudnative-pg
-    - name: dragonfly
+    - name: dragonfly-operator
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
