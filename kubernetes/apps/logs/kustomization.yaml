@@ -8,4 +8,4 @@ resources:
   - ./notification.yaml
   # Flux-Kustomizations
   - ./loki/ks.yaml
-  - ./promtail/ks.yaml
+  # - ./promtail/ks.yaml
