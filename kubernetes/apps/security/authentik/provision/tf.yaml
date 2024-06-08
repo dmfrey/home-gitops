@@ -86,7 +86,7 @@ spec:
           skip_path_regex: |
             ^/j/
             ^/join
-            ^/setup/*
+            ^/help
             ^/static/
         Alert-Manager:
           url: https://alert-manager.${SECRET_DOMAIN}
@@ -119,21 +119,21 @@ spec:
         #   group: Monitor
         #   client_id: gatus
         #   client_secret: ${GATUS_SSO_CLIENT_SECRET}
-        #   redirect_uris: 
+        #   redirect_uris:
         #     - https://status.${SECRET_DOMAIN}/authorization-code/callback
         Grafana:
           url: https://grafana.${SECRET_DOMAIN}
           group: Monitor
           client_id: grafana
           client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
-          redirect_uris: 
+          redirect_uris:
             - https://grafana.${SECRET_DOMAIN}/login/generic_oauth
         Spring-Dev:
           url: https://spring-dev-gateway.${SECRET_DOMAIN}
           group: Development
           client_id: spring-dev
           client_secret: ${SPRING_DEV_SSO_CLIENT_SECRET}
-          redirect_uris: 
+          redirect_uris:
             - https://spring-dev-gateway.${SECRET_DOMAIN}/login/oauth2/code/sso
     - name: groups
       value:

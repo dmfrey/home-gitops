@@ -29,6 +29,7 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: pg-blocky-app
 
         pod:
           topologySpreadConstraints:
