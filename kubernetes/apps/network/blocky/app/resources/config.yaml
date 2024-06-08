@@ -398,7 +398,7 @@ ports:
 # optional: logging configuration
 log:
   # optional: Log level (one from debug, info, warn, error). Default: info
-  level: info
+  level: debug
   # optional: Log format (text or json). Default: text
   format: text
   # optional: log timestamps. Default: true
