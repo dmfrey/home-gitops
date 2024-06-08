@@ -6,9 +6,9 @@ metadata:
   name: &app unpoller
   namespace: monitor
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
@@ -17,28 +17,28 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
-  
+
   values:
-  
+
     defaultPodOptions:
       annotations:
         secret.reloader.stakater.com/reload: unpoller-secret
-    
+
     controllers:
       unpoller:
 
@@ -50,13 +50,14 @@ spec:
             image:
               repository: ghcr.io/unpoller/unpoller
               tag: v2.11.2
-  
+
             env:
               TZ: ${TIMEZONE}
               UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_INFLUXDB_DISABLE: true
-    
+              UP_UNIFI_DEFAULT_SAVE_DPI: true
+
             envFrom:
               - secretRef:
                   name: unpoller-secret
@@ -74,7 +75,7 @@ spec:
         ports:
           http:
             port: 9130
-    
+
     serviceMonitor:
       monitor:
         serviceName: *app
