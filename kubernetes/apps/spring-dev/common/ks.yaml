@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app spring-dev-common
+  namespace: flux-system
+spec:
+  targetNamespace: spring-dev
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/apps/spring-dev/common/clusterissuer"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops

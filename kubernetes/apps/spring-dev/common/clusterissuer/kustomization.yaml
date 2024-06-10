@@ -2,10 +2,6 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: spring-dev
 resources:
-  # Pre Flux-Kustomizations
-  - ./namespace.yaml
-  # Flux-Kustomizations
-  - ./common/ks.yaml
-  - ./gateway/ks.yaml
-  - ./time-service/ks.yaml
+  - ./spring-dev-clusterissuer.yaml
