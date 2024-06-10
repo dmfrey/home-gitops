@@ -6,3 +6,4 @@ resources:
   - ./certificate.yaml
   - ./service.yaml
   - ./deployment.yaml
+  - ./servicemonitor.yaml

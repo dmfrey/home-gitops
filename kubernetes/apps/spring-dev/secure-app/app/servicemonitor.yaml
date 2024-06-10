@@ -5,8 +5,12 @@ metadata:
   name: secure-app
 spec:
   endpoints:
-    - port: http
+    - port: https
       path: '/actuator/prometheus'
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true
   namespaceSelector:
     matchNames:
       - spring-dev
