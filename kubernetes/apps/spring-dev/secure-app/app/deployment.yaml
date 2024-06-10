@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: secure-app-bundle
+  name: secure-app
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: secure-app-bundle
+      app.kubernetes.io/name: secure-app
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: secure-app-bundle
+        app.kubernetes.io/name: secure-app
     spec:
       containers:
         - image: ghcr.io/dmfrey/secure-app:1.1.0
-          name: secure-app-bundle
+          name: secure-app
           ports:
             - containerPort: 8443
               name: https
