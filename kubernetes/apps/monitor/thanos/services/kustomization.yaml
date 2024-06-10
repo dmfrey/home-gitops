@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: monitor
 resources:
   - ./secret-thanos.sops.yaml
-  - ./secret-thanos-redis.sops.yaml
+  # - ./secret-thanos-redis.sops.yaml
   - ./thanos-object-claim-delete.yaml
-  - ./redis.yaml
+  - ./thanos-dragonfly-cluster.yaml
+  - ./thanos-dragonfly-podmonitor.yaml
+  # - ./redis.yaml
