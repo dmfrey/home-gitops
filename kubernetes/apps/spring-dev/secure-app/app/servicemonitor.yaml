@@ -1,0 +1,15 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: secure-app
+spec:
+  endpoints:
+    - port: http
+      path: '/actuator/prometheus'
+  namespaceSelector:
+    matchNames:
+      - spring-dev
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: secure-app

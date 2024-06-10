@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-app-bundle
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: secure-app-bundle
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: secure-app-bundle
+    spec:
+      containers:
+        - image: ghcr.io/dmfrey/secure-app
+          tag: 1.1.0
+          name: secure-app-bundle
+          ports:
+            - containerPort: 8443
+              name: https
+          env:
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: jks-password-secret
+            - name: CERT_PATH
+              value: /opt/secret
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          volumeMounts:
+            - mountPath: /opt/secret
+              name: cert
+      volumes:
+        - name: cert
+          secret:
+            secretName: secure-app-cert
+      automountServiceAccountToken: false
