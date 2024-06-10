@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+configMapGenerator:
+  - name: dragonflydb-dashboard
+    files:
+      - dragonflydb-dashboard.json=https://raw.githubusercontent.com/Pothulapati/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Datastore
+  labels:
+    grafana.io/dashboard: "true"
+
