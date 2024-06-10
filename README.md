@@ -44,7 +44,7 @@ flowchart TD
   id01>Kustomization: cluster] ==>|Creates| id02>Kustomization: cluster-apps]
   id02 ==>|Creates| id06>Kustomization: cluster-apps-rook-ceph]
   id02 ==>|Creates| id07>Kustomization: cluster-apps-rook-ceph-cluster]
-  id02 ==>|Creates| id08>Kustomization: cluster-apps-cloudnative-pg]
+  id02 ==>|Creates| id08>Kustomization: cloudnative-pg]
   id02 ==>|Creates| id09>Kustomization: cluster-apps-authentik-database]
   id02 ==>|Creates| id10>Kustomization: cluster-apps-authentik]
   id06 ==>|Creates| id11(HelmRelease: rook-ceph-operator)

@@ -33,7 +33,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-cloudnative-pg
+    - name: cloudnative-pg
     - name: mosquitto
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync

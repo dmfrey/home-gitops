@@ -18,10 +18,10 @@ spec:
       namespace: security
   postBuild:
     substituteFrom: []
-  decryption: 
+  decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-cloudnative-pg
+    - name: cloudnative-pg
     - name: cluster-apps-rook-ceph-cluster
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -39,7 +39,7 @@ spec:
   wait: false
   postBuild:
     substituteFrom: []
-  decryption: 
+  decryption:
     provider: sops
   dependsOn:
     - name: cluster-apps-authentik-database
@@ -69,4 +69,4 @@ spec:
   dependsOn:
     - name: cluster-apps-authentik
     - name: cluster-apps-plex
- 
+
