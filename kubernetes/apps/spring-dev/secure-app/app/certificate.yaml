@@ -21,5 +21,5 @@ spec:
     - localhost
   secretName: secure-app-cert
   commonName: secure-app-bundle
-  duration: 15m
+  duration: 1h
   renewBefore: 5m
