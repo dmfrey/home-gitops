@@ -10,4 +10,4 @@ resources:
   # - ./otelcol-dm.yaml
   # - ./otelcol-dp.yaml
   # - ./otelcol-logs-dm.yaml
-  # - ./otelcol-traces-dm.yaml
+  - ./otelcol-traces-dm.yaml

@@ -1,9 +1,29 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  name: otelcol-traces
+  name: otel-collector-traces
 spec:
+
   mode: daemonset
+  image: otel/opentelemetry-collector-contrib:0.102.1
+
+  env:
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: K8S_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+  serviceAccount: collector
+
   config: |
     presets:
       # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
