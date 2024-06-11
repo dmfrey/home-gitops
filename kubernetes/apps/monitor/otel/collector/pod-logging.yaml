@@ -132,7 +132,7 @@ spec:
           field: resource["job"]
           value: "pod-logging"
         - type: move
-          from: attributes.servicename
+          from: attributes.service_name
           to: resource["service_name"]
         retry_on_failure:
           enabled: true
