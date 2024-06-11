@@ -6,7 +6,7 @@ namespace: monitor
 resources:
   # - ./helmrelease.yaml
   - ./rback.yaml
-  - ./pod-logging.yaml
+  # - ./pod-logging.yaml
   # - ./otelcol-dm.yaml
   # - ./otelcol-dp.yaml
   # - ./otelcol-logs-dm.yaml
