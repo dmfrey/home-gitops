@@ -2,11 +2,10 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-grafana-backup
-  namespace: monitor
+  name: pg-time-service-backup
 spec:
   schedule: "@weekly"
   immediate: true
   backupOwnerReference: self
   cluster:
-    name: pg-grafana
+    name: pg-time-service
