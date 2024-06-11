@@ -126,9 +126,6 @@ spec:
           to: body
           type: move
         - type: add
-          field: resource["cluster"]
-          value: 'main-lyh'
-        - type: add
           field: resource["job"]
           value: "pod-logging"
         retry_on_failure:
