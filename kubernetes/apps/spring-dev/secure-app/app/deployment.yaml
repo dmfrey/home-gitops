@@ -27,6 +27,11 @@ spec:
               value: /opt/secret
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+            - name: MANAGEMENT_TRACING_ENABLED
+              value: "true"
+            - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
+              value: http://otel-collector-traces-collector.monitor.svc.cluster.local:4318/v1/traces
+
           volumeMounts:
             - mountPath: /opt/secret
               name: cert
