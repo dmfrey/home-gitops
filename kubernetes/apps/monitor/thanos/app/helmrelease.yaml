@@ -142,7 +142,10 @@ spec:
       # extraEnvVarsSecret: "thanos-ceph-bucket"
       logLevel: debug
       replicaCount: 3
-      # config: *config
+      config:
+        type: REDIS
+        config:
+          addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
       containerPorts:
         http: 10902
         grpc: 10901
