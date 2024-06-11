@@ -122,9 +122,6 @@ spec:
         - from: attributes.uid
           to: resource["k8s.pod.uid"]
           type: move
-        - from: attributes.application
-          to: resource["application"]
-          type: move
         - from: attributes.log
           to: body
           type: move
