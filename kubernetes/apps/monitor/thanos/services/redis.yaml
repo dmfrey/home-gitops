@@ -17,12 +17,11 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &name thanos-redis
-  namespace: monitor
 spec:
-  
+
   interval: 15m
   timeout: 15m
-  
+
   chart:
     spec:
       chart: redis
@@ -112,4 +111,3 @@ spec:
       serviceMonitor:
         enabled: true
         interval: 1m
-      
