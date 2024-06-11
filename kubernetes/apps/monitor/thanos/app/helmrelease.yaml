@@ -87,11 +87,11 @@ spec:
     queryFrontend:
       enabled: true
       replicaCount: 3
-      config:
-        type: REDIS
-        config:
-          addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
-          master_name: thanos-redis
+      # config:
+      #   type: REDIS
+      #   config:
+      #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
+      #     master_name: thanos-redis
       ingress:
         enabled: true
         annotations:
