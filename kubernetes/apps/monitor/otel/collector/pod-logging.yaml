@@ -201,8 +201,8 @@ spec:
     exporters:
       debug:
         verbosity: detailed
-      otlphttp/loki:
-        endpoint: "http://loki-backend-headless.logs.svc.cluster.local:3100/otlp/v1/logs"
+      otlphttp:
+        endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/otlp/v1/logs
 
     service:
       extensions:
@@ -217,7 +217,7 @@ spec:
           - resource
           - batch
           exporters:
-          - otlphttp/loki
+          - otlphttp
       telemetry:
         metrics:
           level: detailed
