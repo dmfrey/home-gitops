@@ -110,9 +110,6 @@ spec:
         - from: attributes.container_name
           to: resource["k8s.container.name"]
           type: move
-        - from: attributes.container_name
-          to: resource["service"]
-          type: move
         - from: attributes.namespace
           to: resource["k8s.namespace.name"]
           type: move
