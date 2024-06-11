@@ -201,17 +201,9 @@ spec:
     exporters:
       debug:
         verbosity: detailed
-      loki:
+      otlphttp/loki:
         endpoint: "http://loki-backend-headless.logs.svc.cluster.local:3100/otlp/v1/logs"
-        retry_on_failure:
-          initial_interval: 5s
-          max_interval: 15s
-          max_elapsed_time: 30s
-        sending_queue:
-          enabled: true
-          storage: file_storage
-          num_consumers: 5
-          queue_size: 300
+
     service:
       extensions:
       - health_check
@@ -225,7 +217,7 @@ spec:
           - resource
           - batch
           exporters:
-          - loki
+          - otlphttp/loki
       telemetry:
         metrics:
           level: detailed
