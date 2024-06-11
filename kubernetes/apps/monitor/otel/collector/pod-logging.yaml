@@ -185,6 +185,10 @@ spec:
             key: loki.format
             value: raw
 
+          - action: upsert
+            from_attribute: k8s.pod.label.app.kubernetes.io/name
+            key: service.name
+
     extensions:
 
       health_check:
