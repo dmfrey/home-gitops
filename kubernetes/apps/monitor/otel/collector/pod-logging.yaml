@@ -40,6 +40,10 @@ spec:
         fieldRef:
           fieldPath: status.podIP
 
+  securityContext:
+    runAsUser: 0
+    runAsGroup: 0
+
   config: |
     receivers:
       filelog:
