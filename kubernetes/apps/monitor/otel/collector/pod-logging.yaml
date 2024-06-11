@@ -127,7 +127,7 @@ spec:
           type: move
         - type: add
           field: resource["cluster"]
-          value: 'homelab-k8s-001'
+          value: '${CLUSTER_NAME}'
         - type: add
           field: resource["job"]
           value: "pod-logging"
