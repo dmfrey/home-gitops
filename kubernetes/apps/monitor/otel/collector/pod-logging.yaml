@@ -202,7 +202,7 @@ spec:
       debug:
         verbosity: detailed
       loki:
-        endpoint: "http://loki-backend-headless.logs.svc.cluster.local:3100/otlp"
+        endpoint: "http://loki-backend-headless.logs.svc.cluster.local:3100/otlp/v1/logs"
         retry_on_failure:
           initial_interval: 5s
           max_interval: 15s
