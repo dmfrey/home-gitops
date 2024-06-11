@@ -187,7 +187,7 @@ spec:
 
           - action: insert
             from_attribute: k8s.pod.label.app.kubernetes.io/name
-            key: service.name
+            key: app
 
     extensions:
 
