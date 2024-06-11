@@ -3,27 +3,33 @@ apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
   name: pod-logging
+
 spec:
+
   mode: daemonset
   image: otel/opentelemetry-collector-contrib:0.96.0
+
   volumeMounts:
-    - name: hostvarlog
-      mountPath: /host/var/log
+    - name: varlogpods
+      mountPath: /var/log/pods
     - name: scratchdir
       mountPath: /var/lib/otelcol
+
   volumes:
-    - name: hostvarlog
+    - name: varlogpods
       hostPath:
-        path: /var/log
-        type: Directory
+        path: /var/log/pods
     - name: scratchdir
       emptyDir:
         sizeLimit: 10Gi
+
   resources:
     limits:
       cpu: 500m
       memory: 4Gi
+
   serviceAccount: collector
+
   env:
     - name: K8S_NODE_NAME
       valueFrom:
@@ -33,13 +39,14 @@ spec:
       valueFrom:
         fieldRef:
           fieldPath: status.podIP
+
   config: |
     receivers:
       filelog:
         include:
-        - /host/var/log/pods/*/*/*.log
+        - /var/log/pods/*/*/*.log
         exclude:
-        - /host/var/log/pods/*/otc-container/*.log
+        - /var/log/pods/*/otc-container/*.log
         include_file_name: false
         include_file_path: true
         operators:
