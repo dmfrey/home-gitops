@@ -161,6 +161,10 @@ spec:
             - k8s.node.name
             - k8s.pod.start_time
             - container.id
+          labels:
+            - tag_name: service
+              key: app.kubernetes.io/name
+              from: pod
         pod_association:
           - sources:
               - from: resource_attribute
