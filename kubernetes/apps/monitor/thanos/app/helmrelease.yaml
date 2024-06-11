@@ -8,7 +8,6 @@ metadata:
 spec:
 
   interval: 15m
-  timeout: 15m
 
   chart:
     spec:
@@ -87,10 +86,10 @@ spec:
     queryFrontend:
       enabled: true
       replicaCount: 3
-      config:
-        type: REDIS
-        config:
-          addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
+      # config:
+      #   type: REDIS
+      #   config:
+      #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
       ingress:
         enabled: true
         annotations:
