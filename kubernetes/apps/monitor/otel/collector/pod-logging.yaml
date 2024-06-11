@@ -125,6 +125,9 @@ spec:
         - from: attributes.log
           to: body
           type: move
+        - from: resource["k8s.pod.label.app.kubernetes.io/name"]
+          to: resource["application"]
+          type: move
         - type: add
           field: resource["cluster"]
           value: '${CLUSTER_NAME}'
