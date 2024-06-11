@@ -127,7 +127,7 @@ spec:
           type: move
         - from: attributes.cluster
           to: resource["cluster"]
-          type: add
+          type: move
         - type: add
           field: resource["job"]
           value: "pod-logging"
