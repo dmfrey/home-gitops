@@ -30,8 +30,17 @@ spec:
   uninstall:
     keepHistory: false
 
-  # values:
+  values:
 
-  #   manager:
-  #     collectorImage:
-  #       repository: otel/opentelemetry-collector-contrib
+    manager:
+      collectorImage:
+        repository: otel/opentelemetry-collector-k8s
+
+    admissionWebhooks:
+      certManager:
+        create: false
+
+      autoGenerateCert:
+        enabled: false
+
+
