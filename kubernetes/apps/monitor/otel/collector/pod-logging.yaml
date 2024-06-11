@@ -125,9 +125,9 @@ spec:
         - from: attributes.log
           to: body
           type: move
-        - from: attributes.cluster
-          to: resource["cluster"]
-          type: move
+        - type: add
+          field: resource["cluster"]
+          value: 'homelab-k8s-001'
         - type: add
           field: resource["job"]
           value: "pod-logging"
