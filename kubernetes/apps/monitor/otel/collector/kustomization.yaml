@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: monitor
 resources:
   # - ./helmrelease.yaml
-  - ./rback.yaml
+  - ./rbac.yaml
   # - ./pod-logging.yaml
   # - ./otelcol-dm.yaml
   # - ./otelcol-dp.yaml
