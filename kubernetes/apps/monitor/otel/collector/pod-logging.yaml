@@ -202,7 +202,7 @@ spec:
       debug:
         verbosity: detailed
       otlphttp:
-        endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/otlp/v1/logs
+        endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/otlp
 
     service:
       extensions:
