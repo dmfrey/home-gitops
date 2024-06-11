@@ -50,7 +50,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/wizarrrr/wizarr
               tag: 4.1.1
@@ -81,7 +81,7 @@ spec:
             port: &port 5690
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
