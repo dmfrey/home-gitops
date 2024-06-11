@@ -125,9 +125,6 @@ spec:
         - from: attributes.log
           to: body
           type: move
-        - from: attributes.service
-          to: service
-          type: move
         - type: add
           field: resource["cluster"]
           value: '${CLUSTER_NAME}'
