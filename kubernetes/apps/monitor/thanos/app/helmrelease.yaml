@@ -18,19 +18,19 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-  
+
   install:
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
- 
+
   valuesFrom:
     - targetPath: objstoreConfig.config.bucket
       kind: ConfigMap
@@ -54,7 +54,7 @@ spec:
       valuesKey: AWS_SECRET_ACCESS_KEY
 
   values:
-  
+
     objstoreConfig:
       type: s3
       config:
@@ -87,15 +87,11 @@ spec:
     queryFrontend:
       enabled: true
       replicaCount: 3
-      # config: &config |-
-      #   type: REDIS
-      #   config:
-      #     addr: >-
-      #       thanos-redis-node-0.thanos-redis-headless.monitor.svc.cluster.local:6379,
-      #       thanos-redis-node-1.thanos-redis-headless.monitor.svc.cluster.local:6379,
-      #       thanos-redis-node-2.thanos-redis-headless.monitor.svc.cluster.local:6379
-      #     db: 13
-      #     master_name: thanos-redis
+      config: &config |-
+        type: REDIS
+        config:
+          addr: thanos-dragonfly-cluster.monitor.svc.cluster.local:6379,
+          master_name: thanos-redis
       ingress:
         enabled: true
         annotations:
