@@ -226,7 +226,6 @@ spec:
           - batch
           exporters:
           - otlphttp
-          - debug
       telemetry:
         metrics:
           level: detailed
