@@ -37,7 +37,7 @@ spec:
       configmap.reloader.stakater.com/reload: otel-collector-opentelemetry-collector-agent
 
     image:
-      repository: otel/opentelemetry-collector-k8s
+      repository: otel/opentelemetry-collector-contrib
 
     presets:
       # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
@@ -119,8 +119,8 @@ spec:
         #   namespace: default
 
         # Data sources: metrics
-        # prometheusremotewrite:
-        #   endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+        prometheusremotewrite:
+          endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
 
         # Data sources: traces
         # zipkin:
@@ -133,10 +133,10 @@ spec:
             processors: [ memory_limiter, batch ]
             exporters: [ otlphttp/tempo ]
 
-          # metrics:
-          #   receivers: [ prometheus ]
-          #   processors: [ memory_limiter, batch ]
-          #   exporters: [ prometheusremotewrite ]
+          metrics:
+            receivers: [ prometheus ]
+            processors: [ memory_limiter, batch ]
+            exporters: [ prometheusremotewrite ]
 
           logs:
             receivers: [ filelog ]
