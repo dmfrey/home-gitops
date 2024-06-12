@@ -43,6 +43,8 @@ spec:
       # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
       kubernetesAttributes:
         enabled: true
+        extractAllPodLabels: true
+        extractAllPodAnnotations: true
       # enables the kubeletstatsreceiver and adds it to the metrics pipelines
       kubeletMetrics:
         enabled: true
@@ -50,6 +52,7 @@ spec:
       logsCollection:
         enabled: true
         includeCollectorLogs: true
+        storeCheckpoints: true
       hostMetrics:
         enabled: true
 
@@ -130,13 +133,13 @@ spec:
             processors: [ memory_limiter, batch ]
             exporters: [ otlphttp/tempo ]
 
-          # metrics:
+          metrics:
           #   receivers: [ prometheus ]
           #   processors: [ memory_limiter, batch ]
           #   exporters: [ prometheusremotewrite ]
 
           logs:
-            # receivers: [ otlp ]
+            receivers: [ filelog ]
             processors: [ memory_limiter, batch ]
             exporters: [ otlphttp/loki ]
 
