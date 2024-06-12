@@ -163,13 +163,6 @@ spec:
             - container.id
             - service.name
             - service.version
-          labels:
-            - tag_name: service.name
-              key: app.kubernetes.io/name
-              from: pod
-            - tag_name: service.version
-              key: app.kubernetes.io/version
-              from: pod
         pod_association:
           - sources:
               - from: resource_attribute
