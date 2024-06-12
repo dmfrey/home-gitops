@@ -36,8 +36,8 @@ spec:
     annotations:
       configmap.reloader.stakater.com/reload: otel-collector-opentelemetry-collector-agent
 
-    # image:
-    #   repository: otel/opentelemetry-collector-contrib
+    image:
+      repository: otel/opentelemetry-collector-k8s
 
     presets:
       # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
