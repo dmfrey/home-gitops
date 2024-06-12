@@ -113,7 +113,7 @@ spec:
             enabled: true
           split_queries_by_interval: 1h
           allow_structured_metadata: true
-          discover_service_name: []
+          # discover_service_name: []
 
         compactor:
           working_directory: /var/loki/compactor/retention
