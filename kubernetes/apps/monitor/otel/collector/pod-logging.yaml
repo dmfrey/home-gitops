@@ -161,8 +161,6 @@ spec:
             - k8s.node.name
             - k8s.pod.start_time
             - container.id
-            - service.name
-            - service.version
         pod_association:
           - sources:
               - from: resource_attribute
