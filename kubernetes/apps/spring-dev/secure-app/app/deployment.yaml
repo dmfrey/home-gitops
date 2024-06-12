@@ -30,7 +30,7 @@ spec:
             - name: MANAGEMENT_TRACING_ENABLED
               value: "true"
             - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
-              value: http://otel-collector-traces-collector.monitor.svc.cluster.local:4318/v1/traces
+              value: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/traces
 
           volumeMounts:
             - mountPath: /opt/secret
