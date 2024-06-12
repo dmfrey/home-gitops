@@ -133,7 +133,7 @@ spec:
             processors: [ memory_limiter, batch ]
             exporters: [ otlphttp/tempo ]
 
-          metrics:
+          # metrics:
           #   receivers: [ prometheus ]
           #   processors: [ memory_limiter, batch ]
           #   exporters: [ prometheusremotewrite ]
