@@ -26,7 +26,7 @@ spec:
       batch: {}
     exporters:
       otlphttp:
-        endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/oltp
+        endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/oltp
     service:
       pipelines:
         logs:
