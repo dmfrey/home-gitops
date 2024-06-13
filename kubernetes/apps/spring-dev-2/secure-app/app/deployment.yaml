@@ -47,4 +47,4 @@ spec:
           secret:
             secretName: secure-app-cert
 
-      automountServiceAccountToken: false
+      # automountServiceAccountToken: false
