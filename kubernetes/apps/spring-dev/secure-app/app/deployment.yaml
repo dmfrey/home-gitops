@@ -12,11 +12,9 @@ spec:
         app.kubernetes.io/name: secure-app
     spec:
       containers:
-        - image: ghcr.io/dmfrey/secure-app:1.1.1
+        - image: ghcr.io/dmfrey/secure-app:1.1.2
           name: secure-app
-          ports:
-            - containerPort: 8443
-              name: https
+
           env:
             - name: PASSWORD
               valueFrom:
@@ -31,12 +29,20 @@ spec:
               value: "true"
             - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
               value: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/traces
+            - name: MANAGEMENT_OTLP_METRICS_EXPORT_URL
+              value: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/metrics
+
+          ports:
+            - containerPort: 8443
+              name: https
 
           volumeMounts:
             - mountPath: /opt/secret
               name: cert
+
       volumes:
         - name: cert
           secret:
             secretName: secure-app-cert
+
       automountServiceAccountToken: false
