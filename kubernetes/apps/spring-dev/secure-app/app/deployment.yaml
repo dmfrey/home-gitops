@@ -12,7 +12,7 @@ spec:
         app.kubernetes.io/name: secure-app
     spec:
       containers:
-        - image: ghcr.io/dmfrey/secure-app:1.1.0
+        - image: ghcr.io/dmfrey/secure-app:1.1.1
           name: secure-app
           ports:
             - containerPort: 8443
