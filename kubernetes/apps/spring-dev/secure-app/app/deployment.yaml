@@ -31,6 +31,8 @@ spec:
               value: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/traces
             - name: MANAGEMENT_OTLP_METRICS_EXPORT_URL
               value: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/metrics
+            - name: DEBUG
+              value: "true"
 
           ports:
             - containerPort: 8443
