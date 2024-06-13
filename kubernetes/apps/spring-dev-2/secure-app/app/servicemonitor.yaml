@@ -8,7 +8,7 @@ spec:
     - port: https
       path: '/actuator/prometheus'
       scheme: https
-      # bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
       tlsConfig:
         ca:
           secret:
