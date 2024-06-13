@@ -8,12 +8,16 @@ spec:
     - port: https
       path: '/actuator/prometheus'
       scheme: https
-      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      # bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
       tlsConfig:
-        insecureSkipVerify: true
+        ca:
+          secret:
+            name: secure-app-cert
+            key: tls.key
+        serverName: secure-app.spring-dev-2.svc.cluster.local
   namespaceSelector:
     matchNames:
-      - spring-dev
+      - spring-dev-2
   selector:
     matchLabels:
       app.kubernetes.io/name: secure-app
