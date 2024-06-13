@@ -17,9 +17,9 @@ spec:
     algorithm: ECDSA
     size: 256
   dnsNames:
-    - secure-app-bundle
+    - secure-app.spring-dev-2.svc.cluster.local
     - localhost
   secretName: secure-app-cert
-  commonName: secure-app-bundle
+  commonName: secure-app
   duration: 1h
   renewBefore: 5m
