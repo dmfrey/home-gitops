@@ -217,7 +217,7 @@ caching:
   # duration how long a response must be cached (min value).
   # If <=0, use response's TTL, if >0 use this value, if TTL is smaller
   # Default: 0
-  minTime: 15m
+  minTime: 0
   # duration how long a response must be cached (max value).
   # If <0, do not cache responses
   # If 0, use TTL
