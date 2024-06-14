@@ -279,9 +279,13 @@ queryLog:
   # optional: Time between the creation attempts, default: 2s
   creationCooldown: 2s
   # optional: Which fields should be logged. You can choose one or more from: clientIP, clientName, responseReason, responseAnswer, question, duration. If not defined, it logs all fields
-  # fields:
-  #   - clientIP
-  #   - duration
+  fields:
+    - clientIP
+    - clientName
+    - responseReason
+    - responseAnswer
+    - question
+    - duration
   # optional: Interval to write data in bulk to the external database, default: 30s
   flushInterval: 30s
 
