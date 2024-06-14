@@ -69,7 +69,7 @@ spec:
           check_interval: 5s
           limit_percentage: 80
           spike_limit_percentage: 25
-        resources:
+        resource:
           attributes:
             - action: insert
               key: service_name
