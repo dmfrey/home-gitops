@@ -130,9 +130,6 @@ spec:
           delete_request_store: s3
           retention_enabled: true
 
-        queryFrontend:
-          replicas: 3
-
         query_scheduler:
           max_outstanding_requests_per_tenant: 4096
 
@@ -165,8 +162,6 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
-          # nginx.ingress.kubernetes.io/whitelist-source-range: |
-          #   172.22.0.0/12,192.168.0.0/16
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:loki"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
