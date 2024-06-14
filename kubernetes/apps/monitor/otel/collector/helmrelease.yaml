@@ -82,7 +82,7 @@ spec:
 
             - action: upsert
               key: app
-              from_attribute: service.name
+              from_attribute: app.kubernetes.io/name
 
       receivers:
 
