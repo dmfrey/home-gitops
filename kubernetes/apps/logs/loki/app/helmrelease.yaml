@@ -194,6 +194,7 @@ spec:
 
     monitoring:
       dashboards:
+        enabled: true
         annotations:
           grafana.io/folder: Loki
         labels:
