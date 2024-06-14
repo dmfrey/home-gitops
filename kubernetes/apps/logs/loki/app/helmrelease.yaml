@@ -130,6 +130,9 @@ spec:
           delete_request_store: s3
           retention_enabled: true
 
+        queryFrontend:
+          replicas: 3
+
         query_scheduler:
           max_outstanding_requests_per_tenant: 4096
 
