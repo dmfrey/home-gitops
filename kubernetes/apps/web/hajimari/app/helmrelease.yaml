@@ -32,12 +32,12 @@ spec:
 
   uninstall:
     keepHistory: false
-  
+
   values:
 
     env:
       TZ: ${TIMEZONE}
-    
+
     hajimari:
       title: Portal
       lightTheme: espresso
@@ -63,13 +63,15 @@ spec:
           - flux-system
           - gateway
           - home
+          - logs
           - media
           - monitor
           - network
           - security
           - spring-dev
           - storage
-    
+          - trace
+
     ingress:
       main:
         enabled: true
@@ -88,15 +90,15 @@ spec:
           - hosts:
               - *host
             secretName: hajimari-tls-external
-    
+
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
-    
+
     persistence:
       data:
         enabled: true
         type: emptyDir
-    
+
     resources:
       requests:
         cpu: 100m
