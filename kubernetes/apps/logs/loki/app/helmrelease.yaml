@@ -162,8 +162,8 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/whitelist-source-range: |
-            172.22.0.0/12,192.168.0.0/16
+          # nginx.ingress.kubernetes.io/whitelist-source-range: |
+          #   172.22.0.0/12,192.168.0.0/16
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:loki"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
