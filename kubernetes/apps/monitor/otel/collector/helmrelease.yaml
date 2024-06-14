@@ -69,6 +69,12 @@ spec:
           check_interval: 5s
           limit_percentage: 80
           spike_limit_percentage: 25
+        resources:
+          attributes:
+            - action: insert
+              key: service_name
+              from_attribute: service.name
+
 
       receivers:
 
