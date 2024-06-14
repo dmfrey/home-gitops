@@ -55,7 +55,10 @@ spec:
           group: Home
         Zigbee2Mqtt:
           url: https://zigbee2mqtt.${SECRET_DOMAIN}
-          group: Media
+          group: Home
+        Loki:
+          url: https://loki.${SECRET_DOMAIN}
+          group: Logs
         Bazarr:
           url: https://bazarr.${SECRET_DOMAIN}
           group: Media
@@ -93,9 +96,6 @@ spec:
           group: Monitor
         Gatus:
           url: https://status.${SECRET_DOMAIN}
-          group: Monitor
-        Loki:
-          url: https://loki.${SECRET_DOMAIN}
           group: Monitor
         Prometheus:
           url: https://prometheus.${SECRET_DOMAIN}
