@@ -74,14 +74,14 @@ spec:
 
             - action: insert
               key: loki.resource.labels
-              value: service_name, k8s.pod.uid, k8s.pod.ip, k8s.pod.name, k8s.deployment.name, k8s.namespace.name, cluster, job, k8s.container.name, k8s.node.name
+              value: service, k8s.pod.uid, k8s.pod.ip, k8s.pod.name, k8s.deployment.name, k8s.namespace.name, cluster, job, k8s.container.name, k8s.node.name
 
             - action: insert
               key: loki.format
               value: json
 
             - action: upsert
-              key: service_name
+              key: service
               from_attribute: app.kubernetes.io/name
 
       receivers:
