@@ -139,17 +139,17 @@ spec:
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
-            processors: [ memory_limiter, batch ]
+            processors: [ memory_limiter, batch, resource ]
             exporters: [ otlphttp/tempo ]
 
           metrics:
             receivers: [ prometheus ]
-            processors: [ memory_limiter, batch ]
+            processors: [ memory_limiter, batch, resource ]
             exporters: [ prometheusremotewrite ]
 
           logs:
             receivers: [ filelog ]
-            processors: [ memory_limiter, batch ]
+            processors: [ memory_limiter, batch, resource ]
             exporters: [ otlphttp/loki ]
 
     service:
