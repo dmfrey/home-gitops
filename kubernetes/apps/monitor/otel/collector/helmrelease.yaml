@@ -71,13 +71,13 @@ spec:
           spike_limit_percentage: 25
         resource:
           attributes:
-            - action: insert
-              key: service_name
-              from_attribute: service.name
+            # - action: insert
+            #   key: service_name
+            #   from_attribute: service.name
 
             - action: insert
               key: loki.resource.labels
-              value: service_name, k8s.pod.uid, k8s.pod.ip, k8s.pod.name, k8s.deployment.name, k8s.namespace.name, cluster, job, k8s.container.name, k8s.node.name, app_kubernetes_io_name
+              value: k8s.pod.uid, k8s.pod.ip, k8s.pod.name, k8s.deployment.name, k8s.namespace.name, cluster, job, k8s.container.name, k8s.node.name, app_kubernetes_io_name
 
       receivers:
 
