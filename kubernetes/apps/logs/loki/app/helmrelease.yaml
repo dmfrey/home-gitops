@@ -80,14 +80,9 @@ spec:
 
       storage:
         type: s3
-        # bucketNames:
-        #   chunks: logs/chunks
-        #   ruler: logs/ruler
-        #   admin: logs/admin
         s3:
           s3ForcePathStyle: true
           insecure: true
-          # s3: http://${QNAP_ADDR}:9000
 
       structuredConfig:
         auth_enabled: false
@@ -113,7 +108,7 @@ spec:
             enabled: true
           split_queries_by_interval: 1h
           allow_structured_metadata: true
-          # discover_service_name:
+          discover_service_name: []
           #   - service
           #   - app
           #   - application
