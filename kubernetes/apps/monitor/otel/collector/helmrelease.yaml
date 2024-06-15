@@ -83,6 +83,10 @@ spec:
             - action: upsert
               key: service
               from_attribute: app.kubernetes.io/name
+        resourcedetection:
+          # Enriches telemetry data with resource information from the host
+          detectors: ["env", "system"]
+          override: false
 
       receivers:
 
@@ -144,17 +148,17 @@ spec:
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
-            processors: [ memory_limiter, batch, resource ]
+            processors: [ memory_limiter, batch, resource, resourcedetection ]
             exporters: [ otlphttp/tempo ]
 
           metrics:
             receivers: [ prometheus ]
-            processors: [ memory_limiter, batch, resource ]
+            processors: [ memory_limiter, batch, resource, resourcedetection ]
             exporters: [ prometheusremotewrite ]
 
           logs:
             receivers: [ filelog ]
-            processors: [ memory_limiter, batch, resource ]
+            processors: [ memory_limiter, batch, resource, resourcedetection ]
             exporters: [ otlphttp/loki ]
 
     service:
