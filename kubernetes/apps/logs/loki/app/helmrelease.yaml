@@ -4,11 +4,10 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: loki
-  namespace: logs
+
 spec:
 
-  interval: 30m
-  timeout: 15m
+  interval: 15m
 
   chart:
     spec:
@@ -146,7 +145,7 @@ spec:
 
       podAnnotations:
         secret.reloader.stakater.com/reload: loki-ceph-bucket
-        configmap.reloader.stakater.com/reload: loki-ceph-bucket
+        configmap.reloader.stakater.com/reload: loki,loki-ceph-bucket,loki-gateway,loki-runtime
 
     gateway:
       replicas: 2
@@ -193,11 +192,11 @@ spec:
         labels:
           grafana.io/dashboard: "true"
       serviceMonitor:
-        enabled: false
+        enabled: true
         metricsInstance:
           enabled: false
       selfMonitoring:
-        enabled: false
+        enabled: true
         grafanaAgent:
           installOperator: false
 
