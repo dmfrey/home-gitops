@@ -128,7 +128,7 @@ spec:
 
         # Data sources: traces, metrics
         loki:
-          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
+          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/loki/api/v1/push
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
