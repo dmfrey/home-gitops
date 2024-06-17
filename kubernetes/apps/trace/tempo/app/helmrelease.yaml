@@ -4,11 +4,10 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: tempo
-  namespace: trace
+
 spec:
 
   interval: 15m
-  timeout: 15m
 
   chart:
     spec:
@@ -55,14 +54,19 @@ spec:
 
   values:
 
-    global_overrides:
-      metrics_generator_processors:
-      - service-graphs
-      - span-metrics
-      - local-blocks
-
     global:
       clusterDomain: 'cluster.local'
+
+    tempo:
+      global_overrides:
+        metrics_generator_processors:
+          - service-graphs
+          - span-metrics
+          - local-blocks
+
+      metricsGenerator:
+        enabled: true
+        remoteWriteUrl: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
 
     gateway:
       enabled: true
@@ -87,10 +91,13 @@ spec:
         log_received_spans:
           enabled: true
 
-    metricsGenerator:
+    serviceMonitor:
       enabled: true
 
-      config:
-        storage:
-          remote_write:
-            - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+    # metricsGenerator:
+    #   enabled: true
+
+    #   config:
+    #     storage:
+    #       remote_write:
+    #         - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
