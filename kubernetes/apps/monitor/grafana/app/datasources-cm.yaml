@@ -58,7 +58,6 @@ data:
             datasourceUid: loki
             filterByTraceID: true
             filterBySpanID: false
-            tags: ["service"]
           nodeGraph:
             enabled: true
         uid: tempo
