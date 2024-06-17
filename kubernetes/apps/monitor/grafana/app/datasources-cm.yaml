@@ -52,14 +52,18 @@ data:
         url: http://tempo-gateway.trace.svc.cluster.local
         jsonData:
           httpMethod: GET
-          traceToMetrics:
-            datasourceUid: prometheus
-          tracesToLogs:
+          # traceToMetrics:
+          #   datasourceUid: prometheus
+          tracesToLogsV2:
             datasourceUid: loki
             filterByTraceID: true
             filterBySpanID: false
           nodeGraph:
             enabled: true
+          serviceMap:
+            datasourceUid: prometheus
+          lokiSearch:
+            datasourceUid: loki
         uid: tempo
       - name: Alertmanager
         type: alertmanager
