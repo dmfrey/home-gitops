@@ -55,6 +55,12 @@ spec:
 
   values:
 
+    global_overrides:
+      metrics_generator_processors:
+      - service-graphs
+      - span-metrics
+      - local-blocks
+
     global:
       clusterDomain: 'cluster.local'
 
@@ -84,7 +90,6 @@ spec:
     metricsGenerator:
       enabled: true
 
-      remoteWriteUrl: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
-      # processor:
-      #   service_graphs:
-      #   span_metrics:
+      config:
+          storage:
+            remote_write: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive

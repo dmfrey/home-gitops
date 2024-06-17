@@ -52,8 +52,6 @@ data:
         url: http://tempo-gateway.trace.svc.cluster.local
         jsonData:
           httpMethod: GET
-          # traceToMetrics:
-          #   datasourceUid: prometheus
           tracesToLogsV2:
             datasourceUid: loki
             filterByTraceID: true
