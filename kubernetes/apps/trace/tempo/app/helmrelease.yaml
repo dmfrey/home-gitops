@@ -57,7 +57,7 @@ spec:
     global:
       clusterDomain: 'cluster.local'
 
-    overrides:
+    global_overrides:
       metrics_generator_processors:
         - service-graphs
         - span-metrics
