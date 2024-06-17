@@ -109,15 +109,15 @@ spec:
           allow_structured_metadata: true
           discover_service_name:
             - service
-          #   - app
-          #   - application
-          #   - name
-          #   - app_kubernetes_io_name
-          #   - container
-          #   - container_name
-          #   - component
-          #   - workload
-          #   - job
+            - app
+            - application
+            - name
+            - app_kubernetes_io_name
+            - container
+            - container_name
+            - component
+            - workload
+            - job
 
         compactor:
           working_directory: /var/loki/compactor/retention
