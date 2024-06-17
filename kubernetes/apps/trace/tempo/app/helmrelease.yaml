@@ -91,5 +91,6 @@ spec:
       enabled: true
 
       config:
-          storage:
-            remote_write: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+        storage:
+          remote_write:
+            - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
