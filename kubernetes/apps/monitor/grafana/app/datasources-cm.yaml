@@ -56,6 +56,8 @@ data:
             datasourceUid: loki
             filterByTraceID: true
             filterBySpanID: false
+          tracesToMetrics:
+            datasourceUid: prometheus
           nodeGraph:
             enabled: true
           serviceMap:
