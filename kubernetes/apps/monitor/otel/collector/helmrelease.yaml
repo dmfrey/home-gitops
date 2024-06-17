@@ -83,6 +83,7 @@ spec:
             - action: upsert
               key: service
               from_attribute: app.kubernetes.io/name
+
         resourcedetection:
           # Enriches telemetry data with resource information from the host
           detectors: ["env", "system"]
@@ -126,7 +127,7 @@ spec:
           #   key_file: cert-key.pem
 
         # Data sources: traces, metrics
-        otlphttp/loki:
+        loki:
           endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
@@ -159,7 +160,7 @@ spec:
           logs:
             receivers: [ filelog ]
             processors: [ memory_limiter, batch, resource, resourcedetection ]
-            exporters: [ otlphttp/loki ]
+            exporters: [ loki ]
 
     service:
       enabled: true
