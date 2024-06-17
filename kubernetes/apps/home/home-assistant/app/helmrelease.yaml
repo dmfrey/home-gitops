@@ -4,11 +4,10 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app home-assistant
-  namespace: home
 
 spec:
 
-  interval: 5m
+  interval: 15m
 
   chart:
     spec:
@@ -38,74 +37,63 @@ spec:
 
     controllers:
 
-      home-assistant:
+      *app :
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.4/24"],
-                "mac": "a6:60:f7:86:74:12",
-                "gateway": ["192.168.50.1"]
-              }]
-
         initContainers:
-          clone-repo:
-            image:
-              repository: alpine/git
-              tag: latest
-
-            command:
-              - "/bin/sh"
-              - -c
-              - |
-                if [ ! -d /config/.git ]; then
-                  echo Initializing HASS Config repo
-                  cd /tmp
-                  git clone git@github.com:dmfrey/hass-config.git
-                  cp -r hass-config/* /config
-                  cp -r hass-config/.git /config
-                  cp hass-config/.gitignore /config
-                  ls -la /config
-                else
-                  echo Fetching HASS Config repo
-                  cd /config
-                  git fetch origin
-                  git reset origin/main
-                  ls -la
-                fi
-          # git-sync:
-          #   env:
-          #     GITSYNC_REPO: https://github.com/dmfrey/hass-config
-          #     GITSYNC_REF: main
-          #     GITSYNC_PERIOD: 10s # 1 day
-          #     GITSYNC_ROOT: /config
-          #     GITSYNC_ADD_USER: ${UID}
+          # clone-repo:
           #   image:
-          #     repository: registry.k8s.io/git-sync/git-sync
-          #     tag: v4.2.3@sha256:19cc7c317d125c5737ecb9a9159d00b5d97f39c45225c6483de365d62fc09fa8
-          #   restartPolicy: Always
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 128Mi
-          #   securityContext:
-          #     readOnlyRootFilesystem: true
-          #     allowPrivilegeEscalation: false
-          #     capabilities: { drop: ["ALL"] }
+          #     repository: alpine/git
+          #     tag: latest
+
+          #   command:
+          #     - "/bin/sh"
+          #     - -c
+          #     - |
+          #       if [ ! -d /config/.git ]; then
+          #         echo Initializing HASS Config repo
+          #         cd /tmp
+          #         git clone git@github.com:dmfrey/hass-config.git
+          #         cp -r hass-config/* /config
+          #         cp -r hass-config/.git /config
+          #         cp hass-config/.gitignore /config
+          #         ls -la /config
+          #       else
+          #         echo Fetching HASS Config repo
+          #         cd /config
+          #         git fetch origin
+          #         git reset origin/main
+          #         ls -la
+          #       fi
+          git-sync:
+            env:
+              GITSYNC_REPO: https://github.com/dmfrey/hass-config
+              GITSYNC_REF: main
+              GITSYNC_PERIOD: 10s # 1 day
+              GITSYNC_ROOT: /config
+              GITSYNC_ADD_USER: ${UID}
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.2.3@sha256:19cc7c317d125c5737ecb9a9159d00b5d97f39c45225c6483de365d62fc09fa8
+            restartPolicy: Always
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
 
         containers:
           app:
             image:
-              repository: ghcr.io/home-assistant/home-assistant
-              tag: 2024.6.3
+              repository: ghcr.io/onedr0p/home-assistant
+              tag: 2024.6.3@sha256:74e6ffd612eed81f093a3a2423518c849d84a8944459f806ad08777bf3a45d4d
 
             env:
               TZ: ${TIMEZONE}
@@ -120,13 +108,17 @@ spec:
                   name: home-assistant-secret
                 prefix: "HASS_"
 
+            ports:
+              - name: http
+                containerPort: 8123
+
             probes:
               liveness:
                 custom: true
                 spec:
                   httpGet:
                     path: /manifest.json
-                    port: &port 8123
+                    port: 8123
                   initialDelaySeconds: 3
                   periodSeconds: 3
               readiness:
@@ -141,7 +133,12 @@ spec:
               limits:
                 memory: 4096Mi
 
-          code:
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+          codeserver:
             dependsOn: app
 
             image:
@@ -149,39 +146,52 @@ spec:
               tag: 4.90.2
 
             args:
+              - "/config"
               - --auth
               - "none"
               - --user-data-dir
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
-              - --port
-              - "8081"
-              - "/config"
 
             env:
               TZ: ${TIMEZONE}
 
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.4/24"],
+                "mac": "a6:60:f7:86:74:12",
+                "gateway": ["192.168.50.1"]
+              }]
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
     service:
-      app:
-        nameOverride: *app
-        controller: home-assistant
+      *app :
+        controller: *app
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: home.${INTERNAL_DOMAIN}
           io.cilium/lb-ipam-ips: ${SVC_HASS_ADDR}
         ports:
           http:
-            port: *port
-      code:
-        nameOverride: code-server
-        controller: home-assistant
-        ports:
-          http:
-            port: &codePort 8081
+            port: &port 8123
+          code:
+            port: &codePort 8080
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           nginx.org/websocket-services: home-assistant
@@ -193,16 +203,15 @@ spec:
           - host: &host home.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  identifier: app
-                  port: http
+                  identifier: *app
+                  port: *port
         tls:
           - hosts:
               - *host
             secretName: home-assistant-tls-external
 
-      code:
+      code-external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -217,16 +226,15 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: code
-                  port: http
+                  identifier: *app
+                  port: *codePort
         tls:
           - hosts:
               - *host-code
             secretName: hass-code-tls-external
 
     serviceMonitor:
-      app:
-        enabled: true
+      *app :
         serviceName: *app
         endpoints:
           - port: http
@@ -266,7 +274,7 @@ spec:
                 subPath: dot-gitconfig
               - path: /root/.ssh/config
                 subPath: ssh-config
-            code: *sshmounts
+            codeserver: *sshmounts
 
       hass-config:
         enabled: true
@@ -323,9 +331,9 @@ spec:
           - path: /config/backups
             readOnly: false
 
-      # tmp:
-      #   type: emptyDir
-      #   advancedMounts:
-      #     *app :
-      #       git-sync:
-      #         - path: /tmp
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            git-sync:
+              - path: /tmp
