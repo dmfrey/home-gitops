@@ -64,10 +64,6 @@ spec:
           - span-metrics
           - local-blocks
 
-      metricsGenerator:
-        enabled: true
-        remoteWriteUrl: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
-
     gateway:
       enabled: true
 
@@ -94,10 +90,10 @@ spec:
     serviceMonitor:
       enabled: true
 
-    # metricsGenerator:
-    #   enabled: true
+    metricsGenerator:
+      enabled: true
 
-    #   config:
-    #     storage:
-    #       remote_write:
-    #         - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+      config:
+        storage:
+          remote_write:
+            - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
