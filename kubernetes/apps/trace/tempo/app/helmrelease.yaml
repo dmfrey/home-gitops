@@ -18,19 +18,19 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-  
+
   install:
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
- 
+
   valuesFrom:
     - targetPath: storage.trace.s3.bucket
       kind: ConfigMap
@@ -54,7 +54,7 @@ spec:
       valuesKey: AWS_SECRET_ACCESS_KEY
 
   values:
-  
+
     global:
       clusterDomain: 'cluster.local'
 
@@ -80,3 +80,8 @@ spec:
       config:
         log_received_spans:
           enabled: true
+
+    metrics_generator:
+      processor:
+        service_graphs:
+        span_metrics:
