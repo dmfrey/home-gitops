@@ -4,5 +4,5 @@ metadata:
   name: loki-ceph-bucket
 
 spec:
-  bucketName: loki
+  bucketName: loki-1
   storageClassName: ceph-bucket
