@@ -34,7 +34,7 @@ spec:
     mode: daemonset
 
     annotations:
-      configmap.reloader.stakater.com/reload: otel-collector-opentelemetry-collector-agent
+      configmap.reloader.stakater.com/reload: otelcol-dm-opentelemetry-collector-agent
 
     image:
       repository: otel/opentelemetry-collector-contrib
@@ -165,126 +165,128 @@ spec:
     service:
       enabled: true
       type: ClusterIP
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
-# apiVersion: helm.toolkit.fluxcd.io/v2
-# kind: HelmRelease
-# metadata:
-#   name: otelcol-dp
-# spec:
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: otelcol-dp
+spec:
 
-#   interval: 15m
+  interval: 15m
 
-#   chart:
-#     spec:
-#       chart: opentelemetry-collector
-#       version: 0.93.3
-#       sourceRef:
-#         kind: HelmRepository
-#         name: opentelemetry-charts
-#         namespace: flux-system
+  chart:
+    spec:
+      chart: opentelemetry-collector
+      version: 0.93.3
+      sourceRef:
+        kind: HelmRepository
+        name: opentelemetry-charts
+        namespace: flux-system
 
-#   install:
-#     remediation:
-#       retries: 3
+  install:
+    remediation:
+      retries: 3
 
-#   upgrade:
-#     cleanupOnFail: true
-#     remediation:
-#       retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
 
-#   uninstall:
-#     keepHistory: false
+  uninstall:
+    keepHistory: false
 
-#   values:
+  values:
 
-#     mode: deployment
+    mode: deployment
 
-#     replicaCount: 1
+    replicaCount: 1
 
-#     annotations:
-#       configmap.reloader.stakater.com/reload: otel-collector-opentelemetry-collector-agent
+    annotations:
+      configmap.reloader.stakater.com/reload: otelcol-dp-opentelemetry-collector-agent
 
-#     image:
-#       repository: otel/opentelemetry-collector-contrib
+    image:
+      repository: otel/opentelemetry-collector-contrib
 
-#     presets:
-#       # enables the k8sclusterreceiver and adds it to the metrics pipelines
-#       clusterMetrics:
-#         enabled: true
-#       # enables the k8sobjectsreceiver to collect events only and adds it to the logs pipelines
-#       kubernetesEvents:
-#         enabled: true
+    presets:
+      # enables the k8sclusterreceiver and adds it to the metrics pipelines
+      clusterMetrics:
+        enabled: true
+      # enables the k8sobjectsreceiver to collect events only and adds it to the logs pipelines
+      kubernetesEvents:
+        enabled: true
 
-#     config:
+    config:
 
-#       extensions:
-#         health_check: {}
-#         memory_ballast:
-#           size_in_percentage: 40
+      extensions:
+        health_check: {}
+        memory_ballast:
+          size_in_percentage: 40
 
-#       processors:
-#         batch: {}
-#         memory_limiter:
-#           check_interval: 5s
-#           limit_percentage: 80
-#           spike_limit_percentage: 25
+      processors:
+        batch: {}
+        memory_limiter:
+          check_interval: 5s
+          limit_percentage: 80
+          spike_limit_percentage: 25
 
-#       receivers:
+      receivers:
 
-#         prometheus:
-#           config:
-#             global:
-#               scrape_interval: 15s # Adjust this interval as needed
-#             scrape_configs:
-#               - job_name: 'prometheus'
-#                 static_configs:
-#                   - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
+        prometheus:
+          config:
+            global:
+              scrape_interval: 15s # Adjust this interval as needed
+            scrape_configs:
+              - job_name: 'prometheus'
+                static_configs:
+                  - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
 
-#         # Data sources: traces, metrics, logs
-#         otlp:
-#           protocols:
-#             grpc:
-#               endpoint: 0.0.0.0:4317
-#             http:
-#               endpoint: 0.0.0.0:4318
+        # Data sources: traces, metrics, logs
+        otlp:
+          protocols:
+            grpc:
+              endpoint: 0.0.0.0:4317
+            http:
+              endpoint: 0.0.0.0:4318
 
-#         zipkin:
-#           endpoint: 0.0.0.0:9411
+        zipkin:
+          endpoint: 0.0.0.0:9411
 
-#       exporters:
+      exporters:
 
-#         # Data sources: traces, metrics, logs
-#         # NOTE: Prior to v0.86.0 use `logging` instead of `debug`
-#         debug:
-#           verbosity: detailed
+        # Data sources: traces, metrics, logs
+        # NOTE: Prior to v0.86.0 use `logging` instead of `debug`
+        debug:
+          verbosity: detailed
 
-#         # Data sources: traces, metrics, logs
-#         otlp:
-#           endpoint: tempo-distributor.trace.svc.cluster.local:4317
-#           tls:
-#             insecure: true
+        # Data sources: traces, metrics, logs
+        otlp:
+          endpoint: tempo-distributor.trace.svc.cluster.local:4317
+          tls:
+            insecure: true
 
-#         # Data sources: traces, metrics
-#         otlphttp:
-#           endpoint: http://loki-backend-headless.logs.svc.cluster.local:3100/otlp
+        # Data sources: traces, metrics
+        loki:
+          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/loki/api/v1/push
+        otlphttp/tempo:
+          endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
-#         # Data sources: metrics
-#         prometheusremotewrite:
-#           endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+        # Data sources: metrics
+        prometheusremotewrite:
+          endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
 
-#       service:
-#         pipelines:
-#           metrics:
-#             receivers: [ prometheus ]
-#             processors: [ memory_limiter, batch ]
-#             exporters: [ prometheusremotewrite, debug ]
+      service:
+        pipelines:
+          metrics:
+            receivers: [ prometheus ]
+            processors: [ memory_limiter, batch ]
+            exporters: [ prometheusremotewrite ]
 
-#           logs:
-#             # receivers: [ otlp ]
-#             processors: [ memory_limiter, batch ]
-#             exporters: [ otlphttp, debug ]
+          # logs:
+          #   # receivers: [ otlp ]
+          #   processors: [ memory_limiter, batch ]
+          #   exporters: [ loki ]
 
-#     service:
-#       enabled: true
-#       type: ClusterIP
+    service:
+      enabled: true
+      type: ClusterIP
