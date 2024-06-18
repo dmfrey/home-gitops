@@ -93,20 +93,20 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
 
-          fix-permissions:
-            dependsOn: git-sync
-            image:
-              repository: busybox
-              tag: stable
+          # fix-permissions:
+          #   dependsOn: git-sync
+          #   image:
+          #     repository: busybox
+          #     tag: stable
 
-            command: ["sh", "-c", "chown -R 568:568 /config"]
+          #   command: ["sh", "-c", "chown -R 568:568 /config"]
 
-            securityContext:
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+          #   securityContext:
+          #     readOnlyRootFilesystem: true
+          #     allowPrivilegeEscalation: true
+          #     runAsUser: 0
+          #     runAsGroup: 0
+          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           app:
@@ -189,7 +189,7 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: false
+        runAsNonRoot: true
         runAsUser: 568
         runAsGroup: 568
         fsGroup: 568
