@@ -94,6 +94,7 @@ spec:
               capabilities: { drop: ["ALL"] }
 
           fix-permissions:
+            dependsOn: git-sync
             image:
               repository: busybox
               tag: stable
