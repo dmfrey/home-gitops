@@ -69,25 +69,41 @@ spec:
           #         ls -la
           #       fi
           git-sync:
+            restartPolicy: Always
+
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.2.3@sha256:19cc7c317d125c5737ecb9a9159d00b5d97f39c45225c6483de365d62fc09fa8
+
             env:
               GITSYNC_REPO: https://github.com/dmfrey/hass-config
               GITSYNC_REF: main
               GITSYNC_PERIOD: 10s # 1 day
               GITSYNC_ROOT: /config
               GITSYNC_ADD_USER: ${UID}
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.2.3@sha256:19cc7c317d125c5737ecb9a9159d00b5d97f39c45225c6483de365d62fc09fa8
-            restartPolicy: Always
+
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 128Mi
+
             securityContext:
               readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: stable
+
+              command: ["sh", "-c", "chown -R 568:568 /config"]
+
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           app:
@@ -283,42 +299,6 @@ spec:
         globalMounts:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
-
-      # ssh-config:
-      #   enabled: true
-      #   type: secret
-      #   name: home-assistant-deploy-key
-      #   globalMounts:
-      #     - path: /root/.ssh/config
-      #       subPath: ssh-config
-      #   defaultMode: 0600
-
-      # ssh-privatekey:
-      #   enabled: true
-      #   type: secret
-      #   name: home-assistant-deploy-key
-      #   globalMounts:
-      #     - path: /root/.ssh/id_ed25519
-      #       subPath: ssh-privatekey
-      #   defaultMode: 0600
-
-      # known-hosts:
-      #   enabled: true
-      #   type: secret
-      #   name: home-assistant-deploy-key
-      #   globalMounts:
-      #     - path: /root/.ssh/known_hosts
-      #       subPath: known-hosts
-      #   defaultMode: 0600
-
-      # dot-gitconfig:
-      #   enabled: true
-      #   type: secret
-      #   name: home-assistant-deploy-key
-      #   globalMounts:
-      #     - path: /root/.gitconfig
-      #       subPath: dot-gitconfig
-      #   defaultMode: 0700
 
       backups:
         enabled: true
