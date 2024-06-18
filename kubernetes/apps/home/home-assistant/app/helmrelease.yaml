@@ -98,7 +98,7 @@ spec:
               repository: busybox
               tag: stable
 
-              command: ["sh", "-c", "chown -R 568:568 /config"]
+            command: ["sh", "-c", "chown -R 568:568 /config"]
 
             securityContext:
               readOnlyRootFilesystem: true
