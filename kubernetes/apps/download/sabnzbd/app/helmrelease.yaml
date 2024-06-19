@@ -109,7 +109,7 @@ spec:
 
             args:
               - *app
-              - --enable-additional-metrics
+              # - --enable-additional-metrics
 
             env:
               URL: "http://localhost"
