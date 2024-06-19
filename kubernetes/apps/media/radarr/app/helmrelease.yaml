@@ -90,8 +90,12 @@ spec:
 
             env:
               URL: "http://localhost"
-              CONFIG: "/config/config.xml"
               PORT: &metricsPort 9708
+              APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: RADARR_API_KEY
 
             resources:
               requests:
