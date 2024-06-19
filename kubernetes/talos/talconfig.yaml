@@ -2,9 +2,9 @@
 clusterName: ${CLUSTER_NAME}
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
-talosVersion: v1.6.7
+talosVersion: v1.7.4
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
-kubernetesVersion: 1.29.2
+kubernetesVersion: 1.30.2
 
 endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
 
@@ -28,7 +28,7 @@ additionalApiServerCertSans: &san
 additionalMachineCertSans: *san
 
 nodes:
-  
+
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
   - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
     controlPlane: true
@@ -119,18 +119,18 @@ controlPlane:
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
-          
-          - op: create
-            path: /var/etc/nut/upsmon.conf
-            permissions: 0o600
-            content: |-
-              MONITOR qnapups@${NAS_SERVER} 1 ${NUT_USER} ${NUT_PASSWORD} slave
-              SHUTDOWNCMD "/sbin/poweroff"
+
+          # - op: create
+          #   path: /var/etc/nut/upsmon.conf
+          #   permissions: 0o600
+          #   content: |-
+          #     MONITOR qnapups@${NAS_SERVER} 1 ${NUT_USER} ${NUT_PASSWORD} slave
+          #     SHUTDOWNCMD "/sbin/poweroff"
 
         kubelet:
-          extraArgs:
-            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
-            rotate-server-certificates: "true"
+          # extraArgs:
+          #   feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+          #   rotate-server-certificates: "true"
           extraConfig:
             maxPods: 250
           nodeIP:
