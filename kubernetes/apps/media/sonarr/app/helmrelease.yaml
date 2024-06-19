@@ -4,11 +4,11 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app sonarr
-  namespace: media
+
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
@@ -17,54 +17,41 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 100
-          - 65534
-
     controllers:
-      
-      sonarr:
+
+      *app :
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
-        replicas: 1
-        strategy: RollingUpdate
-
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/sonarr
               tag: 4.0.5.1710
 
             env:
               TZ: ${TIMEZONE}
-              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__INSTANCE_NAME: *app
               SONARR__PORT: &port 8989
               SONARR__APPLICATION_URL: https://sonarr.${SECRET_DOMAIN}
               SONARR__LOG_LEVEL: info
@@ -76,7 +63,7 @@ spec:
 
             ports:
               - name: http
-                containerPort: *port 
+                containerPort: *port
 
             resources:
               requests:
@@ -85,47 +72,65 @@ spec:
               limits:
                 memory: 1024Mi
 
-          # sidecars:
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
           exporter:
-            dependsOn: app
-            
-            image: 
+            image:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
 
-            args: ["sonarr"]
-            
+            args:
+              - *app
+              - --enable-additional-metrics
+
             env:
-              - name: URL
-                value: "http://localhost"
-              - name: CONFIG
-                value: "/config/config.xml"
-              - name: PORT
-                value: &metricsPort 9707
-              - name: ENABLE_ADDITIONAL_METRICS
-                value: true
-              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-                value: false
-            
-            ports:
-              - name: metrics
-                containerPort: *metricsPort 
+              URL: "http://localhost"
+              PORT: &metricsPort 9707
+              APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: BAZARR_API_KEY
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
-      app:
-        nameOverride: sonarr
-        controller: sonarr
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
-      metrics:
-        controller: sonarr
-        ports:
+            primary: true
           metrics:
             port: *metricsPort
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -139,7 +144,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *port
         tls:
           - hosts:
@@ -149,6 +154,10 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config
 
       media:
         enabled: true
@@ -165,14 +174,20 @@ spec:
           - path: /config/Backups
             readOnly: false
 
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            *app :
+              - path: /tmp
+
     serviceMonitor:
       metrics:
-        enabled: true
-        serviceName: sonarr-metrics
+        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http
             path: /metrics
-            interval: 15m
-            scrapeTimeout: 2m
+            interval: 10m
+            scrapeTimeout: 10s
 

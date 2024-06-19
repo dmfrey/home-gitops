@@ -170,7 +170,7 @@ spec:
             path: /plexbackups/backups/bazarr
         advancedMounts:
           *app :
-            app:
+            *app :
               - path: /config/backup
                 readOnly: false
 
