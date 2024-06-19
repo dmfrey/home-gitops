@@ -63,6 +63,17 @@ spec:
                 {{ .Release.Name }}.download.svc,
                 {{ .Release.Name }}.download.svc.cluster,
                 {{ .Release.Name }}.${SECRET_DOMAIN}
+              SABNZBD__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sabnzbd-secret
+                    key: SABNZBD_API_KEY
+
+              SABNZBD__NZB_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sabnzbd-secret
+                    key: SABNZBD_NZB_KEY
 
             envFrom:
               - secretRef:
