@@ -18,90 +18,38 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 65534
-
     controllers:
 
-      overseerr:
+      *app :
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
-        containers:
-          app:
-            image:
-              repository: ghcr.io/sct/overseerr
-              tag: 1.33.2
-
-            env:
-              LOG_LEVEL: "info"
-              PORT: &port 5055
-
-            ports:
-              - name: http
-                containerPort: *port
-
-            resources:
-              requests:
-                memory: 350Mi
-                cpu: 5m
-              limits:
-                memory: 431Mi
-
-          # sidecars:
-          # exporter:
-          #   dependsOn: overseerr
-            
-          #   image: 
-          #     repository: ghcr.io/willfantom/overseerr-exporter
-          #     tag: 1.2.1
-
-          #   args:
-          #     - --overseerr.address
-          #     - "http://localhost:5055"
-          #     - --overseerr.api-key
-          #     - "$(OVERSEERR_API_KEY)"
-            
-          #   envFrom:
-          #     - secretRef:
-          #         name: overseerr-secret
-
-          #   ports:
-          #     - name: metrics
-          #       containerPort: &metricsPort 9850
-
         initContainers:
           config-setup:
-            image: 
+            image:
               repository: ghcr.io/onedr0p/alpine
               tag: 3.19.1@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
-            
+
             command:
               - "/bin/bash"
               - -c
@@ -115,7 +63,7 @@ spec:
                   cp /tmp/settings-resolved.json /config/settings.json
                 fi
                 exit 0
-            
+
             envFrom:
               - secretRef:
                   name: overseerr-secret
@@ -123,27 +71,110 @@ spec:
                   name: starr-apps-secret
               - secretRef:
                   name: plex-secret
-            
+
             env:
               - name: ORGANIZATION
                 value: ${ORGANIZATION}
               - name: EXTERNAL_DOMAIN
                 value: ${SECRET_DOMAIN}
 
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/sct/overseerr
+              tag: 1.33.2
+
+            env:
+              LOG_LEVEL: "info"
+              PORT: &port 5055
+
+            ports:
+              - name: http
+                containerPort: *port
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: &path /api/v1/status
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+          exporter:
+            image:
+              repository: ghcr.io/willfantom/overseerr-exporter
+              tag: 1.2.1
+
+            args:
+              - --overseerr.address
+              - "http://localhost:5055"
+              - --overseerr.api-key
+              - "$(OVERSEERR_API_KEY)"
+
+            envFrom:
+              - secretRef:
+                  name: overseerr-secret
+
+            ports:
+              - name: metrics
+                containerPort: &metricsPort 9850
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
     service:
-      app:
-        controller: overseerr
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
-      # metrics:
-      #   controller: overseerr
-      #   ports:
-      #     metrics:
-      #       port: *metricsPort
+            primary: true
+          metrics:
+            port: *metricsPort
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -156,7 +187,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *port
         tls:
           - hosts:
@@ -167,12 +198,9 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
-          overseerr:
-            app:
+          *app :
+            *app :
               - path: /app/config
-            # exporter:
-            #   - path: /config
-            #     readOnly: true
             config-setup:
               - path: /config
                 readOnly: false
@@ -185,13 +213,19 @@ spec:
           - path: /tmp/config-template
             readOnly: true
 
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            *app :
+              - path: /tmp
+
     serviceMonitor:
       metrics:
-        enabled: true
-        serviceName: overseerr-metrics
+        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http
             path: /metrics
-            interval: 15m
-            scrapeTimeout: 2m
+            interval: 10m
+            scrapeTimeout: 10s

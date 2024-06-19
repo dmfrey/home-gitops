@@ -8,7 +8,7 @@ spec:
   targetNamespace: media
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname overseerr
+      app.kubernetes.io/name: &app overseerr
   path: "./kubernetes/apps/media/overseerr/app"
   prune: true
   sourceRef:
@@ -20,10 +20,8 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
       GATUS_SUBDOMAIN: request
-      APP_UID: "1568"
-      APP_GID: "1568"
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom:

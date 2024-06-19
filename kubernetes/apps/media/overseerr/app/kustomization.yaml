@@ -8,10 +8,6 @@ resources:
   - ./dashboard
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
-
-  # - ./replicationsource.yaml
-  # - ./replicationdestination.yaml
-  # - ./secret-overseerr-volsync-minio.sops.yaml
 configMapGenerator:
   - name: overseerr-config-template
     files:
