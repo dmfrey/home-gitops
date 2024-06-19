@@ -155,7 +155,7 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           *app :
-            app:
+            *app :
               - path: /config
 
       media:
