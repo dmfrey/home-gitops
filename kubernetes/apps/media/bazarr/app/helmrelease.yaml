@@ -43,7 +43,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/bazarr
               tag: 1.4.3@sha256:742693933be67a3d66fdd6c8fb1b4e9fcaa010dc8c6fd1adb150d11614d2b497
@@ -84,7 +84,7 @@ spec:
               tag: v2.0.1
 
             args:
-              - bazarr
+              - *app
               - --enable-additional-metrics
 
             env:
@@ -119,7 +119,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
 
     service:
-      app:
+      *app :
         controller: *app
         ports:
           http:
@@ -129,7 +129,7 @@ spec:
             port: *metricsPort
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -177,12 +177,11 @@ spec:
         type: emptyDir
         advancedMounts:
           *app :
-            app:
+            *app :
               - path: /tmp
 
     serviceMonitor:
       metrics:
-        enabled: true
         serviceName: *app
         endpoints:
           - port: metrics
