@@ -35,35 +35,23 @@ spec:
 
   values:
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 1568
-        runAsGroup: 1568
-        fsGroup: 1568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 65534
-
     controllers:
-      
-      radarr:
+
+      *app :
         type: statefulset
-                
+
         annotations:
           reloader.stakater.com/auto: "true"
 
-        replicas: 1
-        strategy: RollingUpdate
-
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/radarr
               tag: 5.6.0.8846@sha256:6d9fe01aab867098e79d1041f7b71eca5b668b8254944ab89c23eef26042570c
 
             env:
               TZ: ${TIMEZONE}
-              RADARR__INSTANCE_NAME: Radarr
+              RADARR__INSTANCE_NAME: *app
               RADARR__PORT: &port 7878
               RADARR__APPLICATION_URL: https://radarr.${SECRET_DOMAIN}
               RADARR__LOG_LEVEL: info
@@ -75,7 +63,7 @@ spec:
 
             ports:
               - name: http
-                containerPort: *port 
+                containerPort: *port
 
             resources:
               requests:
@@ -84,47 +72,61 @@ spec:
               limits:
                 memory: 2048Mi
 
-          # sidecars:
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
           exporter:
-            dependsOn: app
-            
-            image: 
+            image:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
-            
-            args: ["radarr"]
-            
+
+            args:
+              - *app
+              - --enable-additional-metrics
+
             env:
-              - name: URL
-                value: "http://localhost"
-              - name: CONFIG
-                value: "/config/config.xml"
-              - name: PORT
-                value: &metricsPort 9708
-              - name: ENABLE_ADDITIONAL_METRICS
-                value: true
-              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-                value: false
-            
-            ports:
-              - name: metrics
-                containerPort: *metricsPort 
-          
+              URL: "http://localhost"
+              CONFIG: "/config/config.xml"
+              PORT: &metricsPort 9708
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
     service:
-      app:
-        nameOverride: radarr
-        controller: radarr
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
-      metrics:
-        controller: radarr
-        ports:
+            primary: true
           metrics:
             port: *metricsPort
 
     ingress:
-      app:
+      external:
         enabled: true
         className: external
         annotations:
@@ -140,16 +142,20 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *port
         tls:
           - hosts:
               - *host
             secretName: radarr-tls-external
-    
+
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config
 
       media:
         enabled: true
@@ -166,13 +172,19 @@ spec:
           - path: /config/Backups
             readOnly: false
 
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            *app :
+              - path: /tmp
+
     serviceMonitor:
       metrics:
-        enabled: true
-        serviceName: radarr-metrics
+        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http
             path: /metrics
-            interval: 15m
-            scrapeTimeout: 2m
+            interval: 10m
+            scrapeTimeout: 10s
