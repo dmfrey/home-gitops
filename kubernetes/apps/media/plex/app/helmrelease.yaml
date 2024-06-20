@@ -209,7 +209,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${QNAP_ADDR}"
-            path: /plexbackups/plex
+            path: /plexbackups/backups/plex
         globalMounts:
           - path: /config/Backups
             readOnly: false
