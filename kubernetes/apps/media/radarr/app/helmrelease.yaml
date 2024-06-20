@@ -156,10 +156,8 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config
+        globalMounts:
+          - path: /config
 
       media:
         enabled: true
@@ -172,9 +170,10 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/radarr
-        globalMounts:
-          - path: /config/Backups
-            readOnly: false
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/Backups
 
       tmp:
         type: emptyDir
@@ -185,6 +184,7 @@ spec:
 
     serviceMonitor:
       metrics:
+        enabled: true
         serviceName: *app
         endpoints:
           - port: metrics
