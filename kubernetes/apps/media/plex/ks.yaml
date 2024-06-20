@@ -9,7 +9,7 @@ spec:
   targetNamespace: media
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname plex
+      app.kubernetes.io/name: &app plex
   path: "./kubernetes/apps/media/plex/app"
   prune: true
   sourceRef:
@@ -21,10 +21,8 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
       GATUS_PATH: /identity
-      APP_UID: "1568"
-      APP_GID: "1568"
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi

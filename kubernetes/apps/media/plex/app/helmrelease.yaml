@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app plex
-  namespace: media
 
 spec:
 
@@ -33,41 +32,59 @@ spec:
 
   uninstall:
     keepHistory: false
-  
+
   values:
-    
-    defaultPodOptions:
-      securityContext:
-        supplementalGroups:
-          - 39
-          - 44 # video
-          - 100
-          - 1000
-          - 1568
-          - 65534
 
     controllers:
 
-      plex:
+      *app :
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
           backup.home.arpa/enabled: "true"
 
         containers:
-          app:
+          *app :
             image:
-              repository: plexinc/pms-docker
-              tag: latest #1.32.7.7621-871adbd44
+              repository: ghcr.io/onedr0p/plex
+              tag: 1.40.2.8395-c67dce28e@sha256:3861cc940ecdf97b773fa24d826407cea86559d0f26366d7acd10cef1704f46c
 
             env:
               TZ: ${TIMEZONE}
-              ALLOWED_NETWORKS: "192.168.0.0/16"
+              PLEX_ADVERTISE_URL: https://plex.${SECRET_DOMAIN}:443,https://plex.${INTERNAL_DOMAIN}:32400,http://${SVC_PLEX_ADDR}:32400,plex.media.svc.cluster.local:32400
+              PLEX_NO_AUTH_NETWORKS: 192.0.0.0/8
+              PLEX_PREFERENCE_NAME: "FriendlyName=${ORGANIZATION}"
+              PLEX_PREFERENCE_DLNA: "DlnaEnabled=1"
+              PLEX_PREFERENCE_GDM: "GdmEnabled=1"
+              PLEX_PREFERENCE_GPU: "HardwareAcceleratedCodecs=1"
+              PLEX_PREFERENCE_INTERFACE: "PreferredNetworkInterface=eth0"
+              PLEX_PREFERENCE_PORT_MAPPING: "ManualPortMappingMode=1"
+              PLEX_PREFERENCE_MAPPED_PORT: "ManualPortMappingPort=443"
+              PLEX_PREFERENCE_LAN: "LanNetworksBandwidth=192.0.0.0/8"
 
             envFrom:
               - secretRef:
                   name: plex-secret
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
 
             resources:
               requests:
@@ -78,9 +95,24 @@ spec:
                 amd.com/gpu: 1
                 memory: 10Gi
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 1568, 10000, 65534]
+        seccompProfile: { type: RuntimeDefault }
+
     service:
-      app:
-        controller: plex
+      *app :
+        controller: *app
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
@@ -89,53 +121,31 @@ spec:
         ports:
           http:
             port: &port 32400
-            targetPort: 32400
-            nodePort: 32400
+            primary: true
           dnla-tcp:
-            enabled: true
             port: 32469
             protocol: TCP
-            targetPort: 32469
-            nodePort: 32469
           dnla-udp:
-            enabled: true
             port: 1900
             protocol: UDP
-            targetPort: 1900
-            nodePort: 1900
           bonjour-udp:
-            enabled: true
             port: 5353
             protocol: UDP
-            targetPort: 5353
-            nodePort: 5353
           gdm-1:
-            enabled: true
             port: 32410
             protocol: UDP
-            targetPort: 32410
-            nodePort: 32410
           gdm-2:
-            enabled: true
             port: 32412
             protocol: UDP
-            targetPort: 32412
-            nodePort: 32412
           gdm-3:
-            enabled: true
             port: 32413
             protocol: UDP
-            targetPort: 32413
-            nodePort: 32413
           gdm-4:
-            enabled: true
             port: 32414
             protocol: UDP
-            targetPort: 32414
-            nodePort: 32414
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -144,13 +154,13 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:plex"
           hajimari.io/url: "https://plex.${SECRET_DOMAIN}/web"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
         - host: &host plex.${SECRET_DOMAIN}
           paths:
           - path: /
             service:
-              identifier: app
+              identifier: *app
               port: *port
         tls:
         - hosts:
@@ -160,28 +170,24 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+          - path: /config
 
-      preference-bootstrap:
-        enabled: true
-        type: configMap
-        name: plex-preferences-bootstrap
+      # Separate PVC for cache to avoid backing up cache files
+      cache:
+        existingClaim: plex-cache
         globalMounts:
-          - path: /etc/cont-init.d/41-Plex-Preferences
-            subPath: 41-Plex-Preferences
-            readOnly: false
-        defaultMode: 493
-      
-      preferences:
-        enabled: true
-        type: configMap
-        name: plex-preferences
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+
+      logs:
+        type: emptyDir
         globalMounts:
-          - path: /etc/cont-config.d
-            readOnly: false
-        defaultMode: 493
-      
+          - path: /config/Library/Application Support/Plex Media Server/Logs
+
+      media:
+        existingClaim: nfs-media
+
       transcode:
-        enabled: true
         type: custom
         volumeSpec:
           ephemeral:
@@ -192,37 +198,48 @@ spec:
                   - ReadWriteOnce
                 resources:
                   requests:
-                    storage: 10Gi
-                  limits:
                     storage: 500Gi
-      
+
       tmp:
-        enabled: true
         type: emptyDir
         sizeLimit: 10Gi
-      
-      media:
-        enabled: true
-        existingClaim: nfs-media
-      
+
       backup:
-        enabled: true
         type: custom
         volumeSpec:
           nfs:
             server: "${QNAP_ADDR}"
-            path: /plexbackups
+            path: /plexbackups/plex
         globalMounts:
           - path: /config/Backups
             readOnly: false
 
-    serviceMonitor:
-      monitor:
-        enabled: true
-        serviceName: plex-monitor
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 15m
-            scrapeTimeout: 2m
+      # preference-bootstrap:
+      #   enabled: true
+      #   type: configMap
+      #   name: plex-preferences-bootstrap
+      #   globalMounts:
+      #     - path: /etc/cont-init.d/41-Plex-Preferences
+      #       subPath: 41-Plex-Preferences
+      #       readOnly: false
+      #   defaultMode: 493
+
+      # preferences:
+      #   enabled: true
+      #   type: configMap
+      #   name: plex-preferences
+      #   globalMounts:
+      #     - path: /etc/cont-config.d
+      #       readOnly: false
+      #   defaultMode: 493
+
+    # serviceMonitor:
+    #   monitor:
+    #     enabled: true
+    #     serviceName: plex-monitor
+    #     endpoints:
+    #       - port: http
+    #         scheme: http
+    #         path: /metrics
+    #         interval: 15m
+    #         scrapeTimeout: 2m

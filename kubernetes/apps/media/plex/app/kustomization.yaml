@@ -4,23 +4,25 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./secret-plex.sops.yaml
+  - ./pvc.yaml
   - ./helmrelease.yaml
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
-
-
-  # - ./replicationsource.yaml
-  # - ./replicationdestination.yaml
-  # - ./secret-plex-volsync-minio.sops.yaml
 configMapGenerator:
-  - name: plex-preferences-bootstrap
+  - name: plex-loki-rules
     files:
-      - ./config/41-Plex-Preferences
+      - plex.yaml=./resources/lokirule.yaml
     options:
       labels:
-        kustomize.toolkit.fluxcd.io/substitute: disabled
-  - name: plex-preferences
-    files:
-      - ./config/preferences.cfg
+        loki_rule: "true"
+  # - name: plex-preferences-bootstrap
+  #   files:
+  #     - ./config/41-Plex-Preferences
+  #   options:
+  #     labels:
+  #       kustomize.toolkit.fluxcd.io/substitute: disabled
+  # - name: plex-preferences
+  #   files:
+  #     - ./config/preferences.cfg
 generatorOptions:
   disableNameSuffixHash: true
