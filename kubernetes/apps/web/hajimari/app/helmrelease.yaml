@@ -57,6 +57,7 @@ spec:
       defaultEnable: false
       namespaceSelector:
         matchNames:
+          - ai
           - dataflow
           - dev
           - download
