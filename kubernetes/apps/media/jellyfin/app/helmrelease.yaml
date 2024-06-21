@@ -35,22 +35,9 @@ spec:
 
   values:
 
-    defaultPodOptions:
-      enableServiceLinks: false
-
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 44 # video
-          - 109 # render
-          - 65534
-
     controllers:
 
-      jellyfin:
+      *app :
         type: statefulset
 
         annotations:
@@ -58,7 +45,7 @@ spec:
 
         containers:
 
-          app:
+          *app :
 
             image:
               repository: jellyfin/jellyfin
@@ -99,9 +86,38 @@ spec:
                 amd.com/gpu: 1
                 memory: 8Gi
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 109, 1568, 65534]
+        seccompProfile: { type: RuntimeDefault }
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values: ["ollama"]
+                  - key: app.kuberentes.io/component
+                    operator: In
+                    values: ["backend"]
+              topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        feature.node.kubernetes.io/pci-0300_1002.present: "true"
+
     service:
-      app:
-        controller: jellyfin
+      *app :
+        controller: *app
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
@@ -112,7 +128,7 @@ spec:
             port: &port 8096
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -120,13 +136,13 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
           hajimari.io/url: "https://jellyfin.${SECRET_DOMAIN}/web/index.html"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: &host "jellyfin.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *port
         tls:
         - hosts:
@@ -137,8 +153,19 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
 
+      # Separate PVC for cache to avoid backing up cache files
+      cache:
+        existingClaim: jellyfin-cache
+        globalMounts:
+          - path: /cache
+            readOnly: false
+
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/log
+
       media:
-        enabled: true
         existingClaim: nfs-media
 
       transcode:
@@ -153,17 +180,11 @@ spec:
                   - ReadWriteOnce
                 resources:
                   requests:
-                    storage: 1Gi
-                  limits:
                     storage: 500Gi
         globalMounts:
           - path: /config/transcodes
             readOnly: false
 
-      cache:
-        enabled: true
+      tmp:
         type: emptyDir
-        globalMounts:
-          - path: /config/cache
-            readOnly: false
-
+        sizeLimit: 10Gi

@@ -109,6 +109,20 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 1568, 10000, 65534]
         seccompProfile: { type: RuntimeDefault }
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values: ["ollama"]
+                  - key: app.kuberentes.io/component
+                    operator: In
+                    values: ["backend"]
+              topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        feature.node.kubernetes.io/pci-0300_1002.present: "true"
 
     service:
       *app :
@@ -213,33 +227,3 @@ spec:
         globalMounts:
           - path: /config/Backups
             readOnly: false
-
-      # preference-bootstrap:
-      #   enabled: true
-      #   type: configMap
-      #   name: plex-preferences-bootstrap
-      #   globalMounts:
-      #     - path: /etc/cont-init.d/41-Plex-Preferences
-      #       subPath: 41-Plex-Preferences
-      #       readOnly: false
-      #   defaultMode: 493
-
-      # preferences:
-      #   enabled: true
-      #   type: configMap
-      #   name: plex-preferences
-      #   globalMounts:
-      #     - path: /etc/cont-config.d
-      #       readOnly: false
-      #   defaultMode: 493
-
-    # serviceMonitor:
-    #   monitor:
-    #     enabled: true
-    #     serviceName: plex-monitor
-    #     endpoints:
-    #       - port: http
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 15m
-    #         scrapeTimeout: 2m
