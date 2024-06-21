@@ -32,6 +32,9 @@ spec:
       value: ${SECRET_DOMAIN}
     - name: proxy_applications
       value:
+        Ollama:
+          url: https://ollama.${SECRET_DOMAIN}
+          group: AI
         Dataflow:
           url: https://dataflow.${SECRET_DOMAIN}
           group: Dataflow
