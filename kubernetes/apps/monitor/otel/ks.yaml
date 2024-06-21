@@ -51,5 +51,5 @@ spec:
     substituteFrom: []
   decryption:
     provider: sops
-  dependsOn:
-    - name: otel-operator
+  dependsOn: []
+    # - name: otel-operator
