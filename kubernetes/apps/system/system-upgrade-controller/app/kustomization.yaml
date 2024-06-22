@@ -5,34 +5,33 @@ kind: Kustomization
 namespace: system
 resources:
   # - ./serviceaccount.yaml
-  - ./secret-talos-upgrade-api-access.sops.yaml
-  # renovate: datasource=docker image=rancher/system-upgrade-controller
-  - https://github.com/rancher/system-upgrade-controller/releases/download/0.13.4/crd.yaml
-  - https://github.com/rancher/system-upgrade-controller?ref=v0.13.4
+  # - ./secret-talos-upgrade-api-access.sops.yaml
+  # renovate: depName=rancher/system-upgrade-controller datasource=github-releases
+  - https://github.com/rancher/system-upgrade-controller/releases/download/v0.13.4/crd.yaml
 images:
   - name: rancher/system-upgrade-controller
     newTag: v0.13.4
-patchesStrategicMerge:
-  - |
-    $patch: delete
-    apiVersion: v1
-    kind: Namespace
-    metadata:
-      name: system-upgrade
-patches:
-  - patch: |-
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: not-used
-      spec:
-        template:
-          spec:
-            affinity: null
-    target:
-      kind: Deployment
-labels:
-  - pairs:
-      app.kubernetes.io/name: system-upgrade-controller
-      app.kubernetes.io/instance: system-upgrade-controller
-    includeSelectors: true
+# patchesStrategicMerge:
+#   - |
+#     $patch: delete
+#     apiVersion: v1
+#     kind: Namespace
+#     metadata:
+#       name: system-upgrade
+# patches:
+#   - patch: |-
+#       apiVersion: apps/v1
+#       kind: Deployment
+#       metadata:
+#         name: not-used
+#       spec:
+#         template:
+#           spec:
+#             affinity: null
+#     target:
+#       kind: Deployment
+# labels:
+#   - pairs:
+#       app.kubernetes.io/name: system-upgrade-controller
+#       app.kubernetes.io/instance: system-upgrade-controller
+#     includeSelectors: true
