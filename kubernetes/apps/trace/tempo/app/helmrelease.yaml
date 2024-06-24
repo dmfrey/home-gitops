@@ -127,3 +127,6 @@ spec:
           path: /var/tempo/traces
 
         metrics_ingestion_time_range_slack: 30s
+
+    usage_report:
+      reporting_enabled: false
