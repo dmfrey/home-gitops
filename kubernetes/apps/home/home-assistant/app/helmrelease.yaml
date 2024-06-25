@@ -44,30 +44,6 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
-          # clone-repo:
-          #   image:
-          #     repository: alpine/git
-          #     tag: latest
-
-          #   command:
-          #     - "/bin/sh"
-          #     - -c
-          #     - |
-          #       if [ ! -d /config/.git ]; then
-          #         echo Initializing HASS Config repo
-          #         cd /tmp
-          #         git clone git@github.com:dmfrey/hass-config.git
-          #         cp -r hass-config/* /config
-          #         cp -r hass-config/.git /config
-          #         cp hass-config/.gitignore /config
-          #         ls -la /config
-          #       else
-          #         echo Fetching HASS Config repo
-          #         cd /config
-          #         git fetch origin
-          #         git reset origin/main
-          #         ls -la
-          #       fi
           git-sync:
             restartPolicy: Always
 
@@ -295,8 +271,7 @@ spec:
                 subPath: ssh-config
             codeserver: *sshmounts
 
-      hass-config:
-        enabled: true
+      configuration:
         type: configMap
         name: hass-config
         globalMounts:
