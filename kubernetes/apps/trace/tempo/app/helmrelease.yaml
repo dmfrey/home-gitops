@@ -87,6 +87,7 @@ spec:
           enabled: true
 
     ingester:
+      replicas: 2
       persistence:
         enabled: true
         storageClass: ceph-block
