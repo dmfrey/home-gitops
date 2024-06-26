@@ -9,5 +9,6 @@ resources:
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
   - ./rabbitmq-cluster-operator/ks.yaml
+  - ./emqx/ks.yaml
 
 

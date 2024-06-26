@@ -12,6 +12,7 @@ resources:
   - cilium.yaml
   - cloudnative-pg.yaml
   - emberstack.yaml
+  - emqx.yaml
   - grafana.yaml
   - hajimari.yaml
   - hashicorp.yaml

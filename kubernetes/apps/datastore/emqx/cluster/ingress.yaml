@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    hajimari.io/enable: "true"
+    hajimari.io/icon: simple-icons:mqtt
+  name: emqx-dashboard
+
+spec:
+
+  ingressClassName: internal
+
+  rules:
+    - host: &fqdn emqx.${INTERNAL_DOMAIN}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: emqx-dashboard
+                port:
+                  number: 18083
+  tls:
+    - hosts:
+        - *fqdn
+      secretName: emqx-dashboard-tls-internal
