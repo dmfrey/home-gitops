@@ -33,7 +33,7 @@ spec:
     keepHistory: false
 
   dependsOn:
-    - name: emqx-cluster
+    - name: emqx
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: storage
