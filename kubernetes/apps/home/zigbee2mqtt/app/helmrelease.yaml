@@ -3,8 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: zigbee2mqtt
-  namespace: home
+  name: &app zigbee2mqtt
 
 spec:
 
@@ -34,8 +33,8 @@ spec:
     keepHistory: false
 
   dependsOn:
-    - name: mosquitto
-      namespace: home
+    - name: emqx-cluster
+      namespace: datastore
     - name: rook-ceph-cluster
       namespace: storage
     - name: volsync
@@ -44,78 +43,69 @@ spec:
   values:
 
     controllers:
-      zigbee2mqtt:
+      *app :
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
-        # statefulset:
-        #   volumeClaimTemplates:
-        #     - name: data
-        #       globalMounts:
-        #         - path: /data
-        #       accessMode: ReadWriteOnce
-        #       size: 1Gi
-        #       storageClass: ceph-block
-
         containers:
 
-          zigbee2mqtt:
+          *app :
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 1.38.0
+              tag: 1.38.0@sha256:8a893949ab01ea25fe1189a02a24f7fee3d7e8717d0973bd3dd6989a3a45a6bf
 
             env:
               # DEBUG: zigbee-herdsman*
               TZ: "${TIMEZONE}"
               ZIGBEE2MQTT_DATA: /data
               ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
-              ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: "false"
-              ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_TRIGGERS: "false"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: false
+              ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_TRIGGERS: false
               ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: "false"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: false
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: false
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
-              ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: "60"
-              ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: "2000"
-              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: "false"
-              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
-              ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
-              ZIGBEE2MQTT_CONFIG_FRONTEND: "false"
-              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: "8080"
+              ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 20
+              ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
+              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: false
+              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: true
+              ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: true
+              ZIGBEE2MQTT_CONFIG_FRONTEND: false
+              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 8080
               ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee2mqtt.${SECRET_DOMAIN}
-              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
+              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: true
               ZIGBEE2MQTT_CONFIG_MQTT_BASE_TOPIC: zigbee2mqtt
-              ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
-              ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: "60"
-              ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
-              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto.home.svc.cluster.local:1883"
-              ZIGBEE2MQTT_CONFIG_MQTT_VERSION: "5"
-              ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
+              ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: true
+              ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+              ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: true
+              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://emqx-listeners.datastore.svc.cluster.local
+              ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
+              ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: false
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.30.40:6638
               ZIGBEE2MQTT_CONFIG_MQTT_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: mosquitto-secret
-                    key: ZIGBEE2MQTT_MQTT_USER
+                    name: emqx-secret
+                    key: X_EMQX_USERNAME_ZIGBEE2MQTT
               ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: mosquitto-secret
-                    key: ZIGBEE2MQTT_MQTT_PASS
+                    name: emqx-secret
+                    key: X_EMQX_PASSWORD_ZIGBEE2MQTT
 
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
 
-            ports:
-              - name: http
-                containerPort: &port 8080
-              - name: metrics
-                containerPort: &metricsPort 9000
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
 
             resources:
               requests:
@@ -124,32 +114,31 @@ spec:
               limits:
                 memory: 1024Mi
 
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups:
-              - 5     # tty
-              - 14    # uucp
-              - 20    # dialout
-              - 65534 # nobody
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
-      app:
-        controller: zigbee2mqtt
+      *app :
+        controller: *app
         ports:
           http:
-            enabled: true
             port: *port
-          metrics:
-            enabled: true
-            port: *metricsPort
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -157,14 +146,14 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:zigbee"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hosts:
+        hosts: &hosts
           - host: &host zigbee2mqtt.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *port
-        tls:
+        tls: &tls
           - hosts:
               - *host
             secretName: zigbee2mqtt-tls-external
