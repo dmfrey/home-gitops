@@ -73,9 +73,9 @@ spec:
           configMap:
             name: emqx-init-mqtt-configmap
 
-  # listenersServiceTemplate:
-  #   metadata:
-  #     annotations:
-  #       io.cilium/lb-ipam-ips: ${SVC_MQTT_ADDR}
-  #   spec:
-  #     type: LoadBalancer
+  listenersServiceTemplate:
+    metadata:
+      annotations:
+        io.cilium/lb-ipam-ips: ${SVC_MQTT_ADDR}
+    spec:
+      type: LoadBalancer
