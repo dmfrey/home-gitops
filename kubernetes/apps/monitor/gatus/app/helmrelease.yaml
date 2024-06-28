@@ -42,7 +42,7 @@ spec:
 
             image:
               repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.27.4@sha256:f6ed71d0f9f1175df8c4b8c674b339a74785384d25fdad21b3c3dc0554109286
+              tag: 1.15.6@sha256:1f025ae37b7b20d63bffd179e5e6f972039dd53d9646388c0a8c456229c7bbcb
 
             env:
               FOLDER: /config
