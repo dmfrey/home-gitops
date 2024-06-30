@@ -6,10 +6,9 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     hajimari.io/enable: "true"
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
 spec:
   ingressClassName: external
-  annotations:
-    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   rules:
     - host: &host spring-dev-gateway.${SECRET_DOMAIN}
       http:
@@ -22,6 +21,6 @@ spec:
             path: /
             pathType: Prefix
   tls:
-    - hosts: 
+    - hosts:
         - *host
       secretName: spring-dev-gateway-tls-external
