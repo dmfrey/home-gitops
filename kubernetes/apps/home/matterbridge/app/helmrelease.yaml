@@ -92,7 +92,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: matter.${INTERNAL_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: matter.${SECRET_DOMAIN}
           io.cilium/lb-ipam-ips: 192.168.31.105
         ports:
           http:
