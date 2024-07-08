@@ -46,7 +46,7 @@ spec:
         containers:
           *app :
             image:
-              repository: docker pull ghcr.io/t0bst4r/matterbridge-home-assistant-addon/amd64
+              repository: ghcr.io/t0bst4r/matterbridge-home-assistant-addon/amd64
               tag: 1.6.0-75@sha256:2abedce5cf448b5ecbbface24c62ffa228000853b6ac30d06e7ebbe6aea72456
 
             # env:
