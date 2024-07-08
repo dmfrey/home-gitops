@@ -52,7 +52,7 @@ spec:
             env:
               TZ: ${TIMEZONE}
               HOME_ASSISTANT_URL: http://home-assistant.home.svc.cluster.local:8123
-              SUPERVISOR_TOKEN:
+              HOME_ASSISTANT_ACCESS_TOKEN:
                 valueFrom:
                   secretKeyRef:
                     name: home-assistant-secret
@@ -125,7 +125,7 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-          - path: /config
+          - path: /root/.matterbridge
 
       tmp:
         type: emptyDir
