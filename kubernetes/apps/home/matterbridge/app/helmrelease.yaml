@@ -46,8 +46,8 @@ spec:
         containers:
           *app :
             image:
-              repository: ghcr.io/t0bst4r/matterbridge-home-assistant-addon/amd64
-              tag: 1.6.0-75@sha256:2abedce5cf448b5ecbbface24c62ffa228000853b6ac30d06e7ebbe6aea72456
+              repository: ghcr.io/t0bst4r/matterbridge-home-assistant
+              tag: 1.6.0@sha256:df0056dc49939bfcdc729e617f6cba587f0b61de2c96cac2126eeab7caaf5de4
 
             env:
               TZ: ${TIMEZONE}
