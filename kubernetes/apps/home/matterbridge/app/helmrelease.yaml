@@ -52,7 +52,7 @@ spec:
             env:
               TZ: ${TIMEZONE}
               HOME_ASSISTANT_URL: http://home-assistant.home.svc.cluster.local:8123
-              HOME_ASSISTANT_ACCESS_TOKEN:
+              SUPERVISOR_TOKEN:
                 valueFrom:
                   secretKeyRef:
                     name: home-assistant-secret
