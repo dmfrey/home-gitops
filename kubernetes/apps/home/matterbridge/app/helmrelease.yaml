@@ -38,7 +38,7 @@ spec:
     controllers:
 
       *app :
-        # type: statefulset
+        type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
