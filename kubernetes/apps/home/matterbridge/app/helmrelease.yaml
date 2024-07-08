@@ -99,6 +99,8 @@ spec:
             port: &port 8283
           ws:
             port: &wsPort 8284
+          matter:
+            port: &matterPort 5540
 
     ingress:
       external:
