@@ -23,7 +23,7 @@ spec:
       APP: *app
       APP_UID: "0"
       APP_GID: "0"
-      VOLSYNC_CLAIM: matterbridge-data
+      VOLSYNC_CLAIM: matterbridge-config
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 1Gi
     substituteFrom:

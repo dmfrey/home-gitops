@@ -116,10 +116,10 @@ spec:
             secretName: matterbridge-tls-external
 
     persistence:
-      app:
+      config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-          - path: /app
+          - path: /config
 
       tmp:
         type: emptyDir
