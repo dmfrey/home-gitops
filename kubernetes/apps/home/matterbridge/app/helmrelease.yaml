@@ -49,22 +49,8 @@ spec:
               repository: ghcr.io/t0bst4r/matterbridge-home-assistant-addon/amd64
               tag: 1.6.0-75@sha256:2abedce5cf448b5ecbbface24c62ffa228000853b6ac30d06e7ebbe6aea72456
 
-            # env:
-            #   TZ: ${TIMEZONE}
-            #   HASS_RECORDER_DB_URL:
-            #     valueFrom:
-            #       secretKeyRef:
-            #         name: pg-home-assistant-app
-            #         key: uri
-
-            # envFrom:
-            #   - secretRef:
-            #       name: home-assistant-secret
-            #     prefix: "HASS_"
-
-            # ports:
-            #   - name: http
-            #     containerPort: 8123
+            env:
+              TZ: ${TIMEZONE}
 
             # probes:
             #   liveness:
