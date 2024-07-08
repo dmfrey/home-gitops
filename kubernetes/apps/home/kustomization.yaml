@@ -8,6 +8,7 @@ resources:
   - ./notification.yaml
   # Flux-Kustomizations
   - ./home-assistant/ks.yaml
+  - ./matterbridge/ks.yaml
   # - ./mosquitto/ks.yaml
   # - ./wyoming-piper/ks.yaml
   # - ./wyoming-whisper/ks.yaml
