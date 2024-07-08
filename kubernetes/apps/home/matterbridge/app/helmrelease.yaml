@@ -52,19 +52,13 @@ spec:
             env:
               TZ: ${TIMEZONE}
 
-            # probes:
-            #   liveness:
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /manifest.json
-            #         port: 8123
-            #       initialDelaySeconds: 3
-            #       periodSeconds: 3
-            #   readiness:
-            #     enabled: false
-            #   startup:
-            #     enabled: false
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: false
 
             # resources:
             #   requests:
