@@ -71,6 +71,9 @@ spec:
         Lidarr:
           url: https://lidarr.${SECRET_DOMAIN}
           group: Media
+        Music-Assistant:
+          url: https://music.${SECRET_DOMAIN}
+          group: Media
         Readarr:
           url: https://readarr.${SECRET_DOMAIN}
           group: Media
