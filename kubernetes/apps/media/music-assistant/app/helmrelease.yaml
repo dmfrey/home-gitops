@@ -71,9 +71,9 @@ spec:
             port: &port 8095
 
     ingress:
-      internal:
+      external:
         enabled: true
-        className: internal
+        className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
