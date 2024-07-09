@@ -124,7 +124,7 @@ spec:
             secretName: matterbridge-tls-external
 
     persistence:
-      dotMatterbridge:
+      dot-matterbridge:
         existingClaim: ${DOT_MATTERBRIDGE_CLAIM}
         globalMounts:
           - path: /root/.matterbridge
