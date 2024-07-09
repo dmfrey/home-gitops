@@ -57,6 +57,8 @@ spec:
                   secretKeyRef:
                     name: home-assistant-secret
                     key: MATTERBRIDGE_TOKEN
+              HOME_ASSISTANT_CLIENT_CONFIG: { "includeDomains": ["light", "switch", "media_player"] }
+
 
             probes:
               liveness:
