@@ -58,7 +58,7 @@ spec:
                   secretKeyRef:
                     name: home-assistant-secret
                     key: MATTERBRIDGE_TOKEN
-              CONFIG_FILE: /config/config.yaml
+              CONFIG_FILE: /config/matterbridge-config.json
 
             probes:
               liveness:
