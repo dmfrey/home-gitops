@@ -1,0 +1,6 @@
+{
+  "includeDomains": ["light", "switch", "media_player"],
+  "includePatterns": [],
+  "excludeDomains": [],
+  "excludePatterns": []
+}

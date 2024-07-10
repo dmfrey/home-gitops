@@ -6,3 +6,11 @@ resources:
   - ./helmrelease.yaml
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
+configMapGenerator:
+  - name: matterbridge-config
+    files:
+      - config/matterbridge-config.json
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
