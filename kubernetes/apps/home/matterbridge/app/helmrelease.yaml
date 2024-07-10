@@ -99,8 +99,8 @@ spec:
         ports:
           http:
             port: &port 8283
-          ws:
-            port: &wsPort 8284
+          # ws:
+          #   port: &wsPort 8284
           matter:
             port: &matterPort 5540
 
@@ -108,8 +108,10 @@ spec:
       external:
         className: external
         annotations:
-          nginx.org/websocket-services: *app
           cert-manager.io/cluster-issuer: letsencrypt-prod
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+          nginx.org/websocket-services: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:matterdotjs"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
