@@ -1,6 +1,8 @@
 {
-  "includeDomains": ["light", "switch", "media_player"],
-  "includePatterns": [],
-  "excludeDomains": [],
-  "excludePatterns": []
+  "homeAssistantClientConfig": {
+    "includeDomains": ["light", "switch", "media_player"],
+    "includePatterns": [],
+    "excludeDomains": [],
+    "excludePatterns": []
+  }
 }
