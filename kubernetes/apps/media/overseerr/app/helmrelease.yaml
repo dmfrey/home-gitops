@@ -51,7 +51,7 @@ spec:
               tag: devel-alpine3.20
 
             command:
-              - "/bin/bash"
+              - "/usr/local/bin/bash"
               - -c
               - |
                 envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
