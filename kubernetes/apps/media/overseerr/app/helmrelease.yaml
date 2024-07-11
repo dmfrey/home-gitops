@@ -47,8 +47,8 @@ spec:
         initContainers:
           config-setup:
             image:
-              repository: alpine
-              tag: 3.20.1
+              repository: bash
+              tag: devel-alpine3.20
 
             command:
               - "/bin/bash"
