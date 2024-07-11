@@ -6,9 +6,9 @@ metadata:
   name: &app plex-meta-manager
   namespace: media
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
@@ -17,29 +17,29 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
-  
+
   values:
-  
+
     controllers:
       plex-meta-manager:
         type: cronjob
         annotations:
           secret.reloader.stakater.com/reload: &secret pmm-secret
-      
+
         cronjob:
           schedule: 0 6 * * *
 
@@ -57,10 +57,10 @@ spec:
 
         initContainers:
           config-setup:
-            image: 
-              repository: ghcr.io/onedr0p/alpine
-              tag: 3.19.1@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
-            
+            image:
+              repository: alpine
+              tag: 3.20.1
+
             command:
               - "/bin/sh"
               - -c
@@ -68,23 +68,23 @@ spec:
                 mkdir -p /config/assets
                 envsubst < /tmp/config-template/config.yml > /config/config.yml
                 exit 0
-            
+
             envFrom:
               - secretRef:
                   name: starr-apps-secret
               - secretRef:
                   name: pmm-secret
-    
+
     service:
       app:
         enabled: false
         controller: plex-meta-manager
-    
+
     persistence:
       config:
         enabled: true
         existingClaim: pmm-config
-      
+
       config-prerolls:
         enabled: true
         type: configMap
@@ -93,7 +93,7 @@ spec:
           - path: /config/pre-rolls.yml
             subPath: pre-rolls.yml
             readOnly: true
-      
+
       config-template:
         enabled: true
         type: configMap
@@ -101,7 +101,7 @@ spec:
         globalMounts:
           - path: /tmp/config-template
             readOnly: true
-      
+
       scripts:
         enabled: true
         type: configMap
