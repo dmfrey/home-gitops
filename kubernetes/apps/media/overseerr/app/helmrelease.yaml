@@ -54,7 +54,7 @@ spec:
               - "/usr/local/bin/bash"
               - -c
               - |
-                envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
+                /usr/local/bin/envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
                 if [ -s /config/settings.json ]
                 then
                   cp /tmp/settings-resolved.json /config/settings.json

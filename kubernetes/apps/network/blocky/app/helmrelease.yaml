@@ -49,7 +49,7 @@ spec:
             command:
               - "/usr/local/bin/bash"
               - -c
-              - envsubst < /tmp/config.yml > /config/config.yml
+              - /usr/local/bin/envsubst < /tmp/config.yml > /config/config.yml
 
             env:
               - name: BLOCKY_DATABASE_URI
