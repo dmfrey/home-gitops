@@ -43,13 +43,13 @@ spec:
         initContainers:
           configure:
             image:
-              repository: bash
-              tag: devel-alpine3.20
+              repository: ghcr.io/dmfrey/bash
+              tag: 5.2.26-alpine3.20
 
             command:
               - "/usr/local/bin/bash"
               - -c
-              - /usr/local/bin/envsubst < /tmp/config.yml > /config/config.yml
+              - envsubst < /tmp/config.yml > /config/config.yml
 
             env:
               - name: BLOCKY_DATABASE_URI
