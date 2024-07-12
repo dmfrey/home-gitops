@@ -50,7 +50,7 @@ route:
   repeat_interval: 6h
   receiver: "discord"
   routes:
-    - receiver: "null"
+    - receiver: "discord"
       matchers:
         - alertname =~ "InfoInhibitor|Watchdog"
     - receiver: "discord"
