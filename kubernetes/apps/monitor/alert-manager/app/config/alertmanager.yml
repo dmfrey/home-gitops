@@ -1,6 +1,7 @@
 global:
   smtp_from: dmfrey@dmfrey.com
   smtp_smarthost: smtp-relay.network.svc.cluster.local:2525
+  smtp_hello: alert-manager
 receivers:
   - name: "null"
   - name: "discord"
