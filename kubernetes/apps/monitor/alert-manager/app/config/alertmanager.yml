@@ -48,12 +48,12 @@ route:
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 6h
-  receiver: "pushover"
+  receiver: "discord"
   routes:
     - receiver: "null"
       matchers:
         - alertname =~ "InfoInhibitor|Watchdog"
-    - receiver: "pushover"
+    - receiver: "discord"
       matchers:
         - severity = critical
       continue: true
