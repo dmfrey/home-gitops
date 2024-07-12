@@ -71,6 +71,7 @@ data:
         url: http://alert-manager.monitor.svc.cluster.local:9093
         jsonData:
           implementation: prometheus
+          handleGrafanaManagedAlerts: true
         uid: alertmanager
       - name: blocky-pgcluster
         type: postgres
