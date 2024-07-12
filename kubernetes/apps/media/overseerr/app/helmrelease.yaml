@@ -47,14 +47,14 @@ spec:
         initContainers:
           config-setup:
             image:
-              repository: bash
-              tag: devel-alpine3.20
+              repository: ghcr.io/dmfrey/bash
+              tag: 5.2.26-alpine3.20
 
             command:
               - "/usr/local/bin/bash"
               - -c
               - |
-                /usr/local/bin/envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
+                envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
                 if [ -s /config/settings.json ]
                 then
                   cp /tmp/settings-resolved.json /config/settings.json
