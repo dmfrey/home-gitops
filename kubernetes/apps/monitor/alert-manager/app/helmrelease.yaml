@@ -22,41 +22,41 @@ spec:
   values:
 
     controllers:
-      alert-manager:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+          *app :
             image:
               repository: quay.io/prometheus/alertmanager
               tag: main
-            
+
             ports:
               - name: http
                 containerPort: 9093
-            
+
             resources:
               requests:
                 cpu: 11m
                 memory: 50M
               limits:
                 memory: 99M
-            
+
             securityContext:
               fsGroup: 2000
               runAsNonRoot: true
               runAsUser: 1000
 
     service:
-      app:
-        controller: alert-manager
+      *app :
+        controller: *app
         ports:
           http:
             port: &port 9093
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -69,7 +69,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *port
         tls:
           - hosts:
@@ -81,7 +81,7 @@ spec:
         enabled: true
         type: configMap
         name: alertmanager-configmap
-        globalMounts: 
+        globalMounts:
           - path: /etc/alertmanager
 
       alertmanager:

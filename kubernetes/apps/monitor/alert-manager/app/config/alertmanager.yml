@@ -1,5 +1,8 @@
 receivers:
   - name: "null"
+  - name: "discord"
+    discord_configs:
+      - webhook_url: /etc/secrets/discord_webhook_url
   - name: "pushover"
     pushover_configs:
       - html: true
