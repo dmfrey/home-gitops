@@ -138,7 +138,7 @@ spec:
 
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.91.0
+              tag: 4.91.1
 
             args:
               - "/config"
