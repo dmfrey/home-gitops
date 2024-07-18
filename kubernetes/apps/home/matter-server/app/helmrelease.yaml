@@ -56,7 +56,7 @@ spec:
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &wsPort 5580
               MATTER_SERVER__APPLICATION_URL: "matter.${SECRET_DOMAIN}"
-              MATTER_SERVER__LOG_LEVEL: info
+              MATTER_SERVER__LOG_LEVEL: debug
 
             # probes:
             #   liveness:
