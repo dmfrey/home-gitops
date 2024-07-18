@@ -58,16 +58,6 @@ spec:
               MATTER_SERVER__APPLICATION_URL: "matter.${SECRET_DOMAIN}"
               MATTER_SERVER__LOG_LEVEL: info
 
-            pod:
-              annotations:
-                k8s.v1.cni.cncf.io/networks: |
-                  [{
-                    "name":"iot-vlan",
-                    "namespace": "network",
-                    "ips": ["192.168.50.9/24"],
-                    "mac": "36:3b:ef:15:c3:00"
-                  }]
-
             # probes:
             #   liveness:
             #     enabled: true
@@ -84,6 +74,16 @@ spec:
                 memory: "100M"
               limits:
                 memory: "500M"
+
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.9/24"],
+                "mac": "36:3b:ef:15:c3:00"
+              }]
 
     defaultPodOptions:
       securityContext:
