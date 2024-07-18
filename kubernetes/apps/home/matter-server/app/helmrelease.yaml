@@ -55,7 +55,7 @@ spec:
               TZ: "${TIMEZONE}"
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &wsPort 5580
-              MATTER_SERVER__APPLICATION_URL: &host matter.${INTERNAL_DOMAIN}
+              MATTER_SERVER__APPLICATION_URL: &host matter.${SECRET_DOMAIN}
               MATTER_SERVER__LOG_LEVEL: debug
 
             # probes:
@@ -110,14 +110,14 @@ spec:
         externalTrafficPolicy: Cluster
 
     ingress:
-      internal:
-        className: internal
-        # annotations:
-        #   nginx.org/websocket-services: *app
-        #   cert-manager.io/cluster-issuer: letsencrypt-prod
-        #   hajimari.io/enable: "true"
-        #   hajimari.io/icon: "simple-icons:matter"
-        #   external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+      external:
+        className: external
+        annotations:
+          nginx.org/websocket-services: *app
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:matter"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: *host
             paths:
@@ -128,6 +128,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: matter-server-tls-external
 
     persistence:
       data:
