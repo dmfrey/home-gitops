@@ -76,7 +76,6 @@ spec:
             #     memory: 4096Mi
 
             securityContext:
-              # allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
 
@@ -94,7 +93,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: matter.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: matterbridge.${SECRET_DOMAIN}
           io.cilium/lb-ipam-ips: 192.168.31.105
         ports:
           http:
@@ -116,7 +115,7 @@ spec:
           hajimari.io/icon: "simple-icons:matterdotjs"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host matter.${SECRET_DOMAIN}
+          - host: &host matterbridge.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
