@@ -55,7 +55,7 @@ spec:
               TZ: "${TIMEZONE}"
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &wsPort 5580
-              MATTER_SERVER__APPLICATION_URL: "matter.${SECRET_DOMAIN}"
+              MATTER_SERVER__APPLICATION_URL: &host matter.${INTERNAL_DOMAIN}"
               MATTER_SERVER__LOG_LEVEL: debug
 
             # probes:
@@ -100,7 +100,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: matter.${INTERNAL_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: *app
           io.cilium/lb-ipam-ips: ${SVC_MATTER_ADDR}
         ports:
           ws:
@@ -109,26 +109,25 @@ spec:
             primary: true
         externalTrafficPolicy: Cluster
 
-    # ingress:
-    #   external:
-    #     className: external
-    #     annotations:
-    #       nginx.org/websocket-services: *app
-    #       cert-manager.io/cluster-issuer: letsencrypt-prod
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: "simple-icons:matter"
-    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-    #     hosts:
-    #       - host: &host matter.${SECRET_DOMAIN}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: *app
-    #               port: *wsPort
-    #     tls:
-    #       - hosts:
-    #           - *host
-    #         secretName: matter-server-tls-external
+    ingress:
+      internal:
+        className: internal
+        # annotations:
+        #   nginx.org/websocket-services: *app
+        #   cert-manager.io/cluster-issuer: letsencrypt-prod
+        #   hajimari.io/enable: "true"
+        #   hajimari.io/icon: "simple-icons:matter"
+        #   external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: *wsPort
+        tls:
+          - hosts:
+              - *host
 
     persistence:
       data:
