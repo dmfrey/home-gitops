@@ -55,7 +55,7 @@ spec:
               TZ: "${TIMEZONE}"
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &wsPort 5580
-              MATTER_SERVER__APPLICATION_URL: &host matter.${INTERNAL_DOMAIN}"
+              MATTER_SERVER__APPLICATION_URL: &host matter.${INTERNAL_DOMAIN}
               MATTER_SERVER__LOG_LEVEL: debug
 
             # probes:
