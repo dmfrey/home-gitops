@@ -110,14 +110,14 @@ spec:
         externalTrafficPolicy: Cluster
 
     ingress:
-      external:
-        className: external
+      internal:
+        className: internal
         annotations:
           nginx.org/websocket-services: *app
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:matter"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          # cert-manager.io/cluster-issuer: letsencrypt-prod
+          # hajimari.io/enable: "true"
+          # hajimari.io/icon: "simple-icons:matter"
+          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: *host
             paths:
@@ -128,7 +128,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: matter-server-tls-external
+            # secretName: matter-server-tls-external
 
     persistence:
       data:
