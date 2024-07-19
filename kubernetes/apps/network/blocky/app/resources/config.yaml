@@ -61,7 +61,7 @@ conditional:
   # rewrite:
   #   example.com: fritz.box
   mapping:
-    ${SECRET_DOMAIN}: 192.168.31.100
+    ${SECRET_DOMAIN}: 192.168.31.100:53
 
 blocking:
   # definition of blacklist groups. Can be external link (http/https) or local file
@@ -247,7 +247,7 @@ caching:
 # optional: configuration of client name resolution
 clientLookup:
   # optional: this DNS resolver will be used to perform reverse DNS lookup (typically local router)
-  upstream: 192.168.86.1
+  upstream: 192.168.10.1
   # optional: some routers return multiple names for client (host name and user defined name). Define which single name should be used.
   # Example: take second name if present, if not take first name
   singleNameOrder:
