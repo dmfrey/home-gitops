@@ -13,7 +13,7 @@ spec:
   ingressClassName: internal
 
   rules:
-    - host: &fqdn emqx.${INTERNAL_DOMAIN}
+    - host: &fqdn emqx.${SECRET_DOMAIN}
       http:
         paths:
           - path: /

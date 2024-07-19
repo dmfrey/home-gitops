@@ -140,7 +140,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
-          - host: &host dns.${INTERNAL_DOMAIN}
+          - host: &host dns.${SECRET_DOMAIN}
             paths:
               - path: /dns-query
                 service:

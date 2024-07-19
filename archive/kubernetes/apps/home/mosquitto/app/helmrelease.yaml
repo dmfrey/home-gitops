@@ -19,29 +19,29 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
 
     controllers:
-      
+
       mosquitto:
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -60,23 +60,23 @@ spec:
 
         initContainers:
           user-import:
-            image: 
+            image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18@sha256:d84c9bd554489b5fa564df57d2d12c2e734185b2b2bfd8d62f9f91cb2cc0cdba
-            
+
             command:
               - "/bin/sh"
               - -c
-            
+
             args:
               - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
-            
+
     service:
       app:
         controller: mosquitto
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: mqtt.${INTERNAL_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: mqtt.${SECRET_DOMAIN}
           io.cilium/lb-ipam-ips: ${SVC_MQTT_ADDR}
         ports:
           http:
@@ -94,7 +94,7 @@ spec:
           - path: /mosquitto/config/mosquitto.conf
             subPath: mosquitto.conf
         defaultMode: 0664
-      
+
       mosquitto-secret:
         enabled: true
         type: secret
@@ -102,7 +102,7 @@ spec:
         globalMounts:
           - path: /data/mosquitto_secret
         defaultMode: 0664
-      
+
       mosquitto-init-config:
         enabled: true
         type: configMap
@@ -111,7 +111,7 @@ spec:
           - path: /data/mosquitto_init/load-users.sh
             subPath: load-users.sh
         defaultMode: 0775
-      
+
       external-config:
         enabled: true
         type: emptyDir
