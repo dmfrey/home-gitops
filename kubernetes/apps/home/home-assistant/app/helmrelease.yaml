@@ -123,9 +123,11 @@ spec:
 
             resources:
               requests:
+                squat.ai/skyconnect: 1
                 cpu: 47m
                 memory: 2048Mi
               limits:
+                squat.ai/skyconnect: 1
                 memory: 4096Mi
 
             securityContext:
