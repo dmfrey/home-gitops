@@ -297,3 +297,13 @@ spec:
           *app :
             git-sync:
               - path: /tmp
+
+      usb:
+        type: hostPath
+        hostPath: /dev/ttyUSB0
+        advancedMounts:
+          *app :
+            app:
+              - path: /dev/ttyUSB0
+
+
