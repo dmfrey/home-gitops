@@ -174,7 +174,8 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
         supplementalGroups:
-          - 20
+          - 20    # dialout
+          - 84    # usb
 
     service:
       *app :
