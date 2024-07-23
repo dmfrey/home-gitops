@@ -23,7 +23,7 @@ spec:
       ssoEnabled: false
       predicates:
         - Path=/api/v1/cart/**
-    - uri: http://monomart.spring-dev.svc.cluster.local:8080
+    - uri: http://monomart-ui.spring-dev.svc.cluster.local:8080
       ssoEnabled: false
       predicates:
         - Path=/**
