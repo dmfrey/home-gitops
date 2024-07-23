@@ -8,4 +8,4 @@ resources:
   # Flux-Kustomizations
   - ./gateway/ks.yaml
   - ./time-service/ks.yaml
-  - ./monomart-ui/ks.yaml
+  - ./monomart/ks.yaml
