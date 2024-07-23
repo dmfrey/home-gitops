@@ -20,7 +20,13 @@ spec:
     - uri: http://inventory.spring-dev.svc.cluster.local:8080
       ssoEnabled: false
       predicates:
-        - Path=/api/**
+        - Path=/api/products/**
+      filters:
+        - StripPrefix=0
+    - uri: http://inventory.spring-dev.svc.cluster.local:8080
+      ssoEnabled: false
+      predicates:
+        - Path=/api/catalogs/**
       filters:
         - StripPrefix=0
     - uri: http://monomart-ui.spring-dev.svc.cluster.local:8080
