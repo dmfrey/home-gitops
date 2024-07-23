@@ -12,14 +12,20 @@ spec:
       filters:
         - TokenRelay=
     - uri: http://commerce.spring-dev.svc.cluster.local:8080
-      ssoEnabled: false
+      ssoEnabled: true
       predicates:
         - Path=/api/v1/cart
+      filters:
+        - TokenRelay=
     - uri: http://inventory.spring-dev.svc.cluster.local:8080
-      ssoEnabled: false
+      ssoEnabled: true
       predicates:
         - Path=/api/**
+      filters:
+        - TokenRelay=
     - uri: http://monomart-ui.spring-dev.svc.cluster.local:8080
-      ssoEnabled: false
+      ssoEnabled: true
       predicates:
         - Path=/**
+      filters:
+        - TokenRelay=
