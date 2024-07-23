@@ -61,6 +61,7 @@ spec:
 
             env:
               SERVER_PORT: &port 8080
+              PRODUCT_API_URL: http://inventory.spring-dev.svc.cluster.local:8080
               LOGGING_LEVEL_IO_MICROMETER: ERROR
               SPRING_PROFILES_ACTIVE: kubernetes
               MANAGEMENT_TRACING_ENABLED: true
