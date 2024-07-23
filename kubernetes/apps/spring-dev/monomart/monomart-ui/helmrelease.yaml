@@ -58,15 +58,15 @@ spec:
               tag: 1.0.0
               pullPolicy: Always
 
-            ports:
-              - name: http
-                containerPort: &port 8080
-
             env:
               LOGGING_LEVEL_IO_MICROMETER: ERROR
               SPRING_PROFILES_ACTIVE: kubernetes
               MANAGEMENT_TRACING_ENABLED: true
               MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:9411/api/v2/spans
+
+            ports:
+              - name: http
+                containerPort: &port 8080
 
             probes:
               liveness:
