@@ -75,17 +75,17 @@ spec:
                   secretKeyRef:
                     name: pg-commerce-app
                     key: password
-              SPRING_RABBIT_HOST:
+              SPRING_RABBITMQ_HOST:
                 valueFrom:
                   secretKeyRef:
                     name: rabbit-monomart-default-user
                     key: host
-              SPRING_RABBIT_USERNAME:
+              SPRING_RABBITMQ_USERNAME:
                 valueFrom:
                   secretKeyRef:
                     name: rabbit-monomart-default-user
                     key: username
-              SPRING_RABBIT_PASSWORD:
+              SPRING_RABBITMQ_PASSWORD:
                 valueFrom:
                   secretKeyRef:
                     name: rabbit-monomart-default-user
