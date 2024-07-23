@@ -113,7 +113,7 @@ spec:
                     port: *port
                   initialDelaySeconds: 15
               startup:
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
