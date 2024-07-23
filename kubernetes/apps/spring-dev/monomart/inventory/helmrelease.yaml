@@ -48,6 +48,7 @@ spec:
     controllers:
       *app :
         type: deployment
+        replicas: 3
         annotations:
           reloader.stakater.com/auto: "true"
           secret.reloader.stakater.com/reload: pg-inventory-app,rabbit-monomart-default-user
