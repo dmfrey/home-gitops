@@ -17,10 +17,12 @@ spec:
         - Path=/api/v1/cart
       filters:
         - TokenRelay=
+        - StripPrefix=0
     - uri: http://inventory.spring-dev.svc.cluster.local:8080
       ssoEnabled: true
       predicates:
         - Path=/api/**
+        - StripPrefix=0
       filters:
         - TokenRelay=
     - uri: http://monomart-ui.spring-dev.svc.cluster.local:8080
