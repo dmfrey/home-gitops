@@ -3,6 +3,11 @@ kind: SpringCloudGateway
 metadata:
   name: spring-dev-gateway
   namespace: spring-dev
+  labels:
+    app.kubernetes.io/name: spring-dev-gateway
+    app.kubernetes.io/instance: spring-dev-gateway
+    app.kubernetes.io/component: spring-cloud-gateway
+
 spec:
 
   count: 3
