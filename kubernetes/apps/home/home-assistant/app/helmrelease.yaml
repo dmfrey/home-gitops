@@ -175,7 +175,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
         supplementalGroups:
           - 20    # dialout
-          - 84    # usb
+          - 85    # usb
 
     service:
       *app :
