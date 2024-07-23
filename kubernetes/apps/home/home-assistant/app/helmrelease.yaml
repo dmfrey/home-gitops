@@ -134,6 +134,8 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              supplementalGroups:
+                - 20
 
           codeserver:
             dependsOn: app
@@ -173,8 +175,6 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
-        supplementalGroups:
-          - 20
 
     service:
       *app :
