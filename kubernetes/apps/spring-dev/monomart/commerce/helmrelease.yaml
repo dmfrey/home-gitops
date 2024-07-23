@@ -50,6 +50,7 @@ spec:
         type: deployment
         annotations:
           reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: pg-commerce-app,rabbit-monomart-default-user
 
         containers:
           *app :
@@ -73,6 +74,21 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: pg-commerce-app
+                    key: password
+              SPRING_RABBIT_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: rabbit-monomart-default-user
+                    key: host
+              SPRING_RABBIT_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: rabbit-monomart-default-user
+                    key: username
+              SPRING_RABBIT_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: rabbit-monomart-default-user
                     key: password
 
             ports:

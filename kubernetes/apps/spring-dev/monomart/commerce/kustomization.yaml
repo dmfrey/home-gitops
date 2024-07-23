@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
-  # - ./helmrelease.yaml
+  - ./helmrelease.yaml
