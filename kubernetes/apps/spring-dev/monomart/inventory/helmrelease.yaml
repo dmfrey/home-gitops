@@ -60,6 +60,7 @@ spec:
               pullPolicy: Always
 
             env:
+              SERVER_PORT: &port 8080
               LOGGING_LEVEL_IO_MICROMETER: ERROR
               SPRING_PROFILES_ACTIVE: kubernetes
               MANAGEMENT_TRACING_ENABLED: true
@@ -93,7 +94,7 @@ spec:
 
             ports:
               - name: http
-                containerPort: &port 8080
+                containerPort: *port
 
             probes:
               liveness:
@@ -113,7 +114,7 @@ spec:
                     port: *port
                   initialDelaySeconds: 15
               startup:
-                enabled: false
+                enabled: true
                 custom: true
                 spec:
                   httpGet:
