@@ -151,9 +151,10 @@ spec:
             explicit:
               buckets: [100us, 1ms, 2ms, 6ms, 10ms, 100ms, 250ms]
           dimensions:
-            - name: http.method
+            - name: http.method       # extract http.method attribute from span to Prometheus label http_method
               default: GET
-            - name: http.status_code
+            - name: http.status_code  # extract http.status_code attribute from span to Prometheus label http_status_code
+            - name: http.route        # extract http.route attribute from span to Prometheus label http_route
           exemplars:
             enabled: true
           exclude_dimensions: ['status.code']
