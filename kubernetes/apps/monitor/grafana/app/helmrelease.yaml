@@ -174,7 +174,7 @@ spec:
         # Ref: https://grafana.com/grafana/dashboards/2842/
         ceph-cluster:
           gnetId: 2842
-          revision: 16
+          revision: 17
         # Ref: https://grafana.com/grafana/dashboards/5336/
         ceph-osds:
           gnetId: 5336
@@ -192,6 +192,9 @@ spec:
         apm:
           gnetId: 19419
           revision: 4
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
 
     deploymentStrategy:
       type: Recreate
