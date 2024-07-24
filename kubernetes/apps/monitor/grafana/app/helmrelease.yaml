@@ -191,7 +191,7 @@ spec:
         # Ref: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
         apm:
           gnetId: 19419
-          revision: 3
+          revision: 4
 
     deploymentStrategy:
       type: Recreate
