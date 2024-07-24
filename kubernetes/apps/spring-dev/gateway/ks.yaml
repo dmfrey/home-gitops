@@ -2,15 +2,25 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-spring-dev-gateway
+  name: &app spring-dev-gateway
   namespace: flux-system
 spec:
-  interval: 15m
-  path: "./kubernetes/apps/spring-dev/gateway/app"
+  targetNamespace: spring-dev
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   prune: true
+  path: "./kubernetes/apps/spring-dev/gateway/app"
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
