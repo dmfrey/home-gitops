@@ -44,7 +44,23 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
+          fix-hass-config:
+            image:
+              repository: busybox
+              tag: stable
+
+            command: ["sh", "-c", "mkdir -p /config/hass-config && chown -R 568:568 /config/hass-config"]
+
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+
           git-sync:
+            dependsOn: fix-hass-config
+
             restartPolicy: Always
 
             image:
@@ -160,7 +176,7 @@ spec:
               [{
                 "name":"iot-vlan",
                 "namespace": "network",
-                "ips": ["192.168.50.4/24"],
+                "ips": ["192.168.50./24"],
                 "mac": "a6:60:f7:86:74:12",
                 "gateway": ["192.168.50.1"]
               }]
