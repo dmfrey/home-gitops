@@ -21,8 +21,6 @@ spec:
       value: "true"
     - name: spring.sleuth.trace-id128
       value: "true"
-    # - name: spring.cloud.gateway.filter.strip-prefix.enabled
-    #   value: "false"
 
   healthCheck:
     enabled: true
@@ -35,6 +33,8 @@ spec:
       prometheus:
         enabled: true
         serviceMonitor:
+          enabled: true
+        annotations:
           enabled: true
 
     tracing:
