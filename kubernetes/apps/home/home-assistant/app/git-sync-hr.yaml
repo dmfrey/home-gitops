@@ -50,7 +50,8 @@ spec:
               tag: stable
 
             command:
-              - sh
+              - sleep
+              - "3600"
 
             # image:
             #   repository: registry.k8s.io/git-sync/git-sync
