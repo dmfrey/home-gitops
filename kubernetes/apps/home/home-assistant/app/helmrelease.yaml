@@ -49,13 +49,13 @@ spec:
               repository: busybox
               tag: stable
 
-            command: ["sh", "-c", "mkdir -p /config/hass-config && chown -R 568:568 /config/hass-config"]
+            command: ["sh", "-c", "mkdir -p /config/hass-config"]
 
             securityContext:
               readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
+              allowPrivilegeEscalation: false
+              runAsUser: 568
+              runAsGroup: 568
               capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
           git-sync:
