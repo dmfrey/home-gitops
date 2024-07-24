@@ -29,3 +29,11 @@ spec:
         - Path=/**
       filters:
         - StripPrefix=0
+      metadata:
+        cors:
+          # Allowed origins to make cross-site requests. The special value "*" allows all domains.
+          # These values will be combined with the values from allowedOriginPatterns.
+          allowedOrigins: https://dmfrey.com
+          # Allowed HTTP methods on cross-site requests. The special value "*" allows all methods.
+          # If not set, "GET" and "HEAD" are allowed by default.
+          allowedMethods: [GET, PUT, POST]
