@@ -46,26 +46,32 @@ spec:
         containers:
           *app :
             image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.2.4@sha256:8bfbf28623690fba06c65ec392e42023d28ecfc7e0fbfd4443388d020dc112ea
+              repository: busybox
+              tag: stable
 
-            env:
-              GITSYNC_REPO: https://github.com/dmfrey/hass-config
-              GITSYNC_REF: main
-              GITSYNC_PERIOD: 10s # 1 day
-              GITSYNC_ROOT: /config
-              GITSYNC_ADD_USER: ${UID}
+            command: ["sh", "-c", "mkdir -p /config/hass-config"]
 
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
+            # image:
+            #   repository: registry.k8s.io/git-sync/git-sync
+            #   tag: v4.2.4@sha256:8bfbf28623690fba06c65ec392e42023d28ecfc7e0fbfd4443388d020dc112ea
 
-            securityContext:
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
+            # env:
+            #   GITSYNC_REPO: https://github.com/dmfrey/hass-config
+            #   GITSYNC_REF: main
+            #   GITSYNC_PERIOD: 10s # 1 day
+            #   GITSYNC_ROOT: /config
+            #   GITSYNC_ADD_USER: ${UID}
+
+            # resources:
+            #   requests:
+            #     cpu: 10m
+            #   limits:
+            #     memory: 128Mi
+
+            # securityContext:
+            #   readOnlyRootFilesystem: true
+            #   allowPrivilegeEscalation: false
+            #   capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
       securityContext:
