@@ -71,7 +71,7 @@ spec:
               GITSYNC_REPO: https://github.com/dmfrey/hass-config
               GITSYNC_REF: main
               GITSYNC_PERIOD: 10s # 1 day
-              GITSYNC_ROOT: /config
+              GITSYNC_ROOT: /tmp/config
               GITSYNC_ADD_USER: ${UID}
 
             resources:
@@ -299,16 +299,16 @@ spec:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
 
-      # backups:
-      #   enabled: true
-      #   type: custom
-      #   volumeSpec:
-      #     nfs:
-      #       server: "${QNAP_ADDR}"
-      #       path: /homeassistant
-      #   globalMounts:
-      #     - path: /config/backups
-      #       readOnly: false
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${QNAP_ADDR}"
+            path: /homeassistant
+        globalMounts:
+          - path: /config/backups
+            readOnly: false
 
       tmp:
         type: emptyDir
