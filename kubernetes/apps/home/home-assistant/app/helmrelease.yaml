@@ -44,22 +44,22 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
-          fix-hass-config:
-            image:
-              repository: busybox
-              tag: stable
+          # fix-hass-config:
+          #   image:
+          #     repository: busybox
+          #     tag: stable
 
-            command: ["sh", "-c", "mkdir -p /config/hass-config"]
+          #   command: ["sh", "-c", "mkdir -p /config/hass-config"]
 
-            securityContext:
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: false
-              runAsUser: 568
-              runAsGroup: 568
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+          #   securityContext:
+          #     readOnlyRootFilesystem: true
+          #     allowPrivilegeEscalation: false
+          #     runAsUser: 568
+          #     runAsGroup: 568
+          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
           git-sync:
-            dependsOn: fix-hass-config
+            # dependsOn: fix-hass-config
 
             restartPolicy: Always
 
@@ -101,7 +101,7 @@ spec:
           #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/home-assistant
               tag: 2024.7.3@sha256:49edf11a71f1c6b8787dc5b190252d7a2e72e40d93091011be26d2162b1cdff6
@@ -280,7 +280,7 @@ spec:
                 readOnly: true
               - path: /etc/git-secret/known_hosts
                 subPath: known_hosts
-            app: &sshmounts
+            *app : &sshmounts
               - path: /root/.ssh/id_ed25519
                 subPath: ssh-privatekey
                 readOnly: true
@@ -322,7 +322,7 @@ spec:
         hostPath: /dev/ttyUSB0
         advancedMounts:
           *app :
-            app:
+            *app :
               - path: /dev/ttyUSB0
 
 
