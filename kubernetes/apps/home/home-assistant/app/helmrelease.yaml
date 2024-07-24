@@ -299,16 +299,16 @@ spec:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
 
-      backups:
-        enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /homeassistant
-        globalMounts:
-          - path: /config/backups
-            readOnly: false
+      # backups:
+      #   enabled: true
+      #   type: custom
+      #   volumeSpec:
+      #     nfs:
+      #       server: "${QNAP_ADDR}"
+      #       path: /homeassistant
+      #   globalMounts:
+      #     - path: /config/backups
+      #       readOnly: false
 
       tmp:
         type: emptyDir
