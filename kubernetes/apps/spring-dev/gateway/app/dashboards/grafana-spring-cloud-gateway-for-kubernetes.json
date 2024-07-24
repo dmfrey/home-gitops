@@ -134,7 +134,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "spring_cloud_gateway_routes_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}",
+          "expr": "spring_cloud_gateway_routes_count{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}",
           "instant": true,
           "interval": "",
           "intervalFactor": 1,
@@ -205,7 +205,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "sum (spring_cloud_gateway_requests_seconds_count{outcome=~\"SUCCESSFUL|REDIRECTION\",gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})  * 100",
+          "expr": "sum (spring_cloud_gateway_requests_seconds_count{outcome=~\"SUCCESSFUL|REDIRECTION\",gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"})  * 100",
           "format": "time_series",
           "interval": "",
           "legendFormat": "",
@@ -270,7 +270,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "sum (spring_cloud_gateway_requests_seconds_count{outcome!~\"SUCCESSFUL|REDIRECTION\",gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})  * 100",
+          "expr": "sum (spring_cloud_gateway_requests_seconds_count{outcome!~\"SUCCESSFUL|REDIRECTION\",gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"})  * 100",
           "format": "time_series",
           "interval": "",
           "legendFormat": "",
@@ -341,7 +341,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "sum (spring_cloud_gateway_requests_seconds_count{status=\"TOO_MANY_REQUESTS\", gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) * 100",
+          "expr": "sum (spring_cloud_gateway_requests_seconds_count{status=\"TOO_MANY_REQUESTS\", gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}) / sum (spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}) * 100",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -409,7 +409,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "sum(spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) / sum(spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) ",
+          "expr": "sum(spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}) / sum(spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}) ",
           "format": "time_series",
           "interval": "",
           "legendFormat": "",
@@ -492,7 +492,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "sum by (httpMethod, path) (spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"}) /  sum by (httpMethod, path)(spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})",
+          "expr": "sum by (httpMethod, path) (spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"}) /  sum by (httpMethod, path)(spring_cloud_gateway_requests_seconds_count{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"})",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -576,7 +576,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "max(spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})",
+          "expr": "max(spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"})",
           "format": "time_series",
           "interval": "",
           "legendFormat": "",
@@ -660,7 +660,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "max by (httpMethod,path) (spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"})",
+          "expr": "max by (httpMethod,path) (spring_cloud_gateway_requests_seconds_sum{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"})",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1771,7 +1771,7 @@
             "uid": ""
           },
           "exemplar": true,
-          "expr": "sum by (name, state) (resilience4j_circuitbreaker_state{gateway_name=~\"$gatewayName\", kubernetes_namespace=~\"$namespace\"} > 0)",
+          "expr": "sum by (name, state) (resilience4j_circuitbreaker_state{gateway_name=~\"$gatewayName\", namespace=~\"$namespace\"} > 0)",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1846,7 +1846,7 @@
           "type": "prometheus",
           "uid": ""
         },
-        "definition": "label_values(spring_cloud_gateway_routes_count, kubernetes_namespace)",
+        "definition": "label_values(spring_cloud_gateway_routes_count, namespace)",
         "hide": 0,
         "includeAll": true,
         "label": "Gateway Namespace",
@@ -1854,7 +1854,7 @@
         "name": "namespace",
         "options": [],
         "query": {
-          "query": "label_values(spring_cloud_gateway_routes_count, kubernetes_namespace)",
+          "query": "label_values(spring_cloud_gateway_routes_count, namespace)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
