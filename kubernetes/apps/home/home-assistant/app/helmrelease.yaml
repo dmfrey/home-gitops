@@ -44,20 +44,6 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
-          # fix-hass-config:
-          #   image:
-          #     repository: busybox
-          #     tag: stable
-
-          #   command: ["sh", "-c", "mkdir -p /config/hass-config"]
-
-          #   securityContext:
-          #     readOnlyRootFilesystem: true
-          #     allowPrivilegeEscalation: false
-          #     runAsUser: 568
-          #     runAsGroup: 568
-          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
-
           git-sync:
             # dependsOn: fix-hass-config
 
@@ -85,20 +71,21 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
 
-          # fix-permissions:
-          #   dependsOn: git-sync
-          #   image:
-          #     repository: busybox
-          #     tag: stable
+          fix-permissions:
+            dependsOn: git-sync
+            image:
+              repository: busybox
+              tag: stable
 
-          #   command: ["sh", "-c", "chown -R 568:568 /config"]
+            command: ["sh", "-c", "chown -R 568:568 /config"]
 
-          #   securityContext:
-          #     readOnlyRootFilesystem: true
-          #     allowPrivilegeEscalation: true
-          #     runAsUser: 0
-          #     runAsGroup: 0
-          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           *app :
