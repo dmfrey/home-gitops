@@ -306,9 +306,11 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /homeassistant
-        globalMounts:
-          - path: /config/backups
-            readOnly: false
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/backups
+                readOnly: false
 
       tmp:
         type: emptyDir
