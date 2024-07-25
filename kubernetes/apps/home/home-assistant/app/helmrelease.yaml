@@ -295,9 +295,11 @@ spec:
       configuration:
         type: configMap
         name: hass-config
-        globalMounts:
-          - path: /config/configuration.yaml
-            subPath: configuration.yaml
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/configuration.yaml
+                subPath: configuration.yaml
 
       backups:
         enabled: true
