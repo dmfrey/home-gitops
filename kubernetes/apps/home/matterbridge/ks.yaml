@@ -29,37 +29,37 @@ spec:
   dependsOn:
     - name: cluster-apps-volsync
     - name: cluster-apps-rook-ceph-cluster
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: matterbridge-pvc
-#   namespace: flux-system
-# spec:
-#   targetNamespace: home
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: matterbridge
-#   interval: 10m
-#   path: "./kubernetes/templates/volsync"
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: home-gitops
-#   postBuild:
-#     substitute:
-#       APP: matterbridge-data
-#       VOLSYNC_CLAIM: matterbridge-data
-#       VOLSYNC_CAPACITY: 1Gi
-#     substituteFrom:
-#       - kind: Secret
-#         name: flux-volsync-secret
-#   decryption:
-#     provider: sops
-#   dependsOn:
-#     - name: cluster-apps-volsync
-#     - name: cluster-apps-rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: matterbridge-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: matterbridge
+  interval: 10m
+  path: "./kubernetes/templates/volsync"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: matterbridge-data
+      VOLSYNC_CLAIM: matterbridge-data
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -87,7 +87,7 @@ spec:
       APP_UID: "0"
       APP_GID: "0"
       DOT_MATTERBRIDGE_CLAIM: dot-matterbridge-data
-      # MATTERBRIDGE_CLAIM: matterbridge-data
+      MATTERBRIDGE_CLAIM: matterbridge-data
     substituteFrom:
       - kind: Secret
         name: flux-volsync-secret
@@ -95,4 +95,4 @@ spec:
     provider: sops
   dependsOn:
     - name: dot-matterbridge-pvc
-    # - name: matterbridge-pvc
+    - name: matterbridge-pvc
