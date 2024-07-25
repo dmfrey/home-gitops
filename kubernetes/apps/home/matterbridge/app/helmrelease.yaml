@@ -58,7 +58,7 @@ spec:
                   secretKeyRef:
                     name: home-assistant-secret
                     key: MATTERBRIDGE_TOKEN
-              CONFIG_FILE: /config/matterbridge-config.json
+              MHA_CONFIG_FILE: /config/matterbridge-config.json
 
             probes:
               liveness:
@@ -132,16 +132,16 @@ spec:
         globalMounts:
           - path: /root/.matterbridge
 
-      matterbridge:
-        existingClaim: ${MATTERBRIDGE_CLAIM}
-        globalMounts:
-          - path: /root/Matterbridge
+      # matterbridge:
+      #   existingClaim: ${MATTERBRIDGE_CLAIM}
+      #   globalMounts:
+      #     - path: /root/Matterbridge
 
       config:
         type: configMap
         name: matterbridge-config
         globalMounts:
-          - path: /config/matterbridge-config.json
+          - path: /app/config.json
             subPath: matterbridge-config.json
 
       tmp:
