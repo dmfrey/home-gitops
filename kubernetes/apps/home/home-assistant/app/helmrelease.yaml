@@ -59,6 +59,7 @@ spec:
               GITSYNC_PERIOD: 10s # 1 day
               GITSYNC_ROOT: /config
               GITSYNC_ADD_USER: ${UID}
+              GITSYNC_VERBOSE: 1
 
             resources:
               requests:
