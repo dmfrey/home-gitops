@@ -60,6 +60,7 @@ spec:
               GITSYNC_ROOT: /config
               GITSYNC_ADD_USER: ${UID}
               GITSYNC_VERBOSE: 2
+              GIT_SYNC_ONE_TIME: "true"
 
             resources:
               requests:
