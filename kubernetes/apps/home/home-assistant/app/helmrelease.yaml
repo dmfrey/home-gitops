@@ -45,8 +45,6 @@ spec:
 
         initContainers:
           git-sync:
-            # dependsOn: fix-hass-config
-
             restartPolicy: Always
 
             image:
