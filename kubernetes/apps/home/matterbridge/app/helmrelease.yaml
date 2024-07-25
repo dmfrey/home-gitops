@@ -52,13 +52,11 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-              HOME_ASSISTANT_URL: http://home-assistant.home.svc.cluster.local:8123
-              HOME_ASSISTANT_ACCESS_TOKEN:
+              MHA_CONFIG:
                 valueFrom:
                   secretKeyRef:
-                    name: home-assistant-secret
-                    key: MATTERBRIDGE_TOKEN
-              MHA_CONFIG_FILE: /app/config.json
+                    name: matterbridge-secret
+                    key: MHA_CONFIG
 
             probes:
               liveness:
@@ -137,12 +135,12 @@ spec:
         globalMounts:
           - path: /root/Matterbridge
 
-      config:
-        type: configMap
-        name: matterbridge-config
-        globalMounts:
-          - path: /app/config.json
-            subPath: matterbridge-config.json
+      # config:
+      #   type: configMap
+      #   name: matterbridge-config
+      #   globalMounts:
+      #     - path: /app/config.json
+      #       subPath: matterbridge-config.json
 
       tmp:
         type: emptyDir
