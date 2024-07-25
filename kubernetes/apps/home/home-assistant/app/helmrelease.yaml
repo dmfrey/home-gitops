@@ -316,6 +316,8 @@ spec:
           *app :
             git-sync:
               - path: /tmp
+            *app :
+              - path: /tmp
 
       usb:
         type: hostPath
