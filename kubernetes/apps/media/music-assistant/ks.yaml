@@ -22,7 +22,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: music-assistant-data-1
+      VOLSYNC_CLAIM: music-assistant-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret
