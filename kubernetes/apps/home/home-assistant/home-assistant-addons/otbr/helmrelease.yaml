@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app homeassistant-addon-otbr
+  name: &app otbr
 spec:
 
   interval: 15m
