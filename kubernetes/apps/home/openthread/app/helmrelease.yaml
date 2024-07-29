@@ -61,13 +61,23 @@ spec:
 
     defaultPodOptions:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
-        runAsNonRoot: false
-        fsGroup: 0
+        runAsNonRoot: true
+        allowPrivilegeEscalation: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
         fsGroupChangePolicy: "OnRootMismatch"
+        capabilities:
+          drop: ["ALL"]
         supplementalGroups:
           - 34
+        sysctls:
+          - name: net.ipv6.conf.all.disable_ipv6
+            value: "0"
+          - name: net.ipv4.conf.all.forwarding
+            value: "1"
+          - name: net.ipv6.conf.all.forwarding
+            value: "1"
 
     service:
       *app :
