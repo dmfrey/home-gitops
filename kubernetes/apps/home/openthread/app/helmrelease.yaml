@@ -60,18 +60,15 @@ spec:
                 memory: "500M"
 
             securityContext:
-              runAsUser: 568
-              runAsGroup: 568
-              fsGroup: 568
+              runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
               fsGroupChangePolicy: "OnRootMismatch"
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: ["ALL"]
+              readOnlyRootFilesystem: false
 
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
+        runAsNonRoot: false
         supplementalGroups:
           - 34
         # sysctls:
