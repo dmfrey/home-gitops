@@ -78,4 +78,3 @@ spec:
             primary: true
           rest:
             port: 8081
-        externalTrafficPolicy: Cluster
