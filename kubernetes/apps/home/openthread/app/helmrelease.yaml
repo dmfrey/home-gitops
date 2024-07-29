@@ -47,7 +47,7 @@ spec:
           *app :
             image:
               repository: openthread/otbr
-              tag: latest
+              tag: jammy
               pullPolicy: IfNotPresent
 
             env:
