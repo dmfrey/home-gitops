@@ -59,16 +59,19 @@ spec:
               limits:
                 memory: "500M"
 
+            securityContext:
+              runAsUser: 568
+              runAsGroup: 568
+              fsGroup: 568
+              fsGroupChangePolicy: "OnRootMismatch"
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        allowPrivilegeEscalation: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: "OnRootMismatch"
-        capabilities:
-          drop: ["ALL"]
         supplementalGroups:
           - 34
         sysctls:
