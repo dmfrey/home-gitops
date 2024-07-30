@@ -108,7 +108,7 @@ spec:
 
             ports:
               - name: http
-                containerPort: 8123
+                containerPort: &port 8123
 
             probes:
               liveness:
@@ -116,7 +116,7 @@ spec:
                 spec:
                   httpGet:
                     path: /manifest.json
-                    port: 8123
+                    port: *port
                   initialDelaySeconds: 3
                   periodSeconds: 3
               readiness:
@@ -155,9 +155,15 @@ spec:
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
+              - --port
+              - "8082"
 
             env:
               TZ: ${TIMEZONE}
+
+            ports:
+              - name: code
+                containerPort: &codePort 8082
 
         pod:
           annotations:
@@ -191,9 +197,9 @@ spec:
           io.cilium/lb-ipam-ips: ${SVC_HASS_ADDR}
         ports:
           http:
-            port: &port 8123
+            port: *port
           code:
-            port: &codePort 8080
+            port: *codePort
 
     ingress:
       external:
@@ -226,7 +232,7 @@ spec:
           hajimari.io/appName: "Hass Config"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host-code hass-code.${SECRET_DOMAIN}
+          - host: &host-hass-code hass-code.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -235,7 +241,7 @@ spec:
                   port: *codePort
         tls:
           - hosts:
-              - *host-code
+              - *host-hass-code
             secretName: hass-code-tls-external
 
     serviceMonitor:
