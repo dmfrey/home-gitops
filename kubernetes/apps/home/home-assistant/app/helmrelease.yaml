@@ -156,6 +156,11 @@ spec:
               - name: otbrrest
                 containerPort: &otbrRestPort 8081
 
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+              runAsGroup: 0
+
           codeserver:
             dependsOn: *app
 
