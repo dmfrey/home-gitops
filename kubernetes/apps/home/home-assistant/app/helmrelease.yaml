@@ -140,6 +140,22 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
+          home-assistant-addon-otbr:
+            dependsOn: *app
+
+            image:
+              repository: homeassistant/amd64-addon-otbr
+              tag: 2.9.0
+
+            env:
+              TZ: "${TIMEZONE}"
+
+            ports:
+              - name: otbrWeb
+                containerPort: &otbrWebPort 8080
+              - name: otbrRest
+                containerPort: &otbrRestPort 8081
+
           codeserver:
             dependsOn: *app
 
@@ -200,6 +216,10 @@ spec:
             port: *port
           code:
             port: *codePort
+          otbrWeb:
+            port: *otbrWebPort
+          otbrRest:
+            port: *otbrRestPort
 
     ingress:
       external:
@@ -242,6 +262,28 @@ spec:
         tls:
           - hosts:
               - *host-hass-code
+            secretName: hass-code-tls-external
+
+      otbrWeb-external:
+        className: external
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          # hajimari.io/icon: "mdi:vs-code"
+          # hajimari.io/appName: "Hass Config"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        hosts:
+          - host: &host-otbr-web otbr.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *otbrWebPort
+        tls:
+          - hosts:
+              - *host-otbr-web
             secretName: hass-code-tls-external
 
     serviceMonitor:
