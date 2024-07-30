@@ -18,19 +18,19 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
@@ -39,7 +39,7 @@ spec:
     controllers:
       generic-device-plugin:
         type: daemonset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -48,7 +48,7 @@ spec:
             image:
               repository: squat/generic-device-plugin
               tag: latest
-            
+
             args:
               - --log-level
               - info
@@ -74,6 +74,12 @@ spec:
                 groups:
                   - paths:
                       - path: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_224ad850bc96ed11a4dbc098a7669f5d-if00-port0
+              - --device
+              - |
+                name: SLZB-06M
+                groups:
+                  - paths:
+                      - path: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_6cf74d16b19aea11b1ba955eec257580-if00-port0
               # - --device
               # - |
               #   name: usb
@@ -82,11 +88,11 @@ spec:
               #     - usb:
               #       - vendor: 10c4
               #         product: ea60
-            
+
             ports:
               - name: http
                 containerPort: &port 8080
-            
+
             resources:
               requests:
                 cpu: 50m
@@ -94,7 +100,7 @@ spec:
               limits:
                 cpu: 50m
                 memory: 20Mi
-            
+
             securityContext:
               privileged: true
 
