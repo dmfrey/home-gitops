@@ -28,7 +28,7 @@ spec:
       - kind: Secret
         name: flux-volsync-secret
   dependsOn:
-    - name: cluster-apps-home-assistant
+    - name: home-assistant
     - name: emqx-cluster
     - name: cluster-apps-multus-config
     - name: cluster-apps-rook-ceph-cluster
