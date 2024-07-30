@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-generic-device-plugin
+  name: &app generic-device-plugin
   namespace: flux-system
 spec:
   targetNamespace: system
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname generic-device-plugin
+      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/system/generic-device-plugin/app
   prune: true
   sourceRef:
@@ -20,6 +20,6 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
     substituteFrom: []
   dependsOn: []
