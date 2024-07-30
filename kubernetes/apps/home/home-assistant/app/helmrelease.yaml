@@ -216,9 +216,9 @@ spec:
             port: *port
           code:
             port: *codePort
-          otbrWeb:
+          otbrweb:
             port: *otbrWebPort
-          otbrRest:
+          otbrrest:
             port: *otbrRestPort
 
     ingress:
