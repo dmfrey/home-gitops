@@ -151,9 +151,9 @@ spec:
               TZ: "${TIMEZONE}"
 
             ports:
-              - name: otbrWeb
+              - name: otbrweb
                 containerPort: &otbrWebPort 8080
-              - name: otbrRest
+              - name: otbrrest
                 containerPort: &otbrRestPort 8081
 
           codeserver:
