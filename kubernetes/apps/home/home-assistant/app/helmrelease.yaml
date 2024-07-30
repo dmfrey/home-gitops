@@ -264,7 +264,7 @@ spec:
               - *host-hass-code
             secretName: hass-code-tls-external
 
-      otbrWeb-external:
+      otbr-external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -274,7 +274,7 @@ spec:
           # hajimari.io/appName: "Hass Config"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host-otbr-web otbr.${SECRET_DOMAIN}
+          - host: &host-otbr otbr.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -283,7 +283,7 @@ spec:
                   port: *otbrWebPort
         tls:
           - hosts:
-              - *host-otbr-web
+              - *host-otbr
             secretName: hass-code-tls-external
 
     serviceMonitor:
