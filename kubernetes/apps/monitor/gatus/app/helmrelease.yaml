@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -37,7 +37,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
-        
+
           init-config:
 
             image:
@@ -61,13 +61,13 @@ spec:
                 memory: 256Mi
 
         containers:
-        
+
           app:
-        
+
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.11.0@sha256:eb0374eb55e3ff84ec8f9ea10342ddb623cfba23e5836138896cde01f11cf23d
-        
+
             env:
               - name: TZ
                 value: ${TIMEZONE}
@@ -99,26 +99,26 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            
+
             resources: *resources
-        
+
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            
+
         pod:
           dnsConfig:
             options:
               - { name: ndots, value: "1" }
-        
+
           securityContext:
             runAsUser: 568
             runAsGroup: 568
             runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
-        
+
           topologySpreadConstraints:
             - maxSkew: 1
               topologyKey: kubernetes.io/hostname
@@ -126,14 +126,14 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: *app
-    
+
     service:
       app:
         controller: *app
         ports:
           http:
             port: *port
-    
+
     serviceMonitor:
       app:
         serviceName: *app
@@ -149,7 +149,7 @@ spec:
               - action: replace
                 sourceLabels: ["service"]
                 targetLabel: instance
-    
+
     ingress:
       app:
         className: external
@@ -172,11 +172,11 @@ spec:
     serviceAccount:
       create: true
       name: *app
-    
+
     persistence:
       config:
         type: emptyDir
-    
+
       config-file:
         type: configMap
         name: gatus-configmap

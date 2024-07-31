@@ -13,7 +13,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -25,7 +25,7 @@ spec:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -48,17 +48,17 @@ spec:
       hostname: rdt
 
     controllers:
-      
+
       rdt-client:
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
           app:
             image:
-              repository: rogerfar/rdtclient 
+              repository: rogerfar/rdtclient
               tag: 2.0.81
 
             env:
@@ -69,7 +69,7 @@ spec:
             ports:
               - name: http
                 containerPort: &port 6500
-            
+
             resources:
               requests:
                 cpu: 49m
@@ -110,7 +110,7 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data/db
-        
+
       downloads:
         enabled: true
         existingClaim: nfs-downloads

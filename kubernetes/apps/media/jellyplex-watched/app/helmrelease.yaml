@@ -13,31 +13,31 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
-  
+
   values:
 
     fullnameOverride: *name
-    
+
     # App runs as root
     defaultPodOptions:
       annotations:
@@ -48,22 +48,22 @@ spec:
         #runAsGroup: 1000
         #fsGroup: 1000
         #fsGroupChangePolicy: "OnRootMismatch"
-    
+
     controllers:
-    
+
       jellyplex-watched:
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-    
+
           app:
-    
+
             image:
               repository: ghcr.io/luigi311/jellyplex-watched
               tag: dev
-    
+
             env:
               TZ: "${TIMEZONE}"
               ## Do not mark any shows/movies as played and instead just output to log if they would of been marked.
@@ -113,18 +113,18 @@ spec:
               SYNC_FROM_JELLYFIN_TO_PLEX: "True"
 
             envFrom:
-              - secretRef: 
+              - secretRef:
                   name: jellyplex-watched-secret
-              - secretRef: 
+              - secretRef:
                   name: pmm-secret
-    
+
             resources:
               requests:
                 cpu: 50m
                 memory: 100Mi
               limits:
                 memory: 200Mi
-    
+
     service:
       app:
         enabled: false

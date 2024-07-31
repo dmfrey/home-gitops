@@ -6,40 +6,40 @@ metadata:
   name: &app kubernetes-schemas
   namespace: dev
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
-  
+
   values:
-  
+
     controllers:
       kubernetes-schemas:
         replicas: 1
         strategy: RollingUpdate
-    
+
         pod:
           topologySpreadConstraints:
             - maxSkew: 1
@@ -68,7 +68,7 @@ spec:
         ports:
           http:
             port: &port 8080
-    
+
     ingress:
       app:
         className: external

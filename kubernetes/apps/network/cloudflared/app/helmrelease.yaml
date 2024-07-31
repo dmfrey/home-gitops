@@ -7,34 +7,34 @@ metadata:
   namespace: network
 
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   install:
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
 
   values:
-  
+
     controllers:
       cloudflared:
         replicas: 2
         strategy: RollingUpdate
-      
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -86,13 +86,13 @@ spec:
               capabilities: { drop: ["ALL"] }
               seccompProfile:
                 type: RuntimeDefault
-        
+
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 256Mi
-        
+
         pod:
           securityContext:
             runAsUser: 65534
@@ -108,7 +108,7 @@ spec:
             port: *port
 
     persistence:
-      
+
       config:
         enabled: true
         type: configMap
@@ -117,7 +117,7 @@ spec:
           - path: /etc/cloudflared/config/config.yaml
             subPath: config.yaml
             readOnly: true
-      
+
       creds:
         type: secret
         name: cloudflared-secret
