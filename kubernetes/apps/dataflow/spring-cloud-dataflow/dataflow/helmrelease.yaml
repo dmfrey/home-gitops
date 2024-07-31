@@ -6,24 +6,24 @@ metadata:
   name: dataflow
   namespace: dataflow
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 5
-  
+
   upgrade:
     remediation:
       retries: 5
@@ -50,7 +50,7 @@ spec:
             image:
               repository: docker.io/bitnami/spring-cloud-dataflow
               tag: 2.11.4-debian-12-r2
-            
+
             env:
               - name: LANG
                 value: en_US.utf8
@@ -89,7 +89,7 @@ spec:
             ports:
               - name: http
                 containerPort: &port 9393
-            
+
             probes:
               liveness:
                 enabled: true
@@ -120,7 +120,7 @@ spec:
               limits:
                 cpu: 1.0
                 memory: 2048Mi
-            
+
             securityContext:
               fsGroup: 1001
               runAsNonRoot: true
@@ -163,7 +163,7 @@ spec:
           - path: /config/application.yaml
             readOnly: true
             subPath: application.yaml
-      
+
       secrets:
         type: secret
         name: pg-dataflow-app

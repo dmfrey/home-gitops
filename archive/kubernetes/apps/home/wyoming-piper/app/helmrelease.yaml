@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -35,10 +35,10 @@ spec:
   values:
 
     controllers:
-      
+
       wyoming-piper:
         type: statefulset
-        
+
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -56,7 +56,7 @@ spec:
 
             ports:
               - name: tcp
-                containerPort: &port 10200 
+                containerPort: &port 10200
 
             resources:
               requests:

@@ -7,35 +7,35 @@ metadata:
   namespace: web
 
 spec:
-  
+
   interval: 15m
-  
+
   chart:
     spec:
       chart: app-template
-      version: 3.2.1
+      version: 3.3.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
-    
+
     controllers:
       theme-park:
         replicas: 1
@@ -55,11 +55,11 @@ spec:
             image:
               repository: ghcr.io/onedr0p/theme-park
               tag: 1.17.0@sha256:df753be9371fd663795cd9784d79ba0af1ea86f69ef42774b02a9dabb67afa8c
-            
+
             env:
               - name: TZ
                 value: ${TIMEZONE}
-            
+
             ports:
               - name: http
                 containerPort: &port 8080
@@ -85,7 +85,7 @@ spec:
                   periodSeconds: 60
               startup:
                 enabled: false
-            
+
             resources:
               requests:
                 cpu: 50m
@@ -119,7 +119,7 @@ spec:
           - hosts:
               - *host
             secretName: theme-park-tls-external
-    
+
     persistence:
       rdt-config:
         enabled: true
@@ -127,7 +127,7 @@ spec:
         name: theme-park-rdt-client-config
         globalMounts:
           - path: /usr/share/nginx/html/css/base/rdt-client/
-      
+
       catppuccin-themes:
         enabled: true
         type: configMap
