@@ -126,12 +126,12 @@ spec:
 
             resources:
               requests:
-                squat.ai/slzb06m: 1
+                # squat.ai/slzb06m: 1
                 # squat.ai/skyconnect: 1
                 cpu: 47m
                 memory: 2048Mi
               limits:
-                squat.ai/slzb06m: 1
+                # squat.ai/slzb06m: 1
                 # squat.ai/skyconnect: 1
                 memory: 4096Mi
 
@@ -365,12 +365,12 @@ spec:
             *app :
               - path: /tmp
 
-      usb:
-        type: hostPath
-        hostPath: /dev/ttyUSB0
-        advancedMounts:
-          *app :
-            *app :
-              - path: /dev/ttyUSB0
+      # usb:
+      #   type: hostPath
+      #   hostPath: /dev/ttyUSB0
+      #   advancedMounts:
+      #     *app :
+      #       *app :
+      #         - path: /dev/ttyUSB0
 
 
