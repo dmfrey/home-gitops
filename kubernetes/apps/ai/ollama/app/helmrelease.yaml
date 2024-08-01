@@ -45,7 +45,7 @@ spec:
           main:
             image:
               repository: docker.io/ollama/ollama
-              tag: 0.3.1-rocm
+              tag: 0.3.2-rocm
 
             env:
               TZ: ${TIMEZONE}
