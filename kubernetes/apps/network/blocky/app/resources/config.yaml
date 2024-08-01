@@ -165,9 +165,24 @@ blocking:
       - trackers
     ${IOT_CIDR}:
       - ads
-      # - misc
-      # - normal
-      # - trackers
+      - misc
+      - normal
+      - trackers
+    ${HOMELAB_CIDR}:
+      - ads
+      - misc
+      - normal
+      - trackers
+    ${WORK_CIDR}:
+      - ads
+      - misc
+      - normal
+      - trackers
+    ${FAMILY_CIDR}:
+      - ads
+      - misc
+      - normal
+      - trackers
 
   # which response will be sent, if query is blocked:
   # zeroIp: 0.0.0.0 will be returned (default)
