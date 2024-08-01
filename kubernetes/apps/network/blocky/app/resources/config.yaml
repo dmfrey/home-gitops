@@ -16,6 +16,15 @@ upstreams:
     ${IOT_CIDR}:
       - tcp-tls:1dot1dot1dot1.cloudflare-dns.com
       - tcp-tls:dns.quad9.net
+    ${HOMELAB_CIDR}:
+      - tcp-tls:1dot1dot1dot1.cloudflare-dns.com
+      - tcp-tls:dns.quad9.net
+    ${WORK_CIDR}:
+      - tcp-tls:1dot1dot1dot1.cloudflare-dns.com
+      - tcp-tls:dns.quad9.net
+    ${FAMILY_CIDR}:
+      - tcp-tls:1dot1dot1dot1.cloudflare-dns.com
+      - tcp-tls:dns.quad9.net
   # optional: Determines what strategy blocky uses to choose the upstream servers.
   # accepted: parallel_best, strict, random
   # default: parallel_best
@@ -62,6 +71,7 @@ conditional:
   #   example.com: fritz.box
   mapping:
     ${SECRET_DOMAIN}: 192.168.31.100:53
+    ${INTERNAL_DOMAIN}: &upstream tcp+udp:${UDM_ADDR}
 
 blocking:
   # definition of blacklist groups. Can be external link (http/https) or local file
@@ -262,7 +272,7 @@ caching:
 # optional: configuration of client name resolution
 clientLookup:
   # optional: this DNS resolver will be used to perform reverse DNS lookup (typically local router)
-  upstream: 192.168.86.1
+  upstream: *upstream
   # optional: some routers return multiple names for client (host name and user defined name). Define which single name should be used.
   # Example: take second name if present, if not take first name
   singleNameOrder:
@@ -294,13 +304,13 @@ queryLog:
   # optional: Time between the creation attempts, default: 2s
   creationCooldown: 2s
   # optional: Which fields should be logged. You can choose one or more from: clientIP, clientName, responseReason, responseAnswer, question, duration. If not defined, it logs all fields
-  fields:
-    - clientIP
-    - clientName
-    - responseReason
-    - responseAnswer
-    - question
-    - duration
+  # fields:
+  #   - clientIP
+  #   - clientName
+  #   - responseReason
+  #   - responseAnswer
+  #   - question
+  #   - duration
   # optional: Interval to write data in bulk to the external database, default: 30s
   flushInterval: 30s
 
@@ -419,9 +429,9 @@ ports:
 # optional: logging configuration
 log:
   # optional: Log level (one from debug, info, warn, error). Default: info
-  level: info
+  level: debug
   # optional: Log format (text or json). Default: text
-  format: text
+  format: json
   # optional: log timestamps. Default: true
   timestamp: true
   # optional: obfuscate log output (replace all alphanumeric characters with *) for user sensitive data like request domains or responses to increase privacy. Default: false
