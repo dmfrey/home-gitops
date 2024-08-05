@@ -22,8 +22,8 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: ${ORGANIZATION}
   # Location required to calculate the time the sun rises and sets
-  latitude: !env_var HASS_LATITUDE 
-  longitude: !env_var HASS_LONGITUDE 
+  latitude: !env_var HASS_LATITUDE
+  longitude: !env_var HASS_LONGITUDE
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 210.81
   # metric for Metric, imperial for Imperial
@@ -81,8 +81,8 @@ logger:
   default: warning
   logs:
     homeassistant.components.mqtt: warning
-    
-# panel_iframe:
-#   mass:
-#     title: "Music Assistant"
-#     url: "https://music.${SECRET_DOMAIN}"
+
+panel_iframe:
+  mass:
+    title: "Music Assistant"
+    url: "https://music.${SECRET_DOMAIN}"
