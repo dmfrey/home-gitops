@@ -82,7 +82,7 @@ logger:
   logs:
     homeassistant.components.mqtt: warning
 
-panel_iframe:
-  mass:
-    title: "Music Assistant"
-    url: "https://music.${SECRET_DOMAIN}"
+# panel_iframe:
+#   mass:
+#     title: "Music Assistant"
+#     url: "https://music.${SECRET_DOMAIN}"
