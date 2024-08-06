@@ -78,9 +78,9 @@ zeroconf:
 zone: !include zone.yaml
 
 logger:
-  default: warning
+  default: info
   logs:
-    homeassistant.components.mqtt: info
+    homeassistant.components.mqtt: debug
 
 # panel_iframe:
 #   mass:
