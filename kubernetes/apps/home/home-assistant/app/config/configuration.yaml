@@ -80,7 +80,7 @@ zone: !include zone.yaml
 logger:
   default: warning
   logs:
-    homeassistant.components.mqtt: warning
+    homeassistant.components.mqtt: info
 
 # panel_iframe:
 #   mass:
