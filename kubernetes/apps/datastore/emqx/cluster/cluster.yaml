@@ -7,7 +7,7 @@ metadata:
 
 spec:
 
-  image: public.ecr.aws/emqx/emqx:5.7.1
+  image: public.ecr.aws/emqx/emqx:5.7.2
 
   config:
     data: |
