@@ -48,7 +48,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/t0bst4r/matterbridge-home-assistant
-              tag: 2.5.2@sha256:8e3e593b1ed02ee684772159096c7b779bb9c4b58b32d28231c0ab0df387ada2
+              tag: 2.5.6@sha256:4381ad096138a6ae7e740f13a0a326e6797c7a2a1be862f57c188f0e11204b47
 
             env:
               TZ: ${TIMEZONE}
