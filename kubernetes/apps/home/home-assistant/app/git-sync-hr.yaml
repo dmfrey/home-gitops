@@ -62,7 +62,7 @@ spec:
               GITSYNC_REF: main
               GITSYNC_PERIOD: 10s # 1 day
               GITSYNC_ROOT: /config
-              GITSYNC_ADD_USER: 568
+              GITSYNC_ADD_USER: "true"
 
             resources:
               requests:
