@@ -321,13 +321,13 @@ spec:
                 subPath: ssh-privatekey
                 readOnly: true
               - path: /etc/git-secret/known_hosts
-                subPath: known_hosts
+                subPath: known-hosts
             *app : &sshmounts
               - path: /root/.ssh/id_ed25519
                 subPath: ssh-privatekey
                 readOnly: true
               - path: /root/.ssh/known_hosts
-                subPath: known_hosts
+                subPath: known-hosts
               - path: /root/.gitconfig
                 subPath: dot-gitconfig
               - path: /root/.ssh/config
