@@ -61,7 +61,7 @@ spec:
               GITSYNC_REPO: git@github.com:dmfrey/hass-config.git
               GITSYNC_REF: main
               GITSYNC_PERIOD: 10s # 1 day
-              GITSYNC_ROOT: /config
+              GITSYNC_ROOT: /tmp/config
               GITSYNC_ADD_USER: "true"
               GITSYNC_GIT_CONFIG: 'safe.directory:/config'
 
