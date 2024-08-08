@@ -9,4 +9,5 @@ resources:
   # Flux-Kustomizations
   - ./actions-runner/ks.yaml
   - ./kubernetes-schemas/ks.yaml
+  - ./gitlab/ks.yaml
 
