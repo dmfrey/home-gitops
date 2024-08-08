@@ -8,7 +8,7 @@ resources:
   - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
   - ./helmrelease.yaml
-  # - ./git-sync-hr.yaml
+  - ./git-sync-hr.yaml
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
 configMapGenerator:

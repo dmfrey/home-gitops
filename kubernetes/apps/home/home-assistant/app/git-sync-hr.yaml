@@ -45,35 +45,35 @@ spec:
 
         containers:
           *app :
-            image:
-              repository: busybox
-              tag: stable
-
-            command:
-              - sleep
-              - "3600"
-
             # image:
-            #   repository: registry.k8s.io/git-sync/git-sync
-            #   tag: v4.2.4@sha256:8bfbf28623690fba06c65ec392e42023d28ecfc7e0fbfd4443388d020dc112ea
+            #   repository: busybox
+            #   tag: stable
 
-            # env:
-            #   GITSYNC_REPO: https://github.com/dmfrey/hass-config
-            #   GITSYNC_REF: main
-            #   GITSYNC_PERIOD: 10s # 1 day
-            #   GITSYNC_ROOT: /config
-            #   GITSYNC_ADD_USER: ${UID}
+            # command:
+            #   - sleep
+            #   - "3600"
 
-            # resources:
-            #   requests:
-            #     cpu: 10m
-            #   limits:
-            #     memory: 128Mi
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.2.4@sha256:8bfbf28623690fba06c65ec392e42023d28ecfc7e0fbfd4443388d020dc112ea
 
-            # securityContext:
-            #   readOnlyRootFilesystem: true
-            #   allowPrivilegeEscalation: false
-            #   capabilities: { drop: ["ALL"] }
+            env:
+              GITSYNC_REPO: git@github.com:dmfrey/hass-config.git
+              GITSYNC_REF: main
+              GITSYNC_PERIOD: 10s # 1 day
+              GITSYNC_ROOT: /config
+              GITSYNC_ADD_USER: ${UID}
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
       securityContext:
@@ -94,9 +94,11 @@ spec:
 
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
-        globalMounts:
-          - path: /config
+        type: emptyDir
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config
 
       deploy-key:
         type: secret
@@ -109,14 +111,14 @@ spec:
                 subPath: ssh-privatekey
                 readOnly: true
               - path: /etc/git-secret/known_hosts
-                subPath: known_hosts
+                subPath: known-hosts
 
-      configuration:
-        type: configMap
-        name: hass-config
-        globalMounts:
-          - path: /config/configuration.yaml
-            subPath: configuration.yaml
+      # configuration:
+      #   type: configMap
+      #   name: hass-config
+      #   globalMounts:
+      #     - path: /config/configuration.yaml
+      #       subPath: configuration.yaml
 
       # backups:
       #   enabled: true
