@@ -4,9 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 configMapGenerator:
-  - name: dragonflydb-dashboard
+  - name: dragonfly-dashboard
     files:
-      - dragonflydb-dashboard.json=https://raw.githubusercontent.com/Pothulapati/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
+      - dragonfly.json=https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
