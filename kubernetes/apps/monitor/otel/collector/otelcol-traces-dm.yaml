@@ -5,7 +5,7 @@ metadata:
 spec:
 
   mode: daemonset
-  image: otel/opentelemetry-collector-contrib:0.106.1
+  image: otel/opentelemetry-collector-contrib:0.107.0
 
   env:
     - name: K8S_NODE_NAME
