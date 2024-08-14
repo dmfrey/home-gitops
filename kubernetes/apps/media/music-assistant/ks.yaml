@@ -33,4 +33,4 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
-    - name: cluster-apps-multus
+    - name: multus-config

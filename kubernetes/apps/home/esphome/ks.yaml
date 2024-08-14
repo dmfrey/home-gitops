@@ -30,6 +30,6 @@ spec:
   dependsOn:
     - name: home-assistant
     - name: emqx-cluster
-    - name: cluster-apps-multus-config
+    - name: multus-config
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
