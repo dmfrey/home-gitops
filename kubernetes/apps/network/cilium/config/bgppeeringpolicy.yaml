@@ -7,11 +7,13 @@ kind: CiliumBGPPeeringPolicy
 # "CiliumBGPPeeringPolicy" is used with `bgpControlPlane.enabled: true` which uses GoBGP, NOT the old `bgp.enabled: true` which uses MetalLB
 metadata:
   name: bgp-loadbalancer-ip-main
-  namespace: network
+
 spec:
+
   nodeSelector:
     matchLabels:
       kubernetes.io/os: "linux" # match all Linux nodes, change this to match more granularly if more than 1 PeeringPolicy is to be used throughout cluster
+
   virtualRouters:
     - localASN: 65511
       exportPodCIDR: false
@@ -31,6 +33,8 @@ apiVersion: "cilium.io/v2alpha1"
 kind: CiliumLoadBalancerIPPool
 metadata:
   name: main-pool
+
 spec:
+
   blocks:
     - cidr: 192.168.31.1/24

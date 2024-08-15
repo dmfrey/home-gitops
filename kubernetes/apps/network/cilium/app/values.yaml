@@ -1,11 +1,6 @@
 ---
 autoDirectNodeRoutes: true
 
-bgpControlPlane:
-  enabled: true
-  secretsNamespace:
-    name: network
-
 bandwidthManager:
   enabled: true
   bbr: true
@@ -13,6 +8,11 @@ bandwidthManager:
 bpf:
   masquerade: true
   tproxy: true
+
+bgpControlPlane:
+  enabled: true
+  secretsNamespace:
+    name: network
 
 cgroup:
   autoMount:
@@ -26,28 +26,63 @@ cluster:
 cni:
   exclusive: false
 
+# devices: bond+
+
 enableCnpStatusUpdates: true
+enableRuntimeDeviceDetection: true
+
+endpointRoutes:
+  enabled: true
+
 endpointStatus:
   enabled: true
   status: "policy"
 
-k8sServiceHost: localhost
-k8sServicePort: 7445
+envoy:
+  enabled: false
+
+hubble:
+  enabled: true
+
+  metrics:
+    enabled:
+      - dns:query;ignoreAAAA
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+
+  relay:
+    enabled: true
+    rollOutPods: true
+
+  serviceMonitor:
+    enabled: false
+
+  ui:
+    enabled: true
+    ingress:
+      enabled: false
+    rollOutPods: true
+
+# ingressController:
+#   enabled: false
+#   loadbalancerMode: shared
 
 ipam:
   mode: "kubernetes"
 
-ingressController:
-  enabled: false
-  loadbalancerMode: shared
-
 ipv4NativeRoutingCIDR: 172.22.0.0/16
 
-hubble:
-  enabled: false
-
+k8sServiceHost: localhost
+k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+
+# l2announcements:
+  # enabled: true
 
 l7Proxy: true
 
@@ -61,6 +96,8 @@ operator:
   rollOutPods: true
 
 rollOutCiliumPods: true
+
+routingMode: native
 
 securityContext:
   capabilities:
@@ -80,6 +117,4 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-
-routingMode: native
 
