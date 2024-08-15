@@ -81,7 +81,7 @@ spec:
               - |
                 set -x
                 rm -rf /host/etc/cni/net.d/*multus*
-                rm -rf /host/opt/cni/bin/*multus*
+                rm -rf /opt/cni/bin/*multus*
 
       *app :
         type: daemonset
@@ -166,7 +166,7 @@ spec:
           uninstall:
             uninstall:
               - path: /host/etc/cni/net.d
-          *app :
+          multus:
             multus-daemon:
               - path: /host/etc/cni/net.d
 
@@ -177,7 +177,7 @@ spec:
           uninstall:
             uninstall:
               - path: /host/opt/cni/bin
-          *app :
+          multus:
             cni-plugins-installer:
               - path: /host/opt/cni/bin
             multus-shim-installer:
@@ -193,7 +193,7 @@ spec:
         type: configMap
         name: multus-daemon-config
         advancedMounts:
-          *app :
+          multus:
             multus-daemon:
               - path: /etc/cni/net.d/multus.d
 
@@ -201,7 +201,7 @@ spec:
         type: hostPath
         hostPath: /
         advancedMounts:
-          *app :
+          multus:
             multus-daemon:
               - path: /hostroot
                 mountPropagation: HostToContainer
@@ -210,7 +210,7 @@ spec:
         type: hostPath
         hostPath: /run
         advancedMounts:
-          *app :
+          multus:
             multus-daemon:
               - path: /host/run
 
@@ -218,7 +218,7 @@ spec:
         type: hostPath
         hostPath: /var/lib/cni/multus
         advancedMounts:
-          *app :
+          multus:
             multus-daemon:
               - path: /var/lib/cni/multus
 
@@ -226,7 +226,7 @@ spec:
         type: hostPath
         hostPath: /var/lib/kubelet
         advancedMounts:
-          *app :
+          multus:
             multus-daemon:
               - path: /var/lib/kubelet
 
