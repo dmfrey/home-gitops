@@ -81,7 +81,7 @@ spec:
               - |
                 set -x
                 rm -rf /host/etc/cni/net.d/*multus*
-                rm -rf /opt/cni/bin/*multus*
+                rm -rf /host/opt/cni/bin/*multus*
 
       *app :
         type: daemonset
