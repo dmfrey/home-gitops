@@ -94,18 +94,22 @@ spec:
               secretKeyRef:
                 name: pg-nexus-app
                 key: password
-
-    nexus:
-      env:
-        - name: INSTALL4J_ADD_VM_PARAMS
-          value: |-
-            -Xms2703M -Xmx2703M
-            -XX:+UnlockExperimentalVMOptions -XX:ActiveProcessorCount=4
-            -XX:+UseCGroupMemoryLimitForHeap
-            -Djava.util.prefs.userRoot=/nexus-data/javaprefs
-            -Dnexus.licenseFile=/etc/nexus-license/license.lic
-        - name: NEXUS_SECURITY_RANDOMPASSWORD
-          value: "true"
+          - name: zeroDowntimeEnabled
+            value: "false"
+          - name: INSTALL4J_ADD_VM_PARAMS
+            value: |-
+              -Xms2703M -Xmx2703M
+              -XX:+UnlockExperimentalVMOptions -XX:ActiveProcessorCount=4
+              -XX:+UseCGroupMemoryLimitForHeap
+              -Djava.util.prefs.userRoot=/nexus-data/javaprefs
+              -Dnexus.licenseFile=/etc/nexus-license/license.lic
+              -Dnexus.datastore.clustered.enabled=true
+              -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs
+              -Dnexus.datastore.nexus.jdbcUrl=jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
+              -Dnexus.datastore.nexus.username=${DB_USER}
+              -Dnexus.datastore.nexus.password=${DB_PASSWORD}
+          - name: NEXUS_SECURITY_RANDOMPASSWORD
+            value: "true"
 
     service:
       annotations:
