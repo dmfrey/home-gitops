@@ -92,6 +92,18 @@ spec:
         - name: NEXUS_SECURITY_RANDOMPASSWORD
           value: "true"
 
+    service:
+      annotations:
+        io.cilium/lb-ipam-ips: ${SVC_NEXUS_ADDR}
+      nexus:
+        enable: true
+        type: LoadBalancer
+        protocol: TCP
+        port: 80
+        targetPort: 8081
+      headless:
+        publishNotReadyAddresses: true
+
     ingress:
       enabled: true
       ingressClassName: external
@@ -105,7 +117,8 @@ spec:
       host: &host nexus.${SECRET_DOMAIN}
       hostPath: /
       tls:
-        - hosts:
+        - ip: ${SVC_NEXUS_ADDR}
+          hosts:
             - *host
           secretName: "nexus-tls-external"
 
