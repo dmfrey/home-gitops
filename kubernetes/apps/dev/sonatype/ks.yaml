@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app nexus
+  namespace: flux-system
+spec:
+  targetNamespace: dev
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/dev/sonatype/nexus
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: nexus-data
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CACHE_CAPACITY: 2Gi
+    substituteFrom: []
+  dependsOn:
+    - name: cloudnative-pg
+    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-volsync
