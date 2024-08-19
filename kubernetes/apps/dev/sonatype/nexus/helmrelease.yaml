@@ -72,6 +72,10 @@ spec:
       additionalVolumes:
       additionalVolumeMounts:
 
+      annotations:
+        reloader.stakater.com/auto: "true"
+        secret.reloader.stakater.com/reload: pg-nexus-app,sonatype-nexus-secret
+
       hostAliases:
         - ip: "${SVC_NEXUS_ADDR}"
           hostnames:
