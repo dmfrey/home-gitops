@@ -101,7 +101,7 @@ spec:
 
       secrets:
         type: secret
-        name: secret-esphome
+        name: esphome
         globalMounts:
           - path: /config/secrets.yaml
             subPath: secrets.yaml
