@@ -104,7 +104,6 @@ spec:
         targetPort: 8081
       headless:
         publishNotReadyAddresses: true
-        
 
     ingress:
       enabled: true
