@@ -37,18 +37,6 @@ spec:
       kind: Secret
       name: sonatype-nexus-secret
       valuesKey: nexus-license
-    - targetPath: nexus.datastore.nexus.jdbcUrl
-      kind: Secret
-      name: pg-nexus-app
-      valuesKey: jdbc-uri
-    - targetPath: nexus.datastore.nexus.username
-      kind: Secret
-      name: pg-nexus-app
-      valuesKey: username
-    - targetPath: nexus.datastore.nexus.password
-      kind: Secret
-      name: pg-nexus-app
-      valuesKey: password
 
   values:
 
@@ -84,6 +72,28 @@ spec:
       container:
         image:
           repository: sonatype/nexus3
+
+        env:
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: pg-nexus-app
+                key: dbname
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: pg-nexus-app
+                key: host
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: pg-nexus-app
+                key: user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pg-nexus-app
+                key: password
 
     nexus:
       env:
