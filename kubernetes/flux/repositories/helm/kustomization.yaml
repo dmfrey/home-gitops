@@ -30,6 +30,7 @@ resources:
   - postfinance.yaml
   - prometheus-community.yaml
   - rook-ceph.yaml
+  - sonatype.yaml
   - stakater.yaml
   - tf-controller.yaml
   - opentelemetry-charts.yaml
