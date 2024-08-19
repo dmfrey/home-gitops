@@ -13,4 +13,4 @@ resources:
   - ./openthread/ks.yaml
   - ./wyoming-services/ks.yaml
   - ./zigbee2mqtt/ks.yaml
-  - ./esphome/ks.yaml
+  # - ./esphome/ks.yaml

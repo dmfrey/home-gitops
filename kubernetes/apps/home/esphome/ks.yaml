@@ -22,7 +22,7 @@ spec:
       APP: *app
       APP_UID: "0"
       APP_GID: "0"
-      VOLSYNC_CLAIM: esphome-config
+      VOLSYNC_CLAIM: esphome-config-1
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret
