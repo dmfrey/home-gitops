@@ -73,7 +73,7 @@ spec:
       additionalVolumeMounts:
 
       hostAliases:
-        - ip: ${SVC_NEXUS_ADDR}
+        - ip: "${SVC_NEXUS_ADDR}"
           hostnames:
             - "nexus.${SECRET_DOMAIN}"
 
