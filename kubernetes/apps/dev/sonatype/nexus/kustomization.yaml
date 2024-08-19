@@ -7,4 +7,6 @@ resources:
   - ./scheduledbackup.yaml
   # - ./helmrelease.yaml
   - ./secret-sonatype-nexus.sops.yaml
+  - ../../../../templates/volsync
+  # - ../../../../templates/gatus/external
 
