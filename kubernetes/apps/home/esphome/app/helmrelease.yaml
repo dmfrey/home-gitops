@@ -22,6 +22,7 @@ spec:
     controllers:
       *app :
         type: statefulset
+
         annotations:
           secret.reloader.stakater.com/reload: secret-esphome,home-assistant-deploykey
 
@@ -70,7 +71,7 @@ spec:
             port: &port 6052
 
     ingress:
-      *app :
+      external:
         enabled: true
         className: external
         annotations:
