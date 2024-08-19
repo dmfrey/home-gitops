@@ -32,6 +32,24 @@ spec:
   uninstall:
     keepHistory: false
 
+  valuesFrom:
+    - targetPath: secret.data.license.lic
+      kind: Secret
+      name: sonatype-nexus-secret
+      valuesKey: nexus-license
+    - targetPath: nexus.datastore.nexus.jdbcUrl
+      kind: Secret
+      name: pg-nexus-app
+      valuesKey: jdbc-uri
+    - targetPath: nexus.datastore.nexus.username
+      kind: Secret
+      name: pg-nexus-app
+      valuesKey: username
+    - targetPath: nexus.datastore.nexus.password
+      kind: Secret
+      name: pg-nexus-app
+      valuesKey: password
+
   values:
 
     namespaces:
@@ -62,13 +80,26 @@ spec:
         image:
           repository: sonatype/nexus3
 
+    nexus:
+      env:
+        - name: INSTALL4J_ADD_VM_PARAMS
+          value: |-
+            -Xms2703M -Xmx2703M
+            -XX:+UnlockExperimentalVMOptions -XX:ActiveProcessorCount=4
+            -XX:+UseCGroupMemoryLimitForHeap
+            -Djava.util.prefs.userRoot=/nexus-data/javaprefs
+            -Dnexus.licenseFile=/etc/nexus-license/license.lic
+        - name: NEXUS_SECURITY_RANDOMPASSWORD
+          value: "true"
+
     ingress:
       enabled: true
       ingressClassName: external
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hajimari.io/enable: "true"
-        hajimari.io/icon: "simple-icons:grafana"
+        hajimari.io/icon: "simple-icons:sonatype"
         external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       host: &host nexus.${SECRET_DOMAIN}
       hostPath: /
@@ -76,6 +107,11 @@ spec:
         - hosts:
             - *host
           secretName: "nexus-tls-external"
+
+    secret:
+      enabled: true
+      mountPath: /etc/nexus-license/
+      readOnly: true
 
     storageClass:
       enabled: false
