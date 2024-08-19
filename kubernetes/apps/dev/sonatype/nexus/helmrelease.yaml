@@ -54,6 +54,10 @@ spec:
       additionalVolumes:
       additionalVolumeMounts:
 
+      hostAliases:
+        - hostnames:
+          - "nexus.${SECRET_DOMAIN}"
+
       container:
         image:
           repository: sonatype/nexus3
@@ -62,8 +66,16 @@ spec:
       enabled: true
       ingressClassName: external
       annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "simple-icons:grafana"
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       host: &host nexus.${SECRET_DOMAIN}
-
+      hostPath: /
+      tls:
+        - hosts:
+            - *host
+          secretName: "nexus-tls-external"
 
     storageClass:
       enabled: false
