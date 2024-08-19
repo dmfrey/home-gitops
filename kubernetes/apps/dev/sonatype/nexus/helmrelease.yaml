@@ -73,8 +73,9 @@ spec:
       additionalVolumeMounts:
 
       hostAliases:
-        - hostnames:
-          - "nexus.${SECRET_DOMAIN}"
+        - ip: ${SVC_NEXUS_ADDR}
+          hostnames:
+            - "nexus.${SECRET_DOMAIN}"
 
       container:
         image:
@@ -117,8 +118,7 @@ spec:
       host: &host nexus.${SECRET_DOMAIN}
       hostPath: /
       tls:
-        - ip: ${SVC_NEXUS_ADDR}
-          hosts:
+        - hosts:
             - *host
           secretName: "nexus-tls-external"
 
