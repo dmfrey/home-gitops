@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: esphome
+  name: &app esphome
 spec:
 
   interval: 30m
@@ -20,7 +20,7 @@ spec:
   values:
 
     controllers:
-      esphome:
+      *app :
         type: statefulset
         annotations:
           secret.reloader.stakater.com/reload: secret-esphome,home-assistant-deploykey
@@ -29,21 +29,24 @@ spec:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{
-                "name":"iot-vlan",
+                "name": "iot-vlan",
+                "interface": "eth1",
                 "namespace": "network",
                 "ips": ["192.168.50.3/24"],
-                "gateway": ["192.168.50.1"],
-                "mac": "ba:18:9f:0e:ed:94"
+                "mac": "ba:18:9f:0e:ed:94",
+                "gateway": ["192.168.50.1"]
               }]
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/esphome/esphome
               tag: 2024.7.3
+
             env:
               - name: ESPHOME_DASHBOARD_USE_PING
                 value: "true"
+
             probes:
               liveness:
                 enabled: false
@@ -51,6 +54,7 @@ spec:
                 enabled: false
               startup:
                 enabled: false
+
             resources:
               requests:
                 cpu: 5m
@@ -59,14 +63,14 @@ spec:
                 memory: 2048M
 
     service:
-      app:
-        controller: esphome
+      *app :
+        controller: *app
         ports:
           http:
-            port: 6052
+            port: &port 6052
 
     ingress:
-      app:
+      *app :
         enabled: true
         className: external
         annotations:
@@ -75,34 +79,37 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "chip"
         hosts:
-          - host: &hostname esphome.${SECRET_DOMAIN}
+          - host: &host esphome.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: http
+                  identifier: *app
+                  port: *port
         tls:
           - hosts:
-              - *hostname
+              - *host
             secretName: esphome-tls-external
 
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          esphome:
-            app:
+          *app :
+            *app :
               - path: /config
+
       secrets:
         type: secret
         name: secret-esphome
         globalMounts:
           - path: /config/secrets.yaml
             subPath: secrets.yaml
+
       esphome-cache:
         type: emptyDir
         globalMounts:
           - path: /config/.esphome
+
       deploy-key:
         type: secret
         name: home-assistant-deploy-key
