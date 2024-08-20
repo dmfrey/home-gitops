@@ -33,10 +33,6 @@ spec:
     keepHistory: false
 
   valuesFrom:
-    - targetPath: secret.data.license.lic
-      kind: Secret
-      name: sonatype-nexus-secret
-      valuesKey: nexus-license
     - targetPath: secret.nexusAdminSecret.adminPassword
       kind: Secret
       name: sonatype-nexus-secret
@@ -77,7 +73,6 @@ spec:
         - name: license-volume
           secret:
             secretName: sonatype-nexus-secret
-            key: nexus-license
 
       additionalVolumeMounts:
         - name: license-volume
