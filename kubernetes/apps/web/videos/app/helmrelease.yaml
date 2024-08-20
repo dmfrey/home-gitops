@@ -115,4 +115,4 @@ spec:
       site-data:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-          - path: /var/www/html
+          - path: /usr/share/nginx/html
