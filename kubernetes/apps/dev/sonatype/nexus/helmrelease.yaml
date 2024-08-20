@@ -37,6 +37,22 @@ spec:
       kind: Secret
       name: sonatype-nexus-secret
       valuesKey: nexus-license
+    - targetPath: secret.nexusAdminSecret.adminPassword
+      kind: Secret
+      name: sonatype-nexus-secret
+      valuesKey: nexus-admin-password
+    - targetPath: secret.db.host
+      kind: Secret
+      name: pg-nexus-app
+      valuesKey: host
+    - targetPath: secret.db.user
+      kind: Secret
+      name: pg-nexus-app
+      valuesKey: user
+    - targetPath: secret.db.password
+      kind: Secret
+      name: pg-nexus-app
+      valuesKey: password
 
   values:
 
@@ -58,7 +74,14 @@ spec:
       replicaCount: 3
 
       additionalVolumes:
+        - name: license-volume
+          secret:
+            name: sonatype-nexus-secret
+            key: nexus-license
+
       additionalVolumeMounts:
+        - name: license-volume
+          mountPath: /etc/nexus-license
 
       annotations:
         reloader.stakater.com/auto: "true"
@@ -73,43 +96,43 @@ spec:
         image:
           repository: sonatype/nexus3
 
-        env:
-          - name: DB_NAME
-            valueFrom:
-              secretKeyRef:
-                name: pg-nexus-app
-                key: dbname
-          - name: DB_HOST
-            valueFrom:
-              secretKeyRef:
-                name: pg-nexus-app
-                key: host
-          - name: DB_USER
-            valueFrom:
-              secretKeyRef:
-                name: pg-nexus-app
-                key: user
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: pg-nexus-app
-                key: password
+        # env:
+        #   - name: DB_NAME
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: pg-nexus-app
+        #         key: dbname
+        #   - name: DB_HOST
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: pg-nexus-app
+        #         key: host
+        #   - name: DB_USER
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: pg-nexus-app
+        #         key: user
+        #   - name: DB_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: pg-nexus-app
+        #         key: password
           # - name: zeroDowntimeEnabled
           #   value: false
-          - name: INSTALL4J_ADD_VM_PARAMS
-            value: |-
-              -Xms2703M -Xmx2703M
-              -XX:+UnlockExperimentalVMOptions -XX:ActiveProcessorCount=4
-              -XX:+UseCGroupMemoryLimitForHeap
-              -Djava.util.prefs.userRoot=/nexus-data/javaprefs
-              -Dnexus.licenseFile=/etc/nexus-license/license.lic
-              -Dnexus.datastore.clustered.enabled=true
-              -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs
-              -Dnexus.datastore.nexus.jdbcUrl=jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
-              -Dnexus.datastore.nexus.username=${DB_USER}
-              -Dnexus.datastore.nexus.password=${DB_PASSWORD}
-          - name: NEXUS_SECURITY_RANDOMPASSWORD
-            value: "true"
+          # - name: INSTALL4J_ADD_VM_PARAMS
+          #   value: |-
+          #     -Xms2703M -Xmx2703M
+          #     -XX:+UnlockExperimentalVMOptions -XX:ActiveProcessorCount=4
+          #     -XX:+UseCGroupMemoryLimitForHeap
+          #     -Djava.util.prefs.userRoot=/nexus-data/javaprefs
+          #     -Dnexus.licenseFile=/etc/nexus-license/license.lic
+          #     -Dnexus.datastore.clustered.enabled=true
+          #     -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs
+          #     -Dnexus.datastore.nexus.jdbcUrl=jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
+          #     -Dnexus.datastore.nexus.username=${DB_USER}
+          #     -Dnexus.datastore.nexus.password=${DB_PASSWORD}
+          # - name: NEXUS_SECURITY_RANDOMPASSWORD
+          #   value: "true"
 
     service:
       annotations:
@@ -144,6 +167,17 @@ spec:
       enabled: true
       mountPath: /etc/nexus-license/
       readOnly: true
+
+      dbSecret:
+        enabled: true
+
+      nexusAdminSecret:
+        enabled: true
+
+      license:
+        name: license.lic
+        licenseSecret:
+          mountPath: /etc/nexus-license/
 
     storageClass:
       enabled: false
