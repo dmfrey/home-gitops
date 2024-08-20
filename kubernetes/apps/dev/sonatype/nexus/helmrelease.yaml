@@ -76,7 +76,7 @@ spec:
       additionalVolumes:
         - name: license-volume
           secret:
-            name: sonatype-nexus-secret
+            secretName: sonatype-nexus-secret
             key: nexus-license
 
       additionalVolumeMounts:
