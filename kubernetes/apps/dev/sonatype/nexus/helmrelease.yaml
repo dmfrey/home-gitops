@@ -162,7 +162,7 @@ spec:
 
     secret:
       enabled: true
-      mountPath: /etc/nexus-license/
+      mountPath: /etc/nexus-license
       readOnly: true
 
       dbSecret:
@@ -174,7 +174,7 @@ spec:
       license:
         name: license.lic
         licenseSecret:
-          mountPath: /etc/nexus-license/
+          mountPath: /etc/nexus-license
 
     storageClass:
       enabled: false
