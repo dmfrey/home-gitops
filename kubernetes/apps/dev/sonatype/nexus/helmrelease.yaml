@@ -78,6 +78,7 @@ spec:
       additionalVolumeMounts:
         - name: license-volume
           mountPath: /etc/nexus-license
+          readOnly: true
 
       annotations:
         reloader.stakater.com/auto: "true"
