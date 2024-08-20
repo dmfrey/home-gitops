@@ -73,10 +73,11 @@ spec:
         - name: license-volume
           secret:
             secretName: sonatype-nexus-secret
+            key: license.lic
 
       additionalVolumeMounts:
         - name: license-volume
-          mountPath: /etc/nexus-license
+          mountPath: /etc/nexus-license/license.lic
 
       annotations:
         reloader.stakater.com/auto: "true"
