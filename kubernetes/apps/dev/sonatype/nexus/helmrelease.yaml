@@ -161,9 +161,6 @@ spec:
           secretName: "nexus-tls-external"
 
     secret:
-      enabled: true
-      mountPath: /etc/nexus-license
-      readOnly: true
 
       dbSecret:
         enabled: true
