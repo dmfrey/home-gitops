@@ -77,7 +77,7 @@ spec:
 
       additionalVolumeMounts:
         - name: license-volume
-          mountPath: /etc/nexus-license/license.lic
+          mountPath: /etc/nexus-license
 
       annotations:
         reloader.stakater.com/auto: "true"
