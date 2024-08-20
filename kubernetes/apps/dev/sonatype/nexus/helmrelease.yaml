@@ -95,7 +95,7 @@ spec:
                 name: pg-nexus-app
                 key: password
           - name: zeroDowntimeEnabled
-            value: "false"
+            value: false
           - name: INSTALL4J_ADD_VM_PARAMS
             value: |-
               -Xms2703M -Xmx2703M
