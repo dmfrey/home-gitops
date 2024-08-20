@@ -33,6 +33,10 @@ spec:
     keepHistory: false
 
   valuesFrom:
+    - targetPath: secret.license.licenseSecret.fileContentsBase64
+      kind: Secret
+      name: sonatype-nexus-secret
+      valuesKey: license.lic
     - targetPath: secret.nexusAdminSecret.adminPassword
       kind: Secret
       name: sonatype-nexus-secret
@@ -69,16 +73,16 @@ spec:
     statefulset:
       replicaCount: 3
 
-      additionalVolumes:
-        - name: license-volume
-          secret:
-            secretName: sonatype-nexus-secret
-            key: license.lic
+      # additionalVolumes:
+      #   - name: license-volume
+      #     secret:
+      #       secretName: sonatype-nexus-secret
+      #       key: license.lic
 
-      additionalVolumeMounts:
-        - name: license-volume
-          mountPath: /etc/nexus-license
-          readOnly: true
+      # additionalVolumeMounts:
+      #   - name: license-volume
+      #     mountPath: /etc/nexus-license
+      #     readOnly: true
 
       annotations:
         reloader.stakater.com/auto: "true"
@@ -169,9 +173,10 @@ spec:
         enabled: true
 
       license:
-        name: license.lic
+        # name: license.lic
         licenseSecret:
-          mountPath: /etc/nexus-license
+          enabled: true
+          # mountPath: /etc/nexus-license
 
     storageClass:
       enabled: false
