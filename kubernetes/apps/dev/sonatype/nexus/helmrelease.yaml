@@ -67,7 +67,7 @@ spec:
       enabled: false
 
     statefulset:
-      replicaCount: 3
+      replicaCount: 1
 
       additionalVolumes:
         - name: license-volume
