@@ -35,7 +35,7 @@ spec:
   valuesFrom:
     - targetPath: secret.license.licenseSecret.fileContentsBase64
       kind: Secret
-      name: sonatype-nexus-license
+      name: sonatype-license
       valuesKey: license.lic
     - targetPath: secret.nexusAdminSecret.adminPassword
       kind: Secret
