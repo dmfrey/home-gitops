@@ -105,7 +105,7 @@ spec:
       annotations:
         io.cilium/lb-ipam-ips: ${SVC_NEXUS_ADDR}
       nexus:
-        enable: true
+        enabled: true
         type: LoadBalancer
         protocol: TCP
         port: 80
