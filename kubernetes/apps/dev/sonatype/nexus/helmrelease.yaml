@@ -33,10 +33,10 @@ spec:
     keepHistory: false
 
   valuesFrom:
-    - targetPath: secret.license.licenseSecret.fileContentsBase64
-      kind: Secret
-      name: sonatype-license
-      valuesKey: license.lic
+    # - targetPath: secret.license.licenseSecret.fileContentsBase64
+    #   kind: Secret
+    #   name: sonatype-license
+    #   valuesKey: license.lic
     - targetPath: secret.nexusAdminSecret.adminPassword
       kind: Secret
       name: sonatype-nexus-secret
@@ -172,10 +172,10 @@ spec:
       nexusAdminSecret:
         enabled: true
 
-      license:
+      # license:
         # name: license.lic
-        licenseSecret:
-          enabled: true
+        # licenseSecret:
+          # enabled: true
           # mountPath: /etc/nexus-license
 
     storageClass:
