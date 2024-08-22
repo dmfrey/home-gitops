@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
-  # - ./helmrelease.yaml
+  - ./helmrelease.yaml
   - ./secret-sonatype-nexus-license.sops.yaml
   - ./secret-sonatype-nexus.sops.yaml
   - ../../../../templates/volsync
