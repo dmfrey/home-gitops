@@ -52,7 +52,7 @@ spec:
               tag: v4.2.4@sha256:8bfbf28623690fba06c65ec392e42023d28ecfc7e0fbfd4443388d020dc112ea
 
             env:
-              GITSYNC_REPO: https://github.com/dmfrey/hass-config  # git@github.com:dmfrey/hass-config.git
+              GITSYNC_REPO: git@github.com:dmfrey/hass-config.git   # https://github.com/dmfrey/hass-config
               GITSYNC_REF: main
               GITSYNC_PERIOD: 10s # 1 day
               GITSYNC_ROOT: /config
@@ -322,17 +322,26 @@ spec:
                 readOnly: true
               - path: /etc/git-secret/known_hosts
                 subPath: known-hosts
-            *app : &sshmounts
-              - path: /root/.ssh/id_ed25519
+            *app :
+              - path: /config/.ssh/id_ed25519
                 subPath: ssh-privatekey
                 readOnly: true
-              - path: /root/.ssh/known_hosts
+              - path: /config/.ssh/known_hosts
                 subPath: known-hosts
-              - path: /root/.gitconfig
+              - path: /config/.gitconfig
                 subPath: dot-gitconfig
-              - path: /root/.ssh/config
+              - path: /config/.ssh/config
                 subPath: ssh-config
-            codeserver: *sshmounts
+            codeserver:
+              - path: /home/coder/.ssh/id_ed25519
+                subPath: ssh-privatekey
+                readOnly: true
+              - path: /home/coder/.ssh/known_hosts
+                subPath: known-hosts
+              - path: /home/coder/.gitconfig
+                subPath: dot-gitconfig
+              - path: /home/coder/.ssh/config
+                subPath: ssh-config
 
       configuration:
         type: configMap
