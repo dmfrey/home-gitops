@@ -56,7 +56,7 @@ spec:
               GITSYNC_REF: main
               GITSYNC_PERIOD: 10s # 1 day
               GITSYNC_ROOT: /config
-              GITSYNC_ADD_USER: ${UID}
+              GITSYNC_ADD_USER: "true"
               GITSYNC_VERBOSE: 2
               # GIT_SYNC_ONE_TIME: "true"
 
@@ -372,6 +372,8 @@ spec:
             git-sync:
               - path: /tmp
             *app :
+              - path: /tmp
+            codeserver:
               - path: /tmp
 
       # usb:
