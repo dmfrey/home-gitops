@@ -186,6 +186,11 @@ spec:
               - name: code
                 containerPort: &codePort 8082
 
+            securityContext:
+              readOnlyRootFilesystem: false
+              allowPrivilegeEscalation: true
+              capabilities: { drop: ["ALL"] }
+
         pod:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
