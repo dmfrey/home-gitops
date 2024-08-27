@@ -82,6 +82,18 @@ logger:
   logs:
     homeassistant.components.mqtt: warning
 
+# configuration.yaml entry which defines a Home Assistant sensor from MQTT
+mqtt:
+  sensor:
+    - name: "propane_tank_1_sensor_voltage"
+      state_topic: "propane/1/voltage"
+      value_template: "{{ value }}"
+      unit_of_measurement: "units"
+    - name: "propane_tank_1_percentage"
+      state_topic: "propane/1/percentage"
+      value_template: "{{ value }}"
+      unit_of_measurement: "%"
+      
 # panel_iframe:
 #   mass:
 #     title: "Music Assistant"
