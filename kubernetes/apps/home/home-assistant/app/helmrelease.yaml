@@ -328,8 +328,8 @@ spec:
                 readOnly: true
               - path: /config/.ssh/known_hosts
                 subPath: known-hosts
-              - path: /config/.gitconfig
-                subPath: dot-gitconfig
+              # - path: /config/.gitconfig
+              #   subPath: dot-gitconfig
               - path: /config/.ssh/config
                 subPath: ssh-config
             codeserver:
@@ -338,8 +338,8 @@ spec:
                 readOnly: true
               - path: /home/coder/.ssh/known_hosts
                 subPath: known-hosts
-              - path: /home/coder/.gitconfig
-                subPath: dot-gitconfig
+              # - path: /home/coder/.gitconfig
+              #   subPath: dot-gitconfig
               - path: /home/coder/.ssh/config
                 subPath: ssh-config
 
