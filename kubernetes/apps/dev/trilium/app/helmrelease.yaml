@@ -34,23 +34,24 @@ spec:
 
   values:
 
-    *app :
-      type: statefulset
+    controllers:
+      *app :
+        type: statefulset
 
-      containers:
-        *app :
-          image:
-            repository: zadam/trilium
-            tag: 0.63.7@sha256:a0b5a6a5fd7a64391ae6039bbcd5493151a77a1d5470ef5911923c64d0c232c0
+        containers:
+          *app :
+            image:
+              repository: zadam/trilium
+              tag: 0.63.7@sha256:a0b5a6a5fd7a64391ae6039bbcd5493151a77a1d5470ef5911923c64d0c232c0
 
-          env:
-            TZ: ${TIMEZONE}
-            TRILIUM_DATA_DIR: /trilium-data
+            env:
+              TZ: ${TIMEZONE}
+              TRILIUM_DATA_DIR: /trilium-data
 
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: { drop: ["ALL"] }
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
       securityContext:
