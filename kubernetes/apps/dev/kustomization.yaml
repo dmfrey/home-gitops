@@ -11,4 +11,5 @@ resources:
   - ./kubernetes-schemas/ks.yaml
   - ./gitlab/ks.yaml
   - ./sonatype/ks.yaml
+  - ./trillium/ks.yaml
 

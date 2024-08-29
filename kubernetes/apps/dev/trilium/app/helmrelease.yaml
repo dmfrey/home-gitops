@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app trilium-notes
+spec:
+
+  interval: 15m
+
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  maxHistory: 2
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
+  values:
+
+    *app :
+      type: statefulset
+
+      containers:
+        *app :
+          image:
+            repository: zadam/trilium
+            tag: 0.63.7@sha256:a0b5a6a5fd7a64391ae6039bbcd5493151a77a1d5470ef5911923c64d0c232c0
+
+          env:
+            TZ: ${TIMEZONE}
+            TRILIUM_DATA_DIR: /trilium-data
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      *app :
+        controller: *app
+        ports:
+          http:
+            port: &port 8080
+
+    ingress:
+      external:
+        className: external
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:trilium"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        hosts:
+          - host: &host trilium-notes.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: *port
+        tls:
+          - hosts:
+              - *host
+            secretName: trilium-notes-tls-external
+
+    persistence:
+      trilium-data:
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+          - path: /trilium-data

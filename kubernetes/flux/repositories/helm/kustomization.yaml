@@ -33,4 +33,5 @@ resources:
   - sonatype.yaml
   - stakater.yaml
   - tf-controller.yaml
+  - trilium.yaml
   - opentelemetry-charts.yaml
