@@ -115,8 +115,10 @@ spec:
         existingClaim: ${HOME_NODE_CLAIM}
         globalMounts:
           - path: /home/node
+            readOnly: false
 
       trilium-data:
         existingClaim: ${DATA_CLAIM}
         globalMounts:
           - path: /trilium-data
+            readOnly: false
