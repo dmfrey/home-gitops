@@ -48,6 +48,27 @@ spec:
               TZ: ${TIMEZONE}
               TRILIUM_DATA_DIR: /trilium-data
 
+            ports:
+              - name: http
+                containerPort: &port 8080
+
+            probes:
+              liveness:
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+              startup:
+                enabled: false
+
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -67,7 +88,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &port 8080
+            port: *port
 
     ingress:
       external:
@@ -90,7 +111,12 @@ spec:
             secretName: trilium-notes-tls-external
 
     persistence:
+      home-node:
+        existingClaim: ${HOME_NODE_CLAIM}
+        globalMounts:
+          - path: /home/node
+
       trilium-data:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: ${DATA_CLAIM}
         globalMounts:
           - path: /trilium-data
