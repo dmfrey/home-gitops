@@ -70,8 +70,8 @@ spec:
                 enabled: false
 
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
@@ -111,11 +111,11 @@ spec:
             secretName: trilium-notes-tls-external
 
     persistence:
-      home-node:
-        existingClaim: ${HOME_NODE_CLAIM}
-        globalMounts:
-          - path: /home/node
-            readOnly: false
+      # home-node:
+      #   existingClaim: ${HOME_NODE_CLAIM}
+      #   globalMounts:
+      #     - path: /home/node
+      #       readOnly: false
 
       trilium-data:
         existingClaim: ${DATA_CLAIM}
