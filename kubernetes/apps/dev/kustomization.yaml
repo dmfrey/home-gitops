@@ -9,7 +9,7 @@ resources:
   # Flux-Kustomizations
   - ./actions-runner/ks.yaml
   - ./kubernetes-schemas/ks.yaml
-  - ./gitlab/ks.yaml
-  - ./sonatype/ks.yaml
+  # - ./gitlab/ks.yaml
+  # - ./sonatype/ks.yaml
   # - ./trilium/ks.yaml
 
