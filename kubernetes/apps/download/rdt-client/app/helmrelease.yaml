@@ -59,7 +59,7 @@ spec:
           app:
             image:
               repository: rogerfar/rdtclient
-              tag: 2.0.81
+              tag: 2.0.84
 
             env:
               TZ: ${TIMEZONE}
