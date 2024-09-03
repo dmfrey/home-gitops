@@ -14,7 +14,7 @@ configMapGenerator:
     files:
       # - https://raw.githubusercontent.com/catppuccin/theme.park/main/flavors/frappe.css
       # - https://raw.githubusercontent.com/catppuccin/theme.park/main/flavors/latte.css
-      - catppuccin-macchiato.css=https://raw.githubusercontent.com/catppuccin/theme.park/main/flavors/macchiato.css
+      - catppuccin-macchiato.css=https://raw.githubusercontent.com/catppuccin/theme.park/main/themes/macchiato.css
       # - https://raw.githubusercontent.com/catppuccin/theme.park/main/flavors/mocha.css
 generatorOptions:
   disableNameSuffixHash: true
