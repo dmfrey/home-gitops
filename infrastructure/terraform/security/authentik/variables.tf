@@ -71,3 +71,8 @@ variable "external_domain" {
   type      = string
   sensitive = true
 }
+
+variable "additional_property_mappings" {
+  type    = list(string)
+  default = []
+}
