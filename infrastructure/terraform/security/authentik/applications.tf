@@ -57,7 +57,6 @@ resource "authentik_provider_oauth2" "oauth2_providers" {
   authentication_flow   = authentik_flow.homelab5767-authentication.uuid
   redirect_uris         = each.value.redirect_uris
   signing_key           = data.authentik_certificate_key_pair.default-certificate.id
-  property_mappings     = data.authentik_scope_mapping.oauth2-scopes.ids
 }
 
 resource "authentik_application" "oauth2_apps" {
