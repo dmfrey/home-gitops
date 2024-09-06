@@ -1,4 +1,4 @@
-data "authentik_scope_mapping" "scopes"  {
+data "authentik_property_mapping_provider_scope" "scopes"  {
   managed_list = [
     "goauthentik.io/providers/oauth2/scope-email",
     "goauthentik.io/providers/oauth2/scope-openid",
