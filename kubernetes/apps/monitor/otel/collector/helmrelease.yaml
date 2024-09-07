@@ -37,7 +37,7 @@ spec:
       configmap.reloader.stakater.com/reload: otelcol-dm-opentelemetry-collector-agent
 
     extraEnvs:
-      - name: K8S_NODE_NAME
+      - name: K8S_NODE_IP
         valueFrom:
           fieldRef:
             fieldPath: status.hostIP
@@ -53,8 +53,7 @@ spec:
         extractAllPodAnnotations: true
       # enables the kubeletstatsreceiver and adds it to the metrics pipelines
       kubeletMetrics:
-        enabled: true
-        # endpoint: "${env:K8S_NODE_IP}:10250"
+        enabled: false
       # Enables the filelogreceiver and adds it to the logs pipelines
       logsCollection:
         enabled: true
@@ -66,7 +65,8 @@ spec:
     config:
 
       extensions:
-        # file_storage:
+        file_storage:
+          directory: /var/lib/otelcol
         health_check: {}
         zpages:
 
@@ -105,6 +105,12 @@ spec:
           override: false
 
       receivers:
+
+        kubeletstats:
+          auth_type: serviceAccount
+          collection_interval: 20s
+          endpoint: "https://${env:K8S_NODE_IP}:10250"
+          insecure_skip_verify: true
 
         prometheus:
           config:
@@ -190,8 +196,8 @@ spec:
 
       service:
         extensions:
-          # - file_storage
           - health_check
+          - file_storage
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
