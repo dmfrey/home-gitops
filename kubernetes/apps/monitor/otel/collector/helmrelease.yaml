@@ -62,6 +62,7 @@ spec:
         health_check: {}
         # memory_ballast:
         #   size_in_percentage: 40
+        zpages:
 
       processors:
         batch: {}
