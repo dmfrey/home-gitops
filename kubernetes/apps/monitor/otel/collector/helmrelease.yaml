@@ -144,7 +144,6 @@ spec:
         # Data sources: traces, metrics
         loki:
           endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp/v1/logs
-          encoding: json
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
