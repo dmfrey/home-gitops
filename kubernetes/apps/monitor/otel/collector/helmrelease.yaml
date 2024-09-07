@@ -36,8 +36,8 @@ spec:
     annotations:
       configmap.reloader.stakater.com/reload: otelcol-dm-opentelemetry-collector-agent
 
-    extraEnvs:
-      - name: K8S_NODE_IP
+    env:
+      - name: K8S_NODE_NAME
         valueFrom:
           fieldRef:
             fieldPath: status.hostIP
@@ -68,8 +68,6 @@ spec:
       extensions:
         file_storage:
         health_check: {}
-        # memory_ballast:
-        #   size_in_percentage: 40
         zpages:
 
       processors:
@@ -145,7 +143,7 @@ spec:
 
         # Data sources: traces, metrics
         loki:
-          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/loki/api/v1/push
+          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp/v1/logs
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
@@ -265,8 +263,6 @@ spec:
 
       extensions:
         health_check: {}
-        # memory_ballast:
-        #   size_in_percentage: 40
         zpages:
 
       processors:
