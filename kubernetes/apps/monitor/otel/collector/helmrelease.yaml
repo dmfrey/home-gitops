@@ -206,7 +206,7 @@ spec:
   chart:
     spec:
       chart: opentelemetry-collector
-      version: 0.102.1
+      version: 0.104.0
       sourceRef:
         kind: HelmRepository
         name: opentelemetry-charts
@@ -248,9 +248,10 @@ spec:
 
       extensions:
         health_check: {}
-        memory_ballast:
-          size_in_percentage: 40
-
+        # memory_ballast:
+        #   size_in_percentage: 40
+        zpages:
+        
       processors:
         batch: {}
         memory_limiter:
