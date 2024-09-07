@@ -36,6 +36,12 @@ spec:
     annotations:
       configmap.reloader.stakater.com/reload: otelcol-dm-opentelemetry-collector-agent
 
+    extraEnvs:
+      - name: K8S_NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+
     image:
       repository: otel/opentelemetry-collector-contrib
 
@@ -48,6 +54,7 @@ spec:
       # enables the kubeletstatsreceiver and adds it to the metrics pipelines
       kubeletMetrics:
         enabled: true
+        endpoint: "${env:K8S_NODE_IP}:10250"
       # Enables the filelogreceiver and adds it to the logs pipelines
       logsCollection:
         enabled: true
