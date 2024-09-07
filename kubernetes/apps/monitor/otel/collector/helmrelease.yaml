@@ -190,7 +190,7 @@ spec:
             - telemetry.sdk.name
 
       service:
-        extensions: [file_storage]
+        extensions: [file_storage, health_check]
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
