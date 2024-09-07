@@ -60,8 +60,8 @@ spec:
 
       extensions:
         health_check: {}
-        memory_ballast:
-          size_in_percentage: 40
+        # memory_ballast:
+        #   size_in_percentage: 40
 
       processors:
         batch: {}
