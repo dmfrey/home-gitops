@@ -311,8 +311,8 @@ spec:
             insecure: true
 
         # Data sources: traces, metrics
-        loki:
-          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp/v1/logs
+        otlphttp/loki:
+          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
@@ -330,7 +330,7 @@ spec:
           # logs:
           #   # receivers: [ otlp ]
           #   processors: [ memory_limiter, batch ]
-          #   exporters: [ loki ]
+          #   exporters: [ otlphttp/loki ]
 
     service:
       enabled: true
