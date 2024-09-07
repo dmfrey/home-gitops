@@ -66,7 +66,7 @@ spec:
     config:
 
       extensions:
-        file_storage:
+        # file_storage:
         health_check: {}
         zpages:
 
@@ -188,7 +188,9 @@ spec:
             - telemetry.sdk.name
 
       service:
-        extensions: [file_storage, health_check]
+        extensions:
+          # - file_storage
+          - health_check
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
