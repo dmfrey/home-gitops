@@ -142,8 +142,9 @@ spec:
           #   key_file: cert-key.pem
 
         # Data sources: traces, metrics
-        loki:
+        otlphttp/loki:
           endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp/v1/logs
+          # encoding: json
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
 
@@ -205,7 +206,7 @@ spec:
           logs:
             receivers: [ filelog ]
             processors: [ memory_limiter, batch, resource, resourcedetection ]
-            exporters: [ loki ]
+            exporters: [ otlphttp/loki ]
 
     service:
       enabled: true
