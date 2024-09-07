@@ -59,6 +59,7 @@ spec:
     config:
 
       extensions:
+        file_storage:
         health_check: {}
         # memory_ballast:
         #   size_in_percentage: 40
@@ -182,6 +183,7 @@ spec:
             - telemetry.sdk.name
 
       service:
+        extensions: [file_storage]
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
