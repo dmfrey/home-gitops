@@ -54,7 +54,7 @@ spec:
       # enables the kubeletstatsreceiver and adds it to the metrics pipelines
       kubeletMetrics:
         enabled: true
-        endpoint: "${env:K8S_NODE_IP}:10250"
+        # endpoint: "${env:K8S_NODE_IP}:10250"
       # Enables the filelogreceiver and adds it to the logs pipelines
       logsCollection:
         enabled: true
