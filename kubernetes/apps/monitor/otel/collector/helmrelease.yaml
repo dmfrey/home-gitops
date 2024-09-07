@@ -36,11 +36,11 @@ spec:
     annotations:
       configmap.reloader.stakater.com/reload: otelcol-dm-opentelemetry-collector-agent
 
-    env:
-      - name: K8S_NODE_NAME
-        valueFrom:
-          fieldRef:
-            fieldPath: status.hostIP
+    # env:
+    #   - name: K8S_NODE_NAME
+    #     valueFrom:
+    #       fieldRef:
+    #         fieldPath: status.hostIP
 
     image:
       repository: otel/opentelemetry-collector-contrib
