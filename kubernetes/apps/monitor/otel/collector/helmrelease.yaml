@@ -95,9 +95,9 @@ spec:
             #   key: loki.format
             #   value: json
 
-            # - action: upsert
-            #   key: service
-            #   from_attribute: app.kubernetes.io/name
+            - action: upsert
+              key: service
+              from_attribute: app.kubernetes.io/name
 
         resourcedetection:
           # Enriches telemetry data with resource information from the host
