@@ -1,4 +1,4 @@
-FROM bash:5.2.32-alpine3.20 
+FROM bash:5.2.37-alpine3.20 
 
 USER root
 
