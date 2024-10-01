@@ -75,6 +75,7 @@ spec:
             cpu: 5m
             memory: 64M
           limits:
+            squat.ai/tun: "1"
             memory: 64M
 
         securityContext:
