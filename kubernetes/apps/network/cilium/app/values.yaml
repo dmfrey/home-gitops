@@ -34,9 +34,9 @@ enableRuntimeDeviceDetection: true
 endpointRoutes:
   enabled: true
 
-endpointStatus:
-  enabled: true
-  status: "policy"
+# endpointStatus:
+#   enabled: true
+#   status: "policy"
 
 envoy:
   enabled: false
