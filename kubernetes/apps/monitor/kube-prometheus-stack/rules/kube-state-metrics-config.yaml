@@ -93,7 +93,7 @@ kube-state-metrics:
                   url: [ spec, url ]
           - groupVersionKind:
               group: source.toolkit.fluxcd.io
-              version: v1beta2
+              version: v1
               kind: Bucket
             metricNamePrefix: gotk
             metrics:
@@ -113,7 +113,7 @@ kube-state-metrics:
                   bucket_name: [ spec, bucketName ]
           - groupVersionKind:
               group: source.toolkit.fluxcd.io
-              version: v1beta2
+              version: v1
               kind: HelmRepository
             metricNamePrefix: gotk
             metrics:
@@ -132,7 +132,7 @@ kube-state-metrics:
                   url: [ spec, url ]
           - groupVersionKind:
               group: source.toolkit.fluxcd.io
-              version: v1beta2
+              version: v1
               kind: HelmChart
             metricNamePrefix: gotk
             metrics:
