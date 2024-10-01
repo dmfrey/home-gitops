@@ -28,7 +28,7 @@ cni:
 
 # devices: bond+
 
-enableCnpStatusUpdates: true
+# enableCnpStatusUpdates: true
 enableRuntimeDeviceDetection: true
 
 endpointRoutes:
