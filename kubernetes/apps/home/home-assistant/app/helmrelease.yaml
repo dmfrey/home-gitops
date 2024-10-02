@@ -249,28 +249,6 @@ spec:
               - *host-hass-code
             secretName: hass-code-tls-external
 
-      # otbr-external:
-      #   className: external
-      #   annotations:
-      #     cert-manager.io/cluster-issuer: letsencrypt-prod
-      #     auth.home.arpa/enabled: "true"
-      #     hajimari.io/enable: "true"
-      #     # hajimari.io/icon: "mdi:vs-code"
-      #     # hajimari.io/appName: "Hass Config"
-      #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-      #   hosts:
-      #     - host: &host-otbr otbr.${SECRET_DOMAIN}
-      #       paths:
-      #         - path: /
-      #           pathType: Prefix
-      #           service:
-      #             identifier: *app
-      #             port: *otbrWebPort
-      #   tls:
-      #     - hosts:
-      #         - *host-otbr
-      #       secretName: hass-code-tls-external
-
     serviceMonitor:
       *app :
         serviceName: *app
@@ -302,26 +280,26 @@ spec:
                 readOnly: true
               - path: /etc/git-secret/known_hosts
                 subPath: known-hosts
-            # *app :
-            #   - path: /config/.ssh/id_ed25519
-            #     subPath: ssh-privatekey
-            #     readOnly: true
-            #   - path: /config/.ssh/known_hosts
-            #     subPath: known-hosts
-            #   # - path: /config/.gitconfig
-            #   #   subPath: dot-gitconfig
-            #   - path: /config/.ssh/config
-            #     subPath: ssh-config
-            codeserver:
-              - path: /home/coder/.ssh/id_ed25519
+            *app : &sshmounts
+              - path: /root/.ssh/id_ed25519
                 subPath: ssh-privatekey
                 readOnly: true
-              - path: /home/coder/.ssh/known_hosts
+              - path: /root/.ssh/known_hosts
                 subPath: known-hosts
-              # - path: /home/coder/.gitconfig
-              #   subPath: dot-gitconfig
-              - path: /home/coder/.ssh/config
+              - path: /root/.gitconfig
+                subPath: dot-gitconfig
+              - path: /root/.ssh/config
                 subPath: ssh-config
+            codeserver: *sshmounts
+              # - path: /home/coder/.ssh/id_ed25519
+              #   subPath: ssh-privatekey
+              #   readOnly: true
+              # - path: /home/coder/.ssh/known_hosts
+              #   subPath: known-hosts
+              # # - path: /home/coder/.gitconfig
+              # #   subPath: dot-gitconfig
+              # - path: /home/coder/.ssh/config
+              #   subPath: ssh-config
 
       configuration:
         type: configMap
