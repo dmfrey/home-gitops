@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -18,15 +18,49 @@ spec:
         name: prometheus-community
         namespace: flux-system
 
+  driftDetection:
+    mode: enabled
+
   maxHistory: 2
 
   install:
     createNamespace: true
+    crds: Skip
     remediation:
       retries: 5
 
+  upgrade:
+    cleanupOnFail: true
+    crds: Skip
+    remediation:
+      retries: 3
+
   uninstall:
     keepHistory: false
+
+  dependsOn:
+    - name: kube-prometheus-stack-crds
+    - name: thanos
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              # Ignore these objects from Flux diff as they are mutated from chart hooks
+              kind: (ValidatingWebhookConfiguration|MutatingWebhookConfiguration)
+              name: kube-prometheus-stack-admission
+            patch: |
+              - op: add
+                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+                value: disabled
+          - target:
+              # Ignore these objects from Flux diff as they are mutated at apply time but not
+              # at dry-run time
+              kind: PrometheusRule
+            patch: |
+              - op: add
+                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+                value: disabled
 
   valuesFrom:
     - kind: ConfigMap
@@ -103,21 +137,6 @@ spec:
 
       ingress:
         enabled: false
-      #   pathType: Prefix
-      #   ingressClassName: external
-      #   annotations:
-      #     cert-manager.io/cluster-issuer: letsencrypt-prod
-      #     auth.home.arpa/enabled: "true"
-      #     hajimari.io/enable: "true"
-      #     hajimari.io/icon: "mdi:alert-decagram-outline"
-      #     hajimari.io/appName: "Alert Manager"
-      #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-      #   hosts:
-      #     - &host alert-manager.${SECRET_DOMAIN}
-      #   tls:
-      #     - hosts:
-      #         - *host
-      #       secretName: alert-manager-tls-external
 
       alertmanagerSpec:
         replicas: 3
@@ -129,31 +148,6 @@ spec:
                 requests:
                   storage: 1Gi
 
-    # kube-state-metrics:
-    #   metricLabelsAllowlist:
-    #     - "pods=[*]"
-    #     - "deployments=[*]"
-    #     - "statefulsets=[*]"
-    #     - "persistentvolumeclaims=[*]"
-    #   prometheus:
-    #     monitor:
-    #       enabled: true
-    #       relabelings:
-    #         - action: replace
-    #           regex: (.*)
-    #           replacement: $1
-    #           sourceLabels: ["__meta_kubernetes_pod_node_name"]
-    #           targetLabel: kubernetes_node
-
-    grafana:
-      enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          multicluster:
-            etcd:
-              enabled: true
-
     kubelet:
       enabled: true
       serviceMonitor:
@@ -162,9 +156,26 @@ spec:
             sourceLabels:
               - node
             targetLabel: instance
+          # Drop high cardinality labels
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: [ "__name__" ]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
     kubeApiServer:
       enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: drop
+            sourceLabels: [ "__name__" ]
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: [ "__name__" ]
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
     kubeControllerManager:
       enabled: true
@@ -172,6 +183,14 @@ spec:
         - 192.168.30.31
         - 192.168.30.32
         - 192.168.30.33
+
+    kubeEtcd:
+      enabled: true
+      endpoints: *endpoints
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
 
     kubeScheduler:
       enabled: true
@@ -181,13 +200,17 @@ spec:
       enabled: true # Disabled because eBPF
       endpoints: *endpoints
 
-    kubeEtcd:
-      enabled: true
-      endpoints: *endpoints
-      service:
-        enabled: true
-        port: 2381
-        targetPort: 2381
+    nodeExporter:
+      enabled: false
+
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
 
     prometheus:
       ingress:
