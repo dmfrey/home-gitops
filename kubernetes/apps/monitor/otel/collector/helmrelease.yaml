@@ -144,8 +144,6 @@ spec:
           endpoint: tempo-distributor.trace.svc.cluster.local:4317
           tls:
             insecure: true
-          #   cert_file: cert.pem
-          #   key_file: cert-key.pem
           retry_on_failure:
             enabled: true
             max_elapsed_time: 0
@@ -329,16 +327,28 @@ spec:
           endpoint: tempo-distributor.trace.svc.cluster.local:4317
           tls:
             insecure: true
+          retry_on_failure:
+            enabled: true
+            max_elapsed_time: 0
 
         # Data sources: traces, metrics
         otlphttp/loki:
           endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
+          retry_on_failure:
+            enabled: true
+            max_elapsed_time: 0
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
+          retry_on_failure:
+            enabled: true
+            max_elapsed_time: 0
 
         # Data sources: metrics
         prometheusremotewrite:
           endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+          retry_on_failure:
+            enabled: true
+            max_elapsed_time: 0
 
       service:
         pipelines:
