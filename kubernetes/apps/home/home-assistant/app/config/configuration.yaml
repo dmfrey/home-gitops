@@ -12,7 +12,7 @@ http:
   login_attempts_threshold: 5
   use_x_forwarded_for: true
   trusted_proxies:
-    - 172.22.0.0/16
+    - 172.22.0.0/15
     - 192.0.0.0/9
     - 192.168.31.0/24
     - 127.0.0.1
@@ -31,7 +31,7 @@ homeassistant:
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: ${TIMEZONE}
   country: US
-  packages: !include_dir_named packages
+  packages: !include_dir_named hass-config/packages
   external_url: https://home.${SECRET_DOMAIN}
   internal_url: http://${SVC_HASS_ADDR}:8123
 
@@ -52,30 +52,30 @@ automation:
     - service: homeassistant.reload_all
 
 shell_command:
-  deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
+  deploy_config: cd /config/hass-config && git pull || git reset origin/main && git reset origin/main --hard
 
 # automation: !include_dir_merge_list automations
-binary_sensor: !include_dir_merge_list binary_sensors
-group: !include_dir_merge_named groups
-input_boolean: !include_dir_merge_named input_booleans
-input_button: !include_dir_merge_named input_buttons
-input_datetime: !include_dir_merge_named input_datetimes
-input_number: !include_dir_merge_named input_numbers
-input_select: !include_dir_merge_named input_selects
-input_text: !include_dir_merge_named input_texts
-notify: !include notify.yaml
-scene: !include scenes.yaml
-schedule: !include_dir_merge_named schedule
-script: !include_dir_merge_named scripts
-sensor: !include_dir_merge_list sensors
-template: !include_dir_merge_list templates
+binary_sensor: !include_dir_merge_list hass-config/binary_sensors
+group: !include_dir_merge_named hass-config/groups
+input_boolean: !include_dir_merge_named hass-config/input_booleans
+input_button: !include_dir_merge_named hass-config/input_buttons
+input_datetime: !include_dir_merge_named hass-config/input_datetimes
+input_number: !include_dir_merge_named hass-config/input_numbers
+input_select: !include_dir_merge_named hass-config/input_selects
+input_text: !include_dir_merge_named hass-config/input_texts
+notify: !include hass-config/notify.yaml
+scene: !include hass-config/scenes.yaml
+schedule: !include_dir_merge_named hass-config/schedule
+script: !include_dir_merge_named hass-config/scripts
+sensor: !include_dir_merge_list hass-config/sensors
+template: !include_dir_merge_list hass-config/templates
 
 frontend:
-  themes: !include_dir_merge_named themes
+  themes: !include_dir_merge_named hass-config/themes
 
 zeroconf:
 
-zone: !include zone.yaml
+zone: !include hass-config/zone.yaml
 
 logger:
   default: info
