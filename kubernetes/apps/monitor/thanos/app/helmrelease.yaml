@@ -67,6 +67,10 @@ spec:
       replicaCount: 3
       networkPolicy: &networkPolicy
         enabled: false
+      persistence:
+        enabled: true
+        storageClass: "ceph-block"
+        size: 24Gi
 
     query:
       enabled: true
@@ -164,7 +168,7 @@ spec:
       persistence:
         enabled: true
         storageClass: "ceph-block"
-        size: 1Gi
+        size: 10Gi
       service:
         ports:
           http: 10902
@@ -195,7 +199,7 @@ spec:
       persistence:
         enabled: true
         storageClass: "ceph-block"
-        size: 512Mi
+        size: 10Gi
       resources:
         requests:
           cpu: 23m
