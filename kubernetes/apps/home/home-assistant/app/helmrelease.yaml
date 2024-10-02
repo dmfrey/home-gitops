@@ -44,24 +44,24 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
-          fix-permissions:
+          # fix-permissions:
           #   dependsOn: git-sync
-            image:
-              repository: busybox
-              tag: stable
+            # image:
+            #   repository: busybox
+            #   tag: stable
 
-            command: ["sh", "-c", "rm -rf /config/.ssh"]
+            # command: ["sh", "-c", "rm -rf /config/.ssh"]
 
-            securityContext:
-              runAsNonRoot: false
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+            # securityContext:
+            #   runAsNonRoot: false
+            #   readOnlyRootFilesystem: true
+            #   allowPrivilegeEscalation: true
+            #   runAsUser: 0
+            #   runAsGroup: 0
+            #   capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
           git-sync:
-            dependsOn: fix-permissions
+            # dependsOn: fix-permissions
             restartPolicy: Always
 
             image:
