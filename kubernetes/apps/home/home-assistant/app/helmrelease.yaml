@@ -322,16 +322,16 @@ spec:
                 readOnly: true
               - path: /etc/git-secret/known_hosts
                 subPath: known-hosts
-            *app :
-              - path: /config/.ssh/id_ed25519
-                subPath: ssh-privatekey
-                readOnly: true
-              - path: /config/.ssh/known_hosts
-                subPath: known-hosts
-              # - path: /config/.gitconfig
-              #   subPath: dot-gitconfig
-              - path: /config/.ssh/config
-                subPath: ssh-config
+            # *app :
+            #   - path: /config/.ssh/id_ed25519
+            #     subPath: ssh-privatekey
+            #     readOnly: true
+            #   - path: /config/.ssh/known_hosts
+            #     subPath: known-hosts
+            #   # - path: /config/.gitconfig
+            #   #   subPath: dot-gitconfig
+            #   - path: /config/.ssh/config
+            #     subPath: ssh-config
             codeserver:
               - path: /home/coder/.ssh/id_ed25519
                 subPath: ssh-privatekey
