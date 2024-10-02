@@ -171,6 +171,8 @@ spec:
         # Data sources: metrics
         prometheusremotewrite:
           endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+          tls:
+            insecure: true
           retry_on_failure:
             enabled: true
             max_elapsed_time: 0
