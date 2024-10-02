@@ -125,12 +125,12 @@ spec:
         otlp:
           protocols:
             grpc:
-              endpoint: 0.0.0.0:4317
+              endpoint: localhost:4317
             http:
-              endpoint: 0.0.0.0:4318
+              endpoint: localhost:4318
 
         zipkin:
-          endpoint: 0.0.0.0:9411
+          endpoint: localhost:9411
 
       exporters:
 
@@ -165,7 +165,7 @@ spec:
 
         # Data sources: metrics
         # prometheus:
-        #   endpoint: 0.0.0.0:8889
+        #   endpoint: localhost:8889
         #   namespace: default
 
         # Data sources: metrics
@@ -310,12 +310,12 @@ spec:
         otlp:
           protocols:
             grpc:
-              endpoint: 0.0.0.0:4317
+              endpoint: localhost:4317
             http:
-              endpoint: 0.0.0.0:4318
+              endpoint: localhost:4318
 
         zipkin:
-          endpoint: 0.0.0.0:9411
+          endpoint: localhost:9411
 
       exporters:
 
