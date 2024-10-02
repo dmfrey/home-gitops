@@ -31,7 +31,7 @@ homeassistant:
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: ${TIMEZONE}
   country: US
-  packages: !include_dir_named hass-config/packages
+  packages: !include_dir_named hass-config.git/packages
   external_url: https://home.${SECRET_DOMAIN}
   internal_url: http://${SVC_HASS_ADDR}:8123
 
@@ -52,30 +52,30 @@ recorder:
 #     - service: homeassistant.reload_all
 
 # shell_command:
-#   deploy_config: cd /config/hass-config && git pull || git reset origin/main && git reset origin/main --hard
+#   deploy_config: cd /config/hass-config.git && git pull || git reset origin/main && git reset origin/main --hard
 
 # automation: !include_dir_merge_list automations
-binary_sensor: !include_dir_merge_list hass-config/binary_sensors
-group: !include_dir_merge_named hass-config/groups
-input_boolean: !include_dir_merge_named hass-config/input_booleans
-input_button: !include_dir_merge_named hass-config/input_buttons
-input_datetime: !include_dir_merge_named hass-config/input_datetimes
-input_number: !include_dir_merge_named hass-config/input_numbers
-input_select: !include_dir_merge_named hass-config/input_selects
-input_text: !include_dir_merge_named hass-config/input_texts
-notify: !include hass-config/notify.yaml
-scene: !include hass-config/scenes.yaml
+binary_sensor: !include_dir_merge_list hass-config.git/binary_sensors
+group: !include_dir_merge_named hass-config.git/groups
+input_boolean: !include_dir_merge_named hass-config.git/input_booleans
+input_button: !include_dir_merge_named hass-config.git/input_buttons
+input_datetime: !include_dir_merge_named hass-config.git/input_datetimes
+input_number: !include_dir_merge_named hass-config.git/input_numbers
+input_select: !include_dir_merge_named hass-config.git/input_selects
+input_text: !include_dir_merge_named hass-config.git/input_texts
+notify: !include hass-config.git/notify.yaml
+scene: !include hass-config.git/scenes.yaml
 schedule: !include_dir_merge_named hass-config/schedule
-script: !include_dir_merge_named hass-config/scripts
-sensor: !include_dir_merge_list hass-config/sensors
-template: !include_dir_merge_list hass-config/templates
+script: !include_dir_merge_named hass-config.git/scripts
+sensor: !include_dir_merge_list hass-config.git/sensors
+template: !include_dir_merge_list hass-config.git/templates
 
 frontend:
-  themes: !include_dir_merge_named hass-config/themes
+  themes: !include_dir_merge_named hass-config.git/themes
 
 zeroconf:
 
-zone: !include hass-config/zone.yaml
+zone: !include hass-config.git/zone.yaml
 
 logger:
   default: info
