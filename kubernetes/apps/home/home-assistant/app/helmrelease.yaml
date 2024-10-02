@@ -44,7 +44,24 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
+          fix-permissions:
+          #   dependsOn: git-sync
+            image:
+              repository: busybox
+              tag: stable
+
+            command: ["sh", "-c", "rm -rf /config/.ssh"]
+
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+
           git-sync:
+            dependsOn: fix-permissions
             restartPolicy: Always
 
             image:
@@ -70,22 +87,6 @@ spec:
               readOnlyRootFilesystem: false
               allowPrivilegeEscalation: true
               capabilities: { drop: ["ALL"] }
-
-          # fix-permissions:
-          #   dependsOn: git-sync
-          #   image:
-          #     repository: busybox
-          #     tag: stable
-
-          #   command: ["sh", "-c", "chown -R 568:568 /config"]
-
-          #   securityContext:
-          #     runAsNonRoot: false
-          #     readOnlyRootFilesystem: true
-          #     allowPrivilegeEscalation: true
-          #     runAsUser: 0
-          #     runAsGroup: 0
-          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           *app :
@@ -139,27 +140,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-
-          # home-assistant-addon-otbr:
-          #   dependsOn: *app
-
-          #   image:
-          #     repository: homeassistant/amd64-addon-otbr
-          #     tag: 2.9.0
-
-          #   env:
-          #     TZ: "${TIMEZONE}"
-
-          #   ports:
-          #     - name: otbrweb
-          #       containerPort: &otbrWebPort 8080
-          #     - name: otbrrest
-          #       containerPort: &otbrRestPort 8081
-
-          #   securityContext:
-          #     runAsNonRoot: false
-          #     runAsUser: 0
-          #     runAsGroup: 0
 
           codeserver:
             dependsOn: *app
