@@ -39,7 +39,7 @@ spec:
     keepHistory: false
 
   dependsOn:
-    - name: kube-prometheus-stack-crds
+    - name: prometheus-operator-crds
     - name: thanos
 
   postRenderers:
