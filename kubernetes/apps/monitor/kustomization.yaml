@@ -14,5 +14,5 @@ resources:
   - ./metrics-server/ks.yaml
   - ./node-exporter/ks.yaml
   - ./otel/ks.yaml
-  - ./thanos/ks.yaml
+  # - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
