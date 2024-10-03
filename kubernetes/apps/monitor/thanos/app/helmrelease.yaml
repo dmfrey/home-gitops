@@ -99,6 +99,7 @@ spec:
       #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
       ingress:
         enabled: true
+        ingressClassName: external
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
@@ -106,7 +107,6 @@ spec:
           hajimari.io/icon: "mdi:alpha-t-box"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hostname: &host thanos.${SECRET_DOMAIN}
-        ingressClassName: external
         tls: false
         extraTls:
           - hosts:
