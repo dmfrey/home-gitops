@@ -6,6 +6,5 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./common/ks.yaml
-  - ./secure-app/ks.yaml
-  
+  # - ./common/ks.yaml
+  # - ./secure-app/ks.yaml
