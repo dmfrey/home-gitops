@@ -6,7 +6,7 @@ metadata:
   name: &app openebs
   namespace: flux-system
 spec:
-  targetNamespace: openebs-system
+  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -18,3 +18,5 @@ spec:
   wait: false
   interval: 30m
   timeout: 5m
+  postBuild:
+    substituteFrom: []
