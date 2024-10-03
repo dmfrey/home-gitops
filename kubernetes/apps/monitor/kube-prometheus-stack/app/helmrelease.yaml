@@ -104,6 +104,12 @@ spec:
               - *host
             secretName: prometheus-tls-external
 
+      thanosService:
+        enabled: true
+
+      thanosServiceMonitor:
+        enabled: true
+
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         podMonitorSelectorNilUsesHelmValues: false
@@ -119,6 +125,23 @@ spec:
           - new-service-discovery-manager
         retention: 14d
         retentionSize: 70GB
+
+        # remoteWrite:
+        #   - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+
+        thanos:
+          image: quay.io/thanos/thanos:v0.36.1@sha256:e542959e1b36d5046083d1b64a7049c356b68a44a173c58b3ae7c0c9ada932d5
+          objectStorageConfig:
+            name: thanos-secret
+            key: objstore.yml
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "v0.36.1"
+
+        alertingEnpoints:
+          - namespace: monitor
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
 
         resources:
           requests:
@@ -164,30 +187,6 @@ spec:
               replacement: $1
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
-
-        thanosService:
-          enabled: true
-
-        thanosServiceMonitor:
-          enabled: true
-
-        prometheusSpec:
-          # remoteWrite:
-          #   - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
-
-          thanos:
-            image: quay.io/thanos/thanos:v0.36.1@sha256:e542959e1b36d5046083d1b64a7049c356b68a44a173c58b3ae7c0c9ada932d5
-            objectStorageConfig:
-              name: thanos-secret
-              key: objstore.yml
-            # renovate: datasource=docker depName=quay.io/thanos/thanos
-            version: "v0.36.1"
-
-          alertingEnpoints:
-            - namespace: monitor
-              name: alertmanager
-              port: 9093
-              apiVersion: v2
 
     grafana:
       enabled: false
