@@ -168,6 +168,9 @@ spec:
         thanosService:
           enabled: true
 
+        thanosServiceMonitor:
+          enabled: true
+
     grafana:
       enabled: false
       forceDeployDashboards: true
