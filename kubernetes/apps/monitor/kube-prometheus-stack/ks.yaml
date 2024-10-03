@@ -6,6 +6,7 @@ metadata:
   name: &app kube-prometheus-stack-crds
   namespace: flux-system
 spec:
+  targetNamespace: monitor
   path: ./kubernetes/apps/monitor/kube-prometheus-stack/crds
   prune: true
   sourceRef:
@@ -50,11 +51,12 @@ metadata:
   name: &app kube-prometheus-stack
   namespace: flux-system
 spec:
+  targetNamespace: monitor
   path: ./kubernetes/apps/monitor/kube-prometheus-stack/app
-  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
+  prune: true
   wait: true
   interval: 15m
   retryInterval: 1m
