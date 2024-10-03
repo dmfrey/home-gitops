@@ -22,7 +22,7 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-rabbitmq-cluster-operator
+    - name: dragonfly-operator
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
