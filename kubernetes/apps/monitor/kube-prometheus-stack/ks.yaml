@@ -65,8 +65,8 @@ spec:
     provider: sops
   postBuild:
     substituteFrom: []
-  dependsOn:
-    - name: kube-prometheus-stack-crds
+  dependsOn: []
+    # - name: kube-prometheus-stack-crds
     # - name: prometheus-rules
-    - name: cluster-apps-cert-manager
-    - name: cluster-apps-rook-ceph-cluster
+    # - name: cluster-apps-cert-manager
+    # - name: cluster-apps-rook-ceph-cluster
