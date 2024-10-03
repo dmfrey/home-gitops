@@ -165,11 +165,15 @@ spec:
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
 
-        thanosService:
-          enabled: true
+        prometheusSpec:
+          remoteWrite:
+            - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+            
+        # thanosService:
+        #   enabled: true
 
-        thanosServiceMonitor:
-          enabled: true
+        # thanosServiceMonitor:
+        #   enabled: true
 
     grafana:
       enabled: false
