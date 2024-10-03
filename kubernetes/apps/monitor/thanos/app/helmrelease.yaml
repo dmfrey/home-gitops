@@ -64,7 +64,7 @@ spec:
 
     receive:
       enabled: true
-      replicaCount: 3
+      replicaCount: 1
       networkPolicy: &networkPolicy
         enabled: false
       persistence:
@@ -78,7 +78,7 @@ spec:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitor
       networkPolicy: *networkPolicy
-      replicaCount: 3
+      replicaCount: 1
       replicaLabel:
         - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
       resources:
@@ -92,7 +92,7 @@ spec:
 
     queryFrontend:
       enabled: true
-      replicaCount: 3
+      replicaCount: 1
       # config:
       #   type: REDIS
       #   config:
@@ -116,7 +116,7 @@ spec:
     bucketweb:
       enabled: true
       networkPolicy: *networkPolicy
-      replicaCount: 3
+      replicaCount: 1
       resources:
         requests:
           cpu: 15m
@@ -146,7 +146,7 @@ spec:
       enabled: true
       # extraEnvVarsSecret: "thanos-ceph-bucket"
       logLevel: debug
-      replicaCount: 3
+      replicaCount: 1
       config:
         type: REDIS
         config:
@@ -182,7 +182,7 @@ spec:
       # clusterName: ${CLUSTER_NAME} # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
       networkPolicy: *networkPolicy
       replicaLabel: __replica__
-      replicaCount: 3
+      replicaCount: 1
       config: |-
         groups:
           - name: PrometheusWatcher
