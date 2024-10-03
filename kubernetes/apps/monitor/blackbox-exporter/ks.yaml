@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/monitor/blackbox-exporter/app
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: home-gitops
   prune: true
   wait: false
   interval: 30m
