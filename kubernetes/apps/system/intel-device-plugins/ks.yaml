@@ -15,7 +15,7 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-cert-manager
+    - name: cert-manager
     - name: cluster-apps-node-feature-discovery-rules
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1

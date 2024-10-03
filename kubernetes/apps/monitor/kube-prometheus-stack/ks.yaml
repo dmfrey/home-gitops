@@ -74,5 +74,5 @@ spec:
   dependsOn: []
     # - name: kube-prometheus-stack-crds
     # - name: prometheus-rules
-    # - name: cluster-apps-cert-manager
+    # - name: cert-manager
     # - name: cluster-apps-rook-ceph-cluster

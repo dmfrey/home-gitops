@@ -5,8 +5,11 @@ kind: HelmRelease
 metadata:
   name: cert-manager
   namespace: security
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       # renovate: registryUrl=https://charts.jetstack.io/
@@ -17,22 +20,27 @@ spec:
         name: jetstack
         namespace: flux-system
       interval: 15m
+
   install:
     crds: CreateReplace
+
   upgrade:
     crds: CreateReplace
+
   values:
+
     installCRDs: true
-    webhook:
-      enabled: true
+
     extraArgs:
       # - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
     # - --dns01-recursive-nameservers-only
       # - --enable-certificate-owner-ref
+
     replicaCount: 1
-    dns01RecursiveNameservers: "1.1.1.1:53,9.9.9.9:53"
+
+    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
     dns01RecursiveNameserversOnly: true
-    clusterResourceNamespace: security
+    # clusterResourceNamespace: security
 
     # podDnsPolicy: "None"
     # podDnsConfig:
