@@ -165,6 +165,9 @@ spec:
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
 
+        thanosService:
+          enabled: true
+
     grafana:
       enabled: false
       forceDeployDashboards: true
