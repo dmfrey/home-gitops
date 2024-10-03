@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-kube-prometheus-stack-crds
+  name: &app kube-prometheus-stack-crds
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/monitor/kube-prometheus-stack/crds
@@ -11,40 +12,42 @@ spec:
     kind: GitRepository
     name: home-gitops
   wait: true
-  postBuild:
-    substituteFrom: []
   interval: 15m
   retryInterval: 1m
   timeout: 5m
   decryption:
     provider: sops
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-prometheus-rules
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/monitor/kube-prometheus-stack/rules
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
   postBuild:
     substituteFrom: []
-  interval: 15m
-  retryInterval: 1m
-  timeout: 5m
-  decryption:
-    provider: sops
-  dependsOn:
-    - name: cluster-apps-kube-prometheus-stack-crds
+# ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app prometheus-rules
+#   namespace: flux-system
+# spec:
+#   path: ./kubernetes/apps/monitor/kube-prometheus-stack/rules
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: true
+#   interval: 15m
+#   retryInterval: 1m
+#   timeout: 5m
+#   decryption:
+#     provider: sops
+#   postBuild:
+#     substituteFrom: []
+#   dependsOn:
+#     - name: kube-prometheus-stack-crds
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-kube-prometheus-stack
+  name: &app kube-prometheus-stack
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/monitor/kube-prometheus-stack/app
@@ -53,15 +56,15 @@ spec:
     kind: GitRepository
     name: home-gitops
   wait: true
-  postBuild:
-    substituteFrom: []
   interval: 15m
   retryInterval: 1m
   timeout: 5m
   decryption:
     provider: sops
+  postBuild:
+    substituteFrom: []
   dependsOn:
-    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: kube-prometheus-stack-crds
+    # - name: prometheus-rules
     - name: cluster-apps-cert-manager
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-prometheus-rules

@@ -31,7 +31,7 @@ spec:
   dependsOn:
     - name: cluster-apps-media-common-mounts
     - name: cluster-apps-reflector
-    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: kube-prometheus-stack-crds
     - name: cluster-apps-pod-gateway
     - name: cluster-apps-volsync
 ---

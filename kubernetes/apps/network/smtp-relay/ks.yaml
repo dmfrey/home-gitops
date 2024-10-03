@@ -25,4 +25,4 @@ spec:
       APP: *appname
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: kube-prometheus-stack-crds

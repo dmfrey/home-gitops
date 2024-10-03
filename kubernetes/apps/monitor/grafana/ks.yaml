@@ -19,7 +19,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: cloudnative-pg
-    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: kube-prometheus-stack-crds
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

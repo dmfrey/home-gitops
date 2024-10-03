@@ -1,13 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
-  namespace: monitor
+
 spec:
 
   interval: 30m
+  timeout: 15m
 
   chart:
     spec:
@@ -18,214 +19,71 @@ spec:
         name: prometheus-community
         namespace: flux-system
 
-  driftDetection:
-    mode: enabled
-
-  maxHistory: 2
-
   install:
-    createNamespace: true
     crds: Skip
     remediation:
-      retries: 5
+      retries: 3
 
   upgrade:
     cleanupOnFail: true
     crds: Skip
     remediation:
+      strategy: rollback
       retries: 3
-
-  uninstall:
-    keepHistory: false
 
   dependsOn:
     - name: prometheus-operator-crds
-    - name: thanos
-
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              version: v1
-              kind: ConfigMap
-              labelSelector: grafana.io/dashboard in (true)
-            patch: |-
-              apiVersion: v1
-              kind: ConfigMap
-              metadata:
-                name: not-used
-                namespace: not-used
-                annotations:
-                  grafana.io/folder: Kubernetes
-
-          - target:
-              # Ignore these objects from Flux diff as they are mutated from chart hooks
-              kind: (ValidatingWebhookConfiguration|MutatingWebhookConfiguration)
-              name: kube-prometheus-stack-admission
-            patch: |
-              - op: add
-                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
-                value: disabled
-
-          - target:
-              # Ignore these objects from Flux diff as they are mutated at apply time but not
-              # at dry-run time
-              kind: PrometheusRule
-            patch: |
-              - op: add
-                path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
-                value: disabled
-
-  valuesFrom:
-    - kind: ConfigMap
-      name: flux-kube-state-metrics-config
-      valuesKey: kube-state-metrics-config.yaml
+      namespace: monitor
+    - name: openebs
+      namespace: storage
 
   values:
+
+    crds:
+      enabled: false
 
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
       enabled: false
-      # config:
-      #   global:
-      #     resolve_timeout: 5m
-      #   receivers:
-      #     - name: "null"
-      #     - name: "pushover"
-      #       pushover_configs:
-      #         - html: true
-      #           token: "${SECRET_ALERTMANAGER_PUSHOVER_TOKEN}"
-      #           user_key: "${SECRET_ALERTMANAGER_PUSHOVER_USER_KEY}"
-      #           sound: gamelan
-      #           send_resolved: true
-      #           priority: |-
-      #             {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
-      #           url_title: View in Alert Manager
-      #           title: |-
-      #             [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
-      #           message: |-
-      #             {{- range .Alerts }}
-      #               {{- if ne .Labels.severity "" }}
-      #                 <b>Severity:</b> <i>{{ .Labels.severity }}</i>
-      #               {{- else }}
-      #                 <b>Severity:</b> <i>N/A</i>
-      #               {{- end }}
-      #               {{- if ne .Annotations.description "" }}
-      #                 <b>Description:</b> <i>{{ .Annotations.description }}</i>
-      #               {{- else if ne .Annotations.summary "" }}
-      #                 <b>Summary:</b> <i>{{ .Annotations.summary }}</i>
-      #               {{- else if ne .Annotations.message "" }}
-      #                 <b>Message:</b> <i>{{ .Annotations.message }}</i>
-      #               {{- else }}
-      #                 <b>Description:</b> <i>N/A</i>
-      #               {{- end }}
-      #               {{- if gt (len .Labels.SortedPairs) 0 }}
-      #                 <b>Details:</b>
-      #                 {{- range .Labels.SortedPairs }}
-      #                   • <b>{{ .Name }}:</b> <i>{{ .Value }}</i>
-      #                 {{- end }}
-      #               {{- end }}
-      #             {{- end }}
-
-      #   route:
-      #     group_by: ["alertname", "job"]
-      #     group_wait: 30s
-      #     group_interval: 5m
-      #     repeat_interval: 6h
-      #     receiver: "pushover"
-      #     routes:
-      #       - receiver: "null"
-      #         matchers:
-      #           - alertname =~ "InfoInhibitor|Watchdog"
-      #       - receiver: "pushover"
-      #         matchers:
-      #           - severity = "critical"
-      #         continue: true
-
-      #   inhibit_rules:
-      #     - source_matchers:
-      #         - severity = "critical"
-      #       target_matchers:
-      #         - severity = "warning"
-      #       equal: ["alertname", "namespace"]
-
-      # ingress:
-      #   enabled: false
-
-      # alertmanagerSpec:
-      #   replicas: 3
-      #   storage:
-      #     volumeClaimTemplate:
-      #       spec:
-      #         storageClassName: ceph-block
-      #         resources:
-      #           requests:
-      #             storage: 1Gi
-
-    kubelet:
-      enabled: true
-      serviceMonitor:
-        metricRelabelings:
-          - action: replace
-            sourceLabels:
-              - node
-            targetLabel: instance
-          # Drop high cardinality labels
-          - action: labeldrop
-            regex: (uid)
-          - action: labeldrop
-            regex: (id|name)
-          - action: drop
-            sourceLabels: [ "__name__" ]
-            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+      ingress:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+        ingressClassName: internal
+        hosts: ["alertmanager.devbu.io"]
+        pathType: Prefix
+      alertmanagerSpec:
+        useExistingSecret: true
+        configSecret: alertmanager-secret
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: openebs-hostpath
+              resources:
+                requests:
+                  storage: 1Gi
 
     kubeApiServer:
-      enabled: true
       serviceMonitor:
-        metricRelabelings:
-          # Drop high cardinality labels
-          - action: drop
-            sourceLabels: [ "__name__" ]
-            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-          - action: drop
-            sourceLabels: [ "__name__" ]
-            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-
-    kubeControllerManager:
-      enabled: true
-      endpoints: &endpoints
-        - 192.168.30.31
-        - 192.168.30.32
-        - 192.168.30.33
-
-    kubeEtcd:
-      enabled: true
-      endpoints: *endpoints
-      service:
-        enabled: true
-        port: 2381
-        targetPort: 2381
+        selector:
+          k8s-app: kube-apiserver
 
     kubeScheduler:
-      enabled: true
-      endpoints: *endpoints
+      service:
+        selector:
+          k8s-app: kube-scheduler
+
+    kubeControllerManager: &kubeControllerManager
+      service:
+        selector:
+          k8s-app: kube-controller-manager
+
+    kubeEtcd:
+      <<: *kubeControllerManager # etcd runs on control plane nodes
 
     kubeProxy:
-      enabled: true # Disabled because eBPF
-      endpoints: *endpoints
-
-    nodeExporter:
       enabled: false
-
-    grafana:
-      enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          multicluster:
-            etcd:
-              enabled: true
 
     prometheus:
       ingress:
@@ -246,84 +104,67 @@ spec:
               - *host
             secretName: prometheus-tls-external
 
-      thanosService:
-        enabled: false
-
-      thanosServiceMonitor:
-        enabled: false
-
       prometheusSpec:
-        replicas: 3
-        replicaExternalLabelName: __replica__
-        externalLabels:
-          cluster: ${CLUSTER_NAME}
-
-        # thanos:
-        #   image: quay.io/thanos/thanos:v0.36.1@sha256:e542959e1b36d5046083d1b64a7049c356b68a44a173c58b3ae7c0c9ada932d5
-        #   objectStorageConfig:
-        #     name: thanos-secret
-        #     key: objstore.yml
-        #   # renovate: datasource=docker depName=quay.io/thanos/thanos
-        #   version: "v0.32.4"
-
-        alertingEnpoints:
-          - namespace: monitor
-            name: alertmanager
-            port: 9093
-            apiVersion: v2
-
-        podAffinity: hard
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        retention: 14d
-        retentionSize: 45GB
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
+        enableFeatures:
+          - auto-gomemlimit
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
+        retention: 14d
+        retentionSize: 70GB
+
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 1500Mi
+
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: openebs-hostpath
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 75Gi
 
-        resources:
-          requests:
-            cpu: 10m
-            memory: 2000Mi
-          limits:
-            memory: 8000Mi
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
 
-        additionalScrapeConfigs:
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
 
-          - job_name: node-exporter
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-            static_configs:
-              - targets:
-                  - ${QNAP_ADDR}:9100
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
 
-          - job_name: minio
-            metrics_path: /minio/v2/metrics/cluster
-            static_configs:
-              - targets: ["${QNAP_ADDR}:9000"]
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
 
-          # - job_name: blocky-metrics
-          #   scrape_interval: 1m
-          #   scrape_timeout: 10s
-          #   honor_timestamps: true
-          #   static_configs:
-          #     - targets:
-          #       - ${DNS_ADDR}:4000
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
 
-      prometheusConfigReloader:
-        # resource config for prometheusConfigReloader
-        resources:
-          requests:
-            cpu: 5m
-            memory: 32M
-          limits:
-            memory: 32M
+    grafana:
+      enabled: false
+      forceDeployDashboards: true

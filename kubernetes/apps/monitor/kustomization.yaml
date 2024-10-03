@@ -12,7 +12,7 @@ resources:
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./metrics-server/ks.yaml
-  - ./node-exporter/ks.yaml
+  # - ./node-exporter/ks.yaml
   - ./otel/ks.yaml
   - ./thanos/ks.yaml
   - ./unpoller/ks.yaml

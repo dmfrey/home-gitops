@@ -23,7 +23,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-kube-prometheus-stack-crds
+    - name: kube-prometheus-stack-crds
     - name: cluster-apps-rook-ceph-cluster
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
