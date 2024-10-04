@@ -46,6 +46,14 @@ spec:
               path: /var/lib/grafana/dashboards/network
             orgId: 1
             type: file
+          - name: policy
+            disableDeletion: false
+            editable: true
+            folder: "Policy"
+            options:
+              path: /var/lib/grafana/dashboards/policy
+            orgId: 1
+            type: file
           - name: security
             disableDeletion: false
             editable: true
@@ -215,6 +223,17 @@ spec:
             datasource:
               - name: "DS_PROMETHEUS"
                 value: prometheus
+
+      policy:
+
+        # Ref: https://grafana.com/grafana/dashboards/15804-kyverno
+        # renovate: depName="Keyverno"
+        keyverno:
+          gnetId: 15804
+          revision: 4
+          datasource:
+            - name: "PROMETHEUS"
+              value: prometheus
 
       storage:
 
