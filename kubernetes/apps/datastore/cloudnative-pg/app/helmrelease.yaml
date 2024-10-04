@@ -40,4 +40,11 @@ spec:
         INHERITED_ANNOTATIONS: kyverno.io/ignore, reflector.v1.k8s.emberstack.com/*
 
     monitoring:
-      podMonitorEnabled: true
+      podMonitorEnabled: false
+      grafanaDashboard:
+        create: true
+        labels:
+          grafana.io/dashboard: "true"
+        annotations:
+          kustomize.toolkit.fluxcd.io/substitute: disabled
+          grafana.io/folder: Datastore

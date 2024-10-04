@@ -120,9 +120,10 @@ spec:
       device:
 
         # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+        # renovate: depName="Node Exporter Full"
         node-exporter:
           gnetId: 1860
-          revision: 30
+          revision: 37
           datasource: prometheus
 
       network:
