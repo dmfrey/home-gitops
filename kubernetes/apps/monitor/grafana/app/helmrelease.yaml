@@ -145,6 +145,14 @@ spec:
             - name: "DS_BLOCKYDB"
               value: blocky-pgcluster
 
+        cloudflared:
+          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - name: DS_PROMETHEUS
+              value: prometheus
+
         # Ref: https://grafana.com/grafana/dashboards/11315
         clients:
           gnetId: 11315
