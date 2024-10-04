@@ -140,7 +140,9 @@ spec:
         blocky-postgres:
           gnetId: 17996
           revision: 11
-          datasource: blocky-pgcluster
+          datasource:
+            - name: "DS_BLOCKYDB"
+              value: blocky-pgcluster
 
         # Ref: https://grafana.com/grafana/dashboards/11315
         clients:
