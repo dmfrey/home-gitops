@@ -232,7 +232,7 @@ spec:
           gnetId: 15804
           revision: 4
           datasource:
-            - name: "PROMETHEUS"
+            - name: "DS_PROMETHEUS"
               value: prometheus
 
       storage:
