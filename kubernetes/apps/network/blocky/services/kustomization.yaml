@@ -7,4 +7,4 @@ resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
   # - ./blocky-lb.yaml
-  - ./dashboard
+  # - ./dashboard
