@@ -172,17 +172,23 @@ spec:
                 value: prometheus
       storage:
         # Ref: https://grafana.com/grafana/dashboards/2842/
+        # renovate: depName="Ceph Cluster"
         ceph-cluster:
           gnetId: 2842
-          revision: 17
+          revision: 18
+          datasource: prometheus
         # Ref: https://grafana.com/grafana/dashboards/5336/
+        # renovate: depName="Ceph OSD"
         ceph-osds:
           gnetId: 5336
           revision: 9
+          datasource: prometheus
         # Ref: https://grafana.com/grafana/dashboards/5342/
+        # renovate: depName="Ceph Pools"
         ceph-pools:
           gnetId: 5342
           revision: 9
+          datasource: prometheus
       # spring-boot:
       #   spring-boot-3:
       #     gnetId: 19004
