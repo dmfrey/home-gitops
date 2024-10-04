@@ -65,9 +65,11 @@ spec:
     config:
 
       extensions:
-        file_storage:
+        file_storage/otc:
           directory: /var/lib/otelcol
-        health_check: {}
+
+        health_check:
+
         zpages:
 
       processors:
@@ -77,7 +79,7 @@ spec:
               key: loki.attribute.labels
               value: event.domain, event.name
 
-        batch: {}
+        batch:
 
         memory_limiter:
           check_interval: 5s
@@ -155,6 +157,8 @@ spec:
           retry_on_failure:
             enabled: true
             max_elapsed_time: 0
+          sending_queue:
+            storage: file_storage/otc
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
           retry_on_failure:
@@ -283,11 +287,12 @@ spec:
     config:
 
       extensions:
-        health_check: {}
+        health_check:
+
         zpages:
 
       processors:
-        batch: {}
+        batch:
         memory_limiter:
           check_interval: 5s
           limit_percentage: 80
