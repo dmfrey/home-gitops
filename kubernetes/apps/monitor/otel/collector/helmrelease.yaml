@@ -68,7 +68,7 @@ spec:
         file_storage/otc:
           directory: /var/lib/otelcol
 
-        health_check:
+        health_check: {}
 
         zpages:
 
@@ -79,7 +79,7 @@ spec:
               key: loki.attribute.labels
               value: event.domain, event.name
 
-        batch:
+        batch: {}
 
         memory_limiter:
           check_interval: 5s
@@ -287,12 +287,13 @@ spec:
     config:
 
       extensions:
-        health_check:
+        health_check: {}
 
         zpages:
 
       processors:
-        batch:
+        batch: {}
+
         memory_limiter:
           check_interval: 5s
           limit_percentage: 80
