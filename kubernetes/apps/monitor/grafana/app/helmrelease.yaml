@@ -251,9 +251,7 @@ spec:
         spring-cloud-gateway:
           gnetId: 11506
           revision: 1
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: prometheus
+          datasource: prometheus
 
       apm:
         # Ref: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
