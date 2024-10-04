@@ -237,10 +237,14 @@ spec:
           revision: 9
           datasource: prometheus
 
-      # spring-boot:
-      #   spring-boot-3:
-      #     gnetId: 19004
-      #     revision: 1
+      spring-boot:
+        # renovate: depName="Spring Boot 3.x Statistics"
+        spring-boot-3:
+          gnetId: 19004
+          revision: 1
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
 
       spring-cloud-gateway:
         # renovate: depName="Spring Cloud Gateway"
