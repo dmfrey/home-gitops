@@ -153,11 +153,9 @@ spec:
         blocky:
           gnetId: 13768
           revision: 4
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: prometheus
+          datasource: prometheus
         # Ref: https://grafana.com/grafana/dashboards/17996-blocky-postgres
-        # renovate: depName="Blocky-Postgres"
+        # renovate: depName="Blocky Query"
         blocky-postgres:
           gnetId: 17996
           revision: 11
