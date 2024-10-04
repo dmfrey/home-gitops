@@ -213,7 +213,7 @@ spec:
       service:
         extensions:
           - health_check
-          - file_storage
+          - file_storage/otc
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
