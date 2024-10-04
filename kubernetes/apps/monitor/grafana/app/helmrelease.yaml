@@ -126,6 +126,10 @@ spec:
           revision: 37
           datasource: prometheus
 
+        node-feature-discovery:
+          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: prometheus
+
       network:
 
         # Ref: https://grafana.com/grafana/dashboards/13768-blocky
@@ -238,6 +242,12 @@ spec:
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
+
+        prometheus:
+          # renovate: depName="Prometheus"
+          gnetId: 19105
+          revision: 5
+          datasource: prometheus
 
     deploymentStrategy:
       type: Recreate
