@@ -70,6 +70,14 @@ spec:
               path: /var/lib/grafana/dashboards/spring-boot
             orgId: 1
             type: file
+          - name: spring-cloud-gateway
+            disableDeletion: false
+            editable: true
+            folder: "Spring Cloud Gateway"
+            options:
+              path: /var/lib/grafana/dashboards/spring-cloud-gateway
+            orgId: 1
+            type: file
           - name: apm
             disableDeletion: false
             editable: true
@@ -233,6 +241,15 @@ spec:
       #   spring-boot-3:
       #     gnetId: 19004
       #     revision: 1
+
+      spring-cloud-gateway:
+        # renovate: depName="Spring Cloud Gateway"
+        spring-cloud-gateway:
+          gnetId: 11506
+          revision: 1
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
 
       apm:
         # Ref: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
