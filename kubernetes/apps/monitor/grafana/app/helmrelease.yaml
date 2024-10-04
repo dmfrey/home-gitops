@@ -88,10 +88,13 @@ spec:
               path: /var/lib/grafana/dashboards/datastore-folder
 
     dashboards:
+
       datastore:
+
         dragonfly:
           url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
           datasource: prometheus
+
         emqx-authentication:
           url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/authentication.json
           datasource: prometheus
@@ -113,19 +116,32 @@ spec:
         emqx-rule-engine-rate:
           url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/rule-engine-rate.json
           datasource: prometheus
+
       device:
+
         # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
         node-exporter:
           gnetId: 1860
           revision: 30
           datasource: prometheus
+
       network:
+
         # Ref: https://grafana.com/grafana/dashboards/13768-blocky
         # renovate: depName="blocky"
         blocky:
           gnetId: 13768
           revision: 4
-          datasource: prometheus
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
+        # Ref: https://grafana.com/grafana/dashboards/17996-blocky-postgres
+        # renovate: depName="Blocky-Postgres"
+        blocky-postgres:
+          gnetId: 17996
+          revision: 11
+          datasource: blocky-pgcluster
+
         # Ref: https://grafana.com/grafana/dashboards/11315
         clients:
           gnetId: 11315
@@ -176,7 +192,9 @@ spec:
             datasource:
               - name: "DS_PROMETHEUS"
                 value: prometheus
+
       storage:
+
         # Ref: https://grafana.com/grafana/dashboards/2842/
         # renovate: depName="Ceph Cluster"
         ceph-cluster:
@@ -195,10 +213,12 @@ spec:
           gnetId: 5342
           revision: 9
           datasource: prometheus
+
       # spring-boot:
       #   spring-boot-3:
       #     gnetId: 19004
       #     revision: 1
+
       apm:
         # Ref: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
         apm:
