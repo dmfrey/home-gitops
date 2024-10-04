@@ -120,6 +120,12 @@ spec:
           revision: 30
           datasource: prometheus
       network:
+        # Ref: https://grafana.com/grafana/dashboards/13768-blocky
+        # renovate: depName="blocky"
+        blocky:
+          gnetId: 13768
+          revision: 4
+          datasource: prometheus
         # Ref: https://grafana.com/grafana/dashboards/11315
         clients:
           gnetId: 11315
