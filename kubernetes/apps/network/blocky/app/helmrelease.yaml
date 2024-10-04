@@ -168,7 +168,7 @@ spec:
           - path: /config
 
     serviceMonitor:
-      app:
+      metrics:
         serviceName: *app
         endpoints:
           - port: http
