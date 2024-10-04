@@ -294,7 +294,7 @@ spec:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
       GF_LOG_FILTERS: rendering:debug
-      GF_PANELS_DISABLE_SANATIZE_HTML: true
+      GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
 
     envFromSecrets:
