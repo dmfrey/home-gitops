@@ -301,14 +301,14 @@ spec:
         advancedMounts:
           *app :
             git-clone:
-              - path: /root/.ssh/id_ed25519
+              - path: /.ssh/id_ed25519
                 subPath: ssh-privatekey
                 readOnly: true
-              - path: /root/.ssh/known_hosts
+              - path: /.ssh/known_hosts
                 subPath: known-hosts
-              - path: /root/.gitconfig
+              - path: /.gitconfig
                 subPath: dot-gitconfig
-              - path: /root/.ssh/config
+              - path: /.ssh/config
                 subPath: ssh-config
             # git-sync:
             #   - path: /etc/git-secret/ssh
