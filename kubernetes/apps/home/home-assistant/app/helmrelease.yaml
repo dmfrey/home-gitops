@@ -63,6 +63,7 @@ spec:
           git-clone:
             image:
               repository: alpine/git
+              tag: v2.45.2
 
             command:
               - git
