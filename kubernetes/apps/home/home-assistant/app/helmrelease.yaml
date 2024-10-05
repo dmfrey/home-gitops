@@ -66,23 +66,26 @@ spec:
               tag: v2.45.2
 
             command:
-              - "/bin/sh"
-              - -c
-              - |
-                whoami
-                echo $HOME
-                # ls /.ssh
-                # cat /.gitconfig
-                # git config --global --add safe.directory /config
-                # git config -l
-                ssh-add ~/.ssh/id_ed25519
-                cd /config
-                cat .git/config
-                rm -rf .worktrees
-                rm -rf hass-config.git
-                ls -la
-                git fetch origin
-                git reset origin/main
+              - sleep
+              - "3600"
+
+              # - "/bin/sh"
+              # - -c
+              # - |
+              #   whoami
+              #   echo $HOME
+              #   # ls /.ssh
+              #   # cat /.gitconfig
+              #   # git config --global --add safe.directory /config
+              #   # git config -l
+              #   ssh-add ~/.ssh/id_ed25519
+              #   cd /config
+              #   cat .git/config
+              #   rm -rf .worktrees
+              #   rm -rf hass-config.git
+              #   ls -la
+              #   git fetch origin
+              #   git reset origin/main
 
               # - git
               # - clone
