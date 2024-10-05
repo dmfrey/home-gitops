@@ -70,7 +70,9 @@ spec:
               - -c
               - |
                 echo $HOME
-                git config --global --add safe.directory /config
+                ls /.ssh
+                cat /.gitconfig
+                # git config --global --add safe.directory /config
                 git config -l
                 cd /config
                 git fetch origin
