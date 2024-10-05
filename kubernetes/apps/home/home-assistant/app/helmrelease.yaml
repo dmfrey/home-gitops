@@ -69,9 +69,9 @@ spec:
               - "/bin/sh"
               - -c
               - |
+                git config --global --add safe.directory /config
                 git config -l
                 cd /config
-                # ssh-keyscan github.com >> ~/.ssh/known_hosts
                 git fetch origin
                 git reset origin/main
 
