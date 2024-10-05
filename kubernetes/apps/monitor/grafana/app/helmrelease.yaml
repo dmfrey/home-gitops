@@ -256,6 +256,14 @@ spec:
           revision: 9
           datasource: prometheus
 
+        volsync:
+          # renovate: depName="VolSync Dashboard"
+          gnetId: 21356
+          revision: 3
+          datasource:
+            - { name: DS_PROMETHEUS, value: prometheus }
+            - { name: VAR_REPLICATIONDESTNAME, value: .*-bootstrap }
+
       spring-boot:
         # renovate: depName="Spring Boot 3.x Statistics"
         spring-boot-3:
