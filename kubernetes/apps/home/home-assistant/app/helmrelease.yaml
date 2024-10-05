@@ -69,6 +69,7 @@ spec:
               - "/bin/sh"
               - -c
               - |
+                echo $HOME
                 git config --global --add safe.directory /config
                 git config -l
                 cd /config
