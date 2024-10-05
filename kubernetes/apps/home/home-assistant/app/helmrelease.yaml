@@ -69,8 +69,9 @@ spec:
               - "/bin/sh"
               - -c
               - |
+                git config -l
                 cd /config
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
+                # ssh-keyscan github.com >> ~/.ssh/known_hosts
                 git fetch origin
                 git reset origin/main
 
