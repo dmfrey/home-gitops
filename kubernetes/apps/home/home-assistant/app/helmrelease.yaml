@@ -71,11 +71,14 @@ spec:
               - |
                 whoami
                 echo $HOME
-                ls /.ssh
-                cat /.gitconfig
+                # ls /.ssh
+                # cat /.gitconfig
                 # git config --global --add safe.directory /config
-                git config -l
+                # git config -l
                 cd /config
+                cat .git/config
+                rm -rf .worktrees
+                rm -rf hass-config.git
                 ls -la
                 git fetch origin
                 git reset origin/main
