@@ -69,12 +69,14 @@ spec:
               - "/bin/sh"
               - -c
               - |
+                whoami
                 echo $HOME
                 ls /.ssh
                 cat /.gitconfig
                 # git config --global --add safe.directory /config
                 git config -l
                 cd /config
+                ls -la
                 git fetch origin
                 git reset origin/main
 
