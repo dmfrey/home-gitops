@@ -23,4 +23,4 @@ spec:
       APP: *appname
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-node-feature-discovery-rules
+    - name: node-feature-discovery-rules

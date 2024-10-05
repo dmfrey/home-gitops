@@ -16,7 +16,7 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cert-manager
-    - name: cluster-apps-node-feature-discovery-rules
+    - name: node-feature-discovery-rules
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

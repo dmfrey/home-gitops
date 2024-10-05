@@ -31,6 +31,6 @@ spec:
         name: flux-volsync-secret
   dependsOn:
     - name: emqx-cluster
-    - name: cluster-apps-node-feature-discovery-rules
+    - name: node-feature-discovery-rules
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
