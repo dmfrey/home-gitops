@@ -75,6 +75,7 @@ spec:
                 # cat /.gitconfig
                 # git config --global --add safe.directory /config
                 # git config -l
+                ssh-add ~/.ssh/id_ed25519
                 cd /config
                 cat .git/config
                 rm -rf .worktrees
