@@ -1,9 +1,9 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: volsync
-  namespace: storage
 spec:
   groups:
     - name: volsync.rules
@@ -26,4 +26,3 @@ spec:
           for: 15m
           labels:
             severity: critical
-
