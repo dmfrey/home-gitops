@@ -10,6 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/system/node-feature-discovery/app"
+  prune: true
   wait: false
   interval: 10m
   retryInterval: 1m
@@ -31,6 +32,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/system/node-feature-discovery/rules"
+  prune: true
   wait: false
   interval: 10m
   retryInterval: 1m
