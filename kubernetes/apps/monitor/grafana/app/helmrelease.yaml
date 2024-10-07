@@ -54,6 +54,14 @@ spec:
               path: /var/lib/grafana/dashboards/kubernetes
             orgId: 1
             type: file
+          - name: media
+            disableDeletion: false
+            editable: true
+            folder: "Media"
+            options:
+              path: /var/lib/grafana/dashboards/media
+            orgId: 1
+            type: file
           - name: network
             disableDeletion: false
             editable: true
@@ -208,6 +216,18 @@ spec:
           # renovate: depName="K8s / Storage / Volumes / Cluster"
           gnetId: 11454
           revision: 14
+          datasource: prometheus
+
+      media:
+        servarr-dashboard:
+          # renovate: depName="Media Dashboard"
+          url: https://raw.githubusercontent.com/onedr0p/exportarr/88bf4028243a82cc160ce8f8ed75b76976e4acf5/examples/grafana/dashboard2.json
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
+        overseerr-dashboard:
+          # renovate: depName="Overseerr"
+          url: https://raw.githubusercontent.com/WillFantom/overseerr-exporter/main/grafana/dashboard.json
           datasource: prometheus
 
       network:

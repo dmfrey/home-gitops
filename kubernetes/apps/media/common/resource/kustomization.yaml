@@ -5,5 +5,5 @@ kind: Kustomization
 namespace: media
 resources:
   - ./secret-starr-apps.sops.yaml
-  - ./dashboard
+  # - ./dashboard
 
