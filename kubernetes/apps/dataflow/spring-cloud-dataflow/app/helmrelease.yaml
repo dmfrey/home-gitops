@@ -1,14 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: spring-cloud-dataflow
   namespace: dataflow
 spec:
-  
+
   interval: 5m
-  
+
   chart:
     spec:
       chart: spring-cloud-dataflow
@@ -105,9 +105,9 @@ spec:
         limits:
           cpu: "1.0"
           memory: 2048Mi
-      
+
       replicaCount: 1
-      
+
       serviceMonitor:
         enabled: true
 
@@ -129,7 +129,7 @@ spec:
 
     rabbitmq:
       enabled: false
-      
+
     externalRabbitmq:
       enabled: true
       host: rabbit-dataflow.dataflow.svc.cluster.local

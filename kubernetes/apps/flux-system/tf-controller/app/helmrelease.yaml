@@ -1,14 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &name tf-controller
   namespace: flux-system
 spec:
-  
+
   interval: 30m
-  
+
   chart:
     spec:
       chart: tf-controller
@@ -17,38 +17,38 @@ spec:
         kind: HelmRepository
         name: tofu-controller
         namespace: flux-system
-  
+
   maxHistory: 2
-  
+
   install:
     createNamespace: true
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
-  
+
   values:
-    
+
     fullnameOverride: *name
 
     allowBreakTheGlass: true
     allowCrossNamespaceRefs: true
-    
+
     installCRDs: true
-  
+
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
         endpoint:
           interval: 1m
-  
+
     runner:
       serviceAccount:
         create: true

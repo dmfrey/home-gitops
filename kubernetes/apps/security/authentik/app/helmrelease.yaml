@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -22,17 +22,17 @@ spec:
   install:
     remediation:
       retries: 3
-  
+
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-  
+
   uninstall:
     keepHistory: false
 
   values:
-    
+
     global:
       storageClass: ceph-block
 
@@ -44,7 +44,7 @@ spec:
       envFrom:
         - secretRef:
             name: authentik-secret
-      
+
       # envValueFrom:
       #   AUTHENTIK_POSTGRESQL__NAME:
       #     secretKeyRef:
@@ -84,7 +84,7 @@ spec:
         port: 2525
         use_tls: false
         from: "authentik@${SECRET_DOMAIN}"
-    
+
     # geoip:
     #   enabled: true
     #   accountId: "878850"
@@ -93,7 +93,7 @@ spec:
     #   image: ghcr.io/maxmind/geoipupdate:v6.0.0
     #   updateInterval: 8
 
-    # blueprints: 
+    # blueprints:
     #   configMaps: []
     #   secrets: []
 
@@ -138,7 +138,7 @@ spec:
       metrics:
         serviceMonitor:
           enabled: true
-    
+
       volumes: &postgresCredsVolume
         - name: postgres-creds
           secret:

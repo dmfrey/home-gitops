@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -17,24 +17,24 @@ spec:
         name: grafana
         namespace: flux-system
       interval: 5m
-  
+
   install:
     timeout: 10m
     remediation:
       retries: 3
-  
+
   upgrade:
     timeout: 10m
     remediation:
       retries: 3
       remediateLastFailure: true
     cleanupOnFail: true
-  
+
   rollback:
     timeout: 10m
     recreate: true
     cleanupOnFail: true
-  
+
   values:
 
     config:
@@ -86,16 +86,16 @@ spec:
           type: LoadBalancer
           loadBalancerIP: ${SVC_SYSLOG_ADDR}
         externalTrafficPolicy: Local
-    
+
     extraVolumes:
       - name: journal
         hostPath:
           path: /var/log/journal
-    
+
     extraVolumeMounts:
       - name: journal
         mountPath: /var/log/journal
         readOnly: true
-    
+
     serviceMonitor:
       enabled: true

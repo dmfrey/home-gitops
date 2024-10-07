@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -15,9 +15,9 @@ spec:
         kind: HelmRepository
         name: rook-ceph
         namespace: flux-system
-  
+
   values:
-  
+
     toolbox:
       enabled: true
 
@@ -64,7 +64,7 @@ spec:
             memory: 6Gi
         mgr-sidecar:
           requests:
-            cpu: 50m 
+            cpu: 50m
             memory: 128Mi
           limits:
             memory: 256Mi

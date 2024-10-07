@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -17,20 +17,20 @@ spec:
         name: rook-ceph
         namespace: flux-system
   values:
-    
+
     crds:
       enabled: true
 
     csi:
       provisioner:
-        image: 
+        image:
           repository: registry.k8s.io/sig-storage/csi-provisioner
           tag: v5.1.0
-        
+
       enableLiveness: true
       serviceMonitor:
         enabled: true
-        
+
       kubeletDirPath: /var/lib/kubelet
       enableCSIHostNetwork: true
       pluginTolerations:
