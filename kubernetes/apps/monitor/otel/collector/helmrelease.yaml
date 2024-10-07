@@ -214,6 +214,7 @@ spec:
         extensions:
           - health_check
           - file_storage/otc
+          - zpages
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
