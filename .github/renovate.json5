@@ -16,7 +16,6 @@
     'prEditedNotification',
     'prIgnoreNotification',
   ],
-  requireConfig: 'ignored',
   ignorePaths: [
     '**/*.sops.*',
     'archive/**',
