@@ -6,4 +6,4 @@ namespace: flux-system
 resources:
   - ./podmonitor.yaml
   - ./prometheusrule.yaml
-  - ./dashboard
+  # - ./dashboard

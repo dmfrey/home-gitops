@@ -38,6 +38,14 @@ spec:
               path: /var/lib/grafana/dashboards/device
             orgId: 1
             type: file
+          - name: flux
+            disableDeletion: false
+            editable: true
+            folder: "Flux"
+            options:
+              path: /var/lib/grafana/dashboards/flux
+            orgId: 1
+            type: file
           - name: kubernetes
             disableDeletion: false
             editable: true
@@ -152,6 +160,17 @@ spec:
 
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: prometheus
+
+      flux:
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
+          datasource: prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
+          datasource: prometheus
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
           datasource: prometheus
 
       kubernetes:
