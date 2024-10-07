@@ -127,11 +127,14 @@ spec:
         otlp:
           protocols:
             grpc:
+              include_metadata: true
               endpoint: localhost:4317
             http:
+              include_metadata: true
               endpoint: localhost:4318
 
         zipkin:
+          include_metadata: true
           endpoint: localhost:9411
 
       exporters:
