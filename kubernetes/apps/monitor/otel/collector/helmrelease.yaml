@@ -79,7 +79,9 @@ spec:
               key: loki.attribute.labels
               value: event.domain, event.name
 
-        batch: {}
+        batch:
+          send_batch_size: 10000
+          timeout: 10s
 
         memory_limiter:
           check_interval: 5s
