@@ -1,5 +1,5 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
   name: flux-manifests
@@ -145,4 +145,3 @@ spec:
       target:
         kind: ClusterRole
         name: crd-controller-flux-system
-        
