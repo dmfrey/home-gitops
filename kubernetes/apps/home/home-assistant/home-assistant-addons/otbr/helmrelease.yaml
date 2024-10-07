@@ -47,7 +47,7 @@ spec:
           *app :
             image:
               repository: homeassistant/amd64-addon-otbr
-              tag: 2.11.0
+              tag: 2.11.1
               pullPolicy: IfNotPresent
 
             env:
