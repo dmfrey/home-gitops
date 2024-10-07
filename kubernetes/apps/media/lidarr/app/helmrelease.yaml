@@ -93,7 +93,7 @@ spec:
 
             env:
               - name: URL
-                value: "http://localhost"
+                value: "http://localhost:8686"
               - name: CONFIG
                 value: "/config/config.xml"
               - name: PORT
