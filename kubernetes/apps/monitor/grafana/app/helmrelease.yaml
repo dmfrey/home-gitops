@@ -221,7 +221,7 @@ spec:
       media:
         servarr-dashboard:
           # renovate: depName="Media Dashboard"
-          url: https://raw.githubusercontent.com/onedr0p/exportarr/88bf4028243a82cc160ce8f8ed75b76976e4acf5/examples/grafana/dashboard2.json
+          url: https://raw.githubusercontent.com/onedr0p/exportarr/refs/heads/master/examples/grafana/dashboard2.json
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
