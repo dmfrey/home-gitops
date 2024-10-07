@@ -6,4 +6,11 @@ resources:
   - ./helmrelease.yaml
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
-
+configMapGenerator:
+  - name: bazarr-scripts
+    files:
+      - subcleaner.sh=./resources/subcleaner.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

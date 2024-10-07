@@ -33,6 +33,12 @@ spec:
   uninstall:
     keepHistory: false
 
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage
+    - name: volsync
+      namespace: storage
+
   values:
 
     controllers:
@@ -61,23 +67,59 @@ spec:
                     name: starr-apps-secret
                     key: BAZARR_API_KEY
 
+            envFrom:
+              - secretRef:
+                  name: pmm-secret
+
             ports:
               - name: http
                 containerPort: *port
 
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+
             resources:
               requests:
-                memory: 350Mi
-                cpu: 5m
+                cpu: 10m
               limits:
-                memory: 431Mi
+                memory: 1Gi
 
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
+
+          subcleaner:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.3.0@sha256:5813a7da0ccd58f6dfb9d5e48480e2877355e6bb3d7d81c8908eb1adc3a23b6e
+
+            env:
+              GITSYNC_REPO: https://github.com/KBlixt/subcleaner
+              GITSYNC_REF: master
+              GITSYNC_PERIOD: 24h
+              GITSYNC_ROOT: /add-ons
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+            securityContext: *securityContext
 
           exporter:
             image:
@@ -103,12 +145,7 @@ spec:
               limits:
                 memory: 128Mi
 
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+            securityContext: *securityContext
 
     defaultPodOptions:
       securityContext:
@@ -152,15 +189,34 @@ spec:
             secretName: bazarr-tls-external
 
     persistence:
+      add-ons:
+        type: emptyDir
+
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /config/cache
+
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config
+
+      log:
+        type: emptyDir
+        globalMounts:
+          - path: /config/log
 
       media:
         existingClaim: nfs-media
+
+      scripts:
+        type: configMap
+        name: bazarr-scripts
+        defaultMode: 0775
+        globalMounts:
+          - readOnly: true
+
+      tmp:
+        type: emptyDir
 
       backups:
         type: custom
@@ -168,18 +224,9 @@ spec:
           nfs:
             server: "${QNAP_ADDR}"
             path: /plexbackups/backups/bazarr
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config/backup
-                readOnly: false
-
-      tmp:
-        type: emptyDir
-        advancedMounts:
-          *app :
-            *app :
-              - path: /tmp
+        globalMounts:
+          - path: /config/backup
+            readOnly: false
 
     serviceMonitor:
       metrics:
