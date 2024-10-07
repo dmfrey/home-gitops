@@ -3,15 +3,18 @@
   "extends": [
     "config:best-practices",
     "docker:enableMajor",
+    "replacements:k8s-registry-move",
+    ":automergeBranch"
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    ":automergeBranch"
+    ":skipStatusChecks",
+    ":timezone(America/New_York)"
   ],
-  "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
-  "rebaseWhen": "conflicted",
+  "onboarding": false,
+  "requireConfig": "ignored",
   "ignorePaths": ["**/*.sops.*","archive/**"],
   "flux": {
     "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
