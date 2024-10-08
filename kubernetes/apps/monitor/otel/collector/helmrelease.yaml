@@ -249,6 +249,7 @@ spec:
     service:
       enabled: true
       type: ClusterIP
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -308,12 +309,42 @@ spec:
         zpages:
 
       processors:
-        batch: {}
+        batch:
+          send_batch_size: 1000
+          timeout: 10s
 
         memory_limiter:
           check_interval: 5s
           limit_percentage: 80
           spike_limit_percentage: 25
+
+        resource:
+          attributes:
+
+            - action: insert
+              key: loki.resource.labels
+              value: service, service.name, service.namespace, k8s.pod.uid, k8s.pod.ip, k8s.pod.name, k8s.deployment.name, k8s.namespace.name, cluster, job, k8s.container.name, k8s.node.name
+
+            # - action: insert
+            #   key: loki.format
+            #   value: json
+
+            - action: upsert
+              key: service
+              from_attribute: app.kubernetes.io/name
+
+        resourcedetection:
+          # Enriches telemetry data with resource information from the host
+          detectors: ["env", "system"]
+          override: false
+
+        transform:
+          metric_statements:
+            - context: datapoint
+              statements:
+              - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
+              - set(attributes["container"], resource.attributes["k8s.container.name"])
+              - set(attributes["pod"], resource.attributes["k8s.pod.name"])
 
       receivers:
 
@@ -371,18 +402,15 @@ spec:
           retry_on_failure:
             enabled: true
             max_elapsed_time: 0
+          resource_to_telemetry_conversion:
+            enabled: true
 
       service:
         pipelines:
           metrics:
             receivers: [ prometheus ]
-            processors: [ memory_limiter, batch ]
+            processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ prometheusremotewrite ]
-
-          # logs:
-          #   # receivers: [ otlp ]
-          #   processors: [ memory_limiter, batch ]
-          #   exporters: [ otlphttp/loki ]
 
     service:
       enabled: true
