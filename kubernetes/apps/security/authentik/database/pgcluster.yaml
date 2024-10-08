@@ -9,12 +9,12 @@ metadata:
     secret.reloader.stakater.com/reload: cloudnative-pg-secret
 
 spec:
-  
+
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-32
+  imageName: ghcr.io/cloudnative-pg/postgresql:14.13-31
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
-  
+
   resources:
     requests:
       memory: 1024Mi
@@ -22,11 +22,11 @@ spec:
     limits:
       memory: 2048Mi
       cpu: 2
-  
+
   storage:
     storageClass: ceph-block
     size: 10Gi
-  
+
   walStorage:
     storageClass: ceph-block
     size: 10Gi
@@ -35,12 +35,12 @@ spec:
     parameters:
       max_connections: "600"
       shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
-  
+
   monitoring:
     enablePodMonitor: true
   # configured according to below link to allow customizing of initdb via Flux
   # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
-  
+
   bootstrap:
     initdb:
       dataChecksums: true
@@ -49,7 +49,7 @@ spec:
       encoding: "UTF8"
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
-  
+
   backup:
     retentionPolicy: 30d
     volumeSnapshot:
