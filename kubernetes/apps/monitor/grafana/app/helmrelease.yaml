@@ -102,6 +102,14 @@ spec:
               path: /var/lib/grafana/dashboards/spring-boot
             orgId: 1
             type: file
+          - name: spring-cloud-dataflow
+            disableDeletion: false
+            editable: true
+            folder: "Spring Cloud Data Flow"
+            options:
+              path: /var/lib/grafana/dashboards/spring-cloud-dataflow
+            orgId: 1
+            type: file
           - name: spring-cloud-gateway
             disableDeletion: false
             editable: true
@@ -349,13 +357,39 @@ spec:
             - { name: VAR_REPLICATIONDESTNAME, value: .*-bootstrap }
 
       spring-boot:
-        # renovate: depName="Spring Boot 3.x Statistics"
         spring-boot-3:
+          # renovate: depName="Spring Boot 3.x Statistics"
           gnetId: 19004
           revision: 1
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
+
+      spring-cloud-dataflow:
+        scdf-applications:
+          # renovate: depName="SCDF | Applications"
+          url: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/refs/heads/main/src/grafana/prometheus/docker/grafana/dashboards/scdf-applications.json
+          datasource: prometheus
+
+        scdf-kafka-streams:
+          # renovate: depName="SCDF | Kafka Streams"
+          url: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/refs/heads/main/src/grafana/prometheus/docker/grafana/dashboards/scdf-kafka-streams.json
+          datasource: prometheus
+
+        scdf-servers:
+          # renovate: depName="SCDF | Servers"
+          url: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/refs/heads/main/src/grafana/prometheus/docker/grafana/dashboards/scdf-servers.json
+          datasource: prometheus
+
+        scdf-streams:
+          # renovate: depName="SCDF | Streams"
+          url: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/refs/heads/main/src/grafana/prometheus/docker/grafana/dashboards/scdf-streams.json
+          datasource: prometheus
+
+        # renovate: depName="SCDF | Tasks / Batch"
+        scdf-task-batch:
+          url: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/refs/heads/main/src/grafana/prometheus/docker/grafana/dashboards/scdf-task-batch.json
+          datasource: prometheus
 
       spring-cloud-gateway:
         # renovate: depName="Spring Cloud Gateway"
