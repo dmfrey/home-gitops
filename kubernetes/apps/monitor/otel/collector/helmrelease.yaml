@@ -246,7 +246,7 @@ spec:
           metrics:
             receivers: [ otlp, prometheus, spanmetrics ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
-            exporters: [ prometheusremotewrite ]
+            exporters: [ debug, prometheusremotewrite ]
 
           logs:
             receivers: [ otlp, filelog ]
@@ -406,14 +406,14 @@ spec:
             max_elapsed_time: 0
 
         # Data sources: metrics
-        prometheus:
-          endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
-          send_timestamps: true
-          # metric_expiration: 180m
-          enable_open_metrics: true
-          add_metric_suffixes: true
-          resource_to_telemetry_conversion:
-            enabled: true
+        # prometheus:
+        #   endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+        #   send_timestamps: true
+        #   # metric_expiration: 180m
+        #   enable_open_metrics: true
+        #   add_metric_suffixes: true
+        #   resource_to_telemetry_conversion:
+        #     enabled: true
 
         # Data sources: metrics
         prometheusremotewrite:
@@ -431,7 +431,7 @@ spec:
           metrics:
             receivers: [ otlp, prometheus ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
-            exporters: [ prometheus, prometheusremotewrite ]
+            exporters: [ prometheusremotewrite ]
 
     service:
       enabled: true
