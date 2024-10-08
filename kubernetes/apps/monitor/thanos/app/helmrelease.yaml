@@ -71,6 +71,7 @@ spec:
         enabled: true
         storageClass: "ceph-block"
         size: 24Gi
+      resourcesPreset: "medium"
 
     query:
       enabled: true
