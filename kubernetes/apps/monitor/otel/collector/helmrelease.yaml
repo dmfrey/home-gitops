@@ -237,6 +237,7 @@ spec:
           - health_check
           - file_storage/otc
           - zpages
+
         pipelines:
           traces:
             receivers: [ otlp, zipkin ]
@@ -246,7 +247,7 @@ spec:
           metrics:
             receivers: [ otlp, prometheus, spanmetrics ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
-            exporters: [ debug, prometheusremotewrite ]
+            exporters: [ prometheusremotewrite ]
 
           logs:
             receivers: [ otlp, filelog ]
