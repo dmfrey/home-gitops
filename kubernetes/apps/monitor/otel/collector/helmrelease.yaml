@@ -108,6 +108,14 @@ spec:
           detectors: ["env", "system"]
           override: false
 
+        transform:
+          metric_statements:
+            - context: datapoint
+              statements:
+              - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
+              - set(attributes["container"], resource.attributes["k8s.container.name"])
+              - set(attributes["pod"], resource.attributes["k8s.pod.name"])
+
       receivers:
 
         kubeletstats:
@@ -183,6 +191,8 @@ spec:
           retry_on_failure:
             enabled: true
             # max_elapsed_time: 0
+          resource_to_telemetry_conversion:
+            enabled: true
 
         # Data sources: traces
         # zipkin:
@@ -228,7 +238,7 @@ spec:
 
           metrics:
             receivers: [ prometheus, spanmetrics ]
-            processors: [ memory_limiter, resource, resourcedetection, batch ]
+            processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ prometheusremotewrite ]
 
           logs:
