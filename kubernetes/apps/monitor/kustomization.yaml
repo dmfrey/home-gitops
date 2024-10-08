@@ -9,8 +9,8 @@ resources:
   # Flux-Kustomizations
   - ./alert-manager/ks.yaml
   - ./blackbox-exporter/ks.yaml
-  # - ./gatus/ks.yaml
-  # - ./grafana/ks.yaml
+  - ./gatus/ks.yaml
+  - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./metrics-server/ks.yaml
   # - ./node-exporter/ks.yaml
