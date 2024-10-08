@@ -64,7 +64,7 @@ spec:
 
     receive:
       enabled: true
-      replicaCount: 2
+      replicaCount: 3
       networkPolicy: &networkPolicy
         enabled: false
       persistence:
