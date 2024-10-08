@@ -7,5 +7,5 @@ resources:
   - ./namespace.yaml
   - ./notification.yaml
   # Flux-Kustomizations
-  - ./spring-cloud-dataflow/ks.yaml
+  # - ./spring-cloud-dataflow/ks.yaml
 
