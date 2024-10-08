@@ -181,9 +181,14 @@ spec:
             # max_elapsed_time: 0
 
         # Data sources: metrics
-        # prometheus:
-        #   endpoint: localhost:8889
-        #   namespace: default
+        prometheus:
+          endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+          send_timestamps: true
+          # metric_expiration: 180m
+          enable_open_metrics: true
+          add_metric_suffixes: true
+          resource_to_telemetry_conversion:
+            enabled: true
 
         # Data sources: metrics
         prometheusremotewrite:
@@ -239,12 +244,12 @@ spec:
             exporters: [ otlphttp/tempo, spanmetrics ]
 
           metrics:
-            receivers: [ prometheus, spanmetrics ]
+            receivers: [ otlp, prometheus, spanmetrics ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ prometheusremotewrite ]
 
           logs:
-            receivers: [ filelog ]
+            receivers: [ otlp, filelog ]
             processors: [ memory_limiter, resource, resourcedetection, batch ]
             exporters: [ otlphttp/loki ]
 
@@ -327,10 +332,6 @@ spec:
               key: loki.resource.labels
               value: service, service.name, service.namespace, k8s.pod.uid, k8s.pod.ip, k8s.pod.name, k8s.deployment.name, k8s.namespace.name, cluster, job, k8s.container.name, k8s.node.name
 
-            # - action: insert
-            #   key: loki.format
-            #   value: json
-
             - action: upsert
               key: service
               from_attribute: app.kubernetes.io/name
@@ -405,6 +406,16 @@ spec:
             max_elapsed_time: 0
 
         # Data sources: metrics
+        prometheus:
+          endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+          send_timestamps: true
+          # metric_expiration: 180m
+          enable_open_metrics: true
+          add_metric_suffixes: true
+          resource_to_telemetry_conversion:
+            enabled: true
+
+        # Data sources: metrics
         prometheusremotewrite:
           endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
           tls:
@@ -418,9 +429,9 @@ spec:
       service:
         pipelines:
           metrics:
-            receivers: [ prometheus ]
+            receivers: [ otlp, prometheus ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
-            exporters: [ prometheusremotewrite ]
+            exporters: [ prometheus, prometheusremotewrite ]
 
     service:
       enabled: true
