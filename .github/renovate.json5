@@ -11,6 +11,9 @@
     ':skipStatusChecks',
     ':timezone(America/New_York)',
     "github>dmfrey/home-gitops//.github/renovate/allowedVersions.json5",
+    "github>dmfrey/home-gitops//.github/renovate/autoMerge.json5",
+    "github>onedr0p/home-ops//.github/renovate/commitMessage.json5",
+    "github>dmfrey/home-gitops//.github/renovate/customManagers.json5",
     "github>dmfrey/home-gitops//.github/renovate/semanticCommits.json5"
   ],
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
@@ -32,29 +35,11 @@
       '(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$',
     ],
   },
-  helmfile: {
-    fileMatch: [
-      '(^|/)helmfile\\.ya?ml(?:\\.j2)?$',
-    ],
-  },
   kubernetes: {
     fileMatch: [
       '(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$',
     ],
   },
-  kustomize: {
-    fileMatch: [
-      '(^|/)kustomization\\.ya?ml(?:\\.j2)?$',
-    ],
-  },
-  pip_requirements: {
-    fileMatch: [
-      '(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)(?:\\.j2)?$',
-    ],
-  },
-  commitMessageTopic: '{{depName}}',
-  commitMessageExtra: 'to {{newVersion}}',
-  commitMessageSuffix: '',
   packageRules: [
     {
       description: [
@@ -303,21 +288,6 @@
       addLabels: [
         'renovate/github-action',
       ],
-    },
-  ],
-  customManagers: [
-    {
-      customType: 'regex',
-      description: [
-        'Process custom dependencies',
-      ],
-      fileMatch: [
-        '(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$',
-      ],
-      matchStrings: [
-        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+: (&\\S+\\s)?(?<currentValue>\\S+)',
-      ],
-      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
     },
   ],
 }
