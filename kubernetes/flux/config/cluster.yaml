@@ -36,6 +36,8 @@ spec:
     - name: flux
   decryption:
     provider: sops
+    secretRef:
+      name: sops-age
   postBuild:
     substituteFrom:
       - kind: ConfigMap

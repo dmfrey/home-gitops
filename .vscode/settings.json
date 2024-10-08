@@ -24,7 +24,7 @@
       "*.secret.sops.env": "lock",
       "*.secret.sops.yaml": "lock"
     },
- "material-icon-theme.folders.associations": {
+    "material-icon-theme.folders.associations": {
         // top level
         ".archive": "archive",
         // .github
