@@ -256,7 +256,7 @@ spec:
 
         telemetry:
           logs:
-            level: "debug"
+            level: "info"
 
     service:
       enabled: true
