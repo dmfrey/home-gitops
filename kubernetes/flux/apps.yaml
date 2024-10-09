@@ -33,30 +33,30 @@ spec:
             provider: sops
             secretRef:
               name: sops-age
-          postBuild:
-            substituteFrom:
-              - kind: ConfigMap
-                name: cluster-settings
-              - kind: Secret
-                name: cluster-secrets
+          # postBuild:
+          #   substituteFrom:
+          #     - kind: ConfigMap
+          #       name: cluster-settings
+          #     - kind: Secret
+          #       name: cluster-secrets
       target:
         group: kustomize.toolkit.fluxcd.io
         version: v1
         kind: Kustomization
         labelSelector: substitution.flux.home.arpa/disabled notin (true)
-    # - patch: |-
-    #     - op: add
-    #       path: /spec/postBuild/substituteFrom/-
-    #       value:
-    #         kind: ConfigMap
-    #         name: cluster-settings
-    #     - op: add
-    #       path: /spec/postBuild/substituteFrom/-
-    #       value:
-    #         kind: Secret
-    #         name: cluster-secrets
-    #   target:
-    #     group: kustomize.toolkit.fluxcd.io
-    #     version: v1
-    #     kind: Kustomization
-    #     labelSelector: substitution.flux.home.arpa/disabled notin (true)
+    - patch: |-
+        - op: add
+          path: /spec/postBuild/substituteFrom/-
+          value:
+            kind: ConfigMap
+            name: cluster-settings
+        - op: add
+          path: /spec/postBuild/substituteFrom/-
+          value:
+            kind: Secret
+            name: cluster-secrets
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        version: v1
+        kind: Kustomization
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)
