@@ -7,5 +7,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./gateway/ks.yaml
-  # - ./time-service/ks.yaml
-  - ./monomart/ks.yaml
+  - ./time-service/ks.yaml
+  # - ./monomart/ks.yaml
