@@ -194,7 +194,7 @@ spec:
         prometheusremotewrite:
           endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
           external_labels:
-            thanos: "true"
+            receive: "true"
           tls:
             insecure: true
           retry_on_failure:
@@ -426,7 +426,7 @@ spec:
         prometheusremotewrite:
           endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
           external_labels:
-            thanos: "true"
+            receive: "true"
           tls:
             insecure: true
           retry_on_failure:
