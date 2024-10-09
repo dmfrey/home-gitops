@@ -1,0 +1,6 @@
+machine:
+  features:
+    hostDNS:
+      enabled: false
+      forwardKubeDNSToHost: false
+      resolveMemberNames: false
