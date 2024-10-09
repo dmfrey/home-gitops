@@ -1,6 +1,6 @@
 machine:
   features:
     hostDNS:
-      enabled: false
-      forwardKubeDNSToHost: false
-      resolveMemberNames: false
+      enabled: true
+      forwardKubeDNSToHost: true
+      resolveMemberNames: true
