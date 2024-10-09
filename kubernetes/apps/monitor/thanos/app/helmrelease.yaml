@@ -65,6 +65,7 @@ spec:
     receive:
       enabled: true
       replicaCount: 3
+      logLevel: debug
       networkPolicy: &networkPolicy
         enabled: false
       persistence:
