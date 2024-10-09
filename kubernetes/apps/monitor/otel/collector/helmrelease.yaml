@@ -65,10 +65,8 @@ spec:
     config:
 
       extensions:
-        file_storage/loki:
-          directory: /var/lib/otc/loki
-        file_storage/prw:
-          directory: /var/lib/otc/prw
+        file_storage/otc:
+          directory: /var/lib/otelcol
 
         health_check: {}
 
@@ -175,7 +173,7 @@ spec:
             enabled: true
             # max_elapsed_time: 0
           sending_queue:
-            storage: file_storage/loki
+            storage: file_storage/otc
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
           retry_on_failure:
@@ -196,7 +194,7 @@ spec:
         prometheusremotewrite:
           endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
           external_labels:
-            receive: "true"
+            thanos: "true"
           tls:
             insecure: true
           retry_on_failure:
@@ -204,8 +202,6 @@ spec:
             # max_elapsed_time: 0
           resource_to_telemetry_conversion:
             enabled: true
-          sending_queue:
-            storage: file_storage/prw
 
         # Data sources: traces
         # zipkin:
@@ -241,8 +237,7 @@ spec:
       service:
         extensions:
           - health_check
-          - file_storage/loki
-          - file_storage/prw
+          - file_storage/otc
           - zpages
 
         pipelines:
