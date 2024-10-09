@@ -42,6 +42,7 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: pg-home-assistant-app
 
         initContainers:
           # fix-permissions:
