@@ -254,6 +254,10 @@ spec:
             processors: [ memory_limiter, resource, resourcedetection, batch ]
             exporters: [ otlphttp/loki ]
 
+        telemetry:
+          logs:
+            level: "debug"
+
     service:
       enabled: true
       type: ClusterIP
