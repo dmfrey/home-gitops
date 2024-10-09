@@ -65,8 +65,10 @@ spec:
     config:
 
       extensions:
-        file_storage/otc:
-          directory: /var/lib/otelcol
+        file_storage/loki:
+          directory: /var/lib/otc/loki
+        file_storage/prw:
+          directory: /var/lib/otc/prw
 
         health_check: {}
 
@@ -173,7 +175,7 @@ spec:
             enabled: true
             # max_elapsed_time: 0
           sending_queue:
-            storage: file_storage/otc
+            storage: file_storage/loki
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
           retry_on_failure:
@@ -202,6 +204,8 @@ spec:
             # max_elapsed_time: 0
           resource_to_telemetry_conversion:
             enabled: true
+          sending_queue:
+            storage: file_storage/prw
 
         # Data sources: traces
         # zipkin:
@@ -237,7 +241,8 @@ spec:
       service:
         extensions:
           - health_check
-          - file_storage/otc
+          - file_storage/loki
+          - file_storage/prw
           - zpages
 
         pipelines:
