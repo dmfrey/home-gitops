@@ -246,10 +246,10 @@ spec:
             processors: [ memory_limiter, resource, resourcedetection, batch ]
             exporters: [ otlphttp/tempo, spanmetrics ]
 
-          # metrics:
-          #   receivers: [ otlp, spanmetrics ]
-          #   processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
-          #   exporters: [ prometheus ]
+          metrics:
+            receivers: [ otlp, spanmetrics ]
+            processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
+            exporters: [ prometheus ]
 
           logs:
             receivers: [ otlp, filelog ]
@@ -440,7 +440,7 @@ spec:
         pipelines:
 
           metrics:
-            receivers: [ otlp, k8sclusterreceiver ]
+            receivers: [ otlp ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ prometheus ]
 
