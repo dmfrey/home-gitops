@@ -31,6 +31,7 @@ spec:
 
     domain: "${SECRET_DOMAIN}"
     ttl: 1
+    replicaCount: 3
 
     service:
       type: LoadBalancer
