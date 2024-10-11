@@ -5,7 +5,7 @@ resource "authentik_source_plex" "plex" {
   plex_token          = var.AUTHENTIK_PLEX_TOKEN
   authentication_flow = data.authentik_flow.default-source-authentication.id
   enrollment_flow     = data.authentik_flow.default-enrollment-flow.id
-  allow_friends       = false
+  allow_friends       = true
   allowed_servers = [
     var.PLEX_SERVER_ID
   ]
