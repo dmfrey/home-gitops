@@ -5,20 +5,20 @@ metadata:
   name: lidarr-provisioner
   namespace: media
 spec:
-  
-  interval: 60m
+
+  interval: 120m
   path: "./"
-    
+
   approvePlan: auto
-  
+
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-lidarr
     namespace: flux-system
-  
+
   writeOutputsToSecret:
     name: lidarr-tfstate
-  
+
   varsFrom:
     - kind: Secret
       name: starr-apps-secret
