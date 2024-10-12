@@ -2,5 +2,5 @@ machine:
   features:
     hostDNS:
       enabled: true
-      forwardKubeDNSToHost: true
-      resolveMemberNames: true
+      forwardKubeDNSToHost: false
+      resolveMemberNames: false
