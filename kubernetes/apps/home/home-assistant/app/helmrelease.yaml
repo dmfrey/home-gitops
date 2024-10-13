@@ -334,8 +334,8 @@ spec:
                 readOnly: true
               - path: /config/.ssh/known_hosts
                 subPath: known-hosts
-              - path: /config/.gitconfig
-                subPath: dot-gitconfig
+              # - path: /config/.gitconfig
+              #   subPath: dot-gitconfig
               - path: /config/.ssh/config
                 subPath: ssh-config
             codeserver:
