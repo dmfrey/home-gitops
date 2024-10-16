@@ -91,7 +91,7 @@ spec:
           main:
             image:
               repository: rhasspy/wyoming-whisper
-              tag: 2.1.0
+              tag: 2.2.0@sha256:49d07d5d5ef10b27e228810426d94d3500555ba8ca619485dde4714d8ae85762
 
             args:
               - --model=small
