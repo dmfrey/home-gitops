@@ -45,11 +45,11 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
-        - name: SPRING_APPLICATION_JSON
-          valueFrom:
-            configMapKeyRef:
-              name: spring-cloud-dataflow-server-config
-              key: application.yaml
+        # - name: SPRING_APPLICATION_JSON
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: spring-cloud-dataflow-server-config
+        #       key: application.yaml
 
       extraVolumes:
         - name: scdf-server-m2
@@ -93,11 +93,11 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
-        - name: SPRING_APPLICATION_JSON
-          valueFrom:
-            configMapKeyRef:
-              name: spring-cloud-skipper-server-config
-              key: application.yaml
+        # - name: SPRING_APPLICATION_JSON
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: spring-cloud-skipper-server-config
+        #       key: application.yaml
 
       extraVolumes:
         - name: scdf-skipper-m2
