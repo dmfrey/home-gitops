@@ -5,4 +5,5 @@ kind: Kustomization
 namespace: dataflow
 resources:
   # - ./config.yaml
+  - ./pvc.yaml
   - ./helmrelease.yaml
