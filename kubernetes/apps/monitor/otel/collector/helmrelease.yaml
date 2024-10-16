@@ -270,7 +270,7 @@ spec:
       enabled: true
       type: ClusterIP
 
----
+# ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 # apiVersion: helm.toolkit.fluxcd.io/v2
 # kind: HelmRelease
