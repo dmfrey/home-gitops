@@ -54,12 +54,12 @@ spec:
           cpu: "1"
           memory: 2048M
 
-      containerSecurityContext:
-        readOnlyRootFilesystem: false
-        allowPrivilegeEscalation: true
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
+      # containerSecurityContext:
+      #   readOnlyRootFilesystem: false
+      #   allowPrivilegeEscalation: true
+      #   runAsNonRoot: false
+      #   runAsUser: 0
+      #   runAsGroup: 0
 
       service:
         type: ClusterIP
