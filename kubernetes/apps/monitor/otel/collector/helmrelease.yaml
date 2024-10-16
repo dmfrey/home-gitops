@@ -171,9 +171,14 @@ spec:
           # encoding: json
           retry_on_failure:
             enabled: true
+            initial_interval: 30s
+            max_interval: 60s
             # max_elapsed_time: 0
-          # sending_queue:
+          sending_queue:
+            num_consumers: 100
+            queue_size: 500
           #   storage: file_storage/otc
+          timeout: 10s
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
           retry_on_failure:
