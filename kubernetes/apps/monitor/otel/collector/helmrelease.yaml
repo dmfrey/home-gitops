@@ -242,7 +242,7 @@ spec:
 
         pipelines:
           traces:
-            receivers: [ otlp, zipkin ]
+            receivers: [ otlp, spanmetrics, zipkin ]
             processors: [ memory_limiter, resource, resourcedetection, batch ]
             exporters: [ otlphttp/tempo, spanmetrics ]
 
