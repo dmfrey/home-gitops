@@ -36,6 +36,7 @@ spec:
   values:
 
     deployer:
+      imagePullPolicy: Always
       imagePullSecrets:
         - github-deploy-key
 
