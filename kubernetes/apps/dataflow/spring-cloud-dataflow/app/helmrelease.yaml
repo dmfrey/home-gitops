@@ -36,9 +36,8 @@ spec:
   values:
 
     deployer:
-      server:
-        kubernetes:
-          imagePullSecret: github-deploy-key
+      imagePullSecrets:
+        - github-deploy-key
 
     server:
 
