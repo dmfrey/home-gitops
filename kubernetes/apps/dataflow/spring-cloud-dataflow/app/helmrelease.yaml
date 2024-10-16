@@ -46,6 +46,12 @@ spec:
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
 
+      extraVolumeMounts:
+        - name: scdf-server-m2
+          existingClaim: scdf-server-m2
+          mountPath: /.m2
+          readOnly: false
+
       resources:
         requests:
           cpu: "0.5"
