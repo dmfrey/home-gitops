@@ -45,6 +45,11 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
+        - name: SPRING_APPLICATION_JSON
+          valueFrom:
+            configMapKeyRef:
+              name: spring-cloud-dataflow-server-config
+              key: application.yaml
 
       extraVolumes:
         - name: scdf-server-m2
@@ -64,13 +69,6 @@ spec:
           cpu: "1"
           memory: 2048M
 
-      # containerSecurityContext:
-      #   readOnlyRootFilesystem: false
-      #   allowPrivilegeEscalation: true
-      #   runAsNonRoot: false
-      #   runAsUser: 0
-      #   runAsGroup: 0
-
       service:
         type: ClusterIP
         port: 8080
@@ -88,14 +86,6 @@ spec:
         hostname: &host dataflow.${SECRET_DOMAIN}
         tls: true
 
-      # initContainers:
-      #   - name: check-db
-      #     image: busybox
-      #     command:
-      #       - sh
-      #       - -c
-      #       - until nslookup -q=A pg-dataflow-rw.dataflow.svc.cluster.local; do echo waiting for pg-dataflow-rw.dataflow.svc.cluster.local; sleep 2; done
-
     skipper:
 
       extraEnvVars:
@@ -103,14 +93,21 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
+        - name: SPRING_APPLICATION_JSON
+          valueFrom:
+            configMapKeyRef:
+              name: spring-cloud-skipper-server-config
+              key: application.yaml
 
-      # initContainers:
-      #   - name: check-db
-      #     image: busybox
-      #     command:
-      #       - sh
-      #       - -c
-      #       - until nslookup -q=A pg-skipper-rw.dataflow.svc.cluster.local; do echo waiting for pg-skipper-rw.dataflow.svc.cluster.local; sleep 2; done
+      extraVolumes:
+        - name: scdf-skipper-m2
+          persistentvolumeclaim:
+            claimName: scdf-skipper-m2
+
+      extraVolumeMounts:
+        - name: scdf-skipper-m2
+          mountPath: /.m2
+          readOnly: false
 
     metrics:
       enabled: true
