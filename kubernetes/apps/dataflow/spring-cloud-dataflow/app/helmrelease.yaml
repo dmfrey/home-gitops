@@ -35,18 +35,21 @@ spec:
 
   values:
 
+    deployer:
+      imagePullSecret: github-deploy-key
+
     server:
 
-      applicationProperties:
-        spring:
-          cloud:
-            dataflow:
-              task:
-                platform:
-                  kubernetes:
-                    accounts:
-                      default:
-                        imagePullSecret: github-deploy-key
+      # applicationProperties:
+      #   spring:
+      #     cloud:
+      #       dataflow:
+      #         task:
+      #           platform:
+      #             kubernetes:
+      #               accounts:
+      #                 default:
+      #                   imagePullSecret: github-deploy-key
 
       configuration:
         metricsDashboard: https://grafana.dmfrey.com:443
