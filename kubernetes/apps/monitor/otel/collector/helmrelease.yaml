@@ -172,8 +172,8 @@ spec:
           retry_on_failure:
             enabled: true
             # max_elapsed_time: 0
-          sending_queue:
-            storage: file_storage/otc
+          # sending_queue:
+          #   storage: file_storage/otc
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
           retry_on_failure:
