@@ -44,7 +44,8 @@ spec:
           name: tmp-volume
       volumes:
         - name: tmp-volume
-          emptyDir: 
+          emptyDir:
+            sizeLimit: 500Mi
 
     server:
 
