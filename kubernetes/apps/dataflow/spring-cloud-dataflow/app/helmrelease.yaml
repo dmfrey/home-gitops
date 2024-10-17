@@ -42,9 +42,9 @@ spec:
 
     server:
 
-      image:
-        repository: springcloud/spring-cloud-dataflow-server
-        tag: 2.11.5
+      # image:
+      #   repository: springcloud/spring-cloud-dataflow-server
+      #   tag: 2.11.5
 
       configuration:
         metricsDashboard: https://grafana.dmfrey.com:443
@@ -92,9 +92,9 @@ spec:
 
     skipper:
 
-      image:
-        repository: springcloud/spring-cloud-skipper-server
-        tag: 2.11.5
+      # image:
+      #   repository: springcloud/spring-cloud-skipper-server
+      #   tag: 2.11.5
 
       extraEnvVars:
         - name: DEBUG
