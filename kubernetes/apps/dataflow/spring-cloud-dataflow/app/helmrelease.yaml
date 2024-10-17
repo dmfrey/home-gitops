@@ -90,6 +90,9 @@ spec:
           mountPath: /.m2
           readOnly: false
 
+      livenessProbe:
+        initialDelaySeconds: 30
+
       resources:
         requests:
           cpu: "0.5"
@@ -141,6 +144,9 @@ spec:
         - name: scdf-skipper-m2
           mountPath: /.m2
           readOnly: false
+
+      livenessProbe:
+        initialDelaySeconds: 30
 
     metrics:
       enabled: true
