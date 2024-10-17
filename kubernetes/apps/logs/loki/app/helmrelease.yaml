@@ -172,7 +172,7 @@ spec:
     write:
       replicas: 3
       persistence:
-        size: 20Gi
+        size: 50Gi
         storageClass: ceph-block
 
     read:
