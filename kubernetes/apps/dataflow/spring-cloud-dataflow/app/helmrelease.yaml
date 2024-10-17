@@ -39,6 +39,12 @@ spec:
       imagePullPolicy: Always
       imagePullSecrets:
         - github-deploy-key
+      volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
 
     server:
 
