@@ -44,7 +44,7 @@ spec:
           name: tmp-volume
       volumes:
         - name: tmp-volume
-          emptyDir: {}
+          emptyDir: 
 
     server:
 
