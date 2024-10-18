@@ -39,16 +39,18 @@ spec:
       memory_limiter: {}
 
     exporters:
-      prometheusremotewrite:
-        endpoint: http://thanos-receive.monitor.svc.cluster.local:10902/api/v1/write
-        external_labels:
-          thanos: "true"
-        tls:
-          insecure: true
+      debug:
+
+      # prometheusremotewrite:
+      #   endpoint: http://thanos-receive.monitor.svc.cluster.local:10902/api/v1/write
+      #   external_labels:
+      #     thanos: "true"
+      #   tls:
+      #     insecure: true
 
     service:
       pipelines:
-        traces:
+        metrics:
           receivers: [ prometheus ]
-          processors: [ memory_limiter, batch ]
-          exporters: [ prometheusremotewrite ]
+          processors: [] # [ memory_limiter, batch ]
+          exporters: [ debug ]
