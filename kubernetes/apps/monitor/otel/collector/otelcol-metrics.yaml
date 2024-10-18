@@ -36,8 +36,8 @@ spec:
 
     processors:
       batch: {}
-      memory_limiter:
-        check_interval: 5s
+      # memory_limiter:
+      #   check_interval: 5s
 
 
     exporters:
