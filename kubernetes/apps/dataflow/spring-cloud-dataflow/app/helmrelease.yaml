@@ -62,8 +62,8 @@ spec:
           name: tmp-volume
       volumes:
         - name: tmp-volume
-          emptyDir:
-            sizeLimit: 500Mi
+          persistentVolumeClaim:
+            claimName: deployer-shared
 
     server:
 
