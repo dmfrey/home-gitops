@@ -154,17 +154,17 @@ spec:
 
         # Data sources: traces, metrics, logs
         # NOTE: Prior to v0.86.0 use `logging` instead of `debug`
-        # debug:
-        #   verbosity: detailed
+        debug:
+          verbosity: detailed
 
         # Data sources: traces, metrics, logs
-        otlp:
-          endpoint: tempo-distributor.trace.svc.cluster.local:4317
-          tls:
-            insecure: true
-          retry_on_failure:
-            enabled: true
-            # max_elapsed_time: 0
+        # otlp:
+        #   endpoint: tempo-distributor.trace.svc.cluster.local:4317
+        #   tls:
+        #     insecure: true
+        #   retry_on_failure:
+        #     enabled: true
+        #     # max_elapsed_time: 0
 
         # Data sources: traces, metrics
         otlphttp/loki:
@@ -250,17 +250,17 @@ spec:
           traces:
             receivers: [ otlp, zipkin ]
             processors: [ memory_limiter, batch ]   # resource, resourcedetection,
-            exporters: [ otlphttp/tempo, spanmetrics ]
+            exporters: [ debug, otlphttp/tempo, spanmetrics ]
 
           metrics:
             receivers: [ otlp, spanmetrics ]
             processors: [ memory_limiter, batch ] # resource, resourcedetection, transform,
-            exporters: [ prometheusremotewrite ]
+            exporters: [ debug, prometheusremotewrite ]
 
           logs:
             receivers: [ otlp, filelog ]
             processors: [ memory_limiter, resource, resourcedetection, batch ]
-            exporters: [ otlphttp/loki ]
+            exporters: [ debug, otlphttp/loki ]
 
         # telemetry:
         #   logs:
