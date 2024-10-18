@@ -121,20 +121,21 @@ spec:
           endpoint: "https://${env:K8S_NODE_IP}:10250"
           insecure_skip_verify: true
 
-        # prometheus:
-        #   config:
-        #     global:
-        #       scrape_interval: 15s # Adjust this interval as needed
-        #       scrape_protocols:
-        #         - PrometheusProto
-        #         - OpenMetricsText1.0.0
-        #         - OpenMetricsText0.0.1
-        #         - PrometheusText0.0.4
-        #     scrape_configs:
-        #       - job_name: 'otel-collector-dm'
-        #         scrape_interval: 5s
-        #         static_configs:
-        #           - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
+        prometheus:
+          config:
+            global:
+              scrape_interval: 15s # Adjust this interval as needed
+              # scrape_protocols:
+              #   - PrometheusProto
+              #   - OpenMetricsText1.0.0
+              #   - OpenMetricsText0.0.1
+              #   - PrometheusText0.0.4
+            scrape_configs:
+              - job_name: 'otel-collector-dm'
+                scrape_interval: 5s
+                static_configs:
+                  - targets: ['0.0.0.0:8888'] # Adjust the Prometheus address and port
+                  # - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
 
         # Data sources: traces, metrics, logs
         otlp:
@@ -253,7 +254,7 @@ spec:
             exporters: [ otlphttp/tempo, spanmetrics ]
 
           metrics:
-            receivers: [ otlp, spanmetrics ]
+            receivers: [ otlp, prometheus, spanmetrics ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ prometheusremotewrite ]
 
@@ -364,20 +365,20 @@ spec:
 
       receivers:
 
-        prometheus:
-          config:
-            global:
-              scrape_interval: 15s # Adjust this interval as needed
-              scrape_protocols:
-                - PrometheusProto
-                - OpenMetricsText1.0.0
-                - OpenMetricsText0.0.1
-                - PrometheusText0.0.4
-            scrape_configs:
-              - job_name: 'otel-collector-dp'
-                scrape_interval: 5s
-                static_configs:
-                  - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
+        # prometheus:
+        #   config:
+        #     global:
+        #       scrape_interval: 15s # Adjust this interval as needed
+        #       scrape_protocols:
+        #         - PrometheusProto
+        #         - OpenMetricsText1.0.0
+        #         - OpenMetricsText0.0.1
+        #         - PrometheusText0.0.4
+        #     scrape_configs:
+        #       - job_name: 'otel-collector-dp'
+        #         scrape_interval: 5s
+        #         static_configs:
+        #           - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
 
         # Data sources: traces, metrics, logs
         otlp:
@@ -445,7 +446,7 @@ spec:
 
         pipelines:
           metrics:
-            receivers: [ otlp, prometheus ]
+            receivers: [ otlp ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ prometheusremotewrite ]
 
