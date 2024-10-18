@@ -134,8 +134,7 @@ spec:
               - job_name: 'otel-collector-dm'
                 scrape_interval: 5s
                 static_configs:
-                  - targets: ['0.0.0.0:8888'] # Adjust the Prometheus address and port
-                  # - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
+                  - targets: ['kube-prometheus-stack-prometheus:9090'] # Adjust the Prometheus address and port
 
         # Data sources: traces, metrics, logs
         otlp:
