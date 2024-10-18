@@ -104,11 +104,11 @@ spec:
               - *host
             secretName: prometheus-tls-external
 
-      thanosService:
-        enabled: true
+      # thanosService:
+      #   enabled: true
 
-      thanosServiceMonitor:
-        enabled: true
+      # thanosServiceMonitor:
+      #   enabled: true
 
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
@@ -129,13 +129,13 @@ spec:
         # remoteWrite:
         #   - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
 
-        thanos:
-          image: quay.io/thanos/thanos:v0.36.1@sha256:e542959e1b36d5046083d1b64a7049c356b68a44a173c58b3ae7c0c9ada932d5
-          objectStorageConfig:
-            name: thanos-secret
-            key: objstore.yml
-          # renovate: datasource=docker depName=quay.io/thanos/thanos
-          version: "v0.36.1"
+        # thanos:
+        #   image: quay.io/thanos/thanos:v0.36.1@sha256:e542959e1b36d5046083d1b64a7049c356b68a44a173c58b3ae7c0c9ada932d5
+        #   objectStorageConfig:
+        #     name: thanos-secret
+        #     key: objstore.yml
+        #   # renovate: datasource=docker depName=quay.io/thanos/thanos
+        #   version: "v0.36.1"
 
         alertingEnpoints:
           - namespace: monitor
