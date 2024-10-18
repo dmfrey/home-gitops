@@ -29,7 +29,7 @@ metadata:
   name: deployer-shared
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
