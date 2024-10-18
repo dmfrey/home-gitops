@@ -262,9 +262,9 @@ spec:
             processors: [ memory_limiter, resource, resourcedetection, batch ]
             exporters: [ otlphttp/loki ]
 
-        telemetry:
-          logs:
-            level: "info"
+        # telemetry:
+        #   logs:
+        #     level: "info"
 
     service:
       enabled: true
