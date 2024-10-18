@@ -3,9 +3,14 @@ kind: OpenTelemetryCollector
 metadata:
   name: otelcol-metrics
 spec:
+
   mode: statefulset
+
   targetAllocator:
     enabled: true
+
+  serviceAccount: collector
+
   config: |
     presets:
       # enables the k8sattributesprocessor and adds it to the traces, metrics, and logs pipelines
