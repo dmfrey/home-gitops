@@ -154,8 +154,8 @@ spec:
 
         # Data sources: traces, metrics, logs
         # NOTE: Prior to v0.86.0 use `logging` instead of `debug`
-        debug:
-          verbosity: detailed
+        # debug:
+        #   verbosity: detailed
 
         # Data sources: traces, metrics, logs
         otlp:
@@ -394,8 +394,8 @@ spec:
 
         # Data sources: traces, metrics, logs
         # NOTE: Prior to v0.86.0 use `logging` instead of `debug`
-        debug:
-          verbosity: detailed
+        # debug:
+        #   verbosity: detailed
 
         # Data sources: traces, metrics, logs
         # otlp:
