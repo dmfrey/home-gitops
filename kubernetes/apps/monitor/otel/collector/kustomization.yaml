@@ -10,5 +10,5 @@ resources:
   # - ./otelcol-dm.yaml
   # - ./otelcol-dp.yaml
   # - ./otelcol-logs-dm.yaml
-  - ./otelcol-metrics.yaml
+  # - ./otelcol-metrics.yaml
   # - ./otelcol-traces-dm.yaml
