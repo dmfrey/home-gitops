@@ -253,7 +253,7 @@ spec:
             exporters: [ otlphttp/tempo ]
 
           metrics:
-            receivers: [ otlp, spanmetrics ]
+            receivers: [ otlp ]
             processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ prometheus ]
 
