@@ -141,14 +141,14 @@ spec:
           protocols:
             grpc:
               include_metadata: true
-              endpoint: localhost:4317
+              endpoint: 0.0.0.0:4317
             http:
               include_metadata: true
-              endpoint: localhost:4318
+              endpoint: 0.0.0.0:4318
 
         zipkin:
           include_metadata: true
-          endpoint: localhost:9411
+          endpoint: 0.0.0.0:9411
 
       exporters:
 
@@ -383,12 +383,12 @@ spec:
 #         otlp:
 #           protocols:
 #             grpc:
-#               endpoint: localhost:4317
+#               endpoint: 0.0.0.0:4317
 #             http:
-#               endpoint: localhost:4318
+#               endpoint: 0.0.0.0:4318
 
 #         zipkin:
-#           endpoint: localhost:9411
+#           endpoint: 0.0.0.0:9411
 
 #       exporters:
 
