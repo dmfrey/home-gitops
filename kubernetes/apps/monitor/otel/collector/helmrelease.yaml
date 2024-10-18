@@ -187,27 +187,27 @@ spec:
             # max_elapsed_time: 0
 
         # Data sources: metrics
-        prometheus:
-          endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
-          send_timestamps: true
-          # metric_expiration: 180m
-          enable_open_metrics: true
-          add_metric_suffixes: true
-          resource_to_telemetry_conversion:
-            enabled: true
-
-        # Data sources: metrics
-        # prometheusremotewrite:
-        #   endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
-        #   external_labels:
-        #     thanos: "true"
-        #   tls:
-        #     insecure: true
-        #   retry_on_failure:
-        #     enabled: true
-        #     # max_elapsed_time: 0
+        # prometheus:
+        #   endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+        #   send_timestamps: true
+        #   # metric_expiration: 180m
+        #   enable_open_metrics: true
+        #   add_metric_suffixes: true
         #   resource_to_telemetry_conversion:
         #     enabled: true
+
+        # Data sources: metrics
+        prometheusremotewrite:
+          endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+          external_labels:
+            thanos: "true"
+          tls:
+            insecure: true
+          retry_on_failure:
+            enabled: true
+            # max_elapsed_time: 0
+          resource_to_telemetry_conversion:
+            enabled: true
 
         # Data sources: traces
         # zipkin:
@@ -255,7 +255,7 @@ spec:
           metrics:
             receivers: [ otlp, spanmetrics ]
             processors: [ memory_limiter, batch ] # resource, resourcedetection, transform,
-            exporters: [ prometheus ]
+            exporters: [ prometheusremotewrite ]
 
           logs:
             receivers: [ otlp, filelog ]
@@ -419,27 +419,27 @@ spec:
         #     max_elapsed_time: 0
 
         # Data sources: metrics
-        prometheus:
-          endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
-          send_timestamps: true
-          # metric_expiration: 180m
-          enable_open_metrics: true
-          add_metric_suffixes: true
-          resource_to_telemetry_conversion:
-            enabled: true
-
-        # Data sources: metrics
-        # prometheusremotewrite:
-        #   endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
-        #   external_labels:
-        #     receive: "true"
-        #   tls:
-        #     insecure: true
-        #   retry_on_failure:
-        #     enabled: true
-        #     max_elapsed_time: 0
+        # prometheus:
+        #   endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+        #   send_timestamps: true
+        #   # metric_expiration: 180m
+        #   enable_open_metrics: true
+        #   add_metric_suffixes: true
         #   resource_to_telemetry_conversion:
         #     enabled: true
+
+        # Data sources: metrics
+        prometheusremotewrite:
+          endpoint: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+          external_labels:
+            receive: "true"
+          tls:
+            insecure: true
+          retry_on_failure:
+            enabled: true
+            max_elapsed_time: 0
+          resource_to_telemetry_conversion:
+            enabled: true
 
       service:
 
@@ -447,7 +447,7 @@ spec:
           metrics:
             receivers: [ otlp ]
             processors: [ memory_limiter, batch ]   # resource, resourcedetection, transform,
-            exporters: [ prometheus ]
+            exporters: [ prometheusremotewrite ]
 
           # logs:
             # receivers: [ otlp, k8sobjectsreceiver ]
