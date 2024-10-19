@@ -148,7 +148,7 @@ spec:
         configmap.reloader.stakater.com/reload: loki,loki-ceph-bucket,loki-gateway,loki-runtime
 
     gateway:
-      replicas: 3
+      replicas: 2
       enabled: true
       ingress:
         enabled: true
