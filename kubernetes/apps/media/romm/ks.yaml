@@ -50,7 +50,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
   dependsOn:
     - name: romm-services
     - name: cluster-apps-media-common
