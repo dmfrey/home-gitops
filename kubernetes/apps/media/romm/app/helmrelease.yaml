@@ -127,11 +127,16 @@ spec:
           - path: /romm
             readOnly: false
 
+      romm-config:
+        type: emptyDir
+        globalMounts:
+          - path: /romm/config
+
       configuration:
         type: configMap
         name: romm-config
         globalMounts:
-          - path: /romm/config.yaml
+          - path: /romm/config/config.yaml
             subPath: config.yaml
         defaultMode: 0664
 
@@ -143,10 +148,8 @@ spec:
 
       tmp:
         type: emptyDir
-        advancedMounts:
-          *app :
-            *app :
-              - path: /tmp
+        globalMounts:
+          - path: /tmp
 
     # serviceMonitor:
     #   metrics:
