@@ -48,8 +48,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      # VOLSYNC_CLAIM: romm-config
-      # VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CLAIM: romm-data
+      VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
   dependsOn:
     - name: romm-services
