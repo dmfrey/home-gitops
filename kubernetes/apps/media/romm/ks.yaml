@@ -46,10 +46,11 @@ spec:
   timeout: 1m30s
   retryInterval: 30s
   postBuild:
-    substituteFrom:
+    substitute:
       APP: *app
       # VOLSYNC_CLAIM: romm-config
       # VOLSYNC_CAPACITY: 1Gi
+    substituteFrom: []
   dependsOn:
     - name: romm-services
     - name: cluster-apps-media-common
