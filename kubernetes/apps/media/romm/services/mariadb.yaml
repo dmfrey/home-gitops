@@ -5,8 +5,8 @@ metadata:
 
 spec:
 
-  database: romm-db
-  username: romm-user
+  database: rommdb
+  username: romm_user
 
   passwordSecretKeyRef:
     name: romm-mariadb-secret
