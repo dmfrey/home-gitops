@@ -133,6 +133,7 @@ spec:
         globalMounts:
           - path: /romm/config/config.yaml
             subPath: config.yaml
+        defaultMode: 0664
 
       media:
         enabled: true
