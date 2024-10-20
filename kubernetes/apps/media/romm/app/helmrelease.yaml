@@ -131,7 +131,7 @@ spec:
         type: configMap
         name: romm-config
         globalMounts:
-          - path: /romm/config/config.yaml
+          - path: /romm/config.yaml
             subPath: config.yaml
         defaultMode: 0664
 
