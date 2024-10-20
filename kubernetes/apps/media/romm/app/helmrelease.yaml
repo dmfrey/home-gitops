@@ -132,6 +132,7 @@ spec:
         name: romm-config
         globalMounts:
           - path: /romm/config/config.yaml
+            subPath: config.yaml
 
       media:
         enabled: true
