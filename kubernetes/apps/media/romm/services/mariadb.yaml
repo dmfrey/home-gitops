@@ -4,6 +4,15 @@ metadata:
   name: romm-mariadb
 
 spec:
+
+  database: romm-db
+  username: romm-user
+
+  passwordSecretKeyRef:
+    name: romm-mariadb-secret
+    key: ROMM_PASSWORD
+    generate: false
+
   rootPasswordSecretKeyRef:
     name: romm-mariadb-secret
     key: ROOT_PASSWORD
