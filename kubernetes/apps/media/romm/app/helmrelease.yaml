@@ -57,7 +57,7 @@ spec:
               DB_PASSWD:
                 valueFrom:
                   secretKeyRef:
-                    name: romm-maria-secret
+                    name: romm-mariadb-secret
                     key: ROMM_PASSWORD
 
             envFrom:
