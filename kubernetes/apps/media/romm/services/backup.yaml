@@ -10,7 +10,7 @@ spec:
     name: romm-mariadb
 
   schedule:
-    cron: "@weekly"
+    cron: "*/1 * * * *"
     suspend: false
 
   maxRetention: 720h # 30 days
