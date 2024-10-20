@@ -5,7 +5,7 @@ metadata:
 
 spec:
 
-  database: rommdb
+  database: romm_db
   username: romm_user
 
   passwordSecretKeyRef:
