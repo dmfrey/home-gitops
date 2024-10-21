@@ -53,7 +53,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/kubernetes-schemas
-              tag: latest@sha256:68e25bd1da1544557c5dd5dc16621d3fb3aa3351353bc1210a1f4e1a210e5c80
+              tag: latest@sha256:96e6b5005e0cc1fdb76361c2045a1f6f67abe13461c7b2e3ec8ec17bd4fd0b43
 
             resources:
               requests:
