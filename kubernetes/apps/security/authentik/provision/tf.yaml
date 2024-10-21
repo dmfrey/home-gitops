@@ -80,9 +80,6 @@ spec:
         Radarr:
           url: https://radarr.${SECRET_DOMAIN}
           group: Media
-        Romm:
-          url: https://romm.${SECRET_DOMAIN}
-          group: Media
         Sonarr:
           url: https://sonarr.${SECRET_DOMAIN}
           group: Media
@@ -137,6 +134,13 @@ spec:
           client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
           redirect_uris:
             - https://grafana.${SECRET_DOMAIN}/login/generic_oauth
+        Romm:
+          url: https://romm.${SECRET_DOMAIN}
+          group: Media
+          client_id: romm
+          client_secret: ${ROMM_AUTH_SECRET_KEY}
+          redirect_uris:
+            - https://romm.${SECRET_DOMAIN}/login
         Spring-Dev:
           url: https://spring-dev-gateway.${SECRET_DOMAIN}
           group: Development
@@ -167,3 +171,4 @@ spec:
             - "${ORGANIZATION}-Admins"
             - "Grafana-Admins"
             - "Developers"
+            - "ADMIN"
