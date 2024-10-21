@@ -45,4 +45,4 @@ system:
   versions: {} # { naomi: 'arcade' }
 
 # The folder name where your roms are located
-filesystem: { roms_folder: '/romm/library/games/roms' } # { roms_folder: 'roms' } For example if your folder structure is /home/user/library/roms_folder
+filesystem: { roms_folder: 'games/roms' } # { roms_folder: 'roms' } For example if your folder structure is /home/user/library/roms_folder
