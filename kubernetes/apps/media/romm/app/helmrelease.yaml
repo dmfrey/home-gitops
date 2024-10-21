@@ -102,6 +102,7 @@ spec:
       external:
         className: external
         annotations:
+          nginx.org/websocket-services: romm
           cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
           auth.home.arpa/enabled: "true"
