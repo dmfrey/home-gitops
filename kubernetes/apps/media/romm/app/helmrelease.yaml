@@ -90,6 +90,8 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+        supplementalGroups:
+          - 1568
 
     service:
       *app :
