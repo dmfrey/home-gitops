@@ -122,9 +122,15 @@ spec:
 
     persistence:
       romm-data:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: ${DATA_CLAIM}
         globalMounts:
           - path: /romm
+            readOnly: false
+
+      romm-assets:
+        existingClaim: ${ASSETS_CLAIM}
+        globalMounts:
+          - path: /romm/assets
             readOnly: false
 
       romm-config:
@@ -139,6 +145,18 @@ spec:
           - path: /romm/config/config.yaml
             subPath: config.yaml
         defaultMode: 0664
+
+      romm-resources:
+        existingClaim: ${RESOURCES_CLAIM}
+        globalMounts:
+          - path: /romm/resources
+            readOnly: false
+
+      romm-redis-data:
+        existingClaim: ${REDIS_DATA_CLAIM}
+        globalMounts:
+          - path: /redis-data
+            readOnly: false
 
       media:
         enabled: true

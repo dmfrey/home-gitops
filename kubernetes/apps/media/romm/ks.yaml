@@ -1,4 +1,129 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app romm-redis-data-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: romm
+  interval: 10m
+  path: "./kubernetes/templates/volsync"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: romm-redis-data
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app romm-assets-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: romm
+  interval: 10m
+  path: "./kubernetes/templates/volsync"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: romm-assets
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app romm-resources-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: romm
+  interval: 10m
+  path: "./kubernetes/templates/volsync"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: romm-resources
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app romm-data-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: media
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: romm
+  interval: 10m
+  path: "./kubernetes/templates/volsync"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: romm-data
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom:
+      - kind: Secret
+        name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: cluster-apps-volsync
+    - name: cluster-apps-rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -26,6 +151,7 @@ spec:
     provider: sops
   dependsOn: []
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -48,8 +174,10 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: romm-data
-      VOLSYNC_CAPACITY: 1Gi
+      ASSETS_CLAIM: romm-assets
+      DATA_CLAIM: romm-data
+      RESOURCES_CLAIM: romm-resources
+      REDIS_DATA_CLAIM: romm-redis-data
     substituteFrom:
       - kind: Secret
         name: flux-volsync-secret
