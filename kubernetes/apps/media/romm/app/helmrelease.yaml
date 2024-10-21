@@ -51,6 +51,12 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
+              ENABLE_SCHEDULED_RESCAN: "true"
+              SCHEDULED_RESCAN_CRON: "0 3 * * *"
+              ENABLE_SCHEDULED_UPDATE_SWITCH_TITLEDB: "false"
+              ENABLE_SCHEDULED_UPDATE_MAME_XML: "false"
+              ENABLE_RESCAN_ON_FILESYSTEM_CHANGE: "true"
+              RESCAN_ON_FILESYSTEM_CHANGE_DELAY: 5
               DB_HOST: romm-mariadb-internal.media.svc.cluster.local
               DB_NAME: romm_db
               DB_USER: romm_user
