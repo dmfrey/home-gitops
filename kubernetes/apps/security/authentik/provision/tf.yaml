@@ -154,6 +154,10 @@ spec:
           name: "${ORGANIZATION} Admins"
           superuser: true
           parent: "authentik-Admins"
+        ${ORGANIZATION}-Users:
+          name: "${ORGANIZATION} Users"
+          superuser: false
+          parent: "authentik-Admins"
         Grafana-Admins:
           name: "Grafana Admins"
           superuser: false
@@ -162,10 +166,10 @@ spec:
           name: "Developers"
           superuser: false
           parent: "${ORGANIZATION}-Admins"
-        romm-admin:
-          name: "ADMIN"
+        romm-users:
+          name: "ROMM Users"
           superuser: true
-          parent: "${ORGANIZATION}-Admins"
+          parent: "${ORGANIZATION}-Users"
     - name: users
       value:
         dmfrey:
@@ -175,4 +179,21 @@ spec:
             - "${ORGANIZATION}-Admins"
             - "Grafana-Admins"
             - "Developers"
-            - "ADMIN"
+            - "romm-users"
+        sdfrey:
+          name: "${STEPH_FULL_NAME}"
+          email: "${STEPH_EMAIL}"
+          groups:
+            - "${ORGANIZATION}-Users"
+        cgfrey:
+          name: "${CAMDYN_FULL_NAME}"
+          email: "${CAMDYN_EMAIL}"
+          groups:
+            - "${ORGANIZATION}-Users"
+            - "romm-users"
+        mkfrey:
+          name: "${MOLLY_FULL_NAME}"
+          email: "${MOLLY_EMAIL}"
+          groups:
+            - "${ORGANIZATION}-Users"
+            - "romm-users"
