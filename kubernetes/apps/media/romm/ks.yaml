@@ -149,7 +149,11 @@ spec:
     substituteFrom: []
   decryption:
     provider: sops
-  dependsOn: []
+  dependsOn:
+    - name: romm-redis-data-pvc
+    - name: romm-assets-pvc
+    - name: romm-resources-pvc
+    - name: romm-data-pvc
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
