@@ -162,6 +162,10 @@ spec:
           name: "Developers"
           superuser: false
           parent: "${ORGANIZATION}-Admins"
+        romm-admin:
+          name: "ADMIN"
+          superuser: true
+          parent: "${ORGANIZATION}-Admins"
     - name: users
       value:
         dmfrey:
