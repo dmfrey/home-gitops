@@ -161,9 +161,9 @@ spec:
           - path: /redis-data
             readOnly: false
 
-      media:
+      games:
         enabled: true
-        existingClaim: nfs-media
+        existingClaim: nfs-games
         globalMounts:
           - path: /romm/library
 

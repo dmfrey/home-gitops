@@ -187,7 +187,6 @@ spec:
         name: flux-volsync-secret
   dependsOn:
     - name: romm-services
-    - name: cluster-apps-media-common
-    - name: cluster-apps-media-common-mounts
+    - name: cluster-apps-nfs-subdir
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
