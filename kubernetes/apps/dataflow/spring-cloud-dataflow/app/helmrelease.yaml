@@ -95,15 +95,15 @@ spec:
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
           value: "7001"
 
-      extraVolumes:
-        - name: scdf-server-m2
-          persistentvolumeclaim:
-            claimName: scdf-server-m2
+      extraVolumes: []
+        # - name: scdf-server-m2
+        #   persistentvolumeclaim:
+        #     claimName: scdf-server-m2
 
-      extraVolumeMounts:
-        - name: scdf-server-m2
-          mountPath: /.m2
-          readOnly: false
+      extraVolumeMounts: []
+        # - name: scdf-server-m2
+        #   mountPath: /.m2
+        #   readOnly: false
 
       livenessProbe:
         initialDelaySeconds: 30
@@ -153,15 +153,15 @@ spec:
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
           value: "7001"
 
-      extraVolumes:
-        - name: scdf-skipper-m2
-          persistentvolumeclaim:
-            claimName: scdf-skipper-m2
+      extraVolumes: []
+        # - name: scdf-skipper-m2
+        #   persistentvolumeclaim:
+        #     claimName: scdf-skipper-m2
 
-      extraVolumeMounts:
-        - name: scdf-skipper-m2
-          mountPath: /.m2
-          readOnly: false
+      extraVolumeMounts: []
+        # - name: scdf-skipper-m2
+        #   mountPath: /.m2
+        #   readOnly: false
 
       livenessProbe:
         initialDelaySeconds: 30
