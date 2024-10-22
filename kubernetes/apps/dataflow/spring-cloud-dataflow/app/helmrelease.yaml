@@ -84,7 +84,7 @@ spec:
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
           value: "true"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
-          value: "spring-cloud-dataflow- prometheus-proxy.dataflow.svc.cluster.local"
+          value: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
           value: "7001"
 
@@ -142,7 +142,7 @@ spec:
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
           value: "true"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
-          value: "spring-cloud-dataflow- prometheus-proxy.dataflow.svc.cluster.local"
+          value: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
           value: "7001"
 
