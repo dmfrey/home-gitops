@@ -391,6 +391,10 @@ spec:
           url: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/refs/heads/main/src/grafana/prometheus/docker/grafana/dashboards/scdf-task-batch.json
           datasource: prometheus
 
+        scdf-prometheus-proxy:
+          url: https://raw.githubusercontent.com/dmfrey/prometheus-rsocket-proxy/refs/heads/main/scripts/grafana-dashboard.json
+          datasource: prometheus
+          
       spring-cloud-gateway:
         # renovate: depName="Spring Cloud Gateway"
         spring-cloud-gateway:
