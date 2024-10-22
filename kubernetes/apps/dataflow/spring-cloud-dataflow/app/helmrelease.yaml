@@ -80,9 +80,9 @@ spec:
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
-          value: true
+          value: "true"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
-          value: true
+          value: "true"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
           value: spring-cloud-dataflow- prometheus-proxy.dataflow.svc.cluster.local
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
@@ -138,9 +138,9 @@ spec:
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
-          value: true
+          value: "true"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
-          value: true
+          value: "true"
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
           value: spring-cloud-dataflow- prometheus-proxy.dataflow.svc.cluster.local
         - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
