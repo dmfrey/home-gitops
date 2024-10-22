@@ -152,8 +152,8 @@ spec:
       enabled: true
 
       image:
-        repository: micrometermetrics/prometheus-rsocket-proxy:2.0.0-SNAPSHOT
-        digest: sha256:5db977b574c5e65489665d6099212704431898c589dfc8a1b91755fad419b4e3
+        repository: micrometermetrics/prometheus-rsocket-proxy:1.5.3
+        digest: sha256:c0ca1ffebca21d7e81ccf11d874bebe365012b46db8d0531a4bd1ef07930f709
       resources:
         requests:
           cpu: "0.5"
