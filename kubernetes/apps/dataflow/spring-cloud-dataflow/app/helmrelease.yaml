@@ -74,7 +74,7 @@ spec:
       configuration:
         metricsDashboard: https://grafana.dmfrey.com:443
 
-      extraEnvVars: &extraEnvVars
+      extraEnvVars:
         - name: DEBUG
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
@@ -132,7 +132,19 @@ spec:
       #   repository: springcloud/spring-cloud-skipper-server
       #   tag: 2.11.5
 
-      extraEnvVars: *extraEnvVars
+      extraEnvVars:
+        - name: DEBUG
+          value: "true"
+        - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
+          value: debug
+        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
+          value: true
+        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
+          value: true
+        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
+          value: spring-cloud-dataflow- prometheus-proxy.dataflow.svc.cluster.local
+        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
+          value: 7001
 
       extraVolumes:
         - name: scdf-skipper-m2
