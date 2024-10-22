@@ -58,18 +58,12 @@ spec:
       imagePullSecrets:
         - github-deploy-key
       environmentVariables:
-        - name: DEBUG
-          value: "true"
-        - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
-          value: debug
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
-          value: "true"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
-          value: "true"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
-          value: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
-          value: "7001"
+        - DEBUG: "true"
+        - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC: debug
+        - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED: "true"
+        - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED: "true"
+        - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
+        - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT: "7001"
       volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
