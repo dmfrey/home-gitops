@@ -41,9 +41,11 @@ metadata:
   name: cluster-apps-dataflow
   namespace: flux-system
 spec:
-  interval: 15m
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/app"
   prune: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   sourceRef:
     kind: GitRepository
     name: home-gitops
