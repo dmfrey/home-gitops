@@ -67,6 +67,7 @@ spec:
         # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT=7001"
         - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_ENABLED=true"
         - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_BASE_URL=http://prometheus-pushgateway.monitor.svc.cluster.local:9091"
+        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_PUSH_RATE=5s"
         # - "SPRING_CLOUD_DATAFLOW_METRICS_PROPERTY_REPLICATION=false"
       volumeMounts:
         - mountPath: /tmp
@@ -199,6 +200,15 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_XERIAL_SNAPPY
           value: debug
+
+      volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            
 
     mariadb:
       enabled: false
