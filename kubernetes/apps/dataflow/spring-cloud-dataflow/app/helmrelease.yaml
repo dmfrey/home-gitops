@@ -59,7 +59,7 @@ spec:
         - github-deploy-key
       environmentVariables:
         - "DEBUG=true"
-        - "LOGGING_LEVEL_IO_MICROMETER=debug"
+        - "LOGGING_LEVEL_IO_MICROMETER_PROMETHEUS=debug"
         - "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC=debug"
         - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true"
         - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED=false"
