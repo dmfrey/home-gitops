@@ -7,7 +7,7 @@ metadata:
 spec:
 
   mode: daemonset
-  image: otel/opentelemetry-collector-contrib:0.111.0
+  image: otel/opentelemetry-collector-contrib:0.112.0@sha256:8721b57f22846bd32cf25a0b425a4fc24db87dc7717bd4c59c98cd9cf0b2149c
 
   volumeMounts:
     - name: varlogpods
