@@ -69,6 +69,7 @@ spec:
         # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_BASE_URL=http://prometheus-pushgateway.monitor.svc.cluster.local:9091"
         # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_PUSH_RATE=5s"
         # - "SPRING_CLOUD_DATAFLOW_METRICS_PROPERTY_REPLICATION=false"
+        - "SPRING_BATCH_JDBC_INITIALIZE_SCHEMA=never"
       volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
