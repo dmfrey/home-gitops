@@ -75,7 +75,7 @@ spec:
       volumes:
         - name: tmp-volume
           persistentVolumeClaim:
-            claimName: deployer-shared
+            claimName: deployer-shared-fs
 
     server:
 
