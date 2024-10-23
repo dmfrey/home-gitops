@@ -188,6 +188,12 @@ spec:
       serviceMonitor:
         enabled: true
 
+      extraEnvVars:
+        - name: DEBUG
+          value: "true"
+        - name: LOGGING_LEVEL_ORG_XERIAL_SNAPPY
+          value: debug
+
     mariadb:
       enabled: false
 
