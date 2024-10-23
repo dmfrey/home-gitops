@@ -61,13 +61,13 @@ spec:
         - "DEBUG=true"
         - "LOGGING_LEVEL_IO_MICROMETER_PROMETHEUS=debug"
         - "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC=debug"
-        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true"
-        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED=false"
+        # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true"
+        # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED=false"
         # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST=spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
         # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT=7001"
-        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_ENABLED=true"
-        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_BASE_URL=http://prometheus-pushgateway.monitor.svc.cluster.local:9091"
-        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_PUSH_RATE=5s"
+        # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_ENABLED=true"
+        # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_BASE_URL=http://prometheus-pushgateway.monitor.svc.cluster.local:9091"
+        # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_PUSH_RATE=5s"
         # - "SPRING_CLOUD_DATAFLOW_METRICS_PROPERTY_REPLICATION=false"
       volumeMounts:
         - mountPath: /tmp
@@ -91,16 +91,16 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
-          value: "true"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
-          value: "true"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
-          value: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
-          value: "7001"
-        - name: SPRING_CLOUD_DATAFLOW_METRICS_PROPERTY_REPLICATION
-          value: "false"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
+        #   value: "true"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
+        #   value: "true"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
+        #   value: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
+        #   value: "7001"
+        # - name: SPRING_CLOUD_DATAFLOW_METRICS_PROPERTY_REPLICATION
+        #   value: "false"
 
       extraVolumes: []
         # - name: scdf-server-m2
@@ -151,16 +151,16 @@ spec:
           value: "true"
         - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC
           value: debug
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
-          value: "true"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
-          value: "true"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
-          value: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
-        - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
-          value: "7001"
-        - name: SPRING_CLOUD_DATAFLOW_METRICS_PROPERTY_REPLICATION
-          value: "false"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED
+        #   value: "true"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED
+        #   value: "true"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST
+        #   value: "spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
+        # - name: MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT
+        #   value: "7001"
+        # - name: SPRING_CLOUD_DATAFLOW_METRICS_PROPERTY_REPLICATION
+        #   value: "false"
 
       extraVolumes: []
         # - name: scdf-skipper-m2
