@@ -10,7 +10,7 @@ resources:
   - https://github.com/rancher/system-upgrade-controller/releases/download/v0.13.4/crd.yaml
 images:
   - name: rancher/system-upgrade-controller
-    newTag: v0.14.1
+    newTag: v0.14.2@sha256:3cdbfdd90f814702cefb832fc4bdb09ea93865a4d06c6bafd019d1dc6a9f34c9
 # patchesStrategicMerge:
 #   - |
 #     $patch: delete
