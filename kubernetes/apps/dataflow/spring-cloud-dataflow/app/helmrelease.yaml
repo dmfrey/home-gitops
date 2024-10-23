@@ -59,11 +59,14 @@ spec:
         - github-deploy-key
       environmentVariables:
         - "DEBUG=true"
+        - "LOGGING_LEVEL_IO_MICROMETER=debug"
         - "LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC=debug"
         - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true"
         - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_ENABLED=false"
         # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_HOST=spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local"
         # - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_RSOCKET_PORT=7001"
+        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_ENABLED=true"
+        - "MANAGEMENT_PROMETHEUS_METRICS_EXPORT_PUSHGATEWAY_BASE_URL=http://prometheus-pushgateway.monitor.svc.cluster.local:9091"
       volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
