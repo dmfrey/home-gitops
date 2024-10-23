@@ -201,14 +201,9 @@ spec:
         - name: LOGGING_LEVEL_ORG_XERIAL_SNAPPY
           value: debug
 
-      volumeMounts:
+      extraVolumeMounts:
         - mountPath: /tmp
-          name: tmp-volume
-
-      volumes:
-        - name: tmp-volume
-          emptyDir:
-            
+          name: empty-dir
 
     mariadb:
       enabled: false
