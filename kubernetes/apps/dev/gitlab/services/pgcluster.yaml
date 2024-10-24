@@ -11,7 +11,7 @@ metadata:
 spec:
 
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:14.13-42
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-44
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
 
