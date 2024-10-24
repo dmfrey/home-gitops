@@ -28,18 +28,18 @@ spec:
     - "dial.*tcp.*timeout"
     - "waiting.*socket"
   suspend: false
----
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
-kind: Alert
-metadata:
-  name: dev
-  namespace: flux-system
-spec:
-  providerRef:
-    name: flux-system
-  eventSeverity: info
-  eventSources:
-    - kind: Kustomization
-      name: dev
-      namespace: flux-system
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
+# apiVersion: notification.toolkit.fluxcd.io/v1beta3
+# kind: Alert
+# metadata:
+#   name: dev
+#   namespace: flux-system
+# spec:
+#   providerRef:
+#     name: flux-system
+#   eventSeverity: info
+#   eventSources:
+#     - kind: Kustomization
+#       name: dev
+#       namespace: flux-system
