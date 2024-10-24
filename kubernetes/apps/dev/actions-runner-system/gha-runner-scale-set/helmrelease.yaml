@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: arc-home-gitops
+  name: &app gha-runner-scale-set-home-gitops
   namespace: dev
 spec:
 
@@ -49,12 +49,13 @@ spec:
 
   values:
 
-    runnerScaleSetName: arc-runner-set-home-gitops
+    nameOverride: *app
+    runnerScaleSetName: *app
 
     githubConfigUrl: https://github.com/dmfrey/home-gitops
 
     minRunners: 1
-    maxRunners: 3
+    maxRunners: 6
 
     containerMode:
       type: dind
@@ -67,7 +68,7 @@ spec:
             command: ["/home/runner/run.sh"]
 
     controllerServiceAccount:
-      name: actions-runner-controller-gha-rs-controller
+      name: gha-runner-scale-set-controller
       namespace: dev
 
 ---
@@ -75,7 +76,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: arc-hass-config
+  name: &app gha-runner-scale-set-hass-config
   namespace: dev
 spec:
 
@@ -121,7 +122,8 @@ spec:
 
   values:
 
-    runnerScaleSetName: arc-runner-set-hass-config
+    nameOverride: *app
+    runnerScaleSetName: *app
 
     githubConfigUrl: https://github.com/dmfrey/hass-config
 
@@ -139,5 +141,5 @@ spec:
             command: ["/home/runner/run.sh"]
 
     controllerServiceAccount:
-      name: actions-runner-controller-gha-rs-controller
+      name: gha-runner-scale-set-controller
       namespace: dev

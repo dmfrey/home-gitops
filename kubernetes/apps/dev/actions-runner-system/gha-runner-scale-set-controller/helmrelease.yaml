@@ -11,7 +11,7 @@ spec:
 
   chart:
     spec:
-      chart: gha-runner-scale-set-controller
+      chart: &app gha-runner-scale-set-controller
       version: 0.9.3
       sourceRef:
         kind: HelmRepository
@@ -35,3 +35,6 @@ spec:
   uninstall:
     keepHistory: false
 
+  values:
+
+    fullnameOverride: *app
