@@ -11,15 +11,15 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/dev/actions-runner-system/gha-runner-scale-set-controller
   prune: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
   postBuild:
     substituteFrom: []
-  interval: 15m
-  retryInterval: 1m
-  timeout: 5m
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -31,16 +31,16 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cluster-apps-actions-runner-controller
   path: ./kubernetes/apps/dev/actions-runner-system/gha-runner-scale-set
   prune: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
   postBuild:
     substituteFrom: []
-  interval: 15m
-  retryInterval: 1m
-  timeout: 5m
+  dependsOn:
+    - name: gha-runner-scale-set-controller
