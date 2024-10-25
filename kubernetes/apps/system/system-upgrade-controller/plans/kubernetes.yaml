@@ -25,7 +25,7 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
   prepare:
-    image: ghcr.io/siderolabs/talosctl@sha256:7eb4fa4c62ed1f54a9299c4b61270895c767538834f63c145c0cf38089fc51d0
+    image: ghcr.io/siderolabs/talosctl@sha256:cb89a0cfe539e386c46a8bb64a6d145d2ac4532372f4e49f446f7526c868acad
     envs:
       - name: NODE_IP
         valueFrom:
@@ -35,7 +35,7 @@ spec:
       - '--nodes=$(NODE_IP)'
       - 'health'
   upgrade:
-    image: ghcr.io/siderolabs/talosctl@sha256:7eb4fa4c62ed1f54a9299c4b61270895c767538834f63c145c0cf38089fc51d0
+    image: ghcr.io/siderolabs/talosctl@sha256:cb89a0cfe539e386c46a8bb64a6d145d2ac4532372f4e49f446f7526c868acad
     envs:
       - name: NODE_IP
         valueFrom:
