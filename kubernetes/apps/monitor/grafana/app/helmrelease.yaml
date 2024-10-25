@@ -327,6 +327,15 @@ spec:
             - name: "DS_PROMETHEUS"
               value: prometheus
 
+      security:
+
+        # Ref: https://grafana.com/grafana/dashboards/11001-cert-manager
+        # renovate: depName="cert-manager"
+        keyverno:
+          gnetId: 11001
+          revision: 1
+          datasource: prometheus
+
       storage:
 
         # Ref: https://grafana.com/grafana/dashboards/2842/
@@ -394,7 +403,7 @@ spec:
         scdf-prometheus-proxy:
           url: https://raw.githubusercontent.com/dmfrey/prometheus-rsocket-proxy/refs/heads/main/scripts/grafana-dashboard.json
           datasource: prometheus
-          
+
       spring-cloud-gateway:
         # renovate: depName="Spring Cloud Gateway"
         spring-cloud-gateway:
