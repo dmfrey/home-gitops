@@ -34,7 +34,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cloudnative-pg
-    - name: emqx-cluster
+    - name: mosquitto
     - name: multus-config
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync

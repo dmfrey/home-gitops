@@ -29,7 +29,7 @@ spec:
         name: flux-volsync-secret
   dependsOn:
     - name: home-assistant
-    - name: emqx-cluster
+    - name: mosquitto
     - name: multus-config
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
