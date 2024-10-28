@@ -10,6 +10,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./matter-server/ks.yaml
   - ./matterbridge/ks.yaml
+  - ./mosquitto/ks.yaml
   - ./openthread/ks.yaml
   - ./wyoming-services/ks.yaml
   - ./zigbee2mqtt/ks.yaml
