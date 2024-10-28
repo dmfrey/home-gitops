@@ -62,7 +62,7 @@ spec:
           user-import:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: 2.0.18@sha256:d84c9bd554489b5fa564df57d2d12c2e734185b2b2bfd8d62f9f91cb2cc0cdba
+              tag: 2.0.18@sha256:d12c8f80dfc65b768bb9acecc7ef182b976f71fb681640b66358e5e0cf94e9e9
 
             command:
               - "/bin/sh"
