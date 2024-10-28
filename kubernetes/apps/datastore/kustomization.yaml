@@ -10,6 +10,6 @@ resources:
   - ./dragonfly/ks.yaml
   - ./mariadb/ks.yaml
   - ./rabbitmq-cluster-operator/ks.yaml
-  - ./emqx/ks.yaml
+  # - ./emqx/ks.yaml
 
 
