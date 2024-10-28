@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app mosquitto
-  namespace: home
 
 spec:
 
@@ -13,7 +12,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.3.1
+      version: 3.5.1
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -35,18 +34,25 @@ spec:
   uninstall:
     keepHistory: false
 
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage
+    - name: volsync
+      namespace: storage
+
   values:
 
     controllers:
 
-      mosquitto:
+      *app :
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+
+          *app :
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.20@sha256:090d745b6435d10a31acb82eee999ec36a2d7f416cc4f578c0a298c42af2ea14
@@ -72,8 +78,8 @@ spec:
               - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
 
     service:
-      app:
-        controller: mosquitto
+      *app :
+        controller: *app
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: mqtt.${SECRET_DOMAIN}
