@@ -13,9 +13,6 @@ metadata:
     pod-policies.kyverno.io/autogen-controllers: none
 spec:
 
-  generate:
-    generateExisting: true
-
   rules:
     - name: remove-containers-cpu-limits
       match:
@@ -28,6 +25,9 @@ spec:
             patchesJson6902: |-
               - path: /spec/containers/{{elementIndex}}/resources/limits/cpu
                 op: remove
+      generate:
+        generateExisting: true
+
     - name: delete-initcontainers-cpu-limits
       match:
         any:
@@ -44,3 +44,5 @@ spec:
             patchesJson6902: |-
               - path: /spec/initContainers/{{elementIndex}}/resources/limits/cpu
                 op: remove
+      generate:
+        generateExisting: true
