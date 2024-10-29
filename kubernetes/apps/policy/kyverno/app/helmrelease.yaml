@@ -39,6 +39,7 @@ spec:
                 - ""
               resources:
                 - pods
+                - secrets
               verbs:
                 - create
                 - update
