@@ -62,6 +62,8 @@ spec:
               - get
               - list
               - watch
+              - create
+              - update
       resources:
         requests:
           cpu: 100m
