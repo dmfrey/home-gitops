@@ -5,9 +5,10 @@ metadata:
   name: cluster-apps-kyverno
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: policy
   path: "./kubernetes/apps/policy/kyverno/app"
   prune: true
+  interval: 15m
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -25,6 +26,7 @@ metadata:
   name: cluster-apps-cluster-policies
   namespace: flux-system
 spec:
+  targetNamespace: policy
   path: ./kubernetes/apps/policy/kyverno/policies
   prune: true
   sourceRef:
