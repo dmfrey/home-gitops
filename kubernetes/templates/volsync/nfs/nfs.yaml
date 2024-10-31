@@ -5,23 +5,25 @@ kind: ReplicationSource
 metadata:
   name: "${APP}"
 spec:
-  sourcePVC: "${APP}"
+  sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
-    schedule: "0 * * * *"
+    schedule: "${VOLSYNC_SCHEDULE:-'0 * * * *'}"
   restic:
     copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
-    pruneIntervalDays: 14
     repository: "flux-volsync-secret"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-10Gi}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-ceph-block}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-ceph-block}"
     accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
+    moverPodLabels:
+      vpn.home.arpa/enabled: "false"
     moverSecurityContext:
-      runAsUser: ${VOLSYNC_PUID:-1568}
-      runAsGroup: ${VOLSYNC_PGID:-1568}
-      fsGroup: ${VOLSYNC_PGID:-1568}
+      runAsUser: ${APP_UID:-1568}
+      runAsGroup: ${APP_GID:-1568}
+      fsGroup: ${APP_GID:-1568}
+    pruneIntervalDays: 14
     retain:
       hourly: 24
       daily: 7
@@ -30,24 +32,27 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "${APP}-dst"
+  name: "${APP}-bootstrap"
 spec:
   trigger:
     manual: restore-once
   restic:
-    repository: "flux-volsync-secret"
     copyMethod: Snapshot
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
+    repository: "flux-volsync-secret"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-ceph-block}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-10Gi}"
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
-    accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
-    capacity: "${VOLSYNC_CAPACITY:-5Gi}"
+    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"
+    moverPodLabels:
+      vpn.home.arpa/enabled: "false"
     moverSecurityContext:
-      runAsUser: ${VOLSYNC_PUID:-1568}
-      runAsGroup: ${VOLSYNC_PGID:-1568}
-      fsGroup: ${VOLSYNC_PGID:-1568}
+      runAsUser: ${APP_UID:-1568}
+      runAsGroup: ${APP_GID:-1568}
+      fsGroup: ${APP_GID:-1568}
+    accessModes:
+      - "${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"
+    capacity: "${VOLSYNC_CAPACITY:-1Gi}"
     # enableFileDeletion: true
     # cleanupCachePVC: true
     # cleanupTempPVC: true
