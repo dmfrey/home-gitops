@@ -146,7 +146,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: [] []
+    substituteFrom: []
   decryption:
     provider: sops
   dependsOn:
