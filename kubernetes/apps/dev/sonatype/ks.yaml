@@ -27,9 +27,9 @@ spec:
       VOLSYNC_CLAIM: nexus-data
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: cloudnative-pg
     - name: cluster-apps-rook-ceph-cluster

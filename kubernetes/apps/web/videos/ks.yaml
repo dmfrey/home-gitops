@@ -26,9 +26,9 @@ spec:
       VOLSYNC_CLAIM: site-data
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync

@@ -25,9 +25,9 @@ spec:
       APP_GID: "1568"
       VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-plex
     - name: cluster-apps-rook-ceph-cluster

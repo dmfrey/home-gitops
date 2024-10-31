@@ -24,9 +24,9 @@ spec:
       APP_GID: "0"
       VOLSYNC_CLAIM: esphome-config-1
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: home-assistant
     - name: mosquitto

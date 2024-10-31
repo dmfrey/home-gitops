@@ -23,9 +23,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: lidarr-config
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:

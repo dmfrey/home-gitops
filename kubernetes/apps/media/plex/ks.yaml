@@ -26,9 +26,9 @@ spec:
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:

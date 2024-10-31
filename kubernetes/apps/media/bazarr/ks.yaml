@@ -23,9 +23,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: bazarr-config
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:

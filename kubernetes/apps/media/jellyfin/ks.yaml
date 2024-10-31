@@ -26,9 +26,9 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CAPACITY: 20Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:

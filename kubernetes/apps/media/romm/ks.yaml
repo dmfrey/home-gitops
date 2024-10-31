@@ -21,9 +21,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-redis-data
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -52,9 +52,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-assets
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -83,9 +83,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-resources
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -114,9 +114,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -146,7 +146,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
+    # substituteFrom: []
   decryption:
     provider: sops
   dependsOn:
@@ -182,9 +182,9 @@ spec:
       DATA_CLAIM: romm-data
       RESOURCES_CLAIM: romm-resources
       REDIS_DATA_CLAIM: romm-redis-data
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: romm-services
     - name: cluster-apps-nfs-subdir

@@ -26,9 +26,9 @@ spec:
       GATUS_SUBDOMAIN: rdt
       VOLSYNC_CLAIM: rdt-client-config
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: download-common-mount
     - name: cluster-apps-rook-ceph-cluster

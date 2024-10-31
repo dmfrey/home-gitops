@@ -25,9 +25,9 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: wyoming-piper-data
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -60,9 +60,9 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: wyoming-whisper-data
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:

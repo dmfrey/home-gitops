@@ -26,9 +26,9 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: mosquitto
     - name: node-feature-discovery-rules

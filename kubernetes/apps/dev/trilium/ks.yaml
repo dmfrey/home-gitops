@@ -21,9 +21,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: trilium-home-node
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -52,9 +52,9 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: trilium-data
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -87,9 +87,9 @@ spec:
       APP: *app
       HOME_NODE_CLAIM: trilium-home-node
       DATA_CLAIM: trilium-data
-    substituteFrom:
-      - kind: Secret
-        name: flux-volsync-secret
+    # substituteFrom:
+    #   - kind: Secret
+    #     name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync
