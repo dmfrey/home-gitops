@@ -48,8 +48,8 @@ spec:
                 volumes:
                   - name: repository
                     nfs:
-                      server: expanse.internal
-                      path: /eros/Volsync
+                      server: ${QNAP_ADDR}
+                      path: /volsync
 
     - name: mutate-volsync-dst-movers
       match:
