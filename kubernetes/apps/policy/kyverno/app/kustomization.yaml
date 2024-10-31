@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: policy
 resources:
   - ./helmrelease.yaml
-  # - ./rbac.yaml
+  - ./rbac.yaml
