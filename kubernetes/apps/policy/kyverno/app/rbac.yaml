@@ -17,9 +17,7 @@ kind: ClusterRole
 metadata:
   name: kyverno-volsync-secrets
   labels:
-    rbac.kyverno.io/aggregate-to-background-controller: “true”
-# When you create the "monitoring-endpoints" ClusterRole,
-# the rules below will be added to the "monitoring" ClusterRole.
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
 rules:
 - apiGroups:
     - "*"
