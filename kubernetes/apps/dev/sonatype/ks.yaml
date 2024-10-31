@@ -27,7 +27,7 @@ spec:
       VOLSYNC_CLAIM: nexus-data
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   dependsOn:

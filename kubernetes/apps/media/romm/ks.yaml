@@ -21,7 +21,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-redis-data
       VOLSYNC_CAPACITY: 5Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:
@@ -52,7 +52,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-assets
       VOLSYNC_CAPACITY: 5Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:
@@ -83,7 +83,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-resources
       VOLSYNC_CAPACITY: 5Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:
@@ -114,7 +114,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 1Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:
@@ -146,7 +146,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    # substituteFrom: []
+    substituteFrom: [] []
   decryption:
     provider: sops
   dependsOn:
@@ -182,7 +182,7 @@ spec:
       DATA_CLAIM: romm-data
       RESOURCES_CLAIM: romm-resources
       REDIS_DATA_CLAIM: romm-redis-data
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   dependsOn:

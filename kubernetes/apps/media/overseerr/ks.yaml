@@ -24,7 +24,7 @@ spec:
       GATUS_SUBDOMAIN: request
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 1Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   dependsOn:

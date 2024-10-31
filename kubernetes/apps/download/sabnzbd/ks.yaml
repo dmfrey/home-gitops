@@ -81,7 +81,7 @@ spec:
       APP_GID: "1568"
       VOLSYNC_CLAIM: sabnzbd-config
       VOLSYNC_CAPACITY: 1Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   dependsOn:

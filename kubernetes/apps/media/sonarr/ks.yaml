@@ -23,7 +23,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: sonarr-config
       VOLSYNC_CAPACITY: 1Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:

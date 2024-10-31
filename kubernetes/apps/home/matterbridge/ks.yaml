@@ -21,7 +21,7 @@ spec:
       APP: dot-matterbridge-data
       VOLSYNC_CLAIM: dot-matterbridge-data
       VOLSYNC_CAPACITY: 1Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:
@@ -52,7 +52,7 @@ spec:
       APP: matterbridge-data
       VOLSYNC_CLAIM: matterbridge-data
       VOLSYNC_CAPACITY: 1Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:
@@ -88,7 +88,7 @@ spec:
       APP_GID: "0"
       DOT_MATTERBRIDGE_CLAIM: dot-matterbridge-data
       MATTERBRIDGE_CLAIM: matterbridge-data
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:

@@ -25,7 +25,7 @@ spec:
       APP_GID: "0"
       VOLSYNC_CLAIM: tdarr-config
       VOLSYNC_CAPACITY: 4Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:

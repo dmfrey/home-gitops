@@ -23,7 +23,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: readarr-config
       VOLSYNC_CAPACITY: 5Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:

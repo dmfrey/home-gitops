@@ -27,7 +27,7 @@ spec:
       GATUS_PATH: /web/index.html
       VOLSYNC_CLAIM: matter-server-data
       VOLSYNC_CAPACITY: 5Gi
-    # substituteFrom:
+    substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
   decryption:
