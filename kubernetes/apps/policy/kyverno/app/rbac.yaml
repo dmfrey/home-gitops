@@ -20,9 +20,12 @@ metadata:
     rbac.kyverno.io/aggregate-to-background-controller: "true"
 rules:
 - apiGroups:
-    - "*"
+    - ""
   resources:
     - "secrets"
   verbs:
     - "get"
+    - "list"
+    - "watch"
     - "create"
+    - "update"
