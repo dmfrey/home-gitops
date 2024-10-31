@@ -15,17 +15,14 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kyverno-volsync-secrets
+  name: kyverno:create-secrets
   labels:
     rbac.kyverno.io/aggregate-to-background-controller: "true"
 rules:
 - apiGroups:
     - ""
   resources:
-    - "secrets"
+    - secrets
   verbs:
-    - "get"
-    - "list"
-    - "watch"
-    - "create"
-    - "update"
+    - get
+    - create
