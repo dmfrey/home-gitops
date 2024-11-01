@@ -6,4 +6,4 @@ namespace: storage
 resources:
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
-  - ./rbac.yaml
+  # - ./rbac.yaml

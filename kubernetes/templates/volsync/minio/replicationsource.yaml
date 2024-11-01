@@ -9,7 +9,7 @@ spec:
     schedule: "${VOLSYNC_SCHEDULE:-'0 * * * *'}"
   restic:
     copyMethod: Snapshot
-    repository: flux-volsync-secret
+    repository: "${APP}-volsync-minio"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-ceph-block}"
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1G}"
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
