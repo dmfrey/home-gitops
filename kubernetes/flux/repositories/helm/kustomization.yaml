@@ -13,6 +13,7 @@ resources:
   - cloudnative-pg.yaml
   - emberstack.yaml
   - emqx.yaml
+  - external-secrets.yaml
   - grafana.yaml
   - hajimari.yaml
   - hashicorp.yaml
