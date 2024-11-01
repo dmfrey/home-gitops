@@ -34,6 +34,7 @@ spec:
             annotations:
               backup.home.arpa/enabled: "true"
       generate:
+        generateExisting: true
         apiVersion: v1
         kind: Secret
         name: "{{ name }}-restic-config"
