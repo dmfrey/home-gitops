@@ -6,7 +6,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./authentik/ks.yaml
+  # - ./authentik/ks.yaml
   - ./cert-manager/ks.yaml
-  - ./external-secrets/ks.yaml
+  # - ./external-secrets/ks.yaml
   # - ./vaultwarden/ks.yaml
