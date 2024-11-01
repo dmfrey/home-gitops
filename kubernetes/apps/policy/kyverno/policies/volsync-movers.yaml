@@ -44,14 +44,6 @@ spec:
                 containers:
                   - name: restic
 
-                    env:
-                      - name: RESTIC_REPOSITORY
-                        value: "/repository/${VOLSYNC_CLAIM:-${APP}}"
-
-                    envFrom:
-                      - secretRef:
-                          name: flux-volsync-secret
-
                     volumeMounts:
                       - name: repository
                         mountPath: /repository
