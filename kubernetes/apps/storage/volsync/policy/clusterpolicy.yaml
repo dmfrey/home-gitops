@@ -35,6 +35,7 @@ spec:
               backup.home.arpa/enabled: "true"
       generate:
         generateExisting: true
+        synchronize: true
         apiVersion: v1
         kind: Secret
         name: "{{ name }}-restic-config"
