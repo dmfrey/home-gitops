@@ -24,5 +24,8 @@ rules:
   resources:
     - secrets
   verbs:
+    - list
     - get
     - create
+    - update
+    - patch
