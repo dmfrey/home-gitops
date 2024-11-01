@@ -8,4 +8,5 @@ resources:
   # Flux-Kustomizations
   - ./authentik/ks.yaml
   - ./cert-manager/ks.yaml
+  - ./external-secrets/ks.yaml
   # - ./vaultwarden/ks.yaml
