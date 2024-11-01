@@ -6,7 +6,7 @@ metadata:
   namespace: security
 spec:
   approvePlan: auto
-  interval: 120m
+  interval: 5m    # 120m
   path: "./"
   sourceRef:
     kind: OCIRepository
@@ -27,7 +27,7 @@ spec:
         - PLEX_SERVER_ID
   vars:
     - name: authentik_host
-      value: https://auth.${SECRET_DOMAIN}
+      value: http://authentik-server.security.svc.cluster.local
     - name: authentik_host_browser
       value: https://auth.${SECRET_DOMAIN}
     - name: external_domain
