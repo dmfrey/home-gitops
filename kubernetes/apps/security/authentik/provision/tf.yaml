@@ -27,9 +27,9 @@ spec:
         - PLEX_SERVER_ID
   vars:
     - name: authentik_host
-      value: http://authentik-server.security.svc.cluster.local
-    - name: authentik_host_browser
       value: https://auth.${SECRET_DOMAIN}
+    # - name: authentik_host_browser
+    #   value: https://auth.${SECRET_DOMAIN}
     - name: external_domain
       value: ${SECRET_DOMAIN}
     - name: proxy_applications
