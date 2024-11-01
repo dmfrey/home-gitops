@@ -28,6 +28,8 @@ spec:
   vars:
     - name: authentik_host
       value: https://auth.${SECRET_DOMAIN}
+    - name: authentik_host_browser
+      value: https://auth.${SECRET_DOMAIN}
     - name: external_domain
       value: ${SECRET_DOMAIN}
     - name: proxy_applications
