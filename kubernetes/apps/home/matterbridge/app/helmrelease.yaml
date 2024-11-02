@@ -144,5 +144,6 @@ spec:
 
       tmp:
         type: emptyDir
+        medium: Memory
         globalMounts:
           - path: /tmp

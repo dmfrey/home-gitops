@@ -217,6 +217,7 @@ spec:
 
       tmp:
         type: emptyDir
+        medium: Memory
 
       backups:
         type: custom

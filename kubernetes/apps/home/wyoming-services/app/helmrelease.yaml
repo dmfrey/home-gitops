@@ -242,6 +242,7 @@ spec:
 
       piper-tmp:
         type: emptyDir
+        medium: Memory
         advancedMounts:
           piper:
             main:
@@ -249,6 +250,7 @@ spec:
 
       whisper-tmp:
         type: emptyDir
+        medium: Memory
         advancedMounts:
           whisper:
             main:
@@ -256,6 +258,7 @@ spec:
 
       openwakeword-tmp:
         type: emptyDir
+        medium: Memory
         advancedMounts:
           openwakeword:
             main:

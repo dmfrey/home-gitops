@@ -180,6 +180,7 @@ spec:
 
       tmp:
         type: emptyDir
+        medium: Memory
         advancedMounts:
           *app :
             *app :
