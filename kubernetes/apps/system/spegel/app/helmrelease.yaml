@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -36,6 +36,11 @@ spec:
 
     grafanaDashboard:
       enabled: true
+      labels:
+        grafana.io/dashboard: "true"
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+        grafana.io/folder: Device
 
     serviceMonitor:
       enabled: true
