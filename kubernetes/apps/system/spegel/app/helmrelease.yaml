@@ -35,12 +35,7 @@ spec:
   values:
 
     grafanaDashboard:
-      enabled: true
-      labels:
-        grafana.io/dashboard: "true"
-      annotations:
-        kustomize.toolkit.fluxcd.io/substitute: disabled
-        grafana.io/folder: Device
+      enabled: false
 
     serviceMonitor:
       enabled: true

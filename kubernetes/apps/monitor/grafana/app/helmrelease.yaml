@@ -178,6 +178,13 @@ spec:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: prometheus
 
+        spegel:
+          gnetId: 18089
+          revision: 1
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
+
       flux:
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
