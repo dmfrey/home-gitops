@@ -23,8 +23,9 @@ bin
 .venv*
 
 # Private
-.private
-.bin
+/.private/
+/.bin/
+/.task/
 
 # Terraform
 ## Local .terraform directories
@@ -42,9 +43,11 @@ bin
 
 # Other files
 kubeconfig
+talosconfig
 
 # Talos clusterconfigs
 infrastructure/talos/**/clusterconfig
+archive/kubernetes/talos
 
 # Other
 .env
@@ -57,6 +60,12 @@ Untitled-1.sh
 
 bak/*
 
-age.key
+*.key
+.decrypted~*
 
 .bak
+
+Brewfile.lock.json
+
+Thumbs.db
+.DS_Store

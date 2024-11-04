@@ -1,36 +1,53 @@
 ---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: "3"
-
-vars:
-  KUBECONFORM_SCRIPT: "{{.SCRIPTS_DIR}}/kubeconform.sh"
+version: '3'
 
 tasks:
 
-  resources:
-    desc: Gather common resources in your cluster, useful when asking for support
-    cmds:
-      - for: { var: resource }
-        cmd: kubectl get {{.ITEM}} {{.CLI_ARGS | default "-A"}}
+  apply-ks:
+    desc: Apply a Flux KS for a cluster [CLUSTER=main] [PATH=required]
+    cmd: >
+      flux build --namespace flux-system ks {{base .PATH}}
+      --kustomization-file {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
+      --path {{.CLUSTER_DIR}}/apps/{{.PATH}}{{if contains .KUSTOMIZATION "not found"}} --dry-run{{end}}
+      | yq 'with(select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization"); .metadata.namespace = "flux-system")' -
+      | kubectl apply --server-side --field-manager=kustomize-controller --filename -
+    requires:
+      vars: [CLUSTER, PATH]
     vars:
-      resource: >-
-        nodes
-        gitrepositories
-        kustomizations
-        helmrepositories
-        helmreleases
-        certificates
-        certificaterequests
-        ingresses
-        pods
-
-  kubeconform:
-    desc: Validate Kubernetes manifests with kubeconform
-    cmd: bash {{.KUBECONFORM_SCRIPT}} {{.KUBERNETES_DIR}}
+      KUSTOMIZATION:
+        sh: flux --namespace flux-system get kustomizations {{base .PATH}} 2>&1
     preconditions:
-      - msg: Missing kubeconform script
-        sh: test -f {{.KUBECONFORM_SCRIPT}}
+      - test -f {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
 
-  .reset:
-    internal: true
-    cmd: rm -rf {{.KUBERNETES_DIR}}
+  browse-pvc:
+    desc: Mount a PVC to an temp container [CLUSTER=main] [NS=default] [CLAIM=required]
+    interactive: true
+    cmd: kubectl browse-pvc --namespace {{.NS}} --image docker.io/library/alpine:latest {{.CLAIM}}
+    vars:
+      NS: '{{.NS | default "default"}}'
+    requires:
+      vars: [CLUSTER, CLAIM]
+    preconditions:
+      - kubectl --namespace {{.NS}} get persistentvolumeclaims {{.CLAIM}}
+
+  sync-secrets:
+    desc: Sync all ExternalSecrets [CLUSTER=main]
+    cmds:
+      - for: { var: SECRETS, split: "\n" }
+        cmd: kubectl --namespace {{splitList "," .ITEM | first}} annotate externalsecret {{splitList "," .ITEM | last}} force-sync="{{now | unixEpoch}}" --overwrite
+    vars:
+      SECRETS:
+        sh: kubectl get externalsecret --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
+    requires:
+      vars: [CLUSTER]
+
+  cleanse-pods:
+    desc: Cleanse pods with a Failed/Pending/Succeeded phase [CLUSTER=main]
+    cmds:
+      - for:
+          matrix:
+            PHASE: [Failed, Pending, Succeeded]
+        cmd: kubectl delete pods --all-namespaces --field-selector status.phase={{.ITEM.PHASE}} --ignore-not-found=true
+    requires:
+      vars: [CLUSTER]
