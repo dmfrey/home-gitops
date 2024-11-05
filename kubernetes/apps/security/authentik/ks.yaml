@@ -3,10 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-authentik-database
+  name: &app authentik-database
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: security
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/security/authentik/database"
   prune: false
   sourceRef:
@@ -17,7 +20,13 @@ spec:
       kind: Cluster
       name: pg-authentik
       namespace: security
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
   decryption:
     provider: sops
@@ -29,22 +38,29 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-authentik
+  name: &app authentik
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: security
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/security/authentik/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
-    substituteFrom: []
+    substitute:
+      APP: *app
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-authentik-database
+    - name: authentik-database
     - name: kyverno
     - name: smtp-relay
     - name: grafana
@@ -53,23 +69,33 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-authentik-provision
+  name: &app authentik-provision
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: security
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/security/authentik/provision"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom:
       - kind: Secret
         name: grafana-secret
       - kind: Secret
         name: spring-dev-gateway-authentik-secret
+  decryption:
+    provider: sops
   dependsOn:
-    - name: cluster-apps-authentik
+    - name: authentik
     - name: cluster-apps-plex
 

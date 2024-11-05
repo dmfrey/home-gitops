@@ -58,4 +58,4 @@ spec:
     provider: sops
   dependsOn:
     - name: gatus-services
-    - name: cluster-apps-authentik
+    - name: authentik

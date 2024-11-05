@@ -3,7 +3,6 @@ apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
   name: authentik-provisioner
-  namespace: security
 spec:
   approvePlan: auto
   interval: 120m
