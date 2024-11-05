@@ -31,6 +31,6 @@ spec:
     - name: rook-ceph-cluster
     - name: volsync
     - name: plex
-    - name: cluster-apps-tautulli
+    - name: tautulli
     - name: radarr
     - name: sonarr
