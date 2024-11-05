@@ -1,15 +1,15 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: [
-    'config:best-practices',
-    'docker:enableMajor',
-    'replacements:k8s-registry-move',
-    ':automergeBranch',
-    ':disableRateLimiting',
-    ':dependencyDashboard',
-    ':semanticCommits',
-    ':skipStatusChecks',
-    ':timezone(America/New_York)',
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "docker:enableMajor",
+    "replacements:k8s-registry-move",
+    ":automergeBranch",
+    ":disableRateLimiting",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":skipStatusChecks",
+    ":timezone(America/New_York)",
     "github>dmfrey/home-gitops//.github/renovate/allowedVersions.json5",
     "github>dmfrey/home-gitops//.github/renovate/autoMerge.json5",
     "github>dmfrey/home-gitops//.github/renovate/commitMessage.json5",
@@ -20,28 +20,32 @@
     "github>dmfrey/home-gitops//.github/renovate/packageRules.json5",
     "github>dmfrey/home-gitops//.github/renovate/semanticCommits.json5"
   ],
-  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
-  suppressNotifications: [
-    'prEditedNotification',
-    'prIgnoreNotification',
+  "dependencyDashboardTitle": "Renovate Dashboard 🤖",
+  "suppressNotifications": [
+    "prEditedNotification",
+    "prIgnoreNotification",
   ],
-  ignorePaths: [
-    '**/*.sops.*',
-    'archive/**',
+  "onboarding": false,
+  "requireConfig": "ignored",
+  "ignorePaths": [
+    "**/*.sops.*",
+    "archive/**",
+    "**/resources/**"
   ],
-  flux: {
-    fileMatch: [
-      '(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$',
-    ],
+  "flux": {
+    "fileMatch": [
+      "(^|/)kubernetes/.+\\.ya?ml$"
+    ]
   },
-  'helm-values': {
-    fileMatch: [
-      '(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$',
-    ],
+  "helm-values": {
+    "fileMatch": [
+      "(^|/)kubernetes/.+\\.ya?ml$"
+    ]
   },
-  kubernetes: {
-    fileMatch: [
-      '(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$',
-    ],
+  "kubernetes": {
+    "fileMatch": [
+      "(^|/)\\.taskfiles/.+\\.ya?ml$",
+      "(^|/)kubernetes/.+\\.ya?ml$"
+    ]
   }
 }
