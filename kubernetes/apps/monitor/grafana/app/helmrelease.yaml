@@ -271,6 +271,22 @@ spec:
             - name: DS_PROMETHEUS
               value: prometheus
 
+        nginx-ingress-controller:
+          # renovate: depName="NGINX Ingress Controller"
+          gnetId: 21336
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: prometheus
+
+        nginx-request-handling-performance:
+          # renovate: depName="Request Handling Performance"
+          gnetId: 12680
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: prometheus
+
         # Ref: https://grafana.com/grafana/dashboards/11315
         clients:
           gnetId: 11315
