@@ -96,7 +96,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: *app
                   port: *port
         tls:
           - hosts:
