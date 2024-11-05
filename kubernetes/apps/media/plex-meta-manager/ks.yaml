@@ -33,4 +33,4 @@ spec:
     - name: plex
     - name: cluster-apps-tautulli
     - name: radarr
-    - name: cluster-apps-sonarr
+    - name: sonarr

@@ -3,7 +3,7 @@ apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
   name: sonarr-provisioner
-  namespace: media
+
 spec:
 
   interval: 120m
