@@ -86,6 +86,6 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-amd-device-plugin
+    - name: amd-device-plugin
     - name: ollama-backend-pvc
     - name: ollama-ui-pvc
