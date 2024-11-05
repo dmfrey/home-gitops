@@ -26,4 +26,4 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-external-dns-external
+    - name: external-dns-external

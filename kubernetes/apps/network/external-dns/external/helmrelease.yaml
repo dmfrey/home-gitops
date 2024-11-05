@@ -4,9 +4,11 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &name external-dns-external
-  namespace: network
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes-sigs.github.io/external-dns/
@@ -16,7 +18,6 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-external-dns
         namespace: flux-system
-      interval: 15m
 
   values:
 

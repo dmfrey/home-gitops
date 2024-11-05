@@ -3,17 +3,25 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-external-dns-crds
+  name: &app external-dns-crds
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/network/external-dns/crds"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
   decryption:
     provider: sops
@@ -23,42 +31,58 @@ spec:
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
 # kind: Kustomization
 # metadata:
-#   name: cluster-apps-external-dns-internal
+#   name: &app external-dns-internal
 #   namespace: flux-system
 # spec:
-#   interval: 15m
+#   targetNamespace: network
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
 #   path: "./kubernetes/apps/network/external-dns/internal"
 #   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
 #   wait: true
+#   interval: 5m
+#   timeout: 1m30s
+#   retryInterval: 30s
 #   postBuild:
+#     substitute:
+#       APP: *app
 #     substituteFrom: []
 #   decryption:
 #     provider: sops
 #   dependsOn:
 #     - name: kube-prometheus-stack-crds
-#     - name: cluster-apps-external-dns-crds
+#     - name: external-dns-crds
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-external-dns-external
+  name: &app external-dns-external
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/network/external-dns/external"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
   decryption:
     provider: sops
   dependsOn:
     - name: kube-prometheus-stack-crds
-    - name: cluster-apps-external-dns-crds
+    - name: external-dns-crds
