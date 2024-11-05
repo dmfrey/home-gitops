@@ -23,7 +23,7 @@
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": [
     "prEditedNotification",
-    "prIgnoreNotification",
+    "prIgnoreNotification"
   ],
   "onboarding": false,
   "requireConfig": "ignored",
