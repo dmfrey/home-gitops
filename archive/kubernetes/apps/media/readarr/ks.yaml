@@ -54,5 +54,5 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-tf-controller
+    - name: tf-controller
     - name: readarr

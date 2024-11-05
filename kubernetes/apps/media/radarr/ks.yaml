@@ -52,4 +52,4 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-radarr
-    - name: cluster-apps-tf-controller
+    - name: tf-controller
