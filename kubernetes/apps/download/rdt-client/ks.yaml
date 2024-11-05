@@ -32,4 +32,4 @@ spec:
   dependsOn:
     - name: download-common-mount
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-pod-gateway
+    - name: pod-gateway

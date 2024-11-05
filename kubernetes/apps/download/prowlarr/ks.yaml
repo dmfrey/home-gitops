@@ -32,7 +32,7 @@ spec:
     - name: cluster-apps-media-common-mounts
     - name: reflector
     - name: kube-prometheus-stack-crds
-    - name: cluster-apps-pod-gateway
+    - name: pod-gateway
     - name: cluster-apps-volsync
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1

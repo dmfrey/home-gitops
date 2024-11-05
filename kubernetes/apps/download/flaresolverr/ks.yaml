@@ -23,4 +23,4 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-pod-gateway
+    - name: pod-gateway
