@@ -27,7 +27,7 @@
     "prIgnoreNotification"
   ],
   // "onboarding": false,
-  "requireConfig": "ignored",
+  // "requireConfig": "ignored",
   "ignorePaths": [
     "**/*.sops.*",
     "archive/**",
