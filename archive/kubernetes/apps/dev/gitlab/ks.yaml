@@ -28,7 +28,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
     - name: dragonfly-operator
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync
 ---
 # yaml-language-server: $schema=https://lds-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -60,5 +60,5 @@ spec:
   dependsOn:
     - name: gitlab-services
     - name: dragonfly-operator
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync

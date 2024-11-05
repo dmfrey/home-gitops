@@ -37,7 +37,7 @@ spec:
     - name: cloudnative-pg
     - name: mosquitto
     - name: multus-config
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync
 # ---
 # # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json

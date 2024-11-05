@@ -100,4 +100,4 @@ spec:
     # - name: kube-prometheus-stack-crds
     # - name: prometheus-rules
     # - name: cert-manager
-    # - name: cluster-apps-rook-ceph-cluster
+    # - name: rook-ceph-cluster

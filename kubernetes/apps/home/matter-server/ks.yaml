@@ -35,4 +35,4 @@ spec:
   dependsOn:
     - name: multus-config
     - name: volsync
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster

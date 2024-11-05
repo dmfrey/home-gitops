@@ -24,7 +24,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: rabbitmq-cluster-operator
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json

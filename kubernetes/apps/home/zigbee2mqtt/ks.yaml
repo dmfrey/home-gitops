@@ -33,5 +33,5 @@ spec:
   dependsOn:
     - name: mosquitto
     - name: node-feature-discovery-rules
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync

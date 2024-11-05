@@ -33,7 +33,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cluster-apps-media-common-mounts
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json

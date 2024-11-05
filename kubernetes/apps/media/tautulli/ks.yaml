@@ -31,4 +31,4 @@ spec:
     #     name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-plex
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster

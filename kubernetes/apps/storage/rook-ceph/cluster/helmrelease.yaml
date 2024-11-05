@@ -4,9 +4,11 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
-  namespace: storage
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: rook-ceph-cluster

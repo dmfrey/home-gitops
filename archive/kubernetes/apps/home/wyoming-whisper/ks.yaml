@@ -32,5 +32,5 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync

@@ -24,4 +24,4 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster

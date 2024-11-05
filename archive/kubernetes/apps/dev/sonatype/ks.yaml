@@ -32,5 +32,5 @@ spec:
     #     name: flux-volsync-secret
   dependsOn:
     - name: cloudnative-pg
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync

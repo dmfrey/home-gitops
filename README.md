@@ -42,8 +42,8 @@ Below is a a high level look at the layout of how my directory structure with Fl
 ```mermaid
 flowchart TD
   id01>Kustomization: cluster] ==>|Creates| id02>Kustomization: cluster-apps]
-  id02 ==>|Creates| id06>Kustomization: cluster-apps-rook-ceph]
-  id02 ==>|Creates| id07>Kustomization: cluster-apps-rook-ceph-cluster]
+  id02 ==>|Creates| id06>Kustomization: rook-ceph]
+  id02 ==>|Creates| id07>Kustomization: rook-ceph-cluster]
   id02 ==>|Creates| id08>Kustomization: cloudnative-pg]
   id02 ==>|Creates| id09>Kustomization: authentik-database]
   id02 ==>|Creates| id10>Kustomization: authentik]

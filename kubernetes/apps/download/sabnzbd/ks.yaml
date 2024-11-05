@@ -90,6 +90,6 @@ spec:
   dependsOn:
     - name: download-common-mount
     - name: sabnzbd-config
-    - name: cluster-apps-rook-ceph-cluster
+    - name: rook-ceph-cluster
     - name: volsync
     - name: pod-gateway
