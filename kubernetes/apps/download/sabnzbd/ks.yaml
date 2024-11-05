@@ -91,5 +91,5 @@ spec:
     - name: download-common-mount
     - name: sabnzbd-config
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: pod-gateway

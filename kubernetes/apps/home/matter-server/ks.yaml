@@ -34,5 +34,5 @@ spec:
     provider: sops
   dependsOn:
     - name: multus-config
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: cluster-apps-rook-ceph-cluster

@@ -32,7 +32,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: volsync
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -67,7 +67,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: volsync
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

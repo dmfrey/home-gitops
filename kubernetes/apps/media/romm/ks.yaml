@@ -27,7 +27,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: cluster-apps-rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -58,7 +58,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: cluster-apps-rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -89,7 +89,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: cluster-apps-rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -120,7 +120,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: cluster-apps-rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -189,4 +189,4 @@ spec:
     - name: romm-services
     - name: nfs-subdir
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: volsync

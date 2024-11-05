@@ -31,7 +31,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: volsync
     - name: cluster-apps-media-common
     - name: cluster-apps-media-common-mounts
 ---

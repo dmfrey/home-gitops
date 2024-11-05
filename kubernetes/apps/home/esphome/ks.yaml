@@ -32,4 +32,4 @@ spec:
     - name: mosquitto
     - name: multus-config
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: volsync

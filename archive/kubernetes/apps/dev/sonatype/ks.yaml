@@ -33,4 +33,4 @@ spec:
   dependsOn:
     - name: cloudnative-pg
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync
+    - name: volsync
