@@ -2,17 +2,26 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-pod-gateway
+  name: &app pod-gateway
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+      app.kubernetes.io/instance: vpn-gateway
   path: "./kubernetes/apps/network/pod-gateway/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
   decryption:
     provider: sops
