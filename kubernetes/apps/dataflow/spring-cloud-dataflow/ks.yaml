@@ -18,18 +18,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-dataflow-services
+  name: &app dataflow-services
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: dataflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/services"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cloudnative-pg
@@ -38,22 +48,30 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-dataflow
+  name: &app dataflow
   namespace: flux-system
 spec:
+  targetNamespace: dataflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/app"
   prune: false
-  interval: 5m
-  timeout: 1m30s
-  retryInterval: 30s
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
-    - name: cluster-apps-dataflow-services
+    - name: dataflow-services
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
 # kind: Kustomization
