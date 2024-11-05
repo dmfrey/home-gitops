@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/network/ingress-nginx/certificates"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -27,7 +27,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/network/ingress-nginx/shared"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -46,7 +46,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/network/ingress-nginx/external"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -65,7 +65,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/network/ingress-nginx/internal"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

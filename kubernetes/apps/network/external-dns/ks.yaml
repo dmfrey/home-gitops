@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/network/external-dns/crds"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -48,7 +48,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/network/external-dns/external"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

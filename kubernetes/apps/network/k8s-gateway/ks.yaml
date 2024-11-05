@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: k8s-gateway
   path: ./kubernetes/apps/network/k8s-gateway/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

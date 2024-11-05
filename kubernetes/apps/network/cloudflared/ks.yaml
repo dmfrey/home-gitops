@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: &appname cloudflared
   path: "./kubernetes/apps/network/cloudflared/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

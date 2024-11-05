@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: &appname smtp-relay
   path: "./kubernetes/apps/network/smtp-relay/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
