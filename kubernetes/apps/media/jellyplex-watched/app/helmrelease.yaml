@@ -3,8 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &name jellyplex-watched
-  namespace: media
+  name: &app jellyplex-watched
 
 spec:
 
@@ -36,7 +35,7 @@ spec:
 
   values:
 
-    fullnameOverride: *name
+    fullnameOverride: *app
 
     # App runs as root
     defaultPodOptions:
@@ -51,14 +50,14 @@ spec:
 
     controllers:
 
-      jellyplex-watched:
+      *app :
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
 
-          app:
+          *app :
 
             image:
               repository: ghcr.io/luigi311/jellyplex-watched
@@ -126,6 +125,6 @@ spec:
                 memory: 200Mi
 
     service:
-      app:
+      *app :
         enabled: false
-        controller: jellyplex-watched
+        controller: *app

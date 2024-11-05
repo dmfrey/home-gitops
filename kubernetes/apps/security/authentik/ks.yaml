@@ -98,5 +98,5 @@ spec:
     provider: sops
   dependsOn:
     - name: authentik
-    - name: cluster-apps-plex
+    - name: plex
 

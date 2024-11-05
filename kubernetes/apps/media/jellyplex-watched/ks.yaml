@@ -3,28 +3,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-jellyplex-watched
+  name: &app jellyplex-watched
   namespace: flux-system
 spec:
   targetNamespace: media
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname jellyplex-watched
+      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/media/jellyplex-watched/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
-  interval: 10m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
     substituteFrom: []
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-plex
-    - name: cluster-apps-jellyfin
+    - name: plex
+    - name: jellyfin
