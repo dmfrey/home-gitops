@@ -2,33 +2,33 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-zigbee2mqtt
+  name: &app zigbee2mqtt
   namespace: flux-system
 spec:
   targetNamespace: home
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname zigbee2mqtt
+      app.kubernetes.io/name: &app
   path: "./kubernetes/apps/home/zigbee2mqtt/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
-  interval: 10m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
       APP_UID: "568"
       APP_GID: "568"
       VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
+  decryption:
+    provider: sops
   dependsOn:
     - name: mosquitto
     - name: node-feature-discovery-rules
