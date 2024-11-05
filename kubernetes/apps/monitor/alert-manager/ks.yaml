@@ -10,21 +10,19 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/monitor/alert-manager/app"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
-  interval: 10m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
     substitute:
       APP: *app
       VOLSYNC_CLAIM: *app
       VOLSYNC_CAPACITY: 50Mi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
