@@ -33,4 +33,4 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-reflector
+    - name: reflector
