@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secret-overseerr.sops.yaml
-  # - ./dashboard
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
 configMapGenerator:
