@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: &appname zigbee2mqtt
   path: "./kubernetes/apps/home/zigbee2mqtt/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
