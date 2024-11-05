@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/storage/nfs-subdir/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
