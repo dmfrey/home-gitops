@@ -24,7 +24,7 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-nfs-subdir
+    - name: nfs-subdir
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -51,4 +51,4 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-    - name: cluster-apps-nfs-subdir
+    - name: nfs-subdir
