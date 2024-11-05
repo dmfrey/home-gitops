@@ -4,9 +4,11 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: snapshot-controller
-  namespace: storage
+
 spec:
+
   interval: 15m
+
   chart:
     spec:
       chart: snapshot-controller
@@ -15,20 +17,26 @@ spec:
         kind: HelmRepository
         name: piraeus
         namespace: flux-system
+
   maxHistory: 2
+
   install:
     createNamespace: true
     crds: CreateReplace
     remediation:
       retries: 3
+
   upgrade:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
       retries: 3
+
   uninstall:
     keepHistory: false
+
   values:
+
     controller:
       volumeSnapshotClasses:
         - name: csi-ceph-blockpool
@@ -49,5 +57,6 @@ spec:
             csi.storage.k8s.io/snapshotter-secret-name: rook-csi-cephfs-provisioner
             csi.storage.k8s.io/snapshotter-secret-namespace: rook-ceph
           deletionPolicy: Delete
+
     serviceMonitor:
       create: true

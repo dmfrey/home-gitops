@@ -3,39 +3,55 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-snapshot-controller
+  name: &apps snapshot-controller
   namespace: flux-system
 spec:
+  targetNamespace: storage
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/storage/snapshot-controller/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
-  interval: 15m
-  retryInterval: 1m
-  timeout: 5m
+  decryption:
+    provider: sops
   dependsOn:
     - name: kube-prometheus-stack-crds
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
 # kind: Kustomization
 # metadata:
-#   name: cluster-apps-snapshot-controller-webhook
+#   name: &app snapshot-controller-webhook
 #   namespace: flux-system
 # spec:
+#   targetNamespace: storage
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
 #   path: ./kubernetes/apps/storage/snapshot-controller/webhook
 #   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
 #   wait: true
+#   interval: 5m
+#   timeout: 1m30s
+#   retryInterval: 30s
 #   postBuild:
+#     substitute:
+#       APP: *app
 #     substituteFrom: []
-#   interval: 15m
-#   retryInterval: 1m
-#   timeout: 5m
+#   decryption:
+#     provider: sops
 #   dependsOn:
-#     - name: cluster-apps-snapshot-controller
+#     - name: snapshot-controller
