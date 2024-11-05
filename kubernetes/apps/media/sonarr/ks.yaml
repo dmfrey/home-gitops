@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: &app sonarr
   path: "./kubernetes/apps/media/sonarr/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -44,7 +44,7 @@ metadata:
 spec:
   targetNamespace: media
   path: "./kubernetes/apps/media/sonarr/provision"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

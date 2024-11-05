@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: &appname jellyfin
   path: ./kubernetes/apps/media/jellyfin/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
