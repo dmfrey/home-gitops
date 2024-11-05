@@ -26,7 +26,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/services"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -56,7 +56,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/app"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
