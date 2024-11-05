@@ -7,6 +7,7 @@ resources:
   - ./namespace.yaml
   - ./notification.yaml
   # Flux-Kustomizations
+  - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
   - ./matter-server/ks.yaml
   - ./matterbridge/ks.yaml
@@ -14,4 +15,3 @@ resources:
   - ./openthread/ks.yaml
   - ./wyoming-services/ks.yaml
   - ./zigbee2mqtt/ks.yaml
-  - ./esphome/ks.yaml
