@@ -43,7 +43,7 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
     - name: cloudnative-pg
-    - name: cluster-apps-rabbitmq-cluster-operator
+    - name: rabbitmq-cluster-operator
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
