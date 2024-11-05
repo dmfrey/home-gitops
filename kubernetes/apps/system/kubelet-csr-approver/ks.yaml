@@ -1,16 +1,28 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-kubelet-csr-approver
+  name: &app kubelet-csr-approver
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/system/kubelet-csr-approver/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn: []
