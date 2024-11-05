@@ -1,26 +1,29 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-cloudflared
+  name: &app cloudflared
   namespace: flux-system
 spec:
   targetNamespace: network
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname cloudflared
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/network/cloudflared/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
-  interval: 10m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
     - name: cluster-apps-external-dns-external
