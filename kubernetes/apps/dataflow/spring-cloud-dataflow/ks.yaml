@@ -23,7 +23,7 @@ metadata:
 spec:
   interval: 15m
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/services"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -42,7 +42,7 @@ metadata:
   namespace: flux-system
 spec:
   path: "./kubernetes/apps/dataflow/spring-cloud-dataflow/app"
-  prune: true
+  prune: false
   interval: 5m
   timeout: 1m30s
   retryInterval: 30s
