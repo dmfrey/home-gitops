@@ -26,7 +26,7 @@
     "prEditedNotification",
     "prIgnoreNotification"
   ],
-  "onboarding": false,
+  // "onboarding": false,
   "requireConfig": "ignored",
   "ignorePaths": [
     "**/*.sops.*",
