@@ -32,5 +32,5 @@ spec:
     - name: volsync
     - name: plex
     - name: cluster-apps-tautulli
-    - name:
+    - name: radarr
     - name: cluster-apps-sonarr

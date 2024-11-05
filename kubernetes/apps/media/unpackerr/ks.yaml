@@ -30,5 +30,5 @@ spec:
     - name: media-common-mounts
     - name: lidarr
     - name: cluster-apps-sonarr
-    - name:
+    - name: radarr
     # - name: readarr
