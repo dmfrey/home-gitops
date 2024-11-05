@@ -25,5 +25,5 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-kyverno
+    - name: kyverno
 

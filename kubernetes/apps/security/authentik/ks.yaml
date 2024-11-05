@@ -43,7 +43,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cluster-apps-authentik-database
-    - name: cluster-apps-kyverno
+    - name: kyverno
     - name: cluster-apps-smtp-relay
     - name: cluster-apps-grafana
 ---
