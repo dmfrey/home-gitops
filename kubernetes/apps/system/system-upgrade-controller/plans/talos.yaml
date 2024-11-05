@@ -26,7 +26,7 @@ spec:
         operator: In
         values: [linux]
   prepare:
-    image: ghcr.io/siderolabs/talosctl@sha256:6daf8e5f1bb11fec2eaf5912353ca223003b213d2d0a2e7ded8fb250f93e531d
+    image: ghcr.io/siderolabs/talosctl@sha256:c3deb68924da8f55c971751126764f0a5d6cdc674929a1343f9fe9cb6f0ae440
     envs:
       - name: NODE_IP
         valueFrom:
@@ -36,7 +36,7 @@ spec:
       - '--nodes=$(NODE_IP)'
       - 'health'
   upgrade:
-    image: ghcr.io/siderolabs/talosctl@sha256:6daf8e5f1bb11fec2eaf5912353ca223003b213d2d0a2e7ded8fb250f93e531d
+    image: ghcr.io/siderolabs/talosctl@sha256:c3deb68924da8f55c971751126764f0a5d6cdc674929a1343f9fe9cb6f0ae440
     envs:
       - name: NODE_IP
         valueFrom:
