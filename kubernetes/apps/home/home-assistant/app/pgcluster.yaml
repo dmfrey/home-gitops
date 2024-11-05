@@ -19,6 +19,10 @@ spec:
     size: 25Gi
     storageClass: ceph-block
 
+  walStorage:
+    storageClass: ceph-block
+    size: 25Gi
+
   postgresql:
     parameters:
       max_connections: "600"
