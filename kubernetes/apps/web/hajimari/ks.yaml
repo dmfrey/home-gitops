@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: &appname hajimari
   path: ./kubernetes/apps/web/hajimari/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -22,5 +22,5 @@ spec:
     substitute:
       APP: portal
     substituteFrom: []
-  dependsOn: 
+  dependsOn:
     - name: cluster-apps-authentik
