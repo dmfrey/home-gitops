@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: &appname alert-manager
   path: "./kubernetes/apps/monitor/alert-manager/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
