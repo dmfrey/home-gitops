@@ -34,4 +34,4 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
-    - name: cluster-apps-media-common-mounts
+    - name: media-common-mounts

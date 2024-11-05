@@ -30,7 +30,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: cluster-apps-media-common-mounts
+    - name: media-common-mounts
     - name: reflector
     - name: kube-prometheus-stack-crds
     - name: pod-gateway

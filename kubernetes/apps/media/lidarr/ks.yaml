@@ -32,8 +32,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
-    - name: cluster-apps-media-common
-    - name: cluster-apps-media-common-mounts
+    - name: media-common
+    - name: media-common-mounts
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
