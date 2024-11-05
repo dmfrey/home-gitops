@@ -2,26 +2,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-theme-park
+  name: &app theme-park
   namespace: flux-system
 spec:
   targetNamespace: web
   commonMetadata:
     labels:
-      app.kubernetes.io/name: &appname theme-park
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/web/theme-park/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: false
-  interval: 10m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
     substitute:
-      APP: *appname
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
     - name: cluster-apps-kyverno
 
