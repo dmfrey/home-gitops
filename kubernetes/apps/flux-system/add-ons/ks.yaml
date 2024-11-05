@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/flux-system/add-ons/monitoring
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -40,7 +40,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/flux-system/add-ons/notifications
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -67,7 +67,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/flux-system/add-ons/webhooks
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
