@@ -44,7 +44,7 @@ spec:
   dependsOn:
     - name: cluster-apps-authentik-database
     - name: kyverno
-    - name: cluster-apps-smtp-relay
+    - name: smtp-relay
     - name: grafana
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
