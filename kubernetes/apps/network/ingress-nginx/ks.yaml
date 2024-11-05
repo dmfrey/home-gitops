@@ -3,18 +3,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx-certificates
+  name: &app ingress-nginx-certificates
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/network/ingress-nginx/certificates"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
     - name: cert-manager-issuers
 ---
@@ -22,55 +32,56 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx-shared
+  name: &app ingress-nginx-external
   namespace: flux-system
 spec:
-  interval: 15m
-  path: "./kubernetes/apps/network/ingress-nginx/shared"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
-  postBuild:
-    substituteFrom: []
-  dependsOn:
-    - name: cluster-apps-ingress-nginx-certificates
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-ingress-nginx-external
-  namespace: flux-system
-spec:
-  interval: 15m
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/network/ingress-nginx/external"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
-    - name: cluster-apps-ingress-nginx-certificates
+    - name: ingress-nginx-certificates
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx-internal
+  name: &app ingress-nginx-internal
   namespace: flux-system
 spec:
-  interval: 15m
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: "./kubernetes/apps/network/ingress-nginx/internal"
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
   dependsOn:
-    - name: cluster-apps-ingress-nginx-certificates
+    - name: ingress-nginx-certificates
