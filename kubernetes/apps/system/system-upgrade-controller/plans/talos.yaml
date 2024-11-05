@@ -8,7 +8,7 @@ metadata:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  version: "v1.5.5"
+  version: "v1.8.2"
   serviceAccountName: system-upgrade
   secrets:
     - name: talos-upgrade-api-access
