@@ -2,19 +2,25 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-tf-controller
+  name: &app tf-controller
   namespace: flux-system
 spec:
+  targetNamespace: flux-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/flux-system/tf-controller/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
   wait: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
-  interval: 15m
-  retryInterval: 1m
-  timeout: 5m
   dependsOn:
     - name: kube-prometheus-stack-crds
