@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: &appname theme-park
   path: "./kubernetes/apps/web/theme-park/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -24,4 +24,4 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cluster-apps-kyverno
- 
+
