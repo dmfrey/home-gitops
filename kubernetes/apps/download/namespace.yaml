@@ -4,9 +4,9 @@ kind: Namespace
 metadata:
   name: download
   labels:
-    kustomize.toolkit.fluxcd.io/prune: disabled
     vpn.home.arpa/routed-gateway: "true"
   annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/notification.toolkit.fluxcd.io/provider_v1beta3.json
