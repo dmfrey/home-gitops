@@ -26,3 +26,32 @@ spec:
   decryption:
     provider: sops
   dependsOn: []
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app external-secrets-stores
+  namespace: flux-system
+spec:
+  targetNamespace: *app
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/external-secrets/external-secrets/stores
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
+  postBuild:
+    substitute:
+      APP: *app
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: external-secrets
