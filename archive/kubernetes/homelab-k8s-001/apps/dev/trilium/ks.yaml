@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: trilium-notes
   interval: 10m
-  path: "./kubernetes/templates/volsync"
+  path: "./kubernetes/homelab-k8s-001/templates/volsync"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -42,7 +42,7 @@ spec:
     labels:
       app.kubernetes.io/name: trilium-notes
   interval: 10m
-  path: "./kubernetes/templates/volsync"
+  path: "./kubernetes/homelab-k8s-001/templates/volsync"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -72,7 +72,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/dev/trilium/app
+  path: ./kubernetes/homelab-k8s-001/apps/dev/trilium/app
   prune: true
   sourceRef:
     kind: GitRepository

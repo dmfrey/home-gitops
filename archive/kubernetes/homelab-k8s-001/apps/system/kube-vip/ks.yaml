@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: kube-vip
-  path: ./kubernetes/apps/system/kube-vip/app
+  path: ./kubernetes/homelab-k8s-001/apps/system/kube-vip/app
   prune: true
   sourceRef:
     kind: GitRepository

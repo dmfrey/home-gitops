@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-system-upgrade-controller
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/system-upgrade-controller/app
+  path: ./kubernetes/homelab-k8s-001/apps/system/system-upgrade-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -25,7 +25,7 @@ metadata:
   name: cluster-apps-system-upgrade-controller-plans
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/system/system-upgrade-controller/plans
+  path: ./kubernetes/homelab-k8s-001/apps/system/system-upgrade-controller/plans
   prune: true
   sourceRef:
     kind: GitRepository

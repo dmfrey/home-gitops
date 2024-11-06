@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 15m
-  path: "./kubernetes/apps/monitor/node-exporter/app"
+  path: "./kubernetes/homelab-k8s-001/apps/monitor/node-exporter/app"
   prune: true
   sourceRef:
     kind: GitRepository
