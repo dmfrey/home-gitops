@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ./notification.yaml
   # Flux-Kustomizations
   - ./loki/ks.yaml
   # - ./promtail/ks.yaml

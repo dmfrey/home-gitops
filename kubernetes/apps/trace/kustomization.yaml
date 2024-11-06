@@ -5,6 +5,5 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ./notification.yaml
   # Flux-Kustomizations
   - ./tempo/ks.yaml
