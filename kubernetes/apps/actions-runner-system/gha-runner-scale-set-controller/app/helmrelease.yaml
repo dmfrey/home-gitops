@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: actions-runner-controller
+  name: &app gha-runner-scale-set-controller
 
 spec:
 
@@ -11,7 +11,7 @@ spec:
 
   chart:
     spec:
-      chart: &app gha-runner-scale-set-controller
+      chart: gha-runner-scale-set-controller
       version: 0.9.3
       sourceRef:
         kind: HelmRepository
