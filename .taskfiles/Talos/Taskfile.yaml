@@ -5,7 +5,7 @@ version: '3'
 tasks:
 
   apply-node:
-    desc: Apply Talos config to a node [CLUSTER=main] [HOSTNAME=required]
+    desc: Apply Talos config to a node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
@@ -22,7 +22,7 @@ tasks:
       - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
 
   upgrade-node:
-    desc: Upgrade Talos on a single node [CLUSTER=main] [HOSTNAME=required]
+    desc: Upgrade Talos on a single node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
@@ -42,7 +42,7 @@ tasks:
       - curl -fsSL -o /dev/null --fail https://github.com/siderolabs/talos/releases/tag/$TALOS_VERSION
 
   upgrade-k8s:
-    desc: Upgrade Kubernetes across the whole cluster [CLUSTER=main] [VERSION=required]
+    desc: Upgrade Kubernetes across the whole cluster [CLUSTER=homelab-k8s-001] [VERSION=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
@@ -61,7 +61,7 @@ tasks:
       - curl -fsSL -o /dev/null --fail https://github.com/siderolabs/kubelet/releases/tag/$KUBERNETES_VERSION
 
   reboot-node:
-    desc: Reboot Talos on a single node [CLUSTER=main] [HOSTNAME=required]
+    desc: Reboot Talos on a single node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
     cmds:
       - task: down
       - talosctl --nodes {{.HOSTNAME}} reboot
@@ -76,7 +76,7 @@ tasks:
       - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
 
   shutdown-cluster:
-    desc: Shutdown Talos across the whole cluster [CLUSTER=main]
+    desc: Shutdown Talos across the whole cluster [CLUSTER=homelab-k8s-001]
     prompt: Shutdown the Talos cluster '{{.CLUSTER}}' ... continue?
     cmd: talosctl shutdown --nodes {{.HOSTNAMES}} --force
     vars:
@@ -90,7 +90,7 @@ tasks:
       - talosctl --nodes {{.NODES}} get machineconfig &>/dev/null
 
   reset-node:
-    desc: Reset Talos on a single node [CLUSTER=main] [HOSTNAME=required]
+    desc: Reset Talos on a single node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
     prompt: Reset Talos node '{{.HOSTNAME}}' on the '{{.CLUSTER}}' cluster ... continue?
     cmd: talosctl reset --nodes {{.HOSTNAME}} --graceful=false
     requires:
@@ -101,7 +101,7 @@ tasks:
       - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
 
   reset-cluster:
-    desc: Reset Talos across the whole cluster [CLUSTER=main]
+    desc: Reset Talos across the whole cluster [CLUSTER=homelab-k8s-001]
     prompt: Reset the Talos cluster '{{.CLUSTER}}' ... continue?
     cmd: talosctl reset --nodes {{.HOSTNAMES}} --graceful=false
     vars:

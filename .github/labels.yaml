@@ -14,8 +14,8 @@
   color: "0e8a16"
 
 # Clusters
-# - name: cluster/main
-#   color: "ffc300"
+- name: cluster/homelab-k8s-001
+  color: "ffc300"
 
 # Renovate Types
 - name: renovate/container

@@ -1,0 +1,101 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app wyoming-piper-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: wyoming-piper
+  path: "./kubernetes/templates/volsync"
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  prune: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      APP_UID: "568"
+      APP_GID: "568"
+      VOLSYNC_CLAIM: wyoming-piper-data
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom: []
+    #   - kind: Secret
+    #     name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: rook-ceph-cluster
+    - name: volsync
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app wyoming-whisper-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: wyoming-whisper
+  path: "./kubernetes/templates/volsync"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      APP_UID: "568"
+      APP_GID: "568"
+      VOLSYNC_CLAIM: wyoming-whisper-data
+      VOLSYNC_CAPACITY: 5Gi
+    substituteFrom: []
+    #   - kind: Secret
+    #     name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: rook-ceph-cluster
+    - name: volsync
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app wyoming-services
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/app"
+  prune: false
+  wait: true
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      PIPER_CLAIM: wyoming-piper-data
+      WHISPER_CLAIM: wyoming-whisper-data
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: wyoming-piper-pvc
+    - name: wyoming-whisper-pvc

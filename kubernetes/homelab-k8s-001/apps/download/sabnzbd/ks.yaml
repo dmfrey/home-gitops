@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app sabnzbd-common
+  namespace: flux-system
+spec:
+  targetNamespace: download
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/common"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+    - name: reflector
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app sabnzbd-config
+  namespace: flux-system
+spec:
+  targetNamespace: download
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 15m
+  path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/config"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: sabnzbd-secret
+  dependsOn:
+    - name: sabnzbd-common
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app sabnzbd
+  namespace: flux-system
+spec:
+  targetNamespace: download
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/app"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  postBuild:
+    substitute:
+      APP: *app
+      APP_UID: "1568"
+      APP_GID: "1568"
+      VOLSYNC_CLAIM: sabnzbd-config
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom: []
+    #   - kind: Secret
+    #     name: flux-volsync-secret
+  dependsOn:
+    - name: download-common-mount
+    - name: sabnzbd-config
+    - name: rook-ceph-cluster
+    - name: volsync
+    - name: pod-gateway

@@ -1,0 +1,98 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dot-matterbridge-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: matterbridge
+  interval: 10m
+  path: "./kubernetes/templates/volsync"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: dot-matterbridge-data
+      VOLSYNC_CLAIM: dot-matterbridge-data
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom: []
+    #   - kind: Secret
+    #     name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: volsync
+    - name: rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: matterbridge-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: matterbridge
+  interval: 10m
+  path: "./kubernetes/templates/volsync"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: matterbridge-data
+      VOLSYNC_CLAIM: matterbridge-data
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom: []
+    #   - kind: Secret
+    #     name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: volsync
+    - name: rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app matterbridge
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/home/matterbridge/app"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      APP_UID: "0"
+      APP_GID: "0"
+      DOT_MATTERBRIDGE_CLAIM: dot-matterbridge-data
+      MATTERBRIDGE_CLAIM: matterbridge-data
+    substituteFrom: []
+    #   - kind: Secret
+    #     name: flux-volsync-secret
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: dot-matterbridge-pvc
+    - name: matterbridge-pvc

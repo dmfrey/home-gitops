@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cert-manager
+  namespace: flux-system
+spec:
+  targetNamespace: security
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/security/cert-manager/app"
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  prune: false
+  wait: true
+  interval: 15m
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+    - name: kube-prometheus-stack-crds
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cert-manager-issuers
+  namespace: flux-system
+spec:
+  targetNamespace: security
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/security/cert-manager/issuers"
+  prune: false
+  wait: true
+  interval: 15m
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+    - name: cert-manager

@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kube-prometheus-stack-crds
+  namespace: flux-system
+spec:
+  targetNamespace: monitor
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/crds
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  postBuild:
+    substituteFrom: []
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app prometheus-pushgateway
+  namespace: flux-system
+spec:
+  targetNamespace: monitor
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/pushgateway
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  postBuild:
+    substituteFrom: []
+# ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app prometheus-rules
+#   namespace: flux-system
+# spec:
+#   path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/rules
+#   prune: false
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: true
+#   interval: 15m
+#   retryInterval: 1m
+#   timeout: 5m
+#   decryption:
+#     provider: sops
+#   postBuild:
+#     substituteFrom: []
+#   dependsOn:
+#     - name: kube-prometheus-stack-crds
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kube-prometheus-stack
+  namespace: flux-system
+spec:
+  targetNamespace: monitor
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/app
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  prune: false
+  wait: true
+  interval: 15m
+  retryInterval: 1m
+  timeout: 5m
+  decryption:
+    provider: sops
+  postBuild:
+    substituteFrom: []
+  dependsOn: []
+    # - name: kube-prometheus-stack-crds
+    # - name: prometheus-rules
+    # - name: cert-manager
+    # - name: rook-ceph-cluster

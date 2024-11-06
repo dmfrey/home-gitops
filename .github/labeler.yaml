@@ -20,6 +20,6 @@ area/taskfile:
       - any-glob-to-any-file: Taskfile.yaml
 
 # Clusters
-#cluster/main:
-#  - changed-files:
-#      - any-glob-to-any-file: "kubernetes/main/**/*"
+cluster/homelab-k8s-001:
+ - changed-files:
+     - any-glob-to-any-file: "kubernetes/homelab-k8s-001/**/*"

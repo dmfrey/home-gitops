@@ -5,7 +5,7 @@ version: '3'
 tasks:
 
   apply-ks:
-    desc: Apply a Flux KS for a cluster [CLUSTER=main] [PATH=required]
+    desc: Apply a Flux KS for a cluster [CLUSTER=homelab-k8s-001] [PATH=required]
     cmd: >
       flux build --namespace flux-system ks {{base .PATH}}
       --kustomization-file {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
@@ -21,7 +21,7 @@ tasks:
       - test -f {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
 
   browse-pvc:
-    desc: Mount a PVC to an temp container [CLUSTER=main] [NS=default] [CLAIM=required]
+    desc: Mount a PVC to an temp container [CLUSTER=homelab-k8s-001] [NS=default] [CLAIM=required]
     interactive: true
     cmd: kubectl browse-pvc --namespace {{.NS}} --image docker.io/library/alpine:latest {{.CLAIM}}
     vars:
@@ -32,7 +32,7 @@ tasks:
       - kubectl --namespace {{.NS}} get persistentvolumeclaims {{.CLAIM}}
 
   sync-secrets:
-    desc: Sync all ExternalSecrets [CLUSTER=main]
+    desc: Sync all ExternalSecrets [CLUSTER=homelab-k8s-001]
     cmds:
       - for: { var: SECRETS, split: "\n" }
         cmd: kubectl --namespace {{splitList "," .ITEM | first}} annotate externalsecret {{splitList "," .ITEM | last}} force-sync="{{now | unixEpoch}}" --overwrite
@@ -43,7 +43,7 @@ tasks:
       vars: [CLUSTER]
 
   cleanse-pods:
-    desc: Cleanse pods with a Failed/Pending/Succeeded phase [CLUSTER=main]
+    desc: Cleanse pods with a Failed/Pending/Succeeded phase [CLUSTER=homelab-k8s-001]
     cmds:
       - for:
           matrix:

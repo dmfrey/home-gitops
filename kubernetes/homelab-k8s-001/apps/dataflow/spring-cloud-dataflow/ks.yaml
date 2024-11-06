@@ -1,0 +1,130 @@
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: cluster-apps-dataflow-dashboards
+#   namespace: flux-system
+# spec:
+#   interval: 15m
+#   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dashboards"
+#   prune: false
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: true
+#   postBuild:
+#     substituteFrom: []
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app dataflow-services
+  namespace: flux-system
+spec:
+  targetNamespace: dataflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/services"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
+  postBuild:
+    substitute:
+      APP: *app
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: rook-ceph-cluster
+    - name: cloudnative-pg
+    - name: rabbitmq-cluster-operator
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app dataflow
+  namespace: flux-system
+spec:
+  targetNamespace: dataflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/app"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
+  postBuild:
+    substitute:
+      APP: *app
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: dataflow-services
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: cluster-apps-dataflow
+#   namespace: flux-system
+# spec:
+#   interval: 15m
+#   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow"
+#   prune: false
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: true
+#   postBuild:
+#     substituteFrom: []
+#   dependsOn:
+#     - name: cluster-apps-dataflow-services
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: cluster-apps-dataflow
+#   namespace: flux-system
+# spec:
+#   interval: 15m
+#   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper"
+#   prune: false
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: true
+#   postBuild:
+#     substituteFrom: []
+#   dependsOn:
+#     - name: cluster-apps-dataflow-services
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: cluster-apps-dataflow
+#   namespace: flux-system
+# spec:
+#   interval: 15m
+#   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/metrics"
+#   prune: false
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: true
+#   postBuild:
+#     substituteFrom: []
+#   dependsOn:
+#     - name: cluster-apps-dataflow-services

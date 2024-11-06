@@ -13,7 +13,7 @@ vars:
 tasks:
 
   state-*:
-    desc: Suspend or resume Volsync [CLUSTER=main]
+    desc: Suspend or resume Volsync [CLUSTER=homelab-k8s-001]
     cmds:
       - flux --namespace flux-system {{.STATE}} kustomization volsync
       - flux --namespace volsync-system {{.STATE}} helmrelease volsync
@@ -26,7 +26,7 @@ tasks:
       - '[[ "{{.STATE}}" == "suspend" || "{{.STATE}}" == "resume" ]]'
 
   unlock:
-    desc: Unlock all restic source repos [CLUSTER=main]
+    desc: Unlock all restic source repos [CLUSTER=homelab-k8s-001]
     cmds:
       - for: { var: SOURCES, split: "\n" }
         cmd: kubectl --namespace {{splitList "," .ITEM | first}} patch --field-manager=flux-client-side-apply replicationsources {{splitList "," .ITEM | last}} --type merge --patch "{\"spec\":{\"restic\":{\"unlock\":\"{{now | unixEpoch}}\"}}}"
@@ -37,7 +37,7 @@ tasks:
       vars: [CLUSTER]
 
   snapshot:
-    desc: Snapshot an app [CLUSTER=main] [NS=default] [APP=required]
+    desc: Snapshot an app [CLUSTER=homelab-k8s-001] [NS=default] [APP=required]
     cmds:
       - kubectl --namespace {{.NS}} patch replicationsources {{.APP}} --type merge -p '{"spec":{"trigger":{"manual":"{{now | unixEpoch}}"}}}'
       - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
@@ -51,7 +51,7 @@ tasks:
       - kubectl --namespace {{.NS}} get replicationsources {{.APP}}
 
   restore:
-    desc: Restore an app [CLUSTER=main] [NS=default] [APP=required] [PREVIOUS=required]
+    desc: Restore an app [CLUSTER=homelab-k8s-001] [NS=default] [APP=required] [PREVIOUS=required]
     cmds:
       # Suspend
       - flux --namespace flux-system suspend kustomization {{.APP}}

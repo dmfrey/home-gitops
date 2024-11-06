@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kyverno
+  namespace: flux-system
+spec:
+  targetNamespace: policy
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/policy/kyverno/app"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: true
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
+  postBuild:
+    substitute:
+      APP: *app
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: kube-prometheus-stack-crds
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cluster-policies
+  namespace: flux-system
+spec:
+  targetNamespace: policy
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/homelab-k8s-001/apps/policy/kyverno/policies
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false # no flux ks dependents
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
+  postBuild:
+    substitute:
+      APP: *app
+    substituteFrom: []
+  dependsOn:
+    - name: kyverno
