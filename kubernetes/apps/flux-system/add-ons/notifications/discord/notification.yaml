@@ -17,7 +17,7 @@ metadata:
 spec:
   providerRef:
     name: discord
-  eventSeverity: info
+  eventSeverity: error
   eventSources:
     - kind: Kustomization
       name: "*"

@@ -17,7 +17,7 @@ metadata:
 spec:
   providerRef:
     name: alertmanager
-  eventSeverity: info
+  eventSeverity: error
   eventSources:
     - kind: Kustomization
       name: "*"
