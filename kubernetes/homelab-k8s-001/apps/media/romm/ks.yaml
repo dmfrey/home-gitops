@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: romm
   interval: 10m
-  path: "./kubernetes/templates/volsync"
+  path: "./kubernetes/homelab-k8s-001/templates/volsync"
   prune: false
   sourceRef:
     kind: GitRepository
@@ -42,7 +42,7 @@ spec:
     labels:
       app.kubernetes.io/name: romm
   interval: 10m
-  path: "./kubernetes/templates/volsync"
+  path: "./kubernetes/homelab-k8s-001/templates/volsync"
   prune: false
   sourceRef:
     kind: GitRepository
@@ -73,7 +73,7 @@ spec:
     labels:
       app.kubernetes.io/name: romm
   interval: 10m
-  path: "./kubernetes/templates/volsync"
+  path: "./kubernetes/homelab-k8s-001/templates/volsync"
   prune: false
   sourceRef:
     kind: GitRepository
@@ -104,7 +104,7 @@ spec:
     labels:
       app.kubernetes.io/name: romm
   interval: 10m
-  path: "./kubernetes/templates/volsync"
+  path: "./kubernetes/homelab-k8s-001/templates/volsync"
   prune: false
   sourceRef:
     kind: GitRepository
