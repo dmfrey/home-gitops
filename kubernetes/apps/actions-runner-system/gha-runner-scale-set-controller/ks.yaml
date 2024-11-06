@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/actions-runner-system/gha-runner-scale-set-controller/app
-  prune: true
+  prune: false
   interval: 5m
   timeout: 1m30s
   retryInterval: 30s

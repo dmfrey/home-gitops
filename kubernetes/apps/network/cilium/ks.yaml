@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/network/cilium/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -42,7 +42,7 @@ spec:
       app.kubernetes.io/name: *app
       app.kubernetes.io/component: cilium
   path: "./kubernetes/apps/network/cilium/config"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/download/sabnzbd/common"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -39,7 +39,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 15m
   path: "./kubernetes/apps/download/sabnzbd/config"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -67,7 +67,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/download/sabnzbd/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

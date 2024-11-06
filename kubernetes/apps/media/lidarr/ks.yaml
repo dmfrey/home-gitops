@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/media/lidarr/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -45,7 +45,7 @@ spec:
   interval: 15m
   timeout: 2m
   path: "./kubernetes/apps/media/lidarr/provision"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

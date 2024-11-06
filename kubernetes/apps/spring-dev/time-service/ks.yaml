@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/spring-dev/time-service/services"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -36,7 +36,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/spring-dev/time-service/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

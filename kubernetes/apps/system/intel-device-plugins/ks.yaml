@@ -11,7 +11,7 @@ spec:
     kind: GitRepository
     name: home-gitops
   interval: 15m
-  prune: true
+  prune: false
   wait: true
   postBuild:
     substituteFrom: []
@@ -31,7 +31,7 @@ spec:
     kind: GitRepository
     name: home-gitops
   interval: 15m
-  prune: true
+  prune: false
   wait: true
   postBuild:
     substituteFrom: []

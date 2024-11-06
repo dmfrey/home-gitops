@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/monitor/grafana/common
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -41,7 +41,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/monitor/grafana/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

@@ -14,7 +14,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  prune: true
+  prune: false
   interval: 10m
   retryInterval: 1m
   timeout: 5m
@@ -46,7 +46,7 @@ spec:
     labels:
       app.kubernetes.io/name: wyoming-whisper
   path: "./kubernetes/templates/volsync"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -81,7 +81,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/home/wyoming-services/app"
-  prune: true
+  prune: false
   wait: true
   interval: 10m
   retryInterval: 1m

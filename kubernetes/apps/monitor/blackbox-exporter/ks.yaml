@@ -14,7 +14,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  prune: true
+  prune: false
   wait: false
   interval: 30m
   timeout: 15m

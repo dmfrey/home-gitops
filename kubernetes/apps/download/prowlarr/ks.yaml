@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/download/prowlarr/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -48,7 +48,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/download/prowlarr/provision"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

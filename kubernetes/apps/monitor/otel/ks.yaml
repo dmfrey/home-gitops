@@ -10,7 +10,7 @@
 #     labels:
 #       app.kubernetes.io/name: *app
 #   path: "./kubernetes/apps/monitor/otel/operator"
-#   prune: true
+#   prune: false
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
@@ -38,7 +38,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/monitor/otel/collector"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

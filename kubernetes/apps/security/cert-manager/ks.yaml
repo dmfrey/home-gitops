@@ -14,7 +14,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  prune: true
+  prune: false
   wait: true
   interval: 15m
   postBuild:
@@ -34,7 +34,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/security/cert-manager/issuers"
-  prune: true
+  prune: false
   wait: true
   interval: 15m
   sourceRef:

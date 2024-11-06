@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/monitor/kube-prometheus-stack/crds
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -36,7 +36,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/monitor/kube-prometheus-stack/pushgateway
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -57,7 +57,7 @@ spec:
 #   namespace: flux-system
 # spec:
 #   path: ./kubernetes/apps/monitor/kube-prometheus-stack/rules
-#   prune: true
+#   prune: false
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
@@ -87,7 +87,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  prune: true
+  prune: false
   wait: true
   interval: 15m
   retryInterval: 1m

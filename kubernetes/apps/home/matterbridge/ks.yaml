@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: matterbridge
   interval: 10m
   path: "./kubernetes/templates/volsync"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -43,7 +43,7 @@ spec:
       app.kubernetes.io/name: matterbridge
   interval: 10m
   path: "./kubernetes/templates/volsync"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -73,7 +73,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/home/matterbridge/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

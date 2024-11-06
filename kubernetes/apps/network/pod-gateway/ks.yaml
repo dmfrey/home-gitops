@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
       app.kubernetes.io/instance: vpn-gateway
   path: "./kubernetes/apps/network/pod-gateway/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops

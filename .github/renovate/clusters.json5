@@ -2,9 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": ["Separate PRs for main cluster"],
-      "matchFileNames": ["**/kubernetes/main/**"],
-      "additionalBranchPrefix": "main-"
+      "description": ["Separate PRs for homelab-k8s-001 cluster"],
+      "matchFileNames": ["**/kubernetes/homelab-k8s-001/**"],
+      "additionalBranchPrefix": "homelab-k8s-001-"
     }
   ]
 }

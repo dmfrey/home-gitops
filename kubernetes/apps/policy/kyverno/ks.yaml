@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/apps/policy/kyverno/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -40,7 +40,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/policy/kyverno/policies
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-gitops
