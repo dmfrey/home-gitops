@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: &ns dev
+  name: dev
   labels:
     kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
@@ -12,7 +12,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
   name: alert-manager
-  namespace: *ns
+  namespace: dev
 spec:
   type: alertmanager
   address: http://alert-manager.monitor.svc.cluster.local:9093/api/v2/alerts/
@@ -22,7 +22,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: alert-manager
-  namespace: *ns
+  namespace: dev
 spec:
   providerRef:
     name: alert-manager
