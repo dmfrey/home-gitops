@@ -30,7 +30,7 @@ additionalMachineCertSans: *san
 nodes:
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
-  - hostname: dmf-amd-001.${INTERNAL_DOMAIN}
+  - hostname: dmf-amd-001
     controlPlane: true
     ipAddress: 192.168.30.31
     installDisk: /dev/sda
@@ -66,8 +66,8 @@ nodes:
               SHUTDOWNCMD "/sbin/poweroff"
             mountPath: /usr/local/etc/nut/upsmon.conf
 
-  # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
-  - hostname: dmf-amd-002.${INTERNAL_DOMAIN}
+  # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 512GB SSD / 2TB Nvme
+  - hostname: dmf-amd-002
     controlPlane: true
     ipAddress: 192.168.30.32
     installDisk: /dev/sda
@@ -77,13 +77,42 @@ nodes:
     extensionServices: *extensionServices
 
   # GEEKOM A5 Mini / AMD Ryzen 7 5800H / 64GB / 240GB SSD / 2TB Nvme
-  - hostname: dmf-amd-003.${INTERNAL_DOMAIN}
+  - hostname: dmf-amd-003
     controlPlane: true
     ipAddress: 192.168.30.33
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces: *networkInterfaces
     nodeLabels: *nodeLabels
+    extensionServices: *extensionServices
+
+  # GEEKOM Mini IT 13 / Intel UHD / 64GB / 512GB SSD / 2TB Nvme
+  - hostname: dmf-intel-001
+    controlPlane: false
+    ipAddress: 192.168.30.41
+    installDisk: /dev/sda
+    disableSearchDomain: true
+    networkInterfaces:
+      - interface: enp2s0   # TODO: Fix this when known
+        dhcp: false
+        mtu: 1500
+        vlans:
+          - vlanId: 30
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 1024
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels:
+      topology.kubernetes.io/region: dmf
+      topology.kubernetes.io/zone: dmf-u
+      # Needed because Labels are limited to 63 Characters
+      factory.talos.dev/schematic-prefix: 8a71f9fe5c25403801ac19ff2beeacbf
+      factory.talos.dev/schematic-suffix: 79bcfaf82405833d75707ede0968c64d
     extensionServices: *extensionServices
 
 controlPlane:
@@ -233,6 +262,130 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - system
+          apidCheckExtKeyUsage: true
+          diskQuotaSupport: true
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false # Incompatible with Cilium bpf masquerade
+
+worker:
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/i915-ucode
+          - siderolabs/intel-ucode
+          - siderolabs/nut-client
+
+  patches:
+
+    # Configure containerd
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |-
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
+
+    # Disable search domain everywhere
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Configure kubelet
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: GracefulNodeShutdown=true
+            rotate-server-certificates: true
+          extraConfig:
+            maxPods: 250
+          nodeIP:
+            validSubnets:
+              - 192.168.30.0/24
+
+    # Enable KubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
+    # Force nameserver
+    # - |-
+    #   machine:
+    #     network:
+    #       nameservers:
+    #         - ${DNS_SERVER}
+
+    # Configure NTP
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - ${NTP_SERVER}
+
+    # Custom sysctl settings
+    - |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: 1048576
+          fs.inotify.max_user_instances: 8192
+          net.core.netdev_max_backlog: 30000
+          net.core.rmem_max: 67108864
+          net.core.wmem_max: 67108864
+          net.ipv4.tcp_rmem: 4096 87380 33554432
+          net.ipv4.tcp_wmem: 4096 65536 33554432
+          net.ipv4.tcp_tw_reuse: 1
+          net.ipv4.tcp_window_scaling: 1
+
+    # Custom sysfs
+    - |-
+      machine:
+        sysfs:
+          block.nvme0n1.queue.scheduler: none
+          devices.system.cpu.cpufreq.boost: 0
+
+    # Various udev rules
+    - |-
+      machine:
+        udev:
+          rules:
+            - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
+
+    # Cluster configuration
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        proxy:
+          disabled: true
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          rbac: true
+          stableHostname: true
+          kubernetesTalosAPIAccess:
+            enabled: false
           apidCheckExtKeyUsage: true
           diskQuotaSupport: true
           hostDNS:
