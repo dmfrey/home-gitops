@@ -6,17 +6,23 @@ metadata:
   name: &app external-secrets
   namespace: flux-system
 spec:
-  targetNamespace: security
+  targetNamespace: *app
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/security/external-secrets/app
+  path: ./kubernetes/apps/external-secrets/external-secrets/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
-  wait: true
-  interval: 30m
-  timeout: 5m
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn: []

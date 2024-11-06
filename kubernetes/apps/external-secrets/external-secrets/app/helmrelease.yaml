@@ -38,6 +38,7 @@ spec:
     webhook:
       image:
         repository: ghcr.io/external-secrets/external-secrets
+
       serviceMonitor:
         enabled: true
         interval: 1m
@@ -45,12 +46,13 @@ spec:
     certController:
       image:
         repository: ghcr.io/external-secrets/external-secrets
+
       serviceMonitor:
         enabled: true
         interval: 1m
 
-    bitwarden-sdk-server:
-      enabled: true
+    # bitwarden-sdk-server:
+    #   enabled: true
 
     serviceMonitor:
       enabled: true
