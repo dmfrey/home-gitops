@@ -360,11 +360,9 @@ spec:
 
       backups:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /homeassistant
+        type: nfs
+        server: "${QNAP_ADDR}"
+        path: /homeassistant
         advancedMounts:
           *app :
             *app :

@@ -219,11 +219,9 @@ spec:
         sizeLimit: 10Gi
 
       backup:
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /plexbackups/backups/plex
+        type: nfs
+        server: "${QNAP_ADDR}"
+        path: /plexbackups/backups/plex
         globalMounts:
           - path: /config/Backups
             readOnly: false
