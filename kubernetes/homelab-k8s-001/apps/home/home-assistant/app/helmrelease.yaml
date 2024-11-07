@@ -230,7 +230,7 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
+        # type: LoadBalancer
         annotations:
           # external-dns.alpha.kubernetes.io/hostname: home.${SECRET_DOMAIN}
           # io.cilium/lb-ipam-ips: ${SVC_HASS_ADDR}
