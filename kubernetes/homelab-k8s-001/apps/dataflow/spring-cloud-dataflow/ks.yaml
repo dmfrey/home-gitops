@@ -7,7 +7,7 @@
 # spec:
 #   interval: 15m
 #   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dashboards"
-#   prune: false
+#   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
@@ -27,7 +27,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/services"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -58,7 +58,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/app"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -83,7 +83,7 @@ spec:
 # spec:
 #   interval: 15m
 #   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow"
-#   prune: false
+#   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
@@ -101,7 +101,7 @@ spec:
 # spec:
 #   interval: 15m
 #   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper"
-#   prune: false
+#   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
@@ -119,7 +119,7 @@ spec:
 # spec:
 #   interval: 15m
 #   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/metrics"
-#   prune: false
+#   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops

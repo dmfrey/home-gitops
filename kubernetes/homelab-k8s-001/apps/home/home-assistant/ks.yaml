@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/home/home-assistant/app"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: home-gitops
@@ -52,7 +52,7 @@ spec:
 #     labels:
 #       app.kubernetes.io/name: *app
 #   path: "./kubernetes/homelab-k8s-001/apps/home/home-assistant/home-assistant-addons/otbr"
-#   prune: false
+#   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: home-gitops
