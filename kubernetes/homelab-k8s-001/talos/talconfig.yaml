@@ -215,7 +215,6 @@ controlPlane:
       machine:
         sysfs:
           block.nvme0n1.queue.scheduler: none
-          devices.system.cpu.cpufreq.boost: 0
 
     # Various udev rules
     - |-
@@ -362,7 +361,6 @@ worker:
       machine:
         sysfs:
           block.nvme0n1.queue.scheduler: none
-          devices.system.cpu.cpufreq.boost: 0
 
     # Various udev rules
     - |-

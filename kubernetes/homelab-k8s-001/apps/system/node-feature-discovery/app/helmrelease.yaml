@@ -36,21 +36,11 @@ spec:
     keepHistory: false
 
   values:
-    master:
-      resources:
-        requests:
-          cpu: 11m
-          memory: 51Mi
-        limits:
-          memory: 51Mi
 
     worker:
-      resources:
-        requests:
-          cpu: 15m
-          memory: 48Mi
-        limits:
-          memory: 48Mi
+      config:
+        core:
+          sources: ["pci", "system", "usb"]
 
     prometheus:
       enabled: true

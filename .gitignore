@@ -43,6 +43,7 @@ bin
 
 # Other files
 kubeconfig
+kubeconfig_bak
 talosconfig
 
 # Talos clusterconfigs
