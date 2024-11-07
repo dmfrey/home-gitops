@@ -26,4 +26,4 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: external-dns-external
+    - name: external-dns-cloudflare
