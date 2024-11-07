@@ -221,7 +221,7 @@ spec:
       backups:
         type: nfs
         server: "${QNAP_ADDR}"
-        path: /media/plexbackups/backups/bazarr
+        path: /plexbackups/backups/bazarr
         globalMounts:
           - path: /config/backup
             readOnly: false
