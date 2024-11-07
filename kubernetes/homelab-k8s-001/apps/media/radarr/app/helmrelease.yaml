@@ -168,11 +168,9 @@ spec:
 
       backups:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /plexbackups/backups/radarr
+        type: nfs
+        server: "${QNAP_ADDR}"
+        path: /plexbackups/backups/radarr
         advancedMounts:
           *app :
             *app :

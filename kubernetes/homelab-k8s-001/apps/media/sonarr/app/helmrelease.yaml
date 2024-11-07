@@ -168,11 +168,9 @@ spec:
 
       backups:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /plexbackups/backups/sonarr
+        type: nfs
+        server: "${QNAP_ADDR}"
+        path: /plexbackups/backups/sonarr
         globalMounts:
           - path: /config/Backups
             readOnly: false
