@@ -169,7 +169,9 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
 
       backups:
-        existingClaim: nfs-backup-prowlarr
+        type: nfs
+        server: "${QNAP_ADDR}"
+        path: /plexbackups/backups/prowlarr
         globalMounts:
           - path: /config/Backups
             readOnly: false
