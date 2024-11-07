@@ -36,6 +36,7 @@ spec:
   values:
 
     controllers:
+
       *app :
         type: statefulset
 
@@ -43,7 +44,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/lidarr
               tag: 2.4.3.4248@sha256:fcf7417a7dfa9967a78d668904c62888272bd6dd814b4b9c4500618f51be6b86
@@ -81,7 +82,7 @@ spec:
 
           # sidecars:
           exporter:
-            dependsOn: app
+            dependsOn: *app
 
             image:
               repository: ghcr.io/onedr0p/exportarr
@@ -113,6 +114,8 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+        supplementalGroups:
+          - 1568
 
     service:
       *app :
@@ -159,11 +162,9 @@ spec:
 
       backups:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /plexbackups/backups/lidarr
+        type: nfs
+        server: "${QNAP_ADDR}"
+        path: /plexbackups/backups/lidarr
         globalMounts:
           - path: /config/Backups
             readOnly: false
