@@ -25,12 +25,13 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
 
   values:
 
     controllers:
-      cloudflared:
+      *app :
         replicas: 2
         strategy: RollingUpdate
 
@@ -38,7 +39,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+          *app :
             image:
               repository: docker.io/cloudflare/cloudflared
               tag: 2024.11.0@sha256:2c78df02e1f23ab19d4c636921f05b9ebec163b887e946f98e22e56254a5540f
@@ -50,11 +51,11 @@ spec:
               TUNNEL_ORIGIN_ENABLE_HTTP2: true
               TUNNEL_TRANSPORT_PROTOCOL: quic
               TUNNEL_POST_QUANTUM: true
-              TUNNEL_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: cloudflared-secret
-                    key: TunnelID
+              # TUNNEL_ID:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: cloudflared-secret
+              #       key: TunnelID
 
             args:
               - tunnel
@@ -92,23 +93,23 @@ spec:
               limits:
                 memory: 256Mi
 
-        pod:
-          securityContext:
-            runAsUser: 65534
-            runAsGroup: 65534
-            runAsNonRoot: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
 
     service:
-      app:
-        enabled: true
-        controller: cloudflared
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
 
     serviceMonitor:
-      app:
-        serviceName: cloudflared
+      metrics:
+        serviceName: *app
         endpoints:
           - port: http
             scheme: http
@@ -119,7 +120,6 @@ spec:
     persistence:
 
       config:
-        enabled: true
         type: configMap
         name: cloudflared-configmap
         globalMounts:
