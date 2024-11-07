@@ -217,13 +217,11 @@ spec:
 
       tmp:
         type: emptyDir
-        
+
       backups:
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${QNAP_ADDR}"
-            path: /plexbackups/backups/bazarr
+        type: nfs
+        server: "${QNAP_ADDR}"
+        path: /plexbackups/backups/bazarr
         globalMounts:
           - path: /config/backup
             readOnly: false
