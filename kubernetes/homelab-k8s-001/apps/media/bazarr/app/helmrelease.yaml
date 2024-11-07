@@ -194,6 +194,7 @@ spec:
 
       cache:
         type: emptyDir
+        medium: Memory
         globalMounts:
           - path: /config/cache
 
