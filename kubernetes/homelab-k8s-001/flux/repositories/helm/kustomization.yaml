@@ -19,6 +19,7 @@ resources:
   - hajimari.yaml
   - hashicorp.yaml
   - ingress-nginx.yaml
+  - intel.yaml
   - jetstack.yaml
   - k8s-gateway.yaml
   - kubereboot.yaml

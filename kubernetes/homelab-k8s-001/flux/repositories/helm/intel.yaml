@@ -3,8 +3,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: external-dns
+  name: intel
   namespace: flux-system
 spec:
   interval: 2h
-  url: https://kubernetes-sigs.github.io/external-dns
+  url: https://intel.github.io/helm-charts
