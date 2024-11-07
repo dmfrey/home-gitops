@@ -45,7 +45,8 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+
+          *app :
             image:
               repository: ghcr.io/onedr0p/prowlarr
               tag: 1.25.4.4818@sha256:4df8b9d21469e5051d53d753fb1a277875ac5cdd1dc69068541adb165aae17a1
