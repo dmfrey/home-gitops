@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app external-dns-cloudflare
+
+spec:
+
+  interval: 15m
+
+  chart:
+    spec:
+      # renovate: registryUrl=https://kubernetes-sigs.github.io/external-dns/
+      chart: external-dns
+      version: 1.15.0
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-sigs-external-dns
+        namespace: flux-system
+
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+
+    fullnameOverride: *app
+
+    provider:
+      name: cloudflare
+
+    env:
+      - name: CF_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: &secret external-dns-external-secret
+            key: cloudflare_api_token
+
+    extraArgs:
+      - --cloudflare-dns-records-per-page=5000
+      - --cloudflare-proxied
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --events
+      - --ignore-ingress-tls-spec
+      - --ingress-class=external
+      # - --exclude-target-net=172.16.0.0/12
+      # - --exclude-target-net=192.168.0.0/16
+      # - --exclude-domains=${INTERNAL_DOMAIN}
+
+    interval: 10s
+
+    policy: sync
+
+    sources:
+      - crd
+      - ingress
+      # - service
+
+    txtOwnerId: default
+    txtPrefix: "${CLUSTER_NAME}-"
+
+    domainFilters:
+      - ${SECRET_DOMAIN}
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
+
+    serviceMonitor:
+      enabled: true
