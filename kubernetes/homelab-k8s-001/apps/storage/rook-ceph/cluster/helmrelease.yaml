@@ -115,6 +115,9 @@ spec:
           - name: "dmf-amd-003"
             devices:
               - name: "/dev/nvme0n1"
+          - name: "dmf-intel-001"
+            devices:
+              - name: "/dev/nvme0n1"
 
     ingress:
       dashboard:

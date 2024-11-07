@@ -90,10 +90,11 @@ nodes:
   - hostname: dmf-intel-001
     controlPlane: false
     ipAddress: 192.168.30.41
-    installDisk: /dev/sda
+    installDiskSelector:
+      model: NT-512 2242
     disableSearchDomain: true
     networkInterfaces:
-      - interface: enp2s0   # TODO: Fix this when known
+      - interface: enp87s0
         dhcp: false
         mtu: 1500
         vlans:
@@ -310,6 +311,11 @@ worker:
             rotate-server-certificates: true
           extraConfig:
             maxPods: 250
+          extraMounts:
+            - destination: /var/openebs/local
+              type: bind
+              source: /var/openebs/local
+              options: ["bind", "rshared", "rw"]
           nodeIP:
             validSubnets:
               - 192.168.30.0/24
