@@ -122,7 +122,7 @@ spec:
         externalTrafficPolicy: Cluster
         annotations:
           external-dns.alpha.kubernetes.io/hostname: jellyfin.${SECRET_DOMAIN}
-          io.cilium/lb-ipam-ips: ${SVC_JELLYFIN_ADDR}
+          lbipam.cilium.io/ips: ${SVC_JELLYFIN_ADDR}
         ports:
           http:
             port: &port 8096

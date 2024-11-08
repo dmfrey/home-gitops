@@ -76,6 +76,6 @@ spec:
   listenersServiceTemplate:
     metadata:
       annotations:
-        io.cilium/lb-ipam-ips: ${SVC_MQTT_ADDR}
+        lbipam.cilium.io/ips: ${SVC_MQTT_ADDR}
     spec:
       type: LoadBalancer

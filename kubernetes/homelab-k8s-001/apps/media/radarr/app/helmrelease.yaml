@@ -124,7 +124,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.31.231
+          lbipam.cilium.io/ips: 192.168.31.231
         ports:
           http:
             port: *port

@@ -119,7 +119,7 @@ spec:
         externalTrafficPolicy: Cluster
         annotations:
           external-dns.alpha.kubernetes.io/hostname: plex.${SECRET_DOMAIN}
-          io.cilium/lb-ipam-ips: ${SVC_PLEX_ADDR}
+          lbipam.cilium.io/ips: ${SVC_PLEX_ADDR}
         ports:
           http:
             port: &port 32400

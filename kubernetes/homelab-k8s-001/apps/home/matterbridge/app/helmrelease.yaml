@@ -92,7 +92,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: matterbridge.${SECRET_DOMAIN}
-          io.cilium/lb-ipam-ips: 192.168.31.105
+          lbipam.cilium.io/ips: 192.168.31.105
         ports:
           http:
             port: &port 8283

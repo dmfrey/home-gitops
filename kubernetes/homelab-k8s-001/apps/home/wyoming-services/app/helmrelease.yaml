@@ -162,7 +162,7 @@ spec:
         controller: piper
         annotations:
           app.kubernetes.io/name: piper
-          io.cilium/lb-ipam-ips: 192.168.31.102
+          lbipam.cilium.io/ips: 192.168.31.102
         ports:
           piper:
             port: 10200
@@ -174,7 +174,7 @@ spec:
         controller: whisper
         annotations:
           app.kubernetes.io/name: whisper
-          io.cilium/lb-ipam-ips: 192.168.31.103
+          lbipam.cilium.io/ips: 192.168.31.103
         ports:
           http:
             port: 10300
@@ -185,7 +185,7 @@ spec:
         controller: openwakeword
         annotations:
           app.kubernetes.io/name: openwakeword
-          io.cilium/lb-ipam-ips: 192.168.31.104
+          lbipam.cilium.io/ips: 192.168.31.104
         ports:
           http:
             port: 10400

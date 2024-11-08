@@ -103,7 +103,7 @@ spec:
 
     service:
       annotations:
-        io.cilium/lb-ipam-ips: ${SVC_NEXUS_ADDR}
+        lbipam.cilium.io/ips: ${SVC_NEXUS_ADDR}
       nexus:
         enabled: true
         type: LoadBalancer
