@@ -57,8 +57,8 @@ spec:
         Hass-Code:
           url: https://hass-code.${SECRET_DOMAIN}
           group: Home
-        Matter-Bridge:
-          url: https://matter-bridge.${SECRET_DOMAIN}
+        MatterBridge:
+          url: https://matterbridge.${SECRET_DOMAIN}
           group: Home
         Zigbee2Mqtt:
           url: https://zigbee2mqtt.${SECRET_DOMAIN}
