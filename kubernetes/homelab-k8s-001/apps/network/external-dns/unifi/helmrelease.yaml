@@ -74,8 +74,8 @@ spec:
       - --ignore-ingress-tls-spec
     policy: sync
     sources: ["ingress", "service"]
-    txtOwnerId: main
-    txtPrefix: "${CLUSTER}-"
+    txtOwnerId: default
+    txtPrefix: homelab-k8s-001.
     domainFilters: ["dmfrey.com"]
 
     serviceMonitor:
