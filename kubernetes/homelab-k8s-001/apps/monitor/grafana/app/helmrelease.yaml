@@ -248,20 +248,20 @@ spec:
 
         # Ref: https://grafana.com/grafana/dashboards/13768-blocky
         # renovate: depName="blocky"
-        blocky:
-          gnetId: 13768
-          revision: 4
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: prometheus
+        # blocky:
+        #   gnetId: 13768
+        #   revision: 4
+        #   datasource:
+        #     - name: "DS_PROMETHEUS"
+        #       value: prometheus
         # Ref: https://grafana.com/grafana/dashboards/17996-blocky-postgres
         # renovate: depName="Blocky Query"
-        blocky-postgres:
-          gnetId: 17996
-          revision: 11
-          datasource:
-            - name: "DS_BLOCKYDB"
-              value: blocky-pgcluster
+        # blocky-postgres:
+        #   gnetId: 17996
+        #   revision: 11
+        #   datasource:
+        #     - name: "DS_BLOCKYDB"
+        #       value: blocky-pgcluster
 
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
@@ -467,11 +467,11 @@ spec:
         secretName: pg-grafana-app
         defaultMode: 0444
         readOnly: true
-      - name: pg-blocky-app-secret
-        mountPath: /etc/secrets/blocky
-        secretName: pg-blocky-app
-        defaultMode: 0444
-        readOnly: true
+      # - name: pg-blocky-app-secret
+      #   mountPath: /etc/secrets/blocky
+      #   secretName: pg-blocky-app
+      #   defaultMode: 0444
+      #   readOnly: true
 
     grafana.ini:
       analytics:
@@ -545,7 +545,7 @@ spec:
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: grafana
-      secret.reloader.stakater.com/reload: grafana-secrets,pg-grafana-app,pg-blocky-app
+      secret.reloader.stakater.com/reload: grafana-secrets,pg-grafana-app   #,pg-blocky-app
 
     rbac:
       pspEnabled: false
