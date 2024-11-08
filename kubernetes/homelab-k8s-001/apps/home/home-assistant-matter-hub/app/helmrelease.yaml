@@ -84,8 +84,6 @@ spec:
     service:
       *app :
         controller: *app
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: matterhub.${SECRET_DOMAIN}
         ports:
           http:
             port: *port
