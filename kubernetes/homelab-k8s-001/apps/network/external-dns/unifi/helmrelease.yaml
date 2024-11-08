@@ -75,7 +75,7 @@ spec:
     policy: sync
     sources: ["ingress", "service"]
     txtOwnerId: main
-    txtPrefix: ${CLUSTER}-
+    txtPrefix: "${CLUSTER}-"
     domainFilters: ["dmfrey.com"]
 
     serviceMonitor:
