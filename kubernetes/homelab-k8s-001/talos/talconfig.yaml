@@ -33,7 +33,8 @@ nodes:
   - hostname: dmf-amd-001
     controlPlane: true
     ipAddress: 192.168.30.31
-    installDisk: /dev/sda
+    installDiskSelector:
+      model: T-FORCE 240GB
     disableSearchDomain: true
     networkInterfaces: &networkInterfaces
       - interface: enp2s0
@@ -70,7 +71,8 @@ nodes:
   - hostname: dmf-amd-002
     controlPlane: true
     ipAddress: 192.168.30.32
-    installDisk: /dev/sda
+    installDiskSelector:
+      model: T-FORCE 240GB
     disableSearchDomain: true
     networkInterfaces: *networkInterfaces
     nodeLabels: *nodeLabels
@@ -80,7 +82,8 @@ nodes:
   - hostname: dmf-amd-003
     controlPlane: true
     ipAddress: 192.168.30.33
-    installDisk: /dev/sda
+    installDiskSelector:
+      model: Gigastone SSD
     disableSearchDomain: true
     networkInterfaces: *networkInterfaces
     nodeLabels: *nodeLabels
