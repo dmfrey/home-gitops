@@ -57,6 +57,9 @@ spec:
         Hass-Code:
           url: https://hass-code.${SECRET_DOMAIN}
           group: Home
+        Matter:
+          url: https://matter.${SECRET_DOMAIN}
+          group: Home
         MatterBridge:
           url: https://matterbridge.${SECRET_DOMAIN}
           group: Home
