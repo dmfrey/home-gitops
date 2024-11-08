@@ -104,6 +104,9 @@ spec:
         Alert-Manager:
           url: https://alert-manager.${SECRET_DOMAIN}
           group: Monitor
+        Blackbox-Exporter:
+          url: https://blackbox-exporter.${SECRET_DOMAIN}
+          group: Monitor
         Gatus:
           url: https://status.${SECRET_DOMAIN}
           group: Monitor
