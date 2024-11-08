@@ -6,11 +6,11 @@ resources:
   - ./helmrelease.yaml
 
 configMapGenerator:
-  - name: cilium-values
+  - name: cilium-helm-values
     files:
-      - ./values.yaml
-    options:
-      disableNameSuffixHash: true
+      - ./helm-values.yaml
+    # options:
+    #   disableNameSuffixHash: true
 
 configurations:
   - kustomizeconfig.yaml

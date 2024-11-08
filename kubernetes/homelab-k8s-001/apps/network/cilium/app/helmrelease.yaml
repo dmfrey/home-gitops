@@ -1,10 +1,14 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cilium
-  namespace: system
+
 spec:
+
+  interval: 30m
+
   chart:
     spec:
       chart: cilium
@@ -14,11 +18,20 @@ spec:
         name: cilium
         namespace: flux-system
       version: 1.16.3
-  interval: 30m
+
+  install:
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
 
   valuesFrom:
     - kind: ConfigMap
-      name: cilium-values
+      name: cilium-helm-values
 
   values:
 
@@ -26,6 +39,18 @@ spec:
       "api-rate-limit": "{\"endpoint-create\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-delete\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-get\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-list\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-patch\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\"}"
 
     hubble:
+      enabled: true
+
+      metrics:
+        enabled:
+          - dns:query
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+
       serviceMonitor:
         enabled: true
 
@@ -37,24 +62,28 @@ spec:
           grafana.io/folder: Network
 
       relay:
+        enabled: true
+        rollOutPods: true
         prometheus:
           serviceMonitor:
             enabled: true
 
       ui:
+        enabled: true
+        rollOutPods: true
         ingress:
           enabled: true
-          className: external
+          className: internal
           annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-prod
-            auth.home.arpa/enabled: "true"
-            external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+            # cert-manager.io/cluster-issuer: letsencrypt-prod
+            # auth.home.arpa/enabled: "true"
+            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           hosts:
-            - &host hubble.${EXTERNAL_DOMAIN}
-          tls:
-            - hosts:
-                - *host
-              secretName: hubble-tls-external
+            - &host hubble.${SECRET_DOMAIN}
+          # tls:
+          #   - hosts:
+          #       - *host
+          #     secretName: hubble-tls-external
 
     operator:
       prometheus:
