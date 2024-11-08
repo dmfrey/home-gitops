@@ -9,10 +9,10 @@ bpf:
   masquerade: true
   tproxy: true
 
-# bgpControlPlane:
-#   enabled: true
-#   secretsNamespace:
-#     name: network
+bgpControlPlane:
+  enabled: true
+  secretsNamespace:
+    name: network
 
 cgroup:
   autoMount:
@@ -27,7 +27,7 @@ cluster:
 #   exclusive: false
 
 # devices: bond+
-devices: enp+
+# devices: enp+
 
 # enableCnpStatusUpdates: true
 enableRuntimeDeviceDetection: true
