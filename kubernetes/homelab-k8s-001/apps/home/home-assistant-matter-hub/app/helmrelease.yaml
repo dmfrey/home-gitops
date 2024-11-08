@@ -54,6 +54,7 @@ spec:
               TZ: ${TIMEZONE}
               HAMH_LOG_LEVEL: debug
               HAMH_WEB_PORT: &port 8482
+              HAMH_STORAGE_LOCATION: /data
 
             envFrom:
               - secretRef:
