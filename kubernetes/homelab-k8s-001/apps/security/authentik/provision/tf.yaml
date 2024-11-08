@@ -39,9 +39,6 @@ spec:
         Dataflow:
           url: https://dataflow.${SECRET_DOMAIN}
           group: Dataflow
-        EspHome:
-          url: https://esphome.${SECRET_DOMAIN}
-          group: Home
         Prowlarr:
           url: https://prowlarr.${SECRET_DOMAIN}
           group: Download
@@ -54,8 +51,14 @@ spec:
         Hajimari:
           url: https://portal.${SECRET_DOMAIN}
           group: Home Page
+        EspHome:
+          url: https://esphome.${SECRET_DOMAIN}
+          group: Home
         Hass-Code:
           url: https://hass-code.${SECRET_DOMAIN}
+          group: Home
+        Matter-Bridge:
+          url: https://matter-bridge.${SECRET_DOMAIN}
           group: Home
         Zigbee2Mqtt:
           url: https://zigbee2mqtt.${SECRET_DOMAIN}
