@@ -1,0 +1,93 @@
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: dot-matterbridge-pvc
+#   namespace: flux-system
+# spec:
+#   targetNamespace: home
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: matterbridge
+#   interval: 10m
+#   path: "./kubernetes/homelab-k8s-001/templates/volsync"
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   postBuild:
+#     substitute:
+#       APP: dot-matterbridge-data
+#       VOLSYNC_CLAIM: dot-matterbridge-data
+#       VOLSYNC_CAPACITY: 1Gi
+#     substituteFrom: []
+#     #   - kind: Secret
+#     #     name: flux-volsync-secret
+#   decryption:
+#     provider: sops
+#   dependsOn:
+#     - name: volsync
+#     - name: rook-ceph-cluster
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: matterbridge-pvc
+#   namespace: flux-system
+# spec:
+#   targetNamespace: home
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: matterbridge
+#   interval: 10m
+#   path: "./kubernetes/homelab-k8s-001/templates/volsync"
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   postBuild:
+#     substitute:
+#       APP: matterbridge-data
+#       VOLSYNC_CLAIM: matterbridge-data
+#       VOLSYNC_CAPACITY: 1Gi
+#     substituteFrom: []
+#     #   - kind: Secret
+#     #     name: flux-volsync-secret
+#   decryption:
+#     provider: sops
+#   dependsOn:
+#     - name: volsync
+#     - name: rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app home-assistant-matter-hub
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/home/home-assistant-matter-hub/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: home-assistant-matter-hub-data
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn: []

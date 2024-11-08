@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app matterbridge
+  name: &app home-assistant-matter-hub
 
 spec:
 
@@ -42,21 +42,22 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
-          configmap.reloader.stakater.com/reload: matterbridge-config
+          secret.reloader.stakater.com/reload: &secret home-assistant-matter-hub-secret
 
         containers:
           *app :
             image:
-              repository: ghcr.io/t0bst4r/matterbridge-home-assistant
-              tag: 2.7.2@sha256:bccac64aebd4d5c802b165728e089dcf927f12ae5046c3cdc30c1cd9410d9dbd
+              repository: ghcr.io/t0bst4r/home-assistant-matter-hub
+              tag: 3.0.0-alpha.22@sha256:b7027484a6baddf4936cc1185abb518f1db47b0c96d2847e2842980d68b7a5cc
 
             env:
               TZ: ${TIMEZONE}
-              MHA_CONFIG:
-                valueFrom:
-                  secretKeyRef:
-                    name: matterbridge-secret
-                    key: MHA_CONFIG
+              HAMH_LOG_LEVEL: debug
+              HAMH_WEB_PORT: &port 8482
+
+            envFrom:
+              - secretRef:
+                  name: *secret
 
             probes:
               liveness:
@@ -65,13 +66,6 @@ spec:
                 enabled: false
               startup:
                 enabled: false
-
-            # resources:
-            #   requests:
-            #     cpu: 47m
-            #     memory: 2048Mi
-            #   limits:
-            #     memory: 4096Mi
 
             securityContext:
               readOnlyRootFilesystem: false
@@ -89,17 +83,13 @@ spec:
     service:
       *app :
         controller: *app
-        # type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: matterbridge.${SECRET_DOMAIN}
-          # lbipam.cilium.io/ips: 192.168.31.105
+          external-dns.alpha.kubernetes.io/hostname: matterhub.${SECRET_DOMAIN}
         ports:
           http:
-            port: &port 8283
-          # ws:
-          #   port: &wsPort 8284
-          matter:
-            port: &matterPort 5540
+            port: *port
+          # matter:
+            # port: &matterPort 5540
 
     ingress:
       external:
@@ -112,7 +102,7 @@ spec:
           hajimari.io/icon: "simple-icons:matterdotjs"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host matterbridge.${SECRET_DOMAIN}
+          - host: &host matterhub.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -120,22 +110,8 @@ spec:
                   port: *port
 
     persistence:
-      dot-matterbridge:
-        existingClaim: ${DOT_MATTERBRIDGE_CLAIM}
-        globalMounts:
-          - path: /root/.matterbridge
-
-      matterbridge:
-        existingClaim: ${MATTERBRIDGE_CLAIM}
-        globalMounts:
-          - path: /root/Matterbridge
-
-      # config:
-      #   type: configMap
-      #   name: matterbridge-config
-      #   globalMounts:
-      #     - path: /app/config.json
-      #       subPath: matterbridge-config.json
+      data:
+        existingClaim: ${VOLSYNC_CLAIM}
 
       tmp:
         type: emptyDir

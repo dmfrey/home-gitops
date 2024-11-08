@@ -60,8 +60,8 @@ spec:
         Matter:
           url: https://matter.${SECRET_DOMAIN}
           group: Home
-        MatterBridge:
-          url: https://matterbridge.${SECRET_DOMAIN}
+        MatterHub:
+          url: https://matterhub.${SECRET_DOMAIN}
           group: Home
         Zigbee2Mqtt:
           url: https://zigbee2mqtt.${SECRET_DOMAIN}
