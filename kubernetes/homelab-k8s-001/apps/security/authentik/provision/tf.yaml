@@ -107,6 +107,7 @@ spec:
             ^/join
             ^/help
             ^/static/
+            ^/assets/
         Alert-Manager:
           url: https://alert-manager.${SECRET_DOMAIN}
           group: Monitor
