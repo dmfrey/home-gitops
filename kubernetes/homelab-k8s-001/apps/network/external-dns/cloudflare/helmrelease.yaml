@@ -59,7 +59,7 @@ spec:
       # - --exclude-target-net=192.168.0.0/16
       # - --exclude-domains=${INTERNAL_DOMAIN}
 
-    interval: 10m
+    interval: 1m
 
     policy: sync
 
