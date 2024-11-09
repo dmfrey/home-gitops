@@ -36,7 +36,7 @@ spec:
     fullnameOverride: *app
 
     logLevel: debug
-    
+
     provider:
       name: cloudflare
 
@@ -59,7 +59,7 @@ spec:
       # - --exclude-target-net=192.168.0.0/16
       # - --exclude-domains=${INTERNAL_DOMAIN}
 
-    interval: 10s
+    interval: 10m
 
     policy: sync
 
