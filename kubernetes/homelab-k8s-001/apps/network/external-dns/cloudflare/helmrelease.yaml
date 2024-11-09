@@ -35,6 +35,8 @@ spec:
 
     fullnameOverride: *app
 
+    logLevel: debug
+    
     provider:
       name: cloudflare
 
