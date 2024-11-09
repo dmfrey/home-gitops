@@ -103,11 +103,11 @@ spec:
           url: https://join.${SECRET_DOMAIN}
           group: Media
           skip_path_regex: |
-            ^/j/
+            ^/j/*
             ^/join
             ^/help
-            ^/static/
-            ^/assets/
+            ^/static/*
+            ^/assets/*
         Alert-Manager:
           url: https://alert-manager.${SECRET_DOMAIN}
           group: Monitor
