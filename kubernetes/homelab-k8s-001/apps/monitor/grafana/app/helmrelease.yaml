@@ -271,6 +271,12 @@ spec:
             - name: DS_PROMETHEUS
               value: prometheus
 
+        external-dns:
+          # renovate: depName="External DNS"
+          gnetId: 15038
+          revision: 3
+          datasource: prometheus
+
         nginx-ingress-controller:
           # renovate: depName="NGINX Ingress Controller"
           gnetId: 21336
