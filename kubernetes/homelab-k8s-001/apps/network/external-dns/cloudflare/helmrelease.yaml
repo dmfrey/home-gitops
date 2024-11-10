@@ -61,7 +61,7 @@ spec:
 
     interval: 30m
 
-    policy: sync
+    policy: upsert-only
 
     sources:
       - crd
