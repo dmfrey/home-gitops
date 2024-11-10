@@ -55,18 +55,14 @@ spec:
       - --events
       - --ignore-ingress-tls-spec
       - --ingress-class=external
-      # - --exclude-target-net=172.16.0.0/12
-      # - --exclude-target-net=192.168.0.0/16
-      # - --exclude-domains=${INTERNAL_DOMAIN}
 
     interval: 30m
 
-    policy: upsert-only
+    policy: sync
 
     sources:
       - crd
       - ingress
-      # - service
 
     txtOwnerId: default
     txtPrefix: "${CLUSTER_NAME}-"
