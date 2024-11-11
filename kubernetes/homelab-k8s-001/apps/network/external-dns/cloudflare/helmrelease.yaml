@@ -54,7 +54,7 @@ spec:
       - name: CF_API_EMAIL
         valueFrom:
           secretKeyRef:
-            name: &secret external-dns-external-secret
+            name: *secret
             key: cloudflare_api_email
 
     extraArgs:
