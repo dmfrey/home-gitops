@@ -275,6 +275,34 @@ spec:
             - name: DS_PROMETHEUS
               value: prometheus
 
+        cilium-hubble:
+          # renovate: depName="Cilium | Hubble"
+          url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/hubble/dashboards/hubble-dashboard.json
+          datasource:
+            - name: DS_PROMETHEUS
+              value: prometheus
+
+        cilium-hubble-l7:
+          # renovate: depName="Cilium | Hubble | L7 Workloads"
+          url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/hubble/dashboards/hubble-l7-http-metrics-by-workload.json
+          datasource:
+            - name: DS_PROMETHEUS
+              value: prometheus
+
+        cilium-hubble-dns:
+          # renovate: depName="Cilium | Hubble | DNS"
+          url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/hubble/dashboards/hubble-dns-namespace.json
+          datasource:
+            - name: DS_PROMETHEUS
+              value: prometheus
+
+        cilium-hubble-overview:
+          # renovate: depName="Cilium | Hubble | Overview"
+          url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/hubble/dashboards/hubble-network-overview-namespace.json
+          datasource:
+            - name: DS_PROMETHEUS
+              value: prometheus
+
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
