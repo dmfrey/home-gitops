@@ -55,7 +55,7 @@ spec:
               HAMH_LOG_LEVEL: debug
               HAMH_WEB_PORT: &port 8482
               HAMH_STORAGE_LOCATION: /data
-              HAMH_MDNS_NETWORK_INTERFACE: enp2s0.50
+              HAMH_MDNS_NETWORK_INTERFACE: eth1
 
             envFrom:
               - secretRef:
@@ -78,6 +78,7 @@ spec:
             k8s.v1.cni.cncf.io/networks: |
               [{
                 "name":"iot-vlan",
+                "interface": "eth1",
                 "namespace": "network",
                 "ips": ["192.168.50.6/24"],
                 "mac": "a6:60:f7:85:75:14",
