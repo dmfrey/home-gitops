@@ -72,6 +72,17 @@ spec:
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
 
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.6/24"],
+                "mac": "a6:60:f7:85:75:14",
+                "gateway": ["192.168.50.1"]
+              }]
+
     defaultPodOptions:
       hostNetwork: true
       hostPID: true
@@ -89,11 +100,9 @@ spec:
         ports:
           http:
             port: *port
-          # matter:
-            # port: &matterPort 5540
 
     ingress:
-      external:
+      internal:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
