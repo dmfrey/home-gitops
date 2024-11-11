@@ -73,6 +73,8 @@ spec:
               capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
+      hostNetwork: true
+      hostPID: true
       securityContext:
         runAsNonRoot: false
         runAsUser: 0
