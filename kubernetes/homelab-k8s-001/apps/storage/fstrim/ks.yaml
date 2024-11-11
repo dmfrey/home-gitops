@@ -6,7 +6,7 @@ metadata:
   name: &app fstrim
   namespace: flux-system
 spec:
-  targetNamespace: kube-system
+  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
