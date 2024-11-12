@@ -170,12 +170,12 @@ spec:
           hajimari.io/icon: "solar:subtitles-outline"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host bazarr.${SECRET_DOMAIN}
+          - host: bazarr.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
+                  port: http
 
     persistence:
       add-ons:
