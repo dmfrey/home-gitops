@@ -10,7 +10,7 @@ data:
     endpoints:
       - name: "${APP}"
         group: guarded
-        url: 1.1.1.1
+        url: 192.168.86.1
         interval: 1m
         ui:
           hide-hostname: true
@@ -22,4 +22,3 @@ data:
           - "len([BODY]) == 0"
         alerts:
           - type: pushover
-            
