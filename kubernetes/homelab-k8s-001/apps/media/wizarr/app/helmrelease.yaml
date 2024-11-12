@@ -94,7 +94,7 @@ spec:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
+                  port: http
 
     persistence:
       config:
