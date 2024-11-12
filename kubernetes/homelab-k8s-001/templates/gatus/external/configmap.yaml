@@ -18,7 +18,4 @@ data:
           - "[STATUS] == ${GATUS_STATUS:-200}"
         alerts:
           - type: pushover
-            failure-threshold: 3
-            success-threshold: 5
-            send-on-resolved: true
-            description: "healthcheck failed"
+            
