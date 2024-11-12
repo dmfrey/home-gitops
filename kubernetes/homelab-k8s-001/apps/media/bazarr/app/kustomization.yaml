@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ../../../../templates/volsync
-  - ../../../../templates/gatus/external
+  - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: bazarr-scripts
     files:
