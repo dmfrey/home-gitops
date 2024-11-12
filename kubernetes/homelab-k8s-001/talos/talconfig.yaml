@@ -34,7 +34,7 @@ nodes:
     controlPlane: true
     ipAddress: 192.168.30.31
     installDiskSelector:
-      model: T-FORCE 240GB
+      model: GIGASTONE SSD 51
     disableSearchDomain: true
     networkInterfaces: &networkInterfaces
       - interface: enp2s0
