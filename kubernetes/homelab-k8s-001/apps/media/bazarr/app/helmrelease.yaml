@@ -165,7 +165,7 @@ spec:
         className: internal
         annotations:
           theme.home.arpa/enabled: "true"
-          auth.home.arpa/enabled: "true"
+          # auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "solar:subtitles-outline"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
