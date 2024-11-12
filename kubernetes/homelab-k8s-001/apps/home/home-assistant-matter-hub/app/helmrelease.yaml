@@ -108,7 +108,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-          nginx.org/websocket-services: *app
+          nginx.org/websocket-services: matterhub
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:matterdotjs"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
@@ -118,7 +118,7 @@ spec:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
+                  port: http
 
     persistence:
       data:
