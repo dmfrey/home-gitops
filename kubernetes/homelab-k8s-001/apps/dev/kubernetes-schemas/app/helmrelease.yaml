@@ -36,7 +36,8 @@ spec:
   values:
 
     controllers:
-      kubernetes-schemas:
+
+      *app :
         replicas: 1
         strategy: RollingUpdate
 
@@ -50,7 +51,7 @@ spec:
                   app.kubernetes.io/name: *app
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/dmfrey/kubernetes-schemas
               tag: latest@sha256:8d160e06ad99024aebb3b7f9b56dd2fc295fff1441aade42020016d068bb5abf
@@ -63,14 +64,14 @@ spec:
                 memory: 100Mi
 
     service:
-      app:
-        controller: kubernetes-schemas
+      *app :
+        controller: *app
         ports:
           http:
             port: &port 8080
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-prod"
@@ -82,8 +83,8 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: *port
+                  identifier: *app
+                  port: http
         tls:
           - hosts:
               - *host
