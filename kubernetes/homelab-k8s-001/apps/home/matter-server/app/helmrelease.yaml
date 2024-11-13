@@ -100,7 +100,6 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: *app
           lbipam.cilium.io/ips: ${SVC_MATTER_ADDR}
         ports:
           ws:
@@ -116,7 +115,6 @@ spec:
           nginx.org/websocket-services: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:matter"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: *host
             paths:
