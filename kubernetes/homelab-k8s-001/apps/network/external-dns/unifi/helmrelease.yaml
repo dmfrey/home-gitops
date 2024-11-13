@@ -73,11 +73,11 @@ spec:
     extraArgs:
       - --ignore-ingress-tls-spec
 
-    policy: sync
+    policy: upsert-only
 
     sources: ["ingress", "service"]
 
-    txtOwnerId: ''
+    txtOwnerId: homelab-k8s-001
     txtPrefix: homelab-k8s-001.
     domainFilters: ["dmfrey.com"]
 
