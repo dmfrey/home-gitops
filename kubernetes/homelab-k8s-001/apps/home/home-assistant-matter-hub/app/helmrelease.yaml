@@ -113,7 +113,7 @@ spec:
           hajimari.io/icon: "simple-icons:matterdotjs"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host matterhub.${SECRET_DOMAIN}
+          - host: matterhub.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

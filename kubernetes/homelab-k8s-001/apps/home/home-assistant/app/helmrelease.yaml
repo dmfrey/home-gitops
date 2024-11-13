@@ -248,8 +248,8 @@ spec:
       external:
         className: external
         annotations:
-          nginx.org/websocket-services: home-assistant
           cert-manager.io/cluster-issuer: letsencrypt-prod
+          nginx.org/websocket-services: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:homeassistant"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
@@ -259,33 +259,28 @@ spec:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
+                  port: http
         tls:
           - hosts:
               - *host
             secretName: home-assistant-tls-external
 
-      code-external:
-        className: external
+      code:
+        className: internal
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:vs-code"
           hajimari.io/appName: "Hass Config"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host-hass-code hass-code.${SECRET_DOMAIN}
+          - host: hass-code.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: *app
-                  port: *codePort
-        tls:
-          - hosts:
-              - *host-hass-code
-            secretName: hass-code-tls-external
+                  port: code
 
     serviceMonitor:
       *app :
