@@ -192,20 +192,14 @@ spec:
 
     ingress:
       piper:
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
         className: external
         hosts:
-          - host: &host piper.${EXTERNAL_DOMAIN}
+          - host: piper.${EXTERNAL_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: piper
                   port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: piper-tls-internal
 
     persistence:
       piper-config:
