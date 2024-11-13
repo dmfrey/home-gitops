@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: spring-cloud-dataflow
+  name: &app spring-cloud-dataflow
   namespace: dataflow
 spec:
 
