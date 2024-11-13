@@ -121,7 +121,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: jellyfin.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: &host jellyfin.${SECRET_DOMAIN}
           lbipam.cilium.io/ips: ${SVC_JELLYFIN_ADDR}
         ports:
           http:
@@ -131,23 +131,17 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
           hajimari.io/url: "https://jellyfin.${SECRET_DOMAIN}/web/index.html"
-          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "jellyfin.${SECRET_DOMAIN}"
+          - host: *host
             paths:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
-        tls:
-        - hosts:
-          - *host
-          secretName: jellyfin-tls-external
+                  port: http
 
     persistence:
       config:
