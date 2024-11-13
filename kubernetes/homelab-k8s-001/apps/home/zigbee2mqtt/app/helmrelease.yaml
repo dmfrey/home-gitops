@@ -142,22 +142,17 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:zigbee"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hosts: &hosts
-          - host: &host zigbee2mqtt.${SECRET_DOMAIN}
+        hosts: 
+          - host: zigbee2mqtt.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
-        tls: &tls
-          - hosts:
-              - *host
-            secretName: zigbee2mqtt-tls-external
+                  port: http
 
     persistence:
       data:
