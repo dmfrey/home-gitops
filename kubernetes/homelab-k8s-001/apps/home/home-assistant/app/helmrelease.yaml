@@ -263,7 +263,6 @@ spec:
       code:
         className: internal
         annotations:
-          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:vs-code"
           hajimari.io/appName: "Hass Config"
