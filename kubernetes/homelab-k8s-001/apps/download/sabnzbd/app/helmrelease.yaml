@@ -166,7 +166,6 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
           theme.home.arpa/theme: "nord"
           auth.home.arpa/enabled: "true"
@@ -174,17 +173,13 @@ spec:
           hajimari.io/icon: "mdi:download-circle-outline"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "sabnzbd.${SECRET_DOMAIN}"
+          - host: sabnzbd.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: *app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
-            secretName: sabnzbd-client-tls-external
+                  port: http
 
     persistence:
       config:
