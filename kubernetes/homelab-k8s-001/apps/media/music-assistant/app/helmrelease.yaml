@@ -75,20 +75,15 @@ spec:
         enabled: true
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:headphones"
         hosts:
-        - host: &host "music.${EXTERNAL_DOMAIN}"
+        - host: music.${SECRET_DOMAIN}
           paths:
           - path: /
             service:
               identifier: *app
-              port: *port
-        tls:
-        - hosts:
-          - *host
-          secretName: music-assistant-tls-external
+              port: http
 
     persistence:
       data:

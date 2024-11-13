@@ -82,10 +82,8 @@ spec:
 
     ingress:
       external:
-        enabled: true
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
@@ -97,11 +95,7 @@ spec:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
-            secretName: tautulli-tls-external
+                  port: http
 
     persistence:
       config:

@@ -176,22 +176,17 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:eye-circle-outline"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "request.${SECRET_DOMAIN}"
+          - host: request.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
-            secretName: overseerr-tls-external
+                  port: http
 
     persistence:
       config:
