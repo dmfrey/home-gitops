@@ -115,7 +115,6 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: "material-symbols:security-rounded"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
@@ -128,11 +127,6 @@ spec:
         pathType: "Prefix"
         paths:
           - "/"
-
-        tls:
-        - hosts:
-          - auth.${SECRET_DOMAIN}
-          secretName: authentik-tls-external
 
       metrics:
         serviceMonitor:
