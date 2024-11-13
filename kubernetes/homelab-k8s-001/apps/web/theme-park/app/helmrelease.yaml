@@ -37,7 +37,8 @@ spec:
   values:
 
     controllers:
-      theme-park:
+
+      *app :
         replicas: 1
         strategy: RollingUpdate
 
@@ -51,7 +52,7 @@ spec:
                   app.kubernetes.io/name: *app
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/theme-park
               tag: 1.18.0@sha256:6d6ad5a1c3b55b83f7441ba0346cbd60939c776a5038d34c7fb4ac1136bfa271
@@ -94,31 +95,26 @@ spec:
                 memory: 500Mi
 
     service:
-      app:
-        controller: theme-park
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
-      app:
+      external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:paint-outline"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "theme-park.${SECRET_DOMAIN}"
+          - host: theme-park.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
-            secretName: theme-park-tls-external
+                  identifier: *app
+                  port: http
 
     persistence:
       rdt-config:
