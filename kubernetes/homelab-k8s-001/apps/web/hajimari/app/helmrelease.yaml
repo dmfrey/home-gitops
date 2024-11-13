@@ -78,7 +78,7 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          # cert-manager.io/cluster-issuer: "letsencrypt-prod"
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "false"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
@@ -87,10 +87,10 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-            secretName: hajimari-tls-external
+        # tls:
+        #   - hosts:
+        #       - *host
+        #     secretName: hajimari-tls-external
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
