@@ -79,7 +79,7 @@ spec:
 
     txtOwnerId: "${CLUSTER_NAME}"
     txtPrefix: "${CLUSTER_NAME}."
-    domainFilters: ["${SECRET_NAME}"]
+    domainFilters: ["${SECRET_DOMAIN}"]
 
     serviceMonitor:
       enabled: true
