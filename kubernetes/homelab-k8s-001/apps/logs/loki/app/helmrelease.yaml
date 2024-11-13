@@ -154,20 +154,12 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:loki"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "loki.${SECRET_DOMAIN}"
+          - host: loki.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-            secretName: loki-tls-external
 
     write:
       replicas: 2
