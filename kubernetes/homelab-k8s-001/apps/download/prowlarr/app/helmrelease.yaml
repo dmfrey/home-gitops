@@ -146,23 +146,18 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           theme.home.arpa/enabled: "true"
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:movie-search"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host prowlarr.${SECRET_DOMAIN}
+          - host: prowlarr.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
-            secretName: prowlarr-tls-external
+                  port: http
 
     persistence:
       config:
