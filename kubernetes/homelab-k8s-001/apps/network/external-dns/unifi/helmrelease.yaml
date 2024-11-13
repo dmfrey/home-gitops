@@ -77,9 +77,9 @@ spec:
 
     sources: ["ingress", "service"]
 
-    txtOwnerId: homelab-k8s-001
-    txtPrefix: homelab-k8s-001.
-    domainFilters: ["dmfrey.com"]
+    txtOwnerId: "${CLUSTER_NAME}"
+    txtPrefix: "${CLUSTER_NAME}."
+    domainFilters: ["${SECRET_NAME}"]
 
     serviceMonitor:
       enabled: true
