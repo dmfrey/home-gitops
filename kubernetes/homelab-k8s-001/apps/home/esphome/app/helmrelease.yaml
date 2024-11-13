@@ -75,21 +75,16 @@ spec:
         enabled: true
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "chip"
         hosts:
-          - host: &host esphome.${SECRET_DOMAIN}
+          - host: esphome.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: *app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
-            secretName: esphome-tls-external
+                  port: http
 
     persistence:
       config:
