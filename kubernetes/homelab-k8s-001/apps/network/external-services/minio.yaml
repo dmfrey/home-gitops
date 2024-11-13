@@ -33,7 +33,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     hajimari.io/enable: "true"
     hajimari.io/icon: "simple-icons:minio"
   labels:
@@ -44,7 +43,7 @@ metadata:
 spec:
   ingressClassName: external
   rules:
-  - host: &host minio.${SECRET_DOMAIN}
+  - host: minio.${SECRET_DOMAIN}
     http:
       paths:
       - backend:
@@ -54,8 +53,4 @@ spec:
               number: 9090
         path: /
         pathType: Prefix
-  tls:
-  - hosts:
-    - *host
-    secretName: minio-tls-internal
 
