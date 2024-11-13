@@ -31,7 +31,7 @@ spec:
   values:
 
     fullnameOverride: *app
-    # logLevel: debug
+    logLevel: &logLevel debug
 
     provider:
       name: webhook
@@ -53,8 +53,8 @@ spec:
               secretKeyRef:
                 name: *secret
                 key: EXTERNAL_DNS_UNIFI_PASS
-          # - name: LOG_LEVEL
-          #   value: "debug"
+          - name: LOG_LEVEL
+            value: *logLevel
 
         livenessProbe:
           httpGet:
@@ -72,8 +72,11 @@ spec:
 
     extraArgs:
       - --ignore-ingress-tls-spec
+
     policy: sync
+
     sources: ["ingress", "service"]
+
     txtOwnerId: default
     txtPrefix: homelab-k8s-001.
     domainFilters: ["dmfrey.com"]
