@@ -103,17 +103,12 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hostname: &host thanos.${SECRET_DOMAIN}
+        hostname: thanos.${SECRET_DOMAIN}
         tls: false
-        extraTls:
-          - hosts:
-              - *host
-            secretName: thanos-tls-external
 
     bucketweb:
       enabled: true

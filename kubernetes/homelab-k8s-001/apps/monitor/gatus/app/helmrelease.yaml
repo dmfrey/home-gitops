@@ -30,7 +30,7 @@ spec:
   values:
 
     controllers:
-      gatus:
+      *app :
         replicas: 3
         strategy: RollingUpdate
         annotations:
@@ -62,7 +62,7 @@ spec:
 
         containers:
 
-          app:
+          *app :
 
             image:
               repository: ghcr.io/twin/gatus
@@ -128,46 +128,25 @@ spec:
                   app.kubernetes.io/name: *app
 
     service:
-      app:
+      *app :
         controller: *app
         ports:
           http:
             port: *port
 
-    serviceMonitor:
-      app:
-        serviceName: *app
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-            metricRelabelings:
-              - action: labeldrop
-                regex: (pod)
-              - action: replace
-                sourceLabels: ["service"]
-                targetLabel: instance
-
     ingress:
-      app:
+      external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host status.${SECRET_DOMAIN}
+          - host: status.${SECRET_DOMAIN}
             paths:
             - path: /
               service:
                 identifier: app
                 port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: gatus-tls-external
 
     serviceAccount:
       create: true
@@ -184,3 +163,20 @@ spec:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
+
+    serviceMonitor:
+      metrics:
+        serviceName: *app
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+            metricRelabelings:
+              - action: labeldrop
+                regex: (pod)
+              - action: replace
+                sourceLabels: ["service"]
+                targetLabel: instance
+

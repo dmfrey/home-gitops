@@ -49,9 +49,9 @@ spec:
       ingress:
         enabled: true
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         ingressClassName: internal
-        hosts: ["alertmanager.devbu.io"]
+        hosts: ["alert-manager.${SECRET_DOMAIN}"]
         pathType: Prefix
       alertmanagerSpec:
         useExistingSecret: true
@@ -90,7 +90,6 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:prometheus"
@@ -98,11 +97,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         pathType: Prefix
         hosts:
-          - &host prometheus.${SECRET_DOMAIN}
-        tls:
-          - hosts:
-              - *host
-            secretName: prometheus-tls-external
+          - prometheus.${SECRET_DOMAIN}
 
       thanosService:
         enabled: true

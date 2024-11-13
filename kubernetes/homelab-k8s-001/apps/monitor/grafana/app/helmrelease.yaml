@@ -569,18 +569,12 @@ spec:
       enabled: true
       ingressClassName: external
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
         hajimari.io/enable: "true"
         hajimari.io/icon: "simple-icons:grafana"
         external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       hosts:
-        - &host grafana.${SECRET_DOMAIN}
+        - grafana.${SECRET_DOMAIN}
         - monitor.${SECRET_DOMAIN}
-      tls:
-        - hosts:
-            - *host
-            - monitor.${SECRET_DOMAIN}
-          secretName: grafana-tls-external
 
     persistence:
       enabled: true
