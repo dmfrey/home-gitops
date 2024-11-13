@@ -73,7 +73,7 @@ spec:
     extraArgs:
       - --ignore-ingress-tls-spec
 
-    policy: upsert-only
+    policy: sync
 
     sources: ["ingress", "service"]
 
