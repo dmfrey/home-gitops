@@ -74,18 +74,13 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-prod"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:code-json
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: *app
                   port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: kubernetes-schemas-tls-external
