@@ -39,7 +39,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "internal.${SECRET_DOMAIN}"
           lbipam.cilium.io/ips: ${SVC_INTERNAL_NGINX_ADDR}
-        externalTrafficPolicy: Cluster
 
       ingressClassResource:
         name: internal
@@ -90,21 +89,7 @@ spec:
       extraArgs:
         default-ssl-certificate: "network/${SECRET_DOMAIN}-tls"
 
-      # enableAnnotationValidations: true
-
-      # publishService:
-      #   enabled: true
-
-      # topologySpreadConstraints:
-      #   - maxSkew: 1
-      #     topologyKey: kubernetes.io/hostname
-      #     whenUnsatisfiable: DoNotSchedule
-      #     labelSelector:
-      #       matchLabels:
-      #         app.kubernetes.io/name: ingress-nginx
-      #         app.kubernetes.io/instance: *name
-      #         app.kubernetes.io/component: controller
-
+      terminationGracePeriodSeconds: 120
       resources:
         requests:
           cpu: 100m
@@ -113,9 +98,3 @@ spec:
 
     defaultBackend:
       enabled: false
-      # image:
-      #   repository: ghcr.io/tarampampam/error-pages
-      #   tag: 3.3.0
-      # extraEnvs:
-      #   - { name: TEMPLATE_NAME, value: lost-in-space }
-      #   - { name: SHOW_DETAILS, value: "false" }
