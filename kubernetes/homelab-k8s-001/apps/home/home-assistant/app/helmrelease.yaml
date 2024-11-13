@@ -248,22 +248,17 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           nginx.org/websocket-services: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:homeassistant"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host home.${SECRET_DOMAIN}
+          - host: home.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: *app
                   port: http
-        tls:
-          - hosts:
-              - *host
-            secretName: home-assistant-tls-external
 
       code:
         className: internal
