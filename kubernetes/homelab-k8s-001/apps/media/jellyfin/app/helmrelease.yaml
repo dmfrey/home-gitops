@@ -118,11 +118,11 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
-        externalTrafficPolicy: Cluster
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: &host jellyfin.${SECRET_DOMAIN}
-          lbipam.cilium.io/ips: ${SVC_JELLYFIN_ADDR}
+        # type: LoadBalancer
+        # externalTrafficPolicy: Cluster
+        # annotations:
+        #   external-dns.alpha.kubernetes.io/hostname: &host jellyfin.${SECRET_DOMAIN}
+        #   lbipam.cilium.io/ips: ${SVC_JELLYFIN_ADDR}
         ports:
           http:
             port: &port 8096
@@ -139,7 +139,7 @@ spec:
           hajimari.io/url: "https://jellyfin.${SECRET_DOMAIN}/web/index.html"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: *host
+          - host: jellyfin.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
