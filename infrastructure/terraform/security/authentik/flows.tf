@@ -42,3 +42,24 @@ data "authentik_flow" "default-invalidation-flow" {
 data "authentik_flow" "default-user-settings-flow" {
   slug = "default-user-settings-flow"
 }
+
+## Invalidation flow
+data "authentik_flow" "default-provider-invalidation-flow" {
+  slug = "default-provider-invalidation-flow"
+}
+
+resource "authentik_flow" "invalidation" {
+  name               = "invalidation-flow"
+  title              = "Invalidation Flow"
+  slug               = "invalidation-flow"
+  policy_engine_mode = "any"
+  designation        = "invalidation"
+  denied_action      = "continue"
+  # background         = "https://placeholder.jpeg"
+}
+
+resource "authentik_flow_stage_binding" "invalidation-flow-binding-00" {
+  target = authentik_flow.invalidation.uuid
+  stage  = authentik_stage_user_logout.invalidation-logout.id
+  order  = 0
+}

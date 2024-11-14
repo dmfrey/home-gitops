@@ -19,3 +19,8 @@ data "authentik_stage" "mfa-validation-stage" {
 data "authentik_stage" "user-login-stage" {
   name = "default-authentication-login"
 }
+
+## Invalidation stages
+resource "authentik_stage_user_logout" "invalidation-logout" {
+  name = "invalidation-logout"
+}
