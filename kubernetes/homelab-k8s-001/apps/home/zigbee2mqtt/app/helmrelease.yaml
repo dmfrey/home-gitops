@@ -142,7 +142,6 @@ spec:
       internal:
         className: internal
         annotations:
-          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:zigbee"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
