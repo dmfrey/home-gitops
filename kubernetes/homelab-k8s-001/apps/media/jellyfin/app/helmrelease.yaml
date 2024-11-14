@@ -129,7 +129,7 @@ spec:
 
     ingress:
       internal:
-        enabled: false
+        enabled: true
         className: internal
         annotations:
           auth.home.arpa/enabled: "true"
