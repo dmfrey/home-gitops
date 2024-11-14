@@ -72,6 +72,7 @@ spec:
           enabled: true
           className: internal
           annotations:
+            nginx.org/websocket-services: hubble-ui
             external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
             auth.home.arpa/enabled: "true"
           hosts:
