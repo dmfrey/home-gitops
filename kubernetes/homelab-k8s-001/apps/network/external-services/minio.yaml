@@ -35,10 +35,10 @@ metadata:
   annotations:
     hajimari.io/enable: "true"
     hajimari.io/icon: "simple-icons:minio"
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   labels:
     app.kubernetes.io/instance: minio
     app.kubernetes.io/name: minio
-    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   name: minio
   namespace: network
 spec:
