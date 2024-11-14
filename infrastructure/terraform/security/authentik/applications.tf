@@ -53,8 +53,9 @@ resource "authentik_provider_oauth2" "oauth2_providers" {
   access_token_validity = "hours=1"
   client_id             = each.value.client_id
   client_secret         = sensitive(each.value.client_secret)
-  authorization_flow    = data.authentik_flow.default-authorization-flow.id
-  authentication_flow   = authentik_flow.homelab5767-authentication.uuid
+  authorization_flow     = data.authentik_flow.default-authorization-flow.id
+  authentication_flow    = authentik_flow.homelab5767-authentication.uuid
+  invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
   redirect_uris         = each.value.redirect_uris
   signing_key           = data.authentik_certificate_key_pair.default-certificate.id
   property_mappings     = data.authentik_property_mapping_provider_scope.scopes.ids
