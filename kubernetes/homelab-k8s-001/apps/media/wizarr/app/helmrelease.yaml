@@ -81,15 +81,15 @@ spec:
             port: &port 5690
 
     ingress:
-      internal:
-        className: internal
+      external:
+        className: external
         annotations:
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:invite"
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: &host join.${SECRET_DOMAIN}
+          - host: join.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
