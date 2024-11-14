@@ -76,6 +76,7 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:headphones"
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
         - host: music.${SECRET_DOMAIN}
           paths:
