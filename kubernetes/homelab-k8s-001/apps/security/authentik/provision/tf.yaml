@@ -36,24 +36,24 @@ spec:
         # Ollama:
         #   url: https://ollama.${SECRET_DOMAIN}
         #   group: AI
-        Dataflow:
-          url: https://dataflow.${SECRET_DOMAIN}
-          group: Dataflow
-        Prowlarr:
-          url: https://prowlarr.${SECRET_DOMAIN}
-          group: Download
-        RealDebrid-Client:
-          url: https://rdt.${SECRET_DOMAIN}
-          group: Download
-        SABNZBD-Client:
-          url: https://sabnzbd.${SECRET_DOMAIN}
-          group: Download
+        # Dataflow:
+        #   url: https://dataflow.${SECRET_DOMAIN}
+        #   group: Dataflow
+        # Prowlarr:
+        #   url: https://prowlarr.${SECRET_DOMAIN}
+        #   group: Download
+        # RealDebrid-Client:
+        #   url: https://rdt.${SECRET_DOMAIN}
+        #   group: Download
+        # SABNZBD-Client:
+        #   url: https://sabnzbd.${SECRET_DOMAIN}
+        #   group: Download
         Hajimari:
           url: https://portal.${SECRET_DOMAIN}
           group: Home Page
-        EspHome:
-          url: https://esphome.${SECRET_DOMAIN}
-          group: Home
+        # EspHome:
+        #   url: https://esphome.${SECRET_DOMAIN}
+        #   group: Home
         # Hass-Code:
         #   url: https://hass-code.${SECRET_DOMAIN}
         #   group: Home
@@ -63,39 +63,39 @@ spec:
         # MatterHub:
         #   url: https://matterhub.${SECRET_DOMAIN}
         #   group: Home
-        Zigbee2Mqtt:
-          url: https://zigbee2mqtt.${SECRET_DOMAIN}
-          group: Home
-        Loki:
-          url: https://loki.${SECRET_DOMAIN}
-          group: Logs
+        # Zigbee2Mqtt:
+        #   url: https://zigbee2mqtt.${SECRET_DOMAIN}
+        #   group: Home
+        # Loki:
+        #   url: https://loki.${SECRET_DOMAIN}
+        #   group: Logs
         # Bazarr:
         #   url: https://bazarr.${SECRET_DOMAIN}
         #   group: Media
         Jellyfin:
           url: https://jellyfin.${SECRET_DOMAIN}
           group: Media
-        Lidarr:
-          url: https://lidarr.${SECRET_DOMAIN}
-          group: Media
-        Music-Assistant:
-          url: https://music.${SECRET_DOMAIN}
-          group: Media
-        Readarr:
-          url: https://readarr.${SECRET_DOMAIN}
-          group: Media
-        Radarr:
-          url: https://radarr.${SECRET_DOMAIN}
-          group: Media
+        # Lidarr:
+        #   url: https://lidarr.${SECRET_DOMAIN}
+        #   group: Media
+        # Music-Assistant:
+        #   url: https://music.${SECRET_DOMAIN}
+        #   group: Media
+        # Readarr:
+        #   url: https://readarr.${SECRET_DOMAIN}
+        #   group: Media
+        # Radarr:
+        #   url: https://radarr.${SECRET_DOMAIN}
+        #   group: Media
         Romm:
           url: https://romm.${SECRET_DOMAIN}
           group: Media
-        Sonarr:
-          url: https://sonarr.${SECRET_DOMAIN}
-          group: Media
-        Tautulli:
-          url: https://tautulli.${SECRET_DOMAIN}
-          group: Media
+        # Sonarr:
+        #   url: https://sonarr.${SECRET_DOMAIN}
+        #   group: Media
+        # Tautulli:
+        #   url: https://tautulli.${SECRET_DOMAIN}
+        #   group: Media
         # Tdarr:
         #   url: https://tdarr.${SECRET_DOMAIN}
         #   group: Media
@@ -108,30 +108,30 @@ spec:
             ^/help
             ^/static/*
             ^/assets/*
-        Alert-Manager:
-          url: https://alert-manager.${SECRET_DOMAIN}
-          group: Monitor
+        # Alert-Manager:
+        #   url: https://alert-manager.${SECRET_DOMAIN}
+        #   group: Monitor
         # Blackbox-Exporter:
         #   url: https://blackbox-exporter.${SECRET_DOMAIN}
         #   group: Monitor
         Gatus:
           url: https://status.${SECRET_DOMAIN}
           group: Monitor
-        Prometheus:
-          url: https://prometheus.${SECRET_DOMAIN}
-          group: Monitor
-        Thanos:
-          url: https://thanos.${SECRET_DOMAIN}
-          group: Monitor
+        # Prometheus:
+        #   url: https://prometheus.${SECRET_DOMAIN}
+        #   group: Monitor
+        # Thanos:
+        #   url: https://thanos.${SECRET_DOMAIN}
+        #   group: Monitor
         # Hubble:
         #   url: https://hubble.${SECRET_DOMAIN}
         #   group: Network
         # Unifi:
         #   url: https://unifi.${SECRET_DOMAIN}
         #   group: Network
-        Rook-Ceph:
-          url: https://rook.${SECRET_DOMAIN}
-          group: Storage
+        # Rook-Ceph:
+        #   url: https://rook.${SECRET_DOMAIN}
+        #   group: Storage
     - name: oauth2_applications
       value:
         # Gatus:

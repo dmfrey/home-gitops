@@ -574,7 +574,6 @@ spec:
         external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
       hosts:
         - grafana.${SECRET_DOMAIN}
-        - monitor.${SECRET_DOMAIN}
 
     persistence:
       enabled: true
