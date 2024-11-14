@@ -7,7 +7,6 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./dashboard
-  - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: gatus-configmap
     files:
