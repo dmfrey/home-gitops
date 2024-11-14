@@ -72,9 +72,9 @@ spec:
         # Bazarr:
         #   url: https://bazarr.${SECRET_DOMAIN}
         #   group: Media
-        Jellyfin:
-          url: https://jellyfin.${SECRET_DOMAIN}
-          group: Media
+        # Jellyfin:
+        #   url: https://jellyfin.${SECRET_DOMAIN}
+        #   group: Media
         # Lidarr:
         #   url: https://lidarr.${SECRET_DOMAIN}
         #   group: Media
