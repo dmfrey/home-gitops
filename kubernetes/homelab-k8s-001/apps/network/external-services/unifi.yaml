@@ -30,6 +30,7 @@ metadata:
     auth.home.arpa/enabled: "true"
     hajimari.io/enable: "true"
     hajimari.io/icon: "simple-icons:ubiquiti"
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   labels:
     app.kubernetes.io/instance: unifi
     app.kubernetes.io/name: unifi

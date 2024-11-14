@@ -38,6 +38,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: minio
     app.kubernetes.io/name: minio
+    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
   name: minio
   namespace: network
 spec:
