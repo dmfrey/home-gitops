@@ -123,9 +123,9 @@ spec:
         Thanos:
           url: https://thanos.${SECRET_DOMAIN}
           group: Monitor
-        Hubble:
-          url: https://hubble.${SECRET_DOMAIN}
-          group: Network
+        # Hubble:
+        #   url: https://hubble.${SECRET_DOMAIN}
+        #   group: Network
         # Unifi:
         #   url: https://unifi.${SECRET_DOMAIN}
         #   group: Network

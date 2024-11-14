@@ -66,7 +66,7 @@ spec:
             enabled: true
 
       ui:
-        enabled: true
+        enabled: false
         rollOutPods: true
         ingress:
           enabled: true
@@ -74,7 +74,7 @@ spec:
           annotations:
             nginx.org/websocket-services: hubble-ui
             external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-            auth.home.arpa/enabled: "true"
+            # auth.home.arpa/enabled: "true"
           hosts:
             - hubble.${SECRET_DOMAIN}
 
