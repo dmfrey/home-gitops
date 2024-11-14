@@ -33,19 +33,20 @@ spec:
     fullnameOverride: *app
 
     ingress:
-      enabled: true
       className: internal
       annotations:
-        # auth.home.arpa/enabled: "true"
         hajimari.io/enable: "true"
         hajimari.io/icon: "simple-icons:prometheus"
         hajimari.io/appName: "Blackbox Exporter"
         external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
       hosts:
-        - host: &host blackbox-exporter.${SECRET_DOMAIN}
+        - host: blackbox-exporter.${SECRET_DOMAIN}
           paths:
             - path: /
               pathType: Prefix
+              service:
+                identifier: *app
+                port: 9115
 
     securityContext:
       readOnlyRootFilesystem: true
