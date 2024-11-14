@@ -99,15 +99,15 @@ spec:
         # Tdarr:
         #   url: https://tdarr.${SECRET_DOMAIN}
         #   group: Media
-        # Wizarr:
-        #   url: https://join.${SECRET_DOMAIN}
-        #   group: Media
-        #   skip_path_regex: |
-        #     ^/j/*
-        #     ^/join
-        #     ^/help
-        #     ^/static/*
-        #     ^/assets/*
+        Wizarr:
+          url: https://join.${SECRET_DOMAIN}
+          group: Media
+          skip_path_regex: |
+            ^/j/*
+            ^/join
+            ^/help
+            ^/static/*
+            ^/assets/*
         Alert-Manager:
           url: https://alert-manager.${SECRET_DOMAIN}
           group: Monitor
