@@ -121,12 +121,12 @@ spec:
 
     ingress:
       dashboard:
-        ingressClassName: external
+        ingressClassName: internal
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: "mdi:chess-rook"
           hajimari.io/enable: "true"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         host:
           name: rook.${SECRET_DOMAIN}
           path: "/"

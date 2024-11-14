@@ -192,9 +192,9 @@ spec:
 
     ingress:
       piper:
-        className: external
+        className: internal
         hosts:
-          - host: piper.${EXTERNAL_DOMAIN}
+          - host: piper.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
