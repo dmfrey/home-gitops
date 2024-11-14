@@ -35,9 +35,6 @@ spec:
 
   values:
 
-    # extraConfig:
-    #   "api-rate-limit": "{\"endpoint-create\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-delete\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-get\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-list\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-patch\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\"}"
-
     hubble:
       enabled: true
 
