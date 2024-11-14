@@ -114,9 +114,9 @@ spec:
         # Blackbox-Exporter:
         #   url: https://blackbox-exporter.${SECRET_DOMAIN}
         #   group: Monitor
-        Gatus:
-          url: https://status.${SECRET_DOMAIN}
-          group: Monitor
+        # Gatus:
+        #   url: https://status.${SECRET_DOMAIN}
+        #   group: Monitor
         # Prometheus:
         #   url: https://prometheus.${SECRET_DOMAIN}
         #   group: Monitor
