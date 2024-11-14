@@ -129,10 +129,9 @@ spec:
 
     ingress:
       internal:
-        enabled: true
+        enabled: false
         className: internal
         annotations:
-          auth.home.arpa/enabled: "true"
           theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
