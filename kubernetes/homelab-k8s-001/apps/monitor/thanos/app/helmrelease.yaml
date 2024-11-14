@@ -101,12 +101,12 @@ spec:
       #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
       ingress:
         enabled: true
-        ingressClassName: external
+        ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hostname: thanos.${SECRET_DOMAIN}
         tls: false
 

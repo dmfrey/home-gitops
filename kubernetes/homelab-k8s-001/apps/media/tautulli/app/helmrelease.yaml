@@ -81,16 +81,16 @@ spec:
             port: *port
 
     ingress:
-      external:
-        className: external
+      internal:
+        className: internal
         annotations:
           theme.home.arpa/enabled: "true"
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:chart-bar"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host tautulli.${SECRET_DOMAIN}
+          - host: tautulli.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -107,7 +107,7 @@ spec:
             readOnly: false
 
     serviceMonitor:
-      monitor:
+      metrics:
         enabled: true
         serviceName: *app
         endpoints:

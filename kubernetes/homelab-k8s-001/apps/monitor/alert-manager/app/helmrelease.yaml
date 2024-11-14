@@ -56,15 +56,15 @@ spec:
             port: &port 9093
 
     ingress:
-      external:
-        className: external
+      internal:
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host alert-manager.${SECRET_DOMAIN}
+          - host: alert-manager.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

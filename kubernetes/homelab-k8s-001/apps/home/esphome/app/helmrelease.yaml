@@ -71,9 +71,9 @@ spec:
             port: &port 6052
 
     ingress:
-      external:
+      internal:
         enabled: true
-        className: external
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"

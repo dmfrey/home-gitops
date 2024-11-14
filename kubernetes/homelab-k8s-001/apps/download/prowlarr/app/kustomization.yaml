@@ -6,4 +6,4 @@ resources:
   - ./secret-prowlarr.sops.yaml
   - ./helmrelease.yaml
   - ../../../../templates/volsync
-  - ../../../../templates/gatus/external
+  - ../../../../templates/gatus/guarded

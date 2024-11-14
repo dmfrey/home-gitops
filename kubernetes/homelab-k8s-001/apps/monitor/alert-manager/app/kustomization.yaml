@@ -6,7 +6,7 @@ resources:
   - ./secret-alert-manager.sops.yaml
   - ./helmrelease.yaml
   - ../../../../templates/volsync
-  - ../../../../templates/gatus/external
+  - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: alertmanager-configmap
     files:
