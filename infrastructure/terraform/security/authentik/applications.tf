@@ -7,6 +7,7 @@ resource "authentik_provider_proxy" "proxy_providers" {
   skip_path_regex       = each.value.skip_path_regex
   authorization_flow    = data.authentik_flow.default-authorization-flow.id
   authentication_flow   = authentik_flow.homelab5767-authentication.uuid
+  invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
 }
 
 resource "authentik_application" "proxy_apps" {
