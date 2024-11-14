@@ -41,24 +41,24 @@ spec:
       name: cloudflare
 
     env:
-      # - name: CF_API_TOKEN
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: &secret external-dns-external-secret
-      #       key: cloudflare_api_token
-      - name: CF_API_KEY
+      - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
             name: &secret external-dns-external-secret
-            key: cloudflare_api_key
-      - name: CF_API_EMAIL
-        valueFrom:
-          secretKeyRef:
-            name: *secret
-            key: cloudflare_api_email
+            key: cloudflare_api_token
+      # - name: CF_API_KEY
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: &secret external-dns-external-secret
+      #       key: cloudflare_api_key
+      # - name: CF_API_EMAIL
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: *secret
+      #       key: cloudflare_api_email
 
     extraArgs:
-      - --cloudflare-dns-records-per-page=5000
+      - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
@@ -70,18 +70,15 @@ spec:
 
     policy: sync
 
-    sources:
-      - crd
-      - ingress
+    sources: ["crd", "ingress"]
 
-    txtOwnerId: default
+    txtOwnerId: main
     txtPrefix: "${CLUSTER_NAME}-"
 
-    domainFilters:
-      - ${SECRET_DOMAIN}
-
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *secret
+    domainFilters: ["${SECRET_DOMAIN}"]
 
     serviceMonitor:
       enabled: true
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
