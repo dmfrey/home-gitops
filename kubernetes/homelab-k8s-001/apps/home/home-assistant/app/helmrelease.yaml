@@ -251,6 +251,7 @@ spec:
           nginx.org/websocket-services: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:homeassistant"
+          hajimari.io/appName: "Home Assistant"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: home.${SECRET_DOMAIN}
