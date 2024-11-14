@@ -66,13 +66,14 @@ spec:
             enabled: true
 
       ui:
-        enabled: true
+        enabled: false
         rollOutPods: true
         ingress:
           enabled: true
           className: internal
           annotations:
             external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+            auth.home.arpa/enabled: "true"
           hosts:
             - hubble.${SECRET_DOMAIN}
 
