@@ -3,4 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./k8s-secret-store.yaml
+  - ./secret-bitwarden-access-token.sops.yaml
+  - ./bitwarden-cluster-secret-store.yaml
+  # - ./k8s-secret-store.yaml
