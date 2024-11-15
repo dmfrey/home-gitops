@@ -18,6 +18,6 @@ spec:
     size: 2048
     rotationPolicy: Always
   issuerRef:
-    name: selfsigned-issuer
+    name: homelab-k8s-001-internal-issuer
     kind: ClusterIssuer
     group: cert-manager.io
