@@ -37,6 +37,14 @@ spec:
               path: /var/lib/grafana/dashboards/device
             orgId: 1
             type: file
+          - name: external-secrets
+            disableDeletion: false
+            editable: true
+            folder: "External Secrets"
+            options:
+              path: /var/lib/grafana/dashboards/external-secrets
+            orgId: 1
+            type: file
           - name: flux
             disableDeletion: false
             editable: true
@@ -183,6 +191,15 @@ spec:
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
+
+      external-secrets:
+
+        # Ref: https://grafana.com/grafana/dashboards/21640-external-secrets/
+        # renovate: depName="External Secrets"
+        external-secrets:
+          gnetId: 21640
+          revision: 4
+          datasource: prometheus
 
       flux:
         flux-cluster:
