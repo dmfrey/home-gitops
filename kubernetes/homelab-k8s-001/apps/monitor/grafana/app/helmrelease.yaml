@@ -199,7 +199,9 @@ spec:
         external-secrets:
           gnetId: 21640
           revision: 4
-          datasource: prometheus
+          datasource:
+            - name: "DS_METRICS"
+              value: prometheus
 
       flux:
         flux-cluster:
