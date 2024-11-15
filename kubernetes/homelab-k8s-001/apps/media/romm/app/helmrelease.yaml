@@ -108,7 +108,7 @@ spec:
 
     ingress:
       external:
-        enabled: false
+        enabled: true
         className: external
         annotations:
           nginx.org/websocket-services: romm
