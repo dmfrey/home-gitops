@@ -108,11 +108,12 @@ spec:
 
     ingress:
       external:
+        enabled: false
         className: external
         annotations:
           nginx.org/websocket-services: romm
           theme.home.arpa/enabled: "true"
-          auth.home.arpa/enabled: "true"
+          # auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:television-classic"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}

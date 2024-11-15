@@ -48,9 +48,9 @@ spec:
         # SABNZBD-Client:
         #   url: https://sabnzbd.${SECRET_DOMAIN}
         #   group: Download
-        Hajimari:
-          url: https://portal.${SECRET_DOMAIN}
-          group: Home Page
+        # Hajimari:
+        #   url: https://portal.${SECRET_DOMAIN}
+        #   group: Home Page
         # EspHome:
         #   url: https://esphome.${SECRET_DOMAIN}
         #   group: Home
@@ -87,9 +87,9 @@ spec:
         # Radarr:
         #   url: https://radarr.${SECRET_DOMAIN}
         #   group: Media
-        Romm:
-          url: https://romm.${SECRET_DOMAIN}
-          group: Media
+        # Romm:
+        #   url: https://romm.${SECRET_DOMAIN}
+        #   group: Media
         # Sonarr:
         #   url: https://sonarr.${SECRET_DOMAIN}
         #   group: Media
