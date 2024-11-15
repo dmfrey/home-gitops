@@ -1,52 +1,52 @@
-resource "authentik_provider_proxy" "proxy_providers" {
-  for_each              = var.proxy_applications
-  name                  = each.key
-  mode                  = "forward_single"
-  access_token_validity = "hours=1"
-  external_host         = each.value.url
-  skip_path_regex       = each.value.skip_path_regex
-  authorization_flow    = data.authentik_flow.default-authorization-flow.id
-  authentication_flow   = authentik_flow.homelab5767-authentication.uuid
-  invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
-}
+# resource "authentik_provider_proxy" "proxy_providers" {
+#   for_each              = var.proxy_applications
+#   name                  = each.key
+#   mode                  = "forward_single"
+#   access_token_validity = "hours=1"
+#   external_host         = each.value.url
+#   skip_path_regex       = each.value.skip_path_regex
+#   authorization_flow    = data.authentik_flow.default-authorization-flow.id
+#   authentication_flow   = authentik_flow.homelab5767-authentication.uuid
+#   invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
+# }
 
-resource "authentik_application" "proxy_apps" {
-  for_each          = authentik_provider_proxy.proxy_providers
-  name              = each.value.name
-  slug              = replace(replace(lower(each.value.name), " ", "-"), "[^a-z0-9-]", "")
-  group             = var.proxy_applications[each.key].group
-  meta_launch_url   = each.value.external_host
-  protocol_provider = each.value.id
-}
+# resource "authentik_application" "proxy_apps" {
+#   for_each          = authentik_provider_proxy.proxy_providers
+#   name              = each.value.name
+#   slug              = replace(replace(lower(each.value.name), " ", "-"), "[^a-z0-9-]", "")
+#   group             = var.proxy_applications[each.key].group
+#   meta_launch_url   = each.value.external_host
+#   protocol_provider = each.value.id
+# }
 
 resource "authentik_service_connection_kubernetes" "local" {
   name  = "Local"
   local = true
 }
 
-resource "authentik_outpost" "outpost" {
-  name               = "homelab5767 Outpost"
-  service_connection = authentik_service_connection_kubernetes.local.id
-  protocol_providers = [for proxy in authentik_provider_proxy.proxy_providers : proxy.id]
-  config = jsonencode({
-    log_level : "debug"
-    authentik_host : format(var.authentik_url)
-    authentik_host_insecure : false
-    authentik_host_browser : var.authentik_host
-    object_naming_template : "ak-outpost-%(name)s"
-    kubernetes_replicas : 1
-    kubernetes_namespace : "security"
-    kubernetes_ingress_annotations : {
-      "cert-manager.io/cluster-issuer" : "letsencrypt-prod"
-    }
-    kubernetes_ingress_secret_name : "authentik-outpost-tls"
-    kubernetes_service_type : "ClusterIP"
-    kubernetes_disabled_components : [
-      "traefik middleware"
-    ]
-    # kubernetes_ingress_class_name : "external"
-  })
-}
+# resource "authentik_outpost" "outpost" {
+#   name               = "homelab5767 Outpost"
+#   service_connection = authentik_service_connection_kubernetes.local.id
+#   protocol_providers = [for proxy in authentik_provider_proxy.proxy_providers : proxy.id]
+#   config = jsonencode({
+#     log_level : "debug"
+#     authentik_host : format(var.authentik_url)
+#     authentik_host_insecure : false
+#     authentik_host_browser : var.authentik_host
+#     object_naming_template : "ak-outpost-%(name)s"
+#     kubernetes_replicas : 1
+#     kubernetes_namespace : "security"
+#     kubernetes_ingress_annotations : {
+#       "cert-manager.io/cluster-issuer" : "letsencrypt-prod"
+#     }
+#     kubernetes_ingress_secret_name : "authentik-outpost-tls"
+#     kubernetes_service_type : "ClusterIP"
+#     kubernetes_disabled_components : [
+#       "traefik middleware"
+#     ]
+#     # kubernetes_ingress_class_name : "external"
+#   })
+# }
 
 resource "authentik_provider_oauth2" "oauth2_providers" {
   for_each              = var.oauth2_applications

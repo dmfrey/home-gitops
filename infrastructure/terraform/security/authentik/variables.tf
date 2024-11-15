@@ -33,13 +33,13 @@ variable "authentik_host" {
   description = "public url for authentik"
 }
 
-variable "proxy_applications" {
-  type = map(object({
-    url             = string
-    group           = string
-    skip_path_regex = optional(string)
-  }))
-}
+# variable "proxy_applications" {
+#   type = map(object({
+#     url             = string
+#     group           = string
+#     skip_path_regex = optional(string)
+#   }))
+# }
 
 variable "oauth2_applications" {
   type = map(object({

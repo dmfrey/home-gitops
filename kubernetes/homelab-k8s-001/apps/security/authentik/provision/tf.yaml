@@ -31,11 +31,11 @@ spec:
     #   value: https://auth.${SECRET_DOMAIN}
     - name: external_domain
       value: ${SECRET_DOMAIN}
-    - name: proxy_applications
-      value:
-        Ollama:
-          url: https://ollama.${SECRET_DOMAIN}
-          group: AI
+    # - name: proxy_applications
+    #   value:
+        # Ollama:
+        #   url: https://ollama.${SECRET_DOMAIN}
+        #   group: AI
         # Dataflow:
         #   url: https://dataflow.${SECRET_DOMAIN}
         #   group: Dataflow
