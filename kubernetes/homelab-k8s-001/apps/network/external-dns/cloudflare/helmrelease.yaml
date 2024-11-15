@@ -73,7 +73,7 @@ spec:
     sources: ["crd", "ingress"]
 
     txtOwnerId: main
-    txtPrefix: "${CLUSTER_NAME}-"
+    txtPrefix: "k8s.001-"
 
     domainFilters: ["${SECRET_DOMAIN}"]
 
