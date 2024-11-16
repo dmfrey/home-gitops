@@ -89,8 +89,20 @@ spec:
         annotations:
           theme.home.arpa/enabled: "true"
           theme.home.arpa/theme: "nord"
+
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/name: qBittorrent
+          gethomepage.dev/icon: qbittorrent.png
+          gethomepage.dev/description: Torrent Client
+          gethomepage.dev/widget.type: qbittorrent
+          gethomepage.dev/widget.url: http://rdt.download.svc.cluster.local:6500
+          # gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}` }}"
+          # gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}` }}"
+
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
           - host: rdt.${SECRET_DOMAIN}

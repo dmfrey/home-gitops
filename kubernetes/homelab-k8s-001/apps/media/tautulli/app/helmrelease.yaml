@@ -82,12 +82,23 @@ spec:
 
     ingress:
       internal:
+        enabled: false
         className: internal
         annotations:
           theme.home.arpa/enabled: "true"
-          auth.home.arpa/enabled: "true"
+
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:chart-bar"
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Video
+          gethomepage.dev/name: Tautulli
+          gethomepage.dev/icon: tautulli.png
+          gethomepage.dev/description: Plex Stream Monitoring
+          gethomepage.dev/widget.type: tautulli
+          gethomepage.dev/widget.url: http://tautulli.media.svc.cluster.local:8081
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_TAUTULLI_TOKEN}}` }}"
+
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
           - host: tautulli.${SECRET_DOMAIN}

@@ -122,10 +122,10 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: &host sonarr.${SECRET_DOMAIN}
-          lbipam.cilium.io/ips: 192.168.31.230
+        # type: LoadBalancer
+        # annotations:
+        #   external-dns.alpha.kubernetes.io/hostname: &host sonarr.${SECRET_DOMAIN}
+        #   lbipam.cilium.io/ips: 192.168.31.230
         ports:
           http:
             port: *port
@@ -139,8 +139,20 @@ spec:
         className: internal
         annotations:
           theme.home.arpa/enabled: "true"
+
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:television-classic"
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/name: Sonarr
+          gethomepage.dev/icon: sonarr.png
+          gethomepage.dev/description: TV Downloads
+          gethomepage.dev/widget.type: sonarr
+          gethomepage.dev/widget.url: http://sonarr.media.svc.cluster.local:8989
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SONARR_TOKEN}}` }}"
+
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
           - host: *host
             paths:

@@ -151,11 +151,22 @@ spec:
         className: external
         annotations:
           theme.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:plex"
           hajimari.io/url: "https://plex.${SECRET_DOMAIN}/web"
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Video
+          gethomepage.dev/name: Plex
+          gethomepage.dev/icon: plex.png
+          gethomepage.dev/description: Media Player
+          gethomepage.dev/widget.type: plex
+          gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
+
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
         hosts:
         - host: *host
           paths:
