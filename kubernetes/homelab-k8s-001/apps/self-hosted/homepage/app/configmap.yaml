@@ -42,6 +42,12 @@ data:
   kubernetes.yaml: |
     mode: cluster
   services.yaml: |
+    - Infrastructure:
+        - Gluetun:
+            description: Tunnel Gateway
+            widget:
+              type: gluetun
+              url: http://pod-gateway.network.svc.cluster.local:4789
     - Network:
         - Cloudflared:
             href: https://dash.cloudflare.com/
