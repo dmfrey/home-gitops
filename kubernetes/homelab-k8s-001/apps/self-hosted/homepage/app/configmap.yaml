@@ -43,11 +43,11 @@ data:
     mode: cluster
   services.yaml: |
     - Infrastructure:
-        - Gluetun:
-            description: Tunnel Gateway
+        - Gatus:
+            description: Application Status
             widget:
-              type: gluetun
-              url: http://pod-gateway.network.svc.cluster.local:4789
+              type: gatus
+              url: http://gatus.monitor.svc.cluster.local:8080
     - Network:
         - Cloudflared:
             href: https://dash.cloudflare.com/
