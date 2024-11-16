@@ -45,11 +45,13 @@ data:
     - Infrastructure:
         - Gatus:
             description: Application Status
+            icon: gatus.png
             widget:
               type: gatus
               url: http://gatus.monitor.svc.cluster.local:8080
         - QNAP:
             description: QNAP NAS TS-462
+            icon: qnap.png
             widget:
               type: qnap
               url: http://${QNAP_ADDR}:7080
