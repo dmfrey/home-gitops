@@ -81,6 +81,18 @@ data:
             widget:
               type: lidarr
               url: https://lidarr.${SECRET_DOMAIN}
+        - SABNZBD:
+            icon: sabnzb.png
+            description: NZB Downloader
+            widget:
+              type: sabnzbd
+              url: http://sabnzbd.${SECRET_DOMAIN}
+        - qBittorrent:
+            icon: qbittorrent.png
+            description: Bittorrent Downloader
+            widget:
+              type: qbittorrent
+              url: http://rdt.${SECRET_DOMAIN}
     - Games:
         - RomM:
             icon: romm.png
