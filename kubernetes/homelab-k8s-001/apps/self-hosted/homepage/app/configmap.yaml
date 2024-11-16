@@ -48,6 +48,13 @@ data:
             widget:
               type: gatus
               url: http://gatus.monitor.svc.cluster.local:8080
+        - QNAP:
+            description: QNAP NAS TS-462
+            widget:
+              type: qnap
+              url: http://${QNAP_ADDR}:7080
+              username: {{HOMEPAGE_VAR_QNAP_USERNAME}}
+              password: {{HOMEPAGE_VAR_QNAP_PASSWORD}}
     - Network:
         - Cloudflared:
             href: https://dash.cloudflare.com/
