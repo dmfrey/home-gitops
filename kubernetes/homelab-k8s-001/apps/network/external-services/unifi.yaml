@@ -27,17 +27,16 @@ kind: Ingress
 metadata:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    auth.home.arpa/enabled: "true"
     hajimari.io/enable: "true"
     hajimari.io/icon: "simple-icons:ubiquiti"
-    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
   labels:
     app.kubernetes.io/instance: unifi
     app.kubernetes.io/name: unifi
   name: unifi
   namespace: network
 spec:
-  ingressClassName: external
+  ingressClassName: internal
   rules:
   - host: unifi.${SECRET_DOMAIN}
     http:
