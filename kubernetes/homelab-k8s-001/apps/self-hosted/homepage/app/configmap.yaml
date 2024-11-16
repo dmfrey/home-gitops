@@ -62,44 +62,6 @@ data:
               url: https://unifi.${SECRET_DOMAIN}
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
-    # - Downloads:
-    #     - Sonarr:
-    #         icon: sonarr.png
-    #         description: TV Show Downloads
-    #         widget:
-    #           type: sonarr
-    #           url: https://sonarr.${SECRET_DOMAIN}
-    #     - Radarr:
-    #         icon: radarr.png
-    #         description: Movie Downloads
-    #         widget:
-    #           type: radarr
-    #           url: https://radarr.${SECRET_DOMAIN}
-    #     - Lidarr:
-    #         icon: lidarr.png
-    #         description: Music Downloads
-    #         widget:
-    #           type: lidarr
-    #           url: https://lidarr.${SECRET_DOMAIN}
-    #     - SABNZBD:
-    #         icon: sabnzb.png
-    #         description: NZB Downloader
-    #         widget:
-    #           type: sabnzbd
-    #           url: https://sabnzbd.${SECRET_DOMAIN}
-    #     - qBittorrent:
-    #         icon: qbittorrent.png
-    #         description: Bittorrent Downloader
-    #         widget:
-    #           type: qbittorrent
-    #           url: https://rdt.${SECRET_DOMAIN}
-    # - Games:
-    #     - RomM:
-    #         icon: romm.png
-    #         description: RomM Server
-    #         widget:
-    #           type: romm
-    #           url: https://romm.${SECRET_DOMAIN}
     - Calendar:
         - Agenda:
             widget:
