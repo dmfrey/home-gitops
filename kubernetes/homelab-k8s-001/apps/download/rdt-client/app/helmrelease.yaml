@@ -99,7 +99,7 @@ spec:
           gethomepage.dev/icon: qbittorrent.png
           gethomepage.dev/description: Torrent Client
           gethomepage.dev/widget.type: qbittorrent
-          gethomepage.dev/widget.url: http://rdt.download.svc.cluster.local:6500
+          gethomepage.dev/widget.url: http://rdt-client.download.svc.cluster.local:6500
           # gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}` }}"
           # gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}` }}"
 
