@@ -169,7 +169,7 @@ data:
         label: Home
         latitude: ${LATITUDE}
         longitude: ${LONGITUDE}
-        units: metric
+        units: imperial
         cache: 5
     - datetime:
         text_size: l
