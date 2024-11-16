@@ -62,6 +62,13 @@ data:
               url: https://unifi.${SECRET_DOMAIN}
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+    - Downloads:
+        - Sonarr:
+            icon: sonarr.png
+            description: TV Show Downloads
+            widget:
+              type: sonarr
+              url: https://sonarr.${SECRET_DOMAIN}
     - Games:
         - RomM:
             icon: romm.png
