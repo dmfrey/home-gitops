@@ -135,10 +135,10 @@ spec:
 
     ingress:
       internal:
+        enabled: false
         className: internal
         annotations:
           theme.home.arpa/enabled: "true"
-          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:television-classic"
         hosts:
