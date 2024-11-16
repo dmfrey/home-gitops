@@ -144,7 +144,7 @@ spec:
 
     ingress:
       internal:
-        enabled: false
+        enabled: true
         className: internal
         annotations:
           theme.home.arpa/enabled: "true"
