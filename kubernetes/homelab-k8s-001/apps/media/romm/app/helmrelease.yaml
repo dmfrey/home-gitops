@@ -123,8 +123,8 @@ spec:
           gethomepage.dev/description: Retro Games
           gethomepage.dev/widget.type: romm
           gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
 
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
           nginx.org/websocket-services: romm
         hosts:
