@@ -113,9 +113,6 @@ data:
                 - type: radarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
                   service_group: Downloads # group name where widget exists
                   service_name: Radarr # service name for that widget
-                - type: lidarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
-                  service_group: Downloads # group name where widget exists
-                  service_name: Lidarr # service name for that widget
     - Home:
         - Home-Assistant:
             href: https://home.${SECRET_DOMAIN}
