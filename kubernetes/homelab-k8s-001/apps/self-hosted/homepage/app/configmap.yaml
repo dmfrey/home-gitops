@@ -64,10 +64,10 @@ data:
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - Games:
         - RomM:
-            # icon: minecraft.png
+            icon: romm.png
             description: RomM Server
             widget:
-              # type: minecraft
+              type: romm
               url: https://romm.${SECRET_DOMAIN}
     - Calendar:
         - Agenda:
@@ -82,9 +82,6 @@ data:
                 - type: radarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
                   service_group: Downloads # group name where widget exists
                   service_name: Radarr # service name for that widget
-                - type: readarr # active widget type that is currently enabled on homepage - possible values: radarr, sonar>
-                  service_group: Downloads # group name where widget exists
-                  service_name: Readarr # service name for that widget
     - Home:
         - Home-Assistant:
             href: https://home.${SECRET_DOMAIN}
