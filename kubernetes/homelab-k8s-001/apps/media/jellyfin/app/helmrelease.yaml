@@ -128,9 +128,20 @@ spec:
         className: internal
         annotations:
           theme.home.arpa/enabled: "true"
+
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
           hajimari.io/url: "https://jellyfin.${SECRET_DOMAIN}/web/index.html"
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Video
+          gethomepage.dev/name: Jellyfin
+          gethomepage.dev/icon: jellyfin.png
+          gethomepage.dev/description: Media Player
+          gethomepage.dev/widget.type: jellyfin
+          gethomepage.dev/widget.url: http://jellyfin.media.svc.cluster.local:8096
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_JELLYFIN_TOKEN}}` }}"
+
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
           - host: jellyfin.${SECRET_DOMAIN}
