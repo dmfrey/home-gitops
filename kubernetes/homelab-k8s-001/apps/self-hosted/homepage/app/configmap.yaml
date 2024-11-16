@@ -69,6 +69,18 @@ data:
             widget:
               type: sonarr
               url: https://sonarr.${SECRET_DOMAIN}
+        - Radarr:
+            icon: radarr.png
+            description: Movie Downloads
+            widget:
+              type: radarr
+              url: https://radarr.${SECRET_DOMAIN}
+        - Lidarr:
+            icon: lidarr.png
+            description: Music Downloads
+            widget:
+              type: lidarr
+              url: https://lidarr.${SECRET_DOMAIN}
     - Games:
         - RomM:
             icon: romm.png
