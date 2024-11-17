@@ -125,7 +125,7 @@ spec:
           gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
 
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+          # nginx.ingress.kubernetes.io/backend-protocol: HTTPS
           nginx.org/websocket-services: romm
         hosts:
           - host: romm.${SECRET_DOMAIN}
