@@ -16,14 +16,15 @@ tasks:
     desc: Suspend or resume Volsync [CLUSTER=homelab-k8s-001]
     cmds:
       - flux --namespace flux-system {{.STATE}} kustomization volsync
-      - flux --namespace volsync-system {{.STATE}} helmrelease volsync
-      - kubectl --namespace volsync-system scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
+      - flux --namespace storage {{.STATE}} helmrelease volsync
+      - kubectl --namespace storage scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
     vars:
       STATE: '{{index .MATCH 0}}'
     requires:
       vars: [CLUSTER]
     preconditions:
       - '[[ "{{.STATE}}" == "suspend" || "{{.STATE}}" == "resume" ]]'
+      - which flux kubectl
 
   unlock:
     desc: Unlock all restic source repos [CLUSTER=homelab-k8s-001]
@@ -35,6 +36,8 @@ tasks:
         sh: kubectl get replicationsources --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
     requires:
       vars: [CLUSTER]
+    preconditions:
+      - which kubectl
 
   snapshot:
     desc: Snapshot an app [CLUSTER=homelab-k8s-001] [NS=default] [APP=required]

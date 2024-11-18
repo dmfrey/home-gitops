@@ -35,11 +35,10 @@ tasks:
     requires:
       vars: [CLUSTER, HOSTNAME]
     preconditions:
+      - talosctl --nodes {{.HOSTNAME}} get machineconfig
       - test -f {{.CLUSTER_DIR}}/cluster.env
-      - test -f {{.TALOSCONFIG}}
-      - talosctl config info &>/dev/null
-      - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
-      - curl -fsSL -o /dev/null --fail https://github.com/siderolabs/talos/releases/tag/$TALOS_VERSION
+      - test -f {{.CLUSTER_DIR}}/talos/talconfig.yaml
+      - test -f {{.CLUSTER_DIR}}/talos/clusterconfig/talosconfig
 
   upgrade-k8s:
     desc: Upgrade Kubernetes across the whole cluster [CLUSTER=homelab-k8s-001] [VERSION=required]
