@@ -15,6 +15,8 @@ spec:
     name: authentik-tfstate
   varsFrom:
     - kind: Secret
+      name: terraform-bitwarden-secret
+    - kind: Secret
       name: authentik-secret
       varsKeys:
         - AUTHENTIK_BOOTSTRAP_TOKEN
@@ -30,6 +32,8 @@ spec:
     # - name: authentik_host_browser
     #   value: https://auth.${SECRET_DOMAIN}
     - name: external_domain
+      value: ${SECRET_DOMAIN}
+    - name: cluster_domain
       value: ${SECRET_DOMAIN}
     # - name: proxy_applications
     #   value:

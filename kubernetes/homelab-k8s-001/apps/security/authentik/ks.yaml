@@ -61,6 +61,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
+    - name: external-secrets
     - name: authentik-database
     - name: kyverno
     - name: smtp-relay
