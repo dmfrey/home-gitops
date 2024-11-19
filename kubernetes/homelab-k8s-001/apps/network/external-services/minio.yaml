@@ -62,6 +62,8 @@ kind: ScrapeConfig
 metadata:
   name: &name minio-job
 spec:
+  scrapeInterval: 60s
+  scheme: HTTPS
   staticConfigs:
     - targets:
         - minio.${SECRET_DOMAIN}
@@ -77,6 +79,8 @@ kind: ScrapeConfig
 metadata:
   name: &name minio-job-node
 spec:
+  scrapeInterval: 60s
+  scheme: HTTPS
   staticConfigs:
     - targets:
         - minio.${SECRET_DOMAIN}
@@ -92,6 +96,8 @@ kind: ScrapeConfig
 metadata:
   name: &name minio-job-bucket
 spec:
+  scrapeInterval: 60s
+  scheme: HTTPS
   staticConfigs:
     - targets:
         - minio.${SECRET_DOMAIN}
@@ -107,6 +113,8 @@ kind: ScrapeConfig
 metadata:
   name: &name minio-job-resource
 spec:
+  scrapeInterval: 60s
+  scheme: HTTPS
   staticConfigs:
     - targets:
         - minio.${SECRET_DOMAIN}
