@@ -87,7 +87,7 @@ spec:
 
     prometheus:
       ingress:
-        enabled: false
+        enabled: true
         ingressClassName: internal
         annotations:
           hajimari.io/enable: "true"
