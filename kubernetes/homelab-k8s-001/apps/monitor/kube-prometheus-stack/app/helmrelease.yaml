@@ -124,6 +124,10 @@ spec:
         # remoteWrite:
         #   - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
 
+        scrapeConfigSelector:
+          matchLabels:
+            prometheus: scrape-me
+
         thanos:
           image: quay.io/thanos/thanos:v0.36.1@sha256:e542959e1b36d5046083d1b64a7049c356b68a44a173c58b3ae7c0c9ada932d5
           objectStorageConfig:

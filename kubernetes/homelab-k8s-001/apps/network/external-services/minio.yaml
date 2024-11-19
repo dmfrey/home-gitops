@@ -61,6 +61,8 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: &name minio-job
+  labels:
+    prometheus: scrape-me
 spec:
   scrapeInterval: 60s
   scheme: HTTPS
@@ -78,6 +80,8 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: &name minio-job-node
+  labels:
+    prometheus: scrape-me
 spec:
   scrapeInterval: 60s
   scheme: HTTPS
@@ -95,6 +99,8 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: &name minio-job-bucket
+  labels:
+    prometheus: scrape-me
 spec:
   scrapeInterval: 60s
   scheme: HTTPS
@@ -112,6 +118,8 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: &name minio-job-resource
+  labels:
+    prometheus: scrape-me
 spec:
   scrapeInterval: 60s
   scheme: HTTPS
