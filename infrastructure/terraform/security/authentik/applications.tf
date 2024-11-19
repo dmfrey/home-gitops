@@ -19,10 +19,10 @@
 #   protocol_provider = each.value.id
 # }
 
-resource "authentik_service_connection_kubernetes" "local" {
-  name  = "Local"
-  local = true
-}
+# resource "authentik_service_connection_kubernetes" "local" {
+#   name  = "Local"
+#   local = true
+# }
 
 # resource "authentik_outpost" "outpost" {
 #   name               = "homelab5767 Outpost"

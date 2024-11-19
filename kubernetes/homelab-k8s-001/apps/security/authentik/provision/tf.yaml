@@ -166,52 +166,59 @@ spec:
           client_secret: ${SPRING_DEV_SSO_CLIENT_SECRET}
           redirect_uris:
             - https://spring-dev-gateway.${SECRET_DOMAIN}/login/oauth2/code/sso
-    - name: groups
-      value:
-        ${ORGANIZATION}-Admins:
-          name: "${ORGANIZATION} Admins"
-          superuser: true
-          parent: "authentik-Admins"
-        ${ORGANIZATION}-Users:
-          name: "${ORGANIZATION} Users"
-          superuser: false
-          parent: "authentik-Admins"
-        Grafana-Admins:
-          name: "Grafana Admins"
-          superuser: false
-          parent: "${ORGANIZATION}-Admins"
-        Developers:
-          name: "Developers"
-          superuser: false
-          parent: "${ORGANIZATION}-Admins"
-        romm-users:
-          name: "ROMM Users"
-          superuser: true
-          parent: "${ORGANIZATION}-Users"
+    # - name: groups
+    #   value:
+    #     ${ORGANIZATION}-Admins:
+    #       name: "${ORGANIZATION} Admins"
+    #       superuser: true
+    #       parent: "authentik-Admins"
+    #     ${ORGANIZATION}-Users:
+    #       name: "${ORGANIZATION} Users"
+    #       superuser: false
+    #       parent: "authentik-Admins"
+    #     Grafana-Admins:
+    #       name: "Grafana Admins"
+    #       superuser: false
+    #       parent: "${ORGANIZATION}-Admins"
+    #     Developers:
+    #       name: "Developers"
+    #       superuser: false
+    #       parent: "${ORGANIZATION}-Admins"
+    #     romm-users:
+    #       name: "ROMM Users"
+    #       superuser: true
+    #       parent: "${ORGANIZATION}-Users"
     - name: users
       value:
         dmfrey:
           name: "${FULL_NAME}"
           email: "${EMAIL_ADDRESS}"
           groups:
-            - "${ORGANIZATION}-Admins"
-            - "Grafana-Admins"
-            - "Developers"
-            - "romm-users"
+            - "admins"
+            - "developer"
+            - "downloads"
+            - "grafana_admins"
+            - "home"
+            - "infrastructure"
+            - "monitoring"
         sdfrey:
           name: "${STEPH_FULL_NAME}"
           email: "${STEPH_EMAIL}"
           groups:
-            - "${ORGANIZATION}-Users"
+            - "users"
+            - "downloads"
+            - "home"
         cgfrey:
           name: "${CAMDYN_FULL_NAME}"
           email: "${CAMDYN_EMAIL}"
           groups:
-            - "${ORGANIZATION}-Users"
-            - "romm-users"
+            - "users"
+            - "downloads"
+            - "home"
         mkfrey:
           name: "${MOLLY_FULL_NAME}"
           email: "${MOLLY_EMAIL}"
           groups:
-            - "${ORGANIZATION}-Users"
-            - "romm-users"
+            - "users"
+            - "downloads"
+            - "home"
