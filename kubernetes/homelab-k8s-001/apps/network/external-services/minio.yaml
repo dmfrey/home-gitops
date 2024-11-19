@@ -65,6 +65,7 @@ metadata:
     prometheus: scrape-me
 spec:
   authorization:
+    type: Bearer
     credentials:
       name: minio-secret
       key: MINIO_BEARER_TOKEN
