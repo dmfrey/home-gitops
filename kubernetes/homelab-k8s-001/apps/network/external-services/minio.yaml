@@ -9,7 +9,7 @@ subsets:
     - ip: ${QNAP_ADDR}
     ports:
     - name: http
-      port: 9090
+      port: 39010
     - name: minio
       port: 9000
 ---
@@ -21,9 +21,9 @@ metadata:
 spec:
  ports:
    - name: http
-     port: 9090
+     port: 39010
      protocol: TCP
-     targetPort: 9090
+     targetPort: 39010
    - name: minio
      port: 9000
      protocol: TCP
@@ -35,6 +35,7 @@ metadata:
   annotations:
     hajimari.io/enable: "true"
     hajimari.io/icon: "simple-icons:minio"
+
     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
   labels:
     app.kubernetes.io/instance: minio
@@ -51,7 +52,7 @@ spec:
           service:
             name: minio
             port:
-              number: 9090
+              number: 39010
         path: /
         pathType: Prefix
 
