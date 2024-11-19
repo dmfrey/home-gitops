@@ -27,7 +27,7 @@ data "bitwarden_secret" "authentik" {
 }
 
 locals {
-  authentik_token = regex("\"AUTHENTIK_TOKEN\": (\\S+)", data.bitwarden_secret.authentik.value)[0]
+  authentik_token = regex("AUTHENTIK_TOKEN: (\\S+)", data.bitwarden_secret.authentik.value)[0]
 }
 
 provider "authentik" {
