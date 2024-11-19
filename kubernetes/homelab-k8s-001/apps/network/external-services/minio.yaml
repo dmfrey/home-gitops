@@ -74,7 +74,7 @@ spec:
   staticConfigs:
     - targets:
         - minio.network.svc.cluster.local:9000
-  metricsPath: /minio/metrics/v3/cluster
+  metricsPath: /minio/metrics/v3
   relabelings:
     - action: replace
       targetLabel: job
