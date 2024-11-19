@@ -68,7 +68,7 @@ spec:
   scheme: HTTPS
   staticConfigs:
     - targets:
-        - minio.${SECRET_DOMAIN}:9000
+        - minio.network.svc.cluster.local:9000
   metricsPath: /minio/v2/metrics/cluster
   relabelings:
     - action: replace
@@ -87,7 +87,7 @@ spec:
   scheme: HTTPS
   staticConfigs:
     - targets:
-        - minio.${SECRET_DOMAIN}:9000
+        - minio.network.svc.cluster.local:9000
   metricsPath: /minio/v2/metrics/node
   relabelings:
     - action: replace
@@ -106,7 +106,7 @@ spec:
   scheme: HTTPS
   staticConfigs:
     - targets:
-        - minio.${SECRET_DOMAIN}:9000
+        - minio.network.svc.cluster.local:9000
   metricsPath: /minio/v2/metrics/bucket
   relabelings:
     - action: replace
@@ -125,7 +125,7 @@ spec:
   scheme: HTTPS
   staticConfigs:
     - targets:
-        - minio.${SECRET_DOMAIN}:9000
+        - minio.network.svc.cluster.local:9000
   metricsPath: /minio/v2/metrics/resource
   relabelings:
     - action: replace
