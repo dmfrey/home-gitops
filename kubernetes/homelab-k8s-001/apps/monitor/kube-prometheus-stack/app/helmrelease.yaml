@@ -132,6 +132,27 @@ spec:
           # renovate: datasource=docker depName=quay.io/thanos/thanos
           version: "v0.36.1"
 
+        additionalScrapeConfigs:
+          - job_name: minio-job
+            metrics_path: /minio/v3/metrics/cluster
+            static_configs:
+              - targets: ["minio.${SECRET_DOMAIN}"]
+          - job_name: minio-job-node
+            metrics_path: /minio/v3/metrics/node
+            scheme: http
+            static_configs:
+              - targets: ["minio.${SECRET_DOMAIN}"]
+          - job_name: minio-job-bucket
+            metrics_path: /minio/v3/metrics/bucket
+            scheme: http
+            static_configs:
+              - targets: ["minio.${SECRET_DOMAIN}"]
+          - job_name: minio-job-resource
+            metrics_path: /minio/v3/metrics/resource
+            scheme: http
+            static_configs:
+              - targets: ["minio.${SECRET_DOMAIN}"]
+
         alertingEnpoints:
           - namespace: monitor
             name: alertmanager
