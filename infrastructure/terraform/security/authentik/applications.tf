@@ -1,40 +1,60 @@
-locals {
-  oauth_apps = [
-    "grafana",
-    "spring-dev"
-  ]
-}
+# locals {
+#   oauth_apps = [
+#     "grafana",
+#     "spring-dev"
+#   ]
+# }
 
 # Step 1: Retrieve secrets from Bitwarden
-data "bitwarden_secret" "application" {
-  for_each = toset(local.oauth_apps)
-  key      = each.key
+# data "bitwarden_secret" "application" {
+#   for_each = toset(local.oauth_apps)
+#   key      = each.key
+# }
+
+data "bitwarden_secret" "grafana" {
+  key = "grafana"
+}
+
+data "bitwarden_secret" "spring-dev" {
+  key = "spring-dev"
 }
 
 # Step 2: Parse the secrets using regex to extract client_id and client_secret
+# locals {
+#   parsed_secrets = {
+#     for app, secret in data.bitwarden_secret.application : app => {
+#       secret_data         = jsondecode(secret.value[0])
+#       client_id           = local.secret_data["AUTHENTIK_CLIENT_ID"].value
+#       client_secret       = local.secret_data["AUTHENTIK_CLIENT_SECRET"].value
+#     }
+#   }
+# }
+
 locals {
-  parsed_secrets = {
-    for app, secret in data.bitwarden_secret.application : app => {
-      secret_data         = jsondecode(secret.value[0])
-      client_id           = local.secret_data["AUTHENTIK_CLIENT_ID"].value
-      client_secret       = local.secret_data["AUTHENTIK_CLIENT_SECRET"].value
-    }
-  }
+  bw_grafana_secret           = jsondecode(data.bitwarden_secret.grafana.value)
+  grafana_client_id           = local.bw_grafana_secret["AUTHENTIK_CLIENT_ID"]
+  grafana_secret              = local.bw_grafana_secret["AUTHENTIK_CLIENT_TOKEN"]
+}
+
+locals {
+  bw_spring_dev_secret        = jsondecode(data.bitwarden_secret.spring_dev.value)
+  spring_dev_client_id        = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_ID"]
+  spring_dev_secret           = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_TOKEN"]
 }
 
 locals {
   applications = {
     grafana = {
-      client_id     = local.parsed_secrets["grafana"].client_id
-      client_secret = local.parsed_secrets["grafana"].client_secret
+      client_id     = local.grafana_client_id
+      client_secret = local.grafana_secret
       group         = authentik_group.monitoring.name
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
     },
     spring-dev = {
-      client_id     = local.parsed_secrets["spring_dev"].client_id
-      client_secret = local.parsed_secrets["spring_dev"].client_secret
+      client_id     = local.spring_dev_client_id
+      client_secret = local.spring_dev_secret
       group         = authentik_group.developer.name
       redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
       launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
