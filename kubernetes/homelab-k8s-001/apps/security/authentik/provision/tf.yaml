@@ -27,6 +27,8 @@ spec:
       varsKeys:
         - PLEX_SERVER_ID
   vars:
+    - name: TF_LOG
+      value: DEBUG
     - name: authentik_host
       value: https://auth.${SECRET_DOMAIN}
     # - name: authentik_host_browser
