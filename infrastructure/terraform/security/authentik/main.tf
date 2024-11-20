@@ -8,7 +8,7 @@ terraform {
 
     bitwarden = {
       source  = "maxlaverse/bitwarden"
-      version = ">= 0.11.0"
+      version = ">= 0.12.1"
     }
 
   }
