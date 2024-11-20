@@ -27,7 +27,10 @@ data "bitwarden_secret" "authentik" {
 }
 
 locals {
-  authentik_token = regex("AUTHENTIK_TOKEN: (\\S+)", data.bitwarden_secret.authentik.value)[0]
+  raw_data                    = jsondecode(data.bitwarden_secret.authentik.value)
+  authentik_token             = local.raw_data["AUTHENTIK_TOKEN"].value
+  authentik_plex_client_id    = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"].value
+  authentik_plex_token        = local.raw_data["AUTHENTIK_PLEX_TOKEN"].value
 }
 
 provider "authentik" {

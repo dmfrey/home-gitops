@@ -70,11 +70,11 @@ resource "authentik_policy_binding" "application_policy_binding" {
 #   key = "authentik"
 # }
 
-locals {
-  raw_data                     = jsondecode(data.bitwarden_secret.authentik.value)
-  authentik_plex_client_id     = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"].value
-  authentik_plex_token         = local.raw_data["AUTHENTIK_PLEX_TOKEN"].value
-}
+# locals {
+#   raw_data                     = jsondecode(data.bitwarden_secret.authentik.value)
+#   authentik_plex_client_id     = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"].value
+#   authentik_plex_token         = local.raw_data["AUTHENTIK_PLEX_TOKEN"].value
+# }
 
 ##Oauth
 # resource "authentik_source_oauth" "discord" {
