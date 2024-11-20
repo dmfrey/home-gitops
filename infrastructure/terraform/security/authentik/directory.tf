@@ -3,7 +3,7 @@ data "authentik_group" "admins" {
   name = "authentik Admins"
 }
 
-resource "authentik_group" "developer" {
+resource "authentik_group" "developers" {
   name         = "Developers"
   is_superuser = false
 }
