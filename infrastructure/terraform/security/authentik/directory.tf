@@ -94,8 +94,8 @@ resource "authentik_source_plex" "plex" {
   slug                = "plex"
   client_id           = local.authentik_plex_client_id
   plex_token          = local.authentik_plex_token
-  authentication_flow = data.authentik_flow.default-source-authentication.id
-  enrollment_flow     = data.authentik_flow.default-enrollment-flow.id
+  authentication_flow  = data.authentik_flow.default-source-authentication.id
+  enrollment_flow      = authentik_flow.enrollment-invitation.uuid
   allow_friends       = true
   allowed_servers = [
     var.PLEX_SERVER_ID
