@@ -17,10 +17,10 @@ locals {
     for app, secret in data.bitwarden_secret.application : app => {
       raw_data            = jsondecode(secret)
       client_prefix        = upper(app)
-      client_id_key       = "${client_prefix}_CLIENT_ID"
-      client_secret_key   = "${client_prefix}_CLIENT_SECRET"
-      client_id           = raw_data[client_id_key].value
-      client_secret       = raw_data[client_secret_key].value
+      client_id_key       = "${local.client_prefix}_CLIENT_ID"
+      client_secret_key   = "${local.client_prefix}_CLIENT_SECRET"
+      client_id           = local.raw_data[local.client_id_key].value
+      client_secret       = local.raw_data[local.client_secret_key].value
     }
   }
 }
