@@ -72,8 +72,8 @@ resource "authentik_policy_binding" "application_policy_binding" {
 
 locals {
   raw_data                     = jsondecode(data.bitwarden_secret.authentik.value)
-  authentik_plex_client_id     = raw_data["AUTHENTIK_PLEX_CLIENT_ID"]
-  authentik_plex_token         = raw_data["AUTHENTIK_PLEX_TOKEN"]
+  authentik_plex_client_id     = raw_data["AUTHENTIK_PLEX_CLIENT_ID"].value
+  authentik_plex_token         = raw_data["AUTHENTIK_PLEX_TOKEN"].value
 }
 
 ##Oauth
