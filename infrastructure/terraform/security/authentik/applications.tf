@@ -15,9 +15,9 @@ data "bitwarden_secret" "application" {
 locals {
   parsed_secrets = {
     for app, secret in data.bitwarden_secret.application : app => {
-      secret_data            = jsondecode(secret.value[0])
-      client_id           = secret_data["AUTHENTIK_CLIENT_ID"].value
-      client_secret       = secret_data["AUTHENTIK_CLIENT_SECRET"].value
+      secret_data         = jsondecode(secret.value[0])
+      client_id           = local.secret_data["AUTHENTIK_CLIENT_ID"].value
+      client_secret       = local.secret_data["AUTHENTIK_CLIENT_SECRET"].value
     }
   }
 }
