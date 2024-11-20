@@ -33,13 +33,13 @@ data "bitwarden_secret" "spring_dev" {
 locals {
   bw_grafana_secret           = jsondecode(data.bitwarden_secret.grafana.value)
   grafana_client_id           = local.bw_grafana_secret["AUTHENTIK_CLIENT_ID"]
-  grafana_secret              = local.bw_grafana_secret["AUTHENTIK_CLIENT_TOKEN"]
+  grafana_secret              = local.bw_grafana_secret["AUTHENTIK_CLIENT_SECRET"]
 }
 
 locals {
   bw_spring_dev_secret        = jsondecode(data.bitwarden_secret.spring_dev.value)
   spring_dev_client_id        = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_ID"]
-  spring_dev_secret           = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_TOKEN"]
+  spring_dev_secret           = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_SECRET"]
 }
 
 locals {
