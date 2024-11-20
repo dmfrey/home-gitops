@@ -51,13 +51,13 @@ variable "oauth2_applications" {
   }))
 }
 
-variable "groups" {
-  type = map(object({
-    name      = string
-    parent    = optional(string)
-    superuser = optional(bool)
-  }))
-}
+# variable "groups" {
+#   type = map(object({
+#     name      = string
+#     parent    = optional(string)
+#     superuser = optional(bool)
+#   }))
+# }
 
 variable "users" {
   type = map(object({
