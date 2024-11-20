@@ -11,23 +11,15 @@ data "bitwarden_secret" "application" {
   key      = each.key
 }
 
-output "application" {
-  value = data.bitwarden_secret.application
-}
-
 # Step 2: Parse the secrets using regex to extract client_id and client_secret
 locals {
   parsed_secrets = {
     for app, secret in data.bitwarden_secret.application : app => {
-      raw_data            = jsondecode(secret.value)
-      client_id           = local.raw_data["AUTHENTIK_CLIENT_ID"]
-      client_secret       = local.raw_data["AUTHENTIK_CLIENT_SECRET"]
+      secret_data            = jsondecode(secret.value[0])
+      client_id           = local.secret_data["AUTHENTIK_CLIENT_ID"]
+      client_secret       = local.secret_data["AUTHENTIK_CLIENT_SECRET"]
     }
   }
-}
-
-output "parsed_secrets" {
-  value = local.parsed_secrets
 }
 
 locals {
