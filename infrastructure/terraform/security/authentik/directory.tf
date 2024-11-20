@@ -71,8 +71,9 @@ resource "authentik_policy_binding" "application_policy_binding" {
 # }
 
 locals {
-  authentik_plex_client_id     = replace(regex("AUTHENTIK_PLEX_CLIENT_ID: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
-  authentik_plex_token = replace(regex("AUTHENTIK_PLEX_TOKEN: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
+  raw_data                     = jsondecode(data.bitwarden_secret.authentik.value)
+  authentik_plex_client_id     = raw_data["AUTHENTIK_PLEX_CLIENT_ID"]
+  authentik_plex_token         = raw_data["AUTHENTIK_PLEX_TOKEN"]
 }
 
 ##Oauth

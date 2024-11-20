@@ -193,32 +193,32 @@ spec:
         dmfrey:
           name: "${FULL_NAME}"
           email: "${EMAIL_ADDRESS}"
-          groups:
-            - "admins"
-            - "developer"
-            - "downloads"
-            - "grafana_admins"
-            - "home"
-            - "infrastructure"
-            - "monitoring"
+          # groups:
+          #   - "admins"
+          #   - "developer"
+          #   - "downloads"
+          #   - "grafana_admins"
+          #   - "home"
+          #   - "infrastructure"
+          #   - "monitoring"
         sdfrey:
           name: "${STEPH_FULL_NAME}"
           email: "${STEPH_EMAIL}"
-          groups:
-            - "users"
-            - "downloads"
-            - "home"
+          # groups:
+          #   - "users"
+          #   - "downloads"
+          #   - "home"
         cgfrey:
           name: "${CAMDYN_FULL_NAME}"
           email: "${CAMDYN_EMAIL}"
-          groups:
-            - "users"
-            - "downloads"
-            - "home"
+          # groups:
+          #   - "users"
+          #   - "downloads"
+          #   - "home"
         mkfrey:
           name: "${MOLLY_FULL_NAME}"
           email: "${MOLLY_EMAIL}"
-          groups:
-            - "users"
-            - "downloads"
-            - "home"
+          # groups:
+          #   - "users"
+          #   - "downloads"
+          #   - "home"

@@ -63,7 +63,7 @@ variable "users" {
   type = map(object({
     name   = string
     email  = string
-    groups = list(string)
+    # groups = list(string)
   }))
 }
 
