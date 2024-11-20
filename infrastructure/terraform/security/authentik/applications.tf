@@ -15,7 +15,7 @@ data "bitwarden_secret" "grafana" {
   key = "grafana"
 }
 
-data "bitwarden_secret" "spring-dev" {
+data "bitwarden_secret" "spring_dev" {
   key = "spring-dev"
 }
 
