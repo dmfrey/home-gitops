@@ -66,9 +66,9 @@ resource "authentik_policy_binding" "application_policy_binding" {
 #   discord_client_secret = replace(regex("DISCORD_CLIENT_SECRET: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
 # }
 
-data "bitwarden_secret" "authentik" {
-  key = "authentik"
-}
+# data "bitwarden_secret" "authentik" {
+#   key = "authentik"
+# }
 
 locals {
   authentik_plex_client_id     = replace(regex("AUTHENTIK_PLEX_CLIENT_ID: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
