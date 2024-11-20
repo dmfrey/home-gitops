@@ -28,9 +28,9 @@ data "bitwarden_secret" "authentik" {
 
 locals {
   raw_data                    = jsondecode(data.bitwarden_secret.authentik.value)
-  authentik_token             = local.raw_data["AUTHENTIK_TOKEN"].value
-  authentik_plex_client_id    = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"].value
-  authentik_plex_token        = local.raw_data["AUTHENTIK_PLEX_TOKEN"].value
+  authentik_token             = local.raw_data["AUTHENTIK_TOKEN"]
+  authentik_plex_client_id    = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"]
+  authentik_plex_token        = local.raw_data["AUTHENTIK_PLEX_TOKEN"]
 }
 
 provider "authentik" {
