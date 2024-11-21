@@ -107,7 +107,7 @@ spec:
         enabled: true
 
     redis:
-      host: authentik-dragonfly-cluster.security.svc.cluster.local
+      host: authentik-kv-cluster.security.svc.cluster.local
 
     server:
 

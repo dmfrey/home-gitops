@@ -2,11 +2,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: authentik-dragonfly-cluster
+  name: authentik-kv-cluster
 spec:
   selector:
     matchLabels:
-      app: authentik-dragonfly-cluster
+      app: authentik-kv-cluster
   podTargetLabels: ["app"]
   podMetricsEndpoints:
     - port: admin

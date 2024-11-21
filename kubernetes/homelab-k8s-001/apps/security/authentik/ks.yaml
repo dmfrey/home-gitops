@@ -38,6 +38,41 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app authentik-kv
+  namespace: flux-system
+spec:
+  targetNamespace: security
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/kv"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  healthChecks:
+    - apiVersion: dragonflydb.io/v1alpha1
+      kind: Dragonfly
+      name: authentik-kv-cluster
+      namespace: security
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
+  postBuild:
+    substitute:
+      APP: *app
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: dragonfly-operator
+    - name: rook-ceph-cluster
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app authentik
   namespace: flux-system
 spec:
@@ -63,6 +98,7 @@ spec:
   dependsOn:
     - name: external-secrets
     - name: authentik-database
+    - name: authentik-kv
     - name: kyverno
     - name: smtp-relay
     - name: grafana
