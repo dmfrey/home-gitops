@@ -158,19 +158,19 @@ spec:
           email: "${USERS_SDFREY_EMAIL}"
           password: "${USERS_SDFREY_PASSWORD}"
           groups:
-            - "downloads"
-            - "home"
+            - "Downloads"
+            - "Home"
         cgfrey:
           name: "${USERS_CGFREY_NAME}"
           email: "${USERS_CGFREY_EMAIL}"
           password: "${USERS_CGFREY_PASSWORD}"
           groups:
-            - "downloads"
-            - "home"
+            - "Downloads"
+            - "Home"
         mkfrey:
           name: "${USERS_MKFREY_NAME}"
           email: "${USERS_MKFREY_EMAIL}"
           password: "${USERS_MKFREY_PASSWORD}"
           groups:
-            - "downloads"
-            - "home"
+            - "Downloads"
+            - "Home"
