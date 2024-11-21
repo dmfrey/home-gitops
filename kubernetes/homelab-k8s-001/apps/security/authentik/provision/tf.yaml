@@ -22,10 +22,9 @@ spec:
         - AUTHENTIK_BOOTSTRAP_TOKEN
         - AUTHENTIK_PLEX_CLIENT_ID
         - AUTHENTIK_PLEX_TOKEN
-    - kind: Secret
-      name: plex-secret
-      varsKeys:
-        - PLEX_SERVER_ID
+        - USERS_DMFREY_NAME
+        - USERS_DMFREY_EMAIL
+        - USERS_DMFREY_PASSWORD
   vars:
     - name: TF_LOG
       value: TRACE
@@ -135,8 +134,9 @@ spec:
     - name: users
       value:
         dmfrey:
-          name: "${FULL_NAME}"
-          email: "${EMAIL_ADDRESS}"
+          name: "${USERS_DMFREY_NAME}"
+          email: "${USERS_DMFREY_EMAIL}"
+          password: "${USERS_DMFREY_PASSWORD}"
           groups:
             - "admins"
             - "developer"
