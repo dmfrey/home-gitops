@@ -19,9 +19,9 @@ variable "bw_access_token" {
 
 variable "users" {
   type = map(object({
-    name   = string
-    email  = string
+    name     = string
+    email    = string
     password = string
-    groups = list(string)
+    groups   = list(string)
   }))
 }
