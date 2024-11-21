@@ -43,6 +43,11 @@ data "authentik_groups" "all" {
 
 }
 
+output all{
+  value = data.authentik_groups.all
+  description = "The list of registered authentik groups"
+}
+
 output all_groups{
   value = data.authentik_groups.all.groups
   description = "The registered authentik groups"
