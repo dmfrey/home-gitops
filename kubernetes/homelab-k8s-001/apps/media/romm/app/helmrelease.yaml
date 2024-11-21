@@ -111,8 +111,6 @@ spec:
         enabled: true
         className: external
         annotations:
-          theme.home.arpa/enabled: "true"
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:television-classic"
 
