@@ -4,12 +4,7 @@ resource "authentik_user" "users" {
   username       = each.key
   email          = each.value.email
   groups         = [
-    for desired_groups in each.value.groups :
-    authentik_group.groups[
-      lookup({
-        for group_key, group_val in data.authentik_groups.all :
-        group_key => group_key
-      }, desired_groups, null)
-    ].id
+    for desired_group in each.value.groups :
+    data.authentik_groups.lookup[desired_group].id
   ]
 }

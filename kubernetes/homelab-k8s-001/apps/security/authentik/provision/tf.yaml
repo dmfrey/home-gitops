@@ -143,7 +143,6 @@ spec:
             - "home"
             - "infrastructure"
             - "monitoring"
-          is_superuser: "true"
         # sdfrey:
         #   name: "${STEPH_FULL_NAME}"
         #   email: "${STEPH_EMAIL}"
