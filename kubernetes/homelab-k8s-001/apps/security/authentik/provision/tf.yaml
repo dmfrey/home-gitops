@@ -27,14 +27,6 @@ spec:
       varsKeys:
         - PLEX_SERVER_ID
   vars:
-    - name: TF_LOG
-      value: TRACE
-    - name: authentik_host
-      value: https://auth.${SECRET_DOMAIN}
-    # - name: authentik_host_browser
-    #   value: https://auth.${SECRET_DOMAIN}
-    - name: external_domain
-      value: ${SECRET_DOMAIN}
     - name: cluster_domain
       value: ${SECRET_DOMAIN}
     # - name: proxy_applications
@@ -138,89 +130,38 @@ spec:
         # Rook-Ceph:
         #   url: https://rook.${SECRET_DOMAIN}
         #   group: Storage
-    - name: oauth2_applications
-      value:
-        # Gatus:
-        #   url: https://status.${SECRET_DOMAIN}
-        #   group: Monitor
-        #   client_id: gatus
-        #   client_secret: ${GATUS_SSO_CLIENT_SECRET}
-        #   redirect_uris:
-        #     - https://status.${SECRET_DOMAIN}/authorization-code/callback
-        Grafana:
-          url: https://grafana.${SECRET_DOMAIN}
-          group: Monitor
-          client_id: grafana
-          client_secret: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
-          redirect_uris:
-            - https://grafana.${SECRET_DOMAIN}/login/generic_oauth
-        # Romm:
-        #   url: https://romm.${SECRET_DOMAIN}
-        #   group: Media
-        #   client_id: romm
-        #   client_secret: ${ROMM_AUTH_SECRET_KEY}
-        #   redirect_uris:
-        #     - https://romm.${SECRET_DOMAIN}/login
-        Spring-Dev:
-          url: https://spring-dev-gateway.${SECRET_DOMAIN}
-          group: Development
-          client_id: spring-dev
-          client_secret: ${SPRING_DEV_SSO_CLIENT_SECRET}
-          redirect_uris:
-            - https://spring-dev-gateway.${SECRET_DOMAIN}/login/oauth2/code/sso
-    # - name: groups
-    #   value:
-    #     ${ORGANIZATION}-Admins:
-    #       name: "${ORGANIZATION} Admins"
-    #       superuser: true
-    #       parent: "authentik-Admins"
-    #     ${ORGANIZATION}-Users:
-    #       name: "${ORGANIZATION} Users"
-    #       superuser: false
-    #       parent: "authentik-Admins"
-    #     Grafana-Admins:
-    #       name: "Grafana Admins"
-    #       superuser: false
-    #       parent: "${ORGANIZATION}-Admins"
-    #     Developers:
-    #       name: "Developers"
-    #       superuser: false
-    #       parent: "${ORGANIZATION}-Admins"
-    #     romm-users:
-    #       name: "ROMM Users"
-    #       superuser: true
-    #       parent: "${ORGANIZATION}-Users"
     - name: users
       value:
         dmfrey:
           name: "${FULL_NAME}"
           email: "${EMAIL_ADDRESS}"
-          # groups:
-          #   - "admins"
-          #   - "developer"
-          #   - "downloads"
-          #   - "grafana_admins"
-          #   - "home"
-          #   - "infrastructure"
-          #   - "monitoring"
-        sdfrey:
-          name: "${STEPH_FULL_NAME}"
-          email: "${STEPH_EMAIL}"
-          # groups:
-          #   - "users"
-          #   - "downloads"
-          #   - "home"
-        cgfrey:
-          name: "${CAMDYN_FULL_NAME}"
-          email: "${CAMDYN_EMAIL}"
-          # groups:
-          #   - "users"
-          #   - "downloads"
-          #   - "home"
-        mkfrey:
-          name: "${MOLLY_FULL_NAME}"
-          email: "${MOLLY_EMAIL}"
-          # groups:
-          #   - "users"
-          #   - "downloads"
-          #   - "home"
+          groups:
+            - "admins"
+            - "developer"
+            - "downloads"
+            - "grafana_admins"
+            - "home"
+            - "infrastructure"
+            - "monitoring"
+          is_superuser: "true"
+        # sdfrey:
+        #   name: "${STEPH_FULL_NAME}"
+        #   email: "${STEPH_EMAIL}"
+        #   groups:
+        #     - "users"
+        #     - "downloads"
+        #     - "home"
+        # cgfrey:
+        #   name: "${CAMDYN_FULL_NAME}"
+        #   email: "${CAMDYN_EMAIL}"
+        #   groups:
+        #     - "users"
+        #     - "downloads"
+        #     - "home"
+        # mkfrey:
+        #   name: "${MOLLY_FULL_NAME}"
+        #   email: "${MOLLY_EMAIL}"
+        #   groups:
+        #     - "users"
+        #     - "downloads"
+        #     - "home"
