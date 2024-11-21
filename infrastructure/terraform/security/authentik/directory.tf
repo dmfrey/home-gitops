@@ -8,23 +8,13 @@ resource "authentik_group" "developers" {
   is_superuser = false
 }
 
-resource "authentik_group" "downloads" {
-  name         = "Downloads"
+resource "authentik_group" "infrastructure" {
+  name         = "Infrastructure"
   is_superuser = false
 }
 
 resource "authentik_group" "grafana_admin" {
   name         = "Grafana Admins"
-  is_superuser = false
-}
-
-resource "authentik_group" "home" {
-  name         = "Home"
-  is_superuser = false
-}
-
-resource "authentik_group" "infrastructure" {
-  name         = "Infrastructure"
   is_superuser = false
 }
 
@@ -35,8 +25,20 @@ resource "authentik_group" "monitoring" {
 }
 
 resource "authentik_group" "users" {
-  name         = "users"
+  name         = "Users"
   is_superuser = false
+}
+
+resource "authentik_group" "downloads" {
+  name         = "Downloads"
+  is_superuser = false
+  parent       = resource.authentik_group.users.id
+}
+
+resource "authentik_group" "home" {
+  name         = "Home"
+  is_superuser = false
+  parent       = resource.authentik_group.users.id
 }
 
 data "authentik_groups" "all" {
@@ -64,6 +66,11 @@ data "authentik_group" "lookup_by_name" {
       group.name => group
   }
   name = each.value.name
+}
+
+output monitoring{
+  value = data.authentik_group.lookup_by_name("Monitoring")
+  description = "Lookup the 'Monitoring' group"
 }
 
 resource "authentik_policy_binding" "application_policy_binding" {

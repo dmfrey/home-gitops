@@ -5,7 +5,7 @@ metadata:
   name: authentik-provisioner
 spec:
   approvePlan: auto
-  interval: 5m
+  interval: 2m
   path: "./"
   sourceRef:
     kind: OCIRepository
@@ -138,13 +138,12 @@ spec:
           email: "${USERS_DMFREY_EMAIL}"
           password: "${USERS_DMFREY_PASSWORD}"
           groups:
-            - "admins"
-            - "developer"
-            - "downloads"
-            - "grafana_admins"
-            - "home"
-            - "infrastructure"
-            - "monitoring"
+            - "authentik Admins"
+            - "Developers"
+            - "Infrastructure"
+            - "Monitoring"
+            - "Downloads"
+            - "Home"
         # sdfrey:
         #   name: "${STEPH_FULL_NAME}"
         #   email: "${STEPH_EMAIL}"
