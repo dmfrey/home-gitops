@@ -24,5 +24,4 @@ variable "users" {
     password = string
     groups = list(string)
   }))
-  sensitive = true
 }
