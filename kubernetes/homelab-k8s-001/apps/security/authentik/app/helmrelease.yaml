@@ -67,17 +67,23 @@ spec:
       #     name: branding
 
     authentik:
+
       security_key: ""
+
       avatars: "gravatar,initials"
+
       log_level: info
+
       error_reporting:
         enabled: false
         send_pii: false
+
       postgresql:
         host: file:///postgres-creds/host
         port: 5432
         user: file:///postgres-creds/username
         password: file:///postgres-creds/password
+
       email:
         host: "smtp-relay.network.svc.cluster.local"
         port: 2525
@@ -101,10 +107,7 @@ spec:
         enabled: true
 
     redis:
-      enabled: true
-      master:
-        securityContext:
-          enabled: true
+      host: authentik-dragonfly-cluster.security.svc.cluster.local
 
     server:
 
@@ -135,7 +138,7 @@ spec:
 
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-        - auth.${SECRET_DOMAIN}
+          - auth.${SECRET_DOMAIN}
         pathType: "Prefix"
         paths:
           - "/"

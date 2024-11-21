@@ -5,3 +5,5 @@ kind: Kustomization
 resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
+  - ./authentik-dragonfly-cluster.yaml
+  - ./authentik-dragonfly-podmonitor.yaml
