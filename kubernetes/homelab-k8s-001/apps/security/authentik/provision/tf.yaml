@@ -18,22 +18,6 @@ spec:
       name: terraform-bitwarden-secret
     - kind: Secret
       name: authentik-secret
-      varsKeys:
-        - AUTHENTIK_BOOTSTRAP_TOKEN
-        - AUTHENTIK_PLEX_CLIENT_ID
-        - AUTHENTIK_PLEX_TOKEN
-        - USERS_DMFREY_NAME
-        - USERS_DMFREY_EMAIL
-        - USERS_DMFREY_PASSWORD
-        - USERS_SDFREY_NAME
-        - USERS_SDFREY_EMAIL
-        - USERS_SDFREY_PASSWORD
-        - USERS_CGFREY_NAME
-        - USERS_CGFREY_EMAIL
-        - USERS_CGFREY_PASSWORD
-        - USERS_MKFREY_NAME
-        - USERS_MKFREY_EMAIL
-        - USERS_MKFREY_PASSWORD
   vars:
     - name: TF_LOG
       value: TRACE
@@ -143,9 +127,9 @@ spec:
     - name: users
       value:
         dmfrey:
-          name: "${USERS_DMFREY_NAME}"
-          email: "${USERS_DMFREY_EMAIL}"
-          password: "${USERS_DMFREY_PASSWORD}"
+          # name: "${USERS_DMFREY_NAME}"
+          # email: "${USERS_DMFREY_EMAIL}"
+          # password: "${USERS_DMFREY_PASSWORD}"
           groups:
             - "authentik Admins"
             - "Developers"
@@ -154,23 +138,23 @@ spec:
             - "Downloads"
             - "Home"
         sdfrey:
-          name: "${USERS_SDFREY_NAME}"
-          email: "${USERS_SDFREY_EMAIL}"
-          password: "${USERS_SDFREY_PASSWORD}"
+          # name: "${USERS_SDFREY_NAME}"
+          # email: "${USERS_SDFREY_EMAIL}"
+          # password: "${USERS_SDFREY_PASSWORD}"
           groups:
             - "Downloads"
             - "Home"
         cgfrey:
-          name: "${USERS_CGFREY_NAME}"
-          email: "${USERS_CGFREY_EMAIL}"
-          password: "${USERS_CGFREY_PASSWORD}"
+          # name: "${USERS_CGFREY_NAME}"
+          # email: "${USERS_CGFREY_EMAIL}"
+          # password: "${USERS_CGFREY_PASSWORD}"
           groups:
             - "Downloads"
             - "Home"
         mkfrey:
-          name: "${USERS_MKFREY_NAME}"
-          email: "${USERS_MKFREY_EMAIL}"
-          password: "${USERS_MKFREY_PASSWORD}"
+          # name: "${USERS_MKFREY_NAME}"
+          # email: "${USERS_MKFREY_EMAIL}"
+          # password: "${USERS_MKFREY_PASSWORD}"
           groups:
             - "Downloads"
             - "Home"
