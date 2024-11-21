@@ -62,6 +62,6 @@ resource "authentik_source_plex" "plex" {
   enrollment_flow      = authentik_flow.enrollment-invitation.uuid
   allow_friends       = true
   allowed_servers = [
-    var.PLEX_SERVER_ID
+    local.authentik_plex_client_id
   ]
 }
