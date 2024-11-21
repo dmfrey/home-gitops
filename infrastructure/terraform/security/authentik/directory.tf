@@ -50,7 +50,7 @@ data "authentik_groups" "all" {
 
 data "authentik_groups" "lookup" {
   for_each = data.authentik_groups.all
-  name = each.name
+  name = each.value.name
 }
 
 resource "authentik_policy_binding" "application_policy_binding" {
