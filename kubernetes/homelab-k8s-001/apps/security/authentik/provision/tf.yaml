@@ -27,6 +27,8 @@ spec:
       varsKeys:
         - PLEX_SERVER_ID
   vars:
+    - name: TF_LOG
+      value: TRACE
     - name: cluster_domain
       value: ${SECRET_DOMAIN}
     # - name: proxy_applications

@@ -39,16 +39,16 @@ resource "authentik_group" "users" {
   is_superuser = false
 }
 
-data "authentik_group" "lookup" {
-  for_each = local.applications
-  name     = each.value.group
-}
-
 data "authentik_groups" "all" {
 
 }
 
-data "authentik_groups" "lookup" {
+data "authentik_group" "lookup_by_application" {
+  for_each = local.applications
+  name     = each.value.group
+}
+
+data "authentik_group" "lookup_by_name" {
   for_each = {
     for index, group in data.authentik_groups.all.groups:
       group.name => group
@@ -60,7 +60,7 @@ resource "authentik_policy_binding" "application_policy_binding" {
   for_each = local.applications
 
   target = authentik_application.application[each.key].uuid
-  group  = data.authentik_group.lookup[each.key].id
+  group  = data.authentik_group.lookup_by_application[each.key].id
   order  = 0
 }
 
