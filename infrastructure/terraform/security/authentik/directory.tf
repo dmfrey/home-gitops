@@ -49,7 +49,7 @@ data "authentik_groups" "all" {
 }
 
 data "authentik_groups" "lookup" {
-  for_each = data.authentik_groups.all
+  for_each = data.authentik_groups.all.groups
   name = each.value.name
 }
 
