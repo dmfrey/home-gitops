@@ -43,6 +43,11 @@ data "authentik_groups" "all" {
 
 }
 
+output all_groups{
+  value = data.authentik_groups.all.groups
+  description = "The registered authentik groups"
+}
+
 data "authentik_group" "lookup_by_application" {
   for_each = local.applications
   name     = each.value.group
