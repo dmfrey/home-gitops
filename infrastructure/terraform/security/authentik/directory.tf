@@ -68,11 +68,6 @@ data "authentik_group" "lookup_by_name" {
   name = each.value.name
 }
 
-output monitoring{
-  value = data.authentik_group.lookup_by_name("Monitoring")
-  description = "Lookup the 'Monitoring' group"
-}
-
 resource "authentik_policy_binding" "application_policy_binding" {
   for_each = local.applications
 
