@@ -7,7 +7,7 @@ resource "authentik_user" "users" {
     for desired_groups in each.value.groups :
     authentik_group.groups[
       lookup({
-        for group_key, group_val in var.groups :
+        for group_key, group_val in data.authentik_groups.all :
         group_key => group_key
       }, desired_groups, null)
     ].id

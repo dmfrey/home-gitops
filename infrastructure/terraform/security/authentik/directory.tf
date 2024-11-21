@@ -44,6 +44,10 @@ data "authentik_group" "lookup" {
   name     = each.value.group
 }
 
+data "authentik_groups" "all" {
+
+}
+
 resource "authentik_policy_binding" "application_policy_binding" {
   for_each = local.applications
 
