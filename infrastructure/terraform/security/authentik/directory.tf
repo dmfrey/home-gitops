@@ -18,11 +18,6 @@ resource "authentik_group" "grafana_admin" {
   is_superuser = false
 }
 
-# resource "authentik_group" "headscale" {
-#   name         = "Headscale"
-#   is_superuser = false
-# }
-
 resource "authentik_group" "home" {
   name         = "Home"
   is_superuser = false
@@ -57,38 +52,7 @@ resource "authentik_policy_binding" "application_policy_binding" {
   order  = 0
 }
 
-# data "bitwarden_secret" "discord" {
-#   key = "discord"
-# }
-
-# locals {
-#   discord_client_id     = replace(regex("DISCORD_CLIENT_ID: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
-#   discord_client_secret = replace(regex("DISCORD_CLIENT_SECRET: (\\S+)", data.bitwarden_secret.discord.value)[0], "\"", "")
-# }
-
-# data "bitwarden_secret" "authentik" {
-#   key = "authentik"
-# }
-
-# locals {
-#   raw_data                     = jsondecode(data.bitwarden_secret.authentik.value)
-#   authentik_plex_client_id     = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"].value
-#   authentik_plex_token         = local.raw_data["AUTHENTIK_PLEX_TOKEN"].value
-# }
-
 ##Oauth
-# resource "authentik_source_oauth" "discord" {
-#   name                = "Discord"
-#   slug                = "discord"
-#   authentication_flow = data.authentik_flow.default-source-authentication.id
-#   enrollment_flow     = authentik_flow.enrollment-invitation.uuid
-#   user_matching_mode  = "email_deny"
-
-#   provider_type   = "discord"
-#   consumer_key    = local.discord_client_id
-#   consumer_secret = local.discord_client_secret
-# }
-
 resource "authentik_source_plex" "plex" {
   name                = "Plex"
   slug                = "plex"

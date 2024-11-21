@@ -6,11 +6,6 @@
 # }
 
 # Step 1: Retrieve secrets from Bitwarden
-# data "bitwarden_secret" "application" {
-#   for_each = toset(local.oauth_apps)
-#   key      = each.key
-# }
-
 data "bitwarden_secret" "grafana" {
   key = "grafana"
 }
@@ -20,16 +15,6 @@ data "bitwarden_secret" "spring_dev" {
 }
 
 # Step 2: Parse the secrets using regex to extract client_id and client_secret
-# locals {
-#   parsed_secrets = {
-#     for app, secret in data.bitwarden_secret.application : app => {
-#       secret_data         = jsondecode(secret.value[0])
-#       client_id           = local.secret_data["AUTHENTIK_CLIENT_ID"].value
-#       client_secret       = local.secret_data["AUTHENTIK_CLIENT_SECRET"].value
-#     }
-#   }
-# }
-
 locals {
   bw_grafana_secret           = jsondecode(data.bitwarden_secret.grafana.value)
   grafana_client_id           = local.bw_grafana_secret["AUTHENTIK_CLIENT_ID"]
