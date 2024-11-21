@@ -3,6 +3,13 @@ resource "authentik_user" "users" {
   name           = each.value.name
   username       = each.key
   email          = each.value.email
-  groups_by_name = each.value.groups
-  is_superuser   = each.value.is_superuser
+  groups         = [
+    for desired_groups in each.value.groups :
+    authentik_group.groups[
+      lookup({
+        for group_key, group_val in var.groups :
+        group_key => group_key
+      }, desired_groups, null)
+    ].id
+  ]
 }
