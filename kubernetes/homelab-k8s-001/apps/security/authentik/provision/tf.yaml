@@ -25,6 +25,15 @@ spec:
         - USERS_DMFREY_NAME
         - USERS_DMFREY_EMAIL
         - USERS_DMFREY_PASSWORD
+        - USERS_SDFREY_NAME
+        - USERS_SDFREY_EMAIL
+        - USERS_SDFREY_PASSWORD
+        - USERS_CGFREY_NAME
+        - USERS_CGFREY_EMAIL
+        - USERS_CGFREY_PASSWORD
+        - USERS_MKFREY_NAME
+        - USERS_MKFREY_EMAIL
+        - USERS_MKFREY_PASSWORD
   vars:
     - name: TF_LOG
       value: TRACE
@@ -144,24 +153,24 @@ spec:
             - "Monitoring"
             - "Downloads"
             - "Home"
-        # sdfrey:
-        #   name: "${STEPH_FULL_NAME}"
-        #   email: "${STEPH_EMAIL}"
-        #   groups:
-        #     - "users"
-        #     - "downloads"
-        #     - "home"
-        # cgfrey:
-        #   name: "${CAMDYN_FULL_NAME}"
-        #   email: "${CAMDYN_EMAIL}"
-        #   groups:
-        #     - "users"
-        #     - "downloads"
-        #     - "home"
-        # mkfrey:
-        #   name: "${MOLLY_FULL_NAME}"
-        #   email: "${MOLLY_EMAIL}"
-        #   groups:
-        #     - "users"
-        #     - "downloads"
-        #     - "home"
+        sdfrey:
+          name: "${USERS_SDFREY_NAME}"
+          email: "${USERS_SDFREY_EMAIL}"
+          password: "${USERS_SDFREY_PASSWORD}"
+          groups:
+            - "downloads"
+            - "home"
+        cgfrey:
+          name: "${USERS_CGFREY_NAME}"
+          email: "${USERS_CGFREY_EMAIL}"
+          password: "${USERS_CGFREY_PASSWORD}"
+          groups:
+            - "downloads"
+            - "home"
+        mkfrey:
+          name: "${USERS_MKFREY_NAME}"
+          email: "${USERS_MKFREY_EMAIL}"
+          password: "${USERS_MKFREY_PASSWORD}"
+          groups:
+            - "downloads"
+            - "home"
