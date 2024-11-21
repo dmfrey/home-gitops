@@ -44,28 +44,6 @@ spec:
         - secretRef:
             name: authentik-secret
 
-      # envValueFrom:
-      #   AUTHENTIK_POSTGRESQL__NAME:
-      #     secretKeyRef:
-      #       name: pg-authentik-app
-      #       key: username
-      #   AUTHENTIK_POSTGRESQL__USER:
-      #     secretKeyRef:
-      #       name: pg-authentik-app
-      #       key: username
-      #   AUTHENTIK_POSTGRESQL__PASSWORD:
-      #     secretKeyRef:
-      #       name: pg-authentik-app
-      #       key: password
-
-      # volumes:
-      #   - configMap:
-      #       name: authentik-branding
-      #     name: branding
-      # volumeMounts:
-      #   - mountPath: /media/branding
-      #     name: branding
-
     authentik:
 
       security_key: ""
@@ -93,13 +71,15 @@ spec:
       redis:
         host: authentik-kv-cluster.security.svc.cluster.local
 
-    # geoip:
-    #   enabled: true
-    #   accountId: "878850"
-    #   licenseKey: ${SECRET_MAXMIND_LICENSE_KEY}
-    #   editionIds: "GeoLite2-City"
-    #   image: ghcr.io/maxmind/geoipupdate:v6.0.0
-    #   updateInterval: 8
+    geoip:
+      enabled: true
+      existingSecret:
+        secretName: authentik-secret
+        accountId: MAXMIND_ACCOUNT_ID
+        licenseKey: MAXMIND_LICENSE_KEY
+      editionIds: "GeoLite2-City"
+      image: ghcr.io/maxmind/geoipupdate:v6.0.0
+      updateInterval: 8
 
     # blueprints:
     #   configMaps: []
