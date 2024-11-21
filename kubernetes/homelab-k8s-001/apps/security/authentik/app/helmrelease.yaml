@@ -78,7 +78,9 @@ spec:
         accountId: MAXMIND_ACCOUNT_ID
         licenseKey: MAXMIND_LICENSE_KEY
       editionIds: "GeoLite2-City"
-      image: ghcr.io/maxmind/geoipupdate:v7.1.0
+      image:
+        repository: ghcr.io/maxmind/geoipupdate
+        tag: v7.1.0
       updateInterval: 8
 
     # blueprints:
