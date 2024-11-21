@@ -74,6 +74,12 @@ spec:
 
       log_level: info
 
+      email:
+        host: "smtp-relay.network.svc.cluster.local"
+        port: 2525
+        use_tls: false
+        from: "authentik@${SECRET_DOMAIN}"
+
       error_reporting:
         enabled: false
         send_pii: false
@@ -84,11 +90,8 @@ spec:
         user: file:///postgres-creds/username
         password: file:///postgres-creds/password
 
-      email:
-        host: "smtp-relay.network.svc.cluster.local"
-        port: 2525
-        use_tls: false
-        from: "authentik@${SECRET_DOMAIN}"
+      redis:
+        host: authentik-kv-cluster.security.svc.cluster.local
 
     # geoip:
     #   enabled: true
@@ -106,10 +109,11 @@ spec:
       rules:
         enabled: true
 
-    redis:
-      host: authentik-kv-cluster.security.svc.cluster.local
-
     server:
+
+      autoscaling:
+        enabled: true
+        minReplicas: 2
 
       deploymentAnnotations:
         secret.reloader.stakater.com/reload: pg-authentik-app
@@ -157,5 +161,10 @@ spec:
           readOnly: true
 
     worker:
+
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+
       volumes: *postgresCredsVolume
       volumeMounts: *postgresCredsVolumeMounts
