@@ -5,7 +5,7 @@ metadata:
   name: authentik-provisioner
 spec:
   approvePlan: auto
-  interval: 120m
+  interval: 5m
   path: "./"
   sourceRef:
     kind: OCIRepository
