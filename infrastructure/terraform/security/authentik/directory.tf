@@ -50,7 +50,7 @@ data "authentik_groups" "all" {
 
 data "authentik_groups" "lookup" {
   for_each = {
-    for index, group in data.authentik_groups.all:
+    for index, group in data.authentik_groups.all.groups:
       group.name => group
   }
   name = each.value.name
