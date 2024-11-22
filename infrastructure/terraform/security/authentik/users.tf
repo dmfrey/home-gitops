@@ -77,5 +77,5 @@ resource "authentik_user" "users" {
 }
 
 output "var_users" {
-  value = local.users
+  value = var.users
 }

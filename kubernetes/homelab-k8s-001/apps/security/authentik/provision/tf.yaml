@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/infra.contrib.fluxcd.io/terraform_v1alpha1.json
 apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
@@ -16,6 +17,51 @@ spec:
 
   writeOutputsToSecret:
     name: authentik-tfstate
+
+  runnerPodTemplate:
+    spec:
+      envFrom:
+        - secretRef:
+            name: authentik-users-secret
+
+  readInputsFromSecrets:
+    - as: users
+      name: authentik-users-secret
+
+  values:
+    users:
+      dmfrey:
+        name: ${{ .users.USERS_DMFREY_NAME }}
+        email: ${{ .users.USERS_DMFREY_EMAIL }}
+        password: ${{ .users.USERS_DMFREY_PASSWORD }}
+        groups:
+          - authentik Admins
+          - Developers
+          - Infrastructure
+          - Monitoring
+          - Downloads
+          - Home
+      sdfrey:
+        name: ${{ .users.USERS_SDFREY_NAME }}
+        email: ${{ .users.USERS_SDFREY_EMAIL }}
+        password: ${{ .users.USERS_SDFREY_PASSWORD }}
+        groups:
+          - Downloads
+          - Home
+      cgfrey:
+        name: ${{ .users.USERS_CGFREY_NAME }}
+        email: ${{ .users.USERS_CGFREY_EMAIL }}
+        password: ${{ .users.USERS_CGFREY_PASSWORD }}
+        groups:
+          - Downloads
+          - Home
+      mkfrey:
+        name: ${{ .users.USERS_MKFREY_NAME }}
+        email: ${{ .users.USERS_MKFREY_EMAIL }}
+        password: ${{ .users.USERS_MKFREY_PASSWORD }}
+        groups:
+          - Downloads
+          - Home
 
   varsFrom:
     - kind: Secret
