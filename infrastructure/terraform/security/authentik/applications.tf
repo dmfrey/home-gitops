@@ -37,14 +37,14 @@ locals {
     #   redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
     #   launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
     # },
-    # spring-dev = {
-    #   client_id     = local.spring_dev_client_id
-    #   client_secret = local.spring_dev_secret
-    #   group         = authentik_group.developers.name
-    #   icon_url      = "https://github.com/dmfrey/home-gitops/blob/246df6f1456330a06e7fa8de710460cb65178475/docs/src/assets/icons/spring-boot.png"
-    #   redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
-    #   launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
-    # }
+    spring-dev = {
+      client_id     = local.spring_dev_client_id
+      client_secret = local.spring_dev_secret
+      group         = authentik_group.developers.name
+      icon_url      = "https://github.com/dmfrey/home-gitops/blob/246df6f1456330a06e7fa8de710460cb65178475/docs/src/assets/icons/spring-boot.png"
+      redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
+      launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
+    }
   }
 }
 
