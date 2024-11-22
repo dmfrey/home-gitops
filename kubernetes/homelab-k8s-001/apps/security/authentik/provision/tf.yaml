@@ -131,35 +131,35 @@ spec:
     - name: users
       value:
         dmfrey:
-          name: ${USERS_DMFREY_NAME}
-          email: ${USERS_DMFREY_EMAIL}
-          password: ${USERS_DMFREY_PASSWORD}
+          name: "${USERS_DMFREY_NAME}"
+          email: "${USERS_DMFREY_EMAIL}"
+          password: "${USERS_DMFREY_PASSWORD}"
           groups:
-            - authentik Admins
-            - Developers
-            - Infrastructure
-            - Monitoring
-            - Downloads
-            - Home
+            - "authentik Admins"
+            - "Developers"
+            - "Infrastructure"
+            - "Monitoring"
+            - "Downloads"
+            - "Home"
         sdfrey:
-          name: ${USERS_SDFREY_NAME}
-          email: ${USERS_SDFREY_EMAIL}
-          password: ${USERS_SDFREY_PASSWORD}
+          name: "${USERS_SDFREY_NAME}"
+          email: "${USERS_SDFREY_EMAIL}"
+          password: "${USERS_SDFREY_PASSWORD}"
           groups:
-            - Downloads
-            - Home
+            - "Downloads"
+            - "Home"
         cgfrey:
-          name: ${USERS_CGFREY_NAME}
-          email: ${USERS_CGFREY_EMAIL}
-          password: ${USERS_CGFREY_PASSWORD}
+          name: "${USERS_CGFREY_NAME}"
+          email: "${USERS_CGFREY_EMAIL}"
+          password: "${USERS_CGFREY_PASSWORD}"
           groups:
-            - Downloads
-            - Home
+            - "Downloads"
+            - "Home"
         mkfrey:
-          name: ${USERS_MKFREY_NAME}
-          email: ${USERS_MKFREY_EMAIL}
-          password: ${USERS_MKFREY_PASSWORD}
+          name: "${USERS_MKFREY_NAME}"
+          email: "${USERS_MKFREY_EMAIL}"
+          password: "${USERS_MKFREY_PASSWORD}"
           groups:
-            - Downloads
-            - Home
+            - "Downloads"
+            - "Home"
 
