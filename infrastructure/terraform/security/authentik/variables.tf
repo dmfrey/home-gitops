@@ -23,7 +23,7 @@ variable "oauth_applications" {
     client_secret = string
     group         = string
     icon_url      = string
-    redirect_url  = string
+    redirect_uri  = string
     launch_url    = string
   }))
 }
