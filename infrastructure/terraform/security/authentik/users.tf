@@ -25,41 +25,41 @@ locals {
       name = local.dmfrey_name
       email = local.dmfrey_email
       password = local.dmfrey_password
-      groups = []
-      #   data.authentik_group.admins.id,
-      #   data.authentik_group.developers.id,
-      #   data.authentik_group.infrastructure.id,
-      #   data.authentik_group.monitoring.id,
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        data.authentik_group.admins.id,
+        data.authentik_group.developers.id,
+        data.authentik_group.infrastructure.id,
+        data.authentik_group.monitoring.id,
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
+      ]
     },
     sdfrey = {
       name = local.sdfrey_name
       email = local.sdfrey_email
       password = local.sdfrey_password
-      groups = []
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
+      ]
     },
     cgfrey = {
       name = local.cgfrey_name
       email = local.cgfrey_email
       password = local.cgfrey_password
-      groups = []
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
+      ]
     },
-    sdfrey = {
+    mkfrey = {
       name = local.mkfrey_name
       email = local.mkfrey_email
       password = local.mkfrey_password
-      groups = []
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
+      ]
     }
   }
 }
