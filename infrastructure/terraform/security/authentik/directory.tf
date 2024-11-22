@@ -60,13 +60,13 @@ data "authentik_group" "lookup_by_application" {
   name     = each.value.group
 }
 
-# data "authentik_group" "lookup_by_name" {
-#   for_each = {
-#     for group in data.authentik_groups.all.groups:
-#       group.name => group
-#   }
-#   name = each.value.name
-# }
+data "authentik_group" "lookup_by_name" {
+  for_each = {
+    for group in data.authentik_groups.all.groups:
+      group.name => group
+  }
+  name = each.value.name
+}
 
 resource "authentik_policy_binding" "application_policy_binding" {
   for_each = local.applications

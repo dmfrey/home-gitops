@@ -25,14 +25,14 @@ locals {
       name = local.dmfrey_name
       email = local.dmfrey_email
       password = local.dmfrey_password
-      groups = []
-      #   data.authentik_group.admins.id,
-      #   data.authentik_group.developers.id,
-      #   data.authentik_group.infrastructure.id,
-      #   data.authentik_group.monitoring.id,
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        authentik_group.admins.name,
+        authentik_group.developers.name,
+        authentik_group.infrastructure.name,
+        authentik_group.monitoring.name,
+        authentik_group.downloads.name,
+        authentik_group.home.name
+      ]
     },
     sdfrey = {
       name = local.sdfrey_name
@@ -70,7 +70,10 @@ resource "authentik_user" "users" {
   name           = each.value["name"]
   email          = each.value["email"]
   password       = each.value["password"]
-  groups         = each.value["groups"]
+  groups         = [
+    for desired_group in each.value["groups"] :
+    data.authentik_group.lookup_by_name[desired_group].id
+  ]
 }
 
 output "var_users" {
