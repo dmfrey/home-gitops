@@ -26,12 +26,12 @@ locals {
       email = local.dmfrey_email
       password = local.dmfrey_password
       groups = [
-        authentik_group.admins.id,
-        authentik_group.developers.id,
-        authentik_group.infrastructure.id,
-        authentik_group.monitoring.id,
-        authentik_group.downloads.id,
-        authentik_group.home.id
+        data.authentik_group.admins.id,
+        data.authentik_group.developers.id,
+        data.authentik_group.infrastructure.id,
+        data.authentik_group.monitoring.id,
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
       ]
     },
     sdfrey = {
@@ -39,8 +39,8 @@ locals {
       email = local.sdfrey_email
       password = local.sdfrey_password
       groups = [
-        authentik_group.downloads.id,
-        authentik_group.home.id
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
       ]
     },
     cgfrey = {
@@ -48,8 +48,8 @@ locals {
       email = local.cgfrey_email
       password = local.cgfrey_password
       groups = [
-        authentik_group.downloads.id,
-        authentik_group.home.id
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
       ]
     },
     sdfrey = {
@@ -57,8 +57,8 @@ locals {
       email = local.mkfrey_email
       password = local.mkfrey_password
       groups = [
-        authentik_group.downloads.id,
-        authentik_group.home.id
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id
       ]
     }
   }
