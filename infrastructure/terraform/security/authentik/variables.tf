@@ -1,10 +1,3 @@
-# variable "proxy_applications" {
-#   type = map(object({
-#     url             = string
-#     group           = string
-#     skip_path_regex = optional(string)
-#   }))
-# }
 
 variable "cluster_domain" {
   type      = string
@@ -15,6 +8,23 @@ variable "bw_access_token" {
   type        = string
   description = "Bitwarden Secret Manager Access token"
   sensitive   = true
+}
+
+variable "groups" {
+  type = map(object({
+    name        = string
+    superuser   = optional(bool, true)
+    parent_name = optional(string)
+  }))
+}
+
+variable "users" {
+  type = map(object({
+    name     = string
+    email    = string
+    password = string
+    groups   = list(string)
+  }))
 }
 
 variable "oauth_applications" {
@@ -28,11 +38,10 @@ variable "oauth_applications" {
   }))
 }
 
-variable "users" {
-  type = map(object({
-    name     = string
-    email    = string
-    password = string
-    groups   = list(string)
-  }))
-}
+# variable "proxy_applications" {
+#   type = map(object({
+#     url             = string
+#     group           = string
+#     skip_path_regex = optional(string)
+#   }))
+# }
