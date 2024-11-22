@@ -26,12 +26,12 @@ locals {
       email = local.dmfrey_email
       password = local.dmfrey_password
       groups = [
-        "authentik Admins",
-        "Developers",
-        "Infrastructure",
-        "Monitoring",
-        "Downloads",
-        "Home"
+        # "authentik Admins",
+        # "Developers",
+        # "Infrastructure",
+        # "Monitoring",
+        # "Downloads",
+        # "Home"
       ]
     },
     sdfrey = {
@@ -39,8 +39,8 @@ locals {
       email = local.sdfrey_email
       password = local.sdfrey_password
       groups = [
-        "Downloads",
-        "Home"
+        # "Downloads",
+        # "Home"
       ]
     },
     cgfrey = {
@@ -48,8 +48,8 @@ locals {
       email = local.cgfrey_email
       password = local.cgfrey_password
       groups = [
-        "Downloads",
-        "Home"
+        # "Downloads",
+        # "Home"
       ]
     },
     mkfrey = {
@@ -57,8 +57,8 @@ locals {
       email = local.mkfrey_email
       password = local.mkfrey_password
       groups = [
-        "Downloads",
-        "Home"
+        # "Downloads",
+        # "Home"
       ]
     }
   }
