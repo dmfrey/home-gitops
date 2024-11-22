@@ -131,6 +131,8 @@ spec:
         name: grafana-secret
       - kind: Secret
         name: spring-dev-gateway-authentik-secret
+      - kind: Secret
+        name: authentik-users-secret
   decryption:
     provider: sops
   dependsOn:

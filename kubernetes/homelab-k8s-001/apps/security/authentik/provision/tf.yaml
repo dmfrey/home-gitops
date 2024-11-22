@@ -18,15 +18,15 @@ spec:
   writeOutputsToSecret:
     name: authentik-tfstate
 
-  runnerPodTemplate:
-    spec:
-      envFrom:
-        - secretRef:
-            name: authentik-users-secret
+  # runnerPodTemplate:
+  #   spec:
+  #     envFrom:
+  #       - secretRef:
+  #           name: authentik-users-secret
 
-  readInputsFromSecrets:
-    - as: users
-      name: authentik-users-secret
+  # readInputsFromSecrets:
+  #   - as: users
+  #     name: authentik-users-secret
 
   values:
     users:
