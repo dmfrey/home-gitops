@@ -10,14 +10,6 @@ variable "bw_access_token" {
   sensitive   = true
 }
 
-variable "groups" {
-  type = map(object({
-    name        = string
-    superuser   = optional(bool, true)
-    parent_name = optional(string)
-  }))
-}
-
 variable "users" {
   type = map(object({
     name     = string

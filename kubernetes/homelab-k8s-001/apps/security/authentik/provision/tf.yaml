@@ -129,35 +129,6 @@ spec:
         #   url: https://rook.${SECRET_DOMAIN}
         #   group: Storage
 
-    - name: groups
-      value:
-        admins:
-          name: "authentik Admins"
-        developers:
-          name: "Developers"
-          superuser: false
-        infrastructure:
-          name: "Infrastructure"
-          superuser: false
-        grafana_admin:
-          name: "Grafana Admins"
-          superuser: false
-        monitoring:
-          name: "Monitoring"
-          superuser: false
-          parent_name: "Grafana Admins"
-        users:
-          name: "Users"
-          superuser: false
-        downloads:
-          name: "Downloads"
-          superuser: false
-          parent_name: "Users"
-        home:
-          name: "Home"
-          superuser: false
-          parent_name: "Users"
-
     - name: oauth_applications
       value:
         grafana:

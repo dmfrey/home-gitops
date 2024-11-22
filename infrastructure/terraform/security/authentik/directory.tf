@@ -1,51 +1,44 @@
 
-# data "authentik_group" "admins" {
-#   name = "authentik Admins"
-# }
+data "authentik_group" "admins" {
+  name = "authentik Admins"
+}
 
-# resource "authentik_group" "developers" {
-#   name         = "Developers"
-#   is_superuser = false
-# }
+resource "authentik_group" "developers" {
+  name         = "Developers"
+  is_superuser = false
+}
 
-# resource "authentik_group" "infrastructure" {
-#   name         = "Infrastructure"
-#   is_superuser = false
-# }
+resource "authentik_group" "infrastructure" {
+  name         = "Infrastructure"
+  is_superuser = false
+}
 
-# resource "authentik_group" "grafana_admin" {
-#   name         = "Grafana Admins"
-#   is_superuser = false
-# }
+resource "authentik_group" "grafana_admin" {
+  name         = "Grafana Admins"
+  is_superuser = false
+}
 
-# resource "authentik_group" "monitoring" {
-#   name         = "Monitoring"
-#   is_superuser = false
-#   parent       = resource.authentik_group.grafana_admin.id
-# }
+resource "authentik_group" "monitoring" {
+  name         = "Monitoring"
+  is_superuser = false
+  parent       = resource.authentik_group.grafana_admin.id
+}
 
-# resource "authentik_group" "users" {
-#   name         = "Users"
-#   is_superuser = false
-# }
+resource "authentik_group" "users" {
+  name         = "Users"
+  is_superuser = false
+}
 
-# resource "authentik_group" "downloads" {
-#   name         = "Downloads"
-#   is_superuser = false
-#   parent       = resource.authentik_group.users.id
-# }
+resource "authentik_group" "downloads" {
+  name         = "Downloads"
+  is_superuser = false
+  parent       = resource.authentik_group.users.id
+}
 
-# resource "authentik_group" "home" {
-#   name         = "Home"
-#   is_superuser = false
-#   parent       = resource.authentik_group.users.id
-# }
-
-resource "authentik_group" "groups" {
-  for_each       = var.groups
-  name           = each.value["name"]
-  is_superuser   = each.value["superuser"]
-  parent         = data.authentik_group.lookup_by_name[each.value["parent_name"]].id
+resource "authentik_group" "home" {
+  name         = "Home"
+  is_superuser = false
+  parent       = resource.authentik_group.users.id
 }
 
 data "authentik_groups" "all" {
