@@ -26,40 +26,40 @@ locals {
       email = local.dmfrey_email
       password = local.dmfrey_password
       groups = [
-        authentik_group.admins.name,
-        authentik_group.developers.name,
-        authentik_group.infrastructure.name,
-        authentik_group.monitoring.name,
-        authentik_group.downloads.name,
-        authentik_group.home.name
+        "authentik Admins",
+        "Developers",
+        "Infrastructure",
+        "Monitoring",
+        "Downloads",
+        "Home"
       ]
     },
     sdfrey = {
       name = local.sdfrey_name
       email = local.sdfrey_email
       password = local.sdfrey_password
-      groups = []
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        "Downloads",
+        "Home"
+      ]
     },
     cgfrey = {
       name = local.cgfrey_name
       email = local.cgfrey_email
       password = local.cgfrey_password
-      groups = []
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        "Downloads",
+        "Home"
+      ]
     },
     mkfrey = {
       name = local.mkfrey_name
       email = local.mkfrey_email
       password = local.mkfrey_password
-      groups = []
-      #   data.authentik_group.downloads.id,
-      #   data.authentik_group.home.id
-      # ]
+      groups = [
+        "Downloads",
+        "Home"
+      ]
     }
   }
 }
