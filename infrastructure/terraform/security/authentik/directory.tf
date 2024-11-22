@@ -56,7 +56,7 @@ output all_groups{
 }
 
 data "authentik_group" "lookup_by_application" {
-  for_each = local.applications
+  for_each = var.oauth_applications
   name     = each.value.group
 }
 
@@ -69,7 +69,7 @@ data "authentik_group" "lookup_by_name" {
 }
 
 resource "authentik_policy_binding" "application_policy_binding" {
-  for_each = local.applications
+  for_each = var.oauth_applications
 
   target = authentik_application.application[each.key].uuid
   group  = data.authentik_group.lookup_by_application[each.key].id
