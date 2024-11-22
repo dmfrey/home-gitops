@@ -128,11 +128,11 @@ spec:
       APP: *app
     substituteFrom:
       - kind: Secret
-        name: grafana-secret
-      - kind: Secret
-        name: spring-dev-gateway-authentik-secret
-      - kind: Secret
         name: authentik-users-secret
+      - kind: Secret
+        name: authentik-grafana-secret
+      - kind: Secret
+        name: authentik-spring-dev-secret
   decryption:
     provider: sops
   dependsOn:
