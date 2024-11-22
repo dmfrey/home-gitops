@@ -29,14 +29,14 @@ locals {
 
 locals {
   applications = {
-    grafana = {
-      client_id     = local.grafana_client_id
-      client_secret = local.grafana_secret
-      group         = authentik_group.monitoring.name
-      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
-      redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
-      launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
-    },
+    # grafana = {
+    #   client_id     = local.grafana_client_id
+    #   client_secret = local.grafana_secret
+    #   group         = authentik_group.monitoring.name
+    #   icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
+    #   redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+    #   launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+    # },
     spring-dev = {
       client_id     = local.spring_dev_client_id
       client_secret = local.spring_dev_secret
