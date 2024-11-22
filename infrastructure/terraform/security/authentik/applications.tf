@@ -5,51 +5,51 @@
 #   ]
 # }
 
-# Step 1: Retrieve secrets from Bitwarden
-data "bitwarden_secret" "grafana" {
-  key = "grafana"
-}
+# # Step 1: Retrieve secrets from Bitwarden
+# data "bitwarden_secret" "grafana" {
+#   key = "grafana"
+# }
 
-data "bitwarden_secret" "spring_dev" {
-  key = "spring-dev"
-}
+# data "bitwarden_secret" "spring_dev" {
+#   key = "spring-dev"
+# }
 
-# Step 2: Parse the secrets using regex to extract client_id and client_secret
-locals {
-  bw_grafana_secret           = jsondecode(data.bitwarden_secret.grafana.value)
-  grafana_client_id           = local.bw_grafana_secret["AUTHENTIK_CLIENT_ID"]
-  grafana_secret              = local.bw_grafana_secret["AUTHENTIK_CLIENT_SECRET"]
-}
+# # Step 2: Parse the secrets using regex to extract client_id and client_secret
+# locals {
+#   bw_grafana_secret           = jsondecode(data.bitwarden_secret.grafana.value)
+#   grafana_client_id           = local.bw_grafana_secret["AUTHENTIK_CLIENT_ID"]
+#   grafana_secret              = local.bw_grafana_secret["AUTHENTIK_CLIENT_SECRET"]
+# }
 
-locals {
-  bw_spring_dev_secret        = jsondecode(data.bitwarden_secret.spring_dev.value)
-  spring_dev_client_id        = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_ID"]
-  spring_dev_secret           = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_SECRET"]
-}
+# locals {
+#   bw_spring_dev_secret        = jsondecode(data.bitwarden_secret.spring_dev.value)
+#   spring_dev_client_id        = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_ID"]
+#   spring_dev_secret           = local.bw_spring_dev_secret["AUTHENTIK_CLIENT_SECRET"]
+# }
 
-locals {
-  applications = {
-    grafana = {
-      client_id     = local.grafana_client_id
-      client_secret = local.grafana_secret
-      group         = authentik_group.monitoring.name
-      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
-      redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
-      launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
-    },
-    spring-dev = {
-      client_id     = local.spring_dev_client_id
-      client_secret = local.spring_dev_secret
-      group         = authentik_group.developers.name
-      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
-      redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
-      launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
-    }
-  }
-}
+# locals {
+#   applications = {
+#     grafana = {
+#       client_id     = local.grafana_client_id
+#       client_secret = local.grafana_secret
+#       group         = authentik_group.monitoring.name
+#       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
+#       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+#       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+#     },
+#     spring-dev = {
+#       client_id     = local.spring_dev_client_id
+#       client_secret = local.spring_dev_secret
+#       group         = authentik_group.developers.name
+#       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
+#       redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
+#       launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
+#     }
+#   }
+# }
 
 resource "authentik_provider_oauth2" "oauth2" {
-  for_each              = local.applications
+  for_each              = var.oauth_applications
   name                  = each.key
   client_id             = each.value.client_id
   client_secret         = each.value.client_secret
@@ -69,7 +69,7 @@ resource "authentik_provider_oauth2" "oauth2" {
 }
 
 resource "authentik_application" "application" {
-  for_each           = local.applications
+  for_each           = var.oauth_applications
   name               = title(each.key)
   slug               = each.key
   protocol_provider  = authentik_provider_oauth2.oauth2[each.key].id

@@ -17,6 +17,17 @@ variable "bw_access_token" {
   sensitive   = true
 }
 
+variable "oauth_applications" {
+  type = map(object({
+    client_id     = string
+    client_secret = string
+    group         = string
+    icon_url      = string
+    redirect_url  = string
+    launch_url    = string
+  }))
+}
+
 variable "users" {
   type = map(object({
     name     = string
