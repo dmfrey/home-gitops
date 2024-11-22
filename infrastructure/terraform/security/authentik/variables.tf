@@ -17,11 +17,11 @@ variable "bw_access_token" {
   sensitive   = true
 }
 
-variable "users" {
-  type = map(object({
-    name     = string
-    email    = string
-    password = string
-    groups   = list(string)
-  }))
-}
+# variable "users" {
+#   type = map(object({
+#     name     = string
+#     email    = string
+#     password = string
+#     groups   = list(string)
+#   }))
+# }
