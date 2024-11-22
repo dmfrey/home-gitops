@@ -6,7 +6,7 @@ metadata:
 spec:
 
   approvePlan: auto
-  interval: 1m
+  interval: 120m
   path: "./"
 
   sourceRef:
@@ -16,45 +16,6 @@ spec:
 
   writeOutputsToSecret:
     name: authentik-tfstate
-
-  # readInputsFromSecrets:
-  #   - name: authentik-secret
-
-  # values:
-
-  #   users:
-  #     dmfrey:
-  #       name: ${{ .authentik-secret.USERS_DMFREY_NAME }}
-  #       email: ${{ .authentik-secret.USERS_DMFREY_EMAIL }}
-  #       password: ${{ .authentik-secret.USERS_DMFREY_PASSWORD }}
-  #       groups:
-  #         - "authentik Admins"
-  #         - "Developers"
-  #         - "Infrastructure"
-  #         - "Monitoring"
-  #         - "Downloads"
-  #         - "Home"
-  #     sdfrey:
-  #       name: ${{ .authentik-secret.USERS_SDFREY_NAME }}
-  #       email: ${{ .authentik-secret.USERS_SDFREY_EMAIL }}
-  #       password: ${{ .authentik-secret.USERS_SDFREY_PASSWORD }}
-  #       groups:
-  #         - "Downloads"
-  #         - "Home"
-  #     cgfrey:
-  #       name: ${{ .authentik-secret.USERS_CGFREY_NAME }}
-  #       email: ${{ .authentik-secret.USERS_CGFREY_EMAIL }}
-  #       password: ${{ .authentik-secret.USERS_CGFREY_PASSWORD }}
-  #       groups:
-  #         - "Downloads"
-  #         - "Home"
-  #     mkfrey:
-  #       name: ${{ .authentik-secret.USERS_MKFREY_NAME }}
-  #       email: ${{ .authentik-secret.USERS_MKFREY_EMAIL }}
-  #       password: ${{ .authentik-secret.USERS_MKFREY_PASSWORD }}
-  #       groups:
-  #         - "Downloads"
-  #         - "Home"
 
   varsFrom:
     - kind: Secret
