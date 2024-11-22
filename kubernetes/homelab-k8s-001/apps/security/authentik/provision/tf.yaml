@@ -24,9 +24,9 @@ spec:
         - secretRef:
             name: authentik-users-secret
 
-  # readInputsFromSecrets:
-  #   - as: users
-  #     name: authentik-users-secret
+  readInputsFromSecrets:
+    - as: users
+      name: authentik-users-secret
 
   values:
     users:
