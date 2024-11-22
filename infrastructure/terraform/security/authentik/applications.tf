@@ -59,7 +59,7 @@ resource "authentik_provider_oauth2" "oauth2" {
   property_mappings     = data.authentik_property_mapping_provider_scope.oauth2.ids
   access_token_validity = "hours=4"
   signing_key           = data.authentik_certificate_key_pair.generated.id
-  redirect_uris         = [each.value.redirect_uri]
+  redirect_uris         = tolist([each.value.redirect_uri])
 }
 
 resource "authentik_application" "application" {
