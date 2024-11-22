@@ -41,7 +41,7 @@ locals {
       client_id     = local.spring_dev_client_id
       client_secret = local.spring_dev_secret
       group         = authentik_group.developers.name
-      icon_url      = "https://github.com/dmfrey/home-gitops/blob/246df6f1456330a06e7fa8de710460cb65178475/docs/src/assets/icons/spring-boot.png"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
       redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
       launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
     }
@@ -95,11 +95,6 @@ resource "authentik_application" "application" {
 #   protocol_provider = each.value.id
 # }
 
-# resource "authentik_service_connection_kubernetes" "local" {
-#   name  = "Local"
-#   local = true
-# }
-
 # resource "authentik_outpost" "outpost" {
 #   name               = "homelab5767 Outpost"
 #   service_connection = authentik_service_connection_kubernetes.local.id
@@ -122,27 +117,4 @@ resource "authentik_application" "application" {
 #     ]
 #     # kubernetes_ingress_class_name : "external"
 #   })
-# }
-
-# resource "authentik_provider_oauth2" "oauth2_providers" {
-#   for_each              = var.oauth2_applications
-#   name                  = each.key
-#   access_token_validity = "hours=1"
-#   client_id             = each.value.client_id
-#   client_secret         = sensitive(each.value.client_secret)
-#   authorization_flow     = data.authentik_flow.default-authorization-flow.id
-#   authentication_flow    = authentik_flow.homelab5767-authentication.uuid
-#   invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
-#   redirect_uris         = each.value.redirect_uris
-#   signing_key           = data.authentik_certificate_key_pair.default-certificate.id
-#   property_mappings     = data.authentik_property_mapping_provider_scope.scopes.ids
-# }
-
-# resource "authentik_application" "oauth2_apps" {
-#   for_each          = authentik_provider_oauth2.oauth2_providers
-#   name              = each.value.name
-#   slug              = replace(replace(lower(each.value.name), " ", "-"), "[^a-z0-9-]", "")
-#   group             = var.oauth2_applications[each.key].group
-#   meta_launch_url   = var.oauth2_applications[each.key].url
-#   protocol_provider = each.value.id
 # }
