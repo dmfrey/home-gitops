@@ -29,6 +29,17 @@ resource "authentik_application" "application" {
   meta_icon          = each.value.icon_url
   meta_launch_url    = each.value.launch_url
   policy_engine_mode = "all"
+
+  depends_on = [
+    authentik_group.developers,
+    authentik_group.infrastructure,
+    authentik_group.grafana_admin,
+    authentik_group.monitoring,
+    authentik_group.users,
+    authentik_group.downloads,
+    authentik_group.home
+  ]
+
 }
 
 # resource "authentik_provider_proxy" "proxy_providers" {
