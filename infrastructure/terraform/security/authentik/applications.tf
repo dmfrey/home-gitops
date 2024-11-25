@@ -59,7 +59,7 @@ resource "authentik_application" "proxy_apps" {
   name              = each.value.name
   slug              = replace(replace(lower(each.value.name), " ", "-"), "[^a-z0-9-]", "")
   group             = var.proxy_applications[each.key].group
-  # open_in_new_tab   = true
+  open_in_new_tab   = true
   meta_launch_url   = each.value.external_host
   protocol_provider = each.value.id
 }
