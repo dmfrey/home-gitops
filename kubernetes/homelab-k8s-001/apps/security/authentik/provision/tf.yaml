@@ -25,10 +25,12 @@ spec:
   vars:
     - name: TF_LOG
       value: TRACE
+
     - name: cluster_domain
       value: ${SECRET_DOMAIN}
-    # - name: proxy_applications
-    #   value:
+
+    - name: proxy_applications
+      value:
         # Ollama:
         #   url: https://ollama.${SECRET_DOMAIN}
         #   group: AI
@@ -44,9 +46,9 @@ spec:
         # SABNZBD-Client:
         #   url: https://sabnzbd.${SECRET_DOMAIN}
         #   group: Download
-        # Hajimari:
-        #   url: https://portal.${SECRET_DOMAIN}
-        #   group: Home Page
+        Hajimari:
+          url: https://portal.${SECRET_DOMAIN}
+          group: Home
         # EspHome:
         #   url: https://esphome.${SECRET_DOMAIN}
         #   group: Home
@@ -83,9 +85,9 @@ spec:
         # Radarr:
         #   url: https://radarr.${SECRET_DOMAIN}
         #   group: Media
-        # Romm:
-        #   url: https://romm.${SECRET_DOMAIN}
-        #   group: Media
+        Romm:
+          url: https://romm.${SECRET_DOMAIN}
+          group: Media
         # Sonarr:
         #   url: https://sonarr.${SECRET_DOMAIN}
         #   group: Media
@@ -95,15 +97,15 @@ spec:
         # Tdarr:
         #   url: https://tdarr.${SECRET_DOMAIN}
         #   group: Media
-        # Wizarr:
-        #   url: https://join.${SECRET_DOMAIN}
-        #   group: Media
-        #   skip_path_regex: |
-        #     ^/j/*
-        #     ^/join
-        #     ^/help
-        #     ^/static/*
-        #     ^/assets/*
+        Wizarr:
+          url: https://join.${SECRET_DOMAIN}
+          group: Media
+          skip_path_regex: |
+            ^/j/*
+            ^/join
+            ^/help
+            ^/static/*
+            ^/assets/*
         # Alert-Manager:
         #   url: https://alert-manager.${SECRET_DOMAIN}
         #   group: Monitor

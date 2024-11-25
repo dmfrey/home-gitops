@@ -41,6 +41,12 @@ resource "authentik_group" "home" {
   parent       = resource.authentik_group.users.id
 }
 
+resource "authentik_group" "media" {
+  name         = "Media"
+  is_superuser = false
+  parent       = resource.authentik_group.users.id
+}
+
 data "authentik_groups" "all" {
 
 }

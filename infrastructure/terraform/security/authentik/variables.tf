@@ -30,6 +30,14 @@ variable "oauth_applications" {
   }))
 }
 
+variable "proxy_applications" {
+  type = map(object({
+    url             = string
+    group           = string
+    skip_path_regex = optional(string)
+  }))
+}
+
 # variable "proxy_applications" {
 #   type = map(object({
 #     url             = string

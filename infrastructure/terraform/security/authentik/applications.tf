@@ -42,26 +42,26 @@ resource "authentik_application" "application" {
 
 }
 
-# resource "authentik_provider_proxy" "proxy_providers" {
-#   for_each              = var.proxy_applications
-#   name                  = each.key
-#   mode                  = "forward_single"
-#   access_token_validity = "hours=1"
-#   external_host         = each.value.url
-#   skip_path_regex       = each.value.skip_path_regex
-#   authorization_flow    = data.authentik_flow.default-authorization-flow.id
-#   authentication_flow   = authentik_flow.homelab5767-authentication.uuid
-#   invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
-# }
+resource "authentik_provider_proxy" "proxy_providers" {
+  for_each              = var.proxy_applications
+  name                  = each.key
+  mode                  = "forward_single"
+  access_token_validity = "hours=1"
+  external_host         = each.value.url
+  skip_path_regex       = each.value.skip_path_regex
+  authorization_flow     = data.authentik_flow.default-authorization-flow.id
+  authentication_flow    = data.authentik_flow.default-authentication.uuid
+  invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
+}
 
-# resource "authentik_application" "proxy_apps" {
-#   for_each          = authentik_provider_proxy.proxy_providers
-#   name              = each.value.name
-#   slug              = replace(replace(lower(each.value.name), " ", "-"), "[^a-z0-9-]", "")
-#   group             = var.proxy_applications[each.key].group
-#   meta_launch_url   = each.value.external_host
-#   protocol_provider = each.value.id
-# }
+resource "authentik_application" "proxy_apps" {
+  for_each          = authentik_provider_proxy.proxy_providers
+  name              = each.value.name
+  slug              = replace(replace(lower(each.value.name), " ", "-"), "[^a-z0-9-]", "")
+  group             = var.proxy_applications[each.key].group
+  meta_launch_url   = each.value.external_host
+  protocol_provider = each.value.id
+}
 
 # resource "authentik_outpost" "outpost" {
 #   name               = "homelab5767 Outpost"
