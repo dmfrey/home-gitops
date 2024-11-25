@@ -75,7 +75,7 @@ spec:
 
     ingress:
       main:
-        enabled: false
+        enabled: true
         ingressClassName: external
         annotations:
           auth.home.arpa/enabled: "true"
