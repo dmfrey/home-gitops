@@ -101,9 +101,11 @@ spec:
         secret.reloader.stakater.com/reload: pg-authentik-app
 
       ingress:
-        enabled: true
+        enabled: false
         ingressClassName: external
         annotations:
+          auth.home.arpa/enabled: "true"
+
           hajimari.io/enable: "true"
           hajimari.io/icon: "material-symbols:security-rounded"
 
