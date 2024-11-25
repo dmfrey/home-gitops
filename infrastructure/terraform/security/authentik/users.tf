@@ -21,6 +21,10 @@ resource "authentik_user" "users" {
   ]
 }
 
+data "authentik_user" "akadmin" {
+  username = "akadmin"
+}
+
 # output "var_users" {
 #   value = var.users
 # }
