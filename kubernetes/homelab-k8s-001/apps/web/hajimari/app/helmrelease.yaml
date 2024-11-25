@@ -75,11 +75,13 @@ spec:
 
     ingress:
       main:
-        enabled: true
+        enabled: false
         ingressClassName: external
         annotations:
-          # auth.home.arpa/enabled: "true"
+          auth.home.arpa/enabled: "true"
+
           hajimari.io/enable: "false"
+
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
         hosts:
