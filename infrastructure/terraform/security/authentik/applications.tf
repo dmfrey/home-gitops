@@ -49,8 +49,8 @@ resource "authentik_provider_proxy" "proxy_providers" {
   access_token_validity = "hours=1"
   external_host         = each.value.url
   skip_path_regex       = each.value.skip_path_regex
-  authorization_flow     = data.authentik_flow.default-authorization-flow.id
-  authentication_flow    = data.authentik_flow.default-authentication.uuid
+  authorization_flow     = authentik_flow.provider-authorization-implicit-consent.uuid
+  authentication_flow    = authentik_flow.authentication.uuid
   invalidation_flow      = data.authentik_flow.default-provider-invalidation-flow.id
 }
 
@@ -59,6 +59,7 @@ resource "authentik_application" "proxy_apps" {
   name              = each.value.name
   slug              = replace(replace(lower(each.value.name), " ", "-"), "[^a-z0-9-]", "")
   group             = var.proxy_applications[each.key].group
+  # open_in_new_tab   = true
   meta_launch_url   = each.value.external_host
   protocol_provider = each.value.id
 }
