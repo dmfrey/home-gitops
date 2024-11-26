@@ -64,26 +64,26 @@ resource "authentik_application" "proxy_apps" {
   protocol_provider = each.value.id
 }
 
-# resource "authentik_outpost" "outpost" {
-#   name               = "homelab5767 Outpost"
-#   service_connection = authentik_service_connection_kubernetes.local.id
-#   protocol_providers = [for proxy in authentik_provider_proxy.proxy_providers : proxy.id]
-#   config = jsonencode({
-#     log_level : "debug"
-#     authentik_host : format(var.authentik_url)
-#     authentik_host_insecure : false
-#     authentik_host_browser : var.authentik_host
-#     object_naming_template : "ak-outpost-%(name)s"
-#     kubernetes_replicas : 1
-#     kubernetes_namespace : "security"
-#     kubernetes_ingress_annotations : {
-#       "cert-manager.io/cluster-issuer" : "letsencrypt-prod"
-#     }
-#     kubernetes_ingress_secret_name : "authentik-outpost-tls"
-#     kubernetes_service_type : "ClusterIP"
-#     kubernetes_disabled_components : [
-#       "traefik middleware"
-#     ]
-#     # kubernetes_ingress_class_name : "external"
-#   })
-# }
+resource "authentik_outpost" "outpost" {
+  name               = "homelab5767 Outpost"
+  service_connection = authentik_service_connection_kubernetes.local.id
+  protocol_providers = [for proxy in authentik_provider_proxy.proxy_providers : proxy.id]
+  config = jsonencode({
+    log_level : "debug"
+    authentik_host : "http://authentik-server.security.svc.cluster.local:80"
+    authentik_host_insecure : false
+    authentik_host_browser : "https://auth.${var.cluster_domain}"
+    object_naming_template : "ak-outpost-%(name)s"
+    kubernetes_replicas : 2
+    kubernetes_namespace : "security"
+    kubernetes_ingress_annotations : {
+      "cert-manager.io/cluster-issuer" : "letsencrypt-prod"
+    }
+    kubernetes_ingress_secret_name : "authentik-outpost-tls"
+    kubernetes_service_type : "ClusterIP"
+    kubernetes_disabled_components : [
+      "traefik middleware"
+    ]
+    kubernetes_ingress_class_name : "external"
+  })
+}
