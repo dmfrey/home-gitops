@@ -75,10 +75,10 @@ spec:
 
     ingress:
       main:
-        enabled: true
+        enabled: false
         ingressClassName: external
         annotations:
-          auth.home.arpa/enabled: "true"
+          # auth.home.arpa/enabled: "true"
 
           hajimari.io/enable: "false"
 
@@ -88,10 +88,10 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-            secretName: hajimari-tls-external
+        # tls:
+        #   - hosts:
+        #       - *host
+        #     secretName: hajimari-tls-external
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
