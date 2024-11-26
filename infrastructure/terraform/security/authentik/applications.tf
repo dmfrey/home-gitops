@@ -78,6 +78,11 @@ resource "authentik_outpost" "outpost" {
     kubernetes_namespace : "security"
     kubernetes_ingress_annotations : {
       "cert-manager.io/cluster-issuer" : "letsencrypt-prod"
+      "nginx.ingress.kubernetes.io/cors-allow-credentials": "true"
+      "nginx.ingress.kubernetes.io/cors-allow-origin": "https://${var.cluster_domain}"
+      "nginx.ingress.kubernetes.io/cors-allow-methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH"
+      "nginx.ingress.kubernetes.io/enable-cors": "true"
+
     }
     kubernetes_ingress_secret_name : "authentik-outpost-tls"
     kubernetes_service_type : "ClusterIP"
