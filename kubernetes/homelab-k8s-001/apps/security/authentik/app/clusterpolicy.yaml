@@ -46,7 +46,7 @@ spec:
               nginx.ingress.kubernetes.io/auth-snippet: |
                 proxy_set_header X-Forwarded-Host $http_host;
               nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-              nginx.ingress.kubernetes.io/cors-allow-origin: "https://${SECRET_DOMAIN}"
+              nginx.ingress.kubernetes.io/cors-allow-origin: "https://auth.${SECRET_DOMAIN}"
               nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH
               nginx.ingress.kubernetes.io/enable-cors: "true"
 
