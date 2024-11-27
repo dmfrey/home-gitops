@@ -74,7 +74,7 @@ spec:
             env:
               - name: ORGANIZATION
                 value: ${ORGANIZATION}
-              - name: EXTERNAL_DOMAIN
+              - name: SECRET_DOMAIN
                 value: ${SECRET_DOMAIN}
 
         containers:

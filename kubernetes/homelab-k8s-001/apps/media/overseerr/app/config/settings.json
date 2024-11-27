@@ -7,7 +7,7 @@
   "applicationTitle": "Overseerr",
   "applicationUrl": "",
   "csrfProtection": false,
-  "cacheImages": false,
+  "cacheImages": true,
   "defaultPermissions": 32,
   "defaultQuotas": {
    "movie": {},
