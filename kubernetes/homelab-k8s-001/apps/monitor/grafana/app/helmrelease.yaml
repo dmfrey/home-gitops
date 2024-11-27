@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: 8.6.1
+      version: 8.6.2
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -223,7 +223,7 @@ spec:
         kubernetes-coredns:
           # renovate: depName="Kubernetes / System / CoreDNS"
           gnetId: 15762
-          revision: 18
+          revision: 19
           datasource: prometheus
         kubernetes-global:
           # renovate: depName="Kubernetes / Views / Global"
@@ -233,7 +233,7 @@ spec:
         kubernetes-namespaces:
           # renovate: depName="Kubernetes / Views / Namespaces"
           gnetId: 15758
-          revision: 40
+          revision: 41
           datasource: prometheus
         kubernetes-nodes:
           # renovate: depName="Kubernetes / Views / Nodes"
@@ -243,7 +243,7 @@ spec:
         kubernetes-pods:
           # renovate: depName="Kubernetes / Views / Pods"
           gnetId: 15760
-          revision: 32
+          revision: 34
           datasource: prometheus
         kubernetes-volumes:
           # renovate: depName="K8s / Storage / Volumes / Cluster"
@@ -524,7 +524,7 @@ spec:
         prometheus:
           # renovate: depName="Prometheus"
           gnetId: 19105
-          revision: 5
+          revision: 6
           datasource: prometheus
 
     deploymentStrategy:
