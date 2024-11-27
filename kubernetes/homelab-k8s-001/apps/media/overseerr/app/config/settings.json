@@ -57,10 +57,10 @@
  "radarr": [
   {
    "name": "Radarr",
-   "hostname": "radarr.media.svc.cluster.local",
-   "port": 7878,
+   "hostname": "radarr.${SECRET_DOMAIN}",
+   "port": 443,
    "apiKey": "${RADARR_API_KEY}",
-   "useSsl": false,
+   "useSsl": true,
    "activeProfileId": 5,
    "activeProfileName": "Ultra-HD-2160p",
    "activeDirectory": "/media/movies",
@@ -80,10 +80,10 @@
  "sonarr": [
   {
    "name": "Sonarr",
-   "hostname": "sonarr.media.svc.cluster.local",
-   "port": 8989,
+   "hostname": "sonarr.${SECRET_DOMAIN}",
+   "port": 443,
    "apiKey": "${SONARR_API_KEY}",
-   "useSsl": false,
+   "useSsl": true,
    "activeProfileId": 4,
    "activeLanguageProfileId": 1,
    "activeProfileName": "HD-1080p",
