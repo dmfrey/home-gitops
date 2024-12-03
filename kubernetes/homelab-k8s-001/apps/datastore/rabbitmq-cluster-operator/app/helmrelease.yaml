@@ -15,7 +15,7 @@ spec:
       version: 4.3.28
       sourceRef:
         kind: OCIRepository
-        name: bitnami-rabbitmq-cluster-operator
+        name: bitnami
         namespace: flux-system
       interval: 15m
 
