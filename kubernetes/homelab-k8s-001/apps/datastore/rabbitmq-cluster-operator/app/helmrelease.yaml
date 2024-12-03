@@ -14,7 +14,7 @@ spec:
       chart: rabbitmq-cluster-operator
       version: 4.3.28
       sourceRef:
-        kind: OCIRepository
+        kind: HelmRepository
         name: bitnami
         namespace: flux-system
       interval: 15m
