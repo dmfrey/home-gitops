@@ -12,10 +12,10 @@ spec:
   chart:
     spec:
       chart: thanos
-      version: 15.8.2
+      version: 1.18.2
       sourceRef:
         kind: HelmRepository
-        name: bitnami
+        name: stevehipwell
         namespace: flux-system
 
   install:
