@@ -93,22 +93,23 @@ spec:
         - thanos-storegateway:10901
 
     queryFrontend:
-      enabled: false
+      enabled: true
       replicaCount: 1
       # config:
       #   type: REDIS
       #   config:
       #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
       ingress:
-        enabled: true
+        enabled: false
         ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: "true"
+          # auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hostname: thanos.${SECRET_DOMAIN}
-        tls: false
+        hosts:
+          - thanos.${SECRET_DOMAIN}
+        tls: []
 
     bucketweb:
       enabled: true
