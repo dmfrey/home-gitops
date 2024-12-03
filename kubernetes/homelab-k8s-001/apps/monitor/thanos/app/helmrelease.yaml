@@ -66,8 +66,8 @@ spec:
       enabled: true
       replicaCount: 3
       logLevel: debug
-      networkPolicy: &networkPolicy
-        enabled: false
+      # networkPolicy: &networkPolicy
+      #   enabled: false
       persistence:
         enabled: true
         storageClass: "ceph-block"
@@ -79,7 +79,7 @@ spec:
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitor
-      networkPolicy: *networkPolicy
+      # networkPolicy: *networkPolicy
       replicaCount: 1
       replicaLabel:
         - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
