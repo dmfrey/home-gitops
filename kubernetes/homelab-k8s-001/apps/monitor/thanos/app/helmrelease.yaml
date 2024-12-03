@@ -93,7 +93,7 @@ spec:
         - thanos-storegateway:10901
 
     queryFrontend:
-      enabled: true
+      enabled: false
       replicaCount: 1
       # config:
       #   type: REDIS
