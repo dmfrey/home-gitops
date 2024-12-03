@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: bitnami
+  name: bitnami-rabbitmq-cluster-operator
   namespace: flux-system
 spec:
   interval: 15m
-  url: oci://registry-1.docker.io/bitnamicharts
+  url: oci://registry-1.docker.io/bitnamicharts/rabbitmq-cluster-operator
   timeout: 3m
