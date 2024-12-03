@@ -38,6 +38,7 @@ resources:
   - sonatype.yaml
   - spegel.yaml
   - stakater.yaml
+  - stevehipwell.yaml
   - tf-controller.yaml
   - trilium.yaml
   - opentelemetry-charts.yaml
