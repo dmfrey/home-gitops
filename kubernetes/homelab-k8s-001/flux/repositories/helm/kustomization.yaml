@@ -7,7 +7,6 @@ resources:
   - angelnu.yaml
   - authentik.yaml
   - backube.yaml
-  - bitnami.yaml
   - bjw-s.yaml
   - cilium.yaml
   - cloudnative-pg.yaml
