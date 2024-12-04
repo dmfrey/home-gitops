@@ -43,7 +43,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+          *app :
             image:
               repository: squat/generic-device-plugin
               tag: latest
@@ -111,8 +111,8 @@ spec:
               privileged: true
 
     service:
-      app:
-        controller: generic-device-plugin
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
