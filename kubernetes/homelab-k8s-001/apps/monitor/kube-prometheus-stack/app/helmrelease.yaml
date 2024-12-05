@@ -129,12 +129,12 @@ spec:
             prometheus: scrape-me
 
         thanos:
-          image: quay.io/thanos/thanos:v0.37.0@sha256:ae949e7579589d5caf5e3cf64e045e39694d5353c2c5ffe3bffd8d7f82bfb8a6
+          image: quay.io/thanos/thanos:v0.37.1@sha256:0b8ff659dd63ffc4e545517af14f203cd27f69d1b0a06ca5df1359f0090a0b33
           objectStorageConfig:
             name: thanos-secret
             key: objstore.yml
           # renovate: datasource=docker depName=quay.io/thanos/thanos
-          version: "v0.37.0"
+          version: "v0.37.1"
 
         # additionalScrapeConfigs:
         #   - job_name: minio-job
