@@ -73,11 +73,11 @@ spec:
               CMD_OAUTH2_TOKEN_URL: https://auth.${SECRET_DOMAIN}/api/oidc/token
               CMD_OAUTH2_AUTHORIZATION_URL: https://auth.${SECRET_DOMAIN}/api/oidc/authorize
 
-            envFrom:
+            envFrom: []
               # - configMapRef:
               #     name: hedgedoc-ldap-configmap
-              - secretRef:
-                  name: *secret
+              # - secretRef:
+              #     name: *secret
 
     service:
       *app :
