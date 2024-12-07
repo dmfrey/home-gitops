@@ -93,14 +93,14 @@ spec:
         - thanos-storegateway:10901
 
     queryFrontend:
-      enabled: false
+      enabled: true
       replicas: 1
       # config:
       #   type: REDIS
       #   config:
       #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
       ingress:
-        enabled: false
+        enabled: true
         ingressClassName: internal
         annotations:
           # auth.home.arpa/enabled: "true"
