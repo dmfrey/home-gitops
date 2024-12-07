@@ -109,7 +109,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
           - thanos.${SECRET_DOMAIN}
-        tls: []
+        # tls: []
 
     bucketweb:
       enabled: true
