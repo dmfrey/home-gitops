@@ -93,122 +93,83 @@ spec:
         storageClass: "ceph-block"
         size: 15Gi
 
-    receive:
-      enabled: true
-      # replicas: 3
-      logLevel: debug
-      # networkPolicy: &networkPolicy
-      #   enabled: false
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
-        size: 24Gi
-      resourcesPreset: "medium"
-
     query:
       enabled: true
-      dnsDiscovery:
-        sidecarsService: kube-prometheus-stack-thanos-discovery
-        sidecarsNamespace: monitor
+
+      # dnsDiscovery:
+      #   sidecarsService: kube-prometheus-stack-thanos-discovery
+      #   sidecarsNamespace: monitor
       # networkPolicy: *networkPolicy
+
       replicas: 1
+
       replicaLabel:
         - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
+
       resources:
         requests:
           cpu: 15m
           memory: 64M
         # limits:
         #   memory: 99M
-      stores:
-        - thanos-store-gateway-headless:10901
+
+      # stores:
+      #   - thanos-store-gateway-headless:10901
 
     queryFrontend:
       enabled: true
-      replicas: 1
-      # config:
-      #   type: REDIS
-      #   config:
-      #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
+
       ingress:
         enabled: true
+
         ingressClassName: internal
+
         annotations:
           # auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+
         hosts:
           - thanos.${SECRET_DOMAIN}
         # tls: []
 
-    # bucketweb:
-    #   enabled: true
-    #   # networkPolicy: *networkPolicy
-    #   replicas: 1
-    #   resources:
-    #     requests:
-    #       cpu: 15m
-    #       memory: 64M
+    receive:
+      enabled: true
 
-    storeGateway:
-      enabled: false
-      # extraEnvVarsSecret: "thanos-ceph-bucket"
-      logLevel: debug
-      replicas: 1
-      config:
-        type: REDIS
-        config:
-          addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
-      containerPorts:
-        http: 10902
-        grpc: 10901
-      livenessProbe:
-        initialDelaySeconds: 30
-      readinessProbe:
-        initialDelaySeconds: 30
-      # networkPolicy: *networkPolicy
-      resources:
-        requests:
-          cpu: 1
-          memory: 2048M
-        limits:
-          memory: 4096M
       persistence:
         enabled: true
         storageClass: "ceph-block"
-        size: 10Gi
-      service:
-        ports:
-          http: 10902
-          grpc: 10901
+        size: 24Gi
+
+      # resourcesPreset: "medium"
 
     rule:
       enabled: true
-      alertmanagers:
-        - http://alert-manager.monitor.svc.cluster.local:9093
+
       # Breaks metrics that have cluster label due to conflict with cnpg
       # clusterName: ${CLUSTER_NAME} # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
-      # networkPolicy: *networkPolicy
-      replicaLabel: __replica__
+
+      # replicaLabel: __replica__
       replicas: 1
-      config: |-
-        groups:
-          - name: PrometheusWatcher
-            rules:
-              - alert: PrometheusDown
-                annotations:
-                  summary: A Prometheus has disappeared from Prometheus target discovery
-                expr: absent(up{job="kube-prometheus-stack-prometheus"})
-                for: 5m
-                labels:
-                  severity: critical
-      dnsDiscovery:
-        enabled: true
+
+      # config: |-
+      #   groups:
+      #     - name: PrometheusWatcher
+      #       rules:
+      #         - alert: PrometheusDown
+      #           annotations:
+      #             summary: A Prometheus has disappeared from Prometheus target discovery
+      #           expr: absent(up{job="kube-prometheus-stack-prometheus"})
+      #           for: 5m
+      #           labels:
+      #             severity: critical
+
       persistence:
         enabled: true
         storageClass: "ceph-block"
         size: 10Gi
+
       resources:
         requests:
           cpu: 23m
@@ -216,7 +177,40 @@ spec:
         limits:
           memory: 113M
 
-    metrics:
-      enabled: true
-      serviceMonitor:
+      alertmanagersConfig:
+        create: true
+        name: thanos-rule-alertmanagerconfigs
+        value: |
+          alertmanager:
+            - http://alert-manager.monitor.svc.cluster.local:9093
+
+    storeGateway:
+      enabled: false
+
+      replicas: 1
+
+      # config:
+      #   type: REDIS
+      #   config:
+      #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
+
+      # containerPorts:
+      #   http: 10902
+      #   grpc: 10901
+
+      # livenessProbe:
+      #   initialDelaySeconds: 30
+      # readinessProbe:
+      #   initialDelaySeconds: 30
+
+      resources:
+        requests:
+          cpu: 1
+          memory: 2048M
+        limits:
+          memory: 4096M
+
+      persistence:
         enabled: true
+        storageClass: "ceph-block"
+        size: 10Gi
