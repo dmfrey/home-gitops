@@ -125,14 +125,18 @@ spec:
         ingressClassName: internal
 
         annotations:
-          # auth.home.arpa/enabled: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
 
         hosts:
-          - thanos.${SECRET_DOMAIN}
-        # tls: []
+          - &host thanos.${SECRET_DOMAIN}
+
+        tls:
+          - hosts:
+            - *host
+            secretName: thanos-tls-internal
 
     receive:
       enabled: true
