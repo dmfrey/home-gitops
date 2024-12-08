@@ -163,7 +163,7 @@ spec:
     rule:
       enabled: true
 
-      replicas: 3
+      replicas: 1
 
       extraArgs: ["--web.prefix-header=X-Forwarded-Prefix"]
 
@@ -195,7 +195,7 @@ spec:
     storeGateway:
       enabled: true
 
-      replicas: 3
+      replicas: 1
 
       extraEnv: &extraEnv
 
