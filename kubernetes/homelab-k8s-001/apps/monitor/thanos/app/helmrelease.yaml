@@ -65,6 +65,34 @@ spec:
       name: thanos-secret
       key: objstore.yml
 
+    serviceMonitor:
+      enabled: true
+
+    logLevel: debug
+
+    compact:
+      enabled: true
+
+      extraArgs:
+        - --compact.concurrency=4
+        - --delete-delay=30m
+      # networkPolicy: *networkPolicy
+      # retentionResolutionRaw: 14d
+      # retentionResolution5m: 14d
+      # retentionResolution1h: 30d
+
+      resources:
+        requests:
+          cpu: 15m
+          memory: 204M
+        # limits:
+        #   memory: 270M
+
+      persistence:
+        enabled: true
+        storageClass: "ceph-block"
+        size: 15Gi
+
     receive:
       enabled: true
       # replicas: 3
@@ -122,26 +150,6 @@ spec:
     #     requests:
     #       cpu: 15m
     #       memory: 64M
-
-    compact:
-      enabled: true
-      extraFlags:
-        - --compact.concurrency=4
-        - --delete-delay=30m
-      # networkPolicy: *networkPolicy
-      retentionResolutionRaw: 14d
-      retentionResolution5m: 14d
-      retentionResolution1h: 30d
-      resources:
-        requests:
-          cpu: 15m
-          memory: 204M
-        # limits:
-        #   memory: 270M
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
-        size: 15Gi
 
     storeGateway:
       enabled: false
