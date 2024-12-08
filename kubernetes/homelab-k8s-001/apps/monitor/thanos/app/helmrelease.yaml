@@ -131,11 +131,11 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
 
         hosts:
-          - &host thanos.${SECRET_DOMAIN}
+            - &host thanos.${SECRET_DOMAIN}
 
         tls:
           - hosts:
-            - *host
+              - *host
             secretName: thanos-tls-internal
 
     receive:
