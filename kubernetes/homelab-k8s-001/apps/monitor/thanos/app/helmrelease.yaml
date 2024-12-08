@@ -82,7 +82,7 @@ spec:
     logLevel: debug
 
     compact:
-      enabled: false
+      enabled: true
 
       extraArgs:
         - --compact.concurrency=4
@@ -97,7 +97,7 @@ spec:
         size: 10Gi
 
     query:
-      enabled: false
+      enabled: true
 
       extraArgs: ["--alert.query-url=https://thanos.${SECRET_DOMAIN}"]
 
@@ -107,7 +107,7 @@ spec:
       #   - thanos-store-gateway-headless:10901
 
     queryFrontend:
-      enabled: false
+      enabled: true
 
       replicas: 3
 
@@ -155,7 +155,7 @@ spec:
         configmap.reloader.stakater.com/reload: *configMap
 
     receive:
-      enabled: false
+      enabled: true
 
       persistence: *persistence
         # enabled: true
@@ -195,7 +195,7 @@ spec:
         # size: 10Gi
 
     storeGateway:
-      enabled: false
+      enabled: true
 
       replicas: 3
 
