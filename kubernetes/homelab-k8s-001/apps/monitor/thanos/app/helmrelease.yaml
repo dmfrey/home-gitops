@@ -93,7 +93,7 @@ spec:
         # limits:
         #   memory: 99M
       stores:
-        - thanos-storegateway:10901
+        - thanos-store-gateway-headless:10901
 
     queryFrontend:
       enabled: true
