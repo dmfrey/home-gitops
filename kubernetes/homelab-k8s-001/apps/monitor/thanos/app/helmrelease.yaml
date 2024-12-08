@@ -177,13 +177,13 @@ spec:
         limits:
           memory: 113M
 
-      alertmanagersConfig:
-        create: true
-        name: thanos-rule-alertmanagerconfigs
-        value: |-
-          alertmanagers:
-            - http_config:
-                proxy_url: alert-manager.monitor.svc.cluster.local:9093
+      # alertmanagersConfig:
+      #   create: true
+      #   name: thanos-rule-alertmanagerconfigs
+      #   value: |-
+      #     alertmanagers:
+      #       - http_config:
+      #           proxy_url: alert-manager.monitor.svc.cluster.local:9093
 
     storeGateway:
       enabled: false
