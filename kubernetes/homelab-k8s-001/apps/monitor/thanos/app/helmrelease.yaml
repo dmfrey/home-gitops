@@ -117,10 +117,10 @@ spec:
       #   - thanos-store-gateway-headless:10901
 
     queryFrontend:
-      enabled: true
+      enabled: false
 
       ingress:
-        enabled: false
+        enabled: true
 
         ingressClassName: internal
 
