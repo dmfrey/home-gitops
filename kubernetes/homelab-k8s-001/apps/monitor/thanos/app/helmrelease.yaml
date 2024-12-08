@@ -120,7 +120,7 @@ spec:
       enabled: true
 
       ingress:
-        enabled: true
+        enabled: false
 
         ingressClassName: internal
 
