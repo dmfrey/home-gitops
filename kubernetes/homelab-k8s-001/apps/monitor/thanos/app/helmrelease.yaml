@@ -182,7 +182,8 @@ spec:
         name: thanos-rule-alertmanagerconfigs
         value: |-
           alertmanagers:
-            - http://alert-manager.monitor.svc.cluster.local:9093
+            - http_config:
+                proxy_url: alert-manager.monitor.svc.cluster.local:9093
 
     storeGateway:
       enabled: false
