@@ -30,40 +30,51 @@ spec:
   uninstall:
     keepHistory: false
 
-  # valuesFrom:
-  #   - targetPath: objstoreConfig.config.bucket
-  #     kind: ConfigMap
-  #     name: thanos-ceph-bucket
-  #     valuesKey: BUCKET_NAME
-  #   - targetPath: objstoreConfig.config.endpoint
-  #     kind: ConfigMap
-  #     name: thanos-ceph-bucket
-  #     valuesKey: BUCKET_HOST
-  #   - targetPath: objstoreConfig.config.region
-  #     kind: ConfigMap
-  #     name: thanos-ceph-bucket
-  #     valuesKey: BUCKET_REGION
-  #   - targetPath: objstoreConfig.config.access_key
-  #     kind: Secret
-  #     name: thanos-ceph-bucket
-  #     valuesKey: AWS_ACCESS_KEY_ID
-  #   - targetPath: objstoreConfig.config.secret_key
-  #     kind: Secret
-  #     name: thanos-ceph-bucket
-  #     valuesKey: AWS_SECRET_ACCESS_KEY
+  dependsOn:
+    - name: openebs
+      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: storage
+
+  valuesFrom:
+    - targetPath: objstoreConfig.value.config.bucket
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_NAME
+    - targetPath: objstoreConfig.value.config.endpoint
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_HOST
+    - targetPath: objstoreConfig.value.config.region
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_REGION
+    - targetPath: objstoreConfig.value.config.access_key
+      kind: Secret
+      name: thanos-ceph-bucket
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: objstoreConfig.value.config.secret_key
+      kind: Secret
+      name: thanos-ceph-bucket
+      valuesKey: AWS_SECRET_ACCESS_KEY
 
   values:
 
-    commonAnnotations:
-      secret.reloader.stakater.com/reload: thanos-secret
+    # commonAnnotations:
+      # secret.reloader.stakater.com/reload: thanos-secret
 
     objstoreConfig:
-      # type: s3
-      # config:
-      #   insecure: true
-      create: false
-      name: thanos-secret
-      key: objstore.yml
+      type: s3
+      config:
+        insecure: true
+      # create: false
+      # name: thanos-secret
+      # key: objstore.yml
+
+    additionalEndpoints:
+      - dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.monitor.svc.cluster.local
+
+    additionalReplicaLabels: ["__replica__"]
 
     serviceMonitor:
       enabled: true
@@ -76,42 +87,21 @@ spec:
       extraArgs:
         - --compact.concurrency=4
         - --delete-delay=30m
-      # networkPolicy: *networkPolicy
-      # retentionResolutionRaw: 14d
-      # retentionResolution5m: 14d
-      # retentionResolution1h: 30d
+        - --retention.resolution-raw=14d
+        - --retention.resolution-5m=30d
+        - --retention.resolution-1h=60d
 
-      resources:
-        requests:
-          cpu: 15m
-          memory: 204M
-        # limits:
-        #   memory: 270M
-
-      persistence:
+      persistence: &persistence
         enabled: true
-        storageClass: "ceph-block"
-        size: 15Gi
+        storageClass: openebs-hostpath
+        size: 10Gi
 
     query:
       enabled: true
 
-      # dnsDiscovery:
-      #   sidecarsService: kube-prometheus-stack-thanos-discovery
-      #   sidecarsNamespace: monitor
-      # networkPolicy: *networkPolicy
+      extraArgs: ["--alert.query-url=https://thanos.${SECRET_DOMAIN}"]
 
-      replicas: 1
-
-      replicaLabel:
-        - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
-
-      resources:
-        requests:
-          cpu: 15m
-          memory: 64M
-        # limits:
-        #   memory: 99M
+      replicas: 3
 
       # stores:
       #   - thanos-store-gateway-headless:10901
@@ -119,103 +109,99 @@ spec:
     queryFrontend:
       enabled: true
 
+      replicas: 3
+
+      extraEnv: &extraEnv
+        - name: THANOS_CACHE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: &configMap thanos-cache-configmap
+              key: cache.yaml
+
+      extraArgs: ["--query-range.response-cache-config=$(THANOS_CACHE_CONFIG)"]
+
       ingress:
         enabled: true
 
         ingressClassName: internal
 
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          # cert-manager.io/cluster-issuer: letsencrypt-prod
+
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: Thanos
+          gethomepage.dev/description: Prometheus long term storage.
+          gethomepage.dev/group: Infrastructure
+          gethomepage.dev/icon: thanos.png
+          gethomepage.dev/pod-selector: >-
+            app in (
+              thanos-query-frontend
+            )
+
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
 
         hosts:
             - &host thanos.${SECRET_DOMAIN}
 
-        tls:
-          - hosts:
-              - *host
-            secretName: thanos-tls-internal
+        # tls:
+        #   - hosts:
+        #       - *host
+        #     secretName: thanos-tls-internal
+
+      podAnnotations: &podAnnotations
+        configmap.reloader.stakater.com/reload: *configMap
 
     receive:
       enabled: true
 
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
-        size: 24Gi
-
-      # resourcesPreset: "medium"
+      persistence: *persistence
+        # enabled: true
+        # storageClass: "ceph-block"
+        # size: 24Gi
 
     rule:
       enabled: true
 
-      # Breaks metrics that have cluster label due to conflict with cnpg
-      # clusterName: ${CLUSTER_NAME} # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.externalLabels.cluster`
+      replicas: 3
 
-      # replicaLabel: __replica__
-      replicas: 1
+      extraArgs: ["--web.prefix-header=X-Forwarded-Prefix"]
 
-      # config: |-
-      #   groups:
-      #     - name: PrometheusWatcher
-      #       rules:
-      #         - alert: PrometheusDown
-      #           annotations:
-      #             summary: A Prometheus has disappeared from Prometheus target discovery
-      #           expr: absent(up{job="kube-prometheus-stack-prometheus"})
-      #           for: 5m
-      #           labels:
-      #             severity: critical
+      alertmanagersConfig:
+        value: |-
+          alertmanagers:
+            - api_version: v2
+              static_configs:
+                - dnssrv+_http-web._tcp.alertmanager-operated.monitoring.svc.cluster.local
 
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
-        size: 10Gi
+      rules:
+        value: |-
+          groups:
+            - name: PrometheusWatcher
+              rules:
+                - alert: PrometheusDown
+                  annotations:
+                    summary: A Prometheus has disappeared from Prometheus target discovery
+                  expr: absent(up{job="kube-prometheus-stack-prometheus"})
+                  for: 5m
+                  labels:
+                    severity: critical
 
-      resources:
-        requests:
-          cpu: 23m
-          memory: 94M
-        limits:
-          memory: 113M
-
-      # alertmanagersConfig:
-      #   create: true
-      #   name: thanos-rule-alertmanagerconfigs
-      #   value: |-
-      #     alertmanagers:
-      #       - http_config:
-      #           proxy_url: alert-manager.monitor.svc.cluster.local:9093
+      persistence: *persistence
+        # enabled: true
+        # storageClass: "ceph-block"
+        # size: 10Gi
 
     storeGateway:
       enabled: false
 
-      replicas: 1
+      replicas: 3
 
-      # config:
-      #   type: REDIS
-      #   config:
-      #     addr: "thanos-dragonfly-cluster.monitor.svc.cluster.local:6379"
+      extraEnv: &extraEnv
 
-      # containerPorts:
-      #   http: 10902
-      #   grpc: 10901
-
-      # livenessProbe:
-      #   initialDelaySeconds: 30
-      # readinessProbe:
-      #   initialDelaySeconds: 30
-
-      resources:
-        requests:
-          cpu: 1
-          memory: 2048M
-        limits:
-          memory: 4096M
-
-      persistence:
-        enabled: true
-        storageClass: "ceph-block"
-        size: 10Gi
+      persistence: *persistence
+        # enabled: true
+        # storageClass: "ceph-block"
+        # size: 10Gi
