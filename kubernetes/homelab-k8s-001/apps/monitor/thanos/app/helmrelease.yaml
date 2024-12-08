@@ -144,7 +144,7 @@ spec:
         size: 15Gi
 
     storeGateway:
-      enabled: true
+      enabled: false
       # extraEnvVarsSecret: "thanos-ceph-bucket"
       logLevel: debug
       replicas: 1
