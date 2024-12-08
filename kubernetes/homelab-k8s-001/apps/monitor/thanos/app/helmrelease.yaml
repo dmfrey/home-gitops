@@ -180,7 +180,7 @@ spec:
       alertmanagersConfig:
         create: true
         name: thanos-rule-alertmanagerconfigs
-        value: |
+        value: |-
           alertmanagers:
             - http://alert-manager.monitor.svc.cluster.local:9093
 
