@@ -124,7 +124,9 @@ spec:
         ingressClassName: internal
 
         annotations:
-          # cert-manager.io/cluster-issuer: letsencrypt-prod
+          nginx.org/proxy-connect-timeout: 3600s
+          nginx.org/proxy-read-timeout: 3600s
+          nginx.org/proxy-send-timeout: 3600s
 
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:alpha-t-box"
