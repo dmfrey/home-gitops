@@ -206,7 +206,7 @@ spec:
         name: sabnzbd-config
         advancedMounts:
           sabnzbd:
-            app:
+            *app :
               - path: /tmp/sabnzbd.ini
                 readOnly: false
                 subPath: sabnzbd.ini
