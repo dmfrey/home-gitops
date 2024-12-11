@@ -72,7 +72,7 @@ spec:
         host: authentik-kv-cluster.security.svc.cluster.local
 
     geoip:
-      enabled: false
+      enabled: true
       existingSecret:
         secretName: authentik-secret
         accountId: MAXMIND_ACCOUNT_ID
