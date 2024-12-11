@@ -21,7 +21,6 @@ spec:
   maxHistory: 2
 
   install:
-    createNamespace: true
     crds: CreateReplace
     remediation:
       retries: 3
@@ -38,6 +37,8 @@ spec:
   values:
 
     controller:
+      replicaCount: 2
+
       volumeSnapshotClasses:
         - name: csi-ceph-blockpool
           driver: rook-ceph.rbd.csi.ceph.com
@@ -58,5 +59,8 @@ spec:
             csi.storage.k8s.io/snapshotter-secret-namespace: rook-ceph
           deletionPolicy: Delete
 
-    serviceMonitor:
-      create: true
+      serviceMonitor:
+        create: true
+
+    webhook:
+      enabled: false
