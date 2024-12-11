@@ -258,7 +258,7 @@ spec:
 
           metrics:
             receivers: [ otlp ] # , spanmetrics
-            processors: [  ] # memory_limiter, resource, resourcedetection, transform, batch
+            processors: [ memory_limiter, resource, resourcedetection, transform, batch ] # memory_limiter, resource, resourcedetection, transform, batch
             exporters: [ prometheusremotewrite ]
 
           logs:
