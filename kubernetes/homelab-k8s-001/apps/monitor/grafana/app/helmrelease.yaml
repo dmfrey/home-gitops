@@ -416,6 +416,13 @@ spec:
 
       security:
 
+        # Ref: https://grafana.com/grafana/dashboards/14837-authentik
+        # renovate: depName="Authentik"
+        authentik:
+          gnetId: 14837
+          revision: 2
+          datasource: prometheus
+
         # Ref: https://grafana.com/grafana/dashboards/11001-cert-manager
         # renovate: depName="cert-manager"
         keyverno:
@@ -448,7 +455,7 @@ spec:
           # renovate: depName="MinIO Dashboard"
           gnetId: 13502
           revision: 26
-          datasource: 
+          datasource:
             - { name: DS_PROMETHEUS, value: prometheus }
 
         smart:
