@@ -169,6 +169,8 @@ spec:
         # Data sources: traces, metrics
         otlphttp/loki:
           endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
+          tls:
+            insecure: true
           # encoding: json
           retry_on_failure:
             enabled: true
@@ -182,6 +184,8 @@ spec:
           timeout: 10s
         otlphttp/tempo:
           endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
+          tls:
+            insecure: true
           retry_on_failure:
             enabled: true
             # max_elapsed_time: 0
