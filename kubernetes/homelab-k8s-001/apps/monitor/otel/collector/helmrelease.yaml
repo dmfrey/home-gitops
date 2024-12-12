@@ -476,7 +476,7 @@ spec:
         pipelines:
           metrics:
             receivers: [ otlp ]
-            processors: [ memory_limiter, batch ]   # memory_limiter, resource, resourcedetection, transform, batch
+            processors: [ memory_limiter, resource, resourcedetection, transform, batch ]   # memory_limiter, resource, resourcedetection, transform, batch
             exporters: [ prometheusremotewrite ]
 
           logs:
