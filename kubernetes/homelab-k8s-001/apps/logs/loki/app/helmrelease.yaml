@@ -87,7 +87,7 @@ spec:
         auth_enabled: false
 
         server:
-          log_level: debug
+          log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
 
@@ -162,7 +162,7 @@ spec:
                 pathType: Prefix
 
     write:
-      replicas: 2
+      replicas: 3
       persistence:
         size: 50Gi
         storageClass: ceph-block
