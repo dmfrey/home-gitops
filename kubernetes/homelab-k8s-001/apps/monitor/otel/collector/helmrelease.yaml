@@ -461,6 +461,10 @@ spec:
             enabled: true
 
       service:
+        extensions:
+          - health_check
+          - file_storage/otc
+          - zpages
 
         pipelines:
           metrics:
