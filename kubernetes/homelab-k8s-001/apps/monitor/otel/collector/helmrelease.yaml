@@ -413,19 +413,20 @@ spec:
         # Data sources: traces, metrics
         otlphttp/loki:
           endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
+          timeout: 20s
           tls:
-            insecure: true
+            insecure_skip_verify: true
           # encoding: json
+          sending_queue:
+            enabled: true
+            num_consumers: 10
+            queue_size: 10000
+          #   storage: file_storage/otc
           retry_on_failure:
             enabled: true
-            initial_interval: 30s
-            max_interval: 60s
-            # max_elapsed_time: 0
-          sending_queue:
-            num_consumers: 100
-            queue_size: 500
-          #   storage: file_storage/otc
-          timeout: 10s
+            initial_interval: 1s
+            max_interval: 10s
+            max_elapsed_time: 300s
         # otlphttp/tempo:
         #   endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
         #   retry_on_failure:
