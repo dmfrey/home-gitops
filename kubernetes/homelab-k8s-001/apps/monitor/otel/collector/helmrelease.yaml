@@ -329,6 +329,9 @@ spec:
     config:
 
       extensions:
+        file_storage/otc:
+          directory: /var/lib/otelcol
+
         health_check: {}
 
         zpages:
@@ -422,7 +425,7 @@ spec:
             enabled: true
             num_consumers: 10
             queue_size: 10000
-          #   storage: file_storage/otc
+            storage: file_storage/otc
           retry_on_failure:
             enabled: true
             initial_interval: 1s
