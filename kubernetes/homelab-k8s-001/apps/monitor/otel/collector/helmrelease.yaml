@@ -411,11 +411,21 @@ spec:
         #     max_elapsed_time: 0
 
         # Data sources: traces, metrics
-        # otlphttp/loki:
-        #   endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
-        #   retry_on_failure:
-        #     enabled: true
-        #     max_elapsed_time: 0
+        otlphttp/loki:
+          endpoint: http://loki-write-headless.logs.svc.cluster.local:3100/otlp
+          tls:
+            insecure: true
+          # encoding: json
+          retry_on_failure:
+            enabled: true
+            initial_interval: 30s
+            max_interval: 60s
+            # max_elapsed_time: 0
+          sending_queue:
+            num_consumers: 100
+            queue_size: 500
+          #   storage: file_storage/otc
+          timeout: 10s
         # otlphttp/tempo:
         #   endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
         #   retry_on_failure:
@@ -453,10 +463,10 @@ spec:
             processors: [ memory_limiter, batch ]   # memory_limiter, resource, resourcedetection, transform, batch
             exporters: [ prometheusremotewrite ]
 
-          # logs:
-            # receivers: [ otlp, k8sobjectsreceiver ]
-            # processors: [ memory_limiter, resource, resourcedetection, batch ]
-            # exporters: [ otlphttp/loki ]
+          logs:
+            receivers: [ otlp ]
+            processors: [ memory_limiter, batch ]
+            exporters: [ otlphttp/loki ]
 
     service:
       enabled: true
