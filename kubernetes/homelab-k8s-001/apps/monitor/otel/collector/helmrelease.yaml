@@ -481,7 +481,7 @@ spec:
 
           logs:
             receivers: [ otlp ]
-            processors: [ memory_limiter, batch ]
+            processors: [ memory_limiter, resource, resourcedetection, transform, batch ]
             exporters: [ otlphttp/loki ]
 
     service:
