@@ -53,6 +53,10 @@ spec:
 
   values:
 
+    global:
+      security:
+        allowInsecureImages: true
+
     deployer:
       imagePullPolicy: Always
       imagePullSecrets:
