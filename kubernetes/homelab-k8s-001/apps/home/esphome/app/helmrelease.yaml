@@ -34,8 +34,7 @@ spec:
                 "interface": "eth1",
                 "namespace": "network",
                 "ips": ["192.168.50.3/24"],
-                "mac": "ba:18:9f:0e:ed:94",
-                "gateway": ["192.168.50.1"]
+                "mac": "73:88:e8:74:90:c2"
               }]
 
         containers:
