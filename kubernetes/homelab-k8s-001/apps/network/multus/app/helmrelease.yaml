@@ -166,7 +166,7 @@ spec:
           uninstall:
             uninstall:
               - path: /host/etc/cni/net.d
-          multus:
+          *app :
             multus-daemon:
               - path: /host/etc/cni/net.d
 
@@ -177,7 +177,7 @@ spec:
           uninstall:
             uninstall:
               - path: /host/opt/cni/bin
-          multus:
+          *app :
             cni-plugins-installer:
               - path: /host/opt/cni/bin
             multus-shim-installer:
