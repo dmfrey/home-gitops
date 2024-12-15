@@ -82,7 +82,7 @@ spec:
                 "name":"iot-vlan",
                 "namespace": "network",
                 "ips": ["192.168.50.9/24"],
-                "mac": "36:3b:ef:15:c3:00"
+                "mac": "f1:fd:59:0b:bd:2b"
               }]
 
     defaultPodOptions:
