@@ -30,7 +30,7 @@ spec:
           *app :
             image:
               repository: quay.io/prometheus/alertmanager
-              tag: main
+              tag: latest
 
             ports:
               - name: http
