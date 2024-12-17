@@ -30,6 +30,7 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
+      strategy: rollback
       retries: 3
 
   uninstall:
@@ -38,3 +39,4 @@ spec:
   values:
 
     fullnameOverride: *app
+    replicaCount: 2
