@@ -94,7 +94,7 @@ nodes:
     controlPlane: false
     ipAddress: 192.168.30.41
     installDiskSelector:
-      model: NT-512 2242
+      model: GIGASTONE SSD 51
     disableSearchDomain: true
     networkInterfaces:
       - interface: enp87s0
