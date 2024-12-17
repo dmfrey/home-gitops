@@ -4,10 +4,10 @@ global:
   smtp_hello: alert-manager
 receivers:
   - name: "null"
-  - name: "discord"
-    discord_configs:
-      - webhook_url_file: /etc/secrets/discord_webhook_url
-        send_resolved: true
+  # - name: "discord"
+  #   discord_configs:
+  #     - webhook_url_file: /etc/secrets/discord_webhook_url
+  #       send_resolved: true
         # title: &title |-
         #   [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
         # message: &message |-
