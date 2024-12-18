@@ -48,12 +48,12 @@ spec:
           *app :
             image:
               repository: ghcr.io/onedr0p/plex
-              tag: 1.41.3.9314-a0bfb8370@sha256:38fcbef239341db591f8ff87f20777d9a783b79f757fc42e360041d7ba78eada
+              tag: 1.41.3.9292-bc7397402@sha256:9a9196a109437035b9b20c8d368c569555623f14faf2247c3aa0a84cf568242d
 
             env:
               TZ: ${TIMEZONE}
               PLEX_ADVERTISE_URL: https://plex.${SECRET_DOMAIN}:443,http://${SVC_PLEX_ADDR}:32400,plex.media.svc.cluster.local:32400
-              PLEX_NO_AUTH_NETWORKS: 192.0.0.0/8
+              PLEX_NO_AUTH_NETWORKS: 192.168.0.0/16
               PLEX_PREFERENCE_NAME: "FriendlyName=${ORGANIZATION}"
               PLEX_PREFERENCE_DLNA: "DlnaEnabled=1"
               PLEX_PREFERENCE_GDM: "GdmEnabled=1"
@@ -61,7 +61,7 @@ spec:
               PLEX_PREFERENCE_INTERFACE: "PreferredNetworkInterface=eth0"
               PLEX_PREFERENCE_PORT_MAPPING: "ManualPortMappingMode=1"
               PLEX_PREFERENCE_MAPPED_PORT: "ManualPortMappingPort=443"
-              PLEX_PREFERENCE_LAN: "LanNetworksBandwidth=192.0.0.0/8"
+              PLEX_PREFERENCE_LAN: "LanNetworksBandwidth=192.168.0.0/16"
 
             envFrom:
               - secretRef:
