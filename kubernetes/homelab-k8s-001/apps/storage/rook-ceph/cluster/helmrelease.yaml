@@ -33,72 +33,32 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
+      osd_class_update_on_start = false
 
     cephClusterSpec:
-      network:
-        provider: host
-
-      mgr:
-        modules:
-          - name: rook
-            enabled: true
-          - name: pg_autoscaler
-            enabled: true
-
-      resources:
-        mgr:
-          requests:
-            cpu: 125m
-            memory: 512Mi
-          limits:
-            memory: 2Gi
-        mon:
-          requests:
-            cpu: 50m
-            memory: 512Mi
-          limits:
-            memory: 1Gi
-        osd:
-          requests:
-            cpu: 500m
-            memory: 2Gi
-          limits:
-            memory: 6Gi
-        mgr-sidecar:
-          requests:
-            cpu: 50m
-            memory: 128Mi
-          limits:
-            memory: 256Mi
-        crashcollector:
-          requests:
-            cpu: "15m"
-            memory: "64M"
-          limits:
-            memory: "64M"
-        logcollector:
-          requests:
-            cpu: "100m"
-            memory: "100M"
-          limits:
-            memory: "1G"
-        cleanup:
-          requests:
-            cpu: "250m"
-            memory: "100M"
-          limits:
-            memory: "1G"
 
       crashCollector:
         disable: false
 
       dashboard:
         enabled: true
-        ssl: true
-        # port: 8443
-        # urlPrefix: /
-        # prometheusEndpoint: http://thanos-query.monitor.svc.cluster.local:9090
-        # prometheusEndpointSSLVerify: false
+        urlPrefix: /
+        ssl: false
+        prometheusEndpoint: http://prometheus-operated.monitor.svc.cluster.local:9090
+
+      mgr:
+        modules:
+          - name: insights
+            enabled: true
+          - name: pg_autoscaler
+            enabled: true
+          - name: rook
+            enabled: true
+
+      network:
+        provider: host
+        connections:
+          requireMsgr2: true
 
       storage:
         useAllNodes: false
@@ -118,6 +78,61 @@ spec:
           - name: "dmf-intel-001"
             devices:
               - name: "/dev/nvme0n1"
+
+      placement:
+        mgr: &placement
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: Exists
+
+        mon: *placement
+
+      # resources:
+      #   mgr:
+      #     requests:
+      #       cpu: 125m
+      #       memory: 512Mi
+      #     limits:
+      #       memory: 2Gi
+      #   mon:
+      #     requests:
+      #       cpu: 50m
+      #       memory: 512Mi
+      #     limits:
+      #       memory: 1Gi
+      #   osd:
+      #     requests:
+      #       cpu: 500m
+      #       memory: 2Gi
+      #     limits:
+      #       memory: 6Gi
+      #   mgr-sidecar:
+      #     requests:
+      #       cpu: 50m
+      #       memory: 128Mi
+      #     limits:
+      #       memory: 256Mi
+      #   crashcollector:
+      #     requests:
+      #       cpu: "15m"
+      #       memory: "64M"
+      #     limits:
+      #       memory: "64M"
+      #   logcollector:
+      #     requests:
+      #       cpu: "100m"
+      #       memory: "100M"
+      #     limits:
+      #       memory: "1G"
+      #   cleanup:
+      #     requests:
+      #       cpu: "250m"
+      #       memory: "100M"
+      #     limits:
+      #       memory: "1G"
 
     ingress:
       dashboard:
