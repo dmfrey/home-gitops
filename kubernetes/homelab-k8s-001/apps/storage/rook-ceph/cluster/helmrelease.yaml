@@ -79,16 +79,16 @@ spec:
             devices:
               - name: "/dev/nvme0n1"
 
-      placement:
-        mgr: &placement
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
+      # placement:
+      #   mgr: &placement
+      #     nodeAffinity:
+      #       requiredDuringSchedulingIgnoredDuringExecution:
+      #         nodeSelectorTerms:
+      #           - matchExpressions:
+      #               - key: node-role.kubernetes.io/control-plane
+      #                 operator: Exists
 
-        mon: *placement
+      #   mon: *placement
 
       # resources:
       #   mgr:
