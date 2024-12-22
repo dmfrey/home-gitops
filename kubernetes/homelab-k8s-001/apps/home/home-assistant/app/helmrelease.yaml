@@ -209,7 +209,6 @@ spec:
             k8s.v1.cni.cncf.io/networks: |
               [{
                 "name":"iot-vlan",
-                "interface": "eth1",
                 "namespace": "network",
                 "ips": ["192.168.50.4/24"],
                 "mac": "7b:ac:9c:14:8d:48"
