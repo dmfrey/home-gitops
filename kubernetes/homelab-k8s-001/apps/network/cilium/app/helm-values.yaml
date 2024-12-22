@@ -23,8 +23,8 @@ cluster:
   id: 1
   name: ${CLUSTER_NAME}
 
-# cni:
-#   exclusive: false
+cni:
+  exclusive: false
 
 # devices: bond+
 # devices: enp+
