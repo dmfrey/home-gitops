@@ -15,6 +15,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-gitops
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-gatus
+      namespace: monitor
   wait: false
   interval: 5m
   timeout: 1m30s
