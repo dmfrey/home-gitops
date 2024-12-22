@@ -27,7 +27,7 @@ cni:
   exclusive: false
 
 # devices: bond+
-# devices: enp+
+devices: enp+
 
 # enableCnpStatusUpdates: true
 enableRuntimeDeviceDetection: true
