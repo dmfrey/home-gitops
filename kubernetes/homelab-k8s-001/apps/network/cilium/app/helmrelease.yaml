@@ -40,7 +40,7 @@ spec:
 
       metrics:
         enabled:
-          - dns:query
+          - dns:query;ignoreAAAA
           - drop
           - tcp
           - flow
@@ -62,6 +62,7 @@ spec:
         enabled: true
         rollOutPods: true
         prometheus:
+          enabled: true
           serviceMonitor:
             enabled: true
 
@@ -74,9 +75,20 @@ spec:
           annotations:
             nginx.org/websocket-services: hubble-ui
             external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-            # auth.home.arpa/enabled: "true"
           hosts:
             - hubble.${SECRET_DOMAIN}
+
+    dashboards:
+      enabled: true
+      label: grafana.io/dashboard
+      labelValue: "true"
+      annotations:
+        grafana.io/folder: Network
+
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
     operator:
       prometheus:
@@ -90,17 +102,3 @@ spec:
         labelValue: "true"
         annotations:
           grafana.io/folder: Network
-
-    prometheus:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        trustCRDsExist: true
-
-    dashboards:
-      enabled: false
-      label: grafana.io/dashboard
-      labelValue: "true"
-      annotations:
-        grafana.io/folder: Network
-

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app multus
+  name: multus
 
 spec:
 
@@ -42,14 +42,13 @@ spec:
             {
               "cniVersion": "0.3.1",
               "logToStderr": true,
-              "logLevel": "debug",
+              "logLevel": "error",
               "binDir": "/opt/cni/bin",
               "chrootDir": "/hostroot",
               "cniConfigDir": "/host/etc/cni/net.d",
               "confDir": "/host/etc/cni/net.d",
               "multusAutoconfigDir": "/host/etc/cni/net.d",
               "multusConfigFile": "auto",
-              "multusNamespace": "network",
               "socketDir": "/host/run/multus/"
             }
 
@@ -83,7 +82,7 @@ spec:
                 rm -rf /host/etc/cni/net.d/*multus*
                 rm -rf /host/opt/cni/bin/*multus*
 
-      *app :
+      multus:
         type: daemonset
 
         annotations:
@@ -97,7 +96,7 @@ spec:
           multus-daemon:
             image: &image
               repository: ghcr.io/k8snetworkplumbingwg/multus-cni
-              tag: v4.1.4-thick@sha256:16030e8320088cf74dc5fbc7dccfea40169f09722dfad15765fa28bceb8de439
+              tag: v4.1.4-thick
 
             env:
               MULTUS_NODE_NAME:
@@ -166,7 +165,7 @@ spec:
           uninstall:
             uninstall:
               - path: /host/etc/cni/net.d
-          *app :
+          multus:
             multus-daemon:
               - path: /host/etc/cni/net.d
 
@@ -177,7 +176,7 @@ spec:
           uninstall:
             uninstall:
               - path: /host/opt/cni/bin
-          *app :
+          multus:
             cni-plugins-installer:
               - path: /host/opt/cni/bin
             multus-shim-installer:
