@@ -73,15 +73,15 @@ spec:
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
 
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.6/24"],
-                "mac": "6b:36:ab:6f:dd:30"
-              }]
+        # pod:
+        #   annotations:
+        #     k8s.v1.cni.cncf.io/networks: |
+        #       [{
+        #         "name":"iot-vlan",
+        #         "namespace": "network",
+        #         "ips": ["192.168.50.6/24"],
+        #         "mac": "6b:36:ab:6f:dd:30"
+        #       }]
 
     defaultPodOptions:
       hostNetwork: true
