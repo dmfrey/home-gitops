@@ -16,9 +16,9 @@ spec:
     kind: GitRepository
     name: home-gitops
   wait: true
-  interval: 10m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
   postBuild:
     substitute:
       APP: *app
