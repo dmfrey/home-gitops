@@ -5,6 +5,25 @@ version: '3'
 tasks:
 
   apply-node:
+    desc: Apply Talos config to a node [CLUSTER=main] [IP=required]
+    dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
+    cmds:
+      - task: down
+      - sops exec-file --input-type yaml --output-type yaml {{.CLUSTER_DIR}}/talos/{{.IP}}.sops.yaml.j2 "minijinja-cli {}" | talosctl --nodes {{.IP}} apply-config --mode={{.MODE}} --file /dev/stdin
+      - talosctl --nodes {{.IP}} health --wait-timeout=10m --server=false
+      - task: up
+    vars:
+      MODE: '{{.MODE | default "auto"}}'
+    requires:
+      vars: [CLUSTER, IP]
+    preconditions:
+      - talosctl --nodes {{.IP}} get machineconfig
+      - test -f {{.CLUSTER_DIR}}/cluster.env
+      - test -f {{.CLUSTER_DIR}}/talos/{{.IP}}.sops.yaml.j2
+      - test -f {{.CLUSTER_DIR}}/talosconfig
+      - which minijinja-cli sops talosctl
+
+  apply-node:
     desc: Apply Talos config to a node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
@@ -89,15 +108,16 @@ tasks:
       - talosctl --nodes {{.NODES}} get machineconfig &>/dev/null
 
   reset-node:
-    desc: Reset Talos on a single node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
-    prompt: Reset Talos node '{{.HOSTNAME}}' on the '{{.CLUSTER}}' cluster ... continue?
-    cmd: talosctl reset --nodes {{.HOSTNAME}} --graceful=false
+    desc: Reset Talos on a single node [CLUSTER=homelab-k8s-001] [IP=required]
+    prompt: Reset Talos node '{{.IP}}' on the '{{.CLUSTER}}' cluster ... continue?
+    cmd: talosctl reset --nodes {{.IP}} --graceful=false
     requires:
-      vars: [CLUSTER, HOSTNAME]
+      vars: [CLUSTER, IP]
     preconditions:
-      - test -f {{.TALOSCONFIG}}
-      - talosctl config info &>/dev/null
-      - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
+      - talosctl --nodes {{.IP}} get machineconfig
+      - talosctl config info
+      - test -f {{.TALOS_DIR}}/talosconfig
+      - which talosctl
 
   reset-cluster:
     desc: Reset Talos across the whole cluster [CLUSTER=homelab-k8s-001]
