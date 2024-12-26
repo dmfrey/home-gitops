@@ -36,7 +36,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
     - name: mosquitto
-    - name: multus-config
+    # - name: multus-config
     - name: rook-ceph-cluster
     - name: volsync
 # ---

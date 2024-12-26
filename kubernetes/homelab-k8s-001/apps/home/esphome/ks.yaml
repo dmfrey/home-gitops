@@ -32,6 +32,6 @@ spec:
   dependsOn:
     - name: home-assistant
     - name: mosquitto
-    - name: multus-config
+    # - name: multus-config
     - name: rook-ceph-cluster
     - name: volsync

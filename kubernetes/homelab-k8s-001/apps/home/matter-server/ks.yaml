@@ -33,6 +33,6 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: multus-config
+    # - name: multus-config
     - name: volsync
     - name: rook-ceph-cluster
