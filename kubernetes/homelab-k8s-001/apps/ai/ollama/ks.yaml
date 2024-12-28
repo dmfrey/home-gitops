@@ -46,7 +46,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-gitops
   postBuild:
     substitute:
       APP: ollama-ui
@@ -77,7 +77,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-gitops
   postBuild:
     substitute:
       BACKEND_CLAIM: ollama-backend-data
