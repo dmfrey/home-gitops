@@ -52,7 +52,7 @@ spec:
                   - name: repository
                     nfs:
                       server: ${QNAP_ADDR}
-                      path: /Minio/volsync
+                      path: /volsync
 
     - name: mutate-volsync-dst-movers
       match:
