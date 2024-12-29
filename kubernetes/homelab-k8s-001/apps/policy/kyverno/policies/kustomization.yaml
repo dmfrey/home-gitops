@@ -6,4 +6,3 @@ resources:
   # - ./clusterpolicy-remove-cpu-limit.yaml
   # - ./volsync-movers.yaml
   - ./clusterpolicy.yaml
-  - ./secret-flux-volsync.sops.yaml
