@@ -24,6 +24,11 @@ spec:
     crds:
       enabled: true
 
+    image:
+      repository: rook/ceph
+      tag: v1.16.0-4.g6da8ef89d            # TODO: Remove after 1.16.1
+      pullPolicy: IfNotPresent
+
     csi:
       # provisioner:
       #   image:
@@ -31,6 +36,9 @@ spec:
       #     tag: v5.1.0
 
       enableVolumeGroupSnapshot: false # TODO: enable this when v1beta1 CRDs are available
+      snapshotter:
+        tag: v8.2.0                        # TODO: Remove after 1.16.1
+
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableLiveness: true
       serviceMonitor:
