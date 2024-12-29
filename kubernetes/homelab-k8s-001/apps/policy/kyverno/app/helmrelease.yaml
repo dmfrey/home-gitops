@@ -43,7 +43,7 @@ spec:
         extraResources: &extraResources
           - apiGroups: ["*"]
             resources: ["*"]
-            verbs: ["get", "list", "watch"]
+            verbs: ["get", "list", "watch", "create"]
       serviceMonitor:
         enabled: true
 
