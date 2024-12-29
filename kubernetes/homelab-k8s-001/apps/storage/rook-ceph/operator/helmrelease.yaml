@@ -19,6 +19,9 @@ spec:
         name: rook-ceph
         namespace: flux-system
 
+  driftDetection:
+    mode: enabled
+
   values:
 
     crds:
