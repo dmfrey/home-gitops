@@ -20,7 +20,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     toolbox:
@@ -246,9 +246,9 @@ spec:
               limits:
                 memory: 1Gi
             instances: 1
-          healthCheck:
-            bucket:
-              interval: 60s
+          # healthCheck:
+          #   bucket:
+          #     interval: 60s
         storageClass:
           enabled: true
           name: ceph-bucket
