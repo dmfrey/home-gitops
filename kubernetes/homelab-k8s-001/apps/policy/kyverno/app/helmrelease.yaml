@@ -27,6 +27,9 @@ spec:
     remediation:
       retries: 5
 
+  driftDetection:
+    mode: enabled
+  
   values:
 
     crds:
