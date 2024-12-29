@@ -38,30 +38,18 @@ spec:
         grafana.io/folder: Policy
 
     admissionController:
+      replicas: 1
       clusterRole:
-        extraResources:
-          - apiGroups:
-              - '*'
-            resources:
-              - '*'
-            verbs:
-              - get
-              - list
-              - watch
+        extraResources: &extraResources
+          - apiGroups: ["*"]
+            resources: ["*"]
+            verbs: ["get", "list", "watch"]
       serviceMonitor:
         enabled: true
 
     backgroundController:
       clusterRole:
-        extraResources:
-          - apiGroups:
-              - '*'
-            resources:
-              - '*'
-            verbs:
-              - get
-              - list
-              - watch
+        extraResources: *extraResources
       resources:
         requests:
           cpu: 100m
@@ -72,15 +60,7 @@ spec:
 
     reportsController:
       clusterRole:
-        extraResources:
-          - apiGroups:
-              - '*'
-            resources:
-              - '*'
-            verbs:
-              - get
-              - list
-              - watch
+        extraResources: *extraResources
       serviceMonitor:
         enabled: true
 
