@@ -52,7 +52,7 @@ spec:
                   - name: repository
                     nfs:
                       server: ${QNAP_ADDR}
-                      path: /volsync
+                      path: /volsync/repository
 
     - name: mutate-volsync-dst-movers
       match:
@@ -78,4 +78,4 @@ spec:
                   - name: repository
                     nfs:
                       server: ${QNAP_ADDR}
-                      path: /volsync
+                      path: /volsync/repository
