@@ -81,6 +81,9 @@ spec:
           - name: "dmf-intel-001"
             devices:
               - name: "/dev/nvme0n1"
+          - name: "dmf-intel-002"
+            devices:
+              - name: "/dev/nvme0n1"
 
       # placement:
       #   mgr: &placement

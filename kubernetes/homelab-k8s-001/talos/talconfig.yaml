@@ -119,6 +119,36 @@ nodes:
       factory.talos.dev/schematic-suffix: 79bcfaf82405833d75707ede0968c64d
     extensionServices: *extensionServices
 
+  # GEEKOM Mini IT 13 / Intel UHD / 64GB / 512GB SSD / 2TB Nvme
+  - hostname: dmf-intel-002
+    controlPlane: false
+    ipAddress: 192.168.30.42
+    installDiskSelector:
+      model: GIGASTONE SSD 51
+    disableSearchDomain: true
+    networkInterfaces:
+      - interface: enp87s0
+        dhcp: false
+        mtu: 1500
+        vlans:
+          - vlanId: 30
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 1024
+          - vlanId: 50
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels:
+      topology.kubernetes.io/region: dmf
+      topology.kubernetes.io/zone: dmf-u
+      # Needed because Labels are limited to 63 Characters
+      factory.talos.dev/schematic-prefix: 8a71f9fe5c25403801ac19ff2beeacbf
+      factory.talos.dev/schematic-suffix: 79bcfaf82405833d75707ede0968c64d
+    extensionServices: *extensionServices
+
 controlPlane:
   schematic:
     customization:
