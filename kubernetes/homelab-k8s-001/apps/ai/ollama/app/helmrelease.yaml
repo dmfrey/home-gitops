@@ -118,7 +118,7 @@ spec:
 
     ingress:
       ui:
-        enabled: false
+        enabled: true
         className: external
         annotations:
           nginx.org/websocket-services: ollama
