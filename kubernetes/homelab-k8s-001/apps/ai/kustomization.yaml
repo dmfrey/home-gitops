@@ -7,3 +7,4 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./ollama/ks.yaml
+  - ./k8sgpt/ks.yaml
