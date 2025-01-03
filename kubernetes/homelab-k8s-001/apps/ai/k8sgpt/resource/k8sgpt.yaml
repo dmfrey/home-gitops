@@ -16,6 +16,6 @@ spec:
     backend: localai
     baseUrl: http://ollama-backend.ai.svc.cluster.local:11434/v1
 
-  nocache: false
+  noCache: false
 
   # filters: ["Pod"]
