@@ -16,11 +16,11 @@ spec:
 
   storage:
     storageClass: ceph-block
-    size: 25Gi
+    size: 30Gi
 
   walStorage:
     storageClass: ceph-block
-    size: 25Gi
+    size: 60Gi
 
   postgresql:
     parameters:
