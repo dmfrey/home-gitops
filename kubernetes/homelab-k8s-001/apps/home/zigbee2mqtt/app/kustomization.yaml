@@ -3,7 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # - ./secret-zigbee2mqtt.sops.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ../../../../templates/volsync

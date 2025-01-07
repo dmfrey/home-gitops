@@ -3,6 +3,33 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app zigbee2mqtt-common
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/common"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 5m
+  timeout: 1m30s
+  retryInterval: 30s
+  postBuild:
+    substitute:
+      APP: *app
+    substituteFrom: []
+  dependsOn:
+    - name: external-secrets-stores
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app zigbee2mqtt
   namespace: flux-system
 spec:
@@ -31,7 +58,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-    - name: external-secrets-stores
+    - name: zigbee2mqtt-common
     - name: mosquitto
     - name: node-feature-discovery-rules
     - name: rook-ceph-cluster
