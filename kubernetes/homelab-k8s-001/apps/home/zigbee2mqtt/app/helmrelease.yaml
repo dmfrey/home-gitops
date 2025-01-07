@@ -62,7 +62,7 @@ spec:
               ZIGBEE2MQTT_DATA: /config
               ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: "15"
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: debug # info
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info # debug
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
@@ -95,16 +95,16 @@ spec:
               # ZIGBEE2MQTT_CONFIG_FRONTEND: false
               # ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: true
 
-              ZIGBEE2MQTT_CONFIG_MQTT_USER:
-                valueFrom:
-                  secretKeyRef:
-                    name: mosquitto-secret
-                    key: ZIGBEE2MQTT_MQTT_USER
-              ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: mosquitto-secret
-                    key: ZIGBEE2MQTT_MQTT_PASS
+              # ZIGBEE2MQTT_CONFIG_MQTT_USER:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: mosquitto-secret
+              #       key: ZIGBEE2MQTT_MQTT_USER
+              # ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: mosquitto-secret
+              #       key: ZIGBEE2MQTT_MQTT_PASS
 
             envFrom:
               - secretRef:

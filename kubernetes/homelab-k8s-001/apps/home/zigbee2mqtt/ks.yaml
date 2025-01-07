@@ -31,6 +31,7 @@ spec:
   decryption:
     provider: sops
   dependsOn:
+    - name: external-secrets-stores
     - name: mosquitto
     - name: node-feature-discovery-rules
     - name: rook-ceph-cluster
