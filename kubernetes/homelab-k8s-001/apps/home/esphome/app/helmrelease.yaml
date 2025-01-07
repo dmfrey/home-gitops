@@ -26,16 +26,16 @@ spec:
         annotations:
           secret.reloader.stakater.com/reload: secret-esphome,home-assistant-deploykey
 
-        # pod:
-        #   annotations:
-        #     k8s.v1.cni.cncf.io/networks: |
-        #       [{
-        #         "name": "iot-vlan",
-        #         "interface": "eth1",
-        #         "namespace": "network",
-        #         "ips": ["192.168.50.3/24"],
-        #         "mac": "73:88:e8:74:90:c2"
-        #       }]
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name": "iot-vlan",
+                "interface": "eth1",
+                "namespace": "network",
+                "ips": ["192.168.50.3/24"],
+                "mac": "73:88:e8:74:90:c2"
+              }]
 
         containers:
           *app :
