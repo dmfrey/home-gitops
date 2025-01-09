@@ -55,7 +55,7 @@ spec:
           *app :
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: 2.0.20@sha256:3b8c8181f4911cd83cef988b850b18d1d21b84a0adaeb7affa465d5f0b88a034
+              tag: 2.0.20@sha256:deae95623b9d5c6ca5e264380629db53b992106d436b56d42f7c8df46b41b96f
 
             resources:
               requests:
@@ -68,7 +68,7 @@ spec:
           user-import:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: 2.0.20@sha256:3b8c8181f4911cd83cef988b850b18d1d21b84a0adaeb7affa465d5f0b88a034
+              tag: 2.0.20@sha256:deae95623b9d5c6ca5e264380629db53b992106d436b56d42f7c8df46b41b96f
 
             command:
               - "/bin/sh"
