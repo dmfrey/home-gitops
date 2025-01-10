@@ -8,7 +8,8 @@ shopt: [globstar]
 vars:
   CLUSTER: '{{.CLUSTER | default "homelab-k8s-001"}}'
   CLUSTER_DIR: '{{.ROOT_DIR}}/kubernetes/{{.CLUSTER}}'
-  TALOS_DIR: '{{.CLUSTER_DIR}}/talos/clusterconfig'
+  TALOS_DIR: '{{.CLUSTER_DIR}}/talos'
+  TALOS_CLUSTERCONFIG_DIR: '{{.TALOS_DIR}}/clusterconfig'
 
 env:
   KUBECONFIG: '{{.CLUSTER_DIR}}/talos/kubeconfig'

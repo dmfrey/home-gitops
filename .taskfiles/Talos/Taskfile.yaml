@@ -4,94 +4,113 @@ version: '3'
 
 tasks:
 
+  confirm-config:
+    desc: Confirms the Talos Tasks are configured correctly [CLUSTER=homelab-k8s-001]
+    dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
+    cmds:
+      - env
+    preconditions:
+      - test -f {{.CLUSTER_DIR}}/cluster.env
+      - test -f {{.TALOS_CLUSTERCONFIG_DIR}}/talosconfig
+      - which jq kubectl talosctl
+
+  # apply-node:
+  #   desc: Apply Talos config to a node [CLUSTER=main] [IP=required]
+  #   dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
+  #   cmds:
+  #     - task: down
+  #     - sops exec-file --input-type yaml --output-type yaml {{.CLUSTER_DIR}}/talos/{{.IP}}.sops.yaml.j2 "minijinja-cli {}" | talosctl --nodes {{.IP}} apply-config --mode={{.MODE}} --file /dev/stdin
+  #     - talosctl --nodes {{.IP}} health --wait-timeout=10m --server=false
+  #     - task: up
+  #   vars:
+  #     MODE: '{{.MODE | default "auto"}}'
+  #   requires:
+  #     vars: [CLUSTER, IP]
+  #   preconditions:
+  #     - talosctl --nodes {{.IP}} get machineconfig
+  #     - test -f {{.CLUSTER_DIR}}/cluster.env
+  #     - test -f {{.CLUSTER_DIR}}/talos/{{.IP}}.sops.yaml.j2
+  #     - test -f {{.CLUSTER_DIR}}/talosconfig
+  #     - which minijinja-cli sops talosctl
+
   apply-node:
-    desc: Apply Talos config to a node [CLUSTER=main] [IP=required]
+    desc: Apply Talos config to a node [CLUSTER=homelab-k8s-001] [IP=required] [HOSTNAME=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
-      - sops exec-file --input-type yaml --output-type yaml {{.CLUSTER_DIR}}/talos/{{.IP}}.sops.yaml.j2 "minijinja-cli {}" | talosctl --nodes {{.IP}} apply-config --mode={{.MODE}} --file /dev/stdin
+      - talosctl --nodes {{.IP}} apply-config --mode=staged --file {{.TALOS_CLUSTERCONFIG_DIR}}/{{.CLUSTER}}-{{.HOSTNAME}}.yaml
+      - talosctl --nodes {{.IP}} reboot
       - talosctl --nodes {{.IP}} health --wait-timeout=10m --server=false
       - task: up
     vars:
-      MODE: '{{.MODE | default "auto"}}'
+      HOSTNAME:
+        sh: talosctl --nodes {{.IP}} get hostname --output json | jq --raw-output '.spec.hostname'
     requires:
       vars: [CLUSTER, IP]
     preconditions:
-      - talosctl --nodes {{.IP}} get machineconfig
       - test -f {{.CLUSTER_DIR}}/cluster.env
-      - test -f {{.CLUSTER_DIR}}/talos/{{.IP}}.sops.yaml.j2
-      - test -f {{.CLUSTER_DIR}}/talosconfig
-      - which minijinja-cli sops talosctl
-
-  apply-node:
-    desc: Apply Talos config to a node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
-    dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
-    cmds:
-      - task: down
-      - sops exec-file --input-type yaml --output-type yaml {{.CLUSTER_DIR}}/talos/{{.HOSTNAME}}.sops.yaml.j2 "minijinja-cli {}" | talosctl --nodes {{.HOSTNAME}} apply-config --mode=staged --file /dev/stdin
-      - talosctl --nodes {{.HOSTNAME}} reboot
-      - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
-      - task: up
-    requires:
-      vars: [CLUSTER, HOSTNAME]
-    preconditions:
-      - test -f {{.CLUSTER_DIR}}/cluster.env
-      - test -f {{.TALOSCONFIG}}
-      - test -f {{.CLUSTER_DIR}}/talos/{{.HOSTNAME}}.sops.yaml.j2
-      - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
+      - test -f {{.TALOS_CLUSTERCONFIG_DIR}}/{{.CLUSTER}}-{{.HOSTNAME}}.yaml
+      - test -f {{.TALOS_CLUSTERCONFIG_DIR}}/talosconfig
+      - which talosctl
 
   upgrade-node:
-    desc: Upgrade Talos on a single node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
+    desc: Upgrade Talos on a single node [CLUSTER=homelab-k8s-001] [IP=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
-      - talosctl --nodes {{.HOSTNAME}} upgrade --image="factory.talos.dev/installer/{{.SCHEMATIC_ID}}:$TALOS_VERSION" --timeout=10m
-      - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
+      - talosctl --nodes {{.IP}} upgrade --image="factory.talos.dev/installer/{{.TALOS_SCHEMATIC_ID}}:$TALOS_VERSION" --timeout=10m
+      - talosctl --nodes {{.IP}} health
       - task: up
     vars:
-      SCHEMATIC_ID:
-        sh: kubectl get node {{.HOSTNAME}} --output=jsonpath='{.metadata.annotations.extensions\.talos\.dev/schematic}'
+      TALOS_SCHEMATIC_ID:
+        sh: talosctl --nodes {{.IP}} get nodeannotationspecs --output json | jq --raw-output '.spec | select(.key == "extensions.talos.dev/schematic") | .value'
     requires:
-      vars: [CLUSTER, HOSTNAME]
+      vars: [CLUSTER, IP]
     preconditions:
-      - talosctl --nodes {{.HOSTNAME}} get machineconfig
+      - curl -fsSL -o /dev/null --fail https://github.com/siderolabs/talos/releases/tag/$TALOS_VERSION
+      - talosctl --nodes {{.IP}} get machineconfig
+      - talosctl config info
       - test -f {{.CLUSTER_DIR}}/cluster.env
-      - test -f {{.CLUSTER_DIR}}/talos/talconfig.yaml
-      - test -f {{.CLUSTER_DIR}}/talos/clusterconfig/talosconfig
+      - test -f {{.TALOS_CLUSTERCONFIG_DIR}}/talosconfig
+      - which jq kubectl talosctl
 
   upgrade-k8s:
     desc: Upgrade Kubernetes across the whole cluster [CLUSTER=homelab-k8s-001] [VERSION=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
-      - talosctl --nodes {{.CONTROLLER}} upgrade-k8s --to $KUBERNETES_VERSION
+      - talosctl --nodes {{.TALOS_CONTROLLER}} upgrade-k8s --to $KUBERNETES_VERSION
       - task: up
     vars:
-      CONTROLLER:
+      TALOS_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
     requires:
       vars: [CLUSTER]
     preconditions:
-      - test -f {{.CLUSTER_DIR}}/cluster.env
-      - test -f {{.TALOSCONFIG}}
-      - talosctl config info &>/dev/null
-      - talosctl --nodes {{.CONTROLLER}} get machineconfig &>/dev/null
       - curl -fsSL -o /dev/null --fail https://github.com/siderolabs/kubelet/releases/tag/$KUBERNETES_VERSION
+      - talosctl --nodes {{.TALOS_CONTROLLER}} get machineconfig
+      - talosctl config info
+      - test -f {{.CLUSTER_DIR}}/cluster.env
+      - test -f {{.TALOS_CLUSTERCONFIG_DIR}}/talosconfig
+      - which jq talosctl
 
   reboot-node:
-    desc: Reboot Talos on a single node [CLUSTER=homelab-k8s-001] [HOSTNAME=required]
+    desc: Reboot Talos on a single node [CLUSTER=main] [IP=required] [MODE=default]
     cmds:
       - task: down
-      - talosctl --nodes {{.HOSTNAME}} reboot
-      - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
+      - talosctl --nodes {{.IP}} reboot --mode={{.MODE}}
+      - talosctl --nodes {{.IP}} health
       - task: up
+    vars:
+      MODE: '{{.MODE | default "default"}}'
     requires:
-      vars: [CLUSTER, HOSTNAME]
+      vars: [CLUSTER, IP]
     preconditions:
+      - talosctl --nodes {{.IP}} get machineconfig
+      - talosctl config info
       - test -f {{.CLUSTER_DIR}}/cluster.env
-      - test -f {{.TALOSCONFIG}}
-      - talosctl config info &>/dev/null
-      - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
+      - test -f {{.TALOS_CLUSTERCONFIG_DIR}}/talosconfig
+      - which talosctl
 
   shutdown-cluster:
     desc: Shutdown Talos across the whole cluster [CLUSTER=homelab-k8s-001]
@@ -136,15 +155,15 @@ tasks:
   down:
     internal: true
     cmds:
-      - flux --namespace flux-system suspend kustomization --all
       - until kubectl wait cephcluster --for=jsonpath=.status.ceph.health=HEALTH_OK --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
       - until kubectl wait jobs --all --all-namespaces --for=condition=complete --timeout=5m &>/dev/null; do sleep 5; done
-      - task: :volsync:state-suspend
+    preconditions:
+      - which kubectl
 
   up:
     internal: true
     cmds:
-      - flux --namespace flux-system resume kustomization --all
       - until kubectl wait cephcluster --for=jsonpath=.status.ceph.health=HEALTH_OK --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
       - until kubectl wait jobs --all --all-namespaces --for=condition=complete --timeout=5m &>/dev/null; do sleep 5; done
-      - task: :volsync:state-resume
+    preconditions:
+      - which kubectl
