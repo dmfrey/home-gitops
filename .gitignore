@@ -47,7 +47,7 @@ kubeconfig_bak
 talosconfig
 
 # Talos clusterconfigs
-infrastructure/talos/**/clusterconfig
+kubernetes/**/talos/clusterconfig
 archive/kubernetes/talos
 
 # Other
