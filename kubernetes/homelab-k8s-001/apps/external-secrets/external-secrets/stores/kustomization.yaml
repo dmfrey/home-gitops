@@ -5,5 +5,5 @@ kind: Kustomization
 resources:
   - ./secret-bitwarden-access-token.sops.yaml
   - ./bitwarden-cluster-secret-store.yaml
-  - ./onepassword-connect-secret-store.yaml
+  # - ./onepassword-connect-secret-store.yaml
   # - ./k8s-secret-store.yaml
