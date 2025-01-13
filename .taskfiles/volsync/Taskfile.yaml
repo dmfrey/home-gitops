@@ -27,20 +27,18 @@ tasks:
       - which flux kubectl
 
   unlock:
-    desc: Unlock all restic source repos [CLUSTER=homelab-k8s-001]
+    desc: Unlock all restic source repos
     cmds:
       - for: { var: SOURCES, split: "\n" }
         cmd: kubectl --namespace {{splitList "," .ITEM | first}} patch --field-manager=flux-client-side-apply replicationsources {{splitList "," .ITEM | last}} --type merge --patch "{\"spec\":{\"restic\":{\"unlock\":\"{{now | unixEpoch}}\"}}}"
     vars:
       SOURCES:
         sh: kubectl get replicationsources --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
-    requires:
-      vars: [CLUSTER]
     preconditions:
       - which kubectl
 
   snapshot:
-    desc: Snapshot an app [CLUSTER=homelab-k8s-001] [NS=default] [APP=required]
+    desc: Snapshot an app [NS=default] [APP=required]
     cmds:
       - kubectl --namespace {{.NS}} patch replicationsources {{.APP}} --type merge -p '{"spec":{"trigger":{"manual":"{{now | unixEpoch}}"}}}'
       - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
@@ -49,12 +47,13 @@ tasks:
       NS: '{{.NS | default "default"}}'
       JOB: volsync-src-{{.APP}}
     requires:
-      vars: [CLUSTER, APP]
+      vars: [APP]
     preconditions:
       - kubectl --namespace {{.NS}} get replicationsources {{.APP}}
+      - which kubectl
 
   restore:
-    desc: Restore an app [CLUSTER=homelab-k8s-001] [NS=default] [APP=required] [PREVIOUS=required]
+    desc: Restore an app [NS=default] [APP=required] [PREVIOUS=required]
     cmds:
       # Suspend
       - flux --namespace flux-system suspend kustomization {{.APP}}
@@ -90,6 +89,26 @@ tasks:
       PGID:
         sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath="{.spec.restic.moverSecurityContext.runAsGroup}"
     requires:
-      vars: [CLUSTER, APP, PREVIOUS]
+      vars: [APP, PREVIOUS]
     preconditions:
       - test -f {{.VOLSYNC_RESOURCES_DIR}}/replicationdestination.yaml.j2
+      - which flux kubectl minijinja-cli
+
+  unlock-local:
+    desc: Unlock a restic source repo from local machine [NS=default] [APP=required]
+    cmds:
+      - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/unlock.yaml.j2 | kubectl apply --server-side --filename -
+      - until kubectl --namespace {{.NS}} get job/volsync-unlock-{{.APP}} &>/dev/null; do sleep 5; done
+      - kubectl --namespace {{.NS}} wait job/volsync-unlock-{{.APP}} --for condition=complete --timeout=5m
+      - stern --namespace {{.NS}} job/volsync-unlock-{{.APP}} --no-follow
+      - kubectl --namespace {{.NS}} delete job volsync-unlock-{{.APP}}
+    vars:
+      NS: '{{.NS | default "default"}}'
+    env:
+      NS: '{{.NS}}'
+      APP: '{{.APP}}'
+    requires:
+      vars: [APP]
+    preconditions:
+      - test -f {{.VOLSYNC_RESOURCES_DIR}}/unlock.yaml.j2
+      - which kubectl minijinja-cli stern
