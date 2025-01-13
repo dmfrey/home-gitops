@@ -119,7 +119,7 @@ spec:
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
         retention: 14d
-        retentionSize: 70GB
+        retentionSize: 50GB
 
         # remoteWrite:
         #   - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
@@ -172,10 +172,10 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: openebs-hostpath
+              storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 75Gi
+                  storage: 50Gi
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
