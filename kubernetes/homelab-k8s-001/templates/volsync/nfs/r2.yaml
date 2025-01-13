@@ -42,6 +42,8 @@ spec:
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"]
+    moverPodLabels:
+      vpn.home.arpa/enabled: "false"
     moverSecurityContext:
       runAsUser: ${VOLSYNC_PUID:-1568}
       runAsGroup: ${VOLSYNC_PGID:-1568}
