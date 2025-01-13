@@ -34,7 +34,7 @@ tasks:
   #     - which minijinja-cli sops talosctl
 
   apply-node:
-    desc: Apply Talos config to a node [CLUSTER=homelab-k8s-001] [IP=required] [HOSTNAME=required]
+    desc: Apply Talos config to a node [CLUSTER=homelab-k8s-001] [IP=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
