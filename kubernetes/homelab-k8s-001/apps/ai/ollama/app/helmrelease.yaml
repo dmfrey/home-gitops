@@ -53,7 +53,7 @@ spec:
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: &pvc /models
               OLLAMA_GPU_ENABLED: "true"
-              OLLAMA_GPU_TYPE: rocm
+              OLLAMA_GPU_TYPE: amd
 
             resources:
               requests:
