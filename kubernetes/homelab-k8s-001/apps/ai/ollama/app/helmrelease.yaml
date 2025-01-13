@@ -53,18 +53,18 @@ spec:
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: &pvc /models
               OLLAMA_GPU_ENABLED: "true"
-              OLLAMA_GPU_TYPE: amd
+              # OLLAMA_GPU_TYPE: amd
 
             resources:
               requests:
                 cpu: 2000m
                 memory: 16Gi
-                amd.com/gpu: "1"
-                # gpu.intel.com/i915: "1"
+                # amd.com/gpu: "1"
+                gpu.intel.com/i915: "1"
               limits:
                 memory: 16Gi
-                amd.com/gpu: "1"
-                # gpu.intel.com/i915: "1"
+                # amd.com/gpu: "1"
+                gpu.intel.com/i915: "1"
 
         pod:
           affinity:
@@ -72,13 +72,13 @@ spec:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                   - matchExpressions:
-                      - key: feature.node.kubernetes.io/pci-0300_1002.present    # intel.feature.node.kubernetes.io/gpu
+                      - key: intel.feature.node.kubernetes.io/gpu    # feature.node.kubernetes.io/pci-0300_1002.present
                         operator: In
                         values:
                           - "true"
           nodeSelector:
-            feature.node.kubernetes.io/pci-0300_1002.present: "true"
-            # intel.feature.node.kubernetes.io/gpu: "true"
+            # feature.node.kubernetes.io/pci-0300_1002.present: "true"
+            intel.feature.node.kubernetes.io/gpu: "true"
 
       ui:
         type: deployment
