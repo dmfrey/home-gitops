@@ -50,3 +50,4 @@ spec:
       fsGroup: ${VOLSYNC_PGID:-1568}
     retain:
       daily: 7
+    unlock: "2025-01-13T14:18"
