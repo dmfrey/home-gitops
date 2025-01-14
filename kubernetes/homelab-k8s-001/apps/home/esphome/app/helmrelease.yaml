@@ -80,6 +80,9 @@ spec:
         ports:
           http:
             port: &port 6052
+            primary: true
+          api:
+            port: 6053
 
     ingress:
       internal:
