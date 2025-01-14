@@ -31,8 +31,6 @@ spec:
     keepHistory: false
 
   dependsOn:
-    - name: openebs
-      namespace: storage
     - name: rook-ceph-cluster
       namespace: storage
 
