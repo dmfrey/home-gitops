@@ -34,7 +34,7 @@ spec:
     - name: prometheus-operator-crds
       namespace: monitor
     - name: rook-ceph-cluster
-      namespace: rook-ceph
+      namespace: storage
 
   values:
 
