@@ -12,9 +12,10 @@ spec:
   prober:
     url: blackbox-exporter.monitor.svc.cluster.local:9115
 
-  # targets:
-  #   staticConfig:
-  #     static:
+  targets:
+    staticConfig:
+      static:
+        - minio.${SECRET_DOMAIN}
   #       - expanse.internal
   #       - garage-door.internal
   #       - hdhomerun.internal
