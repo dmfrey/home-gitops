@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: monitor
 resources:
   - ./alertmanagerconfig.yaml
+  - ./externalsecret.yaml
   - ./helmrelease.yaml
   # - ./prometheusrule.yaml
   - ./scrapeconfig.yaml
