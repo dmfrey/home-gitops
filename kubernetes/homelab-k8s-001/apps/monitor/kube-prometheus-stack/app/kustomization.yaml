@@ -7,5 +7,5 @@ resources:
   - ./alertmanagerconfig.yaml
   - ./helmrelease.yaml
   # - ./prometheusrule.yaml
-  - ./scrapconfig.yaml
+  - ./scrapeconfig.yaml
   - ../../../../templates/gatus/guarded
