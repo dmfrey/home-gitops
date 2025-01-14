@@ -36,6 +36,9 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage
 
+  driftDetection:
+    mode: enabled
+
   valuesFrom:
     - targetPath: objstoreConfig.value.config.bucket
       kind: ConfigMap
