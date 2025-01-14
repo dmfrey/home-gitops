@@ -24,7 +24,7 @@ spec:
         type: statefulset
 
         annotations:
-          secret.reloader.stakater.com/reload: secret-esphome,home-assistant-deploykey
+          secret.reloader.stakater.com/reload: esphome,home-assistant-deploykey
 
         # pod:
         #   annotations:
