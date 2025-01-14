@@ -8,5 +8,5 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   # - ./prometheusrule.yaml
-  - ./scrapeconfig.yaml
+  # - ./scrapeconfig.yaml
   - ../../../../templates/gatus/guarded
