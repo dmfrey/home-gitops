@@ -67,7 +67,7 @@ data:
       - name: Alertmanager
         type: alertmanager
         access: proxy
-        url: http://alert-manager.monitor.svc.cluster.local:9093
+        url: http://alertmanager.monitor.svc.cluster.local:9093
         jsonData:
           implementation: prometheus
           handleGrafanaManagedAlerts: true
