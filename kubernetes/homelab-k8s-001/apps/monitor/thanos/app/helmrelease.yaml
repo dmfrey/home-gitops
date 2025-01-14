@@ -63,9 +63,6 @@ spec:
 
   values:
 
-    # commonAnnotations:
-      # secret.reloader.stakater.com/reload: thanos-secret
-
     objstoreConfig:
       value:
         type: s3
@@ -94,7 +91,7 @@ spec:
 
       persistence: &persistence
         enabled: true
-        storageClass: openebs-hostpath
+        storageClass: ceph-block
         size: 10Gi
 
     query:
@@ -103,9 +100,6 @@ spec:
       extraArgs: ["--alert.query-url=https://thanos.${SECRET_DOMAIN}"]
 
       replicas: 3
-
-      # stores:
-      #   - thanos-store-gateway-headless:10901
 
     queryFrontend:
       enabled: true
@@ -149,11 +143,6 @@ spec:
         hosts:
             - &host thanos.${SECRET_DOMAIN}
 
-        # tls:
-        #   - hosts:
-        #       - *host
-        #     secretName: thanos-tls-internal
-
       podAnnotations: &podAnnotations
         configmap.reloader.stakater.com/reload: *configMap
 
@@ -161,9 +150,6 @@ spec:
       enabled: true
 
       persistence: *persistence
-        # enabled: true
-        # storageClass: "ceph-block"
-        # size: 24Gi
 
     rule:
       enabled: true
@@ -193,9 +179,6 @@ spec:
                     severity: critical
 
       persistence: *persistence
-        # enabled: true
-        # storageClass: "ceph-block"
-        # size: 10Gi
 
     storeGateway:
       enabled: true
@@ -205,6 +188,3 @@ spec:
       extraEnv: &extraEnv
 
       persistence: *persistence
-        # enabled: true
-        # storageClass: "ceph-block"
-        # size: 10Gi
