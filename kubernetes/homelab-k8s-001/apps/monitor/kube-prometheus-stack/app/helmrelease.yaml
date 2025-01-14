@@ -8,12 +8,11 @@ metadata:
 spec:
 
   interval: 30m
-  timeout: 15m
 
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 67.9.0
+      version: 68.1.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -34,8 +33,8 @@ spec:
   dependsOn:
     - name: prometheus-operator-crds
       namespace: monitor
-    - name: openebs
-      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
 
   values:
 
@@ -45,21 +44,32 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      enabled: false
+      enabled: true
+
       ingress:
         enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         ingressClassName: internal
-        hosts: ["alert-manager.${SECRET_DOMAIN}"]
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:alpha-t-box"
+          hajimari.io/appName: "Alert Manager"
+
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        hosts: ["alertmanager.${SECRET_DOMAIN}"]
         pathType: Prefix
+
       alertmanagerSpec:
-        useExistingSecret: true
-        configSecret: alertmanager-secret
+        alertmanagerConfiguration:
+          name: alertmanager
+          global:
+            resolveTimeout: 5m
+
+        externalUrl: https://alertmanager.${SECRET_DOMAIN}
+
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: openebs-hostpath
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 1Gi
@@ -99,14 +109,7 @@ spec:
         hosts:
           - prometheus.${SECRET_DOMAIN}
 
-      thanosService:
-        enabled: true
-
-      thanosServiceMonitor:
-        enabled: true
-
       prometheusSpec:
-        scrapeInterval: 1m # Must match interval in Grafana Helm chart
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
@@ -115,53 +118,9 @@ spec:
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
-          - auto-gomemlimit
           - memory-snapshot-on-shutdown
-          - new-service-discovery-manager
         retention: 14d
         retentionSize: 50GB
-
-        # remoteWrite:
-        #   - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
-
-        scrapeConfigSelector:
-          matchLabels:
-            prometheus: scrape-me
-
-        thanos:
-          image: quay.io/thanos/thanos:v0.37.2@sha256:4ec6df40fdb921de162677b321057caa8fb8324c65f4cfae9568ed55c4469e2c
-          objectStorageConfig:
-            name: thanos-secret
-            key: objstore.yml
-          # renovate: datasource=docker depName=quay.io/thanos/thanos
-          version: "v0.37.2"
-
-        # additionalScrapeConfigs:
-        #   - job_name: minio-job
-        #     metrics_path: /minio/v3/metrics/cluster
-        #     static_configs:
-        #       - targets: ["minio.${SECRET_DOMAIN}"]
-        #   - job_name: minio-job-node
-        #     metrics_path: /minio/v3/metrics/node
-        #     scheme: http
-        #     static_configs:
-        #       - targets: ["minio.${SECRET_DOMAIN}"]
-        #   - job_name: minio-job-bucket
-        #     metrics_path: /minio/v3/metrics/bucket
-        #     scheme: http
-        #     static_configs:
-        #       - targets: ["minio.${SECRET_DOMAIN}"]
-        #   - job_name: minio-job-resource
-        #     metrics_path: /minio/v3/metrics/resource
-        #     scheme: http
-        #     static_configs:
-        #       - targets: ["minio.${SECRET_DOMAIN}"]
-
-        alertingEnpoints:
-          - namespace: monitor
-            name: alertmanager
-            port: 9093
-            apiVersion: v2
 
         resources:
           requests:
@@ -176,6 +135,20 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
+
+        thanos:
+          image: quay.io/thanos/thanos:v0.37.2@sha256:4ec6df40fdb921de162677b321057caa8fb8324c65f4cfae9568ed55c4469e2c
+          objectStorageConfig:
+            name: thanos-secret
+            key: objstore.yml
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "v0.37.2"
+
+      thanosService:
+        enabled: true
+
+      thanosServiceMonitor:
+        enabled: true
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
@@ -211,3 +184,37 @@ spec:
     grafana:
       enabled: false
       forceDeployDashboards: true
+
+    additionalPrometheusRulesMap:
+      dockerhub-rules:
+        groups:
+          - name: dockerhub
+            rules:
+              - alert: DockerhubRateLimitRisk
+                annotations:
+                  summary: Kubernetes cluster Dockerhub rate limit risk
+                expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
+                labels:
+                  severity: critical
+
+      oom-rules:
+        groups:
+          - name: oom
+            rules:
+              - alert: OomKilled
+                annotations:
+                  summary: Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} has been OOMKilled {{ $value }} times in the last 10 minutes.
+                expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m >= 1) and ignoring (reason) min_over_time(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[10m]) == 1
+                labels:
+                  severity: critical
+
+      zfs-rules:
+        groups:
+          - name: zfs
+            rules:
+              - alert: ZfsUnexpectedPoolState
+                annotations:
+                  summary: ZFS pool {{$labels.zpool}} on {{$labels.instance}} is in a unexpected state {{$labels.state}}
+                expr: node_zfs_zpool_state{state!="online"} > 0
+                labels:
+                  severity: critical
