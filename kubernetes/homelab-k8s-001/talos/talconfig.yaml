@@ -131,27 +131,8 @@ nodes:
       model: GIGASTONE SSD 51
     disableSearchDomain: true
     networkInterfaces: *networkInterfaces-intel
-      # - interface: eth0   # enp87s0
-      #   dhcp: false
-      #   mtu: 1500
-      #   vlans:
-      #     - vlanId: 30
-      #       mtu: 1500
-      #       dhcp: true
-      #       dhcpOptions:
-      #         routeMetric: 1024
-      #     - vlanId: 50
-      #       mtu: 1500
-      #       dhcp: true
-      #       dhcpOptions:
-      #         routeMetric: 4096
     talosImageURL: *factory-intel
     nodeLabels: *nodeLabels-intel
-      # topology.kubernetes.io/region: dmf
-      # topology.kubernetes.io/zone: dmf-u
-      # # Needed because Labels are limited to 63 Characters
-      # factory.talos.dev/schematic-prefix: 8a71f9fe5c25403801ac19ff2beeacbf
-      # factory.talos.dev/schematic-suffix: 79bcfaf82405833d75707ede0968c64d
     extensionServices: *extensionServices
 
 controlPlane:
@@ -159,6 +140,11 @@ controlPlane:
     customization:
       extraKernelArgs:
         - net.ifnames=0
+        - apparmor=0                          # Less security, faster puter
+        - init_on_alloc=0                     # Less security, faster puter
+        - init_on_free=0                      # Less security, faster puter
+        # - iommu=pt                            # PCI Passthrough
+        - mitigations=off                     # Less security, faster puter
       systemExtensions:
         officialExtensions:
           - siderolabs/amd-ucode
@@ -174,13 +160,24 @@ controlPlane:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
             content: |-
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-              [plugins."io.containerd.grpc.v1.cri".containerd]
+              [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
-              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-                discard_unpacked_layers = false
+              # [plugins."io.containerd.grpc.v1.cri"]
+              #   enable_unprivileged_ports = true
+              #   enable_unprivileged_icmp = true
+              # [plugins."io.containerd.grpc.v1.cri".containerd]
+              #   discard_unpacked_layers = false
+              # [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+              #   discard_unpacked_layers = false
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.1
+              hard=True
+              nconnect=16
+              noatime=True
 
     # Disable search domain everywhere
     - |-
@@ -192,11 +189,16 @@ controlPlane:
     - |-
       machine:
         kubelet:
-          extraArgs:
-            feature-gates: GracefulNodeShutdown=true
-            rotate-server-certificates: true
+          # extraArgs:
+          #   feature-gates: GracefulNodeShutdown=true
+          #   rotate-server-certificates: true
           extraConfig:
             maxPods: 250
+          # extraMounts:
+          #   - destination: /var/mnt/extra
+          #     type: bind
+          #     source: /var/mnt/extra
+          #     options: ["bind", "rshared", "rw"]
           nodeIP:
             validSubnets:
               - 192.168.30.0/24
@@ -240,36 +242,41 @@ controlPlane:
     - |-
       machine:
         sysctls:
-          fs.inotify.max_user_watches: 1048576
-          fs.inotify.max_user_instances: 8192
-          net.core.netdev_max_backlog: 30000
-          net.core.rmem_max: 67108864
-          net.core.wmem_max: 67108864
-          net.ipv4.tcp_rmem: 4096 87380 33554432
-          net.ipv4.tcp_wmem: 4096 65536 33554432
-          net.ipv4.tcp_tw_reuse: 1
-          net.ipv4.tcp_window_scaling: 1
+          fs.inotify.max_user_watches: 1048576   # Watchdog
+          fs.inotify.max_user_instances: 8192    # Watchdog
+          # net.core.netdev_max_backlog: 30000
+          net.core.default_qdisc: fq             # 10Gb/s
+          net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+          net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+          net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
+          net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+          net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
+          net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+          net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+          net.ipv4.tcp_window_scaling: 1         # 10Gb/s
+          # net.ipv4.tcp_tw_reuse: 1
+          vm.nr_hugepages: 1024                  # PostgreSQL
 
     # Custom sysfs
-    # - |-
-    #   machine:
-    #     sysfs:
-    #       devices.system.cpu.cpu0.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu1.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu2.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu6.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu7.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu8.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu9.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu10.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu11.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu12.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu13.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu14.cpufreq.energy_performance_preference: balance_performance
-    #       devices.system.cpu.cpu15.cpufreq.energy_performance_preference: balance_performance
+    - |-
+      machine:
+        sysfs:
+          devices.system.cpu.cpu0.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu1.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu2.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu6.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu7.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu8.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu9.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu10.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu11.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu12.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu13.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu14.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu15.cpufreq.energy_performance_preference: balance_performance
 
     # Various udev rules
     - |-
@@ -277,6 +284,15 @@ controlPlane:
         udev:
           rules:
             - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
+            - KERNEL=="kfd", MODE="0666" SUBSYSTEM=="drm"
+            - KERNEL=="renderD*", MODE="0666"
+
+    # Kernel configuration
+    - |-
+      machine:
+        kernel:
+          modules:
+            - name: nbd
 
     # Cluster configuration
     - |-
@@ -355,13 +371,24 @@ worker:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
             content: |-
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-              [plugins."io.containerd.grpc.v1.cri".containerd]
+              [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
-              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-                discard_unpacked_layers = false
+              # [plugins."io.containerd.grpc.v1.cri"]
+              #   enable_unprivileged_ports = true
+              #   enable_unprivileged_icmp = true
+              # [plugins."io.containerd.grpc.v1.cri".containerd]
+              #   discard_unpacked_layers = false
+              # [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+              #   discard_unpacked_layers = false
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.1
+              hard=True
+              nconnect=16
+              noatime=True
 
     # Disable search domain everywhere
     - |-
@@ -373,16 +400,17 @@ worker:
     - |-
       machine:
         kubelet:
-          extraArgs:
-            feature-gates: GracefulNodeShutdown=true
-            rotate-server-certificates: true
+          # extraArgs:
+          #   feature-gates: GracefulNodeShutdown=true
+          #   rotate-server-certificates: true
           extraConfig:
             maxPods: 250
-          extraMounts:
-            - destination: /var/openebs/local
-              type: bind
-              source: /var/openebs/local
-              options: ["bind", "rshared", "rw"]
+          # extraMounts:
+          #   - destination: /var/mnt/extra
+          #     type: bind
+          #     source: /var/mnt/extra
+          #     options: ["bind", "rshared", "rw"]
+          defaultRuntimeSeccompProfileEnabled: true
           nodeIP:
             validSubnets:
               - 192.168.30.0/24
@@ -414,37 +442,42 @@ worker:
     - |-
       machine:
         sysctls:
-          fs.inotify.max_user_watches: 1048576
-          fs.inotify.max_user_instances: 8192
-          net.core.netdev_max_backlog: 30000
-          net.core.rmem_max: 67108864
-          net.core.wmem_max: 67108864
-          net.ipv4.tcp_rmem: 4096 87380 33554432
-          net.ipv4.tcp_wmem: 4096 65536 33554432
-          net.ipv4.tcp_tw_reuse: 1
-          net.ipv4.tcp_window_scaling: 1
+          fs.inotify.max_user_watches: 1048576   # Watchdog
+          fs.inotify.max_user_instances: 8192    # Watchdog
+          # net.core.netdev_max_backlog: 30000
+          net.core.default_qdisc: fq             # 10Gb/s
+          net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+          net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+          net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
+          net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+          net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
+          net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+          net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+          net.ipv4.tcp_window_scaling: 1         # 10Gb/s
+          # net.ipv4.tcp_tw_reuse: 1
+          vm.nr_hugepages: 1024                  # PostgreSQL
 
     # Custom sysfs
     - |-
       machine:
         sysfs:
           devices.system.cpu.intel_pstate.hwp_dynamic_boost: 1
-          # devices.system.cpu.cpu0.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu1.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu2.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu6.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu7.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu8.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu9.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu10.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu11.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu12.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu13.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu14.cpufreq.energy_performance_preference: balance_performance
-          # devices.system.cpu.cpu15.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu0.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu1.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu2.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu6.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu7.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu8.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu9.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu10.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu11.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu12.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu13.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu14.cpufreq.energy_performance_preference: balance_performance
+          devices.system.cpu.cpu15.cpufreq.energy_performance_preference: balance_performance
 
     # Various udev rules
     - |-
@@ -454,6 +487,13 @@ worker:
             - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
             - # Intel GPU
               SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+
+    # Kernel configuration
+    - |-
+      machine:
+        kernel:
+          modules:
+            - name: nbd
 
     # Cluster configuration
     - |-
