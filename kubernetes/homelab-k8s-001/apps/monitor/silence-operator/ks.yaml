@@ -14,7 +14,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: home-gitops
   wait: false
   interval: 30m
   timeout: 15m
@@ -38,7 +38,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: home-gitops
   wait: false
   interval: 30m
   timeout: 5m
