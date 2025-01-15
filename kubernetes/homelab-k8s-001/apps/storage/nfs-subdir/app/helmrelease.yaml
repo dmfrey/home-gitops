@@ -24,4 +24,4 @@ spec:
       server: ${QNAP_ADDR}
       path: /kubernetes
       mountOptions:
-        - "nfsvers=3"
+        - "nfsvers=4.1"
