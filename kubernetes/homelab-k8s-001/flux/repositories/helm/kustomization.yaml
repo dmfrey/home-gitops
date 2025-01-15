@@ -43,3 +43,4 @@ resources:
   - tf-controller.yaml
   - trilium.yaml
   - opentelemetry-charts.yaml
+  - wiremind.yaml
