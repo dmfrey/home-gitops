@@ -37,6 +37,8 @@ spec:
       backend:
         type: statefulset
 
+        nameOverride: ollama-backend
+
         annotations:
           reloader.stakater.com/auto: "true"
 
