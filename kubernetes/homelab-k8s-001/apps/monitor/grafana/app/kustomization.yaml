@@ -3,8 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # - ./secret-grafana.sops.yaml
-  # - ./secret-grafana-auth.sops.yaml
   - ./externalsecret.yaml
   - ./notification.yaml
   - ./datasources-cm.yaml
