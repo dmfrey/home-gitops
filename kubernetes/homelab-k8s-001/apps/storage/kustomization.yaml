@@ -8,7 +8,7 @@ resources:
   # Flux-Kustomizations
   - ./fstrim/ks.yaml
   - ./rook-ceph/ks.yaml
-  - ./openebs/ks.yaml
+  # - ./openebs/ks.yaml
   - ./nfs-subdir/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./volsync/ks.yaml
