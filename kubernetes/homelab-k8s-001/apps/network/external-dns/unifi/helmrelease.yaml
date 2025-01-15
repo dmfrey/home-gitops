@@ -51,22 +51,8 @@ spec:
               secretKeyRef:
                 name: &secret external-dns-unifi-secret
                 key: UNIFI_API_KEY
-          # - name: UNIFI_USER
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: &secret external-dns-unifi-secret
-          #       key: EXTERNAL_DNS_UNIFI_USER
-          # - name: UNIFI_PASS
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: *secret
-          #       key: EXTERNAL_DNS_UNIFI_PASS
           - name: LOG_LEVEL
             value: *logLevel
-
-        envFrom:
-          - secretRef:
-              name: unpoller-secret
 
         livenessProbe:
           httpGet:
