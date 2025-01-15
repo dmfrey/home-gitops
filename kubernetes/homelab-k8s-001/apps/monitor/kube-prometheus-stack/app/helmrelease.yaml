@@ -74,6 +74,10 @@ spec:
                 requests:
                   storage: 1Gi
 
+    defaultRules:
+      rules:
+        kubeApiServer: false
+        
     kubeApiServer:
       serviceMonitor:
         selector:
