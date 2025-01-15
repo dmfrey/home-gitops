@@ -136,19 +136,19 @@ spec:
                 requests:
                   storage: 50Gi
 
-        thanos:
-          image: quay.io/thanos/thanos:v0.37.2@sha256:4ec6df40fdb921de162677b321057caa8fb8324c65f4cfae9568ed55c4469e2c
-          objectStorageConfig:
-            name: thanos-secret
-            key: objstore.yml
-          # renovate: datasource=docker depName=quay.io/thanos/thanos
-          version: "v0.37.2"
+        # thanos:
+        #   image: quay.io/thanos/thanos:v0.37.2@sha256:4ec6df40fdb921de162677b321057caa8fb8324c65f4cfae9568ed55c4469e2c
+        #   objectStorageConfig:
+        #     name: thanos-secret
+        #     key: objstore.yml
+        #   # renovate: datasource=docker depName=quay.io/thanos/thanos
+        #   version: "v0.37.2"
 
-      thanosService:
-        enabled: true
+      # thanosService:
+      #   enabled: true
 
-      thanosServiceMonitor:
-        enabled: true
+      # thanosServiceMonitor:
+      #   enabled: true
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
