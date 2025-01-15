@@ -53,6 +53,7 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
+              UP_POLLER_DEBUG: true
               UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_INFLUXDB_DISABLE: true
