@@ -38,7 +38,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     crds:
@@ -129,6 +129,9 @@ spec:
         retention: 14d
         retentionSize: 50GB
 
+        replicas: 3
+        shards: 2
+        
         resources:
           requests:
             cpu: 100m
