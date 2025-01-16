@@ -9,7 +9,7 @@ spec:
     matchLabels:
       kubernetes.io/os: linux
   virtualRouters:
-    - localASN: 64514
+    - localASN: 65511
       exportPodCIDR: false
       serviceSelector:
         matchExpressions:
@@ -19,4 +19,4 @@ spec:
               - will-match-and-announce-all-services
       neighbors:
         - peerAddress: 192.168.30.1/32
-          peerASN: 64513
+          peerASN: 65510
