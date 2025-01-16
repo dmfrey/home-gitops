@@ -36,6 +36,9 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage
 
+  driftDetection:
+    mode: enabled
+    
   values:
 
     crds:
@@ -74,10 +77,10 @@ spec:
                 requests:
                   storage: 1Gi
 
-    defaultRules:
-      rules:
-        kubeApiServer: false
-        
+    # defaultRules:
+    #   rules:
+    #     kubeApiServer: false
+
     kubeApiServer:
       serviceMonitor:
         selector:
