@@ -2,7 +2,7 @@
 autoDirectNodeRoutes: true
 
 bandwidthManager:
-  enabled: true
+  enabled: false
   bbr: true
 
 bpf:
