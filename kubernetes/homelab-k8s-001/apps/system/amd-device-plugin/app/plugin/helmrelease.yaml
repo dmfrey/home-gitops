@@ -52,7 +52,7 @@ spec:
           app:
             image:
               repository: docker.io/rocm/k8s-device-plugin
-              tag: 1.31.0.0@sha256:12b7f6dbdaec2870f0ef10ca8e59cbc529d31d14c65dae1d5997bff0154b5a66
+              tag: 1.31.0.2@sha256:75c151293f0f69a69f91d6cb04f2635c340747ee7863c6d5cd7ec81c31351961
 
             workingDir: /root
 
