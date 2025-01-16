@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.6.0
+      version: 3.6.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -54,7 +54,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/dmfrey/kubernetes-schemas
-              tag: latest@sha256:070ecbf61c4bad563d26f2d567a56e7d653e8a4117e867fe47106a1aa78f86da
+              tag: latest@sha256:db354e7a1ff6cbb55fa6d3403c7d8d78e7916693257fb4bec45f62f3a1371d7a
 
             resources:
               requests:
