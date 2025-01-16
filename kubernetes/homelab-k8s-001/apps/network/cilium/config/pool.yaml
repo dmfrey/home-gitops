@@ -6,4 +6,4 @@ metadata:
   name: pool
 spec:
   blocks:
-    - cidr: 192.168.31.1/24
+    - cidr: 192.168.30.1/24
