@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app silence-operator
+  namespace: flux-system
+spec:
+  targetNamespace: monitor
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/homelab-k8s-001/apps/monitor/silence-operator/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 30m
+  timeout: 15m
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app silence-operator-crds
+  namespace: flux-system
+spec:
+  targetNamespace: monitor
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/homelab-k8s-001/apps/monitor/silence-operator/crds
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  wait: false
+  interval: 30m
+  timeout: 5m
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops

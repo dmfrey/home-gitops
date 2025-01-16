@@ -3,35 +3,27 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: spring-cloud-gateway
+  name: silence-operator-crds
 
 spec:
 
-  interval: 15m
+  interval: 30m
 
   chart:
     spec:
-      chart: ./
-      version: 2.2.3
+      chart: silence-operator-crds
+      version: 0.0.2
       sourceRef:
-        kind: GitRepository
-        name: git-spring-cloud-gateway-k8s
+        kind: HelmRepository
+        name: wiremind
         namespace: flux-system
 
-  maxHistory: 2
-
   install:
-    createNamespace: true
     remediation:
       retries: 3
 
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-
-  uninstall:
-    keepHistory: false
-
-  driftDetection:
-    mode: enabled
