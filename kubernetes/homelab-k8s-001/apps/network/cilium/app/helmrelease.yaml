@@ -35,15 +35,15 @@ spec:
 
   values:
 
-    extraConfig:
-      "api-rate-limit": "{\"endpoint-create\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-delete\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-get\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-list\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-patch\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\"}"
+    # extraConfig:
+    #   "api-rate-limit": "{\"endpoint-create\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-delete\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-get\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-list\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\", \"endpoint-patch\": \"rate-limit:200/s,rate-burst:200,parallel-requests:200,auto-adjust:true\"}"
 
     hubble:
       enabled: true
 
       metrics:
         enabled:
-          - dns:query;ignoreAAAA
+          - dns:query
           - drop
           - tcp
           - flow
@@ -65,7 +65,6 @@ spec:
         enabled: true
         rollOutPods: true
         prometheus:
-          enabled: true
           serviceMonitor:
             enabled: true
 
@@ -77,31 +76,13 @@ spec:
           className: internal
           annotations:
             nginx.org/websocket-services: hubble-ui
+
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/icon: cilium.png
+            gethomepage.dev/name: Hubble
+            gethomepage.dev/group: Observability
+            gethomepage.dev/description: Network Monitoring Dashboard
+
             external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           hosts:
             - hubble.${SECRET_DOMAIN}
-
-    dashboards:
-      enabled: true
-      label: grafana.io/dashboard
-      labelValue: "true"
-      annotations:
-        grafana.io/folder: Network
-
-    prometheus:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-
-    operator:
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
-
-      dashboards:
-        enabled: false
-        label: grafana.io/dashboard
-        labelValue: "true"
-        annotations:
-          grafana.io/folder: Network
