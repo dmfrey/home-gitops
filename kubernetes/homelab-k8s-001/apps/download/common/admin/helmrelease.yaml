@@ -55,14 +55,26 @@ spec:
           - 65534
 
     controllers:
-      admin:
+      *app :
         replicas: 1
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
 
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name": "iot-vlan",
+                "interface": "eth1",
+                "namespace": "network",
+                "ips": ["192.168.50.9/24"],
+                "mac": "f1:fd:59:0b:bd:2b",
+                "gateway": "192.168.50.1"
+              }]
+
         containers:
-          app:
+          *app :
             image:
               repository: docker.io/library/busybox
               tag: latest
@@ -77,16 +89,6 @@ spec:
                 memory: 150Mi
               limits:
                 memory: 300Mi
-
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.9/24"],
-                "mac": "f1:fd:59:0b:bd:2b"
-              }]
 
     service:
       app:
