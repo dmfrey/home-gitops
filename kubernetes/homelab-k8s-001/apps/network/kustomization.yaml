@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  - ../../templates/alerts
   # Flux-Kustomizations
   # - ./blocky/ks.yaml
   - ./cilium/ks.yaml
@@ -17,4 +18,11 @@ resources:
   - ./multus/ks.yaml
   # # Standard Resources
   - ./external-services
-
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: not-used
+      namespace: network
+    unsetOnly: true

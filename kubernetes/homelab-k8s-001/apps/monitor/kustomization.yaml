@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  - ../../templates/alerts
   # Flux-Kustomizations
   # - ./alert-manager/ks.yaml
   # - ./blackbox-exporter/ks.yaml
@@ -17,3 +18,11 @@ resources:
   - ./smartctl-exporter/ks.yaml
   # - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: not-used
+      namespace: monitor
+    unsetOnly: true
