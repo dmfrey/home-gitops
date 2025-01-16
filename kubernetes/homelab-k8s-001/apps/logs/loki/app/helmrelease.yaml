@@ -183,12 +183,17 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: loki.${SECRET_DOMAIN}
+          - host: &host loki.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
+        tls:
+          - secretName: loki-gateway-tls
+            hosts:
+              - *host
 
     write:
       replicas: 3
