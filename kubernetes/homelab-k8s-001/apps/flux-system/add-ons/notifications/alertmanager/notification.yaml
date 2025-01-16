@@ -3,21 +3,22 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
-  name: alertmanager
+  name: grafana
 spec:
-  type: alertmanager
+  type: grafana
   secretRef:
-    name: alertmanager-address
+    name: grafana-auth-secret
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/notification.toolkit.fluxcd.io/alert_v1beta3.json
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: alertmanager
+  name: grafana
 spec:
   providerRef:
-    name: alertmanager
-  eventSeverity: error
+    name: grafana
+  eventSeverity: info
   eventSources:
-    - kind: Kustomization
-      name: "*"
+    - kind: GitRepository
+      name: '*'
+      namespace: flux-system
