@@ -129,8 +129,8 @@ spec:
         retention: 14d
         retentionSize: 50GB
 
-        replicas: 3
-        shards: 2
+        replicas: 1   # 3
+        shards: 1     # 2
 
         resources:
           requests:
