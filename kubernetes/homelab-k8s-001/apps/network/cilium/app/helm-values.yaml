@@ -7,8 +7,9 @@ bandwidthManager:
 
 bpf:
   datapathMode: netkit
-  hostLegacyRouting: true
+  # hostLegacyRouting: true
   masquerade: true
+  preallocateMaps: true
   tproxy: true
 
 bgpControlPlane:
