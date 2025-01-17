@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 68.2.0
+      version: 68.1.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -36,8 +36,8 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage
 
-  driftDetection:
-    mode: enabled
+  # driftDetection:
+  #   mode: enabled
 
   values:
 
@@ -82,22 +82,19 @@ spec:
     #     kubeApiServer: false
 
     kubeApiServer:
-      # serviceMonitor:
-      #   selector:
-      #     matchLabels:
-      #       k8s-app: kube-apiserver
+      serviceMonitor:
+        selector:
+          k8s-app: kube-apiserver
 
     kubeScheduler:
-      # service:
-      #   selector:
-      #     matchLabels:
-      #       k8s-app: kube-scheduler
+      service:
+        selector:
+          k8s-app: kube-scheduler
 
     kubeControllerManager: &kubeControllerManager
-      # service:
-      #   selector:
-      #     matchLabels:
-      #      k8s-app: kube-controller-manager
+      service:
+        selector:
+          k8s-app: kube-controller-manager
 
     kubeEtcd:
       <<: *kubeControllerManager # etcd runs on control plane nodes
