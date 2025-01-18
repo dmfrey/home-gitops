@@ -34,6 +34,10 @@ spec:
 
   values:
 
+    service:
+      registry:
+        topologyAwareHintsEnabled: false
+
     grafanaDashboard:
       enabled: false
 
