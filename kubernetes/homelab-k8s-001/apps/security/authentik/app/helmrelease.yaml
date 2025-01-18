@@ -73,15 +73,25 @@ spec:
 
     geoip:
       enabled: true
+
       existingSecret:
         secretName: authentik-secret
         accountId: MAXMIND_ACCOUNT_ID
         licenseKey: MAXMIND_LICENSE_KEY
+
       editionIds: "GeoLite2-City"
+
       image:
         repository: ghcr.io/maxmind/geoipupdate
         tag: v7.1.0
+
       updateInterval: 8
+
+      resources:
+        requests:
+          cpu: 50m
+        limits:
+          memory: 384Mi
 
     # blueprints:
     #   configMaps: []
@@ -153,6 +163,12 @@ spec:
       autoscaling:
         enabled: true
         minReplicas: 2
+
+      resources:
+        requests:
+          cpu: 100m
+        limits:
+          memory: 512Mi
 
       volumes: *postgresCredsVolume
       volumeMounts: *postgresCredsVolumeMounts
