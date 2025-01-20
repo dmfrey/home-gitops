@@ -15,7 +15,7 @@ spec:
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
 
   affinity:
-    nodeAntiAffinity:
+    nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchExpressions:
