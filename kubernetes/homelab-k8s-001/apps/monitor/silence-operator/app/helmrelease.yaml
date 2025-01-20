@@ -46,7 +46,7 @@ spec:
             address: http://kube-prometheus-stack-alertmanager:9093
 
       affinity:
-        podAntiAffinity:
+        nodeAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchExpressions:
