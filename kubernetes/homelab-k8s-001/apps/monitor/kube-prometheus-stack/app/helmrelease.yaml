@@ -76,7 +76,6 @@ spec:
               - matchExpressions:
                 - key: node-role.kubernetes.io/control-plane
                   operator: Exists
-        # podAntiAffinityTopologyKey: kubernetes.io/hostname
 
         storage:
           volumeClaimTemplate:
@@ -126,6 +125,15 @@ spec:
           - prometheus.${SECRET_DOMAIN}
 
       prometheusSpec:
+
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: Exists
+
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
