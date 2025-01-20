@@ -14,6 +14,15 @@ spec:
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
 
+  affinity:
+    nodeAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+          topologyKey: kubernetes.io/hostname
+
   storage:
     storageClass: ceph-block
     size: 30Gi
