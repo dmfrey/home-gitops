@@ -69,13 +69,14 @@ spec:
 
         externalUrl: https://alertmanager.${SECRET_DOMAIN}
 
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: node-role.kubernetes.io/control-plane
-                    operator: Exists
-        podAntiAffinityTopologyKey: kubernetes.io/hostname
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: Exists
+        # podAntiAffinityTopologyKey: kubernetes.io/hostname
 
         storage:
           volumeClaimTemplate:
