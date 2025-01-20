@@ -295,6 +295,11 @@ spec:
         globalMounts:
           - path: /config
 
+      llmvision:
+        existingClaim: ${LLMVISION_CLAIM}
+        globalMounts:
+          - path: /llmvision
+
       deploy-key:
         type: secret
         name: home-assistant-deploy-key
