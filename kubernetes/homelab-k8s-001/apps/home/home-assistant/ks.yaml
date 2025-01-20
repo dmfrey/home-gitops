@@ -1,4 +1,33 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app llmvision-pvc
+  namespace: flux-system
+spec:
+  targetNamespace: home
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: home-assistant-llmvision
+  interval: 10m
+  path: "./kubernetes/homelab-k8s-001/templates/volsync"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: llmvision-data
+      VOLSYNC_CAPACITY: 2Gi
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+    - name: rook-ceph-cluster
+    - name: volsync
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -28,6 +57,7 @@ spec:
       VOLSYNC_CLAIM: home-assistant-config-1
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
+      LLMVISION_CLAIM: llmvision-data
     substituteFrom: []
     #   - kind: Secret
     #     name: flux-volsync-secret
