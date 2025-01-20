@@ -159,7 +159,7 @@ spec:
 
     ingress:
       internal:
-        enable: false
+        enabled: false
         className: internal
         annotations:
           hajimari.io/enable: "true"
