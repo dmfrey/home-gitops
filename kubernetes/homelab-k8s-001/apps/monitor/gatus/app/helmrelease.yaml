@@ -113,26 +113,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-        # pod:
-          # dnsConfig:
-          #   options:
-          #     - { name: ndots, value: "1" }
-
-          # securityContext:
-          #   runAsUser: 568
-          #   runAsGroup: 568
-          #   runAsNonRoot: true
-          #   fsGroup: 568
-          #   fsGroupChangePolicy: OnRootMismatch
-
-          # topologySpreadConstraints:
-          #   - maxSkew: 1
-          #     topologyKey: kubernetes.io/hostname
-          #     whenUnsatisfiable: DoNotSchedule
-          #     labelSelector:
-          #       matchLabels:
-          #         app.kubernetes.io/name: *app
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
