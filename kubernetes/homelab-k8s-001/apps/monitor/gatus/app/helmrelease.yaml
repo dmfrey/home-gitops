@@ -149,6 +149,7 @@ spec:
                 matchExpressions:
                   - key: node-role.kubernetes.io/control-plane
                     operator: Exists
+              topologyKey: kubernetes.io/hostname
 
     service:
       *app :
