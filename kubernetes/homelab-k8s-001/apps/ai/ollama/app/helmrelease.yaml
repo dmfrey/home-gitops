@@ -112,6 +112,9 @@ spec:
     service:
       backend:
         controller: backend
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: ${SVC_OLLAMA_ADDR}
         ports:
           http:
             port: 11434
