@@ -17,11 +17,10 @@ spec:
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: node-role.kubernetes.io/control-plane
-                operator: Exists
-          topologyKey: kubernetes.io/hostname
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
 
   storage:
     storageClass: ceph-block
