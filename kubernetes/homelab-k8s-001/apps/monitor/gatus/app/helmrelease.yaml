@@ -27,12 +27,14 @@ spec:
       strategy: rollback
       retries: 3
 
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage
+
   values:
 
     controllers:
       *app :
-        replicas: 3
-        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -54,11 +56,11 @@ spec:
 
             restartPolicy: Always
 
-            resources: &resources
+            resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 256Mi
+                memory: 128Mi
 
         containers:
 
@@ -100,32 +102,53 @@ spec:
                   failureThreshold: 3
               readiness: *probes
 
-            resources: *resources
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
 
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-        pod:
-          dnsConfig:
-            options:
-              - { name: ndots, value: "1" }
+        # pod:
+          # dnsConfig:
+          #   options:
+          #     - { name: ndots, value: "1" }
 
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+          # securityContext:
+          #   runAsUser: 568
+          #   runAsGroup: 568
+          #   runAsNonRoot: true
+          #   fsGroup: 568
+          #   fsGroupChangePolicy: OnRootMismatch
 
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: *app
+          # topologySpreadConstraints:
+          #   - maxSkew: 1
+          #     topologyKey: kubernetes.io/hostname
+          #     whenUnsatisfiable: DoNotSchedule
+          #     labelSelector:
+          #       matchLabels:
+          #         app.kubernetes.io/name: *app
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: Exists
 
     service:
       *app :
@@ -136,6 +159,7 @@ spec:
 
     ingress:
       internal:
+        enable: false
         className: internal
         annotations:
           hajimari.io/enable: "true"
