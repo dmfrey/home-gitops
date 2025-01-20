@@ -17,6 +17,15 @@ spec:
   values:
     replicas: 1
 
+    affinity:
+      nodeAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: Exists
+            topologyKey: kubernetes.io/hostname
+
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
