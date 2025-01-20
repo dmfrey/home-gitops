@@ -73,10 +73,9 @@ spec:
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
-              - labelSelector:
-                  matchExpressions:
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
+              - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: Exists
         # podAntiAffinityTopologyKey: kubernetes.io/hostname
 
         storage:
