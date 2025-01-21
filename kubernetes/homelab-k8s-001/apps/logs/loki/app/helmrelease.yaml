@@ -151,8 +151,9 @@ spec:
         configmap.reloader.stakater.com/reload: loki,loki-ceph-bucket,loki-gateway,loki-runtime
 
     gateway:
-      replicas: 2
       enabled: true
+      replicas: 2
+
       nginxConfig:
         serverSnippet: |
           location = /stub_status {
@@ -163,6 +164,7 @@ spec:
           location = /metrics {
             proxy_pass       http://127.0.0.1:9113/metrics;
           }
+
       extraContainers:
         - name: nginx-exporter
           securityContext:
@@ -179,6 +181,7 @@ spec:
             requests:
               memory: 64Mi
               cpu: 100m
+
       ingress:
         enabled: true
         ingressClassName: internal
