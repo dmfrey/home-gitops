@@ -6,6 +6,7 @@ metadata:
   name: &app go2rtc
   namespace: flux-system
 spec:
+  targetNamespace: home
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -22,4 +23,3 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  targetNamespace: default
