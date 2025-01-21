@@ -12,5 +12,5 @@ webrtc:
     - urls:
        - stun:stun.cloudflare.com:3478
 streams:
-  front-door: hass://${SVC_HASS_ADDR}:8123/entity_id=camera.front_door_doorbell?token=${CAMERA_TOKEN}
-  back-door: hass://${SVC_HASS_ADDR}:8123/entity_id=camera.back_door_doorbell?token=${CAMERA_TOKEN}
+  front-door: hass://${SVC_HASS_ADDR}:8123?entity_id=camera.front_door_doorbell&token=${CAMERA_TOKEN}
+  back-door: hass://${SVC_HASS_ADDR}:8123?entity_id=camera.back_door_doorbell&token=${CAMERA_TOKEN}
