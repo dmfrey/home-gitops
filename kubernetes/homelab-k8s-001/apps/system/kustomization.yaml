@@ -12,7 +12,7 @@ resources:
   - ./generic-device-plugin/ks.yaml
   - ./intel-device-plugin/ks.yaml
   # - ./kube-vip/ks.yaml
-  - ./kured/ks.yaml
+  # - ./kured/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
