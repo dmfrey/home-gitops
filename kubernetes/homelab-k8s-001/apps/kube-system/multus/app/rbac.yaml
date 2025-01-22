@@ -38,4 +38,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: multus
-    namespace: network
+    namespace: kube-system
