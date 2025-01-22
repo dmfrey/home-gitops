@@ -109,6 +109,7 @@ spec:
 
       limits_config:
         retention_period: 14d
+        volume_enabled: true
 
     singleBinary:
       replicas: 1
