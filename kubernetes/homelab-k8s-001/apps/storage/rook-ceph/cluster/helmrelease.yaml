@@ -38,6 +38,9 @@ spec:
       bdev_async_discard = true
       osd_class_update_on_start = false
 
+      [osd]
+      debug osd = 0/5
+
     cephClusterSpec:
 
       crashCollector:
