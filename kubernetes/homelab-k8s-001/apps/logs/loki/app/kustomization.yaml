@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   # - ./secret-loki.sops.yaml
   - ./helmrelease.yaml
-  - ./prometheusrule.yaml
+  # - ./prometheusrule.yaml

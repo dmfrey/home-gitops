@@ -1,31 +1,31 @@
----
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app loki-services
-  namespace: flux-system
-spec:
-  targetNamespace: logs
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/logs/loki/services"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: false
-  interval: 5m
-  timeout: 1m30s
-  retryInterval: 30s
-  postBuild:
-    substituteFrom: []
-  decryption:
-    provider: sops
-  dependsOn:
-    - name: kube-prometheus-stack-crds
-    - name: rook-ceph-cluster
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app loki-services
+#   namespace: flux-system
+# spec:
+#   targetNamespace: logs
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   path: "./kubernetes/homelab-k8s-001/apps/logs/loki/services"
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-gitops
+#   wait: false
+#   interval: 5m
+#   timeout: 1m30s
+#   retryInterval: 30s
+#   postBuild:
+#     substituteFrom: []
+#   decryption:
+#     provider: sops
+#   dependsOn:
+#     - name: kube-prometheus-stack-crds
+#     - name: rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -34,24 +34,24 @@ metadata:
   name: &app loki
   namespace: flux-system
 spec:
-  targetNamespace: logs
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  decryption:
+    provider: sops
+  dependsOn: []
+    # - name: loki-services
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/logs/loki/app"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-gitops
-  wait: true
-  interval: 5m
-  timeout: 1m30s
-  retryInterval: 30s
   postBuild:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
-  dependsOn:
-    - name: loki-services
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-gitops
+  targetNamespace: logs
+  retryInterval: 30s
+  timeout: 1m30s
+  wait: true
