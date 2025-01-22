@@ -17,7 +17,7 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-      version: 1.16.5
+      version: 1.16.6
 
   install:
     remediation:
