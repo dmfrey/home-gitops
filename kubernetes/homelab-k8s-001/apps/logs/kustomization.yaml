@@ -8,6 +8,7 @@ resources:
   - ../../templates/alerts
   # Flux-Kustomizations
   - ./loki/ks.yaml
+  - ./promtail/ks.yaml
 transformers:
   - |-
     apiVersion: builtin
