@@ -7,8 +7,8 @@ resources:
   - ./namespace.yaml
   - ../../templates/alerts
   # Flux-Kustomizations
-  - ./gateway/ks.yaml
-  - ./time-service/ks.yaml
+  # - ./gateway/ks.yaml
+  # - ./time-service/ks.yaml
   # - ./monomart/ks.yaml
 transformers:
   - |-
