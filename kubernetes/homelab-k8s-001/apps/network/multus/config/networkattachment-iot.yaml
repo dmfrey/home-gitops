@@ -8,6 +8,7 @@ spec:
     {
       "cniVersion": "0.3.1",
       "name": "iot-vlan",
+      "logLevel": "debug",
       "plugins": [
         {
           "type": "macvlan",
