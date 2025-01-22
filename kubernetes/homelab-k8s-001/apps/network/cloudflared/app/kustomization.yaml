@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./dnsEndpoint.yaml
   - ./secret-cloudflared.sops.yaml
+  - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
   - name: cloudflared-configmap
