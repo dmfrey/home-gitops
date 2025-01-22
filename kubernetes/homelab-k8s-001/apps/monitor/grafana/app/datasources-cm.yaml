@@ -34,9 +34,9 @@ data:
             - name: trace_id
               datasourceUid: tempo
       - name: Loki
-        access: proxy
+        # access: proxy
         type: loki
-        url: http://loki-gateway.logs.svc.cluster.local
+        url: http://loki-headless.logs.svc.cluster.local:3100
         uid: loki
         jsonData:
           derivedFields:
