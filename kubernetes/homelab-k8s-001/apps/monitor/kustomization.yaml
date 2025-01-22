@@ -13,7 +13,7 @@ resources:
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./metrics-server/ks.yaml
-  - ./otel/ks.yaml
+  # - ./otel/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   # - ./thanos/ks.yaml
