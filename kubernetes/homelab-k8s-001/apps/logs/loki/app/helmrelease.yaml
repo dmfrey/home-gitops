@@ -35,7 +35,7 @@ spec:
 
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: rook-ceph
+      namespace: storage
 
   driftDetection:
     mode: enabled
