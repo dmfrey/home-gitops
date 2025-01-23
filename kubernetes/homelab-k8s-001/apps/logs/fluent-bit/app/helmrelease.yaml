@@ -171,14 +171,13 @@ spec:
       - name: NODE_IP
         valueFrom:
           fieldRef:
-            # apiVersion: v1
             fieldPath: status.hostIP
       - name: K8S_CLUSTER_NAME
         value: homelab-k8s-001
       - name: DT_INGEST_TOKEN
         valueFrom:
           secretKeyRef:
-            name: fluentbit
+            name: fluent-bit
             key: DT_INGEST_TOKEN
       - name: DT_INGEST_HOST
         value: bwf59125.live.dynatrace.com
