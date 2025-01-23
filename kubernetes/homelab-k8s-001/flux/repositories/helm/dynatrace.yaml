@@ -5,6 +5,5 @@ metadata:
   name: dynatrace
   namespace: flux-system
 spec:
-  type: oci
   interval: 5m
-  url: oci://public.ecr.aws/dynatrace/dynatrace-operator
+  url: https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable
