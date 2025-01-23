@@ -40,46 +40,6 @@ spec:
 
     logLevel: debug   # info
 
-    # initContainers:
-    # - name: setup
-
-    #   image: ghcr.io/dmfrey/bash:5.2.26-alpine3.20
-
-    #   command:
-    #   - "/usr/local/bin/bash"
-    #   - -c
-    #   - |
-    #     envsubst < /tmp/config-template/fluent-bit.conf > /fluent-bit/etc/conf/fluent-bit.conf
-    #     cp /tmp/config-template/custom_parsers.conf /fluent-bit/etc/conf/custom_parsers.conf
-
-    #   env:
-    #     - name: NODE_IP
-    #       valueFrom:
-    #         fieldRef:
-    #           fieldPath: status.hostIP
-    #     - name: K8S_CLUSTER_NAME
-    #       value: homelab-k8s-001
-    #     - name: DT_INGEST_HOST
-    #       value: bwf59125.live.dynatrace.com
-
-    #   envFrom:
-    #     - secretRef:
-    #         name: fluent-bit
-
-    #   envWithTpl:
-    #     - name: K8S_CLUSTER_UID
-    #       value: '{{ (lookup "v1" "Namespace" "" "kube-system").metadata.uid }}'
-
-    #   volumeMounts:
-    #   - mountPath: /fluent-bit/etc/conf
-    #     name: config
-    #   - mountPath: /tmp/config-template/fluent-bit.conf
-    #     subPath: fluent-bit.conf
-    #     name: config-template
-    #   - mountPath: /tmp/config-template/custom_parsers.conf
-    #     subPath: custom_parsers.conf
-    #     name: config-template
-
     securityContext:
       capabilities:
         drop:
