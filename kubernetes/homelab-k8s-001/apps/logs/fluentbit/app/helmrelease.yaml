@@ -61,20 +61,20 @@ spec:
             Mem_Buf_Limit 15MB
             Skip_Long_Lines On
 
-      # filters: |
-      #   [FILTER]
-      #       Name kubernetes
-      #       Match kube.*
-      #       Merge_Log On
-      #       Keep_Log Off
-      #       K8S-Logging.Parser Off
-      #       K8S-Logging.Exclude Off
-      #       Labels Off
-      #       Annotations On
-      #       Use_Kubelet On
-      #       Kubelet_Host ${NODE_IP}
-      #       tls.verify Off
-      #       Buffer_Size 0
+      filters: |
+        [FILTER]
+            Name kubernetes
+            Match kube.*
+            Merge_Log On
+            Keep_Log Off
+            K8S-Logging.Parser Off
+            K8S-Logging.Exclude Off
+            Labels Off
+            Annotations On
+            Use_Kubelet On
+            Kubelet_Host ${NODE_IP}
+            tls.verify Off
+            Buffer_Size 0
 
       #   [FILTER]
       #       Name nest
