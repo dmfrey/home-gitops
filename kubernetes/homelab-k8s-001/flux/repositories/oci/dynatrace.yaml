@@ -5,6 +5,7 @@ metadata:
   name: dynatrace
   namespace: flux-system
 spec:
-  type: oci
   interval: 5m
   url: oci://public.ecr.aws/dynatrace/dynatrace-operator
+  ref:
+    semver: ">=1.4.0"
