@@ -151,5 +151,5 @@ spec:
         value: bwf59125.live.dynatrace.com
 
     envFrom:
-      secretRef:
-        name: fluent-bit
+      - secretRef:
+          name: fluent-bit
