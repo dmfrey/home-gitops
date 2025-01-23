@@ -5,7 +5,7 @@ metadata:
   name: oci-terraform-authentik
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 5m
   url: oci://ghcr.io/dmfrey/terraform/authentik
   ref:
     tag: main
