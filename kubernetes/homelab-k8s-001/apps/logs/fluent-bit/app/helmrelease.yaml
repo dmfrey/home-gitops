@@ -43,7 +43,7 @@ spec:
     initContainers:
     - name: setup
 
-      image: ghcr.io/onedr0p/alpine
+      image: ghcr.io/dmfrey/bash:5.2.26-alpine3.20
 
       command:
       - "/bin/bash"
