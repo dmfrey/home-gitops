@@ -8,10 +8,20 @@ metadata:
 spec:
 
   interval: 30m
-  releaseName: dynatrace-operator
-  chartRef:
-    kind: OCIRepository
-    name: dynatrace
+
+  # releaseName: dynatrace-operator
+  # chartRef:
+  #   kind: OCIRepository
+  #   name: dynatrace
+
+  chart:
+    spec:
+      chart: dynatrace-operator
+      version: 1.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: dynatrace
+        namespace: flux-system
 
   maxHistory: 2
 
