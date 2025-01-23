@@ -16,6 +16,7 @@ resources:
   - emqx.yaml
   - external-dns.yaml
   - external-secrets.yaml
+  - fluent.yaml
   - grafana.yaml
   - hajimari.yaml
   - hashicorp.yaml
