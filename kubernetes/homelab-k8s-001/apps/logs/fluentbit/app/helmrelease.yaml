@@ -35,6 +35,8 @@ spec:
 
   values:
 
+    logLevel: debug   # info
+    
     openShift:
       enabled: false
     securityContext:
