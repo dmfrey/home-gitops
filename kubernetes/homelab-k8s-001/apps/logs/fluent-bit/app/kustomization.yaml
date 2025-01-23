@@ -5,3 +5,13 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+configMapGenerator:
+  - name: fluent-bit-configmap-template
+    files:
+      - ./resources/custom_parsers.conf
+      - ./resources/fluent-bit.conf
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+generatorOptions:
+  disableNameSuffixHash: true
