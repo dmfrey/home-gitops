@@ -7,6 +7,7 @@ resources:
   - ./namespace.yaml
   - ../../templates/alerts
   # Flux-Kustomizations
+  - ./fluentbit/ks.yaml
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
 transformers:
