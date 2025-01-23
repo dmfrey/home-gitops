@@ -46,14 +46,10 @@ spec:
       image: ghcr.io/dmfrey/bash:5.2.26-alpine3.20
 
       command:
-      - "/bin/bash"
+      - "/usr/local/bin/bash"
       - -c
       - |
-        envsubst < /tmp/config-template/fluent-bit.conf > /tmp/fluent-bit-resolved.json
-        if ! [ -f /fluent-bit/etc/conf/fluent-bit.conf ]
-        then
-          cp /tmp/fluent-bit-resolved.conf /fluent-bit/etc/conf/fluent-bit.conf
-        fi
+        envsubst < /tmp/config-template/fluent-bit.conf > /fluent-bit/etc/conf/fluent-bit.conf
         cp /tmp/config-template/custom_parsers.conf /fluent-bit/etc/conf/custom_parsers.conf
 
       env:
