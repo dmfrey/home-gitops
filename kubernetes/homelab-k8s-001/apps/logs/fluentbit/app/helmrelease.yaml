@@ -171,7 +171,7 @@ spec:
       - name: NODE_IP
         valueFrom:
           fieldRef:
-            apiVersion: v1
+            # apiVersion: v1
             fieldPath: status.hostIP
       - name: K8S_CLUSTER_NAME
         value: homelab-k8s-001
