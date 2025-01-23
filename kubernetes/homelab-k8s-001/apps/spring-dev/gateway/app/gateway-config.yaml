@@ -13,6 +13,8 @@ spec:
   count: 3
 
   env:
+    - name: logging.level.io.micrometer.dynatrace
+      value: DEBUG
     - name: logging.level.org.springframework.web
       value: debug
     - name: management.tracing.sampling.probability
@@ -30,14 +32,14 @@ spec:
 
   observability:
     metrics:
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
-        annotations:
-          enabled: true
+      # prometheus:
+      #   enabled: true
+      #   serviceMonitor:
+      #     enabled: true
+      #   annotations:
+      #     enabled: true
 
     tracing:
       zipkin:
         enabled: true
-        url: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:9411/api/v2/spans
+        # url: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:9411/api/v2/spans
