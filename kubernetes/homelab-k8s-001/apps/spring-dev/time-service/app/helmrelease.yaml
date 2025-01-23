@@ -124,7 +124,7 @@ spec:
 
     service:
       *app :
-        controller: time-service
+        controller: *app
         ports:
           http:
             port: *port
@@ -137,9 +137,9 @@ spec:
           hajimari.io/enable: "true"
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: &host dataflow.${SECRET_DOMAIN}
+          - host: &host time.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
-                  name: main
+                  name: *app
                   port: http
