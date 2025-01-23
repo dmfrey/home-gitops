@@ -11,5 +11,5 @@ resources:
   - dmfrey-terraform-readarr.yaml
   - dmfrey-terraform-sonarr.yaml
   - dmfrey-terraform-volsync.yaml
-  - dynatrace.yaml
+  # - dynatrace.yaml
 
