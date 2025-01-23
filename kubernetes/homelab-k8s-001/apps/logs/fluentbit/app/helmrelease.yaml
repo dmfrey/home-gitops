@@ -1,0 +1,181 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: fluent-bit
+
+spec:
+
+  interval: 15m
+
+  chart:
+    spec:
+      chart: fluent-bit
+      version: 0.48.4
+      sourceRef:
+        kind: HelmRepository
+        name: fluent
+        namespace: flux-system
+
+  maxHistory: 2
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
+  values:
+
+    openShift:
+      enabled: false
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+
+    rbac:
+      nodeAccess: true
+
+    config:
+      inputs: |
+        [INPUT]
+            Name tail
+            Tag kube.*
+            Path /var/log/containers/*.log
+            DB /fluent-bit/tail/kube.db
+            DB.Sync Normal
+            multiline.parser cri
+            Mem_Buf_Limit 15MB
+            Skip_Long_Lines On
+
+      filters: |
+        [FILTER]
+            Name kubernetes
+            Match kube.*
+            Merge_Log On
+            Keep_Log Off
+            K8S-Logging.Parser Off
+            K8S-Logging.Exclude Off
+            Labels Off
+            Annotations On
+            Use_Kubelet On
+            Kubelet_Host ${NODE_IP}
+            tls.verify Off
+            Buffer_Size 0
+
+        [FILTER]
+            Name nest
+            Match kube.*
+            Operation lift
+            Nested_under kubernetes
+            Add_prefix kubernetes.
+
+        [FILTER]
+            name nest
+            match kube.*
+            operation lift
+            nested_under kubernetes.annotations
+            add_prefix kubernetes.annotations.
+
+        [FILTER]
+            Name nest
+            Match kube.*
+            Operation nest
+            Nest_under dt.metadata
+            Wildcard kubernetes.annotations.metadata.dynatrace.com/*
+
+        [FILTER]
+            Name nest
+            Match kube.*
+            Operation lift
+            Nested_under dt.metadata
+            Remove_prefix kubernetes.annotations.metadata.dynatrace.com/
+
+        [FILTER]
+            Name modify
+            Match kube.*
+            Rename time timestamp
+            Rename log content
+            Rename kubernetes.namespace_name k8s.namespace.name
+            Rename kubernetes.pod_id k8s.pod.uid
+            Rename kubernetes.pod_name k8s.pod.name
+            Rename kubernetes.container_name k8s.container.name
+            Add k8s.cluster.name ${K8S_CLUSTER_NAME}
+            Add k8s.cluster.uid ${K8S_CLUSTER_UID}
+            # deprecated, but still in use
+            Add dt.kubernetes.cluster.name ${K8S_CLUSTER_NAME}
+            Add dt.kubernetes.cluster.id ${K8S_CLUSTER_UID}
+            Remove_wildcard kubernetes.
+
+      outputs: |
+        [OUTPUT]
+            name http
+            match *
+            header Content-Type application/json; charset=utf-8
+            header Authorization Api-Token ${DT_INGEST_TOKEN}
+            allow_duplicated_headers false
+            host ${DT_INGEST_HOST}
+            Port 443
+            URI /api/v2/logs/ingest
+            Format json
+            json_date_format iso8601
+            json_date_key timestamp
+            tls On
+            tls.verify On
+
+    daemonSetVolumes:
+      - hostPath:
+          path: /var/lib/fluent-bit/
+        name: positions
+      - hostPath:
+          path: /var/log/containers
+        name: containers
+      - hostPath:
+          path: /var/log/pods
+        name: pods
+
+    daemonSetVolumeMounts:
+      - mountPath: /fluent-bit/tail
+        name: positions
+      - mountPath: /var/log/containers
+        name: containers
+        readOnly: true
+      - mountPath: /var/log/pods
+        name: pods
+        readOnly: true
+
+    podAnnotations:
+      dynatrace.com/inject: "false"
+      #metrics.dynatrace.com/path: "/api/v1/metrics/prometheus"
+      #metrics.dynatrace.com/port: "2020"
+      #metrics.dynatrace.com/scrape: "true"
+
+    envWithTpl:
+      - name: K8S_CLUSTER_UID
+        value: '{{ (lookup "v1" "Namespace" "" "kube-system").metadata.uid }}'
+
+    env:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: status.hostIP
+      - name: K8S_CLUSTER_NAME
+        value: homelab-k8s-001
+      - name: DT_INGEST_HOST
+        value: bwf59125.live.dynatrace.com
+
+    envFrom:
+      - secretRef:
+          name: fluentbit
+
