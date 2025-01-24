@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app gha-runner-scale-set-controller
+  name: &name actions-runner-controller
 
 spec:
 
@@ -38,5 +38,5 @@ spec:
 
   values:
 
-    fullnameOverride: *app
-    replicaCount: 2
+    fullnameOverride: *name
+    replicaCount: 1
