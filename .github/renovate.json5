@@ -27,7 +27,7 @@
   "requireConfig": "ignored",
   "ignorePaths": [
     "**/*.sops.*",
-    "archive/**",
+    "**/archive/**",
     "**/resources/**"
   ],
   "flux": {
