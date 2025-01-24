@@ -48,7 +48,7 @@ spec:
           app:
             image:
               repository: rhasspy/wyoming-whisper
-              tag: latest@sha256:ceaa162ec05e53b8fa883182cdbceb72e6a1422740ec35be038c9faa278323b3
+              tag: latest@sha256:9839f14e96f5ccd9297238c67ff79866177aa04b124bddb9a3977f27e56cb4f5
 
             args:
               - --model
