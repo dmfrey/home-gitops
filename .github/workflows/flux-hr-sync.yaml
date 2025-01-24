@@ -23,7 +23,7 @@ on:
 jobs:
   sync:
     name: Flux Helm Repository Sync
-    runs-on: ["gha-runner-scale-set-home-gitops"]
+    runs-on: ["home-gitops-runner"]
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@v1
