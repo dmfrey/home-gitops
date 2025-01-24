@@ -46,7 +46,7 @@ jobs:
         with:
           args: >-
             get cluster
-            --path /github/workspace/kubernetes/flux/cluster
+            --path /github/workspace/kubernetes/homelab-k8s-001/bootstrap/flux/
             --enable-images
             --output yaml
             --output-file images.yaml
