@@ -7,11 +7,8 @@ resources:
   - ./namespace.yaml
   - ../../templates/alerts
   # Flux-Kustomizations
-  - ./dynatrace-operator/ks.yaml
+  # - ./dynatrace-operator/ks.yaml
   - ./kubernetes-schemas/ks.yaml
-  # - ./gitlab/ks.yaml
-  # - ./sonatype/ks.yaml
-  # - ./trilium/ks.yaml
 transformers:
   - |-
     apiVersion: builtin
