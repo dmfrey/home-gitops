@@ -29,7 +29,7 @@ spec:
           peerASN: 65510
 
 # ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/cilium.io/ciliuml2announcementpolicy_v2alpha1.json
+# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/cilium.io/ciliuml2announcementpolicy_v2alpha1.json
 # apiVersion: cilium.io/v2alpha1
 # kind: CiliumL2AnnouncementPolicy
 # metadata:

@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/apps.emqx.io/emqx_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/apps.emqx.io/emqx_v2beta1.json
 apiVersion: apps.emqx.io/v2beta1
 kind: EMQX
 metadata:
