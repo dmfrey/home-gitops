@@ -6,16 +6,10 @@
   color: "0e8a16"
 - name: area/kubernetes
   color: "0e8a16"
-- name: area/kubernetes
-  color: "0e8a16"
 - name: area/terraform
   color: "0e8a16"
 - name: area/taskfile
   color: "0e8a16"
-
-# Clusters
-- name: cluster/homelab-k8s-001
-  color: "ffc300"
 
 # Renovate Types
 - name: renovate/container
