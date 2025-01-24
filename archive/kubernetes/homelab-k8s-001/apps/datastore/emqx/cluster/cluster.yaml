@@ -53,7 +53,7 @@ spec:
 
       extraContainers:
         - name: init-mqtt
-          image: docker.io/library/python:3.13-alpine@sha256:c38ead8bcf521573dad837d7ecfdebbc87792202e89953ba8b2b83a9c5a520b6
+          image: docker.io/library/python:3.13-alpine@sha256:be540041682c83228415ca1dbdb061d78d6994523e8ff79c5d5b2a5cab56effb
 
           env:
             - name: X_EMQX_ADDRESS
