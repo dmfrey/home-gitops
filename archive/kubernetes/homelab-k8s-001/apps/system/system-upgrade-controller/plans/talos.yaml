@@ -8,7 +8,7 @@ metadata:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  version: "v1.5.5"
+  version: "v1.9.2"
   serviceAccountName: system-upgrade
   secrets:
     - name: talos-upgrade-api-access
@@ -26,7 +26,7 @@ spec:
         operator: In
         values: [linux]
   prepare:
-    image: ghcr.io/siderolabs/talosctl@sha256:239d7507750a9ca52273d240dfd59167a961425dceb3b4b3e968aaf6a3fb42e2
+    image: ghcr.io/siderolabs/talosctl@sha256:5c78d73c14da6c1fbba384f4bca8d8a71d340c19c3393a96c93918dce75a1413
     envs:
       - name: NODE_IP
         valueFrom:
@@ -36,7 +36,7 @@ spec:
       - '--nodes=$(NODE_IP)'
       - 'health'
   upgrade:
-    image: ghcr.io/siderolabs/talosctl@sha256:239d7507750a9ca52273d240dfd59167a961425dceb3b4b3e968aaf6a3fb42e2
+    image: ghcr.io/siderolabs/talosctl@sha256:5c78d73c14da6c1fbba384f4bca8d8a71d340c19c3393a96c93918dce75a1413
     envs:
       - name: NODE_IP
         valueFrom:
