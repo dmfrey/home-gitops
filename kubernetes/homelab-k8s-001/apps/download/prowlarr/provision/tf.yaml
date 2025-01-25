@@ -16,8 +16,6 @@ spec:
     name: prowlarr-tfstate
   varsFrom:
     - kind: Secret
-      name: starr-apps-secret
-    - kind: Secret
       name: prowlarr-secret
     - kind: Secret
       name: sabnzbd-secret

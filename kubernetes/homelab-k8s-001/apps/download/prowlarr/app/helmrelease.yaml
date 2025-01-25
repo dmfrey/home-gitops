@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app prowlarr
-  namespace: download
 
 spec:
 
@@ -61,7 +60,7 @@ spec:
               PROWLARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: starr-apps-secret
+                    name: prowlarr-secret
                     key: PROWLARR_API_KEY
 
             probes:
