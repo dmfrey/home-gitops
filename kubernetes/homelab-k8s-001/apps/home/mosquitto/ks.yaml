@@ -28,8 +28,6 @@ spec:
       APP_GID: "0"
       VOLSYNC_CLAIM: mosquitto-data
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

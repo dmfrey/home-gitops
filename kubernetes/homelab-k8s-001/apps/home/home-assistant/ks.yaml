@@ -59,8 +59,6 @@ spec:
       VOLSYNC_CACHE_CAPACITY: 2Gi
       LLMVISION_CLAIM: llmvision-data
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -69,31 +67,3 @@ spec:
     # - name: multus-config
     - name: rook-ceph-cluster
     - name: volsync
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app otbr
-#   namespace: flux-system
-# spec:
-#   targetNamespace: home
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   path: "./kubernetes/homelab-k8s-001/apps/home/home-assistant/home-assistant-addons/otbr"
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: home-gitops
-#   wait: false
-#   interval: 10m
-#   retryInterval: 1m
-#   timeout: 5m
-#   postBuild:
-#     substitute:
-#       APP: *app
-#     substituteFrom: []
-#   decryption:
-#     provider: sops
-#   dependsOn: []

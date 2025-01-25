@@ -26,8 +26,6 @@ spec:
       VOLSYNC_CLAIM: music-assistant-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:

@@ -26,8 +26,6 @@ spec:
       VOLSYNC_CLAIM: wizarr-data
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

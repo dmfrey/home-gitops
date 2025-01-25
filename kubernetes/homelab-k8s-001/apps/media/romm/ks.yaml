@@ -22,8 +22,6 @@ spec:
       VOLSYNC_CLAIM: romm-redis-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -53,8 +51,6 @@ spec:
       VOLSYNC_CLAIM: romm-assets
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -84,8 +80,6 @@ spec:
       VOLSYNC_CLAIM: romm-resources
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -115,8 +109,6 @@ spec:
       VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -183,8 +175,6 @@ spec:
       RESOURCES_CLAIM: romm-resources
       REDIS_DATA_CLAIM: romm-redis-data
     substituteFrom: []
-    #   - kind: Secret
-    #     name: flux-volsync-secret
   dependsOn:
     - name: romm-services
     - name: nfs-subdir

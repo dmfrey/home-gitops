@@ -22,8 +22,6 @@ spec:
       VOLSYNC_CLAIM: ollama-backend-data
       VOLSYNC_CAPACITY: 10Gi
     substituteFrom: []
-      # - kind: Secret
-      #   name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
@@ -53,8 +51,6 @@ spec:
       VOLSYNC_CLAIM: ollama-ui-data
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom: []
-      # - kind: Secret
-      #   name: flux-volsync-secret
   decryption:
     provider: sops
   dependsOn:
