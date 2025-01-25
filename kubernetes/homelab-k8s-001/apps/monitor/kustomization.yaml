@@ -7,7 +7,6 @@ resources:
   - ./namespace.yaml
   - ../../templates/alerts
   # Flux-Kustomizations
-  # - ./alert-manager/ks.yaml
   # - ./blackbox-exporter/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
@@ -16,7 +15,6 @@ resources:
   # - ./otel/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  # - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
 transformers:
   - |-

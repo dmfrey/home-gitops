@@ -1,5 +1,0 @@
----
-type: REDIS
-config:
-  addr: thanos-dragonfly-cluster.monitor.svc.cluster.local:6379
-  db: 1
