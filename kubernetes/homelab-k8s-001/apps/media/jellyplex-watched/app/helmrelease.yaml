@@ -114,8 +114,6 @@ spec:
             envFrom:
               - secretRef:
                   name: jellyplex-watched-secret
-              # - secretRef:
-              #     name: pmm-secret
 
             resources:
               requests:
