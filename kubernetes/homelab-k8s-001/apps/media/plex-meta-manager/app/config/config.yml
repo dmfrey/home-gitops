@@ -70,8 +70,8 @@ plex:
 tmdb:
   apikey: ${TMDB_API_KEY}
   language: en
+  region: US
   cache_expiration: 60
-  region:
 
 tautulli:
   url: http://tautulli.media.svc.cluster.local:8181
