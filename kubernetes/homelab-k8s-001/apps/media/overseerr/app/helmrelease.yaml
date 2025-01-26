@@ -66,10 +66,10 @@ spec:
             envFrom:
               - secretRef:
                   name: overseerr-secret
-              - secretRef:
-                  name: starr-apps-secret
-              - secretRef:
-                  name: plex-secret
+              # - secretRef:
+              #     name: starr-apps-secret
+              # - secretRef:
+              #     name: plex-secret
 
             env:
               - name: ORGANIZATION
