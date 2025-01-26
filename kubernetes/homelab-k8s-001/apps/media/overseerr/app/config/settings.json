@@ -53,7 +53,13 @@
   "webAppUrl": "https://plex.${SECRET_DOMAIN}/web",
   "machineId": "${PLEX_SERVER_ID}"
  },
- "tautulli": {},
+ "tautulli": {
+  "hostname": "tautulli.media.svc.cluster.local",
+  "port": 8081,
+  "useSsl": false,
+  "apiKey": "${TAUTULLI_API_KEY}",
+  "externalUrl": "https://tautulli.${SECRET_DOMAIN}"
+ },
  "radarr": [
   {
    "name": "Radarr",
