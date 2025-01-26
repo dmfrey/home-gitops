@@ -70,8 +70,8 @@ spec:
                 exit 0
 
             envFrom:
-              - secretRef:
-                  name: starr-apps-secret
+              # - secretRef:
+              #     name: starr-apps-secret
               - secretRef:
                   name: pmm-secret
 

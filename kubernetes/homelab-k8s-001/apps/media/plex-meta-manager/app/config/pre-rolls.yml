@@ -9,7 +9,7 @@ collections:
     server_preroll: /media/library/prerolls/normal/Plex4K.mp4; /media/library/prerolls/normal/LightSpeed-Plex4K.mp4
     schedule:
       - range(01/01-01/31) # January
-      - range(02/01-01/28) # February
+      - range(02/01-02/28) # February
       - range(03/01-03/31) # March
       - range(04/01-04/30) # April
       - range(05/01-05/31) # May
