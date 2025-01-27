@@ -75,7 +75,7 @@ tasks:
       - which jq kubectl talosctl
 
   upgrade-k8s:
-    desc: Upgrade Kubernetes across the whole cluster [CLUSTER=homelab-k8s-001] [VERSION=required]
+    desc: Upgrade Kubernetes across the whole cluster
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
@@ -84,8 +84,6 @@ tasks:
     vars:
       TALOS_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
-    requires:
-      vars: [CLUSTER]
     preconditions:
       - curl -fsSL -o /dev/null --fail https://github.com/siderolabs/kubelet/releases/tag/$KUBERNETES_VERSION
       - talosctl --nodes {{.TALOS_CONTROLLER}} get machineconfig
