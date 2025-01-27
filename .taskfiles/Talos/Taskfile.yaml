@@ -54,7 +54,7 @@ tasks:
       - which talosctl
 
   upgrade-node:
-    desc: Upgrade Talos on a single node [CLUSTER=homelab-k8s-001] [IP=required]
+    desc: Upgrade Talos on a single node [IP=required]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
@@ -65,7 +65,7 @@ tasks:
       TALOS_SCHEMATIC_ID:
         sh: talosctl --nodes {{.IP}} get nodeannotationspecs --output json | jq --raw-output '.spec | select(.key == "extensions.talos.dev/schematic") | .value'
     requires:
-      vars: [CLUSTER, IP]
+      vars: [IP]
     preconditions:
       - curl -fsSL -o /dev/null --fail https://github.com/siderolabs/talos/releases/tag/$TALOS_VERSION
       - talosctl --nodes {{.IP}} get machineconfig
