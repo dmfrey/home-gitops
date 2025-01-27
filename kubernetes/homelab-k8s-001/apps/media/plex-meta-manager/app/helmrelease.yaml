@@ -58,8 +58,8 @@ spec:
         initContainers:
           config-setup:
             image:
-              repository: bash
-              tag: devel-alpine3.20
+              repository: ghcr.io/dmfrey/bash
+              tag: 5.2.26-alpine3.20
 
             command:
               - "/bin/sh"
