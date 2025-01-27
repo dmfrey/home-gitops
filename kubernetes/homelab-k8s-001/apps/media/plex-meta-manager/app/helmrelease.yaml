@@ -65,13 +65,12 @@ spec:
               - "/bin/sh"
               - -c
               - |
+                env
                 mkdir -p /config/assets
                 envsubst < /tmp/config-template/config.yml > /config/config.yml
                 exit 0
 
             envFrom:
-              # - secretRef:
-              #     name: starr-apps-secret
               - secretRef:
                   name: pmm-secret
 
