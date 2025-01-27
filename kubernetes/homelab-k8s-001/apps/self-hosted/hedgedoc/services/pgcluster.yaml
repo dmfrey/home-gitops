@@ -48,10 +48,10 @@ spec:
       endpointURL: http://${QNAP_ADDR}:9000
       s3Credentials:
         accessKeyId:
-          name: cloudnative-pg-secret
+          name: hedgedoc-cnpg-secret
           key: AWS_SECRET_ACCESS_KEY_ID
         secretAccessKey:
-          name: cloudnative-pg-secret
+          name: hedgedoc-cnpg-secret
           key: AWS_SECRET_ACCESS_KEY
       wal:
         compression: gzip
@@ -72,10 +72,10 @@ spec:
 #        endpointURL: http://${QNAP_ADDR}:9000
 #        s3Credentials:
 #          accessKeyId:
-#            name: cloudnative-pg-secret
+#            name: hedgedoc-cnpg-secret
 #            key: AWS_ACCESS_KEY_ID
 #          secretAccessKey:
-#            name: cloudnative-pg-secret
+#            name: hedgedoc-cnpg-secret
 #            key: AWS_SECRET_ACCESS_KEY
 
 
