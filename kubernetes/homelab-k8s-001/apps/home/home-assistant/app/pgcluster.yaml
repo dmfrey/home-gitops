@@ -6,7 +6,7 @@ metadata:
   namespace: home
   annotations:
     kyverno.io/ignore: "true"
-    secret.reloader.stakater.com/reload: cloudnative-pg-secret
+    secret.reloader.stakater.com/reload: pg-home-assistant-cnpg-secret
 
 spec:
 
@@ -49,10 +49,10 @@ spec:
       endpointURL: http://${QNAP_ADDR}:9000
       s3Credentials:
         accessKeyId:
-          name: cloudnative-pg-secret
+          name: pg-home-assistant-cnpg-secret
           key: AWS_SECRET_ACCESS_KEY_ID
         secretAccessKey:
-          name: cloudnative-pg-secret
+          name: pg-home-assistant-cnpg-secret
           key: AWS_SECRET_ACCESS_KEY
       wal:
         compression: gzip
@@ -73,10 +73,10 @@ spec:
 #        endpointURL: http://${QNAP_ADDR}:9000
 #        s3Credentials:
 #          accessKeyId:
-#            name: cloudnative-pg-secret
+#            name: pg-home-assistant-cnpg-secret
 #            key: AWS_ACCESS_KEY_ID
 #          secretAccessKey:
-#            name: cloudnative-pg-secret
+#            name: pg-home-assistant-cnpg-secret
 #            key: AWS_SECRET_ACCESS_KEY
 
 

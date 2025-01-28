@@ -51,6 +51,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      DB: *app
       GATUS_SUBDOMAIN: home
       APP_UID: "568"
       APP_GID: "568"
@@ -63,6 +64,7 @@ spec:
     provider: sops
   dependsOn:
     - name: cloudnative-pg
+    - name: external-secrets-stores
     - name: mosquitto
     # - name: multus-config
     - name: rook-ceph-cluster
