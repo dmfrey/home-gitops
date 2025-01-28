@@ -27,6 +27,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      DB: grafana
     substituteFrom: []
   decryption:
     provider: sops
