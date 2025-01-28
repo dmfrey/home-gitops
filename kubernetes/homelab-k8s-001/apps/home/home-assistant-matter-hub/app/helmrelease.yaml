@@ -56,7 +56,8 @@ spec:
               HAMH_WEB_PORT: &port 8482
               HAMH_STORAGE_LOCATION: /data
               HAMH_MDNS_NETWORK_INTERFACE: eth0.50 #enp2s0.50
-
+              HAMH_HOME_ASSISTANT_URL: http://home-assistant.home.svc.cluster.local:8123
+              
             envFrom:
               - secretRef:
                   name: *secret
