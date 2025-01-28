@@ -5,5 +5,5 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./mariadb.yaml
-  - ./backup.yaml
+  # - ./backup.yaml
 
