@@ -1,0 +1,24 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pg-dataflow-backup
+  namespace: dataflow
+spec:
+  schedule: "@weekly"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: pg-dataflow
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pg-skipper-backup
+  namespace: dataflow
+spec:
+  schedule: "@weekly"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: pg-skipper
