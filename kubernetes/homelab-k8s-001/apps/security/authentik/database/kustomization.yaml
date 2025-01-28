@@ -5,3 +5,5 @@ kind: Kustomization
 resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
+components:
+  - ../../../../flux/components/cnpg

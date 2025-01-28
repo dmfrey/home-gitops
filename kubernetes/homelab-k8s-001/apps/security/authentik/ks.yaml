@@ -27,6 +27,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      DB: authentik
     substituteFrom: []
   decryption:
     provider: sops
