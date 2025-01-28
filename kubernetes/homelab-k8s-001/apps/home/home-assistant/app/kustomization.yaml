@@ -11,8 +11,6 @@ resources:
   # - ./git-sync-hr.yaml
   - ../../../../templates/volsync
   - ../../../../templates/gatus/external
-components:
-  - ../../../../flux/components/cnpg
 configMapGenerator:
   - name: hass-config
     files:

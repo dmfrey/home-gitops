@@ -6,5 +6,3 @@ resources:
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
   - ./pvc.yaml
-components:
-  - ../../../../flux/components/cnpg
