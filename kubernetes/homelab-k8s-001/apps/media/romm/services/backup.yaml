@@ -23,11 +23,11 @@ spec:
       region: us-east-1
 
       accessKeyIdSecretKeyRef:
-        name: mariadb-secret
+        name: romm-mariadb-secret
         key: AWS_SECRET_ACCESS_KEY_ID
 
       secretAccessKeySecretKeyRef:
-        name: mariadb-secret
+        name: romm-mariadb-secret
         key: AWS_SECRET_ACCESS_KEY
 
       tls:
