@@ -9,10 +9,11 @@ libraries:
   # Anime:
   # Music:
 
-# playlist_files:
-#   - default: playlist                # This is a file within Kometa's defaults folder
-#     template_variables:
-#       libraries: Movies, TV Shows
+playlist_files:
+  - default: playlist                # This is a file within Kometa's defaults folder
+    template_variables:
+      libraries: Movies, TV Shows
+  - file: config/playlists.yaml
 
 settings:
   run_order:

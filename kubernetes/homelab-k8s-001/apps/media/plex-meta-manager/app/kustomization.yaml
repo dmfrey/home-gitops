@@ -13,6 +13,12 @@ configMapGenerator:
     options:
       labels:
         kustomize.toolkit.fluxcd.io/substitute: disabled
+  - name: pmm-playlists
+    files:
+      - ./config/playlists.yml
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
   - name: pmm-prerolls
     files:
       - ./config/pre-rolls.yml

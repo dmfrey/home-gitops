@@ -35,7 +35,7 @@ spec:
   values:
 
     controllers:
-      plex-meta-manager:
+      *app :
         type: cronjob
         annotations:
           secret.reloader.stakater.com/reload: &secret pmm-secret
@@ -44,7 +44,7 @@ spec:
           schedule: 0 6 * * *
 
         containers:
-          app:
+          *app :
             image:
               repository: docker.io/meisnate12/plex-meta-manager
               tag: v1.21.0
@@ -75,14 +75,23 @@ spec:
                   name: pmm-secret
 
     service:
-      app:
+      *app :
         enabled: false
-        controller: plex-meta-manager
+        controller: *app
 
     persistence:
       config:
         enabled: true
         existingClaim: pmm-config
+
+      config-playlists:
+        enabled: true
+        type: configMap
+        name: pmm-playlists
+        globalMounts:
+          - path: /config/playlists.yml
+            subPath: playlists.yml
+            readOnly: true
 
       config-prerolls:
         enabled: true
