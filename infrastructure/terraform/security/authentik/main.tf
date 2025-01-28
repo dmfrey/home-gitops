@@ -15,17 +15,6 @@ terraform {
 
 }
 
-provider "bitwarden" {
-  access_token = var.bw_access_token
-  experimental {
-    embedded_client = true
-  }
-}
-
-data "bitwarden_secret" "authentik" {
-  key = "authentik"
-}
-
 locals {
   raw_data                    = jsondecode(data.bitwarden_secret.authentik.value)
   authentik_token             = local.raw_data["AUTHENTIK_TOKEN"]

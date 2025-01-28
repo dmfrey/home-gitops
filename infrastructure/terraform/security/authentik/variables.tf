@@ -4,12 +4,6 @@ variable "cluster_domain" {
   description = "Domain for Authentik"
 }
 
-variable "bw_access_token" {
-  type        = string
-  description = "Bitwarden Secret Manager Access token"
-  sensitive   = true
-}
-
 variable "users" {
   type = map(object({
     name     = string
