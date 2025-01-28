@@ -33,7 +33,8 @@ spec:
     provider: sops
   dependsOn:
     - name: cloudnative-pg
-    - name: kube-prometheus-stack-crds
+    - name: external-secrets-stores
+    - name: rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://lds-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
