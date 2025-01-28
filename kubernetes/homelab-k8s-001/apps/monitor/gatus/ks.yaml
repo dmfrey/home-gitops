@@ -27,6 +27,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      DB: gatus
     substituteFrom: []
   decryption:
     provider: sops
