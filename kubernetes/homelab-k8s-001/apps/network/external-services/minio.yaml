@@ -55,27 +55,27 @@ spec:
               number: 39010
         path: /
         pathType: Prefix
----
-# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
-  name: &name minio-job
-  labels:
-    prometheus: scrape-me
-spec:
-  authorization:
-    type: Bearer
-    credentials:
-      name: minio-secret
-      key: MINIO_BEARER_TOKEN
-  scrapeInterval: 60s
-  scheme: HTTP
-  staticConfigs:
-    - targets:
-        - minio.network.svc.cluster.local:9000
-  metricsPath: /minio/metrics/v3
-  relabelings:
-    - action: replace
-      targetLabel: job
-      replacement: *name
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# apiVersion: monitoring.coreos.com/v1alpha1
+# kind: ScrapeConfig
+# metadata:
+#   name: &name minio-job
+#   labels:
+#     prometheus: scrape-me
+# spec:
+#   authorization:
+#     type: Bearer
+#     credentials:
+#       name: minio-secret
+#       key: MINIO_BEARER_TOKEN
+#   scrapeInterval: 60s
+#   scheme: HTTP
+#   staticConfigs:
+#     - targets:
+#         - minio.network.svc.cluster.local:9000
+#   metricsPath: /minio/metrics/v3
+#   relabelings:
+#     - action: replace
+#       targetLabel: job
+#       replacement: *name
