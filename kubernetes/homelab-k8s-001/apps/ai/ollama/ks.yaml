@@ -15,7 +15,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   postBuild:
     substitute:
       APP: ollama-backend
@@ -44,7 +44,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   postBuild:
     substitute:
       APP: ollama-ui
@@ -73,7 +73,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   postBuild:
     substitute:
       BACKEND_CLAIM: ollama-backend-data

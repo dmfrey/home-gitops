@@ -11,7 +11,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   decryption:
     provider: sops
     secretRef:

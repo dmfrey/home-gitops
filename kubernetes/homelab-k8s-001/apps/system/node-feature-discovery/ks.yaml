@@ -18,7 +18,7 @@ spec:
   timeout: 5m
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   postBuild:
     substituteFrom: []
 ---
@@ -41,7 +41,7 @@ spec:
   timeout: 5m
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   postBuild:
     substituteFrom: []
   dependsOn:

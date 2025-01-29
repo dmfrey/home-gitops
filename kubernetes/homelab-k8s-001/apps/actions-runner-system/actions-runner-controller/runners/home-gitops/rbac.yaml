@@ -14,7 +14,7 @@ roleRef:
   name: cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: home-gitops-runner
+    name: flux-system-runner
     namespace: actions-runner-system
 ---
 apiVersion: talos.dev/v1alpha1

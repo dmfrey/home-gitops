@@ -19,7 +19,7 @@ spec:
   retryInterval: 30s
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   targetNamespace: actions-runner-system
   timeout: 1m30s
   wait: true
@@ -42,7 +42,7 @@ spec:
   retryInterval: 30s
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   targetNamespace: actions-runner-system
   timeout: 1m30s
   wait: true

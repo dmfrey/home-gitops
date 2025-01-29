@@ -16,7 +16,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
@@ -53,7 +53,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   wait: false # no flux ks dependents
   interval: 5m
   timeout: 1m30s

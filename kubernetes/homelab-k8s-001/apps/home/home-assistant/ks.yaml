@@ -15,7 +15,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   postBuild:
     substitute:
       APP: *app
@@ -45,7 +45,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-gitops
+    name: flux-system
   wait: false
   interval: 10m
   retryInterval: 1m
