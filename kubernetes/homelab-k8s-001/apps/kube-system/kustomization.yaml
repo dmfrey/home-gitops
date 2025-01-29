@@ -8,7 +8,7 @@ resources:
   - ../../templates/alerts
   # Flux-Kustomizations
   # - ./busybox/ks.yaml
-  - ./multus/ks.yaml
+  # - ./multus/ks.yaml
 transformers:
   - |-
     apiVersion: builtin
