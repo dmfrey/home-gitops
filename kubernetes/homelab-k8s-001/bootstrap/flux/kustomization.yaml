@@ -7,6 +7,7 @@ kind: Kustomization
 resources:
   - github.com/fluxcd/flux2/manifests/install?ref=v2.4.0
 patches:
+
   # Remove the network policies that does not work with k3s
   - patch: |
       $patch: delete
@@ -18,6 +19,7 @@ patches:
       group: networking.k8s.io
       version: v1
       kind: NetworkPolicy
+
   # GCP KMS: https://github.com/fluxcd/kustomize-controller/blob/5056fbf6ac5c48de434680042c5979fa79a5de04/docs/spec/v1/kustomization.md#gcp-kms
   - target:
       kind: Deployment
@@ -41,40 +43,42 @@ patches:
           name: flux-gcp-kms-secret
           secret:
             secretName: flux-gcp-kms-secret
+
   # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
   # https://fluxcd.io/flux/cheatsheets/bootstrap/#increase-the-number-of-workers
-  - patch: |
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --concurrent=8
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --kube-api-qps=500
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --kube-api-burst=1000
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --requeue-dependency=5s
-    target:
-      kind: Deployment
-      name: "(kustomize-controller|helm-controller|source-controller)"
-  - patch: |
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: not-used
-      spec:
-        template:
-          spec:
-            containers:
-              - name: manager
-                resources:
-                  limits:
-                    memory: 2Gi
-    target:
-      kind: Deployment
-      name: "(kustomize-controller|helm-controller|source-controller)"
+  # - patch: |
+  #     - op: add
+  #       path: /spec/template/spec/containers/0/args/-
+  #       value: --concurrent=8
+  #     - op: add
+  #       path: /spec/template/spec/containers/0/args/-
+  #       value: --kube-api-qps=500
+  #     - op: add
+  #       path: /spec/template/spec/containers/0/args/-
+  #       value: --kube-api-burst=1000
+  #     - op: add
+  #       path: /spec/template/spec/containers/0/args/-
+  #       value: --requeue-dependency=5s
+  #   target:
+  #     kind: Deployment
+  #     name: "(kustomize-controller|helm-controller|source-controller)"
+  # - patch: |
+  #     apiVersion: apps/v1
+  #     kind: Deployment
+  #     metadata:
+  #       name: not-used
+  #     spec:
+  #       template:
+  #         spec:
+  #           containers:
+  #             - name: manager
+  #               resources:
+  #                 limits:
+  #                   memory: 2Gi
+  #   target:
+  #     kind: Deployment
+  #     name: "(kustomize-controller|helm-controller|source-controller)"
+
   # Enable drift detection for HelmReleases and set the log level to debug
   # https://fluxcd.io/flux/components/helm/helmreleases/#drift-detection
   - patch: |
@@ -87,6 +91,7 @@ patches:
     target:
       kind: Deployment
       name: helm-controller
+
   # Enable Helm near OOM detection
   # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-helm-near-oom-detection
   - patch: |
@@ -102,6 +107,7 @@ patches:
     target:
       kind: Deployment
       name: helm-controller
+
   # Enable notifications for 3rd party Flux controllers such as tofu-controller
   # https://fluxcd.io/flux/cheatsheets/bootstrap/#enable-notifications-for-third-party-controllers
   - patch: |

@@ -3,22 +3,28 @@ instance:
   distribution:
     # renovate: datasource=github-releases depName=fluxcd/flux2
     version: 2.4.0
+
   cluster:
     networkPolicy: false
+
   components:
     - source-controller
     - kustomize-controller
     - helm-controller
     - notification-controller
+
   sync:
     kind: GitRepository
-    url: https://github.com/onedr0p/home-ops
+    url: https://github.com/dmfrey/home-gitops
     ref: refs/heads/main
-    path: kubernetes/flux/cluster
+    path: kubernetes/homelab-k8s-001/flux/cluster
+
   commonMetadata:
     labels:
       app.kubernetes.io/name: flux
+
   kustomize:
+
     patches:
       - # Add Sops decryption to 'flux-system' Kustomization
         patch: |
@@ -31,6 +37,7 @@ instance:
         target:
           group: kustomize.toolkit.fluxcd.io
           kind: Kustomization
+
       - # Increase the number of workers
         patch: |
           - op: add
@@ -42,6 +49,7 @@ instance:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
+
       - # Increase the memory limits
         patch: |
           apiVersion: apps/v1
@@ -59,6 +67,7 @@ instance:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
+
       - # Enable in-memory kustomize builds
         patch: |
           - op: add
@@ -73,6 +82,7 @@ instance:
         target:
           kind: Deployment
           name: kustomize-controller
+
       - # Enable Helm repositories caching
         patch: |
           - op: add
@@ -87,6 +97,7 @@ instance:
         target:
           kind: Deployment
           name: source-controller
+
       - # Flux near OOM detection for Helm
         patch: |
           - op: add
