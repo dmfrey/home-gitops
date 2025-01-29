@@ -62,6 +62,14 @@ spec:
       namespace: flux-system
   interval: 30m
   path: ./kubernetes/homelab-k8s-001/apps
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+        optional: false
+      - kind: ConfigMap
+        name: cluster-settings
+        optional: false
   prune: true
   sourceRef:
     kind: GitRepository
