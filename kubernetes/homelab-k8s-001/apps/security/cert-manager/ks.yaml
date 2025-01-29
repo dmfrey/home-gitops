@@ -19,8 +19,8 @@ spec:
   interval: 15m
   postBuild:
     substituteFrom: []
-  dependsOn:
-    - name: kube-prometheus-stack-crds
+  dependsOn: []
+    # - name: kube-prometheus-stack-crds
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
