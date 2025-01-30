@@ -1,28 +1,33 @@
 
-variable "onepassword_sa_token" {
-  type        = string
-  description = "Oneopass Service Account Token"
-  sensitive   = true
-  default     = null
-}
+# variable "onepassword_sa_token" {
+#   type        = string
+#   description = "Oneopass Service Account Token"
+#   sensitive   = true
+#   default     = null
+# }
 
-variable "service_account_json" {
-  type        = string
-  description = "The path to the service account JSON for OnePassword."
-  sensitive   = true
-  default     = null
-}
+# variable "service_account_json" {
+#   type        = string
+#   description = "The path to the service account JSON for OnePassword."
+#   sensitive   = true
+#   default     = null
+# }
 
-variable "vault" {
-  description = "Vault name to find the Item in"
-  type        = string
-  default     = "homelab5767"
-}
+# variable "vault" {
+#   description = "Vault name to find the Item in"
+#   type        = string
+#   default     = "homelab5767"
+# }
 
-variable "item" {
-  description = "Password Item to fetch"
-  type        = string
-  default     = "authentik"
+# variable "item" {
+#   description = "Password Item to fetch"
+#   type        = string
+#   default     = "authentik"
+# }
+
+variable "authentik_token" {
+  type      = string
+  description = "Token for Authentik"
 }
 
 variable "cluster_domain" {

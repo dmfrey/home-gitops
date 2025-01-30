@@ -6,29 +6,29 @@ terraform {
       version = "2024.12.0"
     }
 
-    onepassword = {
-      source  = "1Password/onepassword"
-      version = "2.1.2"
-    }
+    # onepassword = {
+    #   source  = "1Password/onepassword"
+    #   version = "2.1.2"
+    # }
 
   }
 
 }
 
-data "onepassword_vault" "vault" {
-  name = var.vault
-}
+# data "onepassword_vault" "vault" {
+#   name = var.vault
+# }
 
-data "onepassword_item" "item" {
-  vault = data.onepassword_vault.vault.uuid
-  title = var.item
-}
+# data "onepassword_item" "item" {
+#   vault = data.onepassword_vault.vault.uuid
+#   title = var.item
+# }
 
-provider "onepassword" {
-  url                   = var.service_account_json != null ? "http://onepassword-connect.external-secrets.svc.cluster.local" : null
-  token                 = var.service_account_json
-  service_account_token = var.onepassword_sa_token
-}
+# provider "onepassword" {
+#   url                   = var.service_account_json != null ? "http://onepassword-connect.external-secrets.svc.cluster.local" : null
+#   token                 = var.service_account_json
+#   service_account_token = var.onepassword_sa_token
+# }
 
 locals {
   authentik_token             = local.raw_data["AUTHENTIK_TOKEN"]
@@ -38,5 +38,5 @@ locals {
 
 provider "authentik" {
   url   = "https://auth.${var.cluster_domain}"
-  token = data.onepassword_item.item.AUTHENTIK_TOKEN
+  token = local.authentik_token
 }
