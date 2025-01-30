@@ -75,10 +75,10 @@ resource "authentik_group" "default" {
 
 # }
 
-output all_groups{
-  value = data.authentik_groups.all.groups
-  description = "The registered authentik groups"
-}
+# output all_groups{
+#   value = data.authentik_groups.all.groups
+#   description = "The registered authentik groups"
+# }
 
 # data "authentik_group" "lookup_by_application" {
 #   for_each = var.oauth_applications
@@ -94,10 +94,10 @@ output all_groups{
 # }
 
 resource "authentik_policy_binding" "application_policy_binding" {
-  for_each = var.oauth_applications
+  for_each = local.applications
 
   target = authentik_application.application[each.key].uuid
-  group  = data.authentik_group.lookup_by_application[each.key].id
+  group  = authentik_group.default[each.value.group].id
   order  = 0
 }
 
