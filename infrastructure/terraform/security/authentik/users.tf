@@ -14,7 +14,7 @@ locals {
       email = module.onepassword_users.fields["USERS_DMFREY_EMAIL"]
       password = module.onepassword_users.fields["USERS_DMFREY_PASSWORD"]
       groups = [
-        data.authentik_group.akadmin.id,
+        data.authentik_group.akadmins.id,
         data.authentik_group.developers.id,
         data.authentik_group.downloads.id,
         data.authentik_group.home.id,
@@ -78,8 +78,8 @@ resource "authentik_user" "users" {
   # ]
 }
 
-data "authentik_user" "akadmin" {
-  username = "akadmin"
+data "authentik_group" "akadmins" {
+  username = "authentik Admins"
 }
 
 data "authentik_group" "developers" {
