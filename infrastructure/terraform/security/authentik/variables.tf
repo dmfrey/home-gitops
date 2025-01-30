@@ -25,11 +25,6 @@
 #   default     = "authentik"
 # }
 
-variable "authentik_token" {
-  type      = string
-  description = "Token for Authentik"
-}
-
 variable "cluster_domain" {
   type      = string
   description = "Domain for Authentik"
