@@ -2,9 +2,9 @@ data "authentik_certificate_key_pair" "generated" {
   name = "authentik Self-signed Certificate"
 }
 
-data "authentik_brand" "authentik-default" {
-  domain = "authentik-default"
-}
+# data "authentik_brand" "authentik-default" {
+#   domain = "authentik-default"
+# }
 
 # Get the default flows
 data "authentik_flow" "default-brand-authentication" {
@@ -19,10 +19,10 @@ data "authentik_flow" "default-brand-user-settings" {
   slug = "default-user-settings-flow"
 }
 
-import {
-  to = authentik_brand.default
-  id = data.authentik_brand.authentik-default.id
-}
+# import {
+#   to = authentik_brand.default
+#   id = data.authentik_brand.authentik-default.id
+# }
 
 # Create/manage the default brand
 resource "authentik_brand" "default" {
