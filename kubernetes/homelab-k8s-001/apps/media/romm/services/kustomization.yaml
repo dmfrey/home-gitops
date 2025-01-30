@@ -6,4 +6,5 @@ resources:
   - ./externalsecret.yaml
   - ./mariadb.yaml
   - ./backup.yaml
+  - ./restore.yaml
 
