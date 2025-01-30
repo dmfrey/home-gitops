@@ -18,6 +18,10 @@ spec:
   writeOutputsToSecret:
     name: authentik-tfstate
 
+  varsFrom:
+    - kind: Secret
+      name: terraform-secret
+
   vars:
     - name: TF_LOG
       value: TRACE
