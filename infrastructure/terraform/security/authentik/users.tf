@@ -1,11 +1,68 @@
 
+
+# Step 1: Retrieve secrets from 1Password
+module "onepassword_users" {
+  source   = "github.com/dmfrey/terraform-1password-item"
+  vault    = "homelab5767"
+  item     = "users"
+}
+
+locals {
+  users = {
+    dmfrey = {
+      name = module.onepassword_users.fields["USERS_DMFREY_NAME"]
+      email = module.onepassword_users.fields["USERS_DMFREY_EMAIL"]
+      password = module.onepassword_users.fields["USERS_DMFREY_PASSWORD"]
+      groups = [
+        data.authentik_group.akadmin.id,
+        data.authentik_group.developers.id,
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id,
+        data.authentik_group.infrastructure.id,
+        data.authentik_group.media.id,
+        data.authentik_group.monitoring.id
+      ]
+    },
+    sdfrey = {
+      name = module.onepassword_users.fields["USERS_SDFREY_NAME"]
+      email = module.onepassword_users.fields["USERS_SDFREY_EMAIL"]
+      password = module.onepassword_users.fields["USERS_SDFREY_PASSWORD"]
+      groups = [
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id,
+        data.authentik_group.media.id,
+      ]
+    },
+    cgfrey = {
+      name = module.onepassword_users.fields["USERS_CGFREY_NAME"]
+      email = module.onepassword_users.fields["USERS_CGFREY_EMAIL"]
+      password = module.onepassword_users.fields["USERS_CGFREY_PASSWORD"]
+      groups = [
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id,
+        data.authentik_group.media.id,
+      ]
+    },
+    mkfrey = {
+      name = module.onepassword_users.fields["USERS_MKFREY_NAME"]
+      email = module.onepassword_users.fields["USERS_MKFREY_EMAIL"]
+      password = module.onepassword_users.fields["USERS_MKFREY_PASSWORD"]
+      groups = [
+        data.authentik_group.downloads.id,
+        data.authentik_group.home.id,
+        data.authentik_group.media.id,
+      ]
+    }
+  }
+}
+
 resource "authentik_user" "users" {
-  for_each       = var.users
+  for_each       = local.users
   username       = each.key
   name           = each.value["name"]
   email          = each.value["email"]
   password       = each.value["password"]
-  # groups         = [
+  groups         = each.value["groups"]
   #   for desired_group in each.value["groups"] :
   #   data.authentik_group.lookup_by_name[desired_group].id
   # ]
@@ -23,6 +80,30 @@ resource "authentik_user" "users" {
 
 data "authentik_user" "akadmin" {
   username = "akadmin"
+}
+
+data "authentik_group" "developers" {
+  name = "Developers"
+}
+
+data "authentik_group" "downloads" {
+  name = "Downloads"
+}
+
+data "authentik_group" "home" {
+  name = "Home"
+}
+
+data "authentik_group" "infrastructure" {
+  name = "Infrastructure"
+}
+
+data "authentik_group" "media" {
+  name = "Media"
+}
+
+data "authentik_group" "monitoring" {
+  name = "Monitoring"
 }
 
 # output "var_users" {

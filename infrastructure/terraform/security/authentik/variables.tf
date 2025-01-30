@@ -18,14 +18,14 @@ variable "cluster_domain" {
   description = "Domain for Authentik"
 }
 
-variable "users" {
-  type = map(object({
-    name     = string
-    email    = string
-    password = string
-    groups   = list(string)
-  }))
-}
+# variable "users" {
+#   type = map(object({
+#     name     = string
+#     email    = string
+#     password = string
+#     groups   = list(string)
+#   }))
+# }
 
 # variable "oauth_applications" {
 #   type = map(object({
