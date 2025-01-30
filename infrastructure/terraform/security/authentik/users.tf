@@ -79,7 +79,7 @@ resource "authentik_user" "users" {
 }
 
 data "authentik_group" "akadmins" {
-  username = "authentik Admins"
+  name = "authentik Admins"
 }
 
 data "authentik_group" "developers" {
