@@ -20,7 +20,8 @@ locals {
         data.authentik_group.home.id,
         data.authentik_group.infrastructure.id,
         data.authentik_group.media.id,
-        data.authentik_group.monitoring.id
+        data.authentik_group.monitoring.id,
+        data.authentik_group.grafana_admin.id
       ]
     },
     sdfrey = {
@@ -104,6 +105,10 @@ data "authentik_group" "media" {
 
 data "authentik_group" "monitoring" {
   name = "Monitoring"
+}
+
+data "authentik_group" "grafana_admin" {
+  name = "Grafana Admins"
 }
 
 # output "var_users" {

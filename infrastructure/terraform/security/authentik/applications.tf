@@ -28,7 +28,7 @@ locals {
     spring-dev = {
       client_id     = module.onepassword_application["spring-dev"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["spring-dev"].fields["AUTHENTIK_CLIENT_SECRET"]
-      group         = "monitoring"
+      group         = "developers"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
       redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
       launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
