@@ -28,9 +28,8 @@ module "onepassword_authentik" {
 }
 
 locals {
-  authentik_token             = local.raw_data["AUTHENTIK_TOKEN"]
-  authentik_plex_client_id    = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"]
-  authentik_plex_token        = local.raw_data["AUTHENTIK_PLEX_TOKEN"]
+  authentik_plex_client_id    = module.onepassword_authentik.fields["AUTHENTIK_PLEX_CLIENT_ID"]
+  authentik_plex_token        = module.onepassword_authentik.fields["AUTHENTIK_PLEX_TOKEN"]
 }
 
 provider "authentik" {
