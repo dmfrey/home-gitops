@@ -27,24 +27,24 @@ variable "users" {
   }))
 }
 
-variable "oauth_applications" {
-  type = map(object({
-    client_id     = string
-    client_secret = string
-    group         = string
-    icon_url      = string
-    redirect_uri  = string
-    launch_url    = string
-  }))
-}
+# variable "oauth_applications" {
+#   type = map(object({
+#     client_id     = string
+#     client_secret = string
+#     group         = string
+#     icon_url      = string
+#     redirect_uri  = string
+#     launch_url    = string
+#   }))
+# }
 
-variable "proxy_applications" {
-  type = map(object({
-    url             = string
-    group           = string
-    skip_path_regex = optional(string)
-  }))
-}
+# variable "proxy_applications" {
+#   type = map(object({
+#     url             = string
+#     group           = string
+#     skip_path_regex = optional(string)
+#   }))
+# }
 
 # variable "proxy_applications" {
 #   type = map(object({

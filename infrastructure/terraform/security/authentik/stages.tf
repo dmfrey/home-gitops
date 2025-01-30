@@ -1,30 +1,3 @@
-# resource "authentik_stage_identification" "homelab5767-identity-stage" {
-#   name = "homelab5767-identification"
-#   user_fields = [
-#     "username",
-#     "email"
-#   ]
-#   sources        = [authentik_source_plex.plex.uuid]
-#   password_stage = data.authentik_stage.password-stage.id
-# }
-
-# data "authentik_stage" "password-stage" {
-#   name = "default-authentication-password"
-# }
-
-# data "authentik_stage" "mfa-validation-stage" {
-#   name = "default-authentication-mfa-validation"
-# }
-
-# data "authentik_stage" "user-login-stage" {
-#   name = "default-authentication-login"
-# }
-
-# ## Invalidation stages
-# resource "authentik_stage_user_logout" "invalidation-logout" {
-#   name = "invalidation-logout"
-# }
-
 ## Authorization stages
 resource "authentik_stage_identification" "authentication-identification" {
   name                      = "authentication-identification"
@@ -34,7 +7,7 @@ resource "authentik_stage_identification" "authentication-identification" {
   show_matched_user         = false
   password_stage            = authentik_stage_password.authentication-password.id
   recovery_flow             = authentik_flow.recovery.uuid
-  sources                   = [authentik_source_plex.plex.uuid]
+  sources                   = [authentik_source_oauth.discord.uuid]
 }
 
 resource "authentik_stage_password" "authentication-password" {
@@ -114,7 +87,7 @@ resource "authentik_stage_prompt" "source-enrollment-prompt" {
 resource "authentik_stage_user_write" "enrollment-user-write" {
   name                     = "enrollment-user-write"
   create_users_as_inactive = false
-  create_users_group       = authentik_group.users.id
+  create_users_group       = authentik_group.default["users"].id
 }
 
 resource "authentik_stage_user_login" "source-enrollment-login" {
