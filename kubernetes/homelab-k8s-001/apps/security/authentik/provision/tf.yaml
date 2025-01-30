@@ -159,6 +159,7 @@ spec:
             - "Developers"
             - "Infrastructure"
             - "Monitoring"
+            - "Media"
             - "Downloads"
             - "Home"
         sdfrey:
@@ -167,6 +168,7 @@ spec:
           password: "${USERS_SDFREY_PASSWORD}"
           groups:
             - "Downloads"
+            - "Media"
             - "Home"
         cgfrey:
           name: "${USERS_CGFREY_NAME}"
@@ -174,6 +176,7 @@ spec:
           password: "${USERS_CGFREY_PASSWORD}"
           groups:
             - "Downloads"
+            - "Media"
             - "Home"
         mkfrey:
           name: "${USERS_MKFREY_NAME}"
@@ -181,5 +184,6 @@ spec:
           password: "${USERS_MKFREY_PASSWORD}"
           groups:
             - "Downloads"
+            - "Media"
             - "Home"
 
