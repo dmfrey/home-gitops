@@ -6,17 +6,31 @@ terraform {
       version = "2024.12.0"
     }
 
-    bitwarden = {
-      source  = "maxlaverse/bitwarden"
-      version = ">= 0.12.1"
-    }
+    # onepassword = {
+    #   source  = "1Password/onepassword"
+    #   version = "2.1.2"
+    # }
 
   }
 
 }
 
+# data "onepassword_vault" "vault" {
+#   name = var.vault
+# }
+
+# data "onepassword_item" "item" {
+#   vault = data.onepassword_vault.vault.uuid
+#   title = var.item
+# }
+
+# provider "onepassword" {
+#   url                   = var.service_account_json != null ? "http://onepassword-connect.external-secrets.svc.cluster.local" : null
+#   token                 = var.service_account_json
+#   service_account_token = var.onepassword_sa_token
+# }
+
 locals {
-  raw_data                    = jsondecode(data.bitwarden_secret.authentik.value)
   authentik_token             = local.raw_data["AUTHENTIK_TOKEN"]
   authentik_plex_client_id    = local.raw_data["AUTHENTIK_PLEX_CLIENT_ID"]
   authentik_plex_token        = local.raw_data["AUTHENTIK_PLEX_TOKEN"]
@@ -24,5 +38,5 @@ locals {
 
 provider "authentik" {
   url   = "https://auth.${var.cluster_domain}"
-  token = local.authentik_token
+  token = module.onepassword_authentik.fields["AUTHENTIK_TOKEN"]
 }

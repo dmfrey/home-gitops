@@ -18,9 +18,9 @@ spec:
   writeOutputsToSecret:
     name: authentik-tfstate
 
-  varsFrom:
-    - kind: Secret
-      name: terraform-bitwarden-secret
+  # varsFrom:
+  #   - kind: Secret
+  #     name: terraform-bitwarden-secret
 
   vars:
     - name: TF_LOG
