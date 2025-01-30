@@ -38,5 +38,5 @@ locals {
 
 provider "authentik" {
   url   = "https://auth.${var.cluster_domain}"
-  token = local.authentik_token
+  token = local.raw_data["AUTHENTIK_TOKEN"]
 }
