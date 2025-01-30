@@ -16,11 +16,13 @@ variable "service_account_json" {
 variable "vault" {
   description = "Vault name to find the Item in"
   type        = string
+  default     = "homelab5767"
 }
 
 variable "item" {
   description = "Password Item to fetch"
   type        = string
+  default     = "authentik"
 }
 
 variable "cluster_domain" {

@@ -38,5 +38,5 @@ locals {
 
 provider "authentik" {
   url   = "https://auth.${var.cluster_domain}"
-  token = module.onepassword_authentik.fields["AUTHENTIK_TOKEN"]
+  token = data.onepassword_item.item.AUTHENTIK_TOKEN
 }
