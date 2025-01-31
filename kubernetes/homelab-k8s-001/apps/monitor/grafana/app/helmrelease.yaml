@@ -552,6 +552,8 @@ spec:
       GF_LOG_FILTERS: rendering:debug
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_SECURITY_COOKIE_SAMESITE: grafana
+      GF_AUTH_OAUTH_AUTO_LOGIN: true
+      GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'"
 
     envFromSecrets:
       - name: grafana-secret
