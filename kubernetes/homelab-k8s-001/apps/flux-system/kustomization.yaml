@@ -7,7 +7,6 @@ resources:
   - ./namespace.yaml
   - ../../templates/alerts
   # Flux-Kustomizations
-  - ./add-ons/ks.yaml
   - ./flux-operator/ks.yaml
   - ./tf-controller/ks.yaml
 transformers:
