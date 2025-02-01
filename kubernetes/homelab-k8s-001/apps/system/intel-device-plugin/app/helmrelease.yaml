@@ -13,7 +13,7 @@ spec:
     spec:
       # renovate: registryUrl=https://intel.github.io/helm-charts
       chart: intel-device-plugins-operator
-      version: 0.31.1
+      version: 0.32.0
       interval: 15m
       sourceRef:
         kind: HelmRepository
