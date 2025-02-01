@@ -1,0 +1,38 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: &app wipe-rook
+  namespace: default
+  labels:
+    app.kubernetes.io/name: *app
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: *app
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: wipe
+          image: docker.io/library/alpine:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - apk add --no-cache sgdisk util-linux util-linux-misc parted device-mapper;
+              rm -rf /mnt/host/var/lib/rook;
+              sgdisk --zap-all /mnt/host/dev/nvme0n1;
+              dd if=/dev/zero of=/mnt/host/dev/nvme0n1 bs=1M count=100 oflag=direct;
+              blkdiscard /mnt/host/dev/nvme0n1;
+              partprobe /mnt/host/dev/nvme0n1;
+          volumeMounts:
+            - name: host
+              mountPath: /mnt/host
+          securityContext:
+            privileged: true
+          resources: {}
+      nodeSelector:
+        kubernetes.io/hostname: dmf-amd-001
+      volumes:
+        - name: host
+          hostPath:
+            path: /
