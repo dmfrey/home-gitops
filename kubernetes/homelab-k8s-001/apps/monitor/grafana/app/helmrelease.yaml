@@ -155,9 +155,9 @@ spec:
 
       datastore:
 
-        dragonfly:
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/refs/heads/main/monitoring/grafana-dashboard.json
-          datasource: prometheus
+        # dragonfly:
+        #   url: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/refs/heads/main/monitoring/grafana-dashboard.json
+        #   datasource: prometheus
 
         # emqx-authentication:
         #   url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/authentication.json
@@ -288,17 +288,17 @@ spec:
         #     - name: "DS_BLOCKYDB"
         #       value: blocky-pgcluster
 
-        cilium-metrics:
-          # renovate: depName="Cilium | Metrics"
-          url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/cilium-agent/dashboards/cilium-dashboard.json
-          datasource: prometheus
+        # cilium-metrics:
+        #   # renovate: depName="Cilium | Metrics"
+        #   url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/cilium-agent/dashboards/cilium-dashboard.json
+        #   datasource: prometheus
 
-        cilium-operator:
-          # renovate: depName="Cilium | Operator"
-          url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/cilium-operator/dashboards/cilium-operator-dashboard.json
-          datasource:
-            - name: DS_PROMETHEUS
-              value: prometheus
+        # cilium-operator:
+        #   # renovate: depName="Cilium | Operator"
+        #   url: https://raw.githubusercontent.com/cilium/cilium/refs/heads/main/install/kubernetes/cilium/files/cilium-operator/dashboards/cilium-operator-dashboard.json
+        #   datasource:
+        #     - name: DS_PROMETHEUS
+        #       value: prometheus
 
         cilium-hubble:
           # renovate: depName="Cilium | Hubble"
