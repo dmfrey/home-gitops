@@ -600,10 +600,10 @@ spec:
       server:
         root_url: https://grafana.${SECRET_DOMAIN}
 
-    # imageRenderer:
-    #   enabled: true
-    #   serviceMonitor:
-    #     enabled: true
+    imageRenderer:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
     ingress:
       enabled: true
