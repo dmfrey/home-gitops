@@ -47,7 +47,7 @@ spec:
             image:
               repository: quay.io/hedgedoc/hedgedoc
               pullPolicy: IfNotPresent
-              tag: 1.10.0
+              tag: 1.10.1
 
             env:
               TZ: ${TIMEZONE}
