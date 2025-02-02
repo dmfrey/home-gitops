@@ -9,7 +9,7 @@ resources:
   # Flux-Kustomizations
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
-  - ./mariadb/ks.yaml
+  # - ./mariadb/ks.yaml
   - ./rabbitmq-cluster-operator/ks.yaml
 transformers:
   - |-
