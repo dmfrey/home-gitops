@@ -39,5 +39,5 @@ spec:
     grafanaDashboard:
       enabled: true
       label:
-        key: "grafana.io/dashboard"
+        key: "grafana_dashboard"
         value: "true"

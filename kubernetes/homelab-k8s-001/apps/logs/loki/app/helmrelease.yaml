@@ -255,9 +255,9 @@ spec:
     #   dashboards:
     #     enabled: true
     #     annotations:
-    #       grafana.io/folder: Loki
+    #       grafana_folder: Loki
     #     labels:
-    #       grafana.io/dashboard: "true"
+    #       grafana_dashboard: "true"
     #   serviceMonitor:
     #     enabled: true
     #     metricsInstance:

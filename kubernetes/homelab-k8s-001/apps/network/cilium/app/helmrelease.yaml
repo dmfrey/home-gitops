@@ -56,10 +56,10 @@ spec:
 
       dashboards:
         enabled: true
-        label: grafana.io/dashboard
+        label: grafana_dashboard
         labelValue: "true"
         annotations:
-          grafana.io/folder: Network
+          grafana_folder: Network
 
       relay:
         enabled: true

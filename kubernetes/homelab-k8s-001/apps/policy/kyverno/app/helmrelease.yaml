@@ -38,7 +38,7 @@ spec:
     grafana:
       enabled: false
       annotations:
-        grafana.io/folder: Policy
+        grafana_folder: Policy
 
     admissionController:
       replicas: 1
@@ -85,9 +85,9 @@ spec:
                 name: not-used
                 namespace: not-used
                 labels:
-                  grafana.io/dashboard: "true"
+                  grafana_dashboard: "true"
                 annotations:
-                  grafana.io/folder: Kyverno
+                  grafana_folder: Kyverno
           - target:
               version: v1
               kind: ConfigMap

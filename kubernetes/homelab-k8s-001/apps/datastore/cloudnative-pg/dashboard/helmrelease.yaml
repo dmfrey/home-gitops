@@ -24,8 +24,8 @@ spec:
     grafanaDashboard:
 
       labels:
-        grafana.io/dashboard: "true"
+        grafana_dashboard: "true"
 
       annotations:
         kustomize.toolkit.fluxcd.io/substitute: disabled
-        grafana.io/folder: Datastore
+        grafana_folder: Datastore

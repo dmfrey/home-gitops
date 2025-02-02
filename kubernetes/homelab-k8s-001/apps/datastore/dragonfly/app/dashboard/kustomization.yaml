@@ -11,7 +11,7 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-    grafana.io/folder: Datastore
+    grafana_folder: Datastore
   labels:
-    grafana.io/dashboard: "true"
+    grafana_dashboard: "true"
 

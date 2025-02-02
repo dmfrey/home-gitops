@@ -10,6 +10,6 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-    grafana.io/folder: Status
+    grafana_folder: Status
   labels:
-    grafana.io/dashboard: "true"
+    grafana_dashboard: "true"
