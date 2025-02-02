@@ -43,8 +43,8 @@ spec:
       podMonitorEnabled: false
       grafanaDashboard:
         create: true
-        labels:
-          grafana_dashboard: "true"
+        # labels:
+        #   grafana_dashboard: "true"
         annotations:
           kustomize.toolkit.fluxcd.io/substitute: disabled
           grafana_folder: Datastore
