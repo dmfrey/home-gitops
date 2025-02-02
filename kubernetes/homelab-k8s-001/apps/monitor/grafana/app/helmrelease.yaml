@@ -156,7 +156,7 @@ spec:
       datastore:
 
         dragonfly:
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
+          url: https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/refs/heads/main/monitoring/grafana-dashboard.json
           datasource: prometheus
 
         # emqx-authentication:
