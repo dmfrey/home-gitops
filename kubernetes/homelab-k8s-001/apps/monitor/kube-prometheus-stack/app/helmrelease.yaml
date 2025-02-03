@@ -39,6 +39,12 @@ spec:
   # driftDetection:
   #   mode: enabled
 
+  valuesFrom:
+  - kind: ConfigMap
+    name: flux-kube-state-metrics-config
+    valuesKey: kube-state-metrics-config.yaml
+
+  # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
   values:
 
     crds:
@@ -84,10 +90,6 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-
-    # defaultRules:
-    #   rules:
-    #     kubeApiServer: false
 
     kubeApiServer:
       serviceMonitor:

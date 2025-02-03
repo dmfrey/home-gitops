@@ -2,7 +2,6 @@
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: monitor
 resources:
   - ./alertmanagerconfig.yaml
   - ./externalsecret.yaml
@@ -10,3 +9,13 @@ resources:
   # - ./prometheusrule.yaml
   # - ./scrapeconfig.yaml
   - ../../../../templates/gatus/guarded
+configMapGenerator:
+  - name: flux-kube-state-metrics-config
+    files:
+      - resources/kube-state-metrics-config.yaml
+    options:
+      labels:
+        app.kubernetes.io/part-of: flux
+        app.kubernetes.io/component: monitoring
+configurations:
+  - kustomizeconfig.yaml
