@@ -7,3 +7,15 @@ resources:
   - ./datasources-cm.yaml
   - ./helmrelease.yaml
   - ../../../../templates/gatus/external
+configMapGenerator:
+  - name: flux-dashboards
+    files:
+      - https://raw.githubusercontent.com/jfroy/flatops/refs/heads/main/kubernetes/apps/observability/grafana/app/resources/flux-control-plane.json
+    options:
+      annotations:
+        grafana_folder: Flux
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: ""
+generatorOptions:
+  disableNameSuffixHash: true
