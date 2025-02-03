@@ -40,4 +40,4 @@ spec:
       enabled: true
       label:
         key: "grafana_dashboard"
-        value: "true"
+        value: ""

@@ -673,6 +673,7 @@ spec:
         enabled: true
         searchNamespace: ALL
         label: grafana_dashboard
+        labelValue: ""
         folderAnnotation: "grafana_folder"
         provider:
           disableDelete: true

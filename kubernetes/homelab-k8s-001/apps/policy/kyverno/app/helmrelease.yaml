@@ -85,7 +85,7 @@ spec:
                 name: not-used
                 namespace: not-used
                 labels:
-                  grafana_dashboard: "true"
+                  grafana_dashboard: ""
                 annotations:
                   grafana_folder: Kyverno
           - target:

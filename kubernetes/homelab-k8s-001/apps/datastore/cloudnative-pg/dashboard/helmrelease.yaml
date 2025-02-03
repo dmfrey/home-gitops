@@ -24,7 +24,7 @@ spec:
     grafanaDashboard:
 
       labels:
-        grafana_dashboard: "true"
+        grafana_dashboard: ""
 
       annotations:
         kustomize.toolkit.fluxcd.io/substitute: disabled

@@ -14,5 +14,5 @@ resources:
 #     kustomize.toolkit.fluxcd.io/substitute: disabled
 #     grafana_folder: Datastore
 #   labels:
-#     grafana_dashboard: "true"
+#     grafana_dashboard: ""
 

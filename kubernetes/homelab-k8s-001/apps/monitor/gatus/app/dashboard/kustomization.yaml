@@ -12,4 +12,4 @@ generatorOptions:
     kustomize.toolkit.fluxcd.io/substitute: disabled
     grafana_folder: Status
   labels:
-    grafana_dashboard: "true"
+    grafana_dashboard: ""

@@ -257,7 +257,7 @@ spec:
     #     annotations:
     #       grafana_folder: Loki
     #     labels:
-    #       grafana_dashboard: "true"
+    #       grafana_dashboard: ""
     #   serviceMonitor:
     #     enabled: true
     #     metricsInstance:

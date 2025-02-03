@@ -57,7 +57,7 @@ spec:
       dashboards:
         enabled: true
         label: grafana_dashboard
-        labelValue: "true"
+        labelValue: ""
         annotations:
           grafana_folder: Network
 
