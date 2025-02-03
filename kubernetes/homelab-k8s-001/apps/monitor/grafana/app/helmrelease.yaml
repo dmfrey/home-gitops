@@ -219,7 +219,8 @@ spec:
             - name: "DS_PROMETHEUS"
               value: prometheus
         flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
+          # url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
+          url: https://raw.githubusercontent.com/jfroy/flatops/refs/heads/main/kubernetes/apps/observability/grafana/app/resources/flux-control-plane.json
           datasource:
             - name: "DS_PROMETHEUS"
               value: prometheus
