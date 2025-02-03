@@ -84,7 +84,7 @@ data:
             description: Application Metrics
             widget:
               type: prometheus
-              url: http://thanos-query-frontend.monitor.svc.cluster.local:9090
+              url: http://prometheus-operated.monitor.svc.cluster.local:9090
     - Calendar:
         - Agenda:
             widget:
