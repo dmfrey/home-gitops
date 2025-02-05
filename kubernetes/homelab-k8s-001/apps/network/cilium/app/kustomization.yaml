@@ -9,8 +9,6 @@ configMapGenerator:
   - name: cilium-helm-values
     files:
       - values.yaml=./helm-values.yaml
-    # options:
-    #   disableNameSuffixHash: true
 
 configurations:
   - kustomizeconfig.yaml
