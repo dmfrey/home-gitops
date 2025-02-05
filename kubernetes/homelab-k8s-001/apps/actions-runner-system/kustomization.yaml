@@ -9,6 +9,7 @@ resources:
   - ./actions-runner-controller/ks.yaml
 components:
   - ../../flux/components/alerts
+  - ../../flux/components/global-vars
   - ../../flux/components/sops
 transformers:
   - |-
