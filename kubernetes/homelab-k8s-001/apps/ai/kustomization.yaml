@@ -10,6 +10,7 @@ resources:
   - ./k8sgpt/ks.yaml
 components:
   - ../../flux/components/alerts
+  - ../../flux/components/sops
 transformers:
   - |-
     apiVersion: builtin

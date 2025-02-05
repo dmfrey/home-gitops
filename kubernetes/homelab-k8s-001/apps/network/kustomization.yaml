@@ -19,6 +19,7 @@ resources:
   - ./external-services
 components:
   - ../../flux/components/alerts
+  - ../../flux/components/sops
 transformers:
   - |-
     apiVersion: builtin
