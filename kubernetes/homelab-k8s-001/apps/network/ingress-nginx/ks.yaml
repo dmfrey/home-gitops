@@ -23,8 +23,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cert-manager-issuers
 ---
@@ -52,8 +50,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: nginx-certificates
 ---
@@ -81,7 +77,5 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: nginx-certificates

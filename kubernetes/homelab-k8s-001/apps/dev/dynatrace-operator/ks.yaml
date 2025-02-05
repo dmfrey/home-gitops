@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  decryption:
-    provider: sops
   dependsOn: []
   interval: 5m
   path: ./kubernetes/homelab-k8s-001/apps/dev/dynatrace-operator/app
@@ -37,8 +35,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  decryption:
-    provider: sops
   dependsOn:
     - name: dynatrace-operator
   interval: 5m

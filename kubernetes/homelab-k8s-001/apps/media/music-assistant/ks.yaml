@@ -26,8 +26,6 @@ spec:
       VOLSYNC_CLAIM: music-assistant-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

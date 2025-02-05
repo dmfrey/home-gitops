@@ -22,8 +22,6 @@ spec:
       VOLSYNC_CLAIM: ollama-backend-data
       VOLSYNC_CAPACITY: 10Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -51,8 +49,6 @@ spec:
       VOLSYNC_CLAIM: ollama-ui-data
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -79,8 +75,6 @@ spec:
       BACKEND_CLAIM: ollama-backend-data
       UI_CLAIM: ollama-ui-data
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: intel-device-plugins-gpu
     - name: ollama-backend-pvc

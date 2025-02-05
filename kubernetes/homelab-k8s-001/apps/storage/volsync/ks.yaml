@@ -23,8 +23,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: snapshot-controller
 # ---
@@ -47,8 +45,6 @@ spec:
 #     substitute:
 #       APP: *app
 #     substituteFrom: []
-#   decryption:
-#     provider: sops
 #   dependsOn:
 #     - name: volsync
 #     - name: kyverno

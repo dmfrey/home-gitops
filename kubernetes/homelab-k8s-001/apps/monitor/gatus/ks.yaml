@@ -31,8 +31,6 @@ spec:
       APP: *app
       DB: gatus
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cloudnative-pg
     - name: external-secrets-stores
@@ -63,8 +61,6 @@ spec:
       APP: *app
       GATUS_SUBDOMAIN: status
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: gatus-services
     - name: authentik

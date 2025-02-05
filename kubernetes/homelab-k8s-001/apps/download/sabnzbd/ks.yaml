@@ -19,8 +19,6 @@ spec:
   interval: 15m
   retryInterval: 1m
   timeout: 5m
-  decryption:
-    provider: sops
   postBuild:
     substituteFrom: []
   dependsOn:
@@ -46,8 +44,6 @@ spec:
   wait: false
   retryInterval: 1m
   timeout: 5m
-  decryption:
-    provider: sops
   postBuild:
     substituteFrom:
       - kind: Secret
@@ -75,8 +71,6 @@ spec:
   interval: 15m
   retryInterval: 1m
   timeout: 5m
-  decryption:
-    provider: sops
   postBuild:
     substitute:
       APP: *app

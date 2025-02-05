@@ -23,8 +23,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rabbitmq-cluster-operator
 ---
@@ -55,8 +53,6 @@ spec:
       APP: *app
       DB: dataflow
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cloudnative-pg
     - name: external-secrets-stores
@@ -89,8 +85,6 @@ spec:
       APP: *app
       DB: skipper
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cloudnative-pg
     - name: external-secrets-stores
@@ -120,8 +114,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: dataflow-services
     - name: dataflow-db

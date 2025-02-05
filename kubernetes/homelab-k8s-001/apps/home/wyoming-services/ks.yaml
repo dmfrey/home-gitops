@@ -26,8 +26,6 @@ spec:
       VOLSYNC_CLAIM: wyoming-piper-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -59,8 +57,6 @@ spec:
       VOLSYNC_CLAIM: wyoming-whisper-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -90,8 +86,6 @@ spec:
       PIPER_CLAIM: wyoming-piper-data
       WHISPER_CLAIM: wyoming-whisper-data
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: wyoming-piper-pvc
     - name: wyoming-whisper-pvc

@@ -25,8 +25,6 @@ spec:
       VOLSYNC_CLAIM: readarr-config
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -49,8 +47,6 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  decryption:
-    provider: sops
   postBuild:
     substituteFrom: []
   dependsOn:

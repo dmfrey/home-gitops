@@ -55,8 +55,6 @@ spec:
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
@@ -93,8 +91,6 @@ spec:
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto

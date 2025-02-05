@@ -26,8 +26,6 @@ spec:
       APP: *app
       DB: hedgedoc
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cloudnative-pg
     - name: external-secrets-stores
@@ -58,8 +56,6 @@ spec:
       VOLSYNC_CLAIM: hedgedoc-config
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: hedgedoc-services
     - name: external-secrets-stores

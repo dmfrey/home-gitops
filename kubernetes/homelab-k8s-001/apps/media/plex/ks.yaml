@@ -27,8 +27,6 @@ spec:
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

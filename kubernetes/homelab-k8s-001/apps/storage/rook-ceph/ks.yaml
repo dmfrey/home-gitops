@@ -23,8 +23,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: kube-prometheus-stack-crds
     - name: snapshot-controller
@@ -53,7 +51,5 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph

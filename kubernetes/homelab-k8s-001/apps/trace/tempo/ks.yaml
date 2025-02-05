@@ -21,8 +21,6 @@ spec:
   timeout: 5m
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
 ---
@@ -50,7 +48,5 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: tempo-services

@@ -20,8 +20,6 @@ spec:
   timeout: 15m
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -44,5 +42,3 @@ spec:
   timeout: 5m
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops

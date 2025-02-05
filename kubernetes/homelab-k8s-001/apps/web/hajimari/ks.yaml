@@ -23,7 +23,5 @@ spec:
     substitute:
       APP: portal
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: authentik

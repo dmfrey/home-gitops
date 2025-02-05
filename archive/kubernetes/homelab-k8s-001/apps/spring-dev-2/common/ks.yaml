@@ -21,5 +21,3 @@ spec:
   timeout: 5m
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops

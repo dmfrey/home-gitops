@@ -22,8 +22,6 @@ spec:
       VOLSYNC_CLAIM: llmvision-data
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -62,8 +60,6 @@ spec:
       VOLSYNC_CACHE_CAPACITY: 2Gi
       LLMVISION_CLAIM: llmvision-data
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cloudnative-pg
     - name: external-secrets-stores

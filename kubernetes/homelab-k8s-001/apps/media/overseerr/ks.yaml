@@ -26,8 +26,6 @@ spec:
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

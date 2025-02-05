@@ -21,8 +21,6 @@ spec:
   timeout: 5m
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: rook-ceph-cluster
     - name: rabbitmq-cluster-operator
@@ -49,8 +47,6 @@ spec:
   timeout: 5m
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -76,8 +72,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: monomart-services
     - name: cloudnative-pg
@@ -106,8 +100,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: monomart-services
     - name: cloudnative-pg

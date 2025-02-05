@@ -21,8 +21,6 @@
 #   retryInterval: 30s
 #   postBuild:
 #     substituteFrom: []
-#   decryption:
-#     provider: sops
 #   dependsOn:
 #     - name: kube-prometheus-stack-crds
 #     - name: rook-ceph-cluster
@@ -37,8 +35,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  decryption:
-    provider: sops
   dependsOn: []
     # - name: loki-services
   interval: 30m

@@ -34,8 +34,6 @@ spec:
     name: home-gitops
   dependsOn:
     - name: flux
-  decryption:
-    provider: sops
     secretRef:
       name: sops-age
   postBuild:

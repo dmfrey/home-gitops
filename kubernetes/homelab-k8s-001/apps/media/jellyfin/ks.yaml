@@ -27,8 +27,6 @@ spec:
       VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CAPACITY: 20Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: media-common-mounts
     - name: rook-ceph-cluster

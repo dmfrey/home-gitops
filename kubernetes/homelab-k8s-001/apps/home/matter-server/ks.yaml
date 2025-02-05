@@ -28,8 +28,6 @@ spec:
       VOLSYNC_CLAIM: matter-server-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     # - name: multus-config
     - name: volsync

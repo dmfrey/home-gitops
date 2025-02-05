@@ -21,6 +21,4 @@ spec:
   retryInterval: 30s
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn: []

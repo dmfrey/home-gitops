@@ -23,8 +23,6 @@
 #     substitute:
 #       APP: *app
 #     substituteFrom: []
-#   decryption:
-#     provider: sops
 #   dependsOn: []
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -51,8 +49,6 @@
 #     substitute:
 #       APP: *app
 #     substituteFrom: []
-#   decryption:
-#     provider: sops
 #   dependsOn:
 #     - name: kube-prometheus-stack-crds
 #     - name: external-dns-crds
@@ -81,8 +77,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn: []
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -109,6 +103,4 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn: []

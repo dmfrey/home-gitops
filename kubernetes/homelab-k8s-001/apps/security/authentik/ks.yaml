@@ -31,8 +31,6 @@ spec:
       APP: *app
       DB: authentik
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cloudnative-pg
     - name: external-secrets-stores
@@ -67,8 +65,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: dragonfly-operator
     - name: rook-ceph-cluster
@@ -97,8 +93,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: external-secrets
     - name: authentik-database
@@ -137,8 +131,6 @@ spec:
         name: authentik-grafana-secret
       - kind: Secret
         name: authentik-spring-dev-secret
-  decryption:
-    provider: sops
   dependsOn:
     - name: authentik
     - name: plex

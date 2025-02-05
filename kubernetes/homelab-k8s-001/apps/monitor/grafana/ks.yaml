@@ -31,8 +31,6 @@ spec:
       APP: *app
       DB: grafana
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: cloudnative-pg
     - name: external-secrets-stores
@@ -62,7 +60,5 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: grafana-common

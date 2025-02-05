@@ -22,8 +22,6 @@ spec:
       VOLSYNC_CLAIM: romm-redis-data
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -51,8 +49,6 @@ spec:
       VOLSYNC_CLAIM: romm-assets
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -80,8 +76,6 @@ spec:
       VOLSYNC_CLAIM: romm-resources
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -109,8 +103,6 @@ spec:
       VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -139,8 +131,6 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: romm-redis-data-pvc
     - name: romm-assets-pvc
