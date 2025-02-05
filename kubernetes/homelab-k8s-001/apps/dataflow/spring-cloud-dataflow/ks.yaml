@@ -40,7 +40,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/cnpg
+    - ../../../../flux/components/cnpg
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow-db"
   prune: false
   sourceRef:
@@ -74,7 +74,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/cnpg
+    - ../../../../flux/components/cnpg
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper-db"
   prune: false
   sourceRef:
