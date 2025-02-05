@@ -29,6 +29,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store
+      namespace: external-secrets
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -59,5 +60,6 @@ spec:
   dependsOn:
     - name: hedgedoc-services
     - name: onepassword-store
+      namespace: external-secrets
     - name: rook-ceph-cluster
     - name: volsync

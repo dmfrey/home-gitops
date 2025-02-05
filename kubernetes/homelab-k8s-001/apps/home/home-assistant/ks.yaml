@@ -63,6 +63,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store
+      namespace: external-secrets
     - name: mosquitto
     # - name: multus-config
     - name: rook-ceph-cluster

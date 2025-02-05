@@ -25,3 +25,4 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: onepassword-store
+      namespace: external-secrets

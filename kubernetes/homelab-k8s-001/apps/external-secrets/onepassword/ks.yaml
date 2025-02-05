@@ -4,7 +4,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app onepassword
-  namespace: &namespace flux-system
+  namespace: &namespace external-secrets
 spec:
   commonMetadata:
     labels:
@@ -20,7 +20,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: external-secrets
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -29,15 +29,15 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app onepassword-store
-  namespace: &namespace flux-system
+  namespace: &namespace external-secrets
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword
-      # namespace: external-secrets
-  interval: 5m
+      namespace: external-secrets
+  interval: 30m
   path: ./kubernetes/homelab-k8s-001/apps/external-secrets/onepassword/store
   postBuild:
     substitute:
@@ -48,7 +48,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  retryInterval: 30s
-  targetNamespace: external-secrets
-  timeout: 1m30s
+  targetNamespace: *namespace
+  timeout: 5m
   wait: true
