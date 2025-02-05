@@ -42,7 +42,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
+    # substituteFrom: []
   prune: true
   sourceRef:
     kind: GitRepository
