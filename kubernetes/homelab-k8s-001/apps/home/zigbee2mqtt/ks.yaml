@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/common"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -38,7 +38,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -76,7 +76,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/app-02"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -13,7 +13,7 @@ spec:
   components:
     - ../../../../components/cnpg
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/hedgedoc/services"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -44,7 +44,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/hedgedoc/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -43,7 +43,7 @@ spec:
   interval: 15m
   timeout: 2m
   path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/provision"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/services"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -42,7 +42,7 @@ spec:
   components:
     - ../../../../components/cnpg
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow-db"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -76,7 +76,7 @@ spec:
   components:
     - ../../../../components/cnpg
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper-db"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -108,7 +108,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -13,7 +13,7 @@ spec:
   components:
     - ../../../../components/cnpg
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/database"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -50,7 +50,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/kv"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -85,7 +85,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -119,7 +119,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

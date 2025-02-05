@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: ollama
   interval: 10m
   path: "./kubernetes/homelab-k8s-001/templates/volsync"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -41,7 +41,7 @@ spec:
       app.kubernetes.io/name: ollama
   interval: 10m
   path: "./kubernetes/homelab-k8s-001/templates/volsync"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -70,7 +70,7 @@ spec:
       app.kubernetes.io/name: ollama
   interval: 10m
   path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/app"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

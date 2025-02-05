@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/homelab-k8s-001/apps/datastore/mariadb/crds
   postBuild:
     substituteFrom: []
-  prune: true
+  prune: false
   retryInterval: 30s
   sourceRef:
     kind: GitRepository
@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/homelab-k8s-001/apps/datastore/mariadb/app
   postBuild:
     substituteFrom: []
-  prune: true
+  prune: false
   retryInterval: 30s
   sourceRef:
     kind: GitRepository

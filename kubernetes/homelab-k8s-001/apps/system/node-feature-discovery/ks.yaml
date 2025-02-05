@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/system/node-feature-discovery/app"
-  prune: true
+  prune: false
   wait: false
   interval: 10m
   retryInterval: 1m
@@ -34,7 +34,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/system/node-feature-discovery/rules"
-  prune: true
+  prune: false
   wait: false
   interval: 10m
   retryInterval: 1m

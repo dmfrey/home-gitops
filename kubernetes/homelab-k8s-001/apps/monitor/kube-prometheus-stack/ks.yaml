@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/crds
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -36,7 +36,7 @@ spec:
 #     labels:
 #       app.kubernetes.io/name: *app
 #   path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/pushgateway
-#   prune: true
+#   prune: false
 #   sourceRef:
 #     kind: GitRepository
 #     name: flux-system
@@ -57,7 +57,7 @@ spec:
 #   namespace: flux-system
 # spec:
 #   path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/rules
-#   prune: true
+#   prune: false
 #   sourceRef:
 #     kind: GitRepository
 #     name: flux-system
@@ -84,7 +84,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/homelab-k8s-001/apps/monitor/kube-prometheus-stack/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

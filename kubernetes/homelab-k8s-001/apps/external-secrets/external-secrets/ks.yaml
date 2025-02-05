@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/homelab-k8s-001/apps/external-secrets/external-secrets/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -39,7 +39,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/homelab-k8s-001/apps/external-secrets/external-secrets/stores
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -68,7 +68,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/homelab-k8s-001/apps/external-secrets/external-secrets/dummy
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
