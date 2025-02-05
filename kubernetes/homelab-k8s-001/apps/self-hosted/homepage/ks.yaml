@@ -24,4 +24,4 @@ spec:
       APP: *app
     substituteFrom: []
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store

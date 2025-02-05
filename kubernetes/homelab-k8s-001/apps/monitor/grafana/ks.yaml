@@ -33,7 +33,7 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
-    - name: external-secrets-stores
+    - name: onepassword-store
     - name: rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

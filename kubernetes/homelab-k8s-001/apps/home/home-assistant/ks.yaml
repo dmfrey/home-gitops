@@ -62,7 +62,7 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
-    - name: external-secrets-stores
+    - name: onepassword-store
     - name: mosquitto
     # - name: multus-config
     - name: rook-ceph-cluster
