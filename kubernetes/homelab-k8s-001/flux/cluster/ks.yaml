@@ -62,6 +62,26 @@ spec:
       namespace: flux-system
   interval: 30m
   path: ./kubernetes/homelab-k8s-001/apps
+  patches:
+    - patch: |
+        apiVersion: kustomize.toolkit.fluxcd.io/v1
+        kind: Kustomization
+        metadata:
+          name: not-used
+        spec:
+          decryption:
+            provider: sops
+            secretRef:
+              name: sops-age
+          postBuild:
+            substituteFrom:
+              - kind: ConfigMap
+                name: cluster-settings
+              - kind: Secret
+                name: cluster-secrets
+      target:
+        group: kustomize.toolkit.fluxcd.io
+        kind: Kustomization
   postBuild:
     substituteFrom:
       - kind: Secret
@@ -77,25 +97,3 @@ spec:
     namespace: flux-system
   timeout: 5m
   wait: false
-  patches:
-    - # Add Sops decryption to child Kustomizations
-      patch: |
-        - op: add
-          path: /spec/decryption
-          value:
-            provider: sops
-            secretRef:
-              name: sops-age
-        - op: add
-          path: /spec/postBuild/substituteFrom/-
-          value:
-            kind: ConfigMap
-            name: cluster-settings
-        - op: add
-          path: /spec/postBuild/substituteFrom/-
-          value:
-            kind: Secret
-            name: cluster-secrets
-      target:
-        group: kustomize.toolkit.fluxcd.io
-        kind: Kustomization
