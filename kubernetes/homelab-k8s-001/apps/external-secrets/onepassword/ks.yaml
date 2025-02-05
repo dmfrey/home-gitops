@@ -14,7 +14,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   prune: true
   sourceRef:
     kind: GitRepository
@@ -42,7 +41,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   prune: true
   sourceRef:
     kind: GitRepository
