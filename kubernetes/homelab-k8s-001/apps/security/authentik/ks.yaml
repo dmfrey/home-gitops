@@ -96,6 +96,7 @@ spec:
     substituteFrom: []
   dependsOn:
     - name: external-secrets
+      namespace: external-secrets
     - name: authentik-database
     - name: authentik-kv
     - name: kyverno
