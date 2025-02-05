@@ -5,13 +5,14 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ../../templates/alerts
   # Flux-Kustomizations
   - ./common/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./rdt-client/ks.yaml
   - ./prowlarr/ks.yaml
+components:
+  - ../../flux/components/alerts
 transformers:
   - |-
     apiVersion: builtin

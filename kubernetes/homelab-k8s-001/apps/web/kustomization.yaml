@@ -5,11 +5,12 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ../../templates/alerts
   # Flux-Kustomizations
   - ./hajimari/ks.yaml
   - ./theme-park/ks.yaml
   # - ./videos/ks.yaml
+components:
+  - ../../flux/components/alerts
 transformers:
   - |-
     apiVersion: builtin

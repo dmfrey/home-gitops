@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ../../templates/alerts
   # Flux-Kustomizations
   # - ./blocky/ks.yaml
   - ./cilium/ks.yaml
@@ -18,6 +17,8 @@ resources:
   # - ./multus/ks.yaml
   # # Standard Resources
   - ./external-services
+components:
+  - ../../flux/components/alerts
 transformers:
   - |-
     apiVersion: builtin

@@ -5,12 +5,13 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ../../templates/alerts
   # Flux-Kustomizations
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
   # - ./mariadb/ks.yaml
   - ./rabbitmq-cluster-operator/ks.yaml
+components:
+  - ../../flux/components/alerts
 transformers:
   - |-
     apiVersion: builtin

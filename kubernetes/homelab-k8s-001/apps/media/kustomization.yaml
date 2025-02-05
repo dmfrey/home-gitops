@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ../../templates/alerts
   # Flux-Kustomizations
   - ./common/ks.yaml
   - ./bazarr/ks.yaml
@@ -25,6 +24,8 @@ resources:
   # - ./tdarr/ks.yaml
   - ./unpackerr/ks.yaml
   - ./wizarr/ks.yaml
+components:
+  - ../../flux/components/alerts
 transformers:
   - |-
     apiVersion: builtin

@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ../../templates/alerts
   # Flux-Kustomizations
   - ./fstrim/ks.yaml
   - ./rook-ceph/ks.yaml
@@ -13,6 +12,8 @@ resources:
   - ./nfs-subdir/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./volsync/ks.yaml
+components:
+  - ../../flux/components/alerts
 transformers:
   - |-
     apiVersion: builtin
