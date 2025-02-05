@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-connect
+    - name: onepassword-store
   interval: 5m
   path: ./kubernetes/homelab-k8s-001/apps/actions-runner-system/actions-runner-controller/app
   postBuild:
