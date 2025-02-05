@@ -15,7 +15,7 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -43,7 +43,7 @@ spec:
     substitute:
       APP: *app
     substituteFrom: []
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
