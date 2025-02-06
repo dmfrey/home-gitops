@@ -4,6 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: otelcol-dm
+
 spec:
 
   interval: 15m
@@ -184,7 +185,7 @@ spec:
             max_interval: 10s
             max_elapsed_time: 300s
         otlphttp/tempo:
-          endpoint: http://tempo-distributor.trace.svc.cluster.local:4318
+          endpoint: http://tempo-distributor.observability.svc.cluster.local:4318
           tls:
             insecure: true
           retry_on_failure:
@@ -193,7 +194,7 @@ spec:
 
         # Data sources: metrics
         # prometheus:
-        #   endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+        #   endpoint: kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
         #   send_timestamps: true
         #   # metric_expiration: 180m
         #   enable_open_metrics: true
@@ -203,7 +204,7 @@ spec:
 
         # Data sources: metrics
         prometheusremotewrite:
-          endpoint: http://thanos-receive-ingestor-headless.monitor.svc.cluster.local:19291/api/v1/receive
+          endpoint: http://thanos-receive-ingestor-headless.observability.svc.cluster.local:19291/api/v1/receive
           external_labels:
             thanos: "true"
           tls:
@@ -446,7 +447,7 @@ spec:
 
         # Data sources: metrics
         # prometheus:
-        #   endpoint: kube-prometheus-stack-prometheus.monitor.svc.cluster.local:9090
+        #   endpoint: kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
         #   send_timestamps: true
         #   # metric_expiration: 180m
         #   enable_open_metrics: true
@@ -456,7 +457,7 @@ spec:
 
         # Data sources: metrics
         prometheusremotewrite:
-          endpoint: http://thanos-receive-ingestor-headless.monitor.svc.cluster.local:19291/api/v1/receive
+          endpoint: http://thanos-receive-ingestor-headless.observability.svc.cluster.local:19291/api/v1/receive
           external_labels:
             receive: "true"
           tls:

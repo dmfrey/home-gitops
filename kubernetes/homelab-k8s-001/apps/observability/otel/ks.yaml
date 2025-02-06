@@ -3,18 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app blackbox-exporter
-  namespace: flux-system
+  name: &app otel-collector
+  namespace: &namespace observability
 spec:
-  targetNamespace: monitor
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/homelab-k8s-001/apps/monitor/blackbox-exporter/app
+  interval: 30m
+  path: "./kubernetes/homelab-k8s-001/apps/observability/otel/collector"
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  prune: false
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
   wait: false
-  interval: 30m
-  timeout: 15m
