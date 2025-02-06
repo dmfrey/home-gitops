@@ -14,7 +14,7 @@ spec:
   postBuild:
     substitute:
       APP: portal
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
