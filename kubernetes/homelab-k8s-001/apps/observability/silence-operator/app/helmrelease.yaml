@@ -32,7 +32,7 @@ spec:
     - name: kube-prometheus-stack
       namespace: observability
     - name: silence-operator-crds
-      namespace: monitor
+      namespace: observability
 
   values:
 
@@ -62,7 +62,7 @@ spec:
         kind: Silence
         metadata:
           name: ceph-node-nfsmount-diskspace-warning
-          namespace: monitor
+          namespace: observability
         spec:
           matchers:
             - name: alertname
@@ -76,7 +76,7 @@ spec:
         kind: Silence
         metadata:
           name: ceph-node-local-diskspace-warning
-          namespace: monitor
+          namespace: observability
         spec:
           matchers:
             - name: alertname
