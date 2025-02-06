@@ -20,7 +20,7 @@ resources:
   - ./external-services
 components:
   - ../../flux/components/alerts
-  - ../../flux/components/global-vars
+  # - ../../flux/components/global-vars
   # - ../../flux/components/namespace
   - ../../flux/components/sops
 transformers:
