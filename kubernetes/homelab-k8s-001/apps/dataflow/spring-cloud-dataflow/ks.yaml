@@ -128,6 +128,19 @@ spec:
       namespace: *namespace
     - name: skipper-db
       namespace: *namespace
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: spring-cloud-dataflow-prometheus-proxy
+      namespace: *namespace
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: spring-cloud-dataflow-server
+      namespace: *namespace
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: spring-cloud-dataflow-server
+      namespace: *namespace
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/app"
   postBuild:
