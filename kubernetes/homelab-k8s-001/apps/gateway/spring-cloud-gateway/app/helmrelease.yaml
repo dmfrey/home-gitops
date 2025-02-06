@@ -32,6 +32,3 @@ spec:
 
   uninstall:
     keepHistory: false
-
-  driftDetection:
-    mode: enabled
