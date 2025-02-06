@@ -4,45 +4,50 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app k8sgpt
-  namespace: flux-system
+  namespace: &namespace ai
 spec:
-  targetNamespace: ai
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 10m
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/ai/k8sgpt/app"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  postBuild:
-    substitute:
-      APP: *app
-    substituteFrom: []
-  dependsOn: []
+    namespace: flux-system
+  timeout: 5m
+  targetNamespace: *namespace
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app k8sgpt-ollama
-  namespace: flux-system
+  namespace: &namespace ai
 spec:
-  targetNamespace: ai
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 10m
+  dependsOn:
+    - name: ollama
+      namespace: ai
+    - name: k8sgpt
+      namespace: ai
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/ai/k8sgpt/resource"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  postBuild:
-    substitute:
-      APP: *app
-    substituteFrom: []
-  dependsOn:
-    - name: ollama
-    - name: k8sgpt
+    namespace: flux-system
+  timeout: 5m
+  targetNamespace: *namespace
+  wait: true

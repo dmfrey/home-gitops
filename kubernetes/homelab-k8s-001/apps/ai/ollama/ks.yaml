@@ -4,78 +4,93 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: ollama-backend-pvc
-  namespace: flux-system
+  namespace: &namespace ai
 spec:
-  targetNamespace: ai
   commonMetadata:
     labels:
       app.kubernetes.io/name: ollama
-  interval: 10m
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage
+    - name: volsync
+      namespace: storage
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/templates/volsync"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   postBuild:
     substitute:
       APP: ollama-backend
       VOLSYNC_CLAIM: ollama-backend-data
       VOLSYNC_CAPACITY: 10Gi
-    substituteFrom: []
-  dependsOn:
-    - name: rook-ceph-cluster
-    - name: volsync
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: ollama-ui-pvc
-  namespace: flux-system
+  namespace: &namespace ai
 spec:
-  targetNamespace: ai
   commonMetadata:
     labels:
       app.kubernetes.io/name: ollama
-  interval: 10m
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage
+    - name: volsync
+      namespace: storage
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/templates/volsync"
   prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   postBuild:
     substitute:
       APP: ollama-ui
       VOLSYNC_CLAIM: ollama-ui-data
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom: []
-  dependsOn:
-    - name: rook-ceph-cluster
-    - name: volsync
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: ollama
-  namespace: flux-system
+  namespace: &namespace ai
 spec:
-  targetNamespace: ai
   commonMetadata:
     labels:
       app.kubernetes.io/name: ollama
-  interval: 10m
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/app"
+  dependsOn:
+    - name: intel-device-plugins-gpu
+      namespace: system
+    - name: ollama-backend-pvc
+      namespace: ai
+    - name: ollama-ui-pvc
+      namespace: ai
   prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   postBuild:
     substitute:
       BACKEND_CLAIM: ollama-backend-data
       UI_CLAIM: ollama-ui-data
     substituteFrom: []
-  dependsOn:
-    - name: intel-device-plugins-gpu
-    - name: ollama-backend-pvc
-    - name: ollama-ui-pvc
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  targetNamespace: *namespace
+  wait: true
