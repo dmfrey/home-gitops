@@ -10,7 +10,6 @@ resources:
   # - ./blackbox-exporter/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
-  - ./kube-prometheus-stack/ks.yaml
   - ./metrics-server/ks.yaml
   # - ./otel/ks.yaml
   - ./silence-operator/ks.yaml
