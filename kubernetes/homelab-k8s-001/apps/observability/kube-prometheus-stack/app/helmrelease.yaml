@@ -30,6 +30,9 @@ spec:
       strategy: rollback
       retries: 3
 
+  driftDetection:
+    mode: enabled
+
   dependsOn:
     - name: prometheus-operator-crds
       namespace: monitor
