@@ -30,12 +30,7 @@ spec:
       strategy: rollback
       retries: 3
 
-  driftDetection:
-    mode: enabled
-
   dependsOn:
-    - name: prometheus-operator-crds
-      namespace: monitor
     - name: rook-ceph-cluster
       namespace: storage
 
