@@ -21,8 +21,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  dependsOn:
-    - name: kube-prometheus-stack-crds
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
 # kind: Kustomization

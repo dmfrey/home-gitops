@@ -26,7 +26,6 @@ spec:
   dependsOn:
     - name: media-common-mounts
     - name: reflector
-    - name: kube-prometheus-stack-crds
     - name: pod-gateway
     - name: volsync
 ---

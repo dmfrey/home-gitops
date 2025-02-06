@@ -6,8 +6,6 @@ resources:
   - ./alertmanagerconfig.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  # - ./prometheusrule.yaml
-  # - ./scrapeconfig.yaml
   - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: flux-kube-state-metrics-config
@@ -16,6 +14,6 @@ configMapGenerator:
     options:
       labels:
         app.kubernetes.io/part-of: flux
-        app.kubernetes.io/component: monitoring
+        app.kubernetes.io/component: observability
 configurations:
   - kustomizeconfig.yaml

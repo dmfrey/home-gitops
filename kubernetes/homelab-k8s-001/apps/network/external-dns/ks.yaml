@@ -45,7 +45,6 @@
 #     substitute:
 #       APP: *app
 #   dependsOn:
-#     - name: kube-prometheus-stack-crds
 #     - name: external-dns-crds
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
