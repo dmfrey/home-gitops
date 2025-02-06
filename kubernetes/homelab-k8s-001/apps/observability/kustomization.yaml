@@ -2,24 +2,13 @@
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# namespace: logs
+namespace: observability
 resources:
-  # Pre Flux-Kustomizations
-  - ./namespace.yaml
-  # Flux-Kustomizations
   # - ./fluent-bit/ks.yaml
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
 components:
   - ../../flux/components/alerts
-  # - ../../flux/components/global-vars
-  # - ../../flux/components/namespace
+  - ../../flux/components/global-vars
+  - ../../flux/components/namespace
   - ../../flux/components/sops
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: NamespaceTransformer
-    metadata:
-      name: not-used
-      namespace: logs
-    unsetOnly: true
