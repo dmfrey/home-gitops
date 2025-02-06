@@ -94,6 +94,7 @@ spec:
     - name: authentik-database
     - name: authentik-kv
     - name: kyverno
+      namespace: policy
     - name: smtp-relay
     - name: grafana
 ---

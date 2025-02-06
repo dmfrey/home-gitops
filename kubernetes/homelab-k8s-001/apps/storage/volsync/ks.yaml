@@ -44,3 +44,4 @@ spec:
 #   dependsOn:
 #     - name: volsync
 #     - name: kyverno
+#       namespace: policy
