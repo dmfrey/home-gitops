@@ -36,9 +36,6 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage
 
-  # driftDetection:
-  #   mode: enabled
-
   valuesFrom:
   - kind: ConfigMap
     name: flux-kube-state-metrics-config
