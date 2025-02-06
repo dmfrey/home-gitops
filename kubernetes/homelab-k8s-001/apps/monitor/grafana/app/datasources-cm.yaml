@@ -35,7 +35,7 @@ data:
               datasourceUid: tempo
       - name: Loki
         type: loki
-        url: http://loki-headless.logs.svc.cluster.local:3100
+        url: http://loki-headless.observability.svc.cluster.local:3100
         uid: loki
         jsonData:
           derivedFields:
@@ -47,7 +47,7 @@ data:
       - name: Tempo
         access: proxy
         type: tempo
-        url: http://tempo-gateway.trace.svc.cluster.local
+        url: http://tempo-gateway.observability.svc.cluster.local
         jsonData:
           httpMethod: GET
           tracesToLogsV2:
