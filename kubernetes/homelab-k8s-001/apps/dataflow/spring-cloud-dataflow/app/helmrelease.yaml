@@ -113,6 +113,8 @@ spec:
         annotations:
           nginx.org/websocket-services: *app
           hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:spring"
+          hajimari.io/url: https://dataflow.${SECRET_DOMAIN}/dashboard
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         ingressClassName: internal
         hostname: dataflow.${SECRET_DOMAIN}
