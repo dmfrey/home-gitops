@@ -700,7 +700,7 @@ spec:
       datasources:
         enabled: true
         label: grafana_datasource
-        labelValue: "true"
+        labelValue: ""
         searchNamespace: ALL
       # notifiers:
       #   enabled: true

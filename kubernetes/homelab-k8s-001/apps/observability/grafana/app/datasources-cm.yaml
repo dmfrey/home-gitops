@@ -3,8 +3,7 @@ kind: ConfigMap
 metadata:
   name: grafana-datasource
   labels:
-     grafana_datasource: "1"
-     grafana.io/datasource: "true"
+     grafana_datasource: ""
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 data:
