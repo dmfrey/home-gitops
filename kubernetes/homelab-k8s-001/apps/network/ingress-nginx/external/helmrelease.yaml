@@ -95,7 +95,7 @@ spec:
             any: true
 
       extraArgs:
-        default-ssl-certificate: "network/${SECRET_DOMAIN}-tls"
+        default-ssl-certificate: "cert-manager/dmfrey-com-tls"
         publish-status-address: *hostname
 
       terminationGracePeriodSeconds: 120
