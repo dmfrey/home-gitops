@@ -4,111 +4,132 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dataflow-services
-  namespace: flux-system
+  namespace: &namspace dataflow
 spec:
-  targetNamespace: dataflow
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: rabbitmq-cluster-operator
+      namespace: flux-system  # datastore
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/services"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: dataflow   # *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: rabbitmq-cluster-operator
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dataflow-db
-  namespace: flux-system
+  namespace: &namspace dataflow
 spec:
-  targetNamespace: dataflow
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../flux/components/cnpg
-  path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow-db"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: flux-sustem  # datasource
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: flux-sustem  # rook-ceph
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-dataflow
+      namespace: *namspace
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow-db"
   postBuild:
     substitute:
       APP: *app
       DB: dataflow
-  dependsOn:
-    - name: cloudnative-pg
-    - name: onepassword-store
-      namespace: external-secrets
-    - name: rook-ceph-cluster
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app skipper-db
-  namespace: flux-system
+  namespace: &namspace dataflow
 spec:
-  targetNamespace: dataflow
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../flux/components/cnpg
-  path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper-db"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: flux-sustem  # datasource
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: flux-sustem  # rook-ceph
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-skipper
+      namespace: *namspace
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper-db"
   postBuild:
     substitute:
       APP: *app
       DB: skipper
-  dependsOn:
-    - name: cloudnative-pg
-    - name: onepassword-store
-      namespace: external-secrets
-    - name: rook-ceph-cluster
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dataflow
-  namespace: flux-system
+  namespace: &namspace dataflow
 spec:
-  targetNamespace: dataflow
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: dataflow-services
+      namespace: *namespace
+    - name: dataflow-db
+      namespace: *namespace
+    - name: skipper-db
+      namespace: *namespace
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/app"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: dataflow-services
-    - name: dataflow-db
-    - name: skipper-db
+  wait: false
