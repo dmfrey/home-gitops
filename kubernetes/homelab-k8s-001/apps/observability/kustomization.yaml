@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: observability
 resources:
   # - ./fluent-bit/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
   - ./tempo/ks.yaml
