@@ -49,7 +49,7 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: pg-dataflow
-      namespace: *namspace
+      namespace: *namespace
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow-db"
   postBuild:
@@ -88,7 +88,7 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: pg-skipper
-      namespace: *namspace
+      namespace: *namespace
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper-db"
   postBuild:
