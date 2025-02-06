@@ -4,20 +4,17 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app metrics-server
-  namespace: flux-system
+  namespace: &namespace kube-system
 spec:
-  targetNamespace: monitor
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/monitor/metrics-server/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
+  wait: false
