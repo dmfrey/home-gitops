@@ -16,8 +16,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   postBuild:
     substitute:
@@ -48,8 +47,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: true
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   dependsOn:
     - name: tf-controller

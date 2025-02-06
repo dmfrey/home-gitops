@@ -16,8 +16,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: true
-  interval: 15m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
 # ---
 # # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -37,8 +36,7 @@ spec:
 #     kind: GitRepository
 #     name: flux-system
 #   wait: true
-#   interval: 15m
-#   retryInterval: 1m
+#   interval: 30m
 #   timeout: 5m
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -54,8 +52,7 @@ spec:
 #     kind: GitRepository
 #     name: flux-system
 #   wait: true
-#   interval: 15m
-#   retryInterval: 1m
+#   interval: 30m
 #   timeout: 5m
 #   dependsOn:
 #     - name: kube-prometheus-stack-crds
@@ -77,8 +74,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 15m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   postBuild:
     substitute:

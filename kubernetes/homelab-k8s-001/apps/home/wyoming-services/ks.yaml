@@ -15,8 +15,7 @@ spec:
     kind: GitRepository
     name: flux-system
   prune: false
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   postBuild:
     substitute:
@@ -45,8 +44,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   postBuild:
     substitute:
@@ -73,8 +71,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/app"
   prune: false
   wait: true
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   sourceRef:
     kind: GitRepository

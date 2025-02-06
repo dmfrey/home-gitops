@@ -16,8 +16,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   dependsOn:
     - name: rook-ceph-cluster
@@ -40,8 +39,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -61,8 +59,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   postBuild:
     substitute:
@@ -88,8 +85,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 10m
-  retryInterval: 1m
+  interval: 30m
   timeout: 5m
   postBuild:
     substitute:

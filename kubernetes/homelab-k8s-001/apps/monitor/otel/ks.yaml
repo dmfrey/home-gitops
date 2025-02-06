@@ -15,8 +15,7 @@
 #     kind: GitRepository
 #     name: flux-system
 #   wait: false
-#   interval: 10m
-#   retryInterval: 1m
+#   interval: 30m
 #   timeout: 5m
 #   postBuild:
 #     substitute:
@@ -41,7 +40,6 @@ spec:
     name: flux-system
   wait: false
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
   postBuild:
     substitute:

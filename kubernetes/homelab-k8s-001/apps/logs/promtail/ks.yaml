@@ -20,6 +20,5 @@ spec:
     kind: GitRepository
     name: flux-system
   targetNamespace: logs
-  retryInterval: 30s
-  timeout: 1m30s
+  timeout: 5m
   wait: false

@@ -16,10 +16,8 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: true
-  interval: 5m
-  timeout: 1m30s
-  retryInterval: 30s
+  interval: 30m
+  timeout: 5m
   postBuild:
     substitute:
       APP: *app
-  dependsOn: []
