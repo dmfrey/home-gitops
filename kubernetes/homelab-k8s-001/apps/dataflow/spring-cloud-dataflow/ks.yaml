@@ -24,7 +24,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -63,7 +63,7 @@ spec:
     substitute:
       APP: *app
       DB: dataflow
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -102,7 +102,7 @@ spec:
     substitute:
       APP: *app
       DB: skipper
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -146,7 +146,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
