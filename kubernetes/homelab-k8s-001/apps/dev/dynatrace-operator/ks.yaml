@@ -4,23 +4,23 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dynatrace-operator
-  namespace: flux-system
+  namespace: &namespace dev
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn: []
   interval: 30m
   path: ./kubernetes/homelab-k8s-001/apps/dev/dynatrace-operator/app
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   timeout: 5m
-  targetNamespace: dev
+  targetNamespace: *namespace
   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -28,13 +28,14 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dynatrace-resources
-  namespace: flux-system
+  namespace: &namespace dev
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: dynatrace-operator
+      namespace: *namespace
   interval: 30m
   path: ./kubernetes/homelab-k8s-001/apps/dev/dynatrace-operator/resources
   postBuild:
@@ -44,6 +45,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   timeout: 5m
-  targetNamespace: dev
+  targetNamespace: *namespace
   wait: false
