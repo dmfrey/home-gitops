@@ -11,9 +11,9 @@ spec:
       app.kubernetes.io/name: ollama
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: storage
+      namespace: flux-system  # storage
     - name: volsync
-      namespace: storage
+      namespace: flux-system  # storage
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/templates/volsync"
   postBuild:
@@ -42,8 +42,8 @@ spec:
       app.kubernetes.io/name: ollama
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: storage
-    - name: volsync
+      namespace: flux-system  # storage
+    - name: flux-system  # volsync
       namespace: storage
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/templates/volsync"
@@ -76,7 +76,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/app"
   dependsOn:
     - name: intel-device-plugins-gpu
-      namespace: system
+      namespace: flux-system  # system
     - name: ollama-backend-pvc
       namespace: ai
     - name: ollama-ui-pvc
