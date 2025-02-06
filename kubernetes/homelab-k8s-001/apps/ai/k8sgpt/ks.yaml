@@ -14,7 +14,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -43,7 +43,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

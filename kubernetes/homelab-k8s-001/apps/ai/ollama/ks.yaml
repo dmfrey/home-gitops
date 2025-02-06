@@ -21,7 +21,7 @@ spec:
       APP: ollama-backend
       VOLSYNC_CLAIM: ollama-backend-data
       VOLSYNC_CAPACITY: 10Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -47,13 +47,12 @@ spec:
       namespace: flux-system  # storage
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/templates/volsync"
-  prune: false
   postBuild:
     substitute:
       APP: ollama-ui
       VOLSYNC_CLAIM: ollama-ui-data
       VOLSYNC_CAPACITY: 2Gi
-    substituteFrom: []
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -73,7 +72,6 @@ spec:
     labels:
       app.kubernetes.io/name: ollama
   interval: 30m
-  path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/app"
   dependsOn:
     - name: intel-device-plugins-gpu
       namespace: flux-system  # system
@@ -81,12 +79,12 @@ spec:
       namespace: ai
     - name: ollama-ui-pvc
       namespace: ai
-  prune: false
+  path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/app"
+  prune: true
   postBuild:
     substitute:
       BACKEND_CLAIM: ollama-backend-data
       UI_CLAIM: ollama-ui-data
-    substituteFrom: []
   sourceRef:
     kind: GitRepository
     name: flux-system
