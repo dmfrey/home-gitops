@@ -30,7 +30,7 @@ spec:
 
   dependsOn:
     - name: kube-prometheus-stack
-      namespace: monitor
+      namespace: observability
     - name: silence-operator-crds
       namespace: monitor
 
