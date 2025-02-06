@@ -11,9 +11,6 @@ resources:
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   # - ./otel/ks.yaml
-  - ./silence-operator/ks.yaml
-  - ./smartctl-exporter/ks.yaml
-  - ./unpoller/ks.yaml
 components:
   - ../../flux/components/alerts
   # - ../../flux/components/global-vars
