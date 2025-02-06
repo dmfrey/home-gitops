@@ -40,11 +40,11 @@ spec:
     - ../../../../flux/components/cnpg
   dependsOn:
     - name: cloudnative-pg
-      namespace: flux-sustem  # datasource
+      namespace: flux-system  # datasource
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
-      namespace: flux-sustem  # rook-ceph
+      namespace: flux-system  # rook-ceph
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
@@ -79,11 +79,11 @@ spec:
     - ../../../../flux/components/cnpg
   dependsOn:
     - name: cloudnative-pg
-      namespace: flux-sustem  # datasource
+      namespace: flux-system  # datasource
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
-      namespace: flux-sustem  # rook-ceph
+      namespace: flux-system  # rook-ceph
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
