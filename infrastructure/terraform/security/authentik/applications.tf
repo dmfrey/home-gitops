@@ -102,7 +102,7 @@ resource "authentik_application" "application" {
 #     kubernetes_replicas : 2
 #     kubernetes_namespace : "security"
 #     kubernetes_ingress_annotations : {
-#       "cert-manager.io/cluster-issuer" : "letsencrypt-prod",
+#       "cert-manager.io/cluster-issuer" : "letsencrypt-production",
 #       "nginx.ingress.kubernetes.io/cors-allow-credentials": "true",
 #       "nginx.ingress.kubernetes.io/cors-allow-origin": "https://${var.cluster_domain}",
 #       "nginx.ingress.kubernetes.io/cors-allow-methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",

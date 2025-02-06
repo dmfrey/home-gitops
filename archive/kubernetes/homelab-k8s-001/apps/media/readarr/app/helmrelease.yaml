@@ -135,7 +135,7 @@ spec:
       external:
         className: external
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          cert-manager.io/cluster-issuer: letsencrypt-production
           theme.home.arpa/enabled: "true"
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"

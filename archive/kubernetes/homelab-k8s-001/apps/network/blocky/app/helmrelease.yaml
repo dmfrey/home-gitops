@@ -138,7 +138,7 @@ spec:
       internal:
         className: internal
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host dns.${SECRET_DOMAIN}
             paths:
