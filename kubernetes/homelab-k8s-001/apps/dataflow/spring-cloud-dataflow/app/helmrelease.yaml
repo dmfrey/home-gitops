@@ -80,7 +80,7 @@ spec:
     server:
 
       configuration:
-        metricsDashboard: https://grafana.dmfrey.com:443
+        metricsDashboard: https://grafana.${SECRET_DOMAIN}:443
 
       extraEnvVars:
         - name: DEBUG
