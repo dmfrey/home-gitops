@@ -26,7 +26,6 @@ spec:
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

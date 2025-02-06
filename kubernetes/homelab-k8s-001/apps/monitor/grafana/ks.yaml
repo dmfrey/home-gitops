@@ -30,7 +30,6 @@ spec:
     substitute:
       APP: *app
       DB: grafana
-    substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store
@@ -60,6 +59,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: grafana-common

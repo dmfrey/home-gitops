@@ -25,7 +25,6 @@ spec:
       GATUS_SUBDOMAIN: join
       VOLSYNC_CLAIM: wizarr-data
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

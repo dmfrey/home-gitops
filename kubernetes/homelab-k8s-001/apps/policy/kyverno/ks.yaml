@@ -22,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: kube-prometheus-stack-crds
 ---
@@ -49,6 +48,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: kyverno

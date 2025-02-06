@@ -23,6 +23,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: cert-manager

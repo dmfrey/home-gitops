@@ -24,7 +24,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
   dependsOn:
     - name: media-common-mounts
     - name: reflector
@@ -52,8 +51,6 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: tf-controller
     - name: prowlarr

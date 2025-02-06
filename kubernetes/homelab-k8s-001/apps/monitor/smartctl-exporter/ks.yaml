@@ -19,6 +19,3 @@ spec:
   interval: 5m
   timeout: 1m30s
   retryInterval: 30s
-  postBuild:
-    substituteFrom: []
-  dependsOn: []

@@ -21,7 +21,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-redis-data
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -48,7 +47,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-assets
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -75,7 +73,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-resources
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -102,7 +99,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
   dependsOn:
     - name: volsync
     - name: rook-ceph-cluster
@@ -130,7 +126,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: romm-redis-data-pvc
     - name: romm-assets-pvc
@@ -164,7 +159,6 @@ spec:
       DATA_CLAIM: romm-data
       RESOURCES_CLAIM: romm-resources
       REDIS_DATA_CLAIM: romm-redis-data
-    substituteFrom: []
   dependsOn:
     - name: romm-services
     - name: nfs-subdir

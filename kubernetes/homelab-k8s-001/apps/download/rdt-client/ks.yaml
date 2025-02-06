@@ -25,7 +25,6 @@ spec:
       GATUS_SUBDOMAIN: rdt
       VOLSYNC_CLAIM: rdt-client-config
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: download-common-mount
     - name: rook-ceph-cluster

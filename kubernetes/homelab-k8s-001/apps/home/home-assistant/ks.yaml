@@ -21,7 +21,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: llmvision-data
       VOLSYNC_CAPACITY: 2Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -59,7 +58,6 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
       LLMVISION_CLAIM: llmvision-data
-    substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store

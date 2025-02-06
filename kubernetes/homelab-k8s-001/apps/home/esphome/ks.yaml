@@ -26,7 +26,6 @@ spec:
       APP_GID: "0"
       VOLSYNC_CLAIM: esphome-config-1
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: home-assistant
     - name: mosquitto

@@ -22,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: rabbitmq-cluster-operator
 ---
@@ -52,7 +51,6 @@ spec:
     substitute:
       APP: *app
       DB: dataflow
-    substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store
@@ -85,7 +83,6 @@ spec:
     substitute:
       APP: *app
       DB: skipper
-    substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store
@@ -115,7 +112,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: dataflow-services
     - name: dataflow-db

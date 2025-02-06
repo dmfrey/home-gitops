@@ -25,7 +25,6 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: wyoming-piper-data
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -56,7 +55,6 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: wyoming-whisper-data
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -85,7 +83,6 @@ spec:
     substitute:
       PIPER_CLAIM: wyoming-piper-data
       WHISPER_CLAIM: wyoming-whisper-data
-    substituteFrom: []
   dependsOn:
     - name: wyoming-piper-pvc
     - name: wyoming-whisper-pvc

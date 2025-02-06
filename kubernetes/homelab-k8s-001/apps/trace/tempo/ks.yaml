@@ -19,8 +19,6 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
 ---
@@ -47,6 +45,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: tempo-services

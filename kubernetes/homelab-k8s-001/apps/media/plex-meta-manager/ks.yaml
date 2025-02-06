@@ -24,7 +24,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: pmm-config
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

@@ -21,7 +21,6 @@
 #   postBuild:
 #     substitute:
 #       APP: *app
-#     substituteFrom: []
 #   dependsOn: []
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -47,5 +46,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
-  dependsOn: []

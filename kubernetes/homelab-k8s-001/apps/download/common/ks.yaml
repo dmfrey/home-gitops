@@ -19,8 +19,6 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: nfs-subdir
 ---
@@ -44,7 +42,5 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: nfs-subdir

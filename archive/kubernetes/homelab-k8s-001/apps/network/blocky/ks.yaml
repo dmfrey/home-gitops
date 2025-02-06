@@ -16,8 +16,6 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
     - name: dragonfly-operator
@@ -39,7 +37,5 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: blocky-services

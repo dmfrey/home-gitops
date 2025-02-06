@@ -25,7 +25,6 @@ spec:
       GATUS_SUBDOMAIN: request
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

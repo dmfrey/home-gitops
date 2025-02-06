@@ -22,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: kube-prometheus-stack-crds
     - name: snapshot-controller
@@ -50,6 +49,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph

@@ -30,7 +30,6 @@ spec:
     substitute:
       APP: *app
       DB: authentik
-    substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store
@@ -65,7 +64,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: dragonfly-operator
     - name: rook-ceph-cluster
@@ -93,7 +91,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: external-secrets
       namespace: external-secrets

@@ -24,7 +24,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: readarr-config
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -47,8 +46,6 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: tf-controller
     - name: readarr

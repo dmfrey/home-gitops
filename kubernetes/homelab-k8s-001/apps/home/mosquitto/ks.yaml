@@ -25,7 +25,6 @@ spec:
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: mosquitto-data
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync

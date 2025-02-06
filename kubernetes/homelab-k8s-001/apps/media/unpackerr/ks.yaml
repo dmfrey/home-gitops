@@ -22,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: media-common
     - name: media-common-mounts

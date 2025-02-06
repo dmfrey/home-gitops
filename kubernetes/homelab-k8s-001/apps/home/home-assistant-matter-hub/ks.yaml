@@ -25,5 +25,3 @@ spec:
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: home-assistant-matter-hub-data
-    substituteFrom: []
-  dependsOn: []

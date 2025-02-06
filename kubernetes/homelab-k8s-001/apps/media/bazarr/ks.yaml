@@ -24,7 +24,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: bazarr-config
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
   dependsOn:
     - name: media-common
     - name: media-common-mounts

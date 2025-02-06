@@ -22,5 +22,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
-  dependsOn: []

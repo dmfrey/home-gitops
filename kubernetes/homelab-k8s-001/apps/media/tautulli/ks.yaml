@@ -26,7 +26,6 @@ spec:
       APP_GID: "1568"
       VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
   dependsOn:
     - name: plex
     - name: rook-ceph-cluster

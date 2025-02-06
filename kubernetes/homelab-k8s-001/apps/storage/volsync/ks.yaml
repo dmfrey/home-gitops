@@ -22,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: snapshot-controller
 # ---
@@ -44,7 +43,6 @@ spec:
 #   postBuild:
 #     substitute:
 #       APP: *app
-#     substituteFrom: []
 #   dependsOn:
 #     - name: volsync
 #     - name: kyverno

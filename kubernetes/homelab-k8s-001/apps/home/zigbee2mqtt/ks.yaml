@@ -22,7 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-    substituteFrom: []
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
@@ -55,7 +54,6 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-    substituteFrom: []
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
@@ -91,7 +89,6 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-02
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-    substituteFrom: []
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto

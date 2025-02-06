@@ -24,7 +24,6 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: lidarr-config
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom: []
   dependsOn:
     - name: rook-ceph-cluster
     - name: volsync
@@ -46,8 +45,6 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: tf-controller
     - name: lidarr

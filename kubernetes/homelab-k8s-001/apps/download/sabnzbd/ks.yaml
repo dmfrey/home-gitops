@@ -19,8 +19,6 @@ spec:
   interval: 15m
   retryInterval: 1m
   timeout: 5m
-  postBuild:
-    substituteFrom: []
   dependsOn:
     - name: reflector
 ---
@@ -78,7 +76,6 @@ spec:
       APP_GID: "1568"
       VOLSYNC_CLAIM: sabnzbd-config
       VOLSYNC_CAPACITY: 1Gi
-    substituteFrom: []
   dependsOn:
     - name: download-common-mount
     - name: sabnzbd-config

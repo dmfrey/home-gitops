@@ -30,7 +30,6 @@ spec:
     substitute:
       APP: *app
       DB: gatus
-    substituteFrom: []
   dependsOn:
     - name: cloudnative-pg
     - name: onepassword-store
@@ -61,7 +60,6 @@ spec:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: status
-    substituteFrom: []
   dependsOn:
     - name: gatus-services
     - name: authentik

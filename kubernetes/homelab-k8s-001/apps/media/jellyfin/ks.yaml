@@ -26,7 +26,6 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CAPACITY: 20Gi
-    substituteFrom: []
   dependsOn:
     - name: media-common-mounts
     - name: rook-ceph-cluster
