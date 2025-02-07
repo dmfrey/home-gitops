@@ -47,7 +47,7 @@ spec:
     - ../../../../flux/components/cnpg
   dependsOn:
     - name: cloudnative-pg
-      namespace: flux-system  # datasource
+      namespace: datastore
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
@@ -86,7 +86,7 @@ spec:
     - ../../../../flux/components/cnpg
   dependsOn:
     - name: cloudnative-pg
-      namespace: flux-system  # datasource
+      namespace: datastore
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster

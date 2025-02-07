@@ -26,6 +26,7 @@ spec:
       DB: hedgedoc
   dependsOn:
     - name: cloudnative-pg
+      namespace: datastore
     - name: onepassword-store
       namespace: external-secrets
 ---
