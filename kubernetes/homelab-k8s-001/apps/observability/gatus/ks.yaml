@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app gatus-services
+  namespace: &namespace observability
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/cnpg
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: flux-system  # datastore
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-gatus
+      namespace: *namespace
+  interval: 30m
+  path: ./kubernetes/homelab-k8s-001/apps/observability/gatus/services
+  postBuild:
+    substitute:
+      APP: *app
+      DB: gatus
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://lds-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app gatus
+  namespace: &namespace observability
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: gatus-services
+      namespace: *namespace
+    - name: authentik
+      namespace: flux-system  # security
+  interval: 30m
+  path: ./kubernetes/homelab-k8s-001/apps/observability/gatus/app
+  postBuild:
+    substitute:
+      APP: *app
+      GATUS_SUBDOMAIN: status
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

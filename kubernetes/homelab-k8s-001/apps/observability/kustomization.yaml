@@ -6,6 +6,7 @@ namespace: observability
 resources:
   # - ./blackbox-exporter/ks.yaml
   # - ./fluent-bit/ks.yaml
+  - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
