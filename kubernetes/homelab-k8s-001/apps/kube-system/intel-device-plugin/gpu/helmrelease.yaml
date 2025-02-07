@@ -30,7 +30,7 @@ spec:
       retries: 3
 
   dependsOn:
-    - name: intel-device-plugin-operator
+    - name: intel-device-plugins-operator
       namespace: kube-system
 
   values:
