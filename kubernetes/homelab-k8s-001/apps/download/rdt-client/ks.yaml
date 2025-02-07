@@ -4,27 +4,30 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app rdt-client
-  namespace: flux-system
+  namespace: &namespace download
 spec:
-  targetNamespace: download
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/download/rdt-client/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: download-common-mount
+      namespace: *namespace
+    - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
+    - name: pod-gateway
+      namespace: flux-system  # network
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/download/rdt-client/app"
   postBuild:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: rdt
       VOLSYNC_CLAIM: rdt-client-config
       VOLSYNC_CAPACITY: 5Gi
-  dependsOn:
-    - name: download-common-mount
-    - name: rook-ceph-cluster
-    - name: pod-gateway
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

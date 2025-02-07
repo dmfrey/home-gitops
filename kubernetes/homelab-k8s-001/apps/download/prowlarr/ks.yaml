@@ -4,50 +4,58 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app prowlarr
-  namespace: flux-system
+  namespace: &namespace download
 spec:
-  targetNamespace: download
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/download/prowlarr/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: media-common-mounts
+      namespace: *namespace
+    - name: reflector
+      namespace: flux-system  # kube-system
+    - name: pod-gateway
+      namespace: flux-system  # network
+    - name: volsync
+      namespace: flux-system  # volsync-system
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/download/prowlarr/app"
   postBuild:
     substitute:
       APP: *app
       VOLSYNC_CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 1Gi
-  dependsOn:
-    - name: media-common-mounts
-    - name: reflector
-    - name: pod-gateway
-    - name: volsync
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app prowlarr-provision
-  namespace: flux-system
+  namespace: &namespace download
 spec:
-  targetNamespace: download
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: tf-controller
+      namespace: flux-system
+    - name: prowlarr
+      namespace: *namespace
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/download/prowlarr/provision"
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  dependsOn:
-    - name: tf-controller
-    - name: prowlarr
+  wait: true

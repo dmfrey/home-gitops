@@ -4,41 +4,42 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app download-common-mount
-  namespace: flux-system
+  namespace: &namespace download
 spec:
-  targetNamespace: download
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: nfs-subdir
+      namespace: flux-system  # kube-system
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/download/common/mount"
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  dependsOn:
-    - name: nfs-subdir
+  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app download-admin
-  namespace: flux-system
+  namespace: &namespace download
 spec:
-  targetNamespace: download
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/download/common/admin"
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  dependsOn:
-    - name: nfs-subdir
+  wait: false
