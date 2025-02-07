@@ -65,7 +65,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
     - name: mosquitto
-      namespace: flux-sustem  # *namespace
+      namespace: flux-system  # *namespace
     # - name: multus-config
     - name: rook-ceph-cluster
       namespace: flux-system  # rook-ceph
