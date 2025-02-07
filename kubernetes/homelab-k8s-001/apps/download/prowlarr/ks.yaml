@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: media-common-mounts
-      namespace: *namespace
+      namespace: flux-system  # media
     - name: reflector
       namespace: flux-system  # kube-system
     - name: pod-gateway
