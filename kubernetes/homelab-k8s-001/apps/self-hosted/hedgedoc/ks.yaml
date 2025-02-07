@@ -22,7 +22,7 @@ spec:
     substitute:
       APP: *app
       DB: hedgedoc
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -57,7 +57,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: hedgedoc-config
       VOLSYNC_CAPACITY: 5Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

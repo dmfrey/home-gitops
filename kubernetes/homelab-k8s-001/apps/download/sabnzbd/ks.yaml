@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/common"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -39,7 +39,7 @@ spec:
     substituteFrom:
       - kind: Secret
         name: sabnzbd-secret
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -78,7 +78,7 @@ spec:
       APP_GID: "1568"
       VOLSYNC_CLAIM: sabnzbd-config
       VOLSYNC_CAPACITY: 1Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

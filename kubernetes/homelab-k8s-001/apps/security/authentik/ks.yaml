@@ -29,7 +29,7 @@ spec:
     substitute:
       APP: *app
       DB: authentik
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -63,7 +63,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -100,7 +100,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -136,7 +136,7 @@ spec:
         name: authentik-grafana-secret
       - kind: Secret
         name: authentik-spring-dev-secret
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
