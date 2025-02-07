@@ -9,8 +9,6 @@ resources:
   # Flux-Kustomizations
   - ./rook-ceph/ks.yaml
   # - ./openebs/ks.yaml
-  - ./snapshot-controller/ks.yaml
-  - ./volsync/ks.yaml
 components:
   - ../../flux/components/alerts
   # - ../../flux/components/global-vars

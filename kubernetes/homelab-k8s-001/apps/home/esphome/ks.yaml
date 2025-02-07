@@ -27,7 +27,11 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: home-assistant
+      namespace: flux-system  # home
     - name: mosquitto
+      namespace: flux-system  # home
     # - name: multus-config
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system

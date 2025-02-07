@@ -49,7 +49,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: flux-system  # rook-ceph
     - name: volsync
-      namespace: flux-system  # volsync-system
+      namespace: volsync-system
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/hedgedoc/app"
   postBuild:

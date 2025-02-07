@@ -29,4 +29,6 @@ spec:
   dependsOn:
     # - name: multus-config
     - name: volsync
+      namespace: volsync-system
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph

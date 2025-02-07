@@ -25,8 +25,14 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system
     - name: plex
+      namespace: flux-system  # media
     - name: tautulli
+      namespace: flux-system  # media
     - name: radarr
+      namespace: flux-system  # media
     - name: sonarr
+      namespace: flux-system  # media

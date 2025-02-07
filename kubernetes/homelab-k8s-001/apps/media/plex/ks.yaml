@@ -27,5 +27,8 @@ spec:
       VOLSYNC_CACHE_CAPACITY: 20Gi
   dependsOn:
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system
     - name: media-common-mounts
+      namespace: flux-system  # media

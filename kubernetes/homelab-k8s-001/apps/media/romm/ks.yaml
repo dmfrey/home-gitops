@@ -164,4 +164,4 @@ spec:
     - name: rook-ceph-cluster
       namespace: flux-system  # rook-ceph
     - name: volsync
-      namespace: flux-system  # volsync-system
+      namespace: volsync-system

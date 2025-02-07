@@ -26,7 +26,9 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -55,7 +57,9 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

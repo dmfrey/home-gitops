@@ -54,9 +54,13 @@ spec:
       VOLSYNC_CACHE_CAPACITY: 2Gi
   dependsOn:
     - name: zigbee2mqtt-common
+      namespace: flux-system  # home
     - name: mosquitto
+      namespace: flux-system  # home
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -87,6 +91,10 @@ spec:
       VOLSYNC_CACHE_CAPACITY: 2Gi
   dependsOn:
     - name: zigbee2mqtt-common
+      namespace: flux-system  # home
     - name: mosquitto
+      namespace: flux-system  # home
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system

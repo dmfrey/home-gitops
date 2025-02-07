@@ -26,4 +26,6 @@ spec:
       VOLSYNC_CLAIM: mosquitto-data
   dependsOn:
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system

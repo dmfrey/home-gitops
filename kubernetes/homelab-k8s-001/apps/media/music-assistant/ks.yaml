@@ -26,5 +26,7 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: volsync-system
     # - name: multus-config
