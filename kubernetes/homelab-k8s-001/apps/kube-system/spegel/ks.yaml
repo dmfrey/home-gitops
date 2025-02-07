@@ -3,21 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app reloader
-  namespace: flux-system
+  name: &app spegel
+  namespace: &namespace kube-system
 spec:
-  targetNamespace: system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/system/reloader/app"
+  interval: 30m
+  path: ./kubernetes/homelab-k8s-001/apps/kube-system/spegel/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
+  wait: false
