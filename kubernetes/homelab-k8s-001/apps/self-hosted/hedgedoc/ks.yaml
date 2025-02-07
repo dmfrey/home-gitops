@@ -4,59 +4,63 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app hedgedoc-services
-  namespace: flux-system
+  namespace: &namespace self-hosted
 spec:
-  targetNamespace: self-hosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../flux/components/cnpg
-  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/hedgedoc/services"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
-  interval: 30m
-  timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-      DB: hedgedoc
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
     - name: onepassword-store
       namespace: external-secrets
+  interval: 30m
+  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/hedgedoc/services"
+  postBuild:
+    substitute:
+      APP: *app
+      DB: hedgedoc
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app hedgedoc
-  namespace: flux-system
+  namespace: &namespace self-hosted
 spec:
-  targetNamespace: self-hosted
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/hedgedoc/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: hedgedoc-services
+      namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
+    - name: volsync
+      namespace: flux-system  # volsync-system
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/hedgedoc/app"
   postBuild:
     substitute:
       APP: *app
       VOLSYNC_CLAIM: hedgedoc-config
       VOLSYNC_CAPACITY: 5Gi
-  dependsOn:
-    - name: hedgedoc-services
-    - name: onepassword-store
-      namespace: external-secrets
-    - name: rook-ceph-cluster
-    - name: volsync
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 5m
+  targetNamespace: *namespace
+  wait: true

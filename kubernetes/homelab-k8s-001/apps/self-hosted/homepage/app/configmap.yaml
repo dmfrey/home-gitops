@@ -48,7 +48,7 @@ data:
             icon: gatus.png
             widget:
               type: gatus
-              url: http://gatus.monitor.svc.cluster.local:8080
+              url: http://gatus.observability.svc.cluster.local:8080
         - QNAP:
             description: QNAP NAS TS-462
             icon: qnap.png
@@ -84,7 +84,7 @@ data:
             description: Application Metrics
             widget:
               type: prometheus
-              url: http://prometheus-operated.monitor.svc.cluster.local:9090
+              url: http://prometheus-operated.observability.svc.cluster.local:9090
     - Calendar:
         - Agenda:
             widget:
