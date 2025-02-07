@@ -160,5 +160,8 @@ spec:
   dependsOn:
     - name: romm-services
     - name: nfs-subdir
+      namespace: kube-system
     - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
     - name: volsync
+      namespace: flux-system  # volsync-system
