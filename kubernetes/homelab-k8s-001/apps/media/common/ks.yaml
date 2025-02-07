@@ -48,3 +48,4 @@ spec:
       APP: *app
   dependsOn:
     - name: reflector
+      namespace: kube-system

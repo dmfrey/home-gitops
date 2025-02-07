@@ -13,7 +13,7 @@ spec:
     - name: media-common-mounts
       namespace: flux-system  # media
     - name: reflector
-      namespace: flux-system  # kube-system
+      namespace: kube-system
     - name: pod-gateway
       namespace: flux-system  # network
     - name: volsync
