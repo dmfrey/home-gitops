@@ -74,7 +74,7 @@ spec:
   interval: 30m
   dependsOn:
     - name: intel-device-plugins-gpu
-      namespace: flux-system  # system
+      namespace: kube-system
     - name: ollama-backend-pvc
       namespace: ai
     - name: ollama-ui-pvc
