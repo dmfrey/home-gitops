@@ -7,7 +7,7 @@ metadata:
 
 spec:
 
-  interval: 15m
+  interval: 30m
 
   chart:
     spec:
@@ -15,7 +15,7 @@ spec:
       version: 3.12.2
       sourceRef:
         kind: HelmRepository
-        name: kubernetes-sigs-metrics-server
+        name: metrics-server
         namespace: flux-system
 
   install:
@@ -25,6 +25,7 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
 
   values:
@@ -41,7 +42,8 @@ spec:
       - --kubelet-insecure-tls
       - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
       - --kubelet-use-node-status-port
-      - --metric-resolution=15s
+      - --metric-resolution=10s
+      - --kubelet-request-timeout=2s
 
     metrics:
       enabled: true
