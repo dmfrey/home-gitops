@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - ./busybox/ks.yaml
+  - ./fstrim/ks.yaml
   - ./metrics-server/ks.yaml
   # - ./multus/ks.yaml
 components:

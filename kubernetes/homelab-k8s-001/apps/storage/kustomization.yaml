@@ -7,7 +7,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./fstrim/ks.yaml
   - ./rook-ceph/ks.yaml
   # - ./openebs/ks.yaml
   - ./nfs-subdir/ks.yaml
