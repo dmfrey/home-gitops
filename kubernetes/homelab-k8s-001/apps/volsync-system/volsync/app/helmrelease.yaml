@@ -34,6 +34,9 @@ spec:
     - name: snapshot-controller
       namespace: volsync-system
 
+  driftDetection:
+    mode: enabled
+    
   values:
 
     manageCRDs: true
