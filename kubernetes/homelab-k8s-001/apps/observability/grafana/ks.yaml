@@ -18,7 +18,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
-      namespace: flux-system    # rook-ceph
+      namespace: storage  # rook-ceph
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster

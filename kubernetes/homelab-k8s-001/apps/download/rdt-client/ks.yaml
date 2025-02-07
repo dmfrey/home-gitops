@@ -13,7 +13,7 @@ spec:
     - name: download-common-mount
       namespace: *namespace
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: pod-gateway
       namespace: flux-system  # network
   interval: 30m

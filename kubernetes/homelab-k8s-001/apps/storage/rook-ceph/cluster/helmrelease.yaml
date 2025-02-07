@@ -7,7 +7,8 @@ metadata:
 
 spec:
 
-  interval: 15m
+  interval: 30m
+  timeout: 15m
 
   chart:
     spec:
@@ -18,13 +19,23 @@ spec:
         name: rook-ceph
         namespace: flux-system
 
-  driftDetection:
-    mode: enabled
+  install:
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  dependsOn:
+    - name: rook-ceph-operator
+      namespace: storage # rook-ceph
+    - name: snapshot-controller
+      namespace: volsync-system
 
   values:
-
-    toolbox:
-      enabled: true
 
     operatorNamespace: storage
 
@@ -32,19 +43,34 @@ spec:
       enabled: true
       createPrometheusRules: true
 
+    ingress:
+      dashboard:
+        ingressClassName: internal
+        annotations:
+          hajimari.io/icon: "mdi:chess-rook"
+          hajimari.io/enable: "true"
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        host:
+          name: rook.${SECRET_DOMAIN}
+          path: /
+
+    toolbox:
+      enabled: true
+
     configOverride: |
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
       osd_class_update_on_start = false
 
-      [osd]
-      debug osd = 0/5
-
     cephClusterSpec:
 
       crashCollector:
         disable: false
+
+      csi:
+        readAffinity:
+          enabled: true
 
       dashboard:
         enabled: true
@@ -67,7 +93,7 @@ spec:
           requireMsgr2: true
 
       storage:
-        useAllNodes: false
+        useAllNodes: true
         useAllDevices: false
         config:
           osdsPerDevice: "1"
@@ -88,72 +114,6 @@ spec:
             devices:
               - name: "/dev/nvme0n1"
 
-      # placement:
-      #   mgr: &placement
-      #     nodeAffinity:
-      #       requiredDuringSchedulingIgnoredDuringExecution:
-      #         nodeSelectorTerms:
-      #           - matchExpressions:
-      #               - key: node-role.kubernetes.io/control-plane
-      #                 operator: Exists
-
-      #   mon: *placement
-
-      # resources:
-      #   mgr:
-      #     requests:
-      #       cpu: 125m
-      #       memory: 512Mi
-      #     limits:
-      #       memory: 2Gi
-      #   mon:
-      #     requests:
-      #       cpu: 50m
-      #       memory: 512Mi
-      #     limits:
-      #       memory: 1Gi
-      #   osd:
-      #     requests:
-      #       cpu: 500m
-      #       memory: 2Gi
-      #     limits:
-      #       memory: 6Gi
-      #   mgr-sidecar:
-      #     requests:
-      #       cpu: 50m
-      #       memory: 128Mi
-      #     limits:
-      #       memory: 256Mi
-      #   crashcollector:
-      #     requests:
-      #       cpu: "15m"
-      #       memory: "64M"
-      #     limits:
-      #       memory: "64M"
-      #   logcollector:
-      #     requests:
-      #       cpu: "100m"
-      #       memory: "100M"
-      #     limits:
-      #       memory: "1G"
-      #   cleanup:
-      #     requests:
-      #       cpu: "250m"
-      #       memory: "100M"
-      #     limits:
-      #       memory: "1G"
-
-    ingress:
-      dashboard:
-        ingressClassName: internal
-        annotations:
-          # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          hajimari.io/icon: "mdi:chess-rook"
-          hajimari.io/enable: "true"
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        host:
-          name: rook.${SECRET_DOMAIN}
-          path: "/"
 
     cephBlockPools:
       - name: ceph-blockpool
@@ -252,9 +212,6 @@ spec:
               limits:
                 memory: 1Gi
             instances: 1
-          # healthCheck:
-          #   bucket:
-          #     interval: 60s
         storageClass:
           enabled: true
           name: ceph-bucket

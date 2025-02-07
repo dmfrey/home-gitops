@@ -29,6 +29,6 @@ spec:
     - name: media-common-mounts
       namespace: flux-system  # media
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system

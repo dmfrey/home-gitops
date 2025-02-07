@@ -162,6 +162,6 @@ spec:
     - name: nfs-subdir
       namespace: kube-system
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system

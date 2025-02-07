@@ -23,7 +23,7 @@ spec:
       VOLSYNC_CAPACITY: 2Gi
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
 ---
@@ -68,6 +68,6 @@ spec:
       namespace: flux-system  # *namespace
     # - name: multus-config
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system

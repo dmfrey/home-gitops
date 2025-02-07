@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: ollama
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 30m
@@ -42,7 +42,7 @@ spec:
       app.kubernetes.io/name: ollama
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 30m

@@ -32,6 +32,6 @@ spec:
       namespace: flux-system  # home
     # - name: multus-config
     - name: rook-ceph-cluster
-      namespace: flux-system  # rook-ceph
+      namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
