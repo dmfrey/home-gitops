@@ -3,21 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app amd-device-plugin
-  namespace: flux-system
+  name: &app generic-device-plugin
+  namespace: &namespace kube-system
 spec:
-  targetNamespace: system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/homelab-k8s-001/apps/system/amd-device-plugin/app
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false # no flux ks dependents
   interval: 30m
-  timeout: 5m
+  path: ./kubernetes/homelab-k8s-001/apps/kube-system/generic-device-plugin/app
   postBuild:
     substitute:
       APP: *app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

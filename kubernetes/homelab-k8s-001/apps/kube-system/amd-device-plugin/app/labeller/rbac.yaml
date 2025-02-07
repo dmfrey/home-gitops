@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: amd-gpu-node-labeller
-  namespace: system
+  namespace: kube-system
 secrets:
   - name: amd-gpu-node-labeller
 ---
@@ -12,7 +12,7 @@ kind: Secret
 type: kubernetes.io/service-account-token
 metadata:
   name: amd-gpu-node-labeller
-  namespace: system
+  namespace: kube-system
   annotations:
     kubernetes.io/service-account.name: amd-gpu-node-labeller
 ---
@@ -36,4 +36,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: amd-gpu-node-labeller
-    namespace: system
+    namespace: kube-system

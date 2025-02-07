@@ -4,11 +4,10 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app amd-gpu-node-labeller
-  namespace: system
 
 spec:
 
-  interval: 15m
+  interval: 30m
 
   chart:
     spec:
@@ -35,7 +34,7 @@ spec:
 
   dependsOn:
     - name: amd-device-plugin
-      namespace: system
+      namespace: kube-system
 
   values:
 
@@ -50,11 +49,11 @@ spec:
 
     controllers:
 
-      amd-gpu-node-labeller:
+      *app :
         type: daemonset
 
         containers:
-          app:
+          *app :
             image:
               repository: docker.io/rocm/k8s-device-plugin
               tag: labeller-1.25.2.5@sha256:cd0decbe8e44ff8906fe9c3163b1ae102bcffc23e85edd6213f393beaa8ad78e
@@ -99,9 +98,9 @@ spec:
       name: amd-gpu-node-labeller
 
     service:
-      app:
+      *app :
         enabled: false
-        controller: amd-gpu-node-labeller
+        controller: *app
 
     persistence:
       sys:

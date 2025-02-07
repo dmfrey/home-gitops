@@ -7,18 +7,31 @@ metadata:
 
 spec:
 
-  interval: 15m
+  interval: 30m
 
   chart:
     # renovate: registryUrl=https://intel.github.io/helm-charts
     spec:
       chart: intel-device-plugins-gpu
       version: 0.32.0
-      interval: 15m
       sourceRef:
         kind: HelmRepository
         name: intel
         namespace: flux-system
+
+  install:
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  dependsOn:
+    - name: intel-device-plugin-operator
+      namespace: kube-system
 
   values:
 
