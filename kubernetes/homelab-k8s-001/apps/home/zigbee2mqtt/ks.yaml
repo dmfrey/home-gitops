@@ -55,7 +55,6 @@ spec:
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
-    - name: node-feature-discovery-rules
     - name: rook-ceph-cluster
     - name: volsync
 ---
@@ -89,6 +88,5 @@ spec:
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
-    - name: node-feature-discovery-rules
     - name: rook-ceph-cluster
     - name: volsync

@@ -21,5 +21,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  dependsOn:
-    - name: node-feature-discovery-rules
