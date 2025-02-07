@@ -31,6 +31,9 @@ spec:
       strategy: rollback
       retries: 3
 
+  driftDetection:
+    mode: enabled
+    
   valuesFrom:
     - kind: ConfigMap
       name: cert-manager-helm-values
