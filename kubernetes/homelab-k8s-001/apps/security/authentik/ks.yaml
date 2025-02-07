@@ -4,120 +4,128 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app authentik-database
-  namespace: flux-system
+  namespace: &namespace security
 spec:
-  targetNamespace: security
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../flux/components/cnpg
-  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/database"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: flux-system  # datastore
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: pg-authentik
       namespace: security
-  wait: false
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/database"
   postBuild:
     substitute:
       APP: *app
       DB: authentik
-  dependsOn:
-    - name: cloudnative-pg
-    - name: onepassword-store
-      namespace: external-secrets
-    - name: rook-ceph-cluster
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app authentik-kv
-  namespace: flux-system
+  namespace: &namespace security
 spec:
-  targetNamespace: security
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/kv"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
+  dependsOn:
+    - name: dragonfly-operator
+      namespace: flux-system  # datastore
+    - name: rook-ceph-cluster
+      namespace: flux-system  # rook-ceph
   healthChecks:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: authentik-kv-cluster
       namespace: security
-  wait: false
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/kv"
   postBuild:
     substitute:
       APP: *app
-  dependsOn:
-    - name: dragonfly-operator
-    - name: rook-ceph-cluster
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app authentik
-  namespace: flux-system
+  namespace: &namespace security
 spec:
-  targetNamespace: security
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: authentik-database
+      namespace: *namespace
+    - name: authentik-kv
+      namespace: *namespace
+    - name: kyverno
+      namespace: policy
+    - name: smtp-relay
+      namespace: flux-system  # network
+    - name: grafana
+      namespace: observability
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/app"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: external-secrets
-      namespace: external-secrets
-    - name: authentik-database
-    - name: authentik-kv
-    - name: kyverno
-      namespace: policy
-    - name: smtp-relay
-    - name: grafana
-      namespace: observability
+  targetNamespace: *namespace
+  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app authentik-provision
-  namespace: flux-system
+  namespace: &namespace security
 spec:
-  targetNamespace: security
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: authentik
+      namespace: *namespace
+    - name: plex
+      namespace: flux-system  # media
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
   postBuild:
     substitute:
       APP: *app
@@ -128,7 +136,12 @@ spec:
         name: authentik-grafana-secret
       - kind: Secret
         name: authentik-spring-dev-secret
-  dependsOn:
-    - name: authentik
-    - name: plex
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
 
