@@ -13,8 +13,6 @@ resources:
   - ./intel-device-plugin/ks.yaml
   # - ./kube-vip/ks.yaml
   # - ./kured/ks.yaml
-  - ./kubelet-csr-approver/ks.yaml
-  - ./node-feature-discovery/ks.yaml
   # - ./system-upgrade-controller/ks.yaml
 components:
   - ../../flux/components/alerts
