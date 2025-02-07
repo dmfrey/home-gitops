@@ -29,11 +29,11 @@ resources:
   - kubereboot.yaml
   - kubernetes-sigs-descheduler.yaml
   - kubernetes-sigs-external-dns.yaml
-  - kubernetes-sigs-metrics-server.yaml
   - kubernetes-sigs-nfd.yaml
   - kubernetes-sigs-nfs-subdir.yaml
   - kyverno.yaml
   - mariadb.yaml
+  - metrics-server.yaml
   - openebs.yaml
   - piraeus.yaml
   - postfinance.yaml
