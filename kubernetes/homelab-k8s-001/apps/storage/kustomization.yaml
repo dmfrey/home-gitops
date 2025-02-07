@@ -9,7 +9,6 @@ resources:
   # Flux-Kustomizations
   - ./rook-ceph/ks.yaml
   # - ./openebs/ks.yaml
-  - ./nfs-subdir/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./volsync/ks.yaml
 components:
