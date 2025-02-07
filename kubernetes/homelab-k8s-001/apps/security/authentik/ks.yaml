@@ -13,7 +13,7 @@ spec:
     - ../../../../flux/components/cnpg
   dependsOn:
     - name: cloudnative-pg
-      namespace: flux-system  # datastore
+      namespace: datastore
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
@@ -50,7 +50,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly-operator
-      namespace: flux-system  # datastore
+      namespace: datastore
     - name: rook-ceph-cluster
       namespace: flux-system  # rook-ceph
   healthChecks:

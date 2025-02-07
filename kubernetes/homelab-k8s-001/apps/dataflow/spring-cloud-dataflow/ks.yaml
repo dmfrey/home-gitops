@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: rabbitmq-cluster-operator
-      namespace: flux-system  # datastore
+      namespace: datastore
     - name: rook-ceph-cluster
       namespace: flux-system  # rook-ceph
   healthChecks:

@@ -13,7 +13,7 @@ spec:
     - ../../../../flux/components/cnpg
   dependsOn:
     - name: cloudnative-pg
-      namespace: flux-system  # datastore
+      namespace: datastore
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
