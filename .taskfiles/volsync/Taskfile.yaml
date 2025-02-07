@@ -16,8 +16,8 @@ tasks:
     desc: Suspend or resume Volsync [CLUSTER=homelab-k8s-001]
     cmds:
       - flux --namespace flux-system {{.STATE}} kustomization volsync
-      - flux --namespace storage {{.STATE}} helmrelease volsync
-      - kubectl --namespace storage scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
+      - flux --namespace volsync-system {{.STATE}} helmrelease volsync
+      - kubectl --namespace volsync-system scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
     vars:
       STATE: '{{index .MATCH 0}}'
     requires:

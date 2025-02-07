@@ -34,6 +34,9 @@ spec:
   uninstall:
     keepHistory: false
 
+  driftDetection:
+    mode: enabled
+    
   values:
 
     controller:
