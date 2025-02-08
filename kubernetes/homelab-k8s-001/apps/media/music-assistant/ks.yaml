@@ -23,7 +23,7 @@ spec:
       GATUS_SUBDOMAIN: music
       VOLSYNC_CLAIM: music-assistant-data
       VOLSYNC_CAPACITY: 5Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

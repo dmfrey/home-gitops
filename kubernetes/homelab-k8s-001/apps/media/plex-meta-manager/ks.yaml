@@ -29,7 +29,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: pmm-config
       VOLSYNC_CAPACITY: 5Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

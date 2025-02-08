@@ -22,7 +22,7 @@ spec:
       GATUS_SUBDOMAIN: request
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 1Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
