@@ -38,9 +38,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: zigbee2mqtt-common
-      namespace: flux-system  # home
+      namespace: *namespace
     - name: mosquitto
-      namespace: flux-system  # home
+      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
     - name: volsync
@@ -76,9 +76,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: zigbee2mqtt-common
-      namespace: flux-system  # home
+      namespace: *namespace
     - name: mosquitto
-      namespace: flux-system  # home
+      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
     - name: volsync
