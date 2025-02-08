@@ -11,9 +11,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: home-assistant
-      namespace: flux-system  # home
+      namespace: *namespace
     - name: mosquitto
-      namespace: flux-system  # home
+      namespace: *namespace
     # - name: multus-config
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
