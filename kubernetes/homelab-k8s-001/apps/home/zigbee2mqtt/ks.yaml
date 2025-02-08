@@ -4,46 +4,49 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app zigbee2mqtt-common
-  namespace: flux-system
+  namespace: &namespace home
 spec:
-  targetNamespace: home
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/common"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app zigbee2mqtt
-  namespace: flux-system
+  namespace: &namespace home
 spec:
-  targetNamespace: home
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: zigbee2mqtt-common
+      namespace: flux-system  # home
+    - name: mosquitto
+      namespace: flux-system  # home
+    - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/app"
   postBuild:
     substitute:
       APP: *app
@@ -52,6 +55,25 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app zigbee2mqtt-02
+  namespace: &namespace home
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: zigbee2mqtt-common
       namespace: flux-system  # home
@@ -61,26 +83,8 @@ spec:
       namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
----
-# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app zigbee2mqtt-02
-  namespace: flux-system
-spec:
-  targetNamespace: home
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/app-02"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/app-02"
   postBuild:
     substitute:
       APP: *app
@@ -89,12 +93,11 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-02
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-  dependsOn:
-    - name: zigbee2mqtt-common
-      namespace: flux-system  # home
-    - name: mosquitto
-      namespace: flux-system  # home
-    - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
-    - name: volsync
-      namespace: volsync-system
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

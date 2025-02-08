@@ -4,23 +4,24 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app home-assistant-matter-hub
-  namespace: flux-system
+  namespace: &namespace home
 spec:
-  targetNamespace: home
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/home/home-assistant-matter-hub/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/home/home-assistant-matter-hub/app"
   postBuild:
     substitute:
       APP: *app
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: home-assistant-matter-hub-data
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
