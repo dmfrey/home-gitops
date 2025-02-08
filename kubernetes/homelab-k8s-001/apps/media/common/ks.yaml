@@ -4,49 +4,51 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app media-common-mounts
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: nfs-subdir
+      namespace: kube-system
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/media/common/mount"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: nfs-subdir
-      namespace: kube-system
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app media-common
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: reflector
+      namespace: kube-system
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/media/common/resource"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: reflector
-      namespace: kube-system
+  wait: true

@@ -4,50 +4,55 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app lidarr
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
-  interval: 30m
-  timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_CLAIM: lidarr-config
-      VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
     - name: media-common
-      namespace: flux-system  # media
+      namespace: *namespace
     - name: media-common-mounts
-      namespace: flux-system  # media
+      namespace: *namespace
+  interval: 30m
+  path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/app"
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: lidarr-config
+      VOLSYNC_CAPACITY: 5Gi
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: lidarr-provision
-  namespace: flux-system
+  namespace: &namespace media
 spec:
+  dependsOn:
+    - name: tf-controller
+      namespace: flux-system
+    - name: lidarr
+      namespace: *namespace
   interval: 30m
-  timeout: 5m
   path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/provision"
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
   wait: false
-  dependsOn:
-    - name: tf-controller
-    - name: lidarr

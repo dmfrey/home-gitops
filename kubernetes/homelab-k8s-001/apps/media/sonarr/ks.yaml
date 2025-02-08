@@ -4,57 +4,61 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app sonarr
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/media/sonarr/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: media-common
+      namespace: *namespace
+    - name: media-common-mounts
+      namespace: *namespace
+    - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/media/sonarr/app"
   postBuild:
     substitute:
       APP: *app
       VOLSYNC_CLAIM: sonarr-config
       VOLSYNC_CAPACITY: 1Gi
-  dependsOn:
-    - name: media-common
-      namespace: flux-system  # media
-    - name: media-common-mounts
-      namespace: flux-system  # media
-    - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
-    - name: volsync
-      namespace: volsync-system
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app sonarr-provision
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: sonarr
+      namespace: *namespace
+    - name: tf-controller
+      namespace: flux-system
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/media/sonarr/provision"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: sonarr
-    - name: tf-controller
+  wait: true

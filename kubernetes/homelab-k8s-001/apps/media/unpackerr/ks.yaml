@@ -4,27 +4,33 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app unpackerr
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: media-common
+      namespace: *namespace
+    - name: media-common-mounts
+      namespace: *namespace
+    - name: lidarr
+      namespace: *namespace
+    - name: sonarr
+      namespace: *namespace
+    - name: radarr
+      namespace: *namespace
+    # - name: readarr
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/media/unpackerr/app"
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-  dependsOn:
-    - name: media-common
-    - name: media-common-mounts
-    - name: lidarr
-    - name: sonarr
-    - name: radarr
-    # - name: readarr
+  wait: false

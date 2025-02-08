@@ -4,20 +4,20 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app plex
-  namespace: flux-system
+  namespace: &namespace media
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/media/plex/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
+    - name: volsync
+      namespace: volsync-system
+    - name: media-common-mounts
+      namespace: media
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/media/plex/app"
   postBuild:
     substitute:
       APP: *app
@@ -25,10 +25,11 @@ spec:
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
-    - name: volsync
-      namespace: volsync-system
-    - name: media-common-mounts
-      namespace: flux-system  # media
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

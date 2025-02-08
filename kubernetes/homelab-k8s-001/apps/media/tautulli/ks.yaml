@@ -6,18 +6,16 @@ metadata:
   name: &app tautulli
   namespace: flux-system
 spec:
-  targetNamespace: media
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: "./kubernetes/homelab-k8s-001/apps/media/tautulli/app"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
+  dependsOn:
+    - name: plex
+      namespace: *namespace
+    - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
   interval: 30m
-  timeout: 5m
+  path: "./kubernetes/homelab-k8s-001/apps/media/tautulli/app"
   postBuild:
     substitute:
       APP: *app
@@ -25,8 +23,11 @@ spec:
       APP_GID: "1568"
       VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_CAPACITY: 1Gi
-  dependsOn:
-    - name: plex
-      namespace: flux-system  # media
-    - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: media
+  timeout: 5m
+  wait: false
