@@ -17,7 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -55,7 +55,7 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -93,7 +93,7 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-02
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

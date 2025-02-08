@@ -22,7 +22,7 @@ spec:
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: mosquitto-data
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
