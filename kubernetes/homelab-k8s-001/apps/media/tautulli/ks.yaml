@@ -27,4 +27,6 @@ spec:
       VOLSYNC_CAPACITY: 1Gi
   dependsOn:
     - name: plex
+      namespace: flux-system  # media
     - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
