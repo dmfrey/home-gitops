@@ -92,7 +92,7 @@ spec:
     - name: kyverno
       namespace: policy
     - name: smtp-relay
-      namespace: flux-system  # network
+      namespace: kube-system
     - name: grafana
       namespace: observability
   interval: 30m

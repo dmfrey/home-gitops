@@ -53,7 +53,7 @@ spec:
       log_level: info
 
       email:
-        host: "smtp-relay.network.svc.cluster.local"
+        host: "smtp-relay.kube-system.svc.cluster.local"
         port: 2525
         use_tls: false
         from: "authentik@${SECRET_DOMAIN}"
