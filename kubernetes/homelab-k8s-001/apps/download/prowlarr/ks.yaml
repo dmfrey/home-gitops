@@ -15,7 +15,7 @@ spec:
     - name: reflector
       namespace: kube-system
     - name: pod-gateway
-      namespace: flux-system  # network
+      namespace: network
     - name: volsync
       namespace: volsync-system
   interval: 30m
