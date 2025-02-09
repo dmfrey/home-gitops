@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: network
   path: "./kubernetes/homelab-k8s-001/apps/network/blocky/services"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -28,7 +28,7 @@ metadata:
 spec:
   targetNamespace: network
   path: "./kubernetes/homelab-k8s-001/apps/network/blocky/app"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
