@@ -29,7 +29,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     fullnameOverride: promtail
@@ -37,6 +37,18 @@ spec:
     config:
       clients:
         - url: http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push
+      snippets:
+        pipelineStages:
+          - labels:
+              time_local:
+              client_ip:
+              request:
+              response_status:
+              upstream_status:
+              request_time:
+              response_time:
+              error_type:
+              errormessage:
 
     serviceMonitor:
       enabled: true
