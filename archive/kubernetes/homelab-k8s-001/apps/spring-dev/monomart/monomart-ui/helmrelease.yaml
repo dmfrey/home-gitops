@@ -62,7 +62,7 @@ spec:
               LOGGING_LEVEL_IO_MICROMETER: ERROR
               SPRING_PROFILES_ACTIVE: kubernetes
               MANAGEMENT_TRACING_ENABLED: true
-              MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:9411/api/v2/spans
+              MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://otelcol-dm-opentelemetry-collector.observabiltiy.svc.cluster.local:9411/api/v2/spans
 
             ports:
               - name: http

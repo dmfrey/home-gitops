@@ -135,7 +135,7 @@ spec:
           wal:
           remote_write_flush_deadline: 1m
           remote_write:
-            - url: http://thanos-receive.monitor.svc.cluster.local:19291/api/v1/receive
+            - url: http://thanos-receive.observabiltiy.svc.cluster.local:19291/api/v1/receive
 
         traces_storage:
           path: /var/tempo/traces

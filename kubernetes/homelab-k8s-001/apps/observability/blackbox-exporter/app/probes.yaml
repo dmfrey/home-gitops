@@ -10,7 +10,7 @@ spec:
   module: icmp
 
   prober:
-    url: blackbox-exporter.monitor.svc.cluster.local:9115
+    url: blackbox-exporter.observabiltiy.svc.cluster.local:9115
 
   targets:
     staticConfig:

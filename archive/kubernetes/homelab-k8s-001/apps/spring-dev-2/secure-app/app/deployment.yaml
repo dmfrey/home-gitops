@@ -28,9 +28,9 @@ spec:
             - name: MANAGEMENT_TRACING_ENABLED
               value: "true"
             - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
-              value: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/traces
+              value: http://otelcol-dm-opentelemetry-collector.observabiltiy.svc.cluster.local:4318/v1/traces
             - name: MANAGEMENT_OTLP_METRICS_EXPORT_URL
-              value: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/metrics
+              value: http://otelcol-dm-opentelemetry-collector.observabiltiy.svc.cluster.local:4318/v1/metrics
             - name: DEBUG
               value: "true"
 
