@@ -123,7 +123,7 @@ spec:
     - name: authentik
       namespace: *namespace
     - name: plex
-      namespace: flux-system  # media
+      namespace: media
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
   postBuild:
