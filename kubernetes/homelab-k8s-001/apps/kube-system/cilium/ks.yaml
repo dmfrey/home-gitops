@@ -4,21 +4,19 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cilium
-  namespace: flux-system
+  namespace: &namespace kube-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: "./kubernetes/homelab-k8s-001/apps/network/cilium/app"
-  postBuild:
-    substitute:
-      APP: *app
+  path: "./kubernetes/homelab-k8s-001/apps/kube-system/cilium/app"
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: network
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: true
 ---
@@ -27,25 +25,23 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cilium-config
-  namespace: flux-system
+  namespace: &namespace kube-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-      app.kubernetes.io/component: cilium
   dependsOn:
     - name: cilium
+      namespace: *namespace
   interval: 30m
-  path: "./kubernetes/homelab-k8s-001/apps/network/cilium/config"
-  postBuild:
-    substitute:
-      APP: *app
+  path: "./kubernetes/homelab-k8s-001/apps/kube-system/cilium/config"
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  targetNamespace: network
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
+  wait: false
 
 

@@ -7,12 +7,9 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  # - ./blocky/ks.yaml
-  - ./cilium/ks.yaml
   - ./cloudflared/ks.yaml
   - ./external-dns/ks.yaml
   - ./ingress-nginx/ks.yaml
-  # - ./k8s-gateway/ks.yaml
   - ./pod-gateway/ks.yaml
   # # Standard Resources
   - ./external-services

@@ -13,8 +13,8 @@ bpf:
 
 bgpControlPlane:
   enabled: true
-  secretsNamespace:
-    name: network
+  # secretsNamespace:
+  #   name: network
 
 cgroup:
   autoMount:
@@ -31,7 +31,6 @@ cni:
 devices: eth+
 
 enableIPv4BIGTCP: true
-# enableRuntimeDeviceDetection: true
 
 endpointRoutes:
   enabled: true
