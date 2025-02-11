@@ -35,6 +35,9 @@ spec:
     - name: node-feature-discovery
       namespace: kube-system
 
+  driftDetection:
+    mode: enabled
+    
   values:
 
     manager:
