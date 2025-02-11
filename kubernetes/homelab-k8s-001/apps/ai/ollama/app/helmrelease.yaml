@@ -44,7 +44,7 @@ spec:
           backend:
             image:
               repository: docker.io/ollama/ollama
-              tag: 0.5.7
+              tag: 0.5.8
 
             env:
               TZ: ${TIMEZONE}
