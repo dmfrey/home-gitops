@@ -36,5 +36,10 @@ spec:
       namespace: kube-system
 
   values:
-    controllerExtraArgs: |
-      - --devices=gpu
+
+    manager:
+      devices:
+        gpu: true
+
+    # controllerExtraArgs: |
+    #   - --devices=gpu
