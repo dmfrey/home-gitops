@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../flux/components/gatus/guarded
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: media-common-mounts
       namespace: media
