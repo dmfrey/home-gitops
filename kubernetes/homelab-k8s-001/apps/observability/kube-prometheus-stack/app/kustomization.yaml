@@ -6,7 +6,6 @@ resources:
   - ./alertmanagerconfig.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: flux-kube-state-metrics-config
     files:
