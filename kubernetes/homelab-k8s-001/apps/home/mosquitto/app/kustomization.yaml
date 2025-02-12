@@ -6,7 +6,6 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ../../../../templates/volsync
-  - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: mosquitto-config
     files:

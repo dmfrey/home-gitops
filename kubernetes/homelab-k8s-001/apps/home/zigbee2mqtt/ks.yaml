@@ -36,6 +36,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: zigbee2mqtt-common
       namespace: *namespace
@@ -74,6 +76,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: zigbee2mqtt-common
       namespace: *namespace
