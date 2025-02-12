@@ -6,7 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./datasources-cm.yaml
   - ./helmrelease.yaml
-  - ../../../../templates/gatus/external
 configMapGenerator:
   - name: flux-dashboards
     files:

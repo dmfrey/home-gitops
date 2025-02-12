@@ -8,7 +8,6 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ../../../../templates/volsync
-  - ../../../../templates/gatus/external
 
 configMapGenerator:
   - name: romm-config

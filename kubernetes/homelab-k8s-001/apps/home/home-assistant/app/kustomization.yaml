@@ -10,7 +10,6 @@ resources:
   - ./helmrelease.yaml
   # - ./git-sync-hr.yaml
   - ../../../../templates/volsync
-  - ../../../../templates/gatus/external
 configMapGenerator:
   - name: hass-config
     files:

@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./clusterpolicy.yaml
-  - ../../../../templates/gatus/external
 configMapGenerator:
   - name: theme-park-rdt-client-config
     files:

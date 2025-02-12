@@ -41,6 +41,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  # components:
+  #   - ../../../../flux/components/gatus/external
   dependsOn:
     - name: hedgedoc-services
       namespace: *namespace

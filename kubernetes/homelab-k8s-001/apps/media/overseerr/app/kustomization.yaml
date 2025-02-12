@@ -6,7 +6,6 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ../../../../templates/volsync
-  - ../../../../templates/gatus/external
 configMapGenerator:
   - name: overseerr-config-template
     files:
