@@ -3,7 +3,7 @@ libraries:
   Movies:
     remove_overlays: false
     collection_files:
-      - default: config/pre-rolls.yml
+      - default: /config/pre-rolls.yml
   TV Shows:
     remove_overlays: false
   # Anime:
@@ -13,7 +13,7 @@ playlist_files:
   - default: playlist                # This is a file within Kometa's defaults folder
     template_variables:
       libraries: Movies, TV Shows
-  - file: config/playlists.yml
+  - file: /config/playlists.yml
 
 settings:
   run_order:
