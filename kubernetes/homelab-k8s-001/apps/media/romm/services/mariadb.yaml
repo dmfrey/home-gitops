@@ -23,7 +23,7 @@ spec:
     storageClassName: ceph-block
 
   replicas: 1
-  image: mariadb:11.6.2
+  image: mariadb:11.7.2
   imagePullPolicy: IfNotPresent
 
   maxScale:
