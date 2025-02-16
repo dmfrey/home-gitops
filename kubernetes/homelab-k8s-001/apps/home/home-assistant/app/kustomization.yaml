@@ -9,7 +9,6 @@ resources:
   - ./secret-deploy-key.sops.yaml
   - ./helmrelease.yaml
   # - ./git-sync-hr.yaml
-  - ../../../../templates/volsync
 configMapGenerator:
   - name: hass-config
     files:
