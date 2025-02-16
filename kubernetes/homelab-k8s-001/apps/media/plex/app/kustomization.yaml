@@ -6,7 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./pvc.yaml
   - ./helmrelease.yaml
-  - ../../../../templates/volsync
 configMapGenerator:
   - name: plex-loki-rules
     files:

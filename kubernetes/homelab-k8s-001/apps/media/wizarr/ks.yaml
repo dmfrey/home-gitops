@@ -11,6 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../flux/components/gatus/external
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
