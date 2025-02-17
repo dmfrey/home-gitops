@@ -5,5 +5,3 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./clusterissuer.yaml
-  # - ./clusterissuer-letsencrypt.yaml
-  # - ./clusterissuer-local.yaml
