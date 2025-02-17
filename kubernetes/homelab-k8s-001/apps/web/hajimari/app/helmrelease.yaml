@@ -58,20 +58,26 @@ spec:
       namespaceSelector:
         matchNames:
           - ai
+          - cert-manager
           - dataflow
+          - datastore
           - dev
           - download
+          - external-secrets
           - flux-system
           - gateway
+          - kube-system
           - home
-          - logs
           - media
-          - monitor
           - network
+          - observability
+          - policy
           - security
+          - self-hosted
           - spring-dev
           - storage
           - trace
+          - volsync-system
 
     ingress:
       main:
