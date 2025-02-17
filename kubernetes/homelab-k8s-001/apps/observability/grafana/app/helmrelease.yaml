@@ -196,7 +196,9 @@ spec:
 
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
-          datasource: prometheus
+          datasource:
+            - name: "DS_PROMETHEUS"
+              value: prometheus
 
         spegel:
           gnetId: 18089
