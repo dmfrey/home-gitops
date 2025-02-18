@@ -34,19 +34,19 @@ tasks:
   #     - which minijinja-cli sops talosctl
 
   apply-node:
-    desc: Apply Talos config to a node [CLUSTER=homelab-k8s-001] [IP=required]
+    desc: Apply Talos config to a node [IP=required] [HOSTNAME=required] [MODE=auto]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
       - task: down
-      - talosctl --nodes {{.IP}} apply-config --mode=staged --file {{.TALOS_CLUSTERCONFIG_DIR}}/{{.CLUSTER}}-{{.HOSTNAME}}.yaml
-      - talosctl --nodes {{.IP}} reboot
-      - talosctl --nodes {{.IP}} health --wait-timeout=10m --server=false
+      - talosctl --nodes {{.IP}} apply-config --mode {{.MODE}} --file {{.TALOS_CLUSTERCONFIG_DIR}}/{{.CLUSTER}}-{{.HOSTNAME}}.yaml
+      - talosctl --nodes {{.IP}} health
       - task: up
     vars:
-      HOSTNAME:
-        sh: talosctl --nodes {{.IP}} get hostname --output json | jq --raw-output '.spec.hostname'
+      MODE: '{{.MODE | default "auto"}}'
+      # HOSTNAME:
+      #   sh: talosctl --nodes {{.IP}} get hostname --output json | jq --raw-output '.spec.hostname'
     requires:
-      vars: [CLUSTER, IP]
+      vars: [IP,HOSTNAME]
     preconditions:
       - test -f {{.CLUSTER_DIR}}/cluster.env
       - test -f {{.TALOS_CLUSTERCONFIG_DIR}}/{{.CLUSTER}}-{{.HOSTNAME}}.yaml
