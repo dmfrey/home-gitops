@@ -94,10 +94,6 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
-        # tls:
-        #   - hosts:
-        #       - *host
-        #     secretName: hajimari-tls-external
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
