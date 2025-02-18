@@ -19,13 +19,13 @@ spec:
         namespace: flux-system
 
   install:
-    crds: Create
+    # crds: Create
     remediation:
       retries: 3
 
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
+    # crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
@@ -39,8 +39,8 @@ spec:
     name: flux-kube-state-metrics-config
     valuesKey: kube-state-metrics-config.yaml
 
-  driftDetection:
-    mode: enabled
+  # driftDetection:
+  #   mode: enabled
 
   # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
   values:
@@ -90,22 +90,22 @@ spec:
                   storage: 1Gi
 
     kubeApiServer:
-      # serviceMonitor:
-      #   selector:
-      #     matchLabels:
-      #       k8s-app: kube-apiserver
+      serviceMonitor:
+        selector:
+          # matchLabels:
+          k8s-app: kube-apiserver
 
     kubeScheduler:
-      # service:
-      #   selector:
-      #     matchLabels:
-      #       k8s-app: kube-scheduler
+      service:
+        selector:
+          # matchLabels:
+          k8s-app: kube-scheduler
 
     kubeControllerManager: &kubeControllerManager
-      # service:
-      #   selector:
-      #     matchLabels:
-      #       k8s-app: kube-controller-manager
+      service:
+        selector:
+          # matchLabels:
+          k8s-app: kube-controller-manager
 
     kubeEtcd:
       <<: *kubeControllerManager # etcd runs on control plane nodes
