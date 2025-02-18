@@ -54,12 +54,12 @@ spec:
                       server: ${QNAP_ADDR}
                       path: /volsync/repository
 
-    - name: mutate-volsync-dst-movers
+    - name: mutate-volsync-bootstrap-movers
       match:
         any:
           - resources:
               kinds: ["batch/v1/Job"]
-              names: ["volsync-dst-*"]
+              names: ["volsync-bootstrap-*"]
               namespaces: ["*"]
               selector:
                 matchLabels:
