@@ -92,17 +92,17 @@ spec:
     kubeApiServer:
       serviceMonitor:
         selector:
-          k8s-app: kube-apiserver
+          # k8s-app: kube-apiserver
 
     kubeScheduler:
       service:
         selector:
-          k8s-app: kube-scheduler
+          # k8s-app: kube-scheduler
 
     kubeControllerManager: &kubeControllerManager
       service:
         selector:
-          k8s-app: kube-controller-manager
+          # k8s-app: kube-controller-manager
 
     kubeEtcd:
       <<: *kubeControllerManager # etcd runs on control plane nodes
