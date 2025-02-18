@@ -3,9 +3,9 @@
 clusterName: ${CLUSTER_NAME}
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
-talosVersion: v1.9.1
+talosVersion: v1.9.4
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
-kubernetesVersion: 1.32.0
+kubernetesVersion: 1.32.2
 
 endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
 
@@ -145,6 +145,8 @@ controlPlane:
         - init_on_free=0                      # Less security, faster puter
         # - iommu=pt                            # PCI Passthrough
         - mitigations=off                     # Less security, faster puter
+        - security=none                       # Less security, faster puter
+        - talos.auditd.disabled=1             # Less security, faster puter
       systemExtensions:
         officialExtensions:
           - siderolabs/amd-ucode
@@ -298,6 +300,11 @@ controlPlane:
     - |-
       cluster:
         allowSchedulingOnMasters: true
+        apiServer:
+          extraArgs:
+            enable-aggregator-routing: true
+            feature-gates: MutatingAdmissionPolicy=true
+            runtime-config: admissionregistration.k8s.io/v1alpha1=true
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
@@ -355,6 +362,7 @@ worker:
         # - module_blacklist=igc                # Disable onboard NIC
         - security=none                       # Less security, faster puter
         - sysctl.kernel.kexec_load_disabled=1 # Raptor Lake CPU / iGPU
+        - talos.auditd.disabled=1             # Less security, faster puter
       systemExtensions:
         officialExtensions:
           - siderolabs/i915
