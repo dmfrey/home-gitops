@@ -22,6 +22,10 @@ resource "prowlarr_indexer" "usenet_nzbplanet" {
       sensitive_value: var.NZBPLANET_API_KEY
     },
     {
+      name: "vipExpiration"
+      text_value: "2025-02-20"
+    },
+    {
       name: "baseSettings.queryLimit"
       number_value: "20000"
     },
