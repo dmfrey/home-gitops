@@ -23,7 +23,7 @@ resource "prowlarr_indexer" "usenet_nzbplanet" {
     },
     {
       name: "vipExpiration"
-      text_value: "2025-02-20"
+      text_value: ""
     },
     {
       name: "baseSettings.queryLimit"
