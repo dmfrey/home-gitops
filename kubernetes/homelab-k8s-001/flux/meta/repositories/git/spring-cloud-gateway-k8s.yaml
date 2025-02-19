@@ -5,9 +5,10 @@ metadata:
   name: git-spring-cloud-gateway-k8s
   namespace: flux-system
 spec:
-  interval: 1m
-  url: ssh://git@github.com/dmfrey/spring-cloud-gateway-k8s.git
+  interval: 15m
+  # url: ssh://git@github.com/dmfrey/spring-cloud-gateway-k8s.git
+  url: https://github.com/dmfrey/spring-cloud-gateway-k8s
   ref:
     branch: main
-  secretRef:
-    name: github-ssh-credentials
+  # secretRef:
+  #   name: github-ssh-credentials
