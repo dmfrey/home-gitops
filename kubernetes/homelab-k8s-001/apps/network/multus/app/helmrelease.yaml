@@ -7,7 +7,7 @@ metadata:
 
 spec:
 
-  interval: 15m
+  interval: 30m
 
   chart:
     spec:
@@ -80,12 +80,12 @@ spec:
         globalMounts:
           - path: /host/etc/cni/net.d
 
-      host-run-netns:
-        type: hostPath
-        hostPath: /var/run/netns/
-        globalMounts:
-          - path: /run/netns/
-            mountPropagation: HostToContainer
+      # host-run-netns:
+      #   type: hostPath
+      #   hostPath: /var/run/netns/
+      #   globalMounts:
+      #     - path: /run/netns/
+      #       mountPropagation: HostToContainer
 
       opt-cni-bin:
         type: hostPath
