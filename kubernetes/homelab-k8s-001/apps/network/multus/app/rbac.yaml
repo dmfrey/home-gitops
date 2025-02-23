@@ -13,20 +13,22 @@ rules:
   - apiGroups:
       - ""
     resources:
-      - "pods"
-      - "pods/status"
+      - pods
+      - pods/status
     verbs:
-      - "get"
-      - "update"
+      - get
+      - list
+      - update
+      - watch
   - apiGroups:
       - ""
-      - "events.k8s.io"
+      - events.k8s.io
     resources:
-      - "events"
+      - events
     verbs:
-      - "create"
-      - "patch"
-      - "update"
+      - create
+      - patch
+      - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
