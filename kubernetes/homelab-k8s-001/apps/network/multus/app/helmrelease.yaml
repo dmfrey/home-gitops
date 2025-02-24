@@ -56,7 +56,6 @@ spec:
             }
 
     controllers:
-
       uninstall:
         type: job
 
@@ -74,7 +73,7 @@ spec:
           uninstall:
             image:
               repository: alpine
-              tag: 3.21.3
+              tag: 3.21.2
 
             command:
               - /bin/sh
@@ -96,70 +95,59 @@ spec:
           hostNetwork: true
           hostPID: true
 
-        initContainers:
-          cni-plugins-installer:
-            image:
-              repository: ghcr.io/angelnu/cni-plugins
-              tag: 1.6.2
-
-            resources:
-              requests:
-                cpu: "10m"
-                memory: "15Mi"
-
-            securityContext:
-              capabilities:
-                drop:
-                  - ALL
-
-            terminationMessagePath: /dev/termination-log
-            terminationMessagePolicy: FallbackToLogsOnError
-
-          multus-shim-installer:
+        containers:
+          multus-daemon:
             image: &image
               repository: ghcr.io/k8snetworkplumbingwg/multus-cni
               tag: v4.1.4-thick
-
-            command:
-              - /bin/sh
-              - -c
-
-            args: |
-              set -x
-              cp -f /usr/src/multus-cni/bin/multus-shim /host/opt/cni/bin/multus-shim
-
-            resources:
-              requests:
-                cpu: "10m"
-                memory: "15Mi"
-
-            securityContext:
-              capabilities:
-                drop:
-                  - ALL
-
-            terminationMessagePath: /dev/termination-log
-            terminationMessagePolicy: FallbackToLogsOnError
-
-        containers:
-          multus:
-            image: *image
-
             env:
               MULTUS_NODE_NAME:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
-
             resources:
               requests:
                 cpu: "5m"
                 memory: "96Mi"
               limits:
                 memory: "512Mi"
-
             securityContext:
               privileged: true
+
+        initContainers:
+          cni-plugins-installer:
+            image:
+              repository: ghcr.io/angelnu/cni-plugins
+              tag: 1.6.2
+            resources:
+              requests:
+                cpu: "10m"
+                memory: "15Mi"
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: FallbackToLogsOnError
+
+          multus-shim-installer:
+            image: *image
+            command:
+              - /bin/sh
+              - -c
+            args: |
+              set -x
+              cp -f /usr/src/multus-cni/bin/multus-shim /host/opt/cni/bin/multus-shim
+            resources:
+              requests:
+                cpu: "10m"
+                memory: "15Mi"
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: FallbackToLogsOnError
 
     persistence:
       cni:
