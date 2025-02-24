@@ -21,13 +21,13 @@ spec:
   maxHistory: 2
 
   install:
-    createNamespace: true
     remediation:
       retries: 3
 
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
 
   uninstall:
@@ -35,7 +35,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     configMaps:
