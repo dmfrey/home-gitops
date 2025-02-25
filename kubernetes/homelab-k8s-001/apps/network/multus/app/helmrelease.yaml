@@ -179,6 +179,7 @@ spec:
               # mount to '/opt/cni/bin' in multus-daemon, not to any other directory, like '/opt/bin' or
               # '/usr/bin'.
               - path: /opt/cni/bin
+                mountPropagation: Bidirectional
 
       config:
         type: configMap
