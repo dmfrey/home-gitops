@@ -11,7 +11,7 @@ spec:
       "logLevel": "verbose",
       "plugins": [
         {
-          "type": "ipcvlan",
+          "type": "ipvlan",
           "master": "eth0.50",
           "mode": "l2",
           "ipam": {
