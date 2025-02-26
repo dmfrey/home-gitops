@@ -41,16 +41,16 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          # annotations:
-          #   k8s.v1.cni.cncf.io/networks: |
-          #     [{
-          #       "name": "iot-vlan",
-          #       "interface": "eth0.50",
-          #       "namespace": "network" ,
-          #       "ips": ["192.168.50.8/24"],
-          #       "mac": "f1:fd:59:0b:bd:2b"
-          #     }]
+        # pod:
+        #   annotations:
+        #     k8s.v1.cni.cncf.io/networks: |
+        #       [{
+        #         "name": "iot-vlan",
+        #         "interface": "eth0.50",
+        #         "namespace": "network" ,
+        #         "ips": ["192.168.50.8/24"],
+        #         "mac": "f1:fd:59:0b:bd:2b"
+        #       }]
 
         containers:
           *app :
