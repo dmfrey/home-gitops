@@ -31,7 +31,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/music-assistant/server
-              tag: 2.4.1@sha256:1fb6f4bea12d3dac7f662c331466eb4a0c7092b4483dcd3f8bb7783e95a53a32
+              tag: 2.4.2@sha256:d75a2e636989ce6d3cb7a0435726f89f8a56a50fe88c3ea0c4c2066aeb1f487b
 
             env:
               TZ: ${TIMEZONE}
