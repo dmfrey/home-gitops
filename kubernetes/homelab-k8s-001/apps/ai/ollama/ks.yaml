@@ -22,6 +22,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: openweb
+      GATUS_PATH: /health
       VOLSYNC_CLAIM: *app
       VOLSYNC_CAPACITY: 2Gi
   prune: true
