@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: authentik
-      version: 2025.2.0
+      version: 2025.2.1
       sourceRef:
         kind: HelmRepository
         name: authentik
@@ -37,7 +37,7 @@ spec:
 
       image:
         repository: ghcr.io/goauthentik/server
-        tag: 2025.2.0
+        tag: 2025.2.1
         pullPolicy: IfNotPresent
 
       envFrom:
