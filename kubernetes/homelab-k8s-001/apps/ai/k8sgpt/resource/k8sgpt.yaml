@@ -14,7 +14,7 @@ spec:
     enabled: true
     model: llama3.1
     backend: localai
-    baseUrl: http://ollama-backend.ai.svc.cluster.local:11434/v1
+    baseUrl: http://ollama.ai.svc.cluster.local:11434/v1
 
   noCache: false
 
