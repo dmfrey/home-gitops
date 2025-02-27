@@ -91,10 +91,10 @@ spec:
             port: 11434
 
     persistence:
-      backend-config:
+      config:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
-        globaldMounts:
+        globalMounts:
           - path: /.ollama
 
       tmp:
