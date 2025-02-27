@@ -3,54 +3,26 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: ollama-backend-pvc
+  name: &app open-webui
   namespace: &namespace ai
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: ollama
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/gatus/external
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 30m
-  path: "./kubernetes/homelab-k8s-001/templates/volsync"
+  path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/open-webui"
   postBuild:
     substitute:
-      APP: ollama-backend
-      VOLSYNC_CLAIM: ollama-backend-data
-      VOLSYNC_CAPACITY: 10Gi
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
----
-# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: ollama-ui-pvc
-  namespace: &namespace ai
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: ollama
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
-    - name: volsync
-      namespace: volsync-system
-  interval: 30m
-  path: "./kubernetes/homelab-k8s-001/templates/volsync"
-  postBuild:
-    substitute:
-      APP: ollama-ui
-      VOLSYNC_CLAIM: ollama-ui-data
+      APP: *app
+      VOLSYNC_CLAIM: *app
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
@@ -65,26 +37,29 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: ollama
+  name: &app ollama
   namespace: &namespace ai
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: ollama
-  interval: 30m
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: intel-device-plugins-gpu
       namespace: kube-system
-    - name: ollama-backend-pvc
-      namespace: ai
-    - name: ollama-ui-pvc
-      namespace: ai
+    - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/app"
   prune: true
   postBuild:
     substitute:
-      BACKEND_CLAIM: ollama-backend-data
-      UI_CLAIM: ollama-ui-data
+      APP: *app
+      VOLSYNC_CLAIM: *app
+      VOLSYNC_CAPACITY: 100Gi
   sourceRef:
     kind: GitRepository
     name: flux-system

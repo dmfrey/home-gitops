@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: ollama
+  name: &app ollama
 
 spec:
 
@@ -34,14 +34,14 @@ spec:
   values:
 
     controllers:
-      backend:
+      *app :
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          backend:
+          *app :
             image:
               repository: docker.io/ollama/ollama
               tag: 0.5.12
@@ -51,7 +51,7 @@ spec:
               LIBVA_DRIVER_NAME: i965
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
-              OLLAMA_MODELS: &pvc /models
+              # OLLAMA_MODELS: &pvc /models
               OLLAMA_GPU_ENABLED: "true"
               # OLLAMA_GPU_TYPE: amd
 
@@ -80,95 +80,22 @@ spec:
             # feature.node.kubernetes.io/pci-0300_1002.present: "true"
             intel.feature.node.kubernetes.io/gpu: "true"
 
-      ui:
-        type: deployment
-
-        annotations:
-          reloader.stakater.com/auto: "true"
-
-        containers:
-          ui:
-            image:
-              repository: ghcr.io/open-webui/open-webui
-              tag: main
-
-            env:
-              WEBUI_NAME: Ollama
-              WEBUI_URL: https://ollama.${SECRET_DOMAIN}
-              DATA_DIR: /data
-              OLLAMA_BASE_URL: http://ollama-backend.ai.svc.cluster.local:11434
-              # WEBUI_AUTH_TRUSTED_EMAIL_HEADER: X-authentik-email
-              AUDIO_OPENAI_API_BASE_URL: https://wyoming-services-piper.${SECRET_DOMAIN}/v1
-              AUDIO_OPENAI_API_KEY: sk-111111111111 # fake key needed to make ui happy
-              RAG_EMBEDDING_ENGINE: ollama
-
-            resources:
-              requests:
-                cpu: 200m
-                memory: 2Gi
-              limits:
-                memory: 2Gi
-
     service:
-      backend:
-        controller: backend
+      *app :
+        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${SVC_OLLAMA_ADDR}
         ports:
           http:
             port: 11434
-      ui:
-        controller: ui
-        ports:
-          http:
-            port: &port 8080
-
-    ingress:
-      ui:
-        enabled: true
-        className: external
-        annotations:
-          nginx.org/websocket-services: ollama
-
-          hajimari.io/appName: "Ollama"
-          hajimari.io/enable: "true"
-          hajimari.io/group: "AI"
-
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-
-        hosts:
-          - host: &host ollama.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: ui
-                  port: *port
 
     persistence:
       backend-config:
         enabled: true
-        existingClaim: ${BACKEND_CLAIM}
-        advancedMounts:
-          backend:
-            backend:
-              - path: /.ollama
-
-      ui-config:
-        enabled: true
-        existingClaim: ${UI_CLAIM}
-        advancedMounts:
-          ui:
-            ui:
-              - path: /data
-
-      models:
-        enabled: true
-        existingClaim: ollama-models
-        advancedMounts:
-          backend:
-            main:
-              - path: *pvc
+        existingClaim: ${VOLSYNC_CLAIM}
+        globaldMounts:
+          - path: /.ollama
 
       tmp:
         enabled: true
