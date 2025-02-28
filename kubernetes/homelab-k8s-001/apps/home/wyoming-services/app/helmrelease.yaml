@@ -22,51 +22,6 @@ spec:
 
     controllers:
 
-      piper:
-        type: statefulset
-
-        annotations:
-          app.kubernetes.io/name: piper
-          reloader.stakater.com/auto: "true"
-
-        containers:
-          main:
-            image:
-              repository: rhasspy/wyoming-piper
-              tag: 1.5.0
-
-            args:
-              - --voice=en_US-hfc_female-medium
-
-            env:
-              TZ: ${TIMEZONE}
-
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
-            resources:
-              requests:
-                cpu: 500m
-                memory: 250Mi
-              limits:
-                memory: 500Mi
-
-          api:
-            image:
-              repository: ghcr.io/matatonic/openedai-speech-min
-              tag: 0.18.2
-
-            env:
-              TTS_HOME: voices
-              HF_HOME: voices
-
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
       whisper:
 
         type: statefulset
@@ -109,18 +64,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      piper:
-        type: LoadBalancer
-        controller: piper
-        annotations:
-          app.kubernetes.io/name: piper
-          lbipam.cilium.io/ips: 192.168.30.102
-        ports:
-          piper:
-            port: 10200
-          http:
-            port: 8000
-
       whisper:
         type: LoadBalancer
         controller: whisper
@@ -132,49 +75,13 @@ spec:
             port: 10300
             protocol: TCP
 
-    ingress:
-      piper:
-        className: internal
-        hosts:
-          - host: piper.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: piper
-                  port: http
-
     persistence:
-      piper-config:
-        type: configMap
-        name: piper-config
-        advancedMounts:
-          piper:
-            api:
-              - path: /app/config
-
-      piper-data:
-        existingClaim: ${PIPER_CLAIM}
-        advancedMounts:
-          piper:
-            main:
-              - path: /data
-            api:
-              - path: /app/voices
-
       whisper-data:
         existingClaim: ${WHISPER_CLAIM}
         advancedMounts:
           whisper:
             main:
               - path: /data
-
-      piper-tmp:
-        type: emptyDir
-        medium: Memory
-        advancedMounts:
-          piper:
-            main:
-              - path: /tmp
 
       whisper-tmp:
         type: emptyDir
