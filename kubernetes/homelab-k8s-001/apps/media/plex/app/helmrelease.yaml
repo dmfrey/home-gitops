@@ -118,7 +118,7 @@ spec:
         type: LoadBalancer
         # externalTrafficPolicy: Cluster
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: &host plex.${SECRET_DOMAIN}
+          # external-dns.alpha.kubernetes.io/hostname: &host plex.${SECRET_DOMAIN}
           lbipam.cilium.io/ips: ${SVC_PLEX_ADDR}
         ports:
           http:
@@ -165,10 +165,10 @@ spec:
           gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
 
-          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
         hosts:
-        - host: *host
+        - host: plex.${SECRET_DOMAIN}
           paths:
           - path: /
             service:
