@@ -117,7 +117,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: wyoming-piper-data
+      VOLSYNC_CLAIM: piper-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
