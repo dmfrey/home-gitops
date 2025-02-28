@@ -31,39 +31,39 @@
 #   targetNamespace: *namespace
 #   timeout: 5m
 #   wait: false
----
-# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app wyoming-whisper-pvc
-  namespace: &namespace home
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: wyoming-whisper
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
-    - name: volsync
-      namespace: volsync-system
-  interval: 30m
-  path: "./kubernetes/homelab-k8s-001/templates/volsync"
-  postBuild:
-    substitute:
-      APP: *app
-      APP_UID: "568"
-      APP_GID: "568"
-      VOLSYNC_CLAIM: wyoming-whisper-data
-      VOLSYNC_CAPACITY: 5Gi
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app wyoming-whisper-pvc
+#   namespace: &namespace home
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: wyoming-whisper
+#   dependsOn:
+#     - name: rook-ceph-cluster
+#       namespace: storage  # rook-ceph
+#     - name: volsync
+#       namespace: volsync-system
+#   interval: 30m
+#   path: "./kubernetes/homelab-k8s-001/templates/volsync"
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       APP_UID: "568"
+#       APP_GID: "568"
+#       VOLSYNC_CLAIM: wyoming-whisper-data
+#       VOLSYNC_CAPACITY: 5Gi
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -75,17 +75,17 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: wyoming-piper-pvc
-      namespace: *namespace
-    - name: wyoming-whisper-pvc
-      namespace: *namespace
+  # dependsOn:
+  #   - name: wyoming-piper-pvc
+  #     namespace: *namespace
+  #   - name: wyoming-whisper-pvc
+  #     namespace: *namespace
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/app"
-  postBuild:
-    substitute:
-      PIPER_CLAIM: wyoming-piper-data
-      WHISPER_CLAIM: wyoming-whisper-data
+  # postBuild:
+  #   substitute:
+  #     PIPER_CLAIM: wyoming-piper-data
+  #     WHISPER_CLAIM: wyoming-whisper-data
   prune: true
   sourceRef:
     kind: GitRepository
@@ -151,36 +151,36 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app whisper
-#   namespace: &namespace home
-# spec:
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   components:
-#     - ../../../../flux/components/volsync
-  # dependsOn:
-  #   - name: rook-ceph-cluster
-  #     namespace: storage  # rook-ceph
-  #   - name: volsync
-  #     namespace: volsync-system
-#   interval: 30m
-#   path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/whisper"
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       VOLSYNC_CLAIM: wyoming-whisper-data
-#       VOLSYNC_CAPACITY: 5Gi
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   targetNamespace: *namespace
-#   timeout: 5m
-#   wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app whisper
+  namespace: &namespace home
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 30m
+  path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/whisper"
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CLAIM: whisper-data
+      VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
