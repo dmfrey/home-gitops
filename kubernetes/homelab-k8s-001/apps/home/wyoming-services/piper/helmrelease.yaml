@@ -105,7 +105,7 @@ spec:
           - path: /app/config
 
       data:
-        existingClaim: ${PIPER_CLAIM}
+        existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           *app :
             *app :
