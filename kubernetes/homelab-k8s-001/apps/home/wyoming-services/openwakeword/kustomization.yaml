@@ -6,10 +6,9 @@ resources:
   - ./helmrelease.yaml
 
 configMapGenerator:
-  - name: piper-config
+  - name: openwakeword-config
     files:
-      - ./resources/pre_process_map.yaml
-      - ./resources/voice_to_speaker.yaml
+      - ./resources/hey_piper.tflite
 
 generatorOptions:
   disableNameSuffixHash: true

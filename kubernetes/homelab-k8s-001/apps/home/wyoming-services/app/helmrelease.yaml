@@ -67,18 +67,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-        # statefulset:
-        #   volumeClaimTemplates:
-        #     - name: data
-        #       advancedMounts:
-        #         main:
-        #           - path: /data
-        #         api:
-        #           - path: /app/voices
-        #       accessMode: ReadWriteOnce
-        #       size: 5Gi
-        #       storageClass: ceph-block
-
       whisper:
 
         type: statefulset
@@ -106,42 +94,6 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 2500Mi
-
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
-        # statefulset:
-        #   volumeClaimTemplates:
-        #     - name: data
-        #       globalMounts:
-        #         - path: /data
-        #       accessMode: ReadWriteOnce
-        #       size: 5Gi
-        #       storageClass: ceph-block
-
-      openwakeword:
-        type: statefulset
-
-        annotations:
-          app.kubernetes.io/name: openwakeword
-          reloader.stakater.com/auto: "true"
-
-        containers:
-          main:
-            image:
-              repository: rhasspy/wyoming-openwakeword
-              tag: 1.10.0
-
-            args:
-              - --preload-model
-              - "ok_nabu"
-              - --custom-model-dir
-              - /custom
-
-            env:
-              TZ: ${TIMEZONE}
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -180,16 +132,6 @@ spec:
             port: 10300
             protocol: TCP
 
-      openwakeword:
-        type: LoadBalancer
-        controller: openwakeword
-        annotations:
-          app.kubernetes.io/name: openwakeword
-          lbipam.cilium.io/ips: 192.168.30.104
-        ports:
-          http:
-            port: 10400
-
     ingress:
       piper:
         className: internal
@@ -226,14 +168,6 @@ spec:
             main:
               - path: /data
 
-      openwakeword-config:
-        type: configMap
-        name: openwakeword-config
-        advancedMounts:
-          openwakeword:
-            main:
-              - path: /custom
-
       piper-tmp:
         type: emptyDir
         medium: Memory
@@ -247,13 +181,5 @@ spec:
         medium: Memory
         advancedMounts:
           whisper:
-            main:
-              - path: /tmp
-
-      openwakeword-tmp:
-        type: emptyDir
-        medium: Memory
-        advancedMounts:
-          openwakeword:
             main:
               - path: /tmp
