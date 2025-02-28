@@ -1,0 +1,118 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app piper
+
+spec:
+
+  interval: 15m
+
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+
+    controllers:
+
+      *app :
+        type: statefulset
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          *app :
+            image:
+              repository: rhasspy/wyoming-piper
+              tag: 1.5.0
+
+            args:
+              - --voice=en_US-hfc_female-medium
+
+            env:
+              TZ: ${TIMEZONE}
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+            resources:
+              requests:
+                cpu: 500m
+                memory: 250Mi
+              limits:
+                memory: 500Mi
+
+          api:
+            image:
+              repository: ghcr.io/matatonic/openedai-speech-min
+              tag: 0.18.2
+
+            env:
+              TTS_HOME: voices
+              HF_HOME: voices
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      *app :
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.30.102
+        ports:
+          *app :
+            port: 10200
+          http:
+            port: 8000
+
+    ingress:
+      internal:
+        className: internal
+        hosts:
+          - host: piper.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: http
+
+    persistence:
+      config:
+        type: configMap
+        name: piper-config
+        globalMounts:
+          - path: /app/config
+
+      data:
+        existingClaim: ${PIPER_CLAIM}
+        advancedMounts:
+          *app :
+            *app :
+              - path: /data
+            api:
+              - path: /app/voices
+
+      tmp:
+        type: emptyDir
+        medium: Memory
