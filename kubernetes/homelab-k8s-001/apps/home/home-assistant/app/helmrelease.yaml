@@ -296,7 +296,7 @@ spec:
           - path: /config
 
       llmvision:
-        existingClaim: ${LLMVISION_CLAIM}
+        existingClaim: home-assistant-llmvision
         globalMounts:
           - path: /llmvision
 
