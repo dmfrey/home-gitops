@@ -175,7 +175,7 @@ spec:
         enabled: true
         existingClaim: nfs-games
         globalMounts:
-          - path: /romm/library
+          - path: /romm/resources/roms
 
       tmp:
         type: emptyDir
