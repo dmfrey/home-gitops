@@ -161,12 +161,6 @@ spec:
             subPath: config.yml
         defaultMode: 0664
 
-      # romm-redis-data:
-      #   existingClaim: romm-redis-data
-      #   globalMounts:
-      #     - path: /redis-data
-      #       readOnly: false
-
       tmp:
         type: emptyDir
         medium: Memory

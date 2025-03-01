@@ -91,7 +91,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: romm-data
+      VOLSYNC_CLAIM: romm-data-1
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
