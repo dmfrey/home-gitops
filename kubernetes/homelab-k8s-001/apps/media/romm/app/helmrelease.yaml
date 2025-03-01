@@ -168,14 +168,3 @@ spec:
       tmp:
         type: emptyDir
         medium: Memory
-
-    # serviceMonitor:
-    #   metrics:
-    #     serviceName: *app
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 10m
-    #         scrapeTimeout: 10s
-
