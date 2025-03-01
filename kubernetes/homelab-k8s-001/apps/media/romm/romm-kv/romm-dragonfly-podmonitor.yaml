@@ -1,0 +1,12 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: romm-kv-cluster
+spec:
+  selector:
+    matchLabels:
+      app: romm-kv-cluster
+  podTargetLabels: ["app"]
+  podMetricsEndpoints:
+    - port: admin

@@ -32,6 +32,40 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app romm-kv
+  namespace: &namespace media
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: dragonfly-operator
+      namespace: datastore
+    - name: rook-ceph-cluster
+      namespace: storage  # rook-ceph
+  healthChecks:
+    - apiVersion: dragonflydb.io/v1alpha1
+      kind: Dragonfly
+      name: romm-kv-cluster
+      namespace: *namespace
+  interval: 30m
+  path: "./kubernetes/homelab-k8s-001/apps/media/romm/romm-kv"
+  postBuild:
+    substitute:
+      APP: *app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app romm
   namespace: &namespace media
 spec:
@@ -43,6 +77,8 @@ spec:
     - ../../../../flux/components/volsync
   dependsOn:
     - name: romm-db
+      namespace: *namespace
+    - name: romm-kv
       namespace: *namespace
     - name: nfs-subdir
       namespace: kube-system

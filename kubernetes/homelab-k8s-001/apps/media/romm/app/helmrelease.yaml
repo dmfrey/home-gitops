@@ -65,6 +65,8 @@ spec:
                   secretKeyRef:
                     name: romm-mariadb-secret
                     key: ROMM_PASSWORD
+              REDIS_HOST: romm-kv-cluster.media.svc.cluster.local
+              REDIS_PORT: 6379
 
             envFrom:
               - secretRef:
@@ -159,11 +161,11 @@ spec:
             subPath: config.yml
         defaultMode: 0664
 
-      romm-redis-data:
-        existingClaim: romm-redis-data
-        globalMounts:
-          - path: /redis-data
-            readOnly: false
+      # romm-redis-data:
+      #   existingClaim: romm-redis-data
+      #   globalMounts:
+      #     - path: /redis-data
+      #       readOnly: false
 
       tmp:
         type: emptyDir
