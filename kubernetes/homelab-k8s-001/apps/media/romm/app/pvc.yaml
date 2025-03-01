@@ -17,7 +17,7 @@ metadata:
   name: romm-redis-data
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: ceph-block
   resources:
     requests:
