@@ -1,81 +1,3 @@
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app romm-assets-pvc
-#   namespace: flux-system
-# spec:
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: romm
-#   interval: 10m
-#   path: "./kubernetes/homelab-k8s-001/templates/volsync"
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       VOLSYNC_CLAIM: romm-assets
-#       VOLSYNC_CAPACITY: 5Gi
-#   dependsOn:
-#     - name: volsync
-#     - name: rook-ceph-cluster
-#   targetNamespace: media
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app romm-resources-pvc
-#   namespace: flux-system
-# spec:
-#   targetNamespace: media
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: romm
-#   interval: 10m
-#   path: "./kubernetes/homelab-k8s-001/templates/volsync"
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       VOLSYNC_CLAIM: romm-resources
-#       VOLSYNC_CAPACITY: 5Gi
-#   dependsOn:
-#     - name: volsync
-#     - name: rook-ceph-cluster
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app romm-data-pvc
-#   namespace: flux-system
-# spec:
-#   targetNamespace: media
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: romm
-#   interval: 10m
-#   path: "./kubernetes/homelab-k8s-001/templates/volsync"
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#   postBuild:
-#     substitute:
-#       APP: *app
-#       VOLSYNC_CLAIM: romm-data
-#       VOLSYNC_CAPACITY: 1Gi
-#   dependsOn:
-#     - name: volsync
-#     - name: rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -92,7 +14,7 @@ spec:
       namespace: datastore
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/media/romm/services"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
