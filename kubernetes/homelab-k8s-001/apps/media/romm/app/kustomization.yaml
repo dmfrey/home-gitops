@@ -7,7 +7,6 @@ resources:
   - ./pvc.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ../../../../templates/volsync
 
 configMapGenerator:
   - name: romm-config

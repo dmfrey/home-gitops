@@ -91,9 +91,9 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
         supplementalGroups:
@@ -135,16 +135,16 @@ spec:
 
     persistence:
       romm-data:
-        existingClaim: ${DATA_CLAIM}
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /romm
             readOnly: false
 
-      romm-assets:
-        existingClaim: ${ASSETS_CLAIM}
-        globalMounts:
-          - path: /romm/assets
-            readOnly: false
+      # romm-assets:
+      #   existingClaim: ${ASSETS_CLAIM}
+      #   globalMounts:
+      #     - path: /romm/assets
+      #       readOnly: false
 
       romm-config:
         type: emptyDir
@@ -159,11 +159,11 @@ spec:
             subPath: config.yml
         defaultMode: 0664
 
-      romm-resources:
-        existingClaim: ${RESOURCES_CLAIM}
-        globalMounts:
-          - path: /romm/resources
-            readOnly: false
+      # romm-resources:
+      #   existingClaim: ${RESOURCES_CLAIM}
+      #   globalMounts:
+      #     - path: /romm/resources
+      #       readOnly: false
 
       romm-redis-data:
         existingClaim: ${REDIS_DATA_CLAIM}
@@ -180,8 +180,6 @@ spec:
       tmp:
         type: emptyDir
         medium: Memory
-        globalMounts:
-          - path: /tmp
 
     # serviceMonitor:
     #   metrics:
