@@ -42,7 +42,7 @@ spec:
     - ../../../../flux/components/gatus/external
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: romm-services
+    - name: romm-db
       namespace: *namespace
     - name: nfs-subdir
       namespace: kube-system
