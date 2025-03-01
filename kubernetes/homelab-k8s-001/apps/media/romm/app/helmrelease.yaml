@@ -166,7 +166,7 @@ spec:
       #       readOnly: false
 
       romm-redis-data:
-        existingClaim: ${REDIS_DATA_CLAIM}
+        existingClaim: romm-redis-data
         globalMounts:
           - path: /redis-data
             readOnly: false
