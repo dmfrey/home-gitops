@@ -140,11 +140,11 @@ spec:
           - path: /romm
             readOnly: false
 
-      # romm-assets:
-      #   existingClaim: ${ASSETS_CLAIM}
-      #   globalMounts:
-      #     - path: /romm/assets
-      #       readOnly: false
+      romm-library:
+        enabled: true
+        existingClaim: nfs-games
+        globalMounts:
+          - path: /romm/library
 
       romm-config:
         type: emptyDir
@@ -159,23 +159,11 @@ spec:
             subPath: config.yml
         defaultMode: 0664
 
-      # romm-resources:
-      #   existingClaim: ${RESOURCES_CLAIM}
-      #   globalMounts:
-      #     - path: /romm/resources
-      #       readOnly: false
-
       romm-redis-data:
         existingClaim: romm-redis-data
         globalMounts:
           - path: /redis-data
             readOnly: false
-
-      games:
-        enabled: true
-        existingClaim: nfs-games
-        globalMounts:
-          - path: /romm/resources/roms
 
       tmp:
         type: emptyDir
