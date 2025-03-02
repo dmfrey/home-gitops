@@ -139,8 +139,8 @@ spec:
       enabled: true
 
       image:
-        repository: micrometermetrics/prometheus-rsocket-proxy:2.0.0-M1
-        digest: sha256:9f8fc1c7cefbc7626c6bab0c91451dc9964d4025106cee9cbdb4a13d365314b5
+        repository: micrometermetrics/prometheus-rsocket-proxy:2.0.0-RC1
+        digest: sha256:6581ef52d1cf44a3b8526d8b18cbe1775ee67b273361221b2837d641bc296feb
 
       resources:
         requests:
