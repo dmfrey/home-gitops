@@ -157,9 +157,9 @@ spec:
 
       extraEnvVars:
         - name: DEBUG
-          value: "true"
+          value: "false"
         - name: LOGGING_LEVEL_ORG_XERIAL_SNAPPY
-          value: debug
+          value: info
 
       extraVolumeMounts:
         - mountPath: /tmp
