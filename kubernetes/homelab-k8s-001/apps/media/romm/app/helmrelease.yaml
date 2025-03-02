@@ -85,6 +85,20 @@ spec:
                     key: password
               REDIS_HOST: romm-kv-cluster.media.svc.cluster.local
               REDIS_PORT: 6379
+              OIDC_ENABLED: true
+              OIDC_PROVIDER: authentik
+              OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-secret
+                    key: ROMM_CLIENT_ID
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-secret
+                    key: ROMM_CLIENT_SECRET
+              OIDC_REDIRECT_URI: http://romm.${SECRET_DOMAIN/api/oauth/openid
+              OIDC_SERVER_APPLICATION_URL: http://auth.${SECRET_DOMAIN}/application/o/romm
 
             envFrom:
               - secretRef:
