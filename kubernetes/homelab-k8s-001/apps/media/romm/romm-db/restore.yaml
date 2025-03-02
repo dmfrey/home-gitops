@@ -1,9 +1,0 @@
-apiVersion: k8s.mariadb.com/v1alpha1
-kind: Restore
-metadata:
-  name: restore
-spec:
-  mariaDbRef:
-    name: romm-mariadb
-  backupRef:
-    name: romm-mariadb-backup

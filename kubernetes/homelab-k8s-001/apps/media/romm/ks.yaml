@@ -86,8 +86,6 @@ spec:
       namespace: *namespace
     - name: romm-kv
       namespace: *namespace
-    - name: nfs-subdir
-      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
     - name: volsync
