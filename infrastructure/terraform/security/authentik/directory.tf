@@ -3,6 +3,7 @@ locals {
   authentik_groups = {
     developers     = { name = "Developers" }
     downloads      = { name = "Downloads" }
+    games          = { name = "Games" }
     home           = { name = "Home" }
     infrastructure = { name = "Infrastructure" }
     monitoring     = { name = "Monitoring" }

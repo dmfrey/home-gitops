@@ -25,6 +25,14 @@ locals {
       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
     },
+    romm = {
+      client_id     = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "games"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/romm.png"
+      redirect_uri  = "https://romm.${var.cluster_domain}/api/oauth/openid"
+      launch_url    = "https://romm.${var.cluster_domain}/"
+    },
     spring-dev = {
       client_id     = module.onepassword_application["spring-dev"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["spring-dev"].fields["AUTHENTIK_CLIENT_SECRET"]
