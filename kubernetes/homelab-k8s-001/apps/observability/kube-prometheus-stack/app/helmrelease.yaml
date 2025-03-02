@@ -39,8 +39,8 @@ spec:
     name: flux-kube-state-metrics-config
     valuesKey: kube-state-metrics-config.yaml
 
-  # driftDetection:
-  #   mode: enabled
+  driftDetection:
+    mode: enabled
 
   # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
   values:
