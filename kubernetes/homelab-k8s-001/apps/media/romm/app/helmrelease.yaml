@@ -142,12 +142,6 @@ spec:
           - path: /romm
             readOnly: false
 
-      romm-library:
-        enabled: true
-        existingClaim: nfs-games
-        globalMounts:
-          - path: /romm/library
-
       romm-config:
         type: emptyDir
         globalMounts:
@@ -160,6 +154,30 @@ spec:
           - path: /romm/config/config.yml
             subPath: config.yml
         defaultMode: 0664
+
+      romm-assets:
+        enabled: true
+        type: nfs
+        server: ${QNAP_ADDR}
+        path: /games/assets
+        globalMounts:
+          - path: /romm/assets
+
+      romm-library:
+        enabled: true
+        type: nfs
+        server: ${QNAP_ADDR}
+        path: /games/library
+        globalMounts:
+          - path: /romm/library
+
+      romm-resources:
+        enabled: true
+        type: nfs
+        server: ${QNAP_ADDR}
+        path: /games/resources
+        globalMounts:
+          - path: /romm/resources
 
       tmp:
         type: emptyDir
