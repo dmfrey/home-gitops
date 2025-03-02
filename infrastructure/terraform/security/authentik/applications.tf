@@ -29,7 +29,7 @@ locals {
     romm = {
       client_id     = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_SECRET"]
-      group         = "games"
+      group         = "media"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/romm.png"
       redirect_uri  = "https://romm.${var.cluster_domain}/api/oauth/openid"
       launch_url    = "https://romm.${var.cluster_domain}/"
