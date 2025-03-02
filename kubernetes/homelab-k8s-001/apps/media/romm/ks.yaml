@@ -90,6 +90,8 @@ spec:
       namespace: *namespace
     - name: romm-kv
       namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
     - name: volsync
@@ -99,7 +101,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: romm-data-1
+      VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
