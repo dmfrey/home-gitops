@@ -2,6 +2,7 @@
 locals {
   oauth_apps = [
     "grafana",
+    "romm",
     "spring-dev"
   ]
 }
