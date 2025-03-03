@@ -19,13 +19,11 @@ spec:
         namespace: flux-system
 
   install:
-    # crds: Create
     remediation:
       retries: 3
 
   upgrade:
     cleanupOnFail: true
-    # crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
@@ -46,7 +44,10 @@ spec:
   values:
 
     crds:
-      enabled: false
+      enabled: true
+      upgradeJob:
+        enabled: true
+        forceConflicts: true
 
     cleanPrometheusOperatorObjectNames: true
 
@@ -73,13 +74,13 @@ spec:
 
         externalUrl: https://alertmanager.${SECRET_DOMAIN}
 
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: node-role.kubernetes.io/control-plane
-                  operator: Exists
+        # affinity:
+        #   nodeAffinity:
+        #     requiredDuringSchedulingIgnoredDuringExecution:
+        #       nodeSelectorTerms:
+        #       - matchExpressions:
+        #         - key: node-role.kubernetes.io/control-plane
+        #           operator: Exists
 
         storage:
           volumeClaimTemplate:
@@ -92,19 +93,16 @@ spec:
     kubeApiServer:
       serviceMonitor:
         selector:
-          # matchLabels:
           k8s-app: kube-apiserver
 
     kubeScheduler:
       service:
         selector:
-          # matchLabels:
           k8s-app: kube-scheduler
 
     kubeControllerManager: &kubeControllerManager
       service:
         selector:
-          # matchLabels:
           k8s-app: kube-controller-manager
 
     kubeEtcd:
@@ -129,13 +127,13 @@ spec:
 
       prometheusSpec:
 
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: node-role.kubernetes.io/control-plane
-                  operator: Exists
+        # affinity:
+        #   nodeAffinity:
+        #     requiredDuringSchedulingIgnoredDuringExecution:
+        #       nodeSelectorTerms:
+        #       - matchExpressions:
+        #         - key: node-role.kubernetes.io/control-plane
+        #           operator: Exists
 
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
