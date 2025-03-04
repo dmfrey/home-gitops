@@ -2,6 +2,7 @@
 locals {
   oauth_apps = [
     "grafana",
+    "hedgedoc",
     "romm",
     "spring-dev"
   ]
@@ -25,6 +26,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+    },
+    hedgedoc = {
+      client_id     = module.onepassword_application["hedgedoc"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["hedgedoc"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/hedgedoc.svg"
+      redirect_uri  = "https://kb.${var.cluster_domain}/api/private/auth/oidc/authentik/callback"
+      launch_url    = "https://kb.${var.cluster_domain}/"
     },
     romm = {
       client_id     = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_ID"]
