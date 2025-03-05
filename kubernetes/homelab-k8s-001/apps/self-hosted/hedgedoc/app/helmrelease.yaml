@@ -96,7 +96,7 @@ spec:
               # HD_AUTH_LOCAL_ENABLE_REGISTER: true
               HD_AUTH_OIDC_SERVERS: AUTHENTIK
               HD_AUTH_OIDC_AUTHENTIK_PROVIDER_NAME: Authentik
-              HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/.well-known/openid-configuration
+              HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/
               HD_AUTH_OIDC_AUTHENTIK_CLIENT_ID:
                 valueFrom:
                   secretKeyRef:
