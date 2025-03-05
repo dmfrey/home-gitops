@@ -51,6 +51,7 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
+              HD_LOGLEVEL: debug  # info
               HD_BASE_URL: https://kb.${SECRET_DOMAIN}
               HD_SESSION_SECRET:
                 valueFrom:
