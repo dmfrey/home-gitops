@@ -135,14 +135,18 @@ spec:
         #         - key: node-role.kubernetes.io/control-plane
         #           operator: Exists
 
+        externalLabels:
+          cluster: ${CLUSTER_NAME}
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
+        replicaExternalLabelName: "__replica__"
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
+          - expand-external-labels
           - memory-snapshot-on-shutdown
         retention: 14d
         retentionSize: 50GB
