@@ -43,35 +43,78 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          backend:
             image:
-              repository: quay.io/hedgedoc/hedgedoc
+              repository: ghcr.io/hedgedoc/hedgedoc/backend
               pullPolicy: IfNotPresent
-              tag: 1.10.2
+              tag: 2.0.0-alpha.3
 
             env:
               TZ: ${TIMEZONE}
-              PUID: 1000
-              PGID: 1000
-              CMD_DB_PORT: 5432
-              CMD_DB_DIALECT: postgres
+              HD_BASE_URL: https://kb.${SECRET_DOMAIN}
+              HD_SESSION_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: hedgedoc-secret
+                    key: HD_SESSION_SECRET
+
+              # Database settings
+              HD_DATABASE_TYPE: postgres
+              HD_DATABASE_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-hedgedoc-app
+                    key: host
+              HD_DATABASE_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-hedgedoc-app
+                    key: port
+              HD_DATABASE_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-hedgedoc-app
+                    key: dbname
+              HD_DATABASE_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-hedgedoc-app
+                    key: user
+              HD_DATABASE_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-hedgedoc-app
+                    key: password
+
+              # Uploads
+              HD_MEDIA_BACKEND: filesystem
+              HD_MEDIA_BACKEND_FILESYSTEM_UPLOAD_PATH: uploads/
+
+              # Auth
+              HD_AUTH_LOCAL_ENABLE_LOGIN: true
+              HD_AUTH_LOCAL_ENABLE_REGISTER: true
+
+              # PUID: 1000
+              # PGID: 1000
+              # CMD_DB_PORT: 5432
+              # CMD_DB_DIALECT: postgres
               # toggle to allow more user registering
               # use ldap user instead, with group hedgedoc
-              CMD_EMAIL: false
-              CMD_ALLOW_EMAIL_REGISTER: false
-              CMD_DOMAIN: md.${SECRET_DOMAIN}
-              CMD_PROTOCOL_USESSL: true
-              CMD_URL_ADDPORT: false
+              # CMD_EMAIL: false
+              # CMD_ALLOW_EMAIL_REGISTER: false
+              # CMD_DOMAIN: md.${SECRET_DOMAIN}
+              # CMD_PROTOCOL_USESSL: true
+              # CMD_URL_ADDPORT: false
               # SSO
-              CMD_OAUTH2_PROVIDERNAME: Authelia
-              CMD_OAUTH2_CLIENT_ID: hedgedoc
-              CMD_OAUTH2_SCOPE: openid email groups profile
-              CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR: sub
-              CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR: name
-              CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR: email
-              CMD_OAUTH2_USER_PROFILE_URL: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
-              CMD_OAUTH2_TOKEN_URL: https://auth.${SECRET_DOMAIN}/api/oidc/token
-              CMD_OAUTH2_AUTHORIZATION_URL: https://auth.${SECRET_DOMAIN}/api/oidc/authorize
+              # CMD_OAUTH2_PROVIDERNAME: Authelia
+              # CMD_OAUTH2_CLIENT_ID: hedgedoc
+              # CMD_OAUTH2_SCOPE: openid email groups profile
+              # CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR: sub
+              # CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR: name
+              # CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR: email
+              # CMD_OAUTH2_USER_PROFILE_URL: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
+              # CMD_OAUTH2_TOKEN_URL: https://auth.${SECRET_DOMAIN}/api/oidc/token
+              # CMD_OAUTH2_AUTHORIZATION_URL: https://auth.${SECRET_DOMAIN}/api/oidc/authorize
 
             envFrom: []
               # - configMapRef:
@@ -79,12 +122,24 @@ spec:
               # - secretRef:
               #     name: *secret
 
+          frontend:
+            image:
+              repository: ghcr.io/hedgedoc/hedgedoc/frontend
+              pullPolicy: IfNotPresent
+              tag: 2.0.0-alpha.3
+
+            env:
+              HD_BASE_URL: "https://kb.${SECRET_DOMAIN}"
+              HD_INTERNAL_API_URL: http://backend.self-hosted.svc.cluster.local:3000
+
     service:
       *app :
         controller: *app
         ports:
-          http:
+          backend:
             port: 3000
+          http:
+            port: 3001
 
     ingress:
       external:
@@ -99,6 +154,6 @@ spec:
                   identifier: *app
                   port: http
 
-    persistence:
-      config:
-        existingClaim: ${VOLSYNC_CLAIM}
+    # persistence:
+    #   config:
+    #     existingClaim: ${VOLSYNC_CLAIM}
