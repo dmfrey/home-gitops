@@ -146,7 +146,6 @@ spec:
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
-          - expand-external-labels
           - memory-snapshot-on-shutdown
         retention: 14d
         retentionSize: 50GB
