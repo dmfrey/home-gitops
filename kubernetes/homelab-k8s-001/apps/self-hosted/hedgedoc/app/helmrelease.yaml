@@ -91,30 +91,23 @@ spec:
               HD_MEDIA_BACKEND_FILESYSTEM_UPLOAD_PATH: uploads/
 
               # Auth
-              HD_AUTH_LOCAL_ENABLE_LOGIN: true
-              HD_AUTH_LOCAL_ENABLE_REGISTER: true
-
-              # PUID: 1000
-              # PGID: 1000
-              # CMD_DB_PORT: 5432
-              # CMD_DB_DIALECT: postgres
-              # toggle to allow more user registering
-              # use ldap user instead, with group hedgedoc
-              # CMD_EMAIL: false
-              # CMD_ALLOW_EMAIL_REGISTER: false
-              # CMD_DOMAIN: md.${SECRET_DOMAIN}
-              # CMD_PROTOCOL_USESSL: true
-              # CMD_URL_ADDPORT: false
-              # SSO
-              # CMD_OAUTH2_PROVIDERNAME: Authelia
-              # CMD_OAUTH2_CLIENT_ID: hedgedoc
-              # CMD_OAUTH2_SCOPE: openid email groups profile
-              # CMD_OAUTH2_USER_PROFILE_USERNAME_ATTR: sub
-              # CMD_OAUTH2_USER_PROFILE_DISPLAY_NAME_ATTR: name
-              # CMD_OAUTH2_USER_PROFILE_EMAIL_ATTR: email
-              # CMD_OAUTH2_USER_PROFILE_URL: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
-              # CMD_OAUTH2_TOKEN_URL: https://auth.${SECRET_DOMAIN}/api/oidc/token
-              # CMD_OAUTH2_AUTHORIZATION_URL: https://auth.${SECRET_DOMAIN}/api/oidc/authorize
+              # HD_AUTH_LOCAL_ENABLE_LOGIN: true
+              # HD_AUTH_LOCAL_ENABLE_REGISTER: true
+              HD_AUTH_OIDC_SERVERS: authentik
+              HD_AUTH_OIDC_AUTHENTIK_PROVIDER_NAME: Authentik
+              HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/.well-known/openid-configuration
+              HD_AUTH_OIDC_AUTHENTIK_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: hedgedoc-secret
+                    key: HD_AUTHENTIK_CLIENT_ID
+              HD_AUTH_OIDC_AUTHENTIK_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: hedgedoc-secret
+                    key: HD_AUTHENTIK_CLIENT_SECRET
+              HD_AUTH_OIDC_AUTHENTIK_THEME: google
+              HD_AUTH_OIDC_AUTHENTIK_ENABLE_REGISTER: false
 
             envFrom: []
               # - configMapRef:
