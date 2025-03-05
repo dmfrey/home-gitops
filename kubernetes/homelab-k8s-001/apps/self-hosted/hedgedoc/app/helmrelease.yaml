@@ -115,11 +115,9 @@ spec:
               # HD_AUTH_OIDC_AUTHENTIK_THEME: google
               HD_AUTH_OIDC_AUTHENTIK_ENABLE_REGISTER: false
 
-            envFrom: []
-              # - configMapRef:
-              #     name: hedgedoc-ldap-configmap
-              # - secretRef:
-              #     name: *secret
+            envFrom:
+              - secretRef:
+                  name: hedgedoc-secret
 
           frontend:
             image:
