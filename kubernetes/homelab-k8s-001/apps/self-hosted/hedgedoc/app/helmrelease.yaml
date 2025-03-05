@@ -130,7 +130,7 @@ spec:
 
             env:
               HD_BASE_URL: "https://kb.${SECRET_DOMAIN}"
-              HD_INTERNAL_API_URL: http://backend.self-hosted.svc.cluster.local:3000
+              HD_INTERNAL_API_URL: http://hedgedoc.self-hosted.svc.cluster.local:3000
 
     service:
       *app :
