@@ -94,10 +94,10 @@ spec:
               # Auth
               # HD_AUTH_LOCAL_ENABLE_LOGIN: true
               # HD_AUTH_LOCAL_ENABLE_REGISTER: true
-              HD_AUTH_OIDC_SERVERS: authentik # AUTHENTIK
-              HD_AUTH_OIDC_authentik_PROVIDER_NAME: Sign-in with Authentik
-              HD_AUTH_OIDC_authentik_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/
-              HD_AUTH_OIDC_authentik_ENABLE_REGISTER: false
+              HD_AUTH_OIDC_SERVERS: authentik #AUTHENTIK
+              HD_AUTH_OIDC_AUTHENTIK_PROVIDER_NAME: Sign-in with Authentik
+              HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/
+              HD_AUTH_OIDC_AUTHENTIK_ENABLE_REGISTER: false
 
             envFrom:
               - secretRef:
