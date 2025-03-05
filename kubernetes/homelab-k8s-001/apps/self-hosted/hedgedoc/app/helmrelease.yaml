@@ -53,11 +53,6 @@ spec:
               TZ: ${TIMEZONE}
               HD_LOGLEVEL: trace  # debug info
               HD_BASE_URL: https://kb.${SECRET_DOMAIN}
-              # HD_SESSION_SECRET:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: hedgedoc-secret
-              #       key: HD_SESSION_SECRET
 
               # Database settings
               HD_DATABASE_TYPE: postgres
@@ -99,21 +94,10 @@ spec:
               # Auth
               # HD_AUTH_LOCAL_ENABLE_LOGIN: true
               # HD_AUTH_LOCAL_ENABLE_REGISTER: true
-              HD_AUTH_OIDC_SERVERS: AUTHENTIK
-              HD_AUTH_OIDC_AUTHENTIK_PROVIDER_NAME: Authentik
-              HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/
-              # HD_AUTH_OIDC_AUTHENTIK_CLIENT_ID:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: hedgedoc-secret
-              #       key: HD_AUTHENTIK_CLIENT_ID
-              # HD_AUTH_OIDC_AUTHENTIK_CLIENT_SECRET:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: hedgedoc-secret
-              #       key: HD_AUTHENTIK_CLIENT_SECRET
-              # HD_AUTH_OIDC_AUTHENTIK_THEME: google
-              HD_AUTH_OIDC_AUTHENTIK_ENABLE_REGISTER: false
+              HD_AUTH_OIDC_SERVERS: authentik # AUTHENTIK
+              HD_AUTH_OIDC_authentik_PROVIDER_NAME: Sign-in with Authentik
+              HD_AUTH_OIDC_authentik_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/
+              HD_AUTH_OIDC_authentik_ENABLE_REGISTER: false
 
             envFrom:
               - secretRef:
