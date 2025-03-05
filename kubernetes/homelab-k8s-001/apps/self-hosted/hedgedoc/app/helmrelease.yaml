@@ -53,11 +53,11 @@ spec:
               TZ: ${TIMEZONE}
               HD_LOGLEVEL: trace  # debug info
               HD_BASE_URL: https://kb.${SECRET_DOMAIN}
-              HD_SESSION_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: hedgedoc-secret
-                    key: HD_SESSION_SECRET
+              # HD_SESSION_SECRET:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: hedgedoc-secret
+              #       key: HD_SESSION_SECRET
 
               # Database settings
               HD_DATABASE_TYPE: postgres
@@ -88,8 +88,13 @@ spec:
                     key: password
 
               # Uploads
-              HD_MEDIA_BACKEND: filesystem
-              HD_MEDIA_BACKEND_FILESYSTEM_UPLOAD_PATH: uploads/
+              # HD_MEDIA_BACKEND: filesystem
+              # HD_MEDIA_BACKEND_FILESYSTEM_UPLOAD_PATH: uploads/
+              HD_MEDIA_BACKEND: s3
+              HD_MEDIA_BACKEND_S3_BUCKET: *app
+              HD_MEDIA_BACKEND_S3_ENDPOINT: ${QNAP_ADDR}
+              # HD_MEDIA_BACKEND_S3_REGION: home
+              HD_MEDIA_BACKEND_S3_PATH_STYLE: true
 
               # Auth
               # HD_AUTH_LOCAL_ENABLE_LOGIN: true
@@ -97,17 +102,17 @@ spec:
               HD_AUTH_OIDC_SERVERS: AUTHENTIK
               HD_AUTH_OIDC_AUTHENTIK_PROVIDER_NAME: Authentik
               HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/
-              HD_AUTH_OIDC_AUTHENTIK_CLIENT_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: hedgedoc-secret
-                    key: HD_AUTHENTIK_CLIENT_ID
-              HD_AUTH_OIDC_AUTHENTIK_CLIENT_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: hedgedoc-secret
-                    key: HD_AUTHENTIK_CLIENT_SECRET
-              HD_AUTH_OIDC_AUTHENTIK_THEME: google
+              # HD_AUTH_OIDC_AUTHENTIK_CLIENT_ID:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: hedgedoc-secret
+              #       key: HD_AUTHENTIK_CLIENT_ID
+              # HD_AUTH_OIDC_AUTHENTIK_CLIENT_SECRET:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: hedgedoc-secret
+              #       key: HD_AUTHENTIK_CLIENT_SECRET
+              # HD_AUTH_OIDC_AUTHENTIK_THEME: google
               HD_AUTH_OIDC_AUTHENTIK_ENABLE_REGISTER: false
 
             envFrom: []
