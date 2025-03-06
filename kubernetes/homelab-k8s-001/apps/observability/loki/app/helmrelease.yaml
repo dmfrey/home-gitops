@@ -39,6 +39,9 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
 
+  driftDetection:
+    mode: enabled
+
   values:
 
     deploymentMode: SingleBinary
