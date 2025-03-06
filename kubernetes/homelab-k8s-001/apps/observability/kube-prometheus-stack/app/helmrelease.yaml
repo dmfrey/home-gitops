@@ -135,11 +135,11 @@ spec:
         #         - key: node-role.kubernetes.io/control-plane
         #           operator: Exists
 
-        externalLabels:
-          cluster: ${CLUSTER_NAME}
+        # externalLabels:
+          # cluster: ${CLUSTER_NAME}
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        replicaExternalLabelName: "__replica__"
+        # replicaExternalLabelName: "__replica__"
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
