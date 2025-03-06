@@ -91,22 +91,19 @@ spec:
                   storage: 1Gi
 
     kubeApiServer:
-      serviceMonitor:
+      service:
         selector:
-          matchLabels:
-            k8s-app: kube-apiserver
+          k8s-app: kube-apiserver
 
     kubeScheduler:
       service:
         selector:
-          matchLabels:
-            k8s-app: kube-scheduler
+          k8s-app: kube-scheduler
 
     kubeControllerManager: &kubeControllerManager
       service:
         selector:
-          matchLabels:
-            k8s-app: kube-controller-manager
+          k8s-app: kube-controller-manager
 
     kubeEtcd:
       <<: *kubeControllerManager # etcd runs on control plane nodes
