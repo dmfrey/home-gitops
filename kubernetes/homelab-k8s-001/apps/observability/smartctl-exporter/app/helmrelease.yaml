@@ -31,6 +31,9 @@ spec:
     - name: kube-prometheus-stack
       namespace: observability
 
+  driftDetection:
+    mode: enabled
+    
   values:
 
     fullnameOverride: *app

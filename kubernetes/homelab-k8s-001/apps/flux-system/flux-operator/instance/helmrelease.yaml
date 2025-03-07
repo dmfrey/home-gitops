@@ -32,6 +32,9 @@ spec:
     - name: flux-operator
       namespace: flux-system
 
+  driftDetection:
+    mode: enabled
+    
   valuesFrom:
     - kind: ConfigMap
       name: flux-instance-helm-values
