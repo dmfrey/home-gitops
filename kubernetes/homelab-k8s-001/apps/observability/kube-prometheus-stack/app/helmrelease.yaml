@@ -9,14 +9,19 @@ spec:
 
   interval: 30m
 
-  chart:
-    spec:
-      chart: kube-prometheus-stack
-      version: 69.7.4
-      sourceRef:
-        kind: HelmRepository
-        name: prometheus-community
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: kube-prometheus-stack
+    namespace: observability
+
+  # chart:
+  #   spec:
+  #     chart: kube-prometheus-stack
+  #     version: 69.7.4
+  #     sourceRef:
+  #       kind: HelmRepository
+  #       name: prometheus-community
+  #       namespace: flux-system
 
   install:
     remediation:
@@ -32,10 +37,10 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage
 
-  valuesFrom:
-  - kind: ConfigMap
-    name: flux-kube-state-metrics-config
-    valuesKey: kube-state-metrics-config.yaml
+  # valuesFrom:
+  # - kind: ConfigMap
+  #   name: flux-kube-state-metrics-config
+  #   valuesKey: kube-state-metrics-config.yaml
 
   driftDetection:
     mode: enabled
@@ -73,14 +78,6 @@ spec:
             resolveTimeout: 5m
 
         externalUrl: https://alertmanager.${SECRET_DOMAIN}
-
-        # affinity:
-        #   nodeAffinity:
-        #     requiredDuringSchedulingIgnoredDuringExecution:
-        #       nodeSelectorTerms:
-        #       - matchExpressions:
-        #         - key: node-role.kubernetes.io/control-plane
-        #           operator: Exists
 
         storage:
           volumeClaimTemplate:
@@ -127,19 +124,8 @@ spec:
 
       prometheusSpec:
 
-        # affinity:
-        #   nodeAffinity:
-        #     requiredDuringSchedulingIgnoredDuringExecution:
-        #       nodeSelectorTerms:
-        #       - matchExpressions:
-        #         - key: node-role.kubernetes.io/control-plane
-        #           operator: Exists
-
-        # externalLabels:
-          # cluster: ${CLUSTER_NAME}
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        # replicaExternalLabelName: "__replica__"
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
@@ -149,9 +135,6 @@ spec:
           - memory-snapshot-on-shutdown
         retention: 14d
         retentionSize: 50GB
-
-        replicas: 1   # 3
-        shards: 1     # 2
 
         resources:
           requests:
@@ -166,20 +149,6 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
-
-        # thanos:
-        #   image: quay.io/thanos/thanos:v0.37.2@sha256:4ec6df40fdb921de162677b321057caa8fb8324c65f4cfae9568ed55c4469e2c
-        #   objectStorageConfig:
-        #     name: thanos-secret
-        #     key: objstore.yml
-        #   # renovate: datasource=docker depName=quay.io/thanos/thanos
-        #   version: "v0.37.2"
-
-      # thanosService:
-      #   enabled: true
-
-      # thanosServiceMonitor:
-      #   enabled: true
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
