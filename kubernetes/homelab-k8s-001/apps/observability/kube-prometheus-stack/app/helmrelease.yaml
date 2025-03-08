@@ -122,6 +122,9 @@ spec:
         retention: 14d
         retentionSize: 50GB
 
+        replicas: 2
+        replicaExternalLabelName: "__replica__" # must match with thanos value `.query.replicaLabel[0]`
+
         resources:
           requests:
             cpu: 100m
