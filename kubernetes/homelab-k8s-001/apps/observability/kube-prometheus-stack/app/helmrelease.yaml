@@ -110,14 +110,8 @@ spec:
 
       prometheusSpec:
 
-        relabelConfigs:
-          - source_labels: [__address__]
-            regex: '(.*)'
-            target_label: cluster
-            replacement: ${CLUSTER_NAME}
-
-        # externalLabels:
-        #   cluster: ${CLUSTER_NAME}
+        externalLabels:
+          cluster: ${CLUSTER_NAME}
 
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
