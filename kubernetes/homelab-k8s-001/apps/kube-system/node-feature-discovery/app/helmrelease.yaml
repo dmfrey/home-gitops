@@ -37,7 +37,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     master:
@@ -49,4 +49,4 @@ spec:
           labelSources: ["pci", "system", "usb"]
 
     prometheus:
-      enabled: true
+      enable: true
