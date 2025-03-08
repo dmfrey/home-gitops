@@ -47,7 +47,7 @@ spec:
             image:
               repository: ghcr.io/hedgedoc/hedgedoc/backend
               pullPolicy: IfNotPresent
-              tag: 2.0.0-alpha.3
+              tag: develop  # 2.0.0-alpha.3
 
             env:
               TZ: ${TIMEZONE}
@@ -107,7 +107,7 @@ spec:
             image:
               repository: ghcr.io/hedgedoc/hedgedoc/frontend
               pullPolicy: IfNotPresent
-              tag: 2.0.0-alpha.3
+              tag: develop  # 2.0.0-alpha.3
 
             env:
               HD_BASE_URL: "https://kb.${SECRET_DOMAIN}"
