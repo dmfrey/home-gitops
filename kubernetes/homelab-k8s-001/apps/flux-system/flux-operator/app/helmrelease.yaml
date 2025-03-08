@@ -33,9 +33,4 @@ spec:
 
   valuesFrom:
     - kind: ConfigMap
-      name: flux-operator-helm-values
-
-  values:
-
-    serviceMonitor:
-      create: true
+      name: flux-operator-values
