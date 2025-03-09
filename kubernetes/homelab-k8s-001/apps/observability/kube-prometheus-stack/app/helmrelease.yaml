@@ -14,15 +14,6 @@ spec:
     name: kube-prometheus-stack
     namespace: observability
 
-  # chart:
-  #   spec:
-  #     chart: kube-prometheus-stack
-  #     version: 69.7.4
-  #     sourceRef:
-  #       kind: HelmRepository
-  #       name: prometheus-community
-  #       namespace: flux-system
-
   install:
     remediation:
       retries: 3
@@ -37,10 +28,10 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage
 
-  # valuesFrom:
-  # - kind: ConfigMap
-  #   name: flux-kube-state-metrics-config
-  #   valuesKey: kube-state-metrics-config.yaml
+  valuesFrom:
+  - kind: ConfigMap
+    name: flux-kube-state-metrics-config
+    valuesKey: kube-state-metrics-config.yaml
 
   driftDetection:
     mode: enabled

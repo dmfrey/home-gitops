@@ -7,13 +7,13 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./helmrepository.yaml
-# configMapGenerator:
-#   - name: flux-kube-state-metrics-config
-#     files:
-#       - resources/kube-state-metrics-config.yaml
-#     options:
-#       labels:
-#         app.kubernetes.io/part-of: flux
-#         app.kubernetes.io/component: observability
-# configurations:
-#   - kustomizeconfig.yaml
+configMapGenerator:
+  - name: flux-kube-state-metrics-config
+    files:
+      - resources/kube-state-metrics-config.yaml
+    options:
+      labels:
+        app.kubernetes.io/part-of: flux
+        app.kubernetes.io/component: observability
+configurations:
+  - kustomizeconfig.yaml
