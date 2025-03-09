@@ -6,7 +6,7 @@ namespace: datastore
 resources:
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
-  - ./mariadb/ks.yaml
+  # - ./mariadb/ks.yaml
   - ./rabbitmq-cluster-operator/ks.yaml
 components:
   - ../../flux/components/alerts
