@@ -703,7 +703,7 @@ spec:
         labelValue: ""
         folderAnnotation: "grafana_folder"
         provider:
-          disableDelete: true
+          disableDelete: false
           foldersFromFilesStructure: true
       datasources:
         enabled: true
