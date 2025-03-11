@@ -212,6 +212,12 @@ spec:
         globalMounts:
           - path: /romm/resources
 
+      nginx-conf:
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /etc/nginx/conf.d
+
       tmp:
         type: emptyDir
         medium: Memory
