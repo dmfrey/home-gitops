@@ -57,6 +57,7 @@ spec:
               ENABLE_SCHEDULED_UPDATE_MAME_XML: "false"
               ENABLE_RESCAN_ON_FILESYSTEM_CHANGE: "true"
               RESCAN_ON_FILESYSTEM_CHANGE_DELAY: 5
+              ROMM_PORT: &port 8080
               ROMM_DB_DRIVER: postgresql
               DB_HOST:
                 valueFrom:
@@ -106,7 +107,7 @@ spec:
 
             ports:
               - name: http
-                containerPort: &port 8080
+                containerPort: *port
 
             resources:
               requests:
