@@ -94,5 +94,3 @@ spec:
           - name: talos
             secret:
               secretName: *name
-        # securityContext:
-        #   fsGroup: 123
