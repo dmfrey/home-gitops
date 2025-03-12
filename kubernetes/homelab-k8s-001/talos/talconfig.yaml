@@ -361,7 +361,7 @@ controlPlane:
             allowedRoles:
               - os:admin
             allowedKubernetesNamespaces:
-              - system
+              - actions-runner-system
           apidCheckExtKeyUsage: true
           diskQuotaSupport: true
           hostDNS:
