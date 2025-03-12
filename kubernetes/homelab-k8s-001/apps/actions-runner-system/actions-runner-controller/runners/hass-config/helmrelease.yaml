@@ -21,7 +21,6 @@ spec:
   maxHistory: 2
 
   install:
-    createNamespace: true
     remediation:
       retries: 3
 
