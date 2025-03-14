@@ -12,7 +12,7 @@ spec:
   chart:
     spec:
       chart: opentelemetry-collector
-      version: 0.117.3
+      version: 0.118.0
       sourceRef:
         kind: HelmRepository
         name: opentelemetry-charts
@@ -289,7 +289,7 @@ spec:
   chart:
     spec:
       chart: opentelemetry-collector
-      version: 0.117.3
+      version: 0.118.0
       sourceRef:
         kind: HelmRepository
         name: opentelemetry-charts
