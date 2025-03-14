@@ -93,7 +93,7 @@ tasks:
       - which jq talosctl
 
   reboot-node:
-    desc: Reboot Talos on a single node [CLUSTER=main] [IP=required] [MODE=default]
+    desc: Reboot Talos on a single node [IP=required] [MODE=default]
     cmds:
       - task: down
       - talosctl --nodes {{.IP}} reboot --mode={{.MODE}}
@@ -102,7 +102,7 @@ tasks:
     vars:
       MODE: '{{.MODE | default "default"}}'
     requires:
-      vars: [CLUSTER, IP]
+      vars: [IP]
     preconditions:
       - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info
