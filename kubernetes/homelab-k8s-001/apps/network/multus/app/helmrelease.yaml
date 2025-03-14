@@ -209,6 +209,7 @@ spec:
       host-var-lib-cni-multus:
         type: hostPath
         hostPath: /var/lib/cni/multus
+        hostPathType: DirectoryOrCreate
         advancedMounts:
           multus:
             multus-daemon:
