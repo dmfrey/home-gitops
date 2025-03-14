@@ -42,6 +42,8 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
+              PUID: 1000
+              PGID: 1000
               HOMEPAGE_ALLOWED_HOSTS: "{{ .Release.Name }}.${SECRET_DOMAIN}"
 
             envFrom:
@@ -54,6 +56,20 @@ spec:
                 memory: 200M
               limits:
                 memory: 2G
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       *app :
