@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -57,7 +57,7 @@ spec:
               HAMH_STORAGE_LOCATION: /data
               HAMH_MDNS_NETWORK_INTERFACE: eth0.50 #enp2s0.50
               HAMH_HOME_ASSISTANT_URL: http://home-assistant.home.svc.cluster.local:8123
-              
+
             envFrom:
               - secretRef:
                   name: *secret

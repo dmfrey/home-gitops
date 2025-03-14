@@ -56,7 +56,7 @@ spec:
         path: /
         pathType: Prefix
 # ---
-# # yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 # apiVersion: monitoring.coreos.com/v1alpha1
 # kind: ScrapeConfig
 # metadata:

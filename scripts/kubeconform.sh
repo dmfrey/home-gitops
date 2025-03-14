@@ -16,7 +16,7 @@ kubeconform_args=(
     "-schema-location"
     "default"
     "-schema-location"
-    "https://kubernetes-schemas-5e0.pages.dev/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
+    "https://kubernetes-schemas.dmfrey.com/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
     "-verbose"
 )
 
