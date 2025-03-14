@@ -38,21 +38,23 @@ nodes:
     disableSearchDomain: true
     networkInterfaces: &networkInterfaces-amd
       - interface: eth0   # enp2s0
-        dhcp: false
+        dhcp: true
         mtu: 1500
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
         vlans:
-          - vlanId: 30
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 1024
-            vip:
-              ip: ${CLUSTER_ENDPOINT_IP}
+          # - vlanId: 30
+          #   mtu: 1500
+          #   dhcp: true
+          #   dhcpOptions:
+          #     routeMetric: 1024
+          #   vip:
+          #     ip: ${CLUSTER_ENDPOINT_IP}
           - vlanId: 50
             mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+            dhcp: false
+            # dhcpOptions:
+            #   routeMetric: 4096
     talosImageURL: &factory-amd factory.talos.dev/installer/b51b7b6129e8ba285ab83ef1059418c434de4223a7ae4b3905dd06512b923943
     nodeLabels: &nodeLabels-amd
       topology.kubernetes.io/region: dmf
@@ -101,19 +103,19 @@ nodes:
     disableSearchDomain: true
     networkInterfaces: &networkInterfaces-intel
       - interface: eth0   # enp87s0
-        dhcp: false
+        dhcp: true
         mtu: 1500
         vlans:
-          - vlanId: 30
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 1024
+          # - vlanId: 30
+          #   mtu: 1500
+          #   dhcp: true
+          #   dhcpOptions:
+          #     routeMetric: 1024
           - vlanId: 50
             mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+            dhcp: false
+            # dhcpOptions:
+            #   routeMetric: 4096
     talosImageURL: &factory-intel factory.talos.dev/installer/deee80e4ca4ed205ba87d67b33af7b023264d01ac97c1ce13ab083e6d70074f0
     nodeLabels: &nodeLabels-intel
       topology.kubernetes.io/region: dmf
