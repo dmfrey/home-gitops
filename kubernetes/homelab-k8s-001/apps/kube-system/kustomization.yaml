@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - ./amd-device-plugin/ks.yaml
-  - ./busybox/ks.yaml
+  # - ./busybox/ks.yaml
   - ./cilium/ks.yaml
   - ./descheduler/ks.yaml
   - ./fstrim/ks.yaml
