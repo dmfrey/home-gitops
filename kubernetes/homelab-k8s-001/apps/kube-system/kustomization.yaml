@@ -1,11 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas-5e0.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kube-system
 resources:
   - ./amd-device-plugin/ks.yaml
-  - ./busybox/ks.yaml
+  # - ./busybox/ks.yaml
   - ./cilium/ks.yaml
   - ./descheduler/ks.yaml
   - ./fstrim/ks.yaml
