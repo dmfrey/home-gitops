@@ -47,7 +47,7 @@ spec:
           *app :
             image:
               repository: rommapp/romm
-              tag: 3.8.0
+              tag: 3.8.1
 
             env:
               TZ: ${TIMEZONE}
