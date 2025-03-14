@@ -28,7 +28,7 @@ cluster:
 cni:
   exclusive: false
 
-devices: eth+
+devices: eth0+
 
 enableIPv4BIGTCP: true
 
