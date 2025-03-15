@@ -115,6 +115,12 @@ spec:
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
 
+      cache:
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /app/.next/
+          
     serviceAccount:
       create: true
       name: *app
