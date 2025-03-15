@@ -94,6 +94,12 @@ spec:
 
     persistence:
       config:
+        type: persistentVolumeClaim
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+          - path: /app/config
+
+      config-settings:
         type: configMap
         name: homepage-config
         globalMounts:
@@ -109,12 +115,6 @@ spec:
             path: /app/config/settings.yaml
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
-
-      logs:
-        type: emptyDir
-        medium: Memory
-        globalMounts:
-          - path: /app/config/logs
 
     serviceAccount:
       create: true
