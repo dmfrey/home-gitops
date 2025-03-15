@@ -32,53 +32,56 @@ spec:
     - kind: ConfigMap
       name: cilium-helm-values
 
-  # values:
+  values:
 
-  #   hubble:
-  #     enabled: true
+    hubble:
+      enabled: true
 
-  #     metrics:
-  #       enabled:
-  #         - dns:query
-  #         - drop
-  #         - tcp
-  #         - flow
-  #         - port-distribution
-  #         - icmp
-  #         - http
+      metrics:
+        enabled:
+          - dns:query
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
 
-  #     serviceMonitor:
-  #       enabled: true
+      serviceMonitor:
+        enabled: true
 
-  #     dashboards:
-  #       enabled: true
-  #       label: grafana_dashboard
-  #       labelValue: ""
-  #       annotations:
-  #         grafana_folder: Network
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: ""
+        annotations:
+          grafana_folder: Network
 
-  #     relay:
-  #       enabled: true
-  #       rollOutPods: true
-  #       prometheus:
-  #         serviceMonitor:
-  #           enabled: true
+      relay:
+        enabled: true
+        rollOutPods: true
+        prometheus:
+          serviceMonitor:
+            enabled: true
 
-  #     ui:
-  #       enabled: true
-  #       rollOutPods: true
-  #       ingress:
-  #         enabled: true
-  #         className: internal
-  #         annotations:
-  #           nginx.org/websocket-services: hubble-ui
+      ui:
+        enabled: true
+        rollOutPods: true
+        ingress:
+          enabled: true
+          className: internal
+          annotations:
+            nginx.org/websocket-services: hubble-ui
 
-  #           gethomepage.dev/enabled: "true"
-  #           gethomepage.dev/icon: cilium.png
-  #           gethomepage.dev/name: Hubble
-  #           gethomepage.dev/group: Observability
-  #           gethomepage.dev/description: Network Monitoring Dashboard
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/icon: cilium.png
+            gethomepage.dev/name: Hubble
+            gethomepage.dev/group: Observability
+            gethomepage.dev/description: Network Monitoring Dashboard
 
-  #           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-  #         hosts:
-  #           - hubble.${SECRET_DOMAIN}
+            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          hosts:
+            - hubble.${SECRET_DOMAIN}
+
+    operator:
+      tolerations: []

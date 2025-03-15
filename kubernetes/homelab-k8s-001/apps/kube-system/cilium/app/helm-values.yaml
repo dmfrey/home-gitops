@@ -9,7 +9,7 @@ bpf:
   datapathMode: netkit
   masquerade: true
   preallocateMaps: true
-  tproxy: true
+  # tproxy: true
 
 bgpControlPlane:
   enabled: true
@@ -28,7 +28,7 @@ cluster:
 cni:
   exclusive: false
 
-devices: eth0+
+devices: eth+
 
 enableIPv4BIGTCP: true
 
@@ -36,7 +36,7 @@ endpointRoutes:
   enabled: true
 
 envoy:
-  enabled: false
+  rollOutPods: true
 
 hubble:
   enabled: false
@@ -78,11 +78,6 @@ prometheus:
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
-
-dashboards:
-  enabled: true
-  annotations:
-    grafana_folder: Network
 
 rollOutCiliumPods: true
 
