@@ -18,6 +18,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
     - name: volsync
+      namespace: volsync-system
   interval: 30m
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/homepage/app"
   postBuild:
