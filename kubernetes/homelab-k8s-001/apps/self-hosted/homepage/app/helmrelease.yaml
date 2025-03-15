@@ -96,7 +96,7 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-          - path: /app/config
+          - path: /app
 
       config-settings:
         type: configMap
@@ -115,12 +115,6 @@ spec:
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
 
-      cache:
-        type: emptyDir
-        medium: Memory
-        globalMounts:
-          - path: /app/.next/
-          
     serviceAccount:
       create: true
       name: *app
