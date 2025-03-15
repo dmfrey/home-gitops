@@ -94,7 +94,6 @@ spec:
 
     persistence:
       config:
-        type: persistentVolumeClaim
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /app/config
