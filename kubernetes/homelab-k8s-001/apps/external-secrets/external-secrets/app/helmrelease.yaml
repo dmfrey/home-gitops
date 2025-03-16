@@ -1,4 +1,19 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: external-secrets
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.14.4
+  url: oci://ghcr.io/external-secrets/charts/external-secrets
+  verify:
+    provider: cosign
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -7,16 +22,11 @@ metadata:
 
 spec:
 
-  interval: 30m
+  interval: 1h
 
-  chart:
-    spec:
-      chart: external-secrets
-      version: 0.14.4
-      sourceRef:
-        kind: HelmRepository
-        name: external-secrets
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: external-secrets
 
   install:
     remediation:
@@ -30,4 +40,4 @@ spec:
 
   valuesFrom:
     - kind: ConfigMap
-      name: external-secrets-helm-values
+      name: external-secrets-values
