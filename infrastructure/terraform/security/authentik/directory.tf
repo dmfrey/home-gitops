@@ -1,6 +1,7 @@
 
 locals {
   authentik_groups = {
+    ai             = { name = "AI" }
     developers     = { name = "Developers" }
     downloads      = { name = "Downloads" }
     home           = { name = "Home" }

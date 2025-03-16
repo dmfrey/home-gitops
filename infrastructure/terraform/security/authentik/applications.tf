@@ -3,6 +3,7 @@ locals {
   oauth_apps = [
     "grafana",
     "hedgedoc",
+    "openweb",
     "romm",
     "spring-dev"
   ]
@@ -34,6 +35,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/hedgedoc.svg"
       redirect_uri  = "https://kb.${var.cluster_domain}/api/private/auth/oidc/AUTHENTIK/callback"
       launch_url    = "https://kb.${var.cluster_domain}/"
+    },
+    openweb = {
+      client_id     = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "media"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/openweb-ui.png"
+      redirect_uri  = "https://openweb.${var.cluster_domain}/oauth/oidc/callback"
+      launch_url    = "https://openweb.${var.cluster_domain}/"
     },
     romm = {
       client_id     = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_ID"]
