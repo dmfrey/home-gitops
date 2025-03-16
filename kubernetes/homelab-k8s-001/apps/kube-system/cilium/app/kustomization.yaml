@@ -6,9 +6,9 @@ resources:
   - ./helmrelease.yaml
 
 configMapGenerator:
-  - name: cilium-helm-values
+  - name: cilium-values
     files:
-      - values.yaml=./helm-values.yaml
+      - values.yaml=./helm/values.yaml
 
 configurations:
-  - kustomizeconfig.yaml
+  - ./helm/kustomizeconfig.yaml
