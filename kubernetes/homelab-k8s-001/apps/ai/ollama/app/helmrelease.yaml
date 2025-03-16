@@ -27,6 +27,10 @@ spec:
   uninstall:
     keepHistory: false
 
+  valuesFrom:
+    - kind: ConfigMap
+      name: ollama-values
+
   values:
 
     controllers:

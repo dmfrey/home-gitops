@@ -1,0 +1,6 @@
+---
+ollama:
+  models:
+    pull:
+      - llama3.2
+      - llama3.1
