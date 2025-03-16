@@ -1,4 +1,19 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: descheduler
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.32.2
+  url: oci://ghcr.io/buroa/charts-mirror/descheduler
+  verify:
+    provider: cosign
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -7,17 +22,11 @@ metadata:
 
 spec:
 
-  interval: 15m
+  interval: 1h
 
-  chart:
-    spec:
-      # renovate: registryUrl=https://kubernetes-sigs.github.io/descheduler
-      chart: descheduler
-      version: 0.32.2
-      sourceRef:
-        kind: HelmRepository
-        name: kubernetes-sigs-descheduler
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: descheduler
 
   maxHistory: 2
 
@@ -36,68 +45,55 @@ spec:
 
   values:
 
-    kind: Deployment
     replicas: 2
+    kind: Deployment
 
-    leaderElection:
-      enabled: true
-
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "descheduler"
-
-    resources:
-      requests:
-        cpu: 5m
-        memory: 35M
-      limits:
-        memory: 35M
+    deschedulerPolicyAPIVersion: descheduler/v1alpha2
 
     deschedulerPolicy:
-
-      # https://github.com/kubernetes-sigs/descheduler/blob/release-1.30/README.md
       profiles:
-        - name: default
+        - name: Default
           pluginConfig:
             - name: DefaultEvictor
               args:
-                nodeFit: true
-                ignorePvcPods: true
-            - name: RemoveDuplicates
+                evictFailedBarePods: true
+                evictLocalStoragePods: true
+                evictSystemCriticalPods: true
+            - name: RemoveFailedPods
               args:
-                excludeOwnerKinds:
-                  - ReplicaSet
-            - name: RemovePodsHavingTooManyRestarts
-              args:
-                podRestartThreshold: 80
+                reasons:
+                  - ContainerStatusUnknown
+                  - NodeAffinity
+                  - NodeShutdown
+                  - Terminated
+                  - UnexpectedAdmissionError
                 includingInitContainers: true
+                excludeOwnerKinds:
+                  - Job
+                minPodLifetimeSeconds: 1800
+            - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
               args:
                 nodeAffinityType:
                   - requiredDuringSchedulingIgnoredDuringExecution
             - name: RemovePodsViolatingNodeTaints
-            - name: RemovePodsViolatingInterPodAntiAffinity
-              args:
-                labelSelector:
-                  matchExpressions:
-                    - key: "app.kubernetes.io/name"
-                      operator: In
-                      values:
-                        - emqx
-                        - vault
-                        - prometheus
-                        - loki
-
             - name: RemovePodsViolatingTopologySpreadConstraint
-
           plugins:
             balance:
               enabled:
                 - RemovePodsViolatingTopologySpreadConstraint
-                - LowNodeUtilization
-                # - RemoveDuplicates
             deschedule:
               enabled:
-                - RemovePodsHavingTooManyRestarts
-                - RemovePodsViolatingNodeTaints
-                - RemovePodsViolatingNodeAffinity
+                - RemoveFailedPods
                 - RemovePodsViolatingInterPodAntiAffinity
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingNodeTaints
+
+    service:
+      enabled: true
+
+    serviceMonitor:
+      enabled: true
+
+    leaderElection:
+      enabled: true
