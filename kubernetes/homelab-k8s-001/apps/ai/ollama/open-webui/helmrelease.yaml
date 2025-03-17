@@ -53,6 +53,20 @@ spec:
               AUDIO_OPENAI_API_KEY: sk-111111111111 # fake key needed to make ui happy
               RAG_EMBEDDING_ENGINE: ollama
 
+              # OAUTH
+              ENABLE_OAUTH_SIGNUP: true
+              OAUTH_MERGE_ACCOUNTS_BY_EMAIL: true
+              OAUTH_PROVIDER_NAME: Authentik
+              OPENID_PROVIDER_URL: https://auth.${SECRET_DOMAIN}/application/o/openweb/.well-known/openid-configuration
+              # OAUTH_CLIENT_ID: in external secret
+              # OAUTH_CLIENT_SECRET: in external secret
+              OAUTH_SCOPES: openid email profile
+              OPENID_REDIRECT_URI: https://openweb.${SECRET_DOMAIN}/oauth/oidc/callback
+
+            envFrom:
+              - secretRef:
+                  name: openweb-secret
+
             resources:
               requests:
                 cpu: 200m
