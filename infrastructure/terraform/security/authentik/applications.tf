@@ -39,7 +39,7 @@ locals {
     openweb = {
       client_id     = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_SECRET"]
-      group         = "media"
+      group         = "ai"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/openweb-ui.png"
       redirect_uri  = "https://openweb.${var.cluster_domain}/oauth/oidc/callback"
       launch_url    = "https://openweb.${var.cluster_domain}/"
@@ -47,7 +47,7 @@ locals {
     romm = {
       client_id     = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_SECRET"]
-      group         = "media"
+      group         = "games"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/romm.png"
       redirect_uri  = "https://romm.${var.cluster_domain}/api/oauth/openid"
       launch_url    = "https://romm.${var.cluster_domain}/"

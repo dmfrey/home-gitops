@@ -18,6 +18,7 @@ locals {
         data.authentik_group.ai.id,
         data.authentik_group.developers.id,
         data.authentik_group.downloads.id,
+        data.authentik_group.games.id,
         data.authentik_group.home.id,
         data.authentik_group.infrastructure.id,
         data.authentik_group.media.id,
@@ -32,6 +33,7 @@ locals {
       groups = [
         data.authentik_group.ai.id,
         data.authentik_group.downloads.id,
+        data.authentik_group.games.id,
         data.authentik_group.home.id,
         data.authentik_group.media.id,
       ]
@@ -43,6 +45,7 @@ locals {
       groups = [
         data.authentik_group.ai.id,
         data.authentik_group.downloads.id,
+        data.authentik_group.games.id,
         data.authentik_group.home.id,
         data.authentik_group.media.id,
       ]
@@ -54,6 +57,7 @@ locals {
       groups = [
         data.authentik_group.ai.id,
         data.authentik_group.downloads.id,
+        data.authentik_group.games.id,
         data.authentik_group.home.id,
         data.authentik_group.media.id,
       ]
@@ -97,6 +101,10 @@ data "authentik_group" "developers" {
 
 data "authentik_group" "downloads" {
   name = "Downloads"
+}
+
+data "authentik_group" "games" {
+  name = "Games"
 }
 
 data "authentik_group" "home" {
