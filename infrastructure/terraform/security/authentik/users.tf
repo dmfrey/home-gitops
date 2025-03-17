@@ -15,6 +15,7 @@ locals {
       password = module.onepassword_users.fields["USERS_DMFREY_PASSWORD"]
       groups = [
         data.authentik_group.akadmins.id,
+        data.authentik_group.ai.id,
         data.authentik_group.developers.id,
         data.authentik_group.downloads.id,
         data.authentik_group.home.id,
@@ -29,6 +30,7 @@ locals {
       email = module.onepassword_users.fields["USERS_SDFREY_EMAIL"]
       password = module.onepassword_users.fields["USERS_SDFREY_PASSWORD"]
       groups = [
+        data.authentik_group.ai.id,
         data.authentik_group.downloads.id,
         data.authentik_group.home.id,
         data.authentik_group.media.id,
@@ -39,6 +41,7 @@ locals {
       email = module.onepassword_users.fields["USERS_CGFREY_EMAIL"]
       password = module.onepassword_users.fields["USERS_CGFREY_PASSWORD"]
       groups = [
+        data.authentik_group.ai.id,
         data.authentik_group.downloads.id,
         data.authentik_group.home.id,
         data.authentik_group.media.id,
@@ -49,6 +52,7 @@ locals {
       email = module.onepassword_users.fields["USERS_MKFREY_EMAIL"]
       password = module.onepassword_users.fields["USERS_MKFREY_PASSWORD"]
       groups = [
+        data.authentik_group.ai.id,
         data.authentik_group.downloads.id,
         data.authentik_group.home.id,
         data.authentik_group.media.id,
@@ -81,6 +85,10 @@ resource "authentik_user" "users" {
 
 data "authentik_group" "akadmins" {
   name = "authentik Admins"
+}
+
+data "authentik_group" "ai" {
+  name = "AI"
 }
 
 data "authentik_group" "developers" {
