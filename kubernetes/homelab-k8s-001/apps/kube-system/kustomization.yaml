@@ -18,6 +18,7 @@ resources:
   - ./reloader/ks.yaml
   - ./reflector/ks.yaml
   - ./smtp-relay/ks.yaml
+  - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
 components:
   - ../../components/common
