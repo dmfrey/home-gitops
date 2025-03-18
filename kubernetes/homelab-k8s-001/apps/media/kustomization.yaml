@@ -3,6 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: media
+components:
+  - ../../components/common
 resources:
   - ./common/ks.yaml
   - ./bazarr/ks.yaml
@@ -20,5 +22,3 @@ resources:
   - ./tautulli/ks.yaml
   - ./unpackerr/ks.yaml
   - ./wizarr/ks.yaml
-components:
-  - ../../components/common

@@ -3,6 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: network
+components:
+  - ../../components/common
 resources:
   - ./cloudflared/ks.yaml
   - ./external-dns/ks.yaml
@@ -10,5 +12,3 @@ resources:
   - ./multus/ks.yaml
   - ./pod-gateway/ks.yaml
   - ./external-services
-components:
-  - ../../components/common

@@ -2,8 +2,8 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: gateway
+namespace: openebs-system
 components:
   - ../../components/common
 resources: []
-  # - ./spring-cloud-gateway/ks.yaml
+  # - ./openebs/ks.yaml
