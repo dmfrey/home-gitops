@@ -19,7 +19,12 @@ spec:
       namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
   path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/open-webui"
   postBuild:
     substitute:
@@ -29,13 +34,13 @@ spec:
       VOLSYNC_CLAIM: *app
       VOLSYNC_CAPACITY: 2Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -56,7 +61,12 @@ spec:
       namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
   path: "./kubernetes/homelab-k8s-001/apps/ai/ollama/app"
   prune: true
   postBuild:
@@ -64,10 +74,10 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: *app
       VOLSYNC_CAPACITY: 100Gi
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   timeout: 5m
   targetNamespace: *namespace
-  wait: true
