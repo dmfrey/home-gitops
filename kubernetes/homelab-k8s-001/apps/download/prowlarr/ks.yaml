@@ -21,6 +21,11 @@ spec:
       namespace: network
     - name: volsync
       namespace: volsync-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/prowlarr/app"
   postBuild:
@@ -29,13 +34,13 @@ spec:
       VOLSYNC_CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
