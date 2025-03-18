@@ -2,11 +2,11 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - dmfrey-terraform-prowlarr.yaml
-  - dmfrey-terraform-lidarr.yaml
-  - dmfrey-terraform-radarr.yaml
-  - dmfrey-terraform-readarr.yaml
-  - dmfrey-terraform-sonarr.yaml
-  - dmfrey-terraform-volsync.yaml
+resources: []
+  # - dmfrey-terraform-prowlarr.yaml
+  # - dmfrey-terraform-lidarr.yaml
+  # - dmfrey-terraform-radarr.yaml
+  # - dmfrey-terraform-readarr.yaml
+  # - dmfrey-terraform-sonarr.yaml
+  # - dmfrey-terraform-volsync.yaml
 

@@ -3,9 +3,8 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
   name: oci-terraform-authentik
-  namespace: flux-system
 spec:
-  interval: 5m
+  interval: 1h
   url: oci://ghcr.io/dmfrey/terraform/authentik
   ref:
     tag: main
@@ -18,7 +17,7 @@ metadata:
 spec:
 
   approvePlan: auto
-  interval: 120m
+  interval: 1h
   path: "./"
 
   sourceRef:

@@ -1,4 +1,14 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: oci-terraform-sonarr
+spec:
+  interval: 1h
+  url: oci://ghcr.io/dmfrey/terraform/sonarr
+  ref:
+    tag: main
+---
 apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
@@ -6,7 +16,7 @@ metadata:
 
 spec:
 
-  interval: 120m
+  interval: 1h
   path: ./
 
   approvePlan: auto
@@ -14,7 +24,6 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-sonarr
-    namespace: flux-system
 
   writeOutputsToSecret:
     name: sonarr-tfstate

@@ -1,12 +1,21 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: oci-terraform-readarr
+spec:
+  interval: 1h
+  url: oci://ghcr.io/dmfrey/terraform/readarr
+  ref:
+    tag: main
+---
 apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
   name: readarr-provisioner
-  namespace: media
 spec:
 
-  interval: 120m
+  interval: 1h
   path: "./"
 
   # breakTheGlass: true
@@ -16,7 +25,6 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-readarr
-    namespace: flux-system
 
   writeOutputsToSecret:
     name: readarr-tfstate
