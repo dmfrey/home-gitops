@@ -13,7 +13,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 1h
@@ -70,7 +70,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 1h

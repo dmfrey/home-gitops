@@ -31,7 +31,7 @@ spec:
     - name: mosquitto
       namespace: home
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
 

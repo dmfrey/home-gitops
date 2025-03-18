@@ -18,7 +18,7 @@ spec:
     - name: media-common-mounts
       namespace: *namespace
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 1h

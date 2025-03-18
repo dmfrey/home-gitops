@@ -6,11 +6,11 @@ metadata:
   name: &app openebs
   namespace: flux-system
 spec:
-  targetNamespace: storage
+  targetNamespace: openebs
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/homelab-k8s-001/apps/storage/openebs/app
+  path: ./kubernetes/homelab-k8s-001/apps/openebs/openebs/app
   prune: false
   sourceRef:
     kind: GitRepository

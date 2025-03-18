@@ -16,7 +16,7 @@ spec:
     - name: download-common-mount
       namespace: *namespace
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
     - name: pod-gateway
       namespace: network
   healthChecks:

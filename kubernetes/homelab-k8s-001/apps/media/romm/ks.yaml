@@ -17,7 +17,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
@@ -52,7 +52,7 @@ spec:
     - name: dragonfly-operator
       namespace: datastore
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
   healthChecks:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
@@ -93,7 +93,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 1h

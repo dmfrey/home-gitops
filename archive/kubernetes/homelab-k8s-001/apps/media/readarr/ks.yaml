@@ -26,7 +26,7 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: storage  # rook-ceph
+      namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
     - name: media-common

@@ -24,7 +24,7 @@ spec:
 
   dependsOn:
     - name: rook-ceph-cluster
-      namespace: storage
+      namespace: rook-ceph
 
   values:
 
