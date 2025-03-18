@@ -1,4 +1,15 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: oci-terraform-authentik
+  namespace: flux-system
+spec:
+  interval: 5m
+  url: oci://ghcr.io/dmfrey/terraform/authentik
+  ref:
+    tag: main
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/infra.contrib.fluxcd.io/terraform_v1alpha1.json
 apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
@@ -13,7 +24,6 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-authentik
-    namespace: flux-system
 
   writeOutputsToSecret:
     name: authentik-tfstate
