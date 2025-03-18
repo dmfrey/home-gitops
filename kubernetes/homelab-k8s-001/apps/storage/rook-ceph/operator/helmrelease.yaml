@@ -40,7 +40,7 @@ spec:
 
   dependsOn:
     - name: snapshot-controller
-      namespace: volsync-system
+      namespace: kube-system
 
   values:
 
