@@ -7,5 +7,5 @@ components:
   - ../../components/common
 resources:
   - ./cloudnative-pg/ks.yaml
-  - ./dragonfly/ks.yaml
+  - ./dragonfly-operator/ks.yaml
   - ./rabbitmq-cluster-operator/ks.yaml
