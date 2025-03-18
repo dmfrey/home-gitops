@@ -24,7 +24,7 @@ spec:
       kind: Cluster
       name: pg-grafana
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/grafana/common
   postBuild:
     substitute:
@@ -53,7 +53,7 @@ spec:
   dependsOn:
     - name: grafana-common
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/grafana/app
   postBuild:
     substitute:

@@ -14,7 +14,7 @@ spec:
       namespace: *namespace
     - name: jellyfin
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/media/jellyplex-watched/app
   postBuild:
     substitute:

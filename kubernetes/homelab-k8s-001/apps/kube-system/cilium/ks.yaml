@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/cilium/app"
   prune: false # let's not make happy accidents
   sourceRef:
@@ -33,7 +33,7 @@ spec:
   dependsOn:
     - name: cilium
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/cilium/config"
   prune: false # let's not make happy accidents
   sourceRef:

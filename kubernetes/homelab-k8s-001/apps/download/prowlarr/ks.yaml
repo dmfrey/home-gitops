@@ -21,7 +21,7 @@ spec:
       namespace: network
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/prowlarr/app"
   postBuild:
     substitute:
@@ -52,7 +52,7 @@ spec:
       namespace: flux-system
     - name: prowlarr
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/prowlarr/provision"
   prune: true
   sourceRef:

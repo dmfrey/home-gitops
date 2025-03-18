@@ -23,7 +23,7 @@ spec:
       kind: Cluster
       name: pg-gatus
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/gatus/services
   postBuild:
     substitute:
@@ -53,7 +53,7 @@ spec:
       namespace: *namespace
     - name: authentik
       namespace: security
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/gatus/app
   postBuild:
     substitute:

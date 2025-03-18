@@ -23,7 +23,7 @@ spec:
       kind: Cluster
       name: pg-authentik
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/database"
   postBuild:
     substitute:
@@ -58,7 +58,7 @@ spec:
       kind: Dragonfly
       name: authentik-kv-cluster
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/kv"
   postBuild:
     substitute:
@@ -93,7 +93,7 @@ spec:
       namespace: kube-system
     - name: grafana
       namespace: observability
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/app"
   postBuild:
     substitute:
@@ -122,7 +122,7 @@ spec:
       namespace: *namespace
     - name: plex
       namespace: media
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
   postBuild:
     substitute:

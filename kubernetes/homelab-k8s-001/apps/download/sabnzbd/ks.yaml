@@ -15,7 +15,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  interval: 30m
+  interval: 1h
   targetNamespace: *namespace
   timeout: 5m
   wait: false
@@ -33,7 +33,7 @@ spec:
   dependsOn:
     - name: sabnzbd-common
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/config"
   postBuild:
     substituteFrom:
@@ -72,7 +72,7 @@ spec:
       namespace: volsync-system
     - name: pod-gateway
       namespace: network
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/app"
   postBuild:
     substitute:

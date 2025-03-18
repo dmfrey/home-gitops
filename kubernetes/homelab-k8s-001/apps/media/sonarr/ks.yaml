@@ -21,7 +21,7 @@ spec:
       namespace: storage  # rook-ceph
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/sonarr/app"
   postBuild:
     substitute:
@@ -52,7 +52,7 @@ spec:
       namespace: *namespace
     - name: tf-controller
       namespace: flux-system
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/sonarr/provision"
   postBuild:
     substitute:

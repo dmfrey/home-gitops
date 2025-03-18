@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/node-feature-discovery/app"
   prune: true
   sourceRef:
@@ -33,7 +33,7 @@ spec:
   dependsOn:
     - name: node-feature-discovery
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/node-feature-discovery/rules"
   prune: true
   sourceRef:

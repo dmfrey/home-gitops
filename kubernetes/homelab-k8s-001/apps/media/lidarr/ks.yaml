@@ -21,7 +21,7 @@ spec:
       namespace: *namespace
     - name: media-common-mounts
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/app"
   postBuild:
     substitute:
@@ -49,7 +49,7 @@ spec:
       namespace: flux-system
     - name: lidarr
       namespace: *namespace
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/provision"
   prune: true
   sourceRef:

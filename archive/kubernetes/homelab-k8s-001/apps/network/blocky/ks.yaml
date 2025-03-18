@@ -13,7 +13,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 30m
+  interval: 1h
   timeout: 5m
   dependsOn:
     - name: cloudnative-pg
@@ -33,7 +33,7 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 30m
+  interval: 1h
   timeout: 5m
   dependsOn:
     - name: blocky-services
