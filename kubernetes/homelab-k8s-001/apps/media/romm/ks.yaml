@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/cnpg
+    - ../../../../components/cnpg
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
@@ -83,8 +83,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/gatus/external
-    - ../../../../flux/components/volsync
+    - ../../../../components/gatus/external
+    - ../../../../components/volsync
   dependsOn:
     - name: romm-db
       namespace: *namespace

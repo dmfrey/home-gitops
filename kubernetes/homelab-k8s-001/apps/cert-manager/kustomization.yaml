@@ -6,7 +6,4 @@ namespace: cert-manager
 resources:
   - ./cert-manager/ks.yaml
 components:
-  - ../../flux/components/alerts
-  - ../../flux/components/global-vars
-  - ../../flux/components/namespace
-  - ../../flux/components/sops
+  - ../../components/common

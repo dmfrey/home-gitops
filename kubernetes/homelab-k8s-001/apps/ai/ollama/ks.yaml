@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/gatus/external
-    - ../../../../flux/components/volsync
+    - ../../../../components/gatus/external
+    - ../../../../components/volsync
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
@@ -48,7 +48,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/volsync
+    - ../../../../components/volsync
   dependsOn:
     - name: intel-device-plugins-gpu
       namespace: kube-system

@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/volsync
+    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph
@@ -67,7 +67,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/volsync
+    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: storage  # rook-ceph

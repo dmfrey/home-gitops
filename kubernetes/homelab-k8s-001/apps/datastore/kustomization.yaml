@@ -9,7 +9,4 @@ resources:
   # - ./mariadb/ks.yaml
   - ./rabbitmq-cluster-operator/ks.yaml
 components:
-  - ../../flux/components/alerts
-  - ../../flux/components/global-vars
-  - ../../flux/components/namespace
-  - ../../flux/components/sops
+  - ../../components/common

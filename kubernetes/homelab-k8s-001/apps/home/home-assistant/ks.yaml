@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../flux/components/cnpg
-    - ../../../../flux/components/volsync
+    - ../../../../components/cnpg
+    - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
