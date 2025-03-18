@@ -3,8 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - app-template.yaml
-  # - bitnami.yaml
   - dmfrey-terraform-authentik.yaml
   - dmfrey-terraform-prowlarr.yaml
   - dmfrey-terraform-lidarr.yaml
@@ -12,5 +10,4 @@ resources:
   - dmfrey-terraform-readarr.yaml
   - dmfrey-terraform-sonarr.yaml
   - dmfrey-terraform-volsync.yaml
-  # - dynatrace.yaml
 
