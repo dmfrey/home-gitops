@@ -28,7 +28,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: radarr-config
       VOLSYNC_CAPACITY: 1Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -57,7 +57,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

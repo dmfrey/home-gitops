@@ -23,7 +23,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: piper-data
       VOLSYNC_CAPACITY: 5Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -47,7 +47,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -80,7 +80,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: whisper-data
       VOLSYNC_CAPACITY: 5Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

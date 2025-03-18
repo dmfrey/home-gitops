@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/observability/otel/collector"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

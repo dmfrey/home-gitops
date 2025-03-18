@@ -15,7 +15,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  prune: true
+  prune: false
   targetNamespace: *namespace
   timeout: 5m
   wait: false
