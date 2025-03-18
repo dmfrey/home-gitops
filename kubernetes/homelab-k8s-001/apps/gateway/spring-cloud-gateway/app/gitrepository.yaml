@@ -3,9 +3,8 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: git-spring-cloud-gateway-k8s
-  namespace: flux-system
 spec:
-  interval: 15m
+  interval: 1h
   url: https://github.com/dmfrey/spring-cloud-gateway-k8s
   ref:
     branch: main
