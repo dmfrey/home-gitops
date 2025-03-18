@@ -4,7 +4,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app spring-dev-common
-  namespace: flux-system
 spec:
   targetNamespace: spring-dev-2
   commonMetadata:
