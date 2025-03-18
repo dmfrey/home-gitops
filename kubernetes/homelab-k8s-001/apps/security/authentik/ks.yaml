@@ -89,8 +89,6 @@ spec:
       namespace: *namespace
     - name: authentik-kv
       namespace: *namespace
-    - name: kyverno
-      namespace: policy
     - name: smtp-relay
       namespace: kube-system
     - name: grafana

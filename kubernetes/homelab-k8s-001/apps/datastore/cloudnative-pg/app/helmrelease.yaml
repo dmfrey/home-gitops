@@ -47,7 +47,7 @@ spec:
 
     config:
       data:
-        INHERITED_ANNOTATIONS: kyverno.io/ignore, reflector.v1.k8s.emberstack.com/*
+        INHERITED_ANNOTATIONS: reflector.v1.k8s.emberstack.com/*
 
     monitoring:
       podMonitorEnabled: false

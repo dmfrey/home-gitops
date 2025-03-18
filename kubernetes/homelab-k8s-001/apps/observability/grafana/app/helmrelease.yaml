@@ -439,17 +439,6 @@ spec:
               - name: "DS_PROMETHEUS"
                 value: prometheus
 
-      policy:
-
-        # Ref: https://grafana.com/grafana/dashboards/15804-kyverno
-        # renovate: depName="Keyverno"
-        keyverno:
-          gnetId: 15804
-          revision: 4
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: prometheus
-
       security:
 
         # Ref: https://grafana.com/grafana/dashboards/14837-authentik

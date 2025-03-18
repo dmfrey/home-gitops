@@ -4,7 +4,6 @@ kind: Cluster
 metadata:
   name: pg-hedgedoc
   annotations:
-    kyverno.io/ignore: "true"
     secret.reloader.stakater.com/reload: pg-hedgedoc-cnpg-secret
 
 spec:

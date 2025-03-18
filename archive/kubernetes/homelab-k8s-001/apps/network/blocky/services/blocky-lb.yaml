@@ -5,8 +5,7 @@ metadata:
   name: pg-blocky-lb
   namespace: network
   annotations:
-    cnpg.io/operatorVersion: 1.23.1                                                                                                                                                                                                                                                                                     
-    kyverno.io/ignore: "true"                                                                                                                                                                                                                                                                                           
+    cnpg.io/operatorVersion: 1.23.1
   labels:
     cnpg.io/cluster: pg-blocky
 spec:

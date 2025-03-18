@@ -4,7 +4,6 @@ kind: Cluster
 metadata:
   name: pg-authentik
   annotations:
-    kyverno.io/ignore: "true"
     secret.reloader.stakater.com/reload: pg-authentik-cnpg-secret
 
 spec:

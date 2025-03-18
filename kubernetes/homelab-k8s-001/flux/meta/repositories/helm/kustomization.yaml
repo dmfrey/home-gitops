@@ -31,7 +31,7 @@ resources:
   - kubernetes-sigs-external-dns.yaml
   - kubernetes-sigs-nfd.yaml
   - kubernetes-sigs-nfs-subdir.yaml
-  - kyverno.yaml
+  # - kyverno.yaml
   - mariadb.yaml
   - metrics-server.yaml
   - openebs.yaml
