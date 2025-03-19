@@ -4,7 +4,7 @@ kind: OCIRepository
 metadata:
   name: oci-terraform-authentik
 spec:
-  interval: 1h
+  interval: 2m # 1h
   url: oci://ghcr.io/dmfrey/terraform/authentik
   ref:
     tag: main
@@ -17,7 +17,7 @@ metadata:
 spec:
 
   approvePlan: auto
-  interval: 1h
+  interval: 2m # 1h
   path: "./"
 
   sourceRef:
