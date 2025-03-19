@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: "./kubernetes/homelab-k8s-001/apps/spring-dev-2/common/clusterissuer"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

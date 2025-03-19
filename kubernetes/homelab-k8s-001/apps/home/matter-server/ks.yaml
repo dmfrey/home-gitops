@@ -27,7 +27,7 @@ spec:
       GATUS_PATH: /web/index.html
       VOLSYNC_CLAIM: matter-server-data
       VOLSYNC_CAPACITY: 5Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

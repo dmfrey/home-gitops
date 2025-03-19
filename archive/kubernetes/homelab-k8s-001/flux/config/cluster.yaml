@@ -27,7 +27,7 @@ metadata:
 spec:
   interval: 2m
   path: ./kubernetes/homelab-k8s-001/flux
-  prune: false
+  prune: true
   wait: false
   sourceRef:
     kind: GitRepository

@@ -37,7 +37,7 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
       # LLMVISION_CLAIM: llmvision-data
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

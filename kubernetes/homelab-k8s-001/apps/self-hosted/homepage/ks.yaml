@@ -27,7 +27,7 @@ spec:
       # VOLSYNC_CLAIM: homepage-config
       # VOLSYNC_CAPACITY: 1Gi
       # VOLSYNC_CACHE_CAPACITY: 1Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
