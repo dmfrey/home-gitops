@@ -26,6 +26,9 @@ spec:
     kind: OCIRepository
     name: grafana
 
+  driftDetection:
+    mode: enabled
+    
   values:
     replicas: 1
 
