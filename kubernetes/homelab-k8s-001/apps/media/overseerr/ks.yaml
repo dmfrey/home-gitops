@@ -25,11 +25,11 @@ spec:
       GATUS_SUBDOMAIN: request
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 1Gi
-  prune: false
+  prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: false
