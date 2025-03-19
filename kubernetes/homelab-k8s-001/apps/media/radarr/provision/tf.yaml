@@ -24,7 +24,6 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: oci-terraform-radarr
-    namespace: flux-system
 
   writeOutputsToSecret:
     name: radarr-tfstate
