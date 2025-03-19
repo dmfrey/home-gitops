@@ -1,4 +1,15 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: oci-terraform-radarr
+  namespace: flux-system
+spec:
+  interval: 5m
+  url: oci://ghcr.io/dmfrey/terraform/radarr
+  ref:
+    tag: main
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
