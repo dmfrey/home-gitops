@@ -27,14 +27,6 @@ spec:
   uninstall:
     keepHistory: false
 
-  dependsOn:
-    - name: mosquitto
-      namespace: home
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
-
   values:
 
     controllers:

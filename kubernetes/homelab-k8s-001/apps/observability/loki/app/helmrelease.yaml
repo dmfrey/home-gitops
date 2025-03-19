@@ -45,10 +45,6 @@ spec:
   uninstall:
     keepHistory: false
 
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-
   driftDetection:
     mode: enabled
 

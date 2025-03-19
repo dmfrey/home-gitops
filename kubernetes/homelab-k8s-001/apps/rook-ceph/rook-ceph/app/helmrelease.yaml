@@ -38,9 +38,8 @@ spec:
       strategy: rollback
       retries: 3
 
-  dependsOn:
-    - name: snapshot-controller
-      namespace: kube-system
+  driftDetection:
+    mode: enabled
 
   values:
 

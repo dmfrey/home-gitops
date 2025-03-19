@@ -40,10 +40,6 @@ spec:
       strategy: rollback
       retries: 3
 
-  dependsOn:
-    - name: node-feature-discovery
-      namespace: kube-system
-
   driftDetection:
     mode: enabled
 

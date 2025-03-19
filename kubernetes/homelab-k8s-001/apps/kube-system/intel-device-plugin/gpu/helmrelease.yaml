@@ -38,10 +38,6 @@ spec:
       strategy: rollback
       retries: 3
 
-  dependsOn:
-    - name: intel-device-plugins-operator
-      namespace: kube-system
-
   values:
 
     name: intel-gpu-plugin

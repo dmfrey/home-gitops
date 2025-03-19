@@ -39,6 +39,9 @@ spec:
       strategy: rollback
       retries: 3
 
+  driftDetection:
+    mode: enabled
+
   values:
 
     operatorNamespace: rook-ceph

@@ -27,12 +27,6 @@ spec:
   uninstall:
     keepHistory: false
 
-  dependsOn:
-    - name: actions-runner-controller
-      namespace: actions-runner-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-
   valuesFrom:
     - targetPath: githubConfigSecret.github_app_id
       kind: Secret
