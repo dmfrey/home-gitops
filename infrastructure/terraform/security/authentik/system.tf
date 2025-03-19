@@ -2,9 +2,9 @@ data "authentik_certificate_key_pair" "generated" {
   name = "authentik Self-signed Certificate"
 }
 
-data "authentik_brand" "authentik-default" {
-  domain = "authentik-default"
-}
+# data "authentik_brand" "authentik-default" {
+#   domain = "authentik-default"
+# }
 
 # Get the default flows
 data "authentik_flow" "default-brand-authentication" {
