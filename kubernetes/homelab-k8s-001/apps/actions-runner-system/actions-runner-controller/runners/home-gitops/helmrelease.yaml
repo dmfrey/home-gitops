@@ -52,7 +52,7 @@ spec:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: openebs-hostpath  # ceph-block
+        storageClassName: openebs-hostpath
         resources:
           requests:
             storage: 25Gi
@@ -82,5 +82,3 @@ spec:
           - name: talos
             secret:
               secretName: *name
-        # securityContext:
-        #   fsGroup: 123
