@@ -40,11 +40,11 @@ spec:
       namespace: ai
     - name: k8sgpt-operator
       namespace: ai
-  healthChecks:
-    - apiVersion: core.k8sgpt.ai/v1alpha1
-      kind: K8sGPT
-      name: *app
-      namespace: *namespace
+  # healthChecks:
+  #   - apiVersion: core.k8sgpt.ai/v1alpha1
+  #     kind: K8sGPT
+  #     name: *app
+  #     namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/ai/k8sgpt/resource"
   prune: true
