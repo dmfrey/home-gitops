@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app k8sgpt
+  name: &app k8sgpt-operator
   namespace: &namespace ai
 spec:
   commonMetadata:
@@ -16,17 +16,14 @@ spec:
       name: *app
       namespace: *namespace
   path: "./kubernetes/homelab-k8s-001/apps/ai/k8sgpt/app"
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  timeout: 5m
   targetNamespace: *namespace
+  timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -41,7 +38,7 @@ spec:
   dependsOn:
     - name: ollama
       namespace: ai
-    - name: k8sgpt
+    - name: k8sgpt-operator
       namespace: ai
   healthChecks:
     - apiVersion: core.k8sgpt.ai/v1alpha1
@@ -50,14 +47,11 @@ spec:
       namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/ai/k8sgpt/resource"
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  timeout: 5m
   targetNamespace: *namespace
+  timeout: 5m
