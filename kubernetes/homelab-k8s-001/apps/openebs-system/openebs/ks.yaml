@@ -4,17 +4,18 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app openebs
-  namespace: flux-system
+  namespace: &namespace openebs-system
 spec:
-  targetNamespace: openebs
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/homelab-k8s-001/apps/openebs/openebs/app
+  interval: 1h
+  path: ./kubernetes/homelab-k8s-001/apps/openebs-system/openebs/app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
   wait: false
-  interval: 1h
+  targetNamespace: openebs
   timeout: 5m

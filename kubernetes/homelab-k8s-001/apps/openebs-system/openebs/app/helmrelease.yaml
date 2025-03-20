@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
@@ -29,24 +30,31 @@ spec:
     name: openebs
 
   install:
+    disableHooks: true
     remediation:
       retries: 3
 
   upgrade:
     cleanupOnFail: true
+    disableHooks: true
     remediation:
       strategy: rollback
       retries: 3
 
   values:
+
     localpv-provisioner:
       localpv:
         image:
           registry: quay.io/
+        basePath: &hostPath /var/mnt/extra/openebs/local
 
       hostpathClass:
+        enabled: true
         name: openebs-hostpath
-
+        isDefaultClass: false
+        basePath: *hostPath
+        
       helperPod:
         image:
           registry: quay.io/
