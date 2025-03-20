@@ -18,5 +18,5 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: false
-  targetNamespace: openebs
+  targetNamespace: *namespace
   timeout: 5m
