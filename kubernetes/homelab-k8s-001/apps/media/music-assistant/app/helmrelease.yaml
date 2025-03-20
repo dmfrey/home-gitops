@@ -99,7 +99,7 @@ spec:
       media:
         type: nfs
         server: ${QNAP_ADDR}
-        path: /media/music/flac/
+        path: /media/music/
         globalMounts:
           - path: /media
 
