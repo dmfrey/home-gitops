@@ -45,7 +45,7 @@ metadata:
   namespace: &namespace media
 spec:
   dependsOn:
-    - name: tf-controller
+    - name: tofu-controller
       namespace: flux-system
     - name: lidarr
       namespace: *namespace

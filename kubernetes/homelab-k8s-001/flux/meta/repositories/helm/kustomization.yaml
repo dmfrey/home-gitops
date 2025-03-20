@@ -43,7 +43,7 @@ resources:
   - spegel.yaml
   - stakater.yaml
   - stevehipwell.yaml
-  - tf-controller.yaml
+  # - tf-controller.yaml
   - trilium.yaml
   - opentelemetry-charts.yaml
   - wiremind.yaml

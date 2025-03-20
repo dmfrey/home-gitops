@@ -50,7 +50,7 @@ spec:
   dependsOn:
     - name: radarr
       namespace: *namespace
-    - name: tf-controller
+    - name: tofu-controller
       namespace: flux-system
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/radarr/provision"

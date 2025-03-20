@@ -53,7 +53,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: tf-controller
+    - name: tofu-controller
       namespace: flux-system
     - name: prowlarr
       namespace: *namespace
