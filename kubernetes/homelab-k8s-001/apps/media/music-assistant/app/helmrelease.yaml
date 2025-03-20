@@ -71,6 +71,8 @@ spec:
         ports:
           http:
             port: &port 8095
+          stream:
+            port: 8097
 
     ingress:
       internal:
@@ -97,7 +99,9 @@ spec:
       media:
         type: nfs
         server: ${QNAP_ADDR}
-        path: /media
+        path: /media/music/flac/
+        globalMounts:
+          - path: /media
 
       tmp:
         enabled: true
