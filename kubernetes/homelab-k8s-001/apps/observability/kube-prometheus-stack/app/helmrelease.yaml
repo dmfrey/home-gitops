@@ -177,6 +177,11 @@ spec:
         monitor:
           enabled: true
           relabelings:
+            - sourceLabels: [__address__]
+              regex: (.*)
+              targetLabel: cluster
+              replacement: '${CLUSTER_NAME}'
+
             - action: replace
               regex: (.*)
               replacement: $1
