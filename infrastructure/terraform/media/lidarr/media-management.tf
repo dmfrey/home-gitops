@@ -29,7 +29,7 @@ resource "lidarr_naming" "naming" {
 
 resource "lidarr_root_folder" "music" {
   name                    = "Music"
-  quality_profile_id      = 1
+  quality_profile_id      = 2
   metadata_profile_id     = 1
   monitor_option          = "future"
   new_item_monitor_option = "all"
@@ -44,5 +44,25 @@ resource "lidarr_root_folder" "purchased_music" {
   monitor_option          = "future"
   new_item_monitor_option = "all"
   path                    = "/media/music/Google Music"
+  tags                    = [lidarr_tag.music.id]
+}
+
+resource "lidarr_root_folder" "mp3" {
+  name                    = "MP3"
+  quality_profile_id      = 1
+  metadata_profile_id     = 1
+  monitor_option          = "future"
+  new_item_monitor_option = "all"
+  path                    = "/media/music/mp3"
+  tags                    = [lidarr_tag.music.id]
+}
+
+resource "lidarr_root_folder" "ogg" {
+  name                    = "OGG Vorbis"
+  quality_profile_id      = 1
+  metadata_profile_id     = 1
+  monitor_option          = "none"
+  new_item_monitor_option = "all"
+  path                    = "/media/music/ogg"
   tags                    = [lidarr_tag.music.id]
 }
