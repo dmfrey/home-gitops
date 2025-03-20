@@ -150,8 +150,9 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
 
       media:
-        enabled: true
-        existingClaim: nfs-media
+        type: nfs
+        server: ${QNAP_ADDR}
+        path: /media/
 
       backups:
         enabled: true
