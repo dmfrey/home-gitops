@@ -67,7 +67,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_MUSIC_ADDR}
+          lbipam.cilium.io/ips: 192.168.30.245  # ${SVC_MUSIC_ADDR}
         ports:
           http:
             port: &port 8095
@@ -98,6 +98,10 @@ spec:
         type: nfs
         server: ${QNAP_ADDR}
         path: /media
-        globalMounts:
-          - path: /media
 
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /tmp
