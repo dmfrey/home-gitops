@@ -16,6 +16,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   wait: false
   targetNamespace: openebs
   timeout: 5m
