@@ -37,10 +37,10 @@ tasks:
     desc: Apply Talos config to a node [IP=required] [HOSTNAME=required] [MODE=auto]
     dotenv: ['{{.CLUSTER_DIR}}/cluster.env']
     cmds:
-      - task: down
+      # - task: down
       - talosctl --nodes {{.IP}} apply-config --mode {{.MODE}} --file {{.TALOS_CLUSTERCONFIG_DIR}}/{{.CLUSTER}}-{{.HOSTNAME}}.yaml
-      - talosctl --nodes {{.IP}} health
-      - task: up
+      # - talosctl --nodes {{.IP}} health
+      # - task: up
     vars:
       MODE: '{{.MODE | default "auto"}}'
       # HOSTNAME:
