@@ -28,7 +28,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
     replicas: 1
 
@@ -642,7 +642,7 @@ spec:
         gethomepage.dev/group: Observability
         gethomepage.dev/description: Monitoring Dashboards
         gethomepage.dev/widget.type: grafana
-        gethomepage.dev/widget.url: http://grafana.observabiltiy.svc.cluster.local:3000
+        gethomepage.dev/widget.url: http://grafana.observability.svc.cluster.local:3000
         gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
         gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
 

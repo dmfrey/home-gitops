@@ -6,7 +6,7 @@ metadata:
   name: grafana
 spec:
   type: grafana
-  address: "http://grafana.observabiltiy.svc.cluster.local:3000/api/annotations"
+  address: "http://grafana.observability.svc.cluster.local:3000/api/annotations"
   secretRef:
     name: grafana-auth-secret
 ---

@@ -42,4 +42,4 @@ spec:
     tracing:
       zipkin:
         enabled: true
-        # url: http://otelcol-dm-opentelemetry-collector.observabiltiy.svc.cluster.local:9411/api/v2/spans
+        # url: http://otelcol-dm-opentelemetry-collector.observability.svc.cluster.local:9411/api/v2/spans
