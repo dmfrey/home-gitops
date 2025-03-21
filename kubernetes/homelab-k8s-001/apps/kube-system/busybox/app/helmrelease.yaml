@@ -46,7 +46,7 @@ spec:
                 "name": "iot-vlan",
                 "interface": "eth1",
                 "namespace": "network" ,
-                "ips": ["192.168.50.3/24"],
+                "ips": ["192.168.51.3/24"],
                 "mac": "f1:fd:59:0b:bd:2b"
               }]
 
