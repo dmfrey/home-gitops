@@ -75,7 +75,7 @@ spec:
       - --ignore-ingress-tls-spec
       - --ingress-class=external
 
-    interval: 30m
+    triggerLoopOnEvent: true
 
     policy: sync
 
