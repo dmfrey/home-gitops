@@ -619,10 +619,10 @@ spec:
       server:
         root_url: https://grafana.${SECRET_DOMAIN}
 
-    # admin:
-    #   existingSecret: grafana-secret
-    #   passwordKey: GRAFANA_ADMIN_PASSWORD
-    #   userKey: GRAFANA_ADMIN_USER
+    admin:
+      existingSecret: grafana-secret
+      passwordKey: GRAFANA_ADMIN_PASSWORD
+      userKey: GRAFANA_ADMIN_USER
 
     imageRenderer:
       enabled: true
