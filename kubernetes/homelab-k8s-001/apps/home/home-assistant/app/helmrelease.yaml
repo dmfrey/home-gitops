@@ -199,15 +199,14 @@ spec:
               - name: code
                 containerPort: &codePort 8082
 
-        # pod:
-        #   annotations:
-        #     k8s.v1.cni.cncf.io/networks: |
-        #       [{
-        #         "name":"iot-vlan",
-        #         "namespace": "network",
-        #         "ips": ["192.168.50.4/24"],
-        #         "mac": "7b:ac:9c:14:8d:48"
-        #       }]
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.4/24"]
+              }]
 
     defaultPodOptions:
       securityContext:
