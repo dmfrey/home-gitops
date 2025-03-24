@@ -45,8 +45,7 @@ spec:
               [{
                 "name": "iot-vlan",
                 "namespace": "network" ,
-                "ips": ["192.168.51.3/24"],
-                "mac": "f1:fd:59:0b:bd:2b"
+                "ips": ["192.168.51.3/24"]
               }]
 
         containers:
