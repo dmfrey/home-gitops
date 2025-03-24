@@ -44,7 +44,7 @@ spec:
             k8s.v1.cni.cncf.io/networks: |
               [{
                 "name": "iot-vlan",
-                "namespace": "network" ,
+                "namespace": "network",
                 "ips": ["192.168.51.3/24"]
               }]
 
