@@ -38,6 +38,16 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.9/24"]
+              }]
+          hostNetwork: true
+
         containers:
           *app :
             image:
@@ -52,31 +62,11 @@ spec:
               MATTER_SERVER__APPLICATION_URL: &host matter.${SECRET_DOMAIN}
               MATTER_SERVER__LOG_LEVEL: debug
 
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
-            #   startup:
-            #     enabled: true
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 5
-
             resources:
               requests:
                 memory: "100M"
               limits:
                 memory: "500M"
-
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.9/24"]
-              }]
 
     defaultPodOptions:
       securityContext:
@@ -87,12 +77,15 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups:
           - 34
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
 
     service:
       *app :
         controller: *app
         type: LoadBalancer
         annotations:
+          external-dns.alpha.kubernetes.io/hostname: *host
           lbipam.cilium.io/ips: ${SVC_MATTER_ADDR}
         ports:
           ws:
