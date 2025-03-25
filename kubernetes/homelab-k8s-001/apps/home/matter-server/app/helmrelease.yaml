@@ -46,7 +46,7 @@ spec:
                 "namespace": "network",
                 "ips": ["192.168.50.9/24"]
               }]
-          hostNetwork: true
+          # hostNetwork: true
 
         containers:
           *app :
@@ -57,7 +57,7 @@ spec:
 
             args:
               - --primary-interface=net1
-              
+
             env:
               TZ: "${TIMEZONE}"
               MATTER_SERVER__INSTANCE_NAME: *app
@@ -80,8 +80,8 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups:
           - 34
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
+      # hostNetwork: true
+      # dnsPolicy: ClusterFirstWithHostNet
 
     service:
       *app :
