@@ -55,6 +55,9 @@ spec:
               tag: 7.0.1
               pullPolicy: IfNotPresent
 
+            args:
+              - --primary-interface=net1
+              
             env:
               TZ: "${TIMEZONE}"
               MATTER_SERVER__INSTANCE_NAME: *app
