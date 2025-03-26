@@ -89,11 +89,11 @@ spec:
 
     policy: sync
 
-    sources: ["ingress", "service"]
+    sources: ["ingress", "gateway-httproute", "service"]
 
     txtOwnerId: "${CLUSTER_NAME}"
     txtPrefix: "${CLUSTER_NAME}."
-    domainFilters: ["${SECRET_DOMAIN}"]
+    domainFilters: ["dmfrey.com"]
 
     serviceMonitor:
       enabled: true
