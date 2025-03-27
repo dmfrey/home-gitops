@@ -1,0 +1,11 @@
+machine:
+  network:
+    hostname: dmf-amd-001
+#   disks:
+#     - device: /dev/disk/by-id/ata-GIGASTONE_SSD_512GB_GSTMFAACMG24371250
+#       partitions:
+#         - mountpoint: /var/mnt/extra
+  install:
+    diskSelector:
+      model: GIGASTONE SSD 51
+    image: factory.talos.dev/installer/b51b7b6129e8ba285ab83ef1059418c434de4223a7ae4b3905dd06512b923943:{{ ENV.TALOS_VERSION }}

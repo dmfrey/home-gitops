@@ -354,6 +354,7 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - actions-runner-system
+              - system-upgrade
           apidCheckExtKeyUsage: true
           diskQuotaSupport: true
           hostDNS:
