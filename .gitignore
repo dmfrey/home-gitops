@@ -70,3 +70,13 @@ Brewfile.lock.json
 
 Thumbs.db
 .DS_Store
+
+/.private/
+/.task/
+/.venv/
+*.crt
+*.key
+.DS_Store
+kubeconfig
+onepassword.env
+talosconfig
