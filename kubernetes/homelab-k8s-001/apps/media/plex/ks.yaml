@@ -28,7 +28,7 @@ spec:
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

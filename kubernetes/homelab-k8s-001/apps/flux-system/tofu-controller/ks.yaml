@@ -14,7 +14,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

@@ -25,7 +25,7 @@ spec:
       GATUS_SUBDOMAIN: request
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 1Gi
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

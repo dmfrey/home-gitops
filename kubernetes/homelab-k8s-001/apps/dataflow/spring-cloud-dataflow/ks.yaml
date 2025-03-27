@@ -24,7 +24,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
@@ -63,7 +63,7 @@ spec:
     substitute:
       APP: *app
       DB: dataflow
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
@@ -102,7 +102,7 @@ spec:
     substitute:
       APP: *app
       DB: skipper
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
@@ -150,7 +150,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

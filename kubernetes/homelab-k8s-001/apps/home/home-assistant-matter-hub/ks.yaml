@@ -19,7 +19,7 @@ spec:
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: home-assistant-matter-hub-data
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

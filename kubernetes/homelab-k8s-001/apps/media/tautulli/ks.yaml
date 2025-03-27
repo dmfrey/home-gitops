@@ -26,7 +26,7 @@ spec:
       APP_GID: "1568"
       VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_CAPACITY: 1Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

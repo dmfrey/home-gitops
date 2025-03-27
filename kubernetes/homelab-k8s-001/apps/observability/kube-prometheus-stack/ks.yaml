@@ -19,7 +19,7 @@ spec:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: prometheus
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

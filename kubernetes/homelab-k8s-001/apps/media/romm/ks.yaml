@@ -29,7 +29,7 @@ spec:
     substitute:
       APP: *app
       DB: romm
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -63,7 +63,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -103,7 +103,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: romm-data
       VOLSYNC_CAPACITY: 5Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
