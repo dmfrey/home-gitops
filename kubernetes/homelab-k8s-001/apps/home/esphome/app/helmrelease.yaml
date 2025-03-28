@@ -90,23 +90,19 @@ spec:
             port: &port 6052
             primary: true
           api:
-            port: 6053
+            port: &apiPort 6053
 
-    ingress:
-      internal:
-        enabled: true
-        className: internal
-        annotations:
-          # auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "chip"
-        hosts:
-          - host: esphome.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    route:
+      *app :
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
