@@ -69,15 +69,14 @@ spec:
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
 
-        # pod:
-        #   annotations:
-        #     k8s.v1.cni.cncf.io/networks: |
-        #       [{
-        #         "name":"iot-vlan",
-        #         "namespace": "network",
-        #         "ips": ["192.168.50.6/24"],
-        #         "mac": "6b:36:ab:6f:dd:30"
-        #       }]
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"iot-vlan",
+                "namespace": "network",
+                "ips": ["192.168.50.6/24"]
+              }]
 
     defaultPodOptions:
       hostNetwork: true
@@ -97,23 +96,21 @@ spec:
           http:
             port: *port
 
-    ingress:
-      internal:
-        className: internal
+    route:
+      *app :
+        hostnames: ["matterhub.dmfrey.com"]
         annotations:
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-          nginx.org/websocket-services: matterhub
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:matterdotjs"
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-          - host: matterhub.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+          hajimari.io/appName: "Home Assistant Hatter Hub"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:
