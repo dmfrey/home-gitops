@@ -134,9 +134,9 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
         supplementalGroups:
@@ -152,32 +152,44 @@ spec:
           metrics:
             port: *metricsPort
 
-    ingress:
-      internal:
-        className: internal
-        annotations:
-          theme.home.arpa/enabled: "true"
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "solar:subtitles-outline"
+    # ingress:
+    #   internal:
+    #     className: internal
+    #     annotations:
+    #       theme.home.arpa/enabled: "true"
 
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/name: Bazarr
-          gethomepage.dev/icon: bazarr.png
-          gethomepage.dev/description: Subtitle Downloads
-          gethomepage.dev/widget.type: bazarr
-          gethomepage.dev/widget.url: http://bazarr.media.svc.cluster.local:6767
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_BAZARR_TOKEN}}` }}"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "solar:subtitles-outline"
 
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-          - host: bazarr.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Downloads
+    #       gethomepage.dev/name: Bazarr
+    #       gethomepage.dev/icon: bazarr.png
+    #       gethomepage.dev/description: Subtitle Downloads
+    #       gethomepage.dev/widget.type: bazarr
+    #       gethomepage.dev/widget.url: http://bazarr.media.svc.cluster.local:6767
+    #       gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_BAZARR_TOKEN}}` }}"
+
+    #       external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+    #     hosts:
+    #       - host: bazarr.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: *app
+    #               port: http
 
     persistence:
       add-ons:

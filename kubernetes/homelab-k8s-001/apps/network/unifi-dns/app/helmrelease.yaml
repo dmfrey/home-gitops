@@ -89,7 +89,7 @@ spec:
 
     policy: sync
 
-    sources: ["ingress", "gateway-httproute", "service"]
+    sources: ["gateway-httproute", "service"]
 
     txtOwnerId: "${CLUSTER_NAME}"
     txtPrefix: "${CLUSTER_NAME}."
