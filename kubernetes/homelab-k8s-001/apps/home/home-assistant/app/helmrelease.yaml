@@ -240,6 +240,10 @@ spec:
     route:
       # *app :
       #   hostnames: ["home.dmfrey.com"]
+      #   annotations:
+      #     hajimari.io/enable: "true"
+      #     hajimari.io/icon: "simple-icons:homeassistant"
+      #     hajimari.io/appName: "Home Assistant"
       #   parentRefs:
       #     - name: external
       #       namespace: kube-system
@@ -250,6 +254,10 @@ spec:
       #           port: *port
       code:
         hostnames: ["hass-code.dmfrey.com"]
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:vs-code"
+          hajimari.io/appName: "Hass Config"
         parentRefs:
           - name: internal
             namespace: kube-system
