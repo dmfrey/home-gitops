@@ -15,6 +15,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: webhook-receiver
+                name: notification-controller # webhook-receiver
                 port:
                   number: 80
