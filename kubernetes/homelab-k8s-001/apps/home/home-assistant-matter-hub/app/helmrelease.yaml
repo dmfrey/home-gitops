@@ -104,7 +104,7 @@ spec:
           hajimari.io/icon: "simple-icons:matterdotjs"
           hajimari.io/appName: "Home Assistant Hatter Hub"
         parentRefs:
-          - name: external
+          - name: internal
             namespace: kube-system
             sectionName: https
         rules:

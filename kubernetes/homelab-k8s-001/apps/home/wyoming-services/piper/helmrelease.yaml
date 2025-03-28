@@ -79,18 +79,19 @@ spec:
           *app :
             port: 10200
           http:
-            port: 8000
+            port: &port 8000
 
-    ingress:
-      internal:
-        className: internal
-        hosts:
-          - host: piper.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    route:
+      *app :
+        hostnames: ["piper.dmfrey.com"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
