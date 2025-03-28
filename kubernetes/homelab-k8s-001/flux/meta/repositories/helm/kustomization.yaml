@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
+resources: []
   # - actions-runner-controller.yaml
   # - angelnu.yaml
   # - authentik.yaml
@@ -33,17 +33,17 @@ resources:
   # - kubernetes-sigs-nfs-subdir.yaml
   # - kyverno.yaml
   # - mariadb.yaml
-  - metrics-server.yaml
-  - openebs.yaml
-  - piraeus.yaml
-  - postfinance.yaml
-  - prometheus-community.yaml
+  # - metrics-server.yaml
+  # - openebs.yaml
+  # - piraeus.yaml
+  # - postfinance.yaml
+  # - prometheus-community.yaml
   # - rook-ceph.yaml
   # - sonatype.yaml
-  - spegel.yaml
-  - stakater.yaml
-  - stevehipwell.yaml
+  # - spegel.yaml
+  # - stakater.yaml
+  # - stevehipwell.yaml
   # - tf-controller.yaml
-  - trilium.yaml
-  - opentelemetry-charts.yaml
-  - wiremind.yaml
+  # - trilium.yaml
+  # - opentelemetry-charts.yaml
+  # - wiremind.yaml
