@@ -238,6 +238,16 @@ spec:
           #   port: *otbrRestPort
 
     route:
+      # *app :
+      #   hostnames: ["home.dmfrey.com"]
+      #   parentRefs:
+      #     - name: external
+      #       namespace: kube-system
+      #       sectionName: https
+      #   rules:
+      #     - backendRefs:
+      #         - name: *app
+      #           port: *port
       code:
         hostnames: ["hass-code.dmfrey.com"]
         parentRefs:
@@ -246,7 +256,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: hass-conde
+              - name: *app
                 port: *codePort
 
     ingress:
