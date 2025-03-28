@@ -32,7 +32,7 @@ spec:
   install:
     disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -82,8 +82,8 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 5
 
-    extraArgs:
-      - --ignore-ingress-tls-spec
+    # extraArgs:
+    #   - --ignore-ingress-tls-spec
 
     triggerLoopOnEvent: true
 
