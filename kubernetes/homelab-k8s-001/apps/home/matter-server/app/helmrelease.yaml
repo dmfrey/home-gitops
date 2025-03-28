@@ -62,7 +62,7 @@ spec:
               TZ: "${TIMEZONE}"
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &wsPort 5580
-              MATTER_SERVER__APPLICATION_URL: &host matter.dmfrey.hub
+              MATTER_SERVER__APPLICATION_URL: &host matter.dmfrey.com
               MATTER_SERVER__LOG_LEVEL: debug
 
             resources:
