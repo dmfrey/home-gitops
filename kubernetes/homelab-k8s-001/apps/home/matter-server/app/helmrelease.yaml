@@ -62,7 +62,7 @@ spec:
               TZ: "${TIMEZONE}"
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &wsPort 5580
-              MATTER_SERVER__APPLICATION_URL: &host matter.${SECRET_DOMAIN}
+              MATTER_SERVER__APPLICATION_URL: &host matter.dmfrey.hub
               MATTER_SERVER__LOG_LEVEL: debug
 
             resources:
@@ -97,20 +97,22 @@ spec:
             primary: true
         externalTrafficPolicy: Cluster
 
-    ingress:
-      internal:
-        className: internal
+    route:
+      *app :
+        hostnames:
+          - *host
         annotations:
-          nginx.org/websocket-services: *app
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:matter"
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: *wsPort
+          hajimari.io/appName: "Home Assistant Hatter Server"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *wsPort
 
     persistence:
       data:
