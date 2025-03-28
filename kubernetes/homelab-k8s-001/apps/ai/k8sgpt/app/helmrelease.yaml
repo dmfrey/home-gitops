@@ -4,7 +4,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: k8sgpt
-  namespace: flux-system
 spec:
   interval: 1h
   url: https://charts.k8sgpt.ai/
@@ -47,7 +46,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     serviceMonitor:
