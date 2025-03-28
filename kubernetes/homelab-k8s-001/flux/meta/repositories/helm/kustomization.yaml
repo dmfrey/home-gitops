@@ -6,22 +6,22 @@ resources:
   # - actions-runner-controller.yaml
   # - angelnu.yaml
   # - authentik.yaml
-  - backube.yaml
-  - bitnami.yaml
-  - bjw-s.yaml
-  - cilium.yaml
-  - cloudnative-pg.yaml
-  - controlplaneio.yaml
-  - dynatrace.yaml
-  - emberstack.yaml
-  - emqx.yaml
-  - external-dns.yaml
-  - external-secrets.yaml
-  - fluent.yaml
-  - grafana.yaml
+  # - backube.yaml
+  # - bitnami.yaml
+  # - bjw-s.yaml
+  # - cilium.yaml
+  # - cloudnative-pg.yaml
+  # - controlplaneio.yaml
+  # - dynatrace.yaml
+  # - emberstack.yaml
+  # - emqx.yaml
+  # - external-dns.yaml
+  # - external-secrets.yaml
+  # - fluent.yaml
+  # - grafana.yaml
   - hajimari.yaml
-  - hashicorp.yaml
-  - ingress-nginx.yaml
+  # - hashicorp.yaml
+  # - ingress-nginx.yaml
   - intel.yaml
   - jetstack.yaml
   - k8s-gateway.yaml
