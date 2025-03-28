@@ -13,5 +13,5 @@ spec:
   rules:
     - backendRefs:
         - name: spring-cloud-dataflow-server
-          namespace: flux-system
+          namespace: dataflow
           port: 8080
