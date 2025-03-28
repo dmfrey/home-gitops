@@ -29,32 +29,61 @@ spec:
      protocol: TCP
      targetPort: 9000
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
   annotations:
     hajimari.io/enable: "true"
     hajimari.io/icon: "simple-icons:minio"
-
-    external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
   labels:
     app.kubernetes.io/instance: minio
     app.kubernetes.io/name: minio
+    app.kubernetes.io/part-of: minio
   name: minio
-  namespace: network
 spec:
-  ingressClassName: internal
+  hostnames:
+  - minio.dmfrey.com
+  parentRefs:
+  - kind: Gateway
+    name: internal
+    namespace: kube-system
   rules:
-  - host: minio.${SECRET_DOMAIN}
-    http:
-      paths:
-      - backend:
-          service:
-            name: minio
-            port:
-              number: 39010
-        path: /
-        pathType: Prefix
+  - backendRefs:
+    - kind: Service
+      name: minio
+      port: 39010
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     hajimari.io/enable: "true"
+#     hajimari.io/icon: "simple-icons:minio"
+
+#     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+#   labels:
+#     app.kubernetes.io/instance: minio
+#     app.kubernetes.io/name: minio
+#   name: minio
+#   namespace: network
+# spec:
+#   ingressClassName: internal
+#   rules:
+#   - host: minio.${SECRET_DOMAIN}
+#     http:
+#       paths:
+#       - backend:
+#           service:
+#             name: minio
+#             port:
+#               number: 39010
+#         path: /
+#         pathType: Prefix
 # ---
 # # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 # apiVersion: monitoring.coreos.com/v1alpha1
