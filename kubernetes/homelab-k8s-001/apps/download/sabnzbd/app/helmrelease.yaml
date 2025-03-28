@@ -157,14 +157,10 @@ spec:
           metrics:
             port: *metricsPort
 
-    ingress:
-      internal:
-        enabled: true
-        className: internal
+    route:
+      *app :
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          theme.home.arpa/enabled: "true"
-          theme.home.arpa/theme: "nord"
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
 
@@ -176,16 +172,14 @@ spec:
           gethomepage.dev/widget.type: sabnzbd
           gethomepage.dev/widget.url: http://sabnzbd.download.svc.cluster.local:8080
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SABNZBD_TOKEN}}` }}"
-
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-          - host: sabnzbd.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: *app
-                  port: http
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
