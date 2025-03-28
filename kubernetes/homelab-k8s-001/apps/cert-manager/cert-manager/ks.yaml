@@ -21,7 +21,7 @@ spec:
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/cert-manager/cert-manager/app"
-  prune: false
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

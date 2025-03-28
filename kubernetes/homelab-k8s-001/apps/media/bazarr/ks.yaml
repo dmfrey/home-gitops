@@ -28,7 +28,7 @@ spec:
       APP: *app
       VOLSYNC_CLAIM: bazarr-config
       VOLSYNC_CAPACITY: 1Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

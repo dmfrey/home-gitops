@@ -15,7 +15,7 @@ spec:
     substituteFrom:
       - kind: Secret
         name: cloudflare-tunnel-id-secret
-  prune: false
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

@@ -25,7 +25,7 @@ spec:
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: mosquitto-data
-  prune: false
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

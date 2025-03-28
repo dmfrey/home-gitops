@@ -28,7 +28,7 @@ spec:
       APP_GID: "568"
       VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CAPACITY: 20Gi
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -14,7 +14,7 @@ spec:
       namespace: kube-system
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/common/mount"
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -35,7 +35,7 @@ spec:
 #       app.kubernetes.io/name: *app
 #   interval: 1h
 #   path: "./kubernetes/homelab-k8s-001/apps/download/common/admin"
-#   prune: false
+#   prune: true
 #   sourceRef:
 #     kind: GitRepository
 #     name: flux-system
