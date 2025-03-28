@@ -82,7 +82,7 @@ spec:
 
     route:
       *app :
-        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+        hostnames: ["rdt.dmfrey.com"]
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
