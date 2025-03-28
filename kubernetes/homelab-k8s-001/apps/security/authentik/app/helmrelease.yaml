@@ -21,7 +21,7 @@ metadata:
 
 spec:
 
-  interval: 15m
+  interval: 1h
 
   chartRef:
     kind: OCIRepository
