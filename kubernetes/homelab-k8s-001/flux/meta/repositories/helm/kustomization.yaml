@@ -19,7 +19,7 @@ resources:
   # - external-secrets.yaml
   # - fluent.yaml
   # - grafana.yaml
-  - hajimari.yaml
+  # - hajimari.yaml
   # - hashicorp.yaml
   # - ingress-nginx.yaml
   - intel.yaml
