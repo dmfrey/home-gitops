@@ -246,7 +246,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: hass-conde
                 port: *codePort
 
     ingress:
