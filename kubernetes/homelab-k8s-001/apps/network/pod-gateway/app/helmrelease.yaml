@@ -1,4 +1,13 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: angelnu
+spec:
+  interval: 15m
+  url: https://angelnu.github.io/helm-charts
+  timeout: 3m
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -7,17 +16,24 @@ metadata:
 
 spec:
 
-  interval: 15m
+  interval: 1h
 
   chart:
     spec:
       chart: pod-gateway
       version: 6.5.1
-      interval: 15m
       sourceRef:
         kind: HelmRepository
         name: angelnu
-        namespace: flux-system
+
+  install:
+    remediation:
+      retries: -1
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
 
   values:
     image:
