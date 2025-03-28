@@ -71,23 +71,31 @@ spec:
           http:
             port: &port 8095
           stream:
-            port: 8097
+            port: &streamPort 8097
 
-    ingress:
-      internal:
-        className: internal
+    route:
+      *app :
+        hostnames: ["music.dmfrey.com"]
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:headphones"
 
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-        - host: music.${SECRET_DOMAIN}
-          paths:
-          - path: /
-            service:
-              identifier: *app
-              port: http
+          # gethomepage.dev/enabled: "true"
+          # gethomepage.dev/group: Downloads
+          # gethomepage.dev/name: Lidarr
+          # gethomepage.dev/icon: lidarr.png
+          # gethomepage.dev/description: Music Downloads
+          # gethomepage.dev/widget.type: lidarr
+          # gethomepage.dev/widget.url: http://lidarr.media.svc.cluster.local:9709
+          # gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_LIDARR_TOKEN}}` }}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:
