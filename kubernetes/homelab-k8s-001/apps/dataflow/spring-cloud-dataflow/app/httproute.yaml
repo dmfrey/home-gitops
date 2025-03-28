@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: spring-cloud-dataflow-server
+spec:
+  hostnames: ["spring-cloud-dataflow-server.dmfrey.com"]
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: spring-cloud-dataflow-server
+          namespace: flux-system
+          port: 8080
