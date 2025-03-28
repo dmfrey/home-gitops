@@ -139,22 +139,29 @@ spec:
           metrics:
             port: *metricsPort
 
-    ingress:
-      internal:
-        enabled: true
-        className: internal
+    route:
+      *app :
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          theme.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:movie-search"
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-          - host: prowlarr.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Download
+          gethomepage.dev/name: Prowlarr
+          gethomepage.dev/icon: prowlarr.png
+          gethomepage.dev/description: Download Indexes
+          # gethomepage.dev/widget.type: jellyfin
+          # gethomepage.dev/widget.url: http://jellyfin.media.svc.cluster.local:8096
+          # gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_TOKEN}}` }}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
