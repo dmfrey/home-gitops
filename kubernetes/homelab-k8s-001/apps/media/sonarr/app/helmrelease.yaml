@@ -51,7 +51,7 @@ spec:
               TZ: ${TIMEZONE}
               SONARR__INSTANCE_NAME: *app
               SONARR__PORT: &port 8989
-              SONARR__APPLICATION_URL: https://sonarr.${SECRET_DOMAIN}
+              SONARR__APPLICATION_URL: https://sonarr.dmfrey.com
               SONARR__LOG_LEVEL: info
               SONARR__API_KEY:
                 valueFrom:
