@@ -153,8 +153,20 @@ spec:
             port: *metricsPort
 
     route:
-      app:
+      *app :
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "solar:subtitles-outline"
+
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/name: Bazarr
+          gethomepage.dev/icon: bazarr.png
+          gethomepage.dev/description: Subtitle Downloads
+          gethomepage.dev/widget.type: bazarr
+          gethomepage.dev/widget.url: http://bazarr.media.svc.cluster.local:6767
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_BAZARR_TOKEN}}` }}"
         parentRefs:
           - name: internal
             namespace: kube-system
