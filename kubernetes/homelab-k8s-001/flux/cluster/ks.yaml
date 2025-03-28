@@ -33,8 +33,6 @@ spec:
     secretRef:
       name: sops-age
   dependsOn:
-    - name: cluster-meta
-      namespace: flux-system
     - name: cluster-settings
       namespace: flux-system
   interval: 1h
