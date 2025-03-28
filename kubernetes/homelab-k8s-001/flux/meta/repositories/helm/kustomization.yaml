@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   # - actions-runner-controller.yaml
   # - angelnu.yaml
-  - authentik.yaml
+  # - authentik.yaml
   - backube.yaml
   - bitnami.yaml
   - bjw-s.yaml
@@ -38,8 +38,8 @@ resources:
   - piraeus.yaml
   - postfinance.yaml
   - prometheus-community.yaml
-  - rook-ceph.yaml
-  - sonatype.yaml
+  # - rook-ceph.yaml
+  # - sonatype.yaml
   - spegel.yaml
   - stakater.yaml
   - stevehipwell.yaml
