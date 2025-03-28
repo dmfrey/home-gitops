@@ -80,14 +80,10 @@ spec:
           http:
             port: *port
 
-    ingress:
-      internal:
-        enabled: true
-        className: internal
+    route:
+      *app :
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          theme.home.arpa/enabled: "true"
-          theme.home.arpa/theme: "nord"
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
 
@@ -100,15 +96,14 @@ spec:
           gethomepage.dev/widget.url: http://rdt-client.download.svc.cluster.local:6500
           # gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}` }}"
           # gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}` }}"
-
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-          - host: rdt.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
