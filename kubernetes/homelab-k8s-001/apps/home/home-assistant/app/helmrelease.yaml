@@ -237,6 +237,18 @@ spec:
           # otbrrest:
           #   port: *otbrRestPort
 
+    route:
+      code:
+        hostnames: ["hass-code.dmfrey.com"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *codePort
+
     ingress:
       external:
         className: external
@@ -254,21 +266,21 @@ spec:
                   identifier: *app
                   port: http
 
-      code:
-        className: internal
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:vs-code"
-          hajimari.io/appName: "Hass Config"
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-          - host: hass-code.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: *app
-                  port: code
+      # code:
+      #   className: internal
+      #   annotations:
+      #     hajimari.io/enable: "true"
+      #     hajimari.io/icon: "mdi:vs-code"
+      #     hajimari.io/appName: "Hass Config"
+      #     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+      #   hosts:
+      #     - host: hass-code.${SECRET_DOMAIN}
+      #       paths:
+      #         - path: /
+      #           pathType: Prefix
+      #           service:
+      #             identifier: *app
+      #             port: code
 
     serviceMonitor:
       *app :
