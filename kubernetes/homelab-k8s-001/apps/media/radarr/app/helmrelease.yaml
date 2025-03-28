@@ -131,13 +131,10 @@ spec:
           metrics:
             port: *metricsPort
 
-    ingress:
-      internal:
-        enabled: true
-        className: internal
+    route:
+      *app :
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          theme.home.arpa/enabled: "true"
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:movie-open-outline"
 
@@ -149,15 +146,14 @@ spec:
           gethomepage.dev/widget.type: radarr
           gethomepage.dev/widget.url: http://radarr.media.svc.cluster.local:7878
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_RADARR_TOKEN}}` }}"
-
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts:
-          - host: radarr.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
