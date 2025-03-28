@@ -58,17 +58,18 @@ spec:
 
     alertmanager:
 
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:alpha-t-box"
-          hajimari.io/appName: "Alert Manager"
-
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        hosts: ["alertmanager.${SECRET_DOMAIN}"]
-        pathType: Prefix
+      route:
+        main:
+          enabled: true
+          hostnames: ["alertmanager.dmfrey.com"]
+          annotations:
+            hajimari.io/enable: "true"
+            hajimari.io/icon: "mdi:alpha-t-box"
+            hajimari.io/appName: "Alert Manager"
+          parentRefs:
+            - name: internal
+              namespace: kube-system
+              sectionName: https
 
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -95,18 +96,18 @@ spec:
       enabled: false
 
     prometheus:
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:prometheus"
-          hajimari.io/appName: "Prometheus"
-
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        pathType: Prefix
-        hosts:
-          - prometheus.${SECRET_DOMAIN}
+      route:
+        main:
+          enabled: true
+          hostnames: ["prometheus.devbu.io"]
+          annotations:
+            hajimari.io/enable: "true"
+            hajimari.io/icon: "simple-icons:prometheus"
+            hajimari.io/appName: "Prometheus"
+          parentRefs:
+            - name: internal
+              namespace: kube-system
+              sectionName: https
 
       prometheusSpec:
 
