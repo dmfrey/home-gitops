@@ -74,7 +74,7 @@ spec:
 
     policy: sync
 
-    sources: ["crd", "ingress", "gateway-httproute"]
+    sources: ["crd", "ingress"] # , "gateway-httproute"
 
     txtOwnerId: main
     txtPrefix: "k8s.001-"
