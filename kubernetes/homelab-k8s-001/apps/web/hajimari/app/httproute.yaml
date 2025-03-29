@@ -19,7 +19,7 @@ spec:
   rules:
   - backendRefs:
     - kind: Service
-      name: http
+      name: hajimari
       port: 3000
       weight: 1
     matches:
