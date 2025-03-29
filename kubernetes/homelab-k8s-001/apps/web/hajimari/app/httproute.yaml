@@ -1,0 +1,28 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  annotations:
+    hajimari.io/enable: "false"
+  labels:
+    app.kubernetes.io/instance: &app hajimari
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/part-of: *app
+  name: *app
+spec:
+  hostnames:
+  - portal.dmfrey.com
+  parentRefs:
+  - kind: Gateway
+    name: external
+    namespace: kube-system
+  rules:
+  - backendRefs:
+    - kind: Service
+      name: http
+      port: 3000
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /

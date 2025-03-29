@@ -69,7 +69,6 @@ spec:
           - cert-manager
           - dataflow
           - datastore
-          - dev
           - download
           - external-secrets
           - flux-system
@@ -79,11 +78,9 @@ spec:
           - media
           - network
           - observability
-          - policy
           - security
           - self-hosted
           - spring-dev
-          - storage
           - trace
           - volsync-system
 

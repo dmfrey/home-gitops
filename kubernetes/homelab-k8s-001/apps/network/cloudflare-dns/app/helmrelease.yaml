@@ -67,6 +67,7 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --ignore-ingress-tls-spec
+      # - --gateway-name=external
       - --ingress-class=external
       - --zone-id-filter=$(CF_ZONE_ID)
 
