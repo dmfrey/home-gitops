@@ -20,32 +20,32 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app system-upgrade-controller-plans
-  namespace: &namespace system-upgrade
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: system-upgrade-controller
-      namespace: system-upgrade
-  interval: 1h
-  path: ./kubernetes/homelab-k8s-001/apps/system-upgrade/system-upgrade-controller/plans
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: versions
-  prune: true
-  retryInterval: 2m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app system-upgrade-controller-plans
+#   namespace: &namespace system-upgrade
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   dependsOn:
+#     - name: system-upgrade-controller
+#       namespace: system-upgrade
+#   interval: 1h
+#   path: ./kubernetes/homelab-k8s-001/apps/system-upgrade/system-upgrade-controller/plans
+#   postBuild:
+#     substituteFrom:
+#       - kind: ConfigMap
+#         name: versions
+#   prune: true
+#   retryInterval: 2m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
