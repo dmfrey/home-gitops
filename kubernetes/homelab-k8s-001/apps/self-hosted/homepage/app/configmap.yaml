@@ -106,6 +106,13 @@ data:
             href: https://zigbee2mqtt.dmfrey.com
             icon: zigbee2mqtt.png
             description: Zigbee2MQTT Controller for Second Floor
+        - ESPHome:
+            href: https://esphome.dmfrey.com
+            icon: esphome.png
+            description: ESPHome Controller
+            widget:
+              type: esphome
+              url: http://esphome.home.svc.cluster.local:6052
     - Infrastructure:
         - Gatus:
             description: Application Status
