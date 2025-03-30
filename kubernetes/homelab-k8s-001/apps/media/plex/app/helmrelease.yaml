@@ -30,7 +30,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     controllers:
@@ -114,42 +114,40 @@ spec:
       *app :
         controller: *app
         type: LoadBalancer
-        # externalTrafficPolicy: Cluster
         annotations:
           # external-dns.alpha.kubernetes.io/hostname: &host plex.${SECRET_DOMAIN}
-          lbipam.cilium.io/ips: ${SVC_PLEX_ADDR}
+          lbipam.cilium.io/ips: 192.168.30.227, ::ffff:192.168.30.227
         ports:
           http:
             port: &port 32400
             primary: true
-          dnla-tcp:
-            port: 32469
-            protocol: TCP
-          dnla-udp:
-            port: 1900
-            protocol: UDP
-          bonjour-udp:
-            port: 5353
-            protocol: UDP
-          gdm-1:
-            port: 32410
-            protocol: UDP
-          gdm-2:
-            port: 32412
-            protocol: UDP
-          gdm-3:
-            port: 32413
-            protocol: UDP
-          gdm-4:
-            port: 32414
-            protocol: UDP
+          # dnla-tcp:
+          #   port: 32469
+          #   protocol: TCP
+          # dnla-udp:
+          #   port: 1900
+          #   protocol: UDP
+          # bonjour-udp:
+          #   port: 5353
+          #   protocol: UDP
+          # gdm-1:
+          #   port: 32410
+          #   protocol: UDP
+          # gdm-2:
+          #   port: 32412
+          #   protocol: UDP
+          # gdm-3:
+          #   port: 32413
+          #   protocol: UDP
+          # gdm-4:
+          #   port: 32414
+          #   protocol: UDP
 
-    ingress:
-      external:
-        className: external
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         annotations:
-          theme.home.arpa/enabled: "true"
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:plex"
           hajimari.io/url: "https://plex.${SECRET_DOMAIN}/web"
@@ -162,16 +160,54 @@ spec:
           gethomepage.dev/widget.type: plex
           gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove: ["Range"]
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /library/streams
+          - backendRefs:
+              - name: *app
+                port: *port
 
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-        hosts:
-        - host: plex.${SECRET_DOMAIN}
-          paths:
-          - path: /
-            service:
-              identifier: *app
-              port: http
+    # ingress:
+    #   external:
+    #     className: external
+    #     annotations:
+    #       theme.home.arpa/enabled: "true"
+
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "mdi:plex"
+    #       hajimari.io/url: "https://plex.${SECRET_DOMAIN}/web"
+
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Video
+    #       gethomepage.dev/name: Plex
+    #       gethomepage.dev/icon: plex.png
+    #       gethomepage.dev/description: Media Player
+    #       gethomepage.dev/widget.type: plex
+    #       gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
+    #       gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
+
+    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #       nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    #     hosts:
+    #     - host: plex.${SECRET_DOMAIN}
+    #       paths:
+    #       - path: /
+    #         service:
+    #           identifier: *app
+    #           port: http
 
     persistence:
       config:
