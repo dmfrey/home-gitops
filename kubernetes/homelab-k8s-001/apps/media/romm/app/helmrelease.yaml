@@ -139,10 +139,9 @@ spec:
           http:
             port: *port
 
-    ingress:
-      external:
-        enabled: true
-        className: external
+    route:
+      *app :
+        hostnames: ["romm.dmfrey.com"]
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:television-classic"
@@ -154,17 +153,41 @@ spec:
           gethomepage.dev/description: Retro Games
           gethomepage.dev/widget.type: romm
           gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/enable-cors: "true"
-          nginx.org/websocket-services: romm
-        hosts:
-          - host: romm.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    # ingress:
+    #   external:
+    #     enabled: true
+    #     className: external
+    #     annotations:
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "mdi:television-classic"
+
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Games
+    #       gethomepage.dev/name: RomM
+    #       gethomepage.dev/icon: romm.png
+    #       gethomepage.dev/description: Retro Games
+    #       gethomepage.dev/widget.type: romm
+    #       gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
+
+    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #       nginx.ingress.kubernetes.io/enable-cors: "true"
+    #       nginx.org/websocket-services: romm
+    #     hosts:
+    #       - host: romm.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: *app
+    #               port: http
 
     persistence:
       romm-data:
