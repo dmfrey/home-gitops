@@ -72,6 +72,19 @@ data:
               type: lidarr
               url: http://lidarr.media.svc.cluster.local:8686
               key: {{HOMEPAGE_VAR_LIDARR_TOKEN}}
+        - SABnzbd:
+            description: NZB Download Client
+            icon: sabnzbd.png
+            widget:
+              type: sabnzbd
+              url: http://sabnzbd.download.svc.cluster.local:8080
+              key: {{HOMEPAGE_VAR_SABNZBD_TOKEN}}
+        - qBittorrent:
+            description: Torrent Client
+            icon: qbittorrent.png
+            widget:
+              type: qbittorrent
+              url: http://rdt-client.download.svc.cluster.local:6500
     - Infrastructure:
         - Gatus:
             description: Application Status
