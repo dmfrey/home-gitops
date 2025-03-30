@@ -43,6 +43,28 @@ data:
     mode: cluster
     gateway: true
   services.yaml: |
+    - Downloads:
+        - Sonarr:
+            description: TV Downloads
+            icon: sonarr.png
+            widget:
+              type: sonarr
+              url: http://sonarr.media.svc.cluster.local:8989
+              key: {{HOMEPAGE_VAR_SONARR_TOKEN}}
+        - Radarr:
+            description: Movie Downloads
+            icon: radarr.png
+            widget:
+              type: radarr
+              url: http://radarr.media.svc.cluster.local:7878
+              key: {{HOMEPAGE_VAR_RADARR_TOKEN}}
+        - Lidarr:
+            description: Music Downloads
+            icon: lidarr.png
+            widget:
+              type: lidarr
+              url: http://lidarr.media.svc.cluster.local:9709
+              key: {{HOMEPAGE_VAR_LIDARR_TOKEN}}
     - Infrastructure:
         - Gatus:
             description: Application Status
