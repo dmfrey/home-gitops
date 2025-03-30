@@ -48,7 +48,7 @@ data:
             description: Download Indexes
             icon: prowlarr.png
             widget:
-              type: prowarr
+              type: prowlarr
               url: http://prowlarr.download.svc.cluster.local:9696
               key: {{HOMEPAGE_VAR_PROWLARR_TOKEN}}
         - Sonarr:
