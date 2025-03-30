@@ -85,6 +85,15 @@ data:
             widget:
               type: qbittorrent
               url: http://rdt-client.download.svc.cluster.local:6500
+    - Home:
+        - Home-Assistant:
+            href: https://home.${SECRET_DOMAIN}
+            icon: home-assistant.png
+            description: Home Automation Software
+            widget:
+              type: homeassistant
+              url: https://home.${SECRET_DOMAIN}
+              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
     - Infrastructure:
         - Gatus:
             description: Application Status
@@ -128,6 +137,15 @@ data:
             widget:
               type: prometheus
               url: http://prometheus-operated.observability.svc.cluster.local:9090
+    - Video:
+        - Plex:
+            href: https://plex.tv
+            icon: plex.png
+            description: Media Player
+            widget:
+              type: plex
+              url: https://plex.dmfrey.com
+              key: {{HOMEPAGE_VAR_PLEX_TOKEN}}
     - Calendar:
         - Agenda:
             widget:
@@ -144,15 +162,6 @@ data:
                 - type: lidarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr, lidarr>
                   service_group: Downloads # group name where widget exists
                   service_name: Lidarr # service name for that widget
-    - Home:
-        - Home-Assistant:
-            href: https://home.${SECRET_DOMAIN}
-            icon: home-assistant.png
-            description: Home Automation Software
-            widget:
-              type: homeassistant
-              url: https://home.${SECRET_DOMAIN}
-              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
   settings.yaml: |
     title: Dashboard
     favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
