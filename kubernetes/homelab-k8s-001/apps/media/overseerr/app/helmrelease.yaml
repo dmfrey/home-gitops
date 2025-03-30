@@ -30,7 +30,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     controllers:
@@ -166,12 +166,10 @@ spec:
           metrics:
             port: *metricsPort
 
-    ingress:
-      external:
-        className: external
+    route:
+      *app :
+        hostnames: ["request.dmfrey.com"]
         annotations:
-          theme.home.arpa/enabled: "true"
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:eye-circle-outline"
 
@@ -183,15 +181,41 @@ spec:
           gethomepage.dev/widget.type: overseerr
           gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local:5055
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hosts:
-          - host: request.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    # ingress:
+    #   external:
+    #     className: external
+    #     annotations:
+    #       theme.home.arpa/enabled: "true"
+
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "mdi:eye-circle-outline"
+
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Video
+    #       gethomepage.dev/name: Overseerr
+    #       gethomepage.dev/icon: overseerr.png
+    #       gethomepage.dev/description: Media Request Management
+    #       gethomepage.dev/widget.type: overseerr
+    #       gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local:5055
+    #       gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
+
+    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #     hosts:
+    #       - host: request.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: *app
+    #               port: http
 
     persistence:
       config:
