@@ -6,10 +6,9 @@ namespace: network
 components:
   - ../../components/common
 resources:
-  - ./cloudflare-tunnel/ks.yaml
   - ./cloudflare-dns/ks.yaml
-  - ./unifi-dns/ks.yaml
-  - ./ingress-nginx/ks.yaml
+  - ./cloudflare-tunnel/ks.yaml
+  - ./external-services/ks.yaml
   - ./multus/ks.yaml
   - ./pod-gateway/ks.yaml
-  - ./external-services
+  - ./unifi-dns/ks.yaml
