@@ -5,20 +5,21 @@ metadata:
   name: unifi
 subsets:
   - addresses:
-    - ip: 192.168.30.1
+      - ip: 192.168.30.1
     ports:
-    - port: 443
+      - port: 443
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: unifi
 spec:
- ports:
-   - name: http
-     port: 443
-     protocol: TCP
-     targetPort: 443
+  ports:
+    - name: http
+      port: 443
+      targetPort: 443
+      protocol: TCP
+      appProtocol: https
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
