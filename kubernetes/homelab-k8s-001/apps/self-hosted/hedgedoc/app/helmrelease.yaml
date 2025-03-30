@@ -115,26 +115,42 @@ spec:
           backend:
             port: 3000
           http:
-            port: 3001
+            port: &port 3001
 
-    ingress:
-      external:
-        className: external
+    route:
+      *app :
+        hostnames: ["openweb.dmfrey.com"]
         annotations:
-          nginx.org/websocket-services: *app
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:hedgedoc"
           hajimari.io/appName: "Hedgedoc"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-        hosts:
-          - host: &host "kb.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    # ingress:
+    #   external:
+    #     className: external
+    #     annotations:
+    #       nginx.org/websocket-services: *app
+
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "simple-icons:hedgedoc"
+    #       hajimari.io/appName: "Hedgedoc"
+
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    #     hosts:
+    #       - host: &host "kb.${SECRET_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: *app
+    #               port: http
 
     # persistence:
     #   config:
