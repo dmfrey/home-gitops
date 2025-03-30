@@ -119,7 +119,7 @@ spec:
 
     route:
       *app :
-        hostnames: ["openweb.dmfrey.com"]
+        hostnames: ["kb.dmfrey.com"]
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:hedgedoc"
