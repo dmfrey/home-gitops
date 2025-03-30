@@ -72,13 +72,10 @@ spec:
           http:
             port: &port 5690
 
-    ingress:
-      external:
-        enabled: true
-        className: external
+    route:
+      *app :
+        hostnames: ["romm.dmfrey.com"]
         annotations:
-          theme.home.arpa/enabled: "true"
-
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:invite"
 
@@ -90,15 +87,42 @@ spec:
           # gethomepage.dev/widget.type: wizarr
           # gethomepage.dev/widget.url: http://wizarr.media.svc.cluster.local:5690
           # gethomepage.dev/widget.key: ${WIZARR_TOKEN}
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hosts:
-          - host: join.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    # ingress:
+    #   external:
+    #     enabled: true
+    #     className: external
+    #     annotations:
+    #       theme.home.arpa/enabled: "true"
+
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "mdi:invite"
+
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Video
+    #       gethomepage.dev/name: Wizarr
+    #       gethomepage.dev/icon: wizarr.png
+    #       gethomepage.dev/description: Plex Invite Management
+    #       # gethomepage.dev/widget.type: wizarr
+    #       # gethomepage.dev/widget.url: http://wizarr.media.svc.cluster.local:5690
+    #       # gethomepage.dev/widget.key: ${WIZARR_TOKEN}
+
+    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #     hosts:
+    #       - host: join.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: *app
+    #               port: http
 
     persistence:
       config:
