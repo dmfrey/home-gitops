@@ -138,6 +138,14 @@ data:
               type: prometheus
               url: http://prometheus-operated.observability.svc.cluster.local:9090
     - Video:
+        - Jellyfin:
+            href: https://jellyfin.dmfrey.com
+            icon: jellyfin.png
+            description: Media Player
+            widget:
+              type: jellyfin
+              url: http://jellyfin.media.svc.cluster.local:8096
+              key: {{HOMEPAGE_VAR_JELLYFIN_TOKEN}}
         - Overseerr:
             href: https://request.dmfrey.com
             icon: overseerr.png
