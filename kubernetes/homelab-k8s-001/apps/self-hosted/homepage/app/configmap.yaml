@@ -139,7 +139,7 @@ data:
               url: http://prometheus-operated.observability.svc.cluster.local:9090
     - Video:
         - Overseerr:
-            href: https://requests.dmfrey.com
+            href: https://request.dmfrey.com
             icon: overseerr.png
             description: Media Request Management
             widget:
@@ -147,12 +147,12 @@ data:
               url: http://overseerr.media.svc.cluster.local:5055
               key: {{HOMEPAGE_VAR_OVERSEERR_TOKEN}}
         - Plex:
-            href: https://plex.tv
+            href: https://plex.dmfrey.com
             icon: plex.png
             description: Media Player
             widget:
               type: plex
-              url: https://plex.dmfrey.com
+              url: https://plex.media.svc.cluster.local:32400
               key: {{HOMEPAGE_VAR_PLEX_TOKEN}}
     - Calendar:
         - Agenda:
