@@ -335,21 +335,21 @@ spec:
           revision: 3
           datasource: prometheus
 
-        nginx-ingress-controller:
-          # renovate: depName="NGINX Ingress Controller"
-          gnetId: 21336
-          revision: 1
-          datasource:
-            - name: DS_PROMETHEUS
-              value: prometheus
+        # nginx-ingress-controller:
+        #   # renovate: depName="NGINX Ingress Controller"
+        #   gnetId: 21336
+        #   revision: 1
+        #   datasource:
+        #     - name: DS_PROMETHEUS
+        #       value: prometheus
 
-        nginx-request-handling-performance:
-          # renovate: depName="Request Handling Performance"
-          gnetId: 12680
-          revision: 1
-          datasource:
-            - name: DS_PROMETHEUS
-              value: prometheus
+        # nginx-request-handling-performance:
+        #   # renovate: depName="Request Handling Performance"
+        #   gnetId: 12680
+        #   revision: 1
+        #   datasource:
+        #     - name: DS_PROMETHEUS
+        #       value: prometheus
 
         # Ref: https://grafana.com/grafana/dashboards/11315
         clients:
@@ -589,26 +589,49 @@ spec:
       serviceMonitor:
         enabled: true
 
-    ingress:
-      enabled: true
-      ingressClassName: external
-      annotations:
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "simple-icons:grafana"
+    route:
+      main:
+        enabled: true
+        hostnames: ["{{ .Release.Name }}.devbu.io"]
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:grafana"
 
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/icon: grafana.png
-        gethomepage.dev/name: Grafana
-        gethomepage.dev/group: Observability
-        gethomepage.dev/description: Monitoring Dashboards
-        gethomepage.dev/widget.type: grafana
-        gethomepage.dev/widget.url: http://grafana.observability.svc.cluster.local:3000
-        gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
-        gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: grafana.png
+          gethomepage.dev/name: Grafana
+          gethomepage.dev/group: Observability
+          gethomepage.dev/description: Monitoring Dashboards
+          gethomepage.dev/widget.type: grafana
+          gethomepage.dev/widget.url: http://grafana.observability.svc.cluster.local:3000
+          gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
+          gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
 
-        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-      hosts:
-        - grafana.${SECRET_DOMAIN}
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+
+    # ingress:
+    #   enabled: true
+    #   ingressClassName: external
+    #   annotations:
+    #     hajimari.io/enable: "true"
+    #     hajimari.io/icon: "simple-icons:grafana"
+
+    #     gethomepage.dev/enabled: "true"
+    #     gethomepage.dev/icon: grafana.png
+    #     gethomepage.dev/name: Grafana
+    #     gethomepage.dev/group: Observability
+    #     gethomepage.dev/description: Monitoring Dashboards
+    #     gethomepage.dev/widget.type: grafana
+    #     gethomepage.dev/widget.url: http://grafana.observability.svc.cluster.local:3000
+    #     gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
+    #     gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
+
+    #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #   hosts:
+    #     - grafana.${SECRET_DOMAIN}
 
     persistence:
       enabled: true
