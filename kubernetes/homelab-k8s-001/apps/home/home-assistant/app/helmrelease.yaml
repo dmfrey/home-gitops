@@ -238,20 +238,20 @@ spec:
           #   port: *otbrRestPort
 
     route:
-      # *app :
-      #   hostnames: ["home.dmfrey.com"]
-      #   annotations:
-      #     hajimari.io/enable: "true"
-      #     hajimari.io/icon: "simple-icons:homeassistant"
-      #     hajimari.io/appName: "Home Assistant"
-      #   parentRefs:
-      #     - name: external
-      #       namespace: kube-system
-      #       sectionName: https
-      #   rules:
-      #     - backendRefs:
-      #         - name: *app
-      #           port: *port
+      *app :
+        hostnames: ["home.dmfrey.com"]
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:homeassistant"
+          hajimari.io/appName: "Home Assistant"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
       code:
         hostnames: ["hass-code.dmfrey.com"]
         annotations:
@@ -267,22 +267,22 @@ spec:
               - name: *app
                 port: *codePort
 
-    ingress:
-      external:
-        className: external
-        annotations:
-          nginx.org/websocket-services: *app
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:homeassistant"
-          hajimari.io/appName: "Home Assistant"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hosts:
-          - host: home.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: *app
-                  port: http
+    # ingress:
+    #   external:
+    #     className: external
+    #     annotations:
+    #       nginx.org/websocket-services: *app
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "simple-icons:homeassistant"
+    #       hajimari.io/appName: "Home Assistant"
+    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #     hosts:
+    #       - host: home.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: *app
+    #               port: http
 
       # code:
       #   className: internal
