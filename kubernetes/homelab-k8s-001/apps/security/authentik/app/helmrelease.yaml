@@ -119,34 +119,34 @@ spec:
       deploymentAnnotations:
         secret.reloader.stakater.com/reload: pg-authentik-app
 
-      ingress:
-        enabled: true
-        ingressClassName: external
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "material-symbols:security-rounded"
+      # ingress:
+      #   enabled: true
+      #   ingressClassName: external
+      #   annotations:
+      #     hajimari.io/enable: "true"
+      #     hajimari.io/icon: "material-symbols:security-rounded"
 
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: authentik.png
-          gethomepage.dev/name: Authentik
-          gethomepage.dev/group: Infrastructure
-          gethomepage.dev/app: authentik
-          gethomepage.dev/description: OIDC User Management
-          gethomepage.dev/widget.type: authentik
-          gethomepage.dev/widget.url: http://authentik-server.security.svc.cluster.local
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
+      #     gethomepage.dev/enabled: "true"
+      #     gethomepage.dev/icon: authentik.png
+      #     gethomepage.dev/name: Authentik
+      #     gethomepage.dev/group: Infrastructure
+      #     gethomepage.dev/app: authentik
+      #     gethomepage.dev/description: OIDC User Management
+      #     gethomepage.dev/widget.type: authentik
+      #     gethomepage.dev/widget.url: http://authentik-server.security.svc.cluster.local
+      #     gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
 
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-          nginx.org/websocket-services: authentik
-          nginx.ingress.kubernetes.io/enable-global-auth: "false"
+      #     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      #     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+      #     nginx.org/websocket-services: authentik
+      #     nginx.ingress.kubernetes.io/enable-global-auth: "false"
 
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hosts:
-          - auth.${SECRET_DOMAIN}
-        pathType: "Prefix"
-        paths:
-          - "/"
+      #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+      #   hosts:
+      #     - auth.${SECRET_DOMAIN}
+      #   pathType: "Prefix"
+      #   paths:
+      #     - "/"
 
       metrics:
         serviceMonitor:
