@@ -45,7 +45,7 @@ releases:
     namespace: kube-system
     atomic: true
     chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: 0.1.0
+    version: 0.1.1
     values: ['{{ requiredEnv "ROOT_DIR" }}/kubernetes/homelab-k8s-001/apps/kube-system/spegel/app/helm/values.yaml']
     needs: ['kube-system/coredns']
 
@@ -61,7 +61,7 @@ releases:
     namespace: external-secrets
     atomic: true
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 0.15.0
+    version: 0.15.1
     values: ['{{ requiredEnv "ROOT_DIR" }}/kubernetes/homelab-k8s-001/apps/external-secrets/external-secrets/app/helm/values.yaml']
     hooks:
       - # Wait for external-secrets CRDs to be available
