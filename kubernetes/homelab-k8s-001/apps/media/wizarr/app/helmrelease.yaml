@@ -74,7 +74,7 @@ spec:
 
     route:
       *app :
-        hostnames: ["romm.dmfrey.com"]
+        hostnames: ["join.dmfrey.com"]
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:invite"
