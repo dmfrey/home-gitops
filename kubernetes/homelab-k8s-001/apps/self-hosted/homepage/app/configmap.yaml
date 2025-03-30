@@ -97,7 +97,7 @@ data:
             description: Unifi Dashboard
             widget:
               type: unifi
-              url: https://unifi.${SECRET_DOMAIN}
+              url: https://192.168.86.1
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - Observability:
