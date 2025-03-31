@@ -5,5 +5,5 @@ kind: Kustomization
 namespace: web
 components:
   - ../../components/common
-resources:
-  - ./hajimari/ks.yaml
+resources: []
+  # - ./hajimari/ks.yaml
