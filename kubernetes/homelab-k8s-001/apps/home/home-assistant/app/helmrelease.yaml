@@ -179,8 +179,8 @@ spec:
               repository: ghcr.io/home-assistant-libs/python-matter-server
               tag: "7.0.1"
 
-            args:
-              - --primary-interface=net1
+            # args:
+            #   - --primary-interface=net1
 
             env:
               MATTER_SERVER__INSTANCE_NAME: matter-server
