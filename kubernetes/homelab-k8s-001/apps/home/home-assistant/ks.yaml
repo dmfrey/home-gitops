@@ -19,7 +19,8 @@ spec:
       namespace: external-secrets
     - name: mosquitto
       namespace: *namespace
-    # - name: multus-config
+    - name: multus-network
+      namespace: network
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
