@@ -14,12 +14,10 @@ spec:
   maxHistory: 3
 
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
-    crds: CreateReplace
     cleanupOnFail: true
     remediation:
       retries: 3
@@ -38,15 +36,15 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.9/24"]
-              }]
-          # hostNetwork: true
+        # pod:
+        #   annotations:
+        #     k8s.v1.cni.cncf.io/networks: |
+        #       [{
+        #         "name":"iot-vlan",
+        #         "namespace": "network",
+        #         "ips": ["192.168.50.9/24"]
+        #       }]
+        #   # hostNetwork: true
 
         containers:
           *app :
@@ -56,6 +54,7 @@ spec:
               pullPolicy: IfNotPresent
 
             args:
+              - --storage-path=/data
               - --primary-interface=net1
 
             env:
@@ -86,10 +85,10 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: *host
-          lbipam.cilium.io/ips: ${SVC_MATTER_ADDR}
+        # type: LoadBalancer
+        # annotations:
+        #   external-dns.alpha.kubernetes.io/hostname: *host
+        #   lbipam.cilium.io/ips: ${SVC_MATTER_ADDR}
         ports:
           ws:
             protocol: TCP
@@ -97,22 +96,22 @@ spec:
             primary: true
         externalTrafficPolicy: Cluster
 
-    route:
-      *app :
-        hostnames:
-          - *host
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:matter"
-          hajimari.io/appName: "Home Assistant Hatter Server"
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *wsPort
+    # route:
+    #   *app :
+    #     hostnames:
+    #       - *host
+    #     annotations:
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "simple-icons:matter"
+    #       hajimari.io/appName: "Home Assistant Hatter Server"
+    #     parentRefs:
+    #       - name: internal
+    #         namespace: kube-system
+    #         sectionName: https
+    #     rules:
+    #       - backendRefs:
+    #           - name: *app
+    #             port: *wsPort
 
     persistence:
       data:
