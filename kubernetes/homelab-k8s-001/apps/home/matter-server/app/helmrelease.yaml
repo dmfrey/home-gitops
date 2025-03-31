@@ -94,7 +94,6 @@ spec:
             protocol: TCP
             port: *wsPort
             primary: true
-        externalTrafficPolicy: Cluster
 
     # route:
     #   *app :
