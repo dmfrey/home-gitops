@@ -27,3 +27,32 @@ spec:
     retain:
       hourly: 24
       daily: 7
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: "home-assistant-matter-server"
+spec:
+  sourcePVC: "home-assistant-matter-server-data"
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    copyMethod: "Snapshot"
+    pruneIntervalDays: 14
+    repository: "home-assistant-matter-server-volsync-secret"
+    volumeSnapshotClassName: "csi-ceph-blockpool"
+    cacheCapacity: "2Gi"
+    cacheStorageClassName: "ceph-block"
+    cacheAccessModes: ["ReadWriteOnce"]
+    storageClassName: "ceph-block"
+    accessModes: ["ReadWriteOnce"]
+    moverPodLabels:
+      vpn.home.arpa/enabled: "false"
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    retain:
+      hourly: 24
+      daily: 7
