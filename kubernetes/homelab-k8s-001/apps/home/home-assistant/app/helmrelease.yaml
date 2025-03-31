@@ -180,13 +180,13 @@ spec:
               tag: "7.0.1"
 
             args:
+              - --storage-path=/data
               - --primary-interface=net1
 
             env:
               MATTER_SERVER__INSTANCE_NAME: matter-server
               MATTER_SERVER__PORT: &matterPort 5580
               MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
-              STORAGE_PATH: /data
               MATTER_SERVER__LOG_LEVEL: debug
 
             resources:
