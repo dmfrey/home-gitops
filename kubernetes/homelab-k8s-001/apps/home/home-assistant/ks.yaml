@@ -19,7 +19,7 @@ spec:
       namespace: external-secrets
     - name: mosquitto
       namespace: *namespace
-    - name: multus-network
+    - name: multus-networks
       namespace: network
     - name: rook-ceph-cluster
       namespace: rook-ceph
