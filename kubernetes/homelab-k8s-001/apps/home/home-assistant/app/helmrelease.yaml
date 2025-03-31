@@ -195,6 +195,11 @@ spec:
               limits:
                 memory: 256Mi
 
+            securityContext:
+              readOnlyRootFilesystem: false
+              allowPrivilegeEscalation: true
+              capabilities: { drop: ["ALL"] }
+
           codeserver:
             dependsOn: *app
 
