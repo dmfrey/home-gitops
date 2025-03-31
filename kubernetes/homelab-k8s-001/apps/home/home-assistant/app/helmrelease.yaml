@@ -174,6 +174,21 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
+          matter-server:
+            image:
+              repository: ghcr.io/home-assistant-libs/python-matter-server
+              tag: "7.0.1"
+            env:
+              MATTER_SERVER__INSTANCE_NAME: matter-server
+              MATTER_SERVER__PORT: &matterPort 5580
+              MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
+              MATTER_SERVER__LOG_LEVEL: info
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+
           codeserver:
             dependsOn: *app
 
@@ -230,6 +245,8 @@ spec:
         ports:
           http:
             port: *port
+          matter:
+            port: *matterPort
           code:
             port: *codePort
           # otbrweb:
@@ -267,19 +284,6 @@ spec:
               - name: *app
                 port: *codePort
 
-    serviceMonitor:
-      *app :
-        serviceName: *app
-        endpoints:
-          - port: http
-            scheme: http
-            path: /api/prometheus
-            interval: 30s
-            scrapeTimeout: 10s
-            bearerTokenSecret:
-              name: home-assistant-secret
-              key: PROMETHEUS_TOKEN
-
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
@@ -290,6 +294,13 @@ spec:
         existingClaim: home-assistant-llmvision
         globalMounts:
           - path: /llmvision
+
+      matter-server-data:
+        existingClaim: home-assistant-matter-server-data
+        advancedMounts:
+          *app :
+            matter-server:
+              - path: /data
 
       deploy-key:
         type: secret
@@ -365,15 +376,21 @@ spec:
             #   - path: /tmp
             *app :
               - path: /tmp
+            matter-server:
+              - path: /tmp
             codeserver:
               - path: /tmp
 
-      # usb:
-      #   type: hostPath
-      #   hostPath: /dev/ttyUSB0
-      #   advancedMounts:
-      #     *app :
-      #       *app :
-      #         - path: /dev/ttyUSB0
-
+    serviceMonitor:
+      *app :
+        serviceName: *app
+        endpoints:
+          - port: http
+            scheme: http
+            path: /api/prometheus
+            interval: 30s
+            scrapeTimeout: 10s
+            bearerTokenSecret:
+              name: home-assistant-secret
+              key: PROMETHEUS_TOKEN
 
