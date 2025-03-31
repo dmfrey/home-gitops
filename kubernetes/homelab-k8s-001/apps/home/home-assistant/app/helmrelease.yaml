@@ -298,13 +298,19 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        globalMounts:
-          - path: /config
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config
+            codeserver:
+              - path: /config
 
       llmvision:
         existingClaim: home-assistant-llmvision
-        globalMounts:
-          - path: /llmvision
+        advancedMounts:
+          *app :
+            *app :
+              - path: /llmvision
 
       matter-server-data:
         existingClaim: home-assistant-matter-server-data
