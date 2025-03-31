@@ -300,6 +300,8 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           *app :
+            git-clone:
+              - path: /config
             *app :
               - path: /config
             codeserver:
