@@ -59,10 +59,14 @@ spec:
               DEBUG: "true"
               SMTP_SERVER: smtp.sendgrid.net
               # OVERWRITE_FROM: "${SECRET_SENDGRID_USER_SMTP_RELAY}"
-              SMTP_USERNAME: apikey
-              SMTP_PASSWORD: "${SECRET_SENDGRID_APIKEY_SMTP_RELAY}"
+              # SMTP_USERNAME: set in externalsecret
+              # SMTP_PASSWORD: set in externalsecret
               SMTP_DOMAIN: "dmfrey.com"
               SMTP_PORT: "465"
+
+            envFrom:
+              - secretRef:
+                  name: smtp-relay-secret
 
             ports:
               - name: http
