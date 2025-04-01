@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./hass-config
   - ./home-gitops
-  - ./externalsecret.yaml
   - ./ocirepository.yaml
