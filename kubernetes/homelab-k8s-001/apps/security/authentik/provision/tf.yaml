@@ -140,59 +140,59 @@ spec:
         #   url: https://rook.dmfrey.com
         #   group: Storage
 
-    - name: oauth_applications
-      value:
-        grafana:
-          client_id: ${GRAFANA_CLIENT_ID}
-          client_secret: ${GRAFANA_CLIENT_SECRET}
-          group: "Monitoring"
-          icon_url: "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
-          redirect_uri: "https://grafana.dmfrey.com/login/generic_oauth"
-          launch_url: "https://grafana.dmfrey.com/login/generic_oauth"
-        spring-dev:
-          client_id: ${SPRING_DEV_CLIENT_ID}
-          client_secret: ${SPRING_DEV_CLIENT_SECRET}
-          group: "Developers"
-          icon_url: "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
-          redirect_uri: "https://spring-dev-gateway.dmfrey.com/login/oauth2/code/sso"
-          launch_url: "https://spring-dev-gateway.dmfrey.com/"
+    # - name: oauth_applications
+    #   value:
+    #     grafana:
+    #       client_id: ${GRAFANA_CLIENT_ID}
+    #       client_secret: ${GRAFANA_CLIENT_SECRET}
+    #       group: "Monitoring"
+    #       icon_url: "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
+    #       redirect_uri: "https://grafana.dmfrey.com/login/generic_oauth"
+    #       launch_url: "https://grafana.dmfrey.com/login/generic_oauth"
+    #     spring-dev:
+    #       client_id: ${SPRING_DEV_CLIENT_ID}
+    #       client_secret: ${SPRING_DEV_CLIENT_SECRET}
+    #       group: "Developers"
+    #       icon_url: "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
+    #       redirect_uri: "https://spring-dev-gateway.dmfrey.com/login/oauth2/code/sso"
+    #       launch_url: "https://spring-dev-gateway.dmfrey.com/"
 
-    - name: users
-      value:
-        dmfrey:
-          name: "${USERS_DMFREY_NAME}"
-          email: "${USERS_DMFREY_EMAIL}"
-          password: "${USERS_DMFREY_PASSWORD}"
-          groups:
-            - "authentik Admins"
-            - "Developers"
-            - "Infrastructure"
-            - "Monitoring"
-            - "Media"
-            - "Downloads"
-            - "Home"
-        sdfrey:
-          name: "${USERS_SDFREY_NAME}"
-          email: "${USERS_SDFREY_EMAIL}"
-          password: "${USERS_SDFREY_PASSWORD}"
-          groups:
-            - "Downloads"
-            - "Media"
-            - "Home"
-        cgfrey:
-          name: "${USERS_CGFREY_NAME}"
-          email: "${USERS_CGFREY_EMAIL}"
-          password: "${USERS_CGFREY_PASSWORD}"
-          groups:
-            - "Downloads"
-            - "Media"
-            - "Home"
-        mkfrey:
-          name: "${USERS_MKFREY_NAME}"
-          email: "${USERS_MKFREY_EMAIL}"
-          password: "${USERS_MKFREY_PASSWORD}"
-          groups:
-            - "Downloads"
-            - "Media"
-            - "Home"
+    # - name: users
+    #   value:
+    #     dmfrey:
+    #       name: "${USERS_DMFREY_NAME}"
+    #       email: "${USERS_DMFREY_EMAIL}"
+    #       password: "${USERS_DMFREY_PASSWORD}"
+    #       groups:
+    #         - "authentik Admins"
+    #         - "Developers"
+    #         - "Infrastructure"
+    #         - "Monitoring"
+    #         - "Media"
+    #         - "Downloads"
+    #         - "Home"
+    #     sdfrey:
+    #       name: "${USERS_SDFREY_NAME}"
+    #       email: "${USERS_SDFREY_EMAIL}"
+    #       password: "${USERS_SDFREY_PASSWORD}"
+    #       groups:
+    #         - "Downloads"
+    #         - "Media"
+    #         - "Home"
+    #     cgfrey:
+    #       name: "${USERS_CGFREY_NAME}"
+    #       email: "${USERS_CGFREY_EMAIL}"
+    #       password: "${USERS_CGFREY_PASSWORD}"
+    #       groups:
+    #         - "Downloads"
+    #         - "Media"
+    #         - "Home"
+    #     mkfrey:
+    #       name: "${USERS_MKFREY_NAME}"
+    #       email: "${USERS_MKFREY_EMAIL}"
+    #       password: "${USERS_MKFREY_PASSWORD}"
+    #       groups:
+    #         - "Downloads"
+    #         - "Media"
+    #         - "Home"
 
