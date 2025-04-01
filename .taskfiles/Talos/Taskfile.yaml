@@ -31,6 +31,22 @@ tasks:
       - test -f {{.TALOS_DIR}}/extensions/nut-client.yaml
       - which talosctl
 
+  promote-node:
+    desc: Apply Talos config to promote a worker node [IP=required] [MODE=auto]
+    cmd: |
+      bash {{.SCRIPTS_DIR}}/render-machine-config.sh {{.TALOS_DIR}}/promote/controlplane.yaml.j2 {{.TALOS_DIR}}/nodes/{{.IP}}.yaml.j2 \
+        | talosctl --nodes {{.IP}} apply-config --mode {{.MODE}} --file /dev/stdin
+    vars:
+      MODE: '{{.MODE | default "auto"}}'
+      MACHINE_TYPE:
+        sh: talosctl --nodes {{.IP}} get machinetypes --output=jsonpath='{.spec}'
+    requires:
+      vars: [IP]
+    preconditions:
+      - talosctl --nodes {{.IP}} get machineconfig
+      - test -f {{.SCRIPTS_DIR}}/render-machine-config.sh
+      - which talosctl
+
   upgrade-node:
     desc: Upgrade Talos on a single node [IP=required] [MODE=powercycle]
     cmd: talosctl --nodes {{.IP}} upgrade --image="{{.FACTORY_IMAGE}}" --reboot-mode={{.MODE}} --timeout=10m
