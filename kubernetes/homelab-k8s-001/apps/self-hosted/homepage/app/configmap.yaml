@@ -189,6 +189,8 @@ data:
               type: tautulli
               url: http://tautulli.media.svc.cluster.local:8081
               key: {{HOMEPAGE_VAR_TAUTULLI_TOKEN}}
+              enableUser: true
+              showEpisodeNumber: true
         - Wizarr:
             href: https://join.dmfrey.com
             icon: wizarr.png
