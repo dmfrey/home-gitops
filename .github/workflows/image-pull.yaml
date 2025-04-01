@@ -21,7 +21,7 @@ jobs:
         id: changed-files
         uses: bjw-s-labs/action-changed-files@b1144fc772fca235a50902c7bb6cc431cc7d8e27 # v0.3.2
         with:
-          patterns: kubernetes/homelab-k8s-001/**/*
+          patterns: kubernetes/**/*
 
   extract:
     if: ${{ needs.filter.outputs.changed-files != '[]' }}
