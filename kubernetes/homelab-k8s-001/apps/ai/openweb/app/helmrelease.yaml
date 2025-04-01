@@ -72,7 +72,7 @@ spec:
               # Dragonfly (Redis)
               ENABLE_WEBSOCKET_SUPPORT: true
               WEBSOCKET_MANAGER: redis
-              REDIS_URL: openweb-kv-cluster.ai.svc.cluster.local
+              REDIS_URL: redis://openweb-kv-cluster.ai.svc.cluster.local
 
             envFrom:
               - secretRef:
