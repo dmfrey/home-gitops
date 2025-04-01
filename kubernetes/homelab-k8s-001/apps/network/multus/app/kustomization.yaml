@@ -5,5 +5,5 @@ kind: Kustomization
 resources:
   # renovate: depName=k8snetworkplumbingwg/network-attachment-definition-client datasource=github-releases
   - https://github.com/k8snetworkplumbingwg/network-attachment-definition-client/raw/refs/tags/v1.7.6/artifacts/networks-crd.yaml
-  - ./helmrelease-buora.yaml
+  - ./helmreleaseyaml
   - ./rbac.yaml
