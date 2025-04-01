@@ -12,6 +12,6 @@ resources:
   # - ./home-assistant-matter-hub/ks.yaml
   - ./matter-server/ks.yaml
   - ./mosquitto/ks.yaml
-  - ./openthread/ks.yaml
+  # - ./openthread/ks.yaml
   - ./wyoming-services/ks.yaml
   - ./zigbee2mqtt/ks.yaml
