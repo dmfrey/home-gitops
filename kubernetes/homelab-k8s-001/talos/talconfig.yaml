@@ -7,7 +7,7 @@ talosVersion: v1.9.5
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
 kubernetesVersion: 1.32.3
 
-endpoint: "https://homelab-k8s-001.${INTERNAL_DOMAIN}:6443"
+endpoint: "https://homelab-k8s-001.homelab.frey.home:6443"
 
 allowSchedulingOnControlPlanes: true
 
@@ -21,8 +21,8 @@ cniConfig:
 
 additionalApiServerCertSans: &san
   - ${CLUSTER_ENDPOINT_IP}
-  - homelab-k8s-001.${INTERNAL_DOMAIN}
-  - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}
+  - homelab-k8s-001.homelab.frey.home
+  - ${EXTERNAL_CLUSTER_NAME}.dmfrey.com
   - "127.0.0.1" # KubePrism
 
 additionalMachineCertSans: *san
@@ -227,10 +227,10 @@ controlPlane:
           extraHostEntries:
             - ip: ${CLUSTER_ENDPOINT_IP}
               aliases:
-                - homelab-k8s-001.${INTERNAL_DOMAIN}
+                - homelab-k8s-001.homelab.frey.home
             - ip: ${CLUSTER_ENDPOINT_IP}
               aliases:
-                - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}
+                - ${EXTERNAL_CLUSTER_NAME}.dmfrey.com
 
     # Custom sysctl settings
     - |-
