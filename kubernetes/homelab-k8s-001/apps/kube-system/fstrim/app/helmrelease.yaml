@@ -32,7 +32,7 @@ spec:
         cronjob:
           schedule: "@monthly"
           timeZone: &timeZone ${TIMEZONE}
-          parallelism: 5 # Set to total number of nodes
+          parallelism: 4 # Set to total number of nodes
           successfulJobsHistory: 1
           failedJobsHistory: 1
 
