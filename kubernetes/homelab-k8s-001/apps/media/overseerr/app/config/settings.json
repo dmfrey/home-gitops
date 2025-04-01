@@ -23,7 +23,7 @@
   "locale": "en"
  },
  "plex": {
-  "name": "${ORGANIZATION}",
+  "name": "homelab5767",
   "ip": "plex.media.svc.cluster.local",
   "port": 32400,
   "useSsl": false,

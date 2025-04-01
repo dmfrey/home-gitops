@@ -67,7 +67,7 @@ spec:
 
             env:
               - name: ORGANIZATION
-                value: ${ORGANIZATION}
+                value: homelab5767
               - name: SECRET_DOMAIN
                 value: ${SECRET_DOMAIN}
 

@@ -20,7 +20,7 @@ http:
 
 homeassistant:
   # Name of the location where Home Assistant is running
-  name: ${ORGANIZATION}
+  name: homelab5767
   # Location required to calculate the time the sun rises and sets
   latitude: !env_var HASS_LATITUDE
   longitude: !env_var HASS_LONGITUDE
