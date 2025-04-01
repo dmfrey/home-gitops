@@ -47,9 +47,9 @@ spec:
         hajimari.io/enable: "true"
         hajimari.io/icon: "simple-icons:prometheus"
         hajimari.io/appName: "Blackbox Exporter"
-        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
       hosts:
-        - host: blackbox-exporter.${SECRET_DOMAIN}
+        - host: blackbox-exporter.dmfrey.com
           paths:
             - path: /
               pathType: Prefix

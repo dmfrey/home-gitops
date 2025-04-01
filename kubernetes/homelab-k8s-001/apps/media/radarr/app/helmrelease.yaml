@@ -48,7 +48,7 @@ spec:
               tag: 5.20.1.9773@sha256:4fa8fc7dcf3b38dbed279125330a8b9bd7be6e68e317e685089d3b03774aeeab
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               RADARR__INSTANCE_NAME: *app
               RADARR__PORT: &port 7878
               RADARR__APPLICATION_URL: https://radarr.dmfrey.com
@@ -122,7 +122,7 @@ spec:
         controller: *app
         # type: LoadBalancer
         # annotations:
-        #   external-dns.alpha.kubernetes.io/hostname: &host radarr.${SECRET_DOMAIN}
+        #   external-dns.alpha.kubernetes.io/hostname: &host radarr.dmfrey.com
         #   lbipam.cilium.io/ips: 192.168.31.231
         ports:
           http:
@@ -168,7 +168,7 @@ spec:
       backups:
         enabled: true
         type: nfs
-        server: "${QNAP_ADDR}"
+        server: "192.168.30.5"
         path: /plexbackups/backups/radarr
         advancedMounts:
           *app :

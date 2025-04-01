@@ -33,7 +33,7 @@ spec:
               - --voice=en_US-hfc_female-medium
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
 
             securityContext:
               allowPrivilegeEscalation: false

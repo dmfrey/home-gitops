@@ -50,14 +50,14 @@ spec:
               pullPolicy: IfNotPresent
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               SABNZBD__PORT: &port 8080
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 {{ .Release.Name }},
                 {{ .Release.Name }}.download,
                 {{ .Release.Name }}.download.svc,
                 {{ .Release.Name }}.download.svc.cluster,
-                {{ .Release.Name }}.${SECRET_DOMAIN}
+                {{ .Release.Name }}.dmfrey.com
               SABNZBD__API_KEY:
                 valueFrom:
                   secretKeyRef:

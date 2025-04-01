@@ -1,13 +1,13 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
-clusterName: ${CLUSTER_NAME}
+clusterName: homelab-k8s-001
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
 talosVersion: v1.9.5
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
 kubernetesVersion: 1.32.3
 
-endpoint: "https://${CLUSTER_NAME}.${INTERNAL_DOMAIN}:6443"
+endpoint: "https://homelab-k8s-001.${INTERNAL_DOMAIN}:6443"
 
 allowSchedulingOnControlPlanes: true
 
@@ -21,7 +21,7 @@ cniConfig:
 
 additionalApiServerCertSans: &san
   - ${CLUSTER_ENDPOINT_IP}
-  - ${CLUSTER_NAME}.${INTERNAL_DOMAIN}
+  - homelab-k8s-001.${INTERNAL_DOMAIN}
   - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}
   - "127.0.0.1" # KubePrism
 
@@ -227,7 +227,7 @@ controlPlane:
           extraHostEntries:
             - ip: ${CLUSTER_ENDPOINT_IP}
               aliases:
-                - ${CLUSTER_NAME}.${INTERNAL_DOMAIN}
+                - homelab-k8s-001.${INTERNAL_DOMAIN}
             - ip: ${CLUSTER_ENDPOINT_IP}
               aliases:
                 - ${EXTERNAL_CLUSTER_NAME}.${EXTERNAL_DOMAIN}

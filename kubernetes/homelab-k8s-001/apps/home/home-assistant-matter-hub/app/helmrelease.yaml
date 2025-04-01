@@ -46,7 +46,7 @@ spec:
               tag: 3.0.0-alpha.22@sha256:b7027484a6baddf4936cc1185abb518f1db47b0c96d2847e2842980d68b7a5cc
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               HAMH_LOG_LEVEL: debug
               HAMH_WEB_PORT: &port 8482
               HAMH_STORAGE_LOCATION: /data

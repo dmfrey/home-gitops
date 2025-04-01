@@ -50,7 +50,7 @@
     "lastScan": 1687450500047
    }
   ],
-  "webAppUrl": "https://plex.${SECRET_DOMAIN}/web",
+  "webAppUrl": "https://plex.dmfrey.com/web",
   "machineId": "${PLEX_SERVER_ID}"
  },
  "tautulli": {
@@ -58,7 +58,7 @@
   "port": 8081,
   "useSsl": false,
   "apiKey": "${TAUTULLI_API_KEY}",
-  "externalUrl": "https://tautulli.${SECRET_DOMAIN}"
+  "externalUrl": "https://tautulli.dmfrey.com"
  },
  "radarr": [
   {
@@ -76,7 +76,7 @@
     1
    ],
    "isDefault": true,
-   "externalUrl": "https://radarr.${SECRET_DOMAIN}",
+   "externalUrl": "https://radarr.dmfrey.com",
    "syncEnabled": true,
    "preventSearch": false,
    "tagRequests": false,
@@ -107,7 +107,7 @@
    "is4k": false,
    "isDefault": true,
    "enableSeasonFolders": true,
-   "externalUrl": "https://sonarr.${SECRET_DOMAIN}",
+   "externalUrl": "https://sonarr.dmfrey.com",
    "syncEnabled": true,
    "preventSearch": false,
    "tagRequests": false,

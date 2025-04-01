@@ -47,7 +47,7 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_VPN_ADDR}
+          lbipam.cilium.io/ips: 192.168.30.77
         externalTrafficPolicy: Cluster
         ports:
           shadowsocks:

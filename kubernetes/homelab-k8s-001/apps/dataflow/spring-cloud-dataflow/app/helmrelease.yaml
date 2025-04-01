@@ -89,7 +89,7 @@ spec:
     server:
 
       configuration:
-        metricsDashboard: https://grafana.${SECRET_DOMAIN}:443
+        metricsDashboard: https://grafana.dmfrey.com:443
 
       extraEnvVars:
         - name: DEBUG
@@ -123,10 +123,10 @@ spec:
         #   nginx.org/websocket-services: *app
         #   hajimari.io/enable: "true"
         #   hajimari.io/icon: "simple-icons:spring"
-        #   hajimari.io/url: https://dataflow.${SECRET_DOMAIN}/dashboard
-        #   external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        #   hajimari.io/url: https://dataflow.dmfrey.com/dashboard
+        #   external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
         # ingressClassName: internal
-        # hostname: dataflow.${SECRET_DOMAIN}
+        # hostname: dataflow.dmfrey.com
         # tls: false
 
     skipper:

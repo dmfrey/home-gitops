@@ -65,7 +65,7 @@ spec:
         host: "smtp-relay.kube-system.svc.cluster.local"
         port: 2525
         use_tls: false
-        from: "authentik@${SECRET_DOMAIN}"
+        from: "authentik@dmfrey.com"
 
       error_reporting:
         enabled: false
@@ -141,9 +141,9 @@ spec:
       #     nginx.org/websocket-services: authentik
       #     nginx.ingress.kubernetes.io/enable-global-auth: "false"
 
-      #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+      #     external-dns.alpha.kubernetes.io/target: external.dmfrey.com
       #   hosts:
-      #     - auth.${SECRET_DOMAIN}
+      #     - auth.dmfrey.com
       #   pathType: "Prefix"
       #   paths:
       #     - "/"

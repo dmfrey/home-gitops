@@ -48,7 +48,7 @@ spec:
               tag: 4.0.14.2938@sha256:f82e69b2d290877b89c2bcae9928df7ed74e05ab3cba905ecaeced85f4f1f2c6
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               SONARR__INSTANCE_NAME: *app
               SONARR__PORT: &port 8989
               SONARR__APPLICATION_URL: https://sonarr.dmfrey.com
@@ -122,7 +122,7 @@ spec:
         controller: *app
         # type: LoadBalancer
         # annotations:
-        #   external-dns.alpha.kubernetes.io/hostname: &host sonarr.${SECRET_DOMAIN}
+        #   external-dns.alpha.kubernetes.io/hostname: &host sonarr.dmfrey.com
         #   lbipam.cilium.io/ips: 192.168.31.230
         ports:
           http:
@@ -170,7 +170,7 @@ spec:
       backups:
         enabled: true
         type: nfs
-        server: "${QNAP_ADDR}"
+        server: "192.168.30.5"
         path: /plexbackups/backups/sonarr
         globalMounts:
           - path: /config/Backups

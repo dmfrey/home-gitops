@@ -49,11 +49,11 @@ spec:
               tag: 1.32.2.4987
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               PROWLARR__INSTANCE_NAME: *app
               PROWLARR__PORT: &port 9696
               PROWLARR__AUTHENTICATION_METHOD: External
-              PROWLARR__APPLICATION_URL: "https://prowlarr.${SECRET_DOMAIN}"
+              PROWLARR__APPLICATION_URL: "https://prowlarr.dmfrey.com"
               PROWLARR__LOG_LEVEL: info
               PROWLARR__API_KEY:
                 valueFrom:
@@ -169,7 +169,7 @@ spec:
 
       backups:
         type: nfs
-        server: "${QNAP_ADDR}"
+        server: "192.168.30.5"
         path: /plexbackups/backups/prowlarr
         globalMounts:
           - path: /config/Backups

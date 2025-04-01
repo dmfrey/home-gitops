@@ -58,7 +58,7 @@ spec:
 #     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 #     hajimari.io/enable: "true"
 #     hajimari.io/icon: "simple-icons:ubiquiti"
-#     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+#     external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
 #   labels:
 #     app.kubernetes.io/instance: unifi
 #     app.kubernetes.io/name: unifi
@@ -67,7 +67,7 @@ spec:
 # spec:
 #   ingressClassName: internal
 #   rules:
-#   - host: unifi.${SECRET_DOMAIN}
+#   - host: unifi.dmfrey.com
 #     http:
 #       paths:
 #       - backend:

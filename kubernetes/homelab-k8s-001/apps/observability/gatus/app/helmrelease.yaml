@@ -63,9 +63,9 @@ spec:
 
             env:
               - name: TZ
-                value: ${TIMEZONE}
+                value: America/New_York
               - name: BASE_URL
-                value: https://status.${SECRET_DOMAIN}
+                value: https://status.dmfrey.com
               - name: GATUS_CONFIG_PATH
                 value: /config
               - name: GATUS_DELAY_START_SECONDS
@@ -149,9 +149,9 @@ spec:
     #     className: external
     #     annotations:
     #       hajimari.io/enable: "true"
-    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #       external-dns.alpha.kubernetes.io/target: external.dmfrey.com
     #     hosts:
-    #       - host: status.${SECRET_DOMAIN}
+    #       - host: status.dmfrey.com
     #         paths:
     #         - path: /
     #           service:

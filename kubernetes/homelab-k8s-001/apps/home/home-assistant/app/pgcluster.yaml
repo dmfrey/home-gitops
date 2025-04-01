@@ -45,7 +45,7 @@ spec:
     retentionPolicy: 30d
     barmanObjectStore:
       destinationPath: s3://cnpg/
-      endpointURL: http://${QNAP_ADDR}:9000
+      endpointURL: http://192.168.30.5:9000
       s3Credentials:
         accessKeyId:
           name: pg-home-assistant-cnpg-secret
@@ -69,7 +69,7 @@ spec:
 #          compression: gzip
 #          maxParallel: 8
 #        destinationPath: s3://cnpg/
-#        endpointURL: http://${QNAP_ADDR}:9000
+#        endpointURL: http://192.168.30.5:9000
 #        s3Credentials:
 #          accessKeyId:
 #            name: pg-home-assistant-cnpg-secret

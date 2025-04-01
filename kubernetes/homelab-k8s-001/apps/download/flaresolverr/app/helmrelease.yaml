@@ -42,7 +42,7 @@ spec:
               tag: v3.3.21
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               TEST_URL: https://www.google.com
               PROMETHEUS_ENABLED: "true"
               PROMETHEUS_PORT: &metricsPort 8192

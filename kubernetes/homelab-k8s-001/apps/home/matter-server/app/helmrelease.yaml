@@ -60,7 +60,7 @@ spec:
               - --log-level-sdk=detail
 
             env:
-              TZ: "${TIMEZONE}"
+              TZ: "America/New_York"
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &wsPort 5580
               MATTER_SERVER__APPLICATION_URL: &host matter.dmfrey.com
@@ -89,7 +89,7 @@ spec:
         # type: LoadBalancer
         # annotations:
         #   external-dns.alpha.kubernetes.io/hostname: *host
-        #   lbipam.cilium.io/ips: ${SVC_MATTER_ADDR}
+        #   lbipam.cilium.io/ips: 192.168.30.243
         ports:
           ws:
             protocol: TCP

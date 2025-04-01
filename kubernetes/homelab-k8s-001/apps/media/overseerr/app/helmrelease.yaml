@@ -69,7 +69,7 @@ spec:
               - name: ORGANIZATION
                 value: homelab5767
               - name: SECRET_DOMAIN
-                value: ${SECRET_DOMAIN}
+                value: dmfrey.com
 
         containers:
           *app :
@@ -208,9 +208,9 @@ spec:
     #       gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local:5055
     #       gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
 
-    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #       external-dns.alpha.kubernetes.io/target: external.dmfrey.com
     #     hosts:
-    #       - host: request.${SECRET_DOMAIN}
+    #       - host: request.dmfrey.com
     #         paths:
     #           - path: /
     #             service:

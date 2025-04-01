@@ -48,7 +48,7 @@ spec:
               tag: 1.5.1@sha256:3543d7708c49a107558315eb88d202d99a0c8aaf592d3a70157565908c9f1eab
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               BAZARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -209,7 +209,7 @@ spec:
 
       backups:
         type: nfs
-        server: "${QNAP_ADDR}"
+        server: "192.168.30.5"
         path: /plexbackups/backups/bazarr
         globalMounts:
           - path: /config/backup

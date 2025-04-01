@@ -44,11 +44,11 @@ spec:
 
             env:
               WEBUI_NAME: Open WebUI
-              WEBUI_URL: https://openweb.${SECRET_DOMAIN}
+              WEBUI_URL: https://openweb.dmfrey.com
               DATA_DIR: /data
               OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
               # WEBUI_AUTH_TRUSTED_EMAIL_HEADER: X-authentik-email
-              AUDIO_OPENAI_API_BASE_URL: https://piper.${SECRET_DOMAIN}/v1
+              AUDIO_OPENAI_API_BASE_URL: https://piper.dmfrey.com/v1
               AUDIO_OPENAI_API_KEY: sk-111111111111 # fake key needed to make ui happy
               RAG_EMBEDDING_ENGINE: ollama
 
@@ -56,11 +56,11 @@ spec:
               ENABLE_OAUTH_SIGNUP: true
               OAUTH_MERGE_ACCOUNTS_BY_EMAIL: true
               OAUTH_PROVIDER_NAME: Authentik
-              OPENID_PROVIDER_URL: https://auth.${SECRET_DOMAIN}/application/o/openweb/.well-known/openid-configuration
+              OPENID_PROVIDER_URL: https://auth.dmfrey.com/application/o/openweb/.well-known/openid-configuration
               # OAUTH_CLIENT_ID: in external secret
               # OAUTH_CLIENT_SECRET: in external secret
               OAUTH_SCOPES: openid email profile
-              OPENID_REDIRECT_URI: https://openweb.${SECRET_DOMAIN}/oauth/oidc/callback
+              OPENID_REDIRECT_URI: https://openweb.dmfrey.com/oauth/oidc/callback
 
             envFrom:
               - secretRef:
@@ -107,10 +107,10 @@ spec:
     #       hajimari.io/enable: "true"
     #       hajimari.io/group: "AI"
 
-    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #       external-dns.alpha.kubernetes.io/target: external.dmfrey.com
 
     #     hosts:
-    #       - host: &host openweb.${SECRET_DOMAIN}
+    #       - host: &host openweb.dmfrey.com
     #         paths:
     #           - path: /
     #             service:

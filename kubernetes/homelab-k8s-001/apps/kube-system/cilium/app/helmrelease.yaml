@@ -92,9 +92,9 @@ spec:
             gethomepage.dev/group: Observability
             gethomepage.dev/description: Network Monitoring Dashboard
 
-            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+            external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
           hosts:
-            - hubble.${SECRET_DOMAIN}
+            - hubble.dmfrey.com
 
     operator:
       tolerations: []

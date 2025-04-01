@@ -66,7 +66,7 @@ spec:
               ]
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               DS_NODE_NAME:
                 valueFrom:
                   fieldRef:

@@ -48,11 +48,11 @@ spec:
               tag: 0.4.13
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               COMPlus_EnableDiagnostics: 0
               READARR__INSTANCE_NAME: *app
               READARR__PORT: &port 8787
-              READARR__APPLICATION_URL: https://readarr.${SECRET_DOMAIN}
+              READARR__APPLICATION_URL: https://readarr.dmfrey.com
               READARR__LOG_LEVEL: info
               READARR__API_KEY:
                 valueFrom:
@@ -135,9 +135,9 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "material-symbols:book-outline-rounded"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.dmfrey.com
         hosts:
-          - host: &host readarr.${SECRET_DOMAIN}
+          - host: &host readarr.dmfrey.com
             paths:
               - path: /
                 service:
@@ -161,7 +161,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: "${QNAP_ADDR}"
+            server: "192.168.30.5"
             path: /plexbackups/backups/readarr
         globalMounts:
           - path: /config/Backups

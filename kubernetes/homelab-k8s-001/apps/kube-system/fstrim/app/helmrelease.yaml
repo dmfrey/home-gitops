@@ -31,7 +31,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "@monthly"
-          timeZone: &timeZone ${TIMEZONE}
+          timeZone: &timeZone America/New_York
           parallelism: 4 # Set to total number of nodes
           successfulJobsHistory: 1
           failedJobsHistory: 1

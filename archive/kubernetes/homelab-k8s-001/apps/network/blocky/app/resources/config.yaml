@@ -70,7 +70,7 @@ conditional:
   # rewrite:
   #   example.com: fritz.box
   mapping:
-    ${SECRET_DOMAIN}: 192.168.31.100:53
+    dmfrey.com: 192.168.31.100:53
     ${INTERNAL_DOMAIN}: &upstream tcp+udp:${UDM_ADDR}
 
 blocking:

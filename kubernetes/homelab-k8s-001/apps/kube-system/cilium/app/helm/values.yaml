@@ -21,7 +21,7 @@ cgroup:
 
 cluster:
   id: 1
-  name: ${CLUSTER_NAME}
+  name: homelab-k8s-001
 
 cni:
   exclusive: false

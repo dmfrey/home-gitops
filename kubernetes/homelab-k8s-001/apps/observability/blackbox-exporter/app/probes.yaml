@@ -15,7 +15,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - minio.${SECRET_DOMAIN}
+        - minio.dmfrey.com
   #       - expanse.internal
   #       - garage-door.internal
   #       - hdhomerun.internal

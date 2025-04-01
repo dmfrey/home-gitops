@@ -36,78 +36,78 @@ spec:
       value: TRACE
 
     - name: cluster_domain
-      value: ${SECRET_DOMAIN}
+      value: dmfrey.com
 
     - name: proxy_applications
       value:
         # Ollama:
-        #   url: https://ollama.${SECRET_DOMAIN}
+        #   url: https://ollama.dmfrey.com
         #   group: AI
         # Dataflow:
-        #   url: https://dataflow.${SECRET_DOMAIN}
+        #   url: https://dataflow.dmfrey.com
         #   group: Dataflow
         # Prowlarr:
-        #   url: https://prowlarr.${SECRET_DOMAIN}
+        #   url: https://prowlarr.dmfrey.com
         #   group: Download
         # RealDebrid-Client:
-        #   url: https://rdt.${SECRET_DOMAIN}
+        #   url: https://rdt.dmfrey.com
         #   group: Download
         # SABNZBD-Client:
-        #   url: https://sabnzbd.${SECRET_DOMAIN}
+        #   url: https://sabnzbd.dmfrey.com
         #   group: Download
         Hajimari:
-          url: https://portal.${SECRET_DOMAIN}
+          url: https://portal.dmfrey.com
           group: Home
         # EspHome:
-        #   url: https://esphome.${SECRET_DOMAIN}
+        #   url: https://esphome.dmfrey.com
         #   group: Home
         # Hass-Code:
-        #   url: https://hass-code.${SECRET_DOMAIN}
+        #   url: https://hass-code.dmfrey.com
         #   group: Home
         # Matter:
-        #   url: https://matter.${SECRET_DOMAIN}
+        #   url: https://matter.dmfrey.com
         #   group: Home
         # MatterHub:
-        #   url: https://matterhub.${SECRET_DOMAIN}
+        #   url: https://matterhub.dmfrey.com
         #   group: Home
         # Zigbee2Mqtt:
-        #   url: https://zigbee2mqtt.${SECRET_DOMAIN}
+        #   url: https://zigbee2mqtt.dmfrey.com
         #   group: Home
         # Loki:
-        #   url: https://loki.${SECRET_DOMAIN}
+        #   url: https://loki.dmfrey.com
         #   group: Logs
         # Bazarr:
-        #   url: https://bazarr.${SECRET_DOMAIN}
+        #   url: https://bazarr.dmfrey.com
         #   group: Media
         # Jellyfin:
-        #   url: https://jellyfin.${SECRET_DOMAIN}
+        #   url: https://jellyfin.dmfrey.com
         #   group: Media
         # Lidarr:
-        #   url: https://lidarr.${SECRET_DOMAIN}
+        #   url: https://lidarr.dmfrey.com
         #   group: Media
         # Music-Assistant:
-        #   url: https://music.${SECRET_DOMAIN}
+        #   url: https://music.dmfrey.com
         #   group: Media
         # Readarr:
-        #   url: https://readarr.${SECRET_DOMAIN}
+        #   url: https://readarr.dmfrey.com
         #   group: Media
         # Radarr:
-        #   url: https://radarr.${SECRET_DOMAIN}
+        #   url: https://radarr.dmfrey.com
         #   group: Media
         Romm:
-          url: https://romm.${SECRET_DOMAIN}
+          url: https://romm.dmfrey.com
           group: Media
         # Sonarr:
-        #   url: https://sonarr.${SECRET_DOMAIN}
+        #   url: https://sonarr.dmfrey.com
         #   group: Media
         # Tautulli:
-        #   url: https://tautulli.${SECRET_DOMAIN}
+        #   url: https://tautulli.dmfrey.com
         #   group: Media
         # Tdarr:
-        #   url: https://tdarr.${SECRET_DOMAIN}
+        #   url: https://tdarr.dmfrey.com
         #   group: Media
         Wizarr:
-          url: https://join.${SECRET_DOMAIN}
+          url: https://join.dmfrey.com
           group: Media
           skip_path_regex: |
             ^/j/*
@@ -116,28 +116,28 @@ spec:
             ^/static/*
             ^/assets/*
         # Alert-Manager:
-        #   url: https://alert-manager.${SECRET_DOMAIN}
+        #   url: https://alert-manager.dmfrey.com
         #   group: Monitor
         # Blackbox-Exporter:
-        #   url: https://blackbox-exporter.${SECRET_DOMAIN}
+        #   url: https://blackbox-exporter.dmfrey.com
         #   group: Monitor
         # Gatus:
-        #   url: https://status.${SECRET_DOMAIN}
+        #   url: https://status.dmfrey.com
         #   group: Monitor
         # Prometheus:
-        #   url: https://prometheus.${SECRET_DOMAIN}
+        #   url: https://prometheus.dmfrey.com
         #   group: Monitor
         # Thanos:
-        #   url: https://thanos.${SECRET_DOMAIN}
+        #   url: https://thanos.dmfrey.com
         #   group: Monitor
         # Hubble:
-        #   url: https://hubble.${SECRET_DOMAIN}
+        #   url: https://hubble.dmfrey.com
         #   group: Network
         # Unifi:
-        #   url: https://unifi.${SECRET_DOMAIN}
+        #   url: https://unifi.dmfrey.com
         #   group: Network
         # Rook-Ceph:
-        #   url: https://rook.${SECRET_DOMAIN}
+        #   url: https://rook.dmfrey.com
         #   group: Storage
 
     - name: oauth_applications
@@ -147,15 +147,15 @@ spec:
           client_secret: ${GRAFANA_CLIENT_SECRET}
           group: "Monitoring"
           icon_url: "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
-          redirect_uri: "https://grafana.${SECRET_DOMAIN}/login/generic_oauth"
-          launch_url: "https://grafana.${SECRET_DOMAIN}/login/generic_oauth"
+          redirect_uri: "https://grafana.dmfrey.com/login/generic_oauth"
+          launch_url: "https://grafana.dmfrey.com/login/generic_oauth"
         spring-dev:
           client_id: ${SPRING_DEV_CLIENT_ID}
           client_secret: ${SPRING_DEV_CLIENT_SECRET}
           group: "Developers"
           icon_url: "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
-          redirect_uri: "https://spring-dev-gateway.${SECRET_DOMAIN}/login/oauth2/code/sso"
-          launch_url: "https://spring-dev-gateway.${SECRET_DOMAIN}/"
+          redirect_uri: "https://spring-dev-gateway.dmfrey.com/login/oauth2/code/sso"
+          launch_url: "https://spring-dev-gateway.dmfrey.com/"
 
     - name: users
       value:

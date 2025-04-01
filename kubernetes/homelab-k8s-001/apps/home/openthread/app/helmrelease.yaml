@@ -45,7 +45,7 @@ spec:
               pullPolicy: IfNotPresent
 
             env:
-              TZ: "${TIMEZONE}"
+              TZ: "America/New_York"
 
             resources:
               requests:

@@ -46,7 +46,7 @@ spec:
               tag: v2.14.1  # v2.14.0
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               UP_POLLER_DEBUG: true
               UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_VERIFY_SSL: false

@@ -47,7 +47,7 @@ spec:
               tag: 0.6.3
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               LIBVA_DRIVER_NAME: i965
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
@@ -85,7 +85,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_OLLAMA_ADDR}
+          lbipam.cilium.io/ips: 192.168.30.241
         ports:
           http:
             port: 11434

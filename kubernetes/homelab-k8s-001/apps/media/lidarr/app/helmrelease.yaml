@@ -48,12 +48,12 @@ spec:
               tag: 2.11.0
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               LIDARR__INSTANCE_NAME: *app
               LIDARR__PORT: &port 8686
               LIDARR__LOG_LEVEL: info
               LIDARR__ANALYTICS_ENABLED: "False"
-              LIDARR__APPLICATION_URL: "https://lidarr.${SECRET_DOMAIN}"
+              LIDARR__APPLICATION_URL: "https://lidarr.dmfrey.com"
               LIDARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -158,13 +158,13 @@ spec:
 
       media:
         type: nfs
-        server: ${QNAP_ADDR}
+        server: 192.168.30.5
         path: /media/
 
       backups:
         enabled: true
         type: nfs
-        server: "${QNAP_ADDR}"
+        server: "192.168.30.5"
         path: /plexbackups/backups/lidarr
         globalMounts:
           - path: /config/Backups

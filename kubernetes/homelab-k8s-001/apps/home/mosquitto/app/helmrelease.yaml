@@ -30,7 +30,7 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     controllers:
@@ -73,8 +73,8 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: mqtt.${SECRET_DOMAIN}
-          lbipam.cilium.io/ips: ${SVC_MQTT_ADDR}
+          external-dns.alpha.kubernetes.io/hostname: mqtt.dmfrey.com
+          lbipam.cilium.io/ips: 192.168.30.247
         ports:
           http:
             port: 1883

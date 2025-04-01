@@ -98,7 +98,7 @@ spec:
               value: Object.spec.template.spec.volumes{
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
-                  server: "${QNAP_ADDR}",
+                  server: "192.168.30.5",
                   path: "/volsync/repository"
                 }
               }

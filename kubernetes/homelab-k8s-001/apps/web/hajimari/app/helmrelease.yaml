@@ -44,7 +44,7 @@ spec:
   values:
 
     env:
-      TZ: ${TIMEZONE}
+      TZ: America/New_York
 
     hajimari:
       title: Portal
@@ -93,9 +93,9 @@ spec:
 
     #       hajimari.io/enable: "false"
 
-    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #       external-dns.alpha.kubernetes.io/target: external.dmfrey.com
     #     hosts:
-    #       - host: &host portal.${SECRET_DOMAIN}
+    #       - host: &host portal.dmfrey.com
     #         paths:
     #           - path: /
     #             pathType: Prefix

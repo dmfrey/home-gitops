@@ -45,7 +45,7 @@ spec:
               tag: unstable
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               UN_INTERVAL: "1m"
               UN_WEBSERVER_METRICS: "true"
               UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local:8989

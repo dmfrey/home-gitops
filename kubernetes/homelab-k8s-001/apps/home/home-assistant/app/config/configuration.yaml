@@ -29,11 +29,11 @@ homeassistant:
   # metric for Metric, us_customary for US Customary
   unit_system: us_customary
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: ${TIMEZONE}
+  time_zone: America/New_York
   country: US
   packages: !include_dir_named packages
-  external_url: https://home.${SECRET_DOMAIN}
-  internal_url: http://${SVC_HASS_ADDR}:8123
+  external_url: https://home.dmfrey.com
+  internal_url: http://192.168.30.242:8123
 
 recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
@@ -97,4 +97,4 @@ mqtt:
 # panel_iframe:
 #   mass:
 #     title: "Music Assistant"
-#     url: "https://music.${SECRET_DOMAIN}"
+#     url: "https://music.dmfrey.com"

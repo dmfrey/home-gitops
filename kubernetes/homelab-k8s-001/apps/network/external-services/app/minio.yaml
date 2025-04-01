@@ -5,7 +5,7 @@ metadata:
   name: minio
 subsets:
   - addresses:
-      - ip: ${QNAP_ADDR}
+      - ip: 192.168.30.5
     ports:
       - name: http
         port: 39010
@@ -64,7 +64,7 @@ spec:
 #     hajimari.io/enable: "true"
 #     hajimari.io/icon: "simple-icons:minio"
 
-#     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+#     external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
 #   labels:
 #     app.kubernetes.io/instance: minio
 #     app.kubernetes.io/name: minio
@@ -73,7 +73,7 @@ spec:
 # spec:
 #   ingressClassName: internal
 #   rules:
-#   - host: minio.${SECRET_DOMAIN}
+#   - host: minio.dmfrey.com
 #     http:
 #       paths:
 #       - backend:

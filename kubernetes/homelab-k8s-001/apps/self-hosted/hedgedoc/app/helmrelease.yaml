@@ -44,9 +44,9 @@ spec:
               tag: develop  # 2.0.0-alpha.3
 
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/New_York
               HD_LOGLEVEL: trace  # debug info
-              HD_BASE_URL: https://kb.${SECRET_DOMAIN}
+              HD_BASE_URL: https://kb.dmfrey.com
 
               # Database settings
               HD_DATABASE_TYPE: postgres
@@ -81,7 +81,7 @@ spec:
               # HD_MEDIA_BACKEND_FILESYSTEM_UPLOAD_PATH: uploads/
               HD_MEDIA_BACKEND: s3
               HD_MEDIA_BACKEND_S3_BUCKET: *app
-              HD_MEDIA_BACKEND_S3_ENDPOINT: http://${QNAP_ADDR}:9000
+              HD_MEDIA_BACKEND_S3_ENDPOINT: http://192.168.30.5:9000
               # HD_MEDIA_BACKEND_S3_REGION: home
               HD_MEDIA_BACKEND_S3_PATH_STYLE: true
 
@@ -90,7 +90,7 @@ spec:
               # HD_AUTH_LOCAL_ENABLE_REGISTER: true
               HD_AUTH_OIDC_SERVERS: AUTHENTIK
               HD_AUTH_OIDC_AUTHENTIK_PROVIDER_NAME: Sign-in with Authentik
-              HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.${SECRET_DOMAIN}/application/o/hedgedoc/
+              HD_AUTH_OIDC_AUTHENTIK_ISSUER: https://auth.dmfrey.com/application/o/hedgedoc/
               HD_AUTH_OIDC_AUTHENTIK_ENABLE_REGISTER: false
 
             envFrom: &envFromSecret
@@ -104,7 +104,7 @@ spec:
               tag: develop  # 2.0.0-alpha.3
 
             env:
-              HD_BASE_URL: "https://kb.${SECRET_DOMAIN}"
+              HD_BASE_URL: "https://kb.dmfrey.com"
               HD_INTERNAL_API_URL: http://hedgedoc.self-hosted.svc.cluster.local:3000
               HD_LOGLEVEL: trace  # debug info
 
@@ -143,9 +143,9 @@ spec:
     #       hajimari.io/icon: "simple-icons:hedgedoc"
     #       hajimari.io/appName: "Hedgedoc"
 
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    #       external-dns.alpha.kubernetes.io/target: "external.dmfrey.com"
     #     hosts:
-    #       - host: &host "kb.${SECRET_DOMAIN}"
+    #       - host: &host "kb.dmfrey.com"
     #         paths:
     #           - path: /
     #             service:

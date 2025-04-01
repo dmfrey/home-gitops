@@ -77,7 +77,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.devbu.io
-          lbipam.cilium.io/ips: ${SVC_GO2RTC_ADDR}
+          lbipam.cilium.io/ips: 192.168.30.244
         ports:
           http:
             port: *port
@@ -94,7 +94,7 @@ spec:
       internal:
         className: internal
         hosts:
-          - host: go2rtc.${SECRET_DOMAIN}
+          - host: go2rtc.dmfrey.com
             paths:
               - path: /
                 service:

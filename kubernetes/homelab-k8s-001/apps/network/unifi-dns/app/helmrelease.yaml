@@ -91,8 +91,8 @@ spec:
 
     sources: ["gateway-httproute", "service"]
 
-    txtOwnerId: "${CLUSTER_NAME}"
-    txtPrefix: "${CLUSTER_NAME}."
+    txtOwnerId: "homelab-k8s-001"
+    txtPrefix: "homelab-k8s-001."
     domainFilters: ["dmfrey.com"]
 
     serviceMonitor:

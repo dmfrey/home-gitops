@@ -6,11 +6,11 @@ rtsp:
 webrtc:
   listen: :8555
   candidates:
-    - ${SVC_GO2RTC_ADDR}:8555
+    - 192.168.30.244:8555
     - stun:8555
   ice_servers:
     - urls:
        - stun:stun.cloudflare.com:3478
 streams:
-  front-door: hass://${SVC_HASS_ADDR}:8123?entity_id=camera.front_door_doorbell&token=${CAMERA_TOKEN}
-  back-door: hass://${SVC_HASS_ADDR}:8123?entity_id=camera.back_door_doorbell&token=${CAMERA_TOKEN}
+  front-door: hass://192.168.30.242:8123?entity_id=camera.front_door_doorbell&token=${CAMERA_TOKEN}
+  back-door: hass://192.168.30.242:8123?entity_id=camera.back_door_doorbell&token=${CAMERA_TOKEN}

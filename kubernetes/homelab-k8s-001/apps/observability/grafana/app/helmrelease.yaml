@@ -550,7 +550,7 @@ spec:
       analytics:
         check_for_updates: false
       auth:
-        signout_redirect_url: https://auth.${SECRET_DOMAIN}/application/o/grafana/end-session/
+        signout_redirect_url: https://auth.dmfrey.com/application/o/grafana/end-session/
         oauth_auto_login:
         oauth_allow_insecure_email_lookup: true
       auth.anonymous:
@@ -563,9 +563,9 @@ spec:
         name: Authentik
         icon: signin
         scopes: openid profile email
-        auth_url: https://auth.${SECRET_DOMAIN}/application/o/authorize/
-        token_url: https://auth.${SECRET_DOMAIN}/application/o/token/
-        api_url: https://auth.${SECRET_DOMAIN}/application/o/userinfo/
+        auth_url: https://auth.dmfrey.com/application/o/authorize/
+        token_url: https://auth.dmfrey.com/application/o/token/
+        api_url: https://auth.dmfrey.com/application/o/userinfo/
         # Optionally map user groups to Grafana roles
         role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
       database:
@@ -577,7 +577,7 @@ spec:
       paths:
         data: /var/lib/grafana/data
       server:
-        root_url: https://grafana.${SECRET_DOMAIN}
+        root_url: https://grafana.dmfrey.com
 
     admin:
       existingSecret: grafana-secret
@@ -629,9 +629,9 @@ spec:
     #     gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
     #     gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
 
-    #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #     external-dns.alpha.kubernetes.io/target: external.dmfrey.com
     #   hosts:
-    #     - grafana.${SECRET_DOMAIN}
+    #     - grafana.dmfrey.com
 
     persistence:
       enabled: true
