@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app open-webui
+  name: &app openweb
 
 spec:
 
@@ -16,7 +16,7 @@ spec:
 
   install:
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -31,7 +31,7 @@ spec:
     controllers:
 
       *app :
-        type: deployment
+        type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
@@ -43,7 +43,7 @@ spec:
               tag: 0.6.0-ollama
 
             env:
-              WEBUI_NAME: Open WebUI
+              WEBUI_NAME: OpenWeb UI
               WEBUI_URL: https://openweb.dmfrey.com
               DATA_DIR: /data
               OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
@@ -61,6 +61,18 @@ spec:
               # OAUTH_CLIENT_SECRET: in external secret
               OAUTH_SCOPES: openid email profile
               OPENID_REDIRECT_URI: https://openweb.dmfrey.com/oauth/oidc/callback
+
+              # Postgres
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-openweb-app
+                    key: uri
+
+              # Dragonfly (Redis)
+              ENABLE_WEBSOCKET_SUPPORT: true
+              WEBSOCKET_MANAGER: redis
+              REDIS_URL: openweb-kv-cluster.ai.svc.cluster.local
 
             envFrom:
               - secretRef:
@@ -85,7 +97,7 @@ spec:
         hostnames: ["openweb.dmfrey.com"]
         annotations:
           hajimari.io/enable: "true"
-          hajimari.io/appName: "Open Web"
+          hajimari.io/appName: "OpenWeb"
           hajimari.io/group: "AI"
         parentRefs:
           - name: external
@@ -95,27 +107,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-
-    # ingress:
-    #   external:
-    #     enabled: true
-    #     className: external
-    #     annotations:
-    #       nginx.org/websocket-services: *app
-
-    #       hajimari.io/appName: "Open Web"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/group: "AI"
-
-    #       external-dns.alpha.kubernetes.io/target: external.dmfrey.com
-
-    #     hosts:
-    #       - host: &host openweb.dmfrey.com
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: *app
-    #               port: *port
 
     persistence:
 
