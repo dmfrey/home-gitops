@@ -18,7 +18,6 @@ sops --decrypt kubernetes/homelab-k8s-001/bootstrap/flux/secret-age-key.sops.yam
 sops --decrypt kubernetes/homelab-k8s-001/bootstrap/flux/secret-github-deploy-key.sops.yaml | kubectl apply -f -
 sops --decrypt kubernetes/homelab-k8s-001/bootstrap/flux/secret-onepassword-secret.sops.yaml | kubectl apply -f -
 sops --decrypt kubernetes/homelab-k8s-001/flux/vars/cluster-secrets.sops.yaml | kubectl apply -f -
-kubectl apply --server-side -f kubernetes/homelab-k8s-001/flux/vars/cluster-settings.yaml
 ```
 
 ### Kick off Flux applying this repository

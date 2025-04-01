@@ -50,8 +50,6 @@ spec:
               name: sops-age
           postBuild:
             substituteFrom:
-              - kind: ConfigMap
-                name: cluster-settings
               - kind: Secret
                 name: cluster-secrets
       target:
@@ -61,9 +59,6 @@ spec:
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
-        optional: false
-      - kind: ConfigMap
-        name: cluster-settings
         optional: false
   prune: true
   sourceRef:
