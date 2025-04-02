@@ -56,12 +56,17 @@ jobs:
       - name: Extract Images
         id: extract
         run: |
+          echo SETUP EXTRACT
           echo "${{ matrix.branch }}=$(jq --compact-output '.' images.json)" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
 
-          echo '## Branch ${{ matrix.branch }} images' >> $GITHUB_STEP_SUMMARY
-          echo '```json' >> $GITHUB_STEP_SUMMARY
-          jq '.' images.json >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          # echo OUTPUT GITHUB_STEP_SUMMARY
+          # echo '## Branch ${{ matrix.branch }} images' >> $GITHUB_STEP_SUMMARY
+          # echo $GITHUB_STEP_SUMMARY
+
+          # echo '```json' >> $GITHUB_STEP_SUMMARY
+          # jq '.' images.json >> $GITHUB_STEP_SUMMARY
+          # echo '```' >> $GITHUB_STEP_SUMMARY
 
   diff:
     if: ${{ needs.extract.outputs.default != needs.extract.outputs.pull }}
