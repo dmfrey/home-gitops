@@ -113,7 +113,7 @@ spec:
 
       extraEnvFrom:
         - secretRef:
-          name: tempo-ceph-bucket
+            name: tempo-ceph-bucket
 
     ingester:
       replicas: 2
@@ -123,7 +123,7 @@ spec:
 
       extraEnvFrom:
         - secretRef:
-          name: tempo-ceph-bucket
+            name: tempo-ceph-bucket
 
       persistence:
         enabled: true
@@ -176,7 +176,7 @@ spec:
 
       extraEnvFrom:
         - secretRef:
-          name: tempo-ceph-bucket
+            name: tempo-ceph-bucket
 
       persistence:
         enabled: true
@@ -188,7 +188,7 @@ spec:
 
       extraEnvFrom:
         - secretRef:
-          name: tempo-ceph-bucket
+            name: tempo-ceph-bucket
 
     queryFrontend:
       extraArgs:
@@ -196,7 +196,7 @@ spec:
 
       extraEnvFrom:
         - secretRef:
-          name: tempo-ceph-bucket
+            name: tempo-ceph-bucket
 
     usage_report:
       reporting_enabled: false
