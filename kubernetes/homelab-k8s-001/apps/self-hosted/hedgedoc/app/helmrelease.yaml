@@ -133,25 +133,6 @@ spec:
               - name: *app
                 port: *port
 
-    # ingress:
-    #   external:
-    #     className: external
-    #     annotations:
-    #       nginx.org/websocket-services: *app
-
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: "simple-icons:hedgedoc"
-    #       hajimari.io/appName: "Hedgedoc"
-
-    #       external-dns.alpha.kubernetes.io/target: "external.dmfrey.com"
-    #     hosts:
-    #       - host: &host "kb.dmfrey.com"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: *app
-    #               port: http
-
     # persistence:
     #   config:
     #     existingClaim: ${VOLSYNC_CLAIM}

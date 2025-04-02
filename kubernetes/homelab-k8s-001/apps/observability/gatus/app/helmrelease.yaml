@@ -143,21 +143,6 @@ spec:
               - name: *app
                 port: *port
 
-    # ingress:
-    #   external:
-    #     enabled: true
-    #     className: external
-    #     annotations:
-    #       hajimari.io/enable: "true"
-    #       external-dns.alpha.kubernetes.io/target: external.dmfrey.com
-    #     hosts:
-    #       - host: status.dmfrey.com
-    #         paths:
-    #         - path: /
-    #           service:
-    #             identifier: *app
-    #             port: http
-
     serviceAccount:
       create: true
       name: *app
