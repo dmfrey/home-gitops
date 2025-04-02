@@ -594,9 +594,6 @@ spec:
         enabled: true
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:grafana"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: grafana.png
           gethomepage.dev/name: Grafana

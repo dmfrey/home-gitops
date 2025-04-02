@@ -132,8 +132,7 @@ spec:
     route:
       *app :
         hostnames: ["status.dmfrey.com"]
-        annotations:
-          hajimari.io/enable: "true"
+        # annotations:
         parentRefs:
           - name: external
             namespace: kube-system

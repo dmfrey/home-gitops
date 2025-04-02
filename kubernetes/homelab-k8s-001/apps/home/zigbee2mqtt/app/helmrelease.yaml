@@ -117,10 +117,7 @@ spec:
     route:
       *app :
         hostnames: ["zigbee2mqtt.dmfrey.com"]
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:zigbee"
-          hajimari.io/appName: Zigbee2MQTT - First Floor"
+        # annotations: 
         parentRefs:
           - name: internal
             namespace: kube-system

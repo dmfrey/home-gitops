@@ -80,8 +80,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
         supplementalGroups:
           - 34
-      # hostNetwork: true
-      # dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
 
     service:
       *app :
@@ -95,23 +94,6 @@ spec:
             protocol: TCP
             port: *wsPort
             primary: true
-
-    # route:
-    #   *app :
-    #     hostnames:
-    #       - *host
-    #     annotations:
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: "simple-icons:matter"
-    #       hajimari.io/appName: "Home Assistant Hatter Server"
-    #     parentRefs:
-    #       - name: internal
-    #         namespace: kube-system
-    #         sectionName: https
-    #     rules:
-    #       - backendRefs:
-    #           - name: *app
-    #             port: *wsPort
 
     persistence:
       data:

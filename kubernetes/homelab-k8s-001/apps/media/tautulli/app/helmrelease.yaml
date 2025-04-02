@@ -82,9 +82,6 @@ spec:
       *app :
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:chart-bar"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Tautulli

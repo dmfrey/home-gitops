@@ -128,7 +128,6 @@ spec:
         enabled: true
         className: internal
         annotations:
-          hajimari.io/enable: "true"
           external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
         hosts:
           - host: &host time.dmfrey.com

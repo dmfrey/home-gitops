@@ -124,10 +124,6 @@ spec:
       *app :
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: simple-icons:jellyfin
-          hajimari.io/url: "https://jellyfin.dmfrey.com/web/index.html"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Jellyfin

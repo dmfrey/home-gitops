@@ -143,9 +143,6 @@ spec:
       *app :
         hostnames: ["romm.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:television-classic"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Games
           gethomepage.dev/name: RomM

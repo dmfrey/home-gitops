@@ -95,10 +95,7 @@ spec:
     route:
       *app :
         hostnames: ["openweb.dmfrey.com"]
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/appName: "OpenWeb"
-          hajimari.io/group: "AI"
+        # annotations: 
         parentRefs:
           - name: external
             namespace: kube-system

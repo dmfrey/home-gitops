@@ -5,9 +5,6 @@ kind: HTTPRoute
 metadata:
   name: authentik
   annotations:
-    hajimari.io/enable: "true"
-    hajimari.io/icon: "material-symbols:security-rounded"
-
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: authentik.png
     gethomepage.dev/name: Authentik

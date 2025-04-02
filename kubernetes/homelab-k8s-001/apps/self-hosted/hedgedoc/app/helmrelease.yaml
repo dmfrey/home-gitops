@@ -120,10 +120,7 @@ spec:
     route:
       *app :
         hostnames: ["kb.dmfrey.com"]
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:hedgedoc"
-          hajimari.io/appName: "Hedgedoc"
+        # annotations:
         parentRefs:
           - name: external
             namespace: kube-system

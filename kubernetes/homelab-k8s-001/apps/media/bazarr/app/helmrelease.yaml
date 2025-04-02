@@ -156,9 +156,6 @@ spec:
       *app :
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "solar:subtitles-outline"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
           gethomepage.dev/name: Bazarr

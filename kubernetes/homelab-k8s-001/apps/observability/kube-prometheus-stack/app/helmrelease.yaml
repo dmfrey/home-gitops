@@ -62,10 +62,7 @@ spec:
         main:
           enabled: true
           hostnames: ["alertmanager.dmfrey.com"]
-          annotations:
-            hajimari.io/enable: "true"
-            hajimari.io/icon: "mdi:alpha-t-box"
-            hajimari.io/appName: "Alert Manager"
+          # annotations:
           parentRefs:
             - name: internal
               namespace: kube-system
@@ -100,10 +97,7 @@ spec:
         main:
           enabled: true
           hostnames: ["prometheus.dmfrey.com"]
-          annotations:
-            hajimari.io/enable: "true"
-            hajimari.io/icon: "simple-icons:prometheus"
-            hajimari.io/appName: "Prometheus"
+          # annotations:
           parentRefs:
             - name: internal
               namespace: kube-system

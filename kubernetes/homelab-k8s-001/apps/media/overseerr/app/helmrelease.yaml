@@ -170,9 +170,6 @@ spec:
       *app :
         hostnames: ["request.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:eye-circle-outline"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Overseerr

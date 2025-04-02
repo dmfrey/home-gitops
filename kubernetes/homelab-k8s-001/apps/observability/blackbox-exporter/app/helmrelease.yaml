@@ -43,11 +43,7 @@ spec:
     ingress:
       enabled: true
       className: internal
-      annotations:
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "simple-icons:prometheus"
-        hajimari.io/appName: "Blackbox Exporter"
-        external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
+      # annotations:
       hosts:
         - host: blackbox-exporter.dmfrey.com
           paths:

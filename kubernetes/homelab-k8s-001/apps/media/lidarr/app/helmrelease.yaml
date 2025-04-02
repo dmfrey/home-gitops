@@ -131,10 +131,7 @@ spec:
     route:
       *app :
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:headphones"
-
+        # annotations: 
           # gethomepage.dev/enabled: "true"
           # gethomepage.dev/group: Downloads
           # gethomepage.dev/name: Lidarr

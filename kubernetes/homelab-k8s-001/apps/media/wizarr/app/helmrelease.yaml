@@ -76,9 +76,6 @@ spec:
       *app :
         hostnames: ["join.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:invite"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Wizarr

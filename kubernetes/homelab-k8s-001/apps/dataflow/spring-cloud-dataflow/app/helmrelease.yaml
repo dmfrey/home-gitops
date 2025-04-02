@@ -101,16 +101,6 @@ spec:
       ingress:
         enabled: false
 
-        # annotations:
-        #   nginx.org/websocket-services: *app
-        #   hajimari.io/enable: "true"
-        #   hajimari.io/icon: "simple-icons:spring"
-        #   hajimari.io/url: https://dataflow.dmfrey.com/dashboard
-        #   external-dns.alpha.kubernetes.io/target: internal.dmfrey.com
-        # ingressClassName: internal
-        # hostname: dataflow.dmfrey.com
-        # tls: false
-
     skipper:
 
       extraEnvVars:

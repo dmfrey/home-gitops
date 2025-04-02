@@ -143,9 +143,6 @@ spec:
       *app :
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:movie-search"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Download
           gethomepage.dev/name: Prowlarr

@@ -148,10 +148,6 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:plex"
-          hajimari.io/url: "https://plex.dmfrey.com/web"
-
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Plex

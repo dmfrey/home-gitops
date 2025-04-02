@@ -99,10 +99,7 @@ spec:
     route:
       *app :
         hostnames: ["matterhub.dmfrey.com"]
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:matterdotjs"
-          hajimari.io/appName: "Home Assistant Hatter Hub"
+        # annotations: 
         parentRefs:
           - name: internal
             namespace: kube-system
