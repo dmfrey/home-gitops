@@ -45,10 +45,6 @@ spec:
     crds:
       create: true
 
-    config:
-      data:
-        INHERITED_ANNOTATIONS: reflector.v1.k8s.emberstack.com/*
-
     monitoring:
       podMonitorEnabled: false
       grafanaDashboard:

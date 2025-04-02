@@ -15,8 +15,6 @@ spec:
   dependsOn:
     - name: media-common-mounts
       namespace: media
-    - name: reflector
-      namespace: kube-system
     - name: pod-gateway
       namespace: network
     - name: volsync
