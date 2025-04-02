@@ -42,23 +42,23 @@ spec:
   uninstall:
     keepHistory: false
 
-  valuesFrom:
-    - targetPath: externalRabbitmq.host
-      kind: Secret
-      name: rabbit-dataflow-default-user
-      valuesKey: host
-    - targetPath: externalRabbitmq.port
-      kind: Secret
-      name: rabbit-dataflow-default-user
-      valuesKey: port
-    - targetPath: externalRabbitmq.username
-      kind: Secret
-      name: rabbit-dataflow-default-user
-      valuesKey: username
-    - targetPath: externalRabbitmq.password
-      kind: Secret
-      name: rabbit-dataflow-default-user
-      valuesKey: password
+  # valuesFrom:
+  #   - targetPath: externalRabbitmq.host
+  #     kind: Secret
+  #     name: rabbit-dataflow-default-user
+  #     valuesKey: host
+  #   - targetPath: externalRabbitmq.port
+  #     kind: Secret
+  #     name: rabbit-dataflow-default-user
+  #     valuesKey: port
+  #   - targetPath: externalRabbitmq.username
+  #     kind: Secret
+  #     name: rabbit-dataflow-default-user
+  #     valuesKey: username
+  #   - targetPath: externalRabbitmq.password
+  #     kind: Secret
+  #     name: rabbit-dataflow-default-user
+  #     valuesKey: password
 
   values:
 
@@ -195,3 +195,7 @@ spec:
 
     externalRabbitmq:
       enabled: true
+      # host: rabbit-dataflow.dataflow.svc.cluster.local
+      # port: 5672
+      existingSecret: rabbit-dataflow-default-user
+      existingSecretPasswordKey: password
