@@ -290,17 +290,17 @@ spec:
           revision: 14
           datasource: prometheus
 
-      media:
-        servarr-dashboard:
-          # renovate: depName="Media Dashboard"
-          url: https://raw.githubusercontent.com/onedr0p/exportarr/refs/heads/master/examples/grafana/dashboard2.json
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: prometheus
-        overseerr-dashboard:
-          # renovate: depName="Overseerr"
-          url: https://raw.githubusercontent.com/WillFantom/overseerr-exporter/main/grafana/dashboard.json
-          datasource: prometheus
+      # media:
+      #   servarr-dashboard:
+      #     # renovate: depName="Media Dashboard"
+      #     url: https://raw.githubusercontent.com/onedr0p/exportarr/refs/heads/master/examples/grafana/dashboard2.json
+      #     datasource:
+      #       - name: "DS_PROMETHEUS"
+      #         value: prometheus
+      #   overseerr-dashboard:
+      #     # renovate: depName="Overseerr"
+      #     url: https://raw.githubusercontent.com/WillFantom/overseerr-exporter/main/grafana/dashboard.json
+      #     datasource: prometheus
 
       network:
 

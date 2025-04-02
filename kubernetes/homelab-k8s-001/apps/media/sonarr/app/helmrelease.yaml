@@ -77,36 +77,36 @@ spec:
                 drop:
                   - ALL
 
-          exporter:
-            image:
-              repository: ghcr.io/onedr0p/exportarr
-              tag: v2.1.0
+          # exporter:
+          #   image:
+          #     repository: ghcr.io/onedr0p/exportarr
+          #     tag: v2.1.0
 
-            args:
-              - *app
-              - --enable-additional-metrics
+          #   args:
+          #     - *app
+          #     - --enable-additional-metrics
 
-            env:
-              URL: "http://localhost:8989"
-              PORT: &metricsPort 9707
-              APIKEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: starr-apps-secret
-                    key: SONARR_API_KEY
+          #   env:
+          #     URL: "http://localhost:8989"
+          #     PORT: &metricsPort 9707
+          #     APIKEY:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: starr-apps-secret
+          #           key: SONARR_API_KEY
 
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
+          #   resources:
+          #     requests:
+          #       cpu: 10m
+          #     limits:
+          #       memory: 128Mi
 
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+          #   securityContext:
+          #     allowPrivilegeEscalation: false
+          #     readOnlyRootFilesystem: true
+          #     capabilities:
+          #       drop:
+          #         - ALL
 
     defaultPodOptions:
       securityContext:
@@ -128,8 +128,8 @@ spec:
           http:
             port: *port
             primary: true
-          metrics:
-            port: *metricsPort
+          # metrics:
+          #   port: *metricsPort
 
     route:
       *app :
@@ -181,13 +181,13 @@ spec:
             *app :
               - path: /tmp
 
-    serviceMonitor:
-      metrics:
-        serviceName: *app
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 10m
-            scrapeTimeout: 10s
+    # serviceMonitor:
+    #   metrics:
+    #     serviceName: *app
+    #     endpoints:
+    #       - port: metrics
+    #         scheme: http
+    #         path: /metrics
+    #         interval: 10m
+    #         scrapeTimeout: 10s
 

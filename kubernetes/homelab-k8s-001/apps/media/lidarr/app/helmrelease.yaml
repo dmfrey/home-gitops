@@ -79,30 +79,30 @@ spec:
                   - ALL
 
           # sidecars:
-          exporter:
-            dependsOn: *app
+          # exporter:
+          #   dependsOn: *app
 
-            image:
-              repository: ghcr.io/onedr0p/exportarr
-              tag: v2.1.0
+          #   image:
+          #     repository: ghcr.io/onedr0p/exportarr
+          #     tag: v2.1.0
 
-            args:
-              - *app
-              - --enable-additional-metrics
+          #   args:
+          #     - *app
+          #     - --enable-additional-metrics
 
-            env:
-              - name: URL
-                value: "http://localhost:8686"
-              - name: CONFIG
-                value: "/config/config.xml"
-              - name: PORT
-                value: &metricsPort 9709
+          #   env:
+          #     - name: URL
+          #       value: "http://localhost:8686"
+          #     - name: CONFIG
+          #       value: "/config/config.xml"
+          #     - name: PORT
+          #       value: &metricsPort 9709
 
-            ports:
-              - name: metrics
-                containerPort: *metricsPort
+          #   ports:
+          #     - name: metrics
+          #       containerPort: *metricsPort
 
-            securityContext: *securityContext
+          #   securityContext: *securityContext
 
     defaultPodOptions:
       securityContext:
@@ -125,13 +125,13 @@ spec:
           http:
             port: *port
             primary: true
-          metrics:
-            port: *metricsPort
+          # metrics:
+          #   port: *metricsPort
 
     route:
       *app :
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
-        # annotations: 
+        # annotations:
           # gethomepage.dev/enabled: "true"
           # gethomepage.dev/group: Downloads
           # gethomepage.dev/name: Lidarr
@@ -175,13 +175,13 @@ spec:
             app:
               - path: /tmp
 
-    serviceMonitor:
-      metrics:
-        enabled: true
-        serviceName: *app
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 10m
-            scrapeTimeout: 10s
+    # serviceMonitor:
+    #   metrics:
+    #     enabled: true
+    #     serviceName: *app
+    #     endpoints:
+    #       - port: metrics
+    #         scheme: http
+    #         path: /metrics
+    #         interval: 10m
+    #         scrapeTimeout: 10s
