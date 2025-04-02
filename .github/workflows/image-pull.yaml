@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Get Changed Files
         id: changed-files
-        uses: bjw-s-labs/action-changed-files@b1144fc772fca235a50902c7bb6cc431cc7d8e27 # v0.3.2
+        uses: bjw-s-labs/action-changed-files@2cc35474e9d534ed0d743aa122fd142afbdaa0ad # v0.3.1
         with:
           patterns: kubernetes/**/*
 
@@ -57,6 +57,7 @@ jobs:
         id: extract
         run: |
           echo SETUP EXTRACT
+          echo "MATRIX BRANCH: ${{ matrix.branch }}""
           echo "${{ matrix.branch }}=$(jq --compact-output '.' images.json)" >> $GITHUB_OUTPUT
           echo $GITHUB_OUTPUT
 
