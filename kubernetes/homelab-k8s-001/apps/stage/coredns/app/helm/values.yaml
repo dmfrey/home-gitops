@@ -13,7 +13,7 @@ serviceAccount:
 
 service:
   name: kube-dns
-  clusterIP: 172.23.0.10
+  clusterIP: 172.23.0.11
 
 servers:
   - zones:
