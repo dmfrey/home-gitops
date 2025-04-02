@@ -57,7 +57,7 @@ jobs:
         id: extract
         run: |
           echo SETUP EXTRACT
-          echo "MATRIX BRANCH: ${{ matrix.branch }}""
+          echo "MATRIX BRANCH: ${{ matrix.branch }}"
           echo "${{ matrix.branch }}=$(jq --compact-output '.' images.json)" >> $GITHUB_OUTPUT
           echo $GITHUB_OUTPUT
 
