@@ -102,12 +102,19 @@ spec:
       zipkin:
         enabled: true
 
+    compactor:
+      extraArgs:
+        - "-config.expand-env=true"
+
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-ceph-bucket
+
     distributor:
       config:
         log_received_spans:
           enabled: true
 
-    compactor:
       extraArgs:
         - "-config.expand-env=true"
 
@@ -198,5 +205,4 @@ spec:
         - secretRef:
             name: tempo-ceph-bucket
 
-    usage_report:
-      reporting_enabled: false
+    reportingEnabled: false
