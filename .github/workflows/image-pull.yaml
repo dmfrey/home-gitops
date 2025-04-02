@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branches: ["default", "pull"]
+        branch: ["default", "pull"]
       fail-fast: false
     outputs:
       default: ${{ steps.extract.outputs.default }}
