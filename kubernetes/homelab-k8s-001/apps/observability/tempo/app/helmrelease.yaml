@@ -107,6 +107,14 @@ spec:
         log_received_spans:
           enabled: true
 
+    compactor:
+      extraArgs:
+        - "-config.expand-env=true"
+
+      extraEnvFrom:
+        - secretRef:
+          name: tempo-ceph-bucket
+
     ingester:
       replicas: 2
 
@@ -173,6 +181,22 @@ spec:
       persistence:
         enabled: true
         storageClass: ceph-block
+
+    querier:
+      extraArgs:
+        - "-config.expand-env=true"
+
+      extraEnvFrom:
+        - secretRef:
+          name: tempo-ceph-bucket
+
+    queryFrontend:
+      extraArgs:
+        - "-config.expand-env=true"
+
+      extraEnvFrom:
+        - secretRef:
+          name: tempo-ceph-bucket
 
     usage_report:
       reporting_enabled: false
