@@ -60,15 +60,15 @@ spec:
           - icmp
           - http
 
-      serviceMonitor:
-        enabled: true
+        serviceMonitor:
+          enabled: true
 
-      dashboards:
-        enabled: true
-        label: grafana_dashboard
-        labelValue: ""
-        annotations:
-          grafana_folder: Network
+        dashboards:
+          enabled: true
+          label: grafana_dashboard
+          labelValue: ""
+          annotations:
+            grafana_folder: Network
 
       relay:
         enabled: true
