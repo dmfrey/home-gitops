@@ -125,12 +125,14 @@ data:
               url: http://esphome.home.svc.cluster.local:6052
     - Infrastructure:
         - Gatus:
+            href: https://status.dmfrey.com
             description: Application Status
             icon: gatus.png
             widget:
               type: gatus
               url: http://gatus.observability.svc.cluster.local:8080
         - QNAP:
+            href: https://192.168.30.5:7080
             description: QNAP NAS TS-462
             icon: qnap.png
             widget:
@@ -150,7 +152,7 @@ data:
               key: {{HOMEPAGE_VAR_CLOUDFLARED_API_TOKEN}}
               fields: ["status"]
         - Unifi:
-            href: https://unifi.ui.com
+            href: https://192.168.86.1
             icon: unifi.png
             description: Unifi Dashboard
             widget:
@@ -160,7 +162,7 @@ data:
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - Observability:
         - Prometheus:
-            href: https://prometheus.io/
+            href: https://prometheus.dmfrey.com
             icon: prometheus.png
             description: Application Metrics
             widget:
@@ -255,6 +257,10 @@ data:
         style: row
         columns: 2
         icon: mdi-book
+      Home:
+        style: row
+        columns: 5
+        icon: mdi-home-analytics
       Infrastructure:
         style: row
         columns: 5
@@ -263,10 +269,6 @@ data:
         style: row
         columns: 5
         icon: mdi-chart-line
-      Home:
-        style: row
-        columns: 5
-        icon: mdi-home-analytics
       Downloads:
         style: row
         columns: 3
