@@ -7,6 +7,10 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   bookmarks.yaml: |
+    - AI:
+        - OpenWeb
+            - icon: ollama.png
+              href: 'https://openweb.dmfrey.com'
     - Communicate:
         - Discord:
             - icon: discord.png
