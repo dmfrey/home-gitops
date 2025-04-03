@@ -1,8 +1,6 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
-# system_health:
-
 prometheus:
   namespace: home-assistant
 
@@ -38,22 +36,6 @@ homeassistant:
 recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
 
-# automation:
-#   - id: update_config_github_push_event
-#     alias: Event | GitHub | Push
-
-#     trigger:
-#     - platform: webhook
-#       webhook_id: !env_var HASS_DEPLOY_CONFIG_WEBHOOK_ID
-#       local_only: false
-
-#     action:
-#     - service: shell_command.deploy_config
-#     - service: homeassistant.reload_all
-
-# shell_command:
-#   deploy_config: cd /config && git pull || git reset origin/main && git reset origin/main --hard
-
 automation: !include automations.yaml
 binary_sensor: !include_dir_merge_list binary_sensors
 group: !include_dir_merge_named groups
@@ -73,14 +55,7 @@ template: !include_dir_merge_list templates
 frontend:
   themes: !include_dir_merge_named themes
 
-# zeroconf:
-
 zone: !include zone.yaml
-
-# logger:
-#   default: info
-#   logs:
-#     homeassistant.components.mqtt: warning
 
 # configuration.yaml entry which defines a Home Assistant sensor from MQTT
 mqtt:
@@ -93,8 +68,3 @@ mqtt:
       state_topic: "propane/1/percentage"
       value_template: "{{ value }}"
       unit_of_measurement: "%"
-
-# panel_iframe:
-#   mass:
-#     title: "Music Assistant"
-#     url: "https://music.dmfrey.com"
