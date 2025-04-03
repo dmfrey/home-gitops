@@ -1,7 +1,7 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
-system_health:
+# system_health:
 
 prometheus:
   namespace: home-assistant
@@ -73,14 +73,14 @@ template: !include_dir_merge_list templates
 frontend:
   themes: !include_dir_merge_named themes
 
-zeroconf:
+# zeroconf:
 
 zone: !include zone.yaml
 
-logger:
-  default: info
-  logs:
-    homeassistant.components.mqtt: warning
+# logger:
+#   default: info
+#   logs:
+#     homeassistant.components.mqtt: warning
 
 # configuration.yaml entry which defines a Home Assistant sensor from MQTT
 mqtt:
