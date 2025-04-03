@@ -28,33 +28,33 @@ spec:
     enableFileDeletion: true
     cleanupCachePVC: true
     cleanupTempPVC: true
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/volsync.backube/replicationdestination_v1alpha1.json
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationDestination
-# metadata:
-#   name: "home-assistant-matter-server-dst"
-#   labels:
-#     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
-# spec:
-#   trigger:
-#     manual: restore-once
-#   restic:
-#     repository: "home-assistant-matter-server-volsync-secret"
-#     copyMethod: Snapshot
-#     volumeSnapshotClassName: "csi-ceph-blockpool"
-#     cacheStorageClassName: "ceph-block"
-#     cacheAccessModes: ["ReadWriteOnce"]
-#     cacheCapacity: "5Gi"
-#     storageClassName: "ceph-block"
-#     accessModes: ["ReadWriteOnce"]
-#     capacity: "5Gi"
-#     moverPodLabels:
-#       vpn.home.arpa/enabled: "false"
-#     moverSecurityContext:
-#       runAsUser: 1000
-#       runAsGroup: 1000
-#       fsGroup: 1000
-#     enableFileDeletion: true
-#     cleanupCachePVC: true
-#     cleanupTempPVC: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: "home-assistant-matter-server-dst"
+  labels:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: "home-assistant-matter-server-volsync-secret"
+    copyMethod: Snapshot
+    volumeSnapshotClassName: "csi-ceph-blockpool"
+    cacheStorageClassName: "ceph-block"
+    cacheAccessModes: ["ReadWriteOnce"]
+    cacheCapacity: "5Gi"
+    storageClassName: "ceph-block"
+    accessModes: ["ReadWriteOnce"]
+    capacity: "5Gi"
+    moverPodLabels:
+      vpn.home.arpa/enabled: "false"
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true

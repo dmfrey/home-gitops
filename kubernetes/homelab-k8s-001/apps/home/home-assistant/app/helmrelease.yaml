@@ -160,13 +160,9 @@ spec:
 
             resources:
               requests:
-                # squat.ai/slzb06m: 1
-                # squat.ai/skyconnect: 1
                 cpu: 47m
                 memory: 2048Mi
               limits:
-                # squat.ai/slzb06m: 1
-                # squat.ai/skyconnect: 1
                 memory: 4096Mi
 
             securityContext:
@@ -174,31 +170,34 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-          # matter-server:
-          #   image:
-          #     repository: ghcr.io/home-assistant-libs/python-matter-server
-          #     tag: "7.0.1"
+          matter-server:
+            image:
+              repository: ghcr.io/home-assistant-libs/python-matter-server
+              tag: "7.0.1"
 
-          #   args:
-          #     - --storage-path=/data
-          #     - --primary-interface=net1
+            args:
+              - --storage-path=/data
+              - --primary-interface=net1
 
-          #   env:
-          #     MATTER_SERVER__INSTANCE_NAME: matter-server
-          #     MATTER_SERVER__PORT: &matterPort 5580
-          #     MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
-          #     MATTER_SERVER__LOG_LEVEL: debug
+            env:
+              MATTER_SERVER__INSTANCE_NAME: matter-server
+              MATTER_SERVER__PORT: &matterPort 5580
+              MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
+              MATTER_SERVER__LOG_LEVEL: debug
 
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 256Mi
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
 
-          #   securityContext:
-          #     readOnlyRootFilesystem: false
-          #     allowPrivilegeEscalation: true
-          #     capabilities: { drop: ["ALL"] }
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
           codeserver:
             dependsOn: *app
@@ -256,14 +255,10 @@ spec:
         ports:
           http:
             port: *port
-          # matter:
-          #   port: *matterPort
+          matter:
+            port: *matterPort
           code:
             port: *codePort
-          # otbrweb:
-          #   port: *otbrWebPort
-          # otbrrest:
-          #   port: *otbrRestPort
 
     route:
       *app :
@@ -308,12 +303,12 @@ spec:
             *app :
               - path: /llmvision
 
-      # matter-server-data:
-      #   existingClaim: home-assistant-matter-server-data
-      #   advancedMounts:
-      #     *app :
-      #       matter-server:
-      #         - path: /data
+      matter-server-data:
+        existingClaim: home-assistant-matter-server-data
+        advancedMounts:
+          *app :
+            matter-server:
+              - path: /data
 
       deploy-key:
         type: secret
