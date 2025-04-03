@@ -177,13 +177,14 @@ spec:
 
             args:
               - --storage-path=/data
+              - --paa-root-cert-dir=/data/paa-root-cert
               - --primary-interface=net1
+              - --log-level=debug
 
             env:
               MATTER_SERVER__INSTANCE_NAME: matter-server
               MATTER_SERVER__PORT: &matterPort 5580
-              MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
-              MATTER_SERVER__LOG_LEVEL: debug
+              # MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
 
             resources:
               requests:
@@ -193,7 +194,7 @@ spec:
 
             securityContext:
               runAsNonRoot: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               allowPrivilegeEscalation: true
               runAsUser: 0
               runAsGroup: 0
