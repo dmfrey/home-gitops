@@ -132,7 +132,7 @@ data:
               type: gatus
               url: http://gatus.observability.svc.cluster.local:8080
         - QNAP:
-            href: https://192.168.30.5:7080
+            href: https://192.168.30.5:7080/cgi-bin/
             description: QNAP NAS TS-462
             icon: qnap.png
             widget:
@@ -161,6 +161,17 @@ data:
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - Observability:
+        - Grafana:
+            href: https://grafana.dmfrey.com
+            icon: grafana.png
+            description: Application Health and Alerting
+            widget:
+              type: grafana
+              url: http://grafana.observability.svc.cluster.local:3000
+              username: {{HOMEPAGE_VAR_GRAFANA_USERNAME}}
+              password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
+              totalalerts: true
+              alertstriggered: true
         - Prometheus:
             href: https://prometheus.dmfrey.com
             icon: prometheus.png
