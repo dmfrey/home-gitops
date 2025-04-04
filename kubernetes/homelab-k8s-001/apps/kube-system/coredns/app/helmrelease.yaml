@@ -23,9 +23,9 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: coredns
-labels:
-  k8s-app: kube-dns
-  kubernetes.io/name: CoreDNS
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/name: CoreDNS
 spec:
 
   interval: 1h
