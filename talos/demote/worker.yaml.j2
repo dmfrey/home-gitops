@@ -1,13 +1,12 @@
----
 version: v1alpha1
 debug: false
 persist: true
 machine:
-  type: controlplane
+  type: worker
   token: op://homelab5767/talos/MACHINE_TOKEN
   ca:
     crt: op://homelab5767/talos/MACHINE_CA_CRT
-    key: op://homelab5767/talos/MACHINE_CA_KEY
+    key: ""
   certSANs:
     - 192.168.30.20
     - homelab-k8s-001.homelab.frey.home
@@ -25,11 +24,6 @@ machine:
           - rw
     extraConfig:
       serializeImagePulls: false
-    extraMounts:
-      - destination: /var/mnt/extra
-        type: bind
-        source: /var/mnt/extra
-        options: ["bind", "rshared", "rw"]
     defaultRuntimeSeccompProfileEnabled: true
     nodeIP:
       validSubnets: ["192.168.30.0/24"]
@@ -48,15 +42,6 @@ machine:
             mtu: 1500
         mtu: 9000
         dhcp: true
-        vip:
-          ip: 192.168.30.20
-    extraHostEntries:
-      - ip: 192.168.30.20
-        aliases:
-          - homelab-k8s-001.homelab.frey.home
-      - ip: 192.168.30.20
-        aliases:
-          - homelab.dmfrey.com
     disableSearchDomain: true
   install:
     extraKernelArgs:
@@ -134,12 +119,7 @@ machine:
     rbac: true
     stableHostname: true
     kubernetesTalosAPIAccess:
-      enabled: true
-      allowedRoles:
-        - os:admin
-      allowedKubernetesNamespaces:
-        - actions-runner-system
-        - system-upgrade"]
+      enabled: false
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
     kubePrism:
@@ -157,8 +137,8 @@ machine:
     modules:
       - name: nbd
   nodeLabels:
-    factory.talos.dev/schematic-prefix: b51b7b6129e8ba285ab83ef1059418c4
-    factory.talos.dev/schematic-suffix: 34de4223a7ae4b3905dd06512b923943
+    factory.talos.dev/schematic-prefix: deee80e4ca4ed205ba87d67b33af7b02
+    factory.talos.dev/schematic-suffix: 3264d01ac97c1ce13ab083e6d70074f0
     topology.kubernetes.io/region: dmf
     topology.kubernetes.io/zone: dmf-u
 cluster:
@@ -175,45 +155,16 @@ cluster:
       - 172.22.0.0/16
     serviceSubnets:
       - 172.23.0.0/16
-  coreDNS:
-    disabled: true
   token: op://homelab5767/talos/CLUSTER_TOKEN
-  secretboxEncryptionSecret: op://homelab5767/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   ca:
     crt: op://homelab5767/talos/CLUSTER_CA_CRT
-    key: op://homelab5767/talos/CLUSTER_CA_KEY
-  aggregatorCA:
-    crt: op://homelab5767/talos/CLUSTER_AGGREGATORCA_CRT
-    key: op://homelab5767/talos/CLUSTER_AGGREGATORCA_KEY
-  serviceAccount:
-    key: op://homelab5767/talos/CLUSTER_SERVICEACCOUNT_KEY
-  apiServer:
-    image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
-    extraArgs:
-      enable-aggregator-routing: true
-      feature-gates: MutatingAdmissionPolicy=true
-      runtime-config: admissionregistration.k8s.io/v1alpha1=true
-    certSANs:
-      - homelab-k8s-001.homelab.frey.home
-      - 192.168.30.20
-      - homelab-k8s-001.homelab.frey.home
-      - homelab.dmfrey.com
-      - 127.0.0.1
-    disablePodSecurityPolicy: true
-    auditPolicy:
-      apiVersion: audit.k8s.io/v1
-      kind: Policy
-      rules:
-        - level: Metadata
+    key: ""
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
       bind-address: 0.0.0.0
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:{{ ENV.KUBERNETES_VERSION }}
   scheduler:
-    image: registry.k8s.io/kube-scheduler:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
       bind-address: 0.0.0.0
   discovery:
@@ -222,27 +173,6 @@ cluster:
       kubernetes:
         disabled: true
       service: {}
-  etcd:
-    ca:
-      crt: op://homelab5767/talos/CLUSTER_ETCD_CA_CRT
-      key: op://homelab5767/talos/CLUSTER_ETCD_CA_KEY
-    extraArgs:
-      listen-metrics-urls: http://0.0.0.0:2381
-    advertisedSubnets:
-      - 192.168.30.0/24
-  extraManifests:
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
-    - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.81.0/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
-  allowSchedulingOnMasters: true
-  allowSchedulingOnControlPlanes: true
 # ---
 # apiVersion: v1alpha1
 # kind: ExtensionServiceConfig
