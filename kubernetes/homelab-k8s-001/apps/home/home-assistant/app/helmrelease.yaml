@@ -302,7 +302,7 @@ spec:
         advancedMounts:
           *app :
             *app :
-              - path: /llmvision
+              - path: /config/www/llmvision
 
       matter-server-data:
         existingClaim: home-assistant-matter-server-data
