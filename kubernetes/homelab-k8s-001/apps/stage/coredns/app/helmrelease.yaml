@@ -46,3 +46,6 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: coredns-values
+
+  driftDetection:
+    mode: enabled
