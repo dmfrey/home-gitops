@@ -5,5 +5,5 @@ kind: Kustomization
 namespace: stage
 components:
   - ../../components/common
-resources: []
-  # - ./coredns/ks.yaml
+resources: 
+  - ./coredns/ks.yaml
