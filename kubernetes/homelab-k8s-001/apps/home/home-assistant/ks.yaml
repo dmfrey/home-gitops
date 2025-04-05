@@ -32,13 +32,11 @@ spec:
       APP: *app
       DB: *app
       GATUS_SUBDOMAIN: home
-      APP_UID: "568"
-      APP_GID: "568"
       VOLSYNC_CLAIM: home-assistant-config-1
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-      # LLMVISION_CLAIM: llmvision-data
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

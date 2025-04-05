@@ -99,7 +99,7 @@ spec:
 
           #   image:
           #     repository: registry.k8s.io/git-sync/git-sync
-          #     tag: v4.2.4@sha256:8bfbf28623690fba06c65ec392e42023d28ecfc7e0fbfd4443388d020dc112ea
+          #     tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
 
           #   env:
           #     GITSYNC_REPO: git@github.com:dmfrey/hass-config.git   # https://github.com/dmfrey/hass-config
@@ -215,15 +215,13 @@ spec:
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
-              - --port
-              - "8082"
 
             env:
               TZ: America/New_York
 
             ports:
               - name: code
-                containerPort: &codePort 8082
+                containerPort: &codePort 8080
 
         pod:
           annotations:
@@ -237,14 +235,15 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
         supplementalGroups:
           - 20    # dialout
           - 85    # usb
+          - 568
 
     service:
       *app :
