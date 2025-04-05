@@ -92,33 +92,32 @@ spec:
               allowPrivilegeEscalation: true
               capabilities: { drop: ["ALL"] }
 
-          # git-sync:
-          #   # dependsOn: fix-permissions
-          #   restartPolicy: Always
+          git-sync:
+            # dependsOn: fix-permissions
+            restartPolicy: Always
 
-          #   image:
-          #     repository: registry.k8s.io/git-sync/git-sync
-          #     tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
 
-          #   env:
-          #     GITSYNC_REPO: git@github.com:dmfrey/hass-config.git   # https://github.com/dmfrey/hass-config
-          #     GITSYNC_REF: main
-          #     GITSYNC_PERIOD: 10s # 1 day
-          #     GITSYNC_ROOT: /config
-          #     GITSYNC_ADD_USER: "true"
-          #     GITSYNC_VERBOSE: 2
-          #     # GIT_SYNC_ONE_TIME: "true"
+            env:
+              GITSYNC_REPO: https://github.com/dmfrey/hass-config
+              GITSYNC_REF: main
+              GITSYNC_PERIOD: 10s # 1 day
+              GITSYNC_ROOT: /config
+              GITSYNC_VERBOSE: 2
+              # GIT_SYNC_ONE_TIME: "true"
 
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 128Mi
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
 
-          #   securityContext:
-          #     readOnlyRootFilesystem: false
-          #     allowPrivilegeEscalation: true
-          #     capabilities: { drop: ["ALL"] }
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
         containers:
           *app :
