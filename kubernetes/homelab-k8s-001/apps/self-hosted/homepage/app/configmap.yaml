@@ -95,6 +95,15 @@ data:
             widget:
               type: qbittorrent
               url: http://rdt-client.download.svc.cluster.local:6500
+    - Games:
+        - RomM:
+            href: https://romm.dmfrey.com
+            icon: romm.png
+            description: Game Platform
+            widget:
+              type: romm
+              url: https://romm.media.svc.cluster.local:8080
+              fields: ["platforms", "totalRoms"]
     - Home:
         - Home-Assistant:
             href: https://home.dmfrey.com
