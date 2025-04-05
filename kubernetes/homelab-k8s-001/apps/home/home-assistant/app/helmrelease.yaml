@@ -372,6 +372,14 @@ spec:
               - path: /config/backups
                 readOnly: false
 
+      git-sync-test:
+        type: emptyDir
+        medium: Memory
+        advancedMounts:
+          *app :
+            git-sync:
+              - path: /config
+
       tmp:
         type: emptyDir
         medium: Memory
@@ -379,8 +387,8 @@ spec:
           *app :
             git-clone:
               - path: /tmp
-            # git-sync:
-            #   - path: /tmp
+            git-sync:
+              - path: /tmp
             *app :
               - path: /tmp
             matter-server:
