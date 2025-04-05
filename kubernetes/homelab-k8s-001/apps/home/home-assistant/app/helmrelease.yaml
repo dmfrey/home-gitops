@@ -40,20 +40,20 @@ spec:
           secret.reloader.stakater.com/reload: pg-home-assistant-app
 
         initContainers:
-          fix-permissions:
-            image:
-              repository: busybox
-              tag: stable
+          # fix-permissions:
+          #   image:
+          #     repository: busybox
+          #     tag: stable
 
-            command: ["sh", "-c", "chown -R 1000:1000 /config/.*"]
+          #   command: ["sh", "-c", "chown -R 1000:1000 /config/.*"]
 
-            securityContext:
-              runAsNonRoot: false
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+          #   securityContext:
+          #     runAsNonRoot: false
+          #     readOnlyRootFilesystem: true
+          #     allowPrivilegeEscalation: true
+          #     runAsUser: 0
+          #     runAsGroup: 0
+          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
           git-clone:
             image:
@@ -287,8 +287,8 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           *app :
-            fix-permissions:
-              - path: /config
+            # fix-permissions:
+            #   - path: /config
             git-clone:
               - path: /config
             *app :
