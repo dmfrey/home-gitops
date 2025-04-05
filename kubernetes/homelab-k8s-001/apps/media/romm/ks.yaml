@@ -14,8 +14,6 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
-    - name: onepassword-store
-      namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
   healthChecks:
@@ -90,8 +88,6 @@ spec:
       namespace: *namespace
     - name: romm-kv
       namespace: *namespace
-    - name: onepassword-store
-      namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync

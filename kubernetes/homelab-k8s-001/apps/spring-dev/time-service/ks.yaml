@@ -25,8 +25,7 @@ spec:
       DB: time-service
   dependsOn:
     - name: cloudnative-pg
-    - name: onepassword-store
-      namespace: external-secrets
+      namespace: datastore
     - name: rook-ceph-cluster
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
