@@ -99,7 +99,7 @@ data:
         - RomM:
             href: https://romm.dmfrey.com
             icon: romm.png
-            description: Game Platform
+            description: Retro Games
             widget:
               type: romm
               url: https://romm.media.svc.cluster.local:8080
