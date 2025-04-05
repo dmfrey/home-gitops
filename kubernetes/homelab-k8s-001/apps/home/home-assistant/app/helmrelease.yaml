@@ -40,21 +40,21 @@ spec:
           secret.reloader.stakater.com/reload: pg-home-assistant-app
 
         initContainers:
-          # fix-permissions:
+          fix-permissions:
           #   dependsOn: git-sync
-            # image:
-            #   repository: busybox
-            #   tag: stable
+            image:
+              repository: busybox
+              tag: stable
 
-            # command: ["sh", "-c", "rm -rf /config/.ssh"]
+            command: ["sh", "-c", "chown -R 1000:1000 /config/*"]
 
-            # securityContext:
-            #   runAsNonRoot: false
-            #   readOnlyRootFilesystem: true
-            #   allowPrivilegeEscalation: true
-            #   runAsUser: 0
-            #   runAsGroup: 0
-            #   capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
           git-clone:
             image:
@@ -239,7 +239,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
         supplementalGroups:
           - 20    # dialout
           - 85    # usb
