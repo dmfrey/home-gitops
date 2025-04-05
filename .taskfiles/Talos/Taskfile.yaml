@@ -82,6 +82,15 @@ tasks:
       - talosctl --nodes {{.IP}} get machineconfig
       - which talosctl
 
+  shutdown-node:
+    desc: Shutdown Talos on a single node [IP=required]
+    cmd: talosctl --nodes {{.IP}} shutdown
+    requires:
+      vars: [IP]
+    preconditions:
+      - talosctl --nodes {{.IP}} get machineconfig
+      - which talosctl
+
   shutdown-cluster:
     desc: Shutdown Talos across the whole cluster
     prompt: Shutdown the Talos cluster ... continue?
