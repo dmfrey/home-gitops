@@ -326,16 +326,15 @@ spec:
               - path: /config/configuration.yaml
                 subPath: configuration.yaml
 
-      backups:
-        enabled: true
-        type: nfs
-        server: "192.168.30.5"
-        path: /homeassistant
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config/backups
-                readOnly: false
+      config-logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+
+      config-tts:
+        type: emptyDir
+        globalMounts:
+          - path: /config/tts
 
       tmp:
         type: emptyDir
@@ -350,6 +349,17 @@ spec:
               - path: /tmp
             codeserver:
               - path: /tmp
+
+      backups:
+        enabled: true
+        type: nfs
+        server: "192.168.30.5"
+        path: /homeassistant
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/backups
+                readOnly: false
 
     serviceMonitor:
       *app :
