@@ -282,12 +282,12 @@ spec:
             matter-server:
               - path: /data
 
-      deploy-key:
-        type: secret
-        name: home-assistant-deploy-key
-        defaultMode: 256
-        advancedMounts:
-          *app :
+      # deploy-key:
+      #   type: secret
+      #   name: home-assistant-deploy-key
+      #   defaultMode: 256
+      #   advancedMounts:
+      #     *app :
             # git-clone:
             #   - path: /.ssh/id_ed25519
             #     subPath: ssh-privatekey
@@ -298,24 +298,24 @@ spec:
             #     subPath: dot-gitconfig
             #   - path: /.ssh/config
             #     subPath: ssh-config
-            *app :
-              - path: /config/.ssh/id_ed25519
-                subPath: ssh-privatekey
-                readOnly: true
-              - path: /config/.ssh/known_hosts
-                subPath: known-hosts
-              - path: /config/.ssh/config
-                subPath: ssh-config
-            codeserver:
-              - path: /home/coder/.ssh/id_ed25519
-                subPath: ssh-privatekey
-                readOnly: true
-              - path: /home/coder/.ssh/known_hosts
-                subPath: known-hosts
-              - path: /home/coder/.gitconfig
-                subPath: dot-gitconfig
-              - path: /home/coder/.ssh/config
-                subPath: ssh-config
+            # *app :
+            #   - path: /config/.ssh/id_ed25519
+            #     subPath: ssh-privatekey
+            #     readOnly: true
+            #   - path: /config/.ssh/known_hosts
+            #     subPath: known-hosts
+            #   - path: /config/.ssh/config
+            #     subPath: ssh-config
+            # codeserver:
+            #   - path: /home/coder/.ssh/id_ed25519
+            #     subPath: ssh-privatekey
+            #     readOnly: true
+            #   - path: /home/coder/.ssh/known_hosts
+            #     subPath: known-hosts
+            #   - path: /home/coder/.gitconfig
+            #     subPath: dot-gitconfig
+            #   - path: /home/coder/.ssh/config
+            #     subPath: ssh-config
 
       configuration:
         type: configMap
