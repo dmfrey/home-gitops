@@ -125,7 +125,7 @@ tasks:
 
   kubeconfig:
     desc: Generate the kubeconfig for a Talos cluster
-    cmd: talosctl kubeconfig --nodes {{.NODE}} --force --force-context-name main {{.ROOT_DIR}}
+    cmd: talosctl kubeconfig --nodes {{.NODE}} --force --force-context-name homelab-k8s-001 {{.ROOT_DIR}}
     vars:
       NODE:
         sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
