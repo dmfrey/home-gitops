@@ -92,33 +92,6 @@ spec:
               allowPrivilegeEscalation: true
               capabilities: { drop: ["ALL"] }
 
-          git-sync:
-            # dependsOn: fix-permissions
-            restartPolicy: Always
-
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
-
-            env:
-              GITSYNC_REPO: https://github.com/dmfrey/hass-config
-              GITSYNC_REF: main
-              GITSYNC_PERIOD: 10s # 1 day
-              GITSYNC_ROOT: /config
-              GITSYNC_VERBOSE: 2
-              # GIT_SYNC_ONE_TIME: "true"
-
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
-
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
         containers:
           *app :
             image:
@@ -325,20 +298,12 @@ spec:
                 subPath: dot-gitconfig
               - path: /.ssh/config
                 subPath: ssh-config
-            # git-sync:
-            #   - path: /etc/git-secret/ssh
-            #     subPath: ssh-privatekey
-            #     readOnly: true
-            #   - path: /etc/git-secret/known_hosts
-            #     subPath: known-hosts
             *app :
               - path: /config/.ssh/id_ed25519
                 subPath: ssh-privatekey
                 readOnly: true
               - path: /config/.ssh/known_hosts
                 subPath: known-hosts
-              # - path: /config/.gitconfig
-              #   subPath: dot-gitconfig
               - path: /config/.ssh/config
                 subPath: ssh-config
             codeserver:
@@ -372,22 +337,12 @@ spec:
               - path: /config/backups
                 readOnly: false
 
-      git-sync-test:
-        type: emptyDir
-        medium: Memory
-        advancedMounts:
-          *app :
-            git-sync:
-              - path: /config
-
       tmp:
         type: emptyDir
         medium: Memory
         advancedMounts:
           *app :
             git-clone:
-              - path: /tmp
-            git-sync:
               - path: /tmp
             *app :
               - path: /tmp

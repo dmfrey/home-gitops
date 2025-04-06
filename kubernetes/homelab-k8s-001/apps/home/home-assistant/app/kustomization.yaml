@@ -13,7 +13,6 @@ resources:
   - ./scheduledbackup.yaml
   - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
-  # - ./git-sync-hr.yaml
 configMapGenerator:
   - name: hass-config
     files:
