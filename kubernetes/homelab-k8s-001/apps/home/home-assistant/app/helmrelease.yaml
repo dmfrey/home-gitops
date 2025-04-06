@@ -39,7 +39,7 @@ spec:
           reloader.stakater.com/auto: "true"
           secret.reloader.stakater.com/reload: pg-home-assistant-app
 
-        initContainers:
+        # initContainers:
           # fix-permissions:
           #   image:
           #     repository: busybox
