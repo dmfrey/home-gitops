@@ -109,7 +109,7 @@ spec:
             envFrom:
               - secretRef:
                   name: home-assistant-secret
-                prefix: "HASS_"
+                # prefix: "HASS_"
 
             ports:
               - name: http
