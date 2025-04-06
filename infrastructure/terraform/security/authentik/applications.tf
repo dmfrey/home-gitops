@@ -13,7 +13,7 @@ locals {
 module "onepassword_application" {
   for_each = toset(local.oauth_apps)
   source   = "github.com/dmfrey/terraform-1password-item"
-  vault    = "homelab5767"
+  vault    = "Kubernetes"
   item     = each.key
 }
 
