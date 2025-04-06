@@ -3,7 +3,7 @@
 # Step 1: Retrieve secrets from 1Password
 module "onepassword_users" {
   source   = "github.com/dmfrey/terraform-1password-item"
-  vault    = "homelab5767"
+  vault    = "Kubernetes"
   item     = "users"
 }
 
