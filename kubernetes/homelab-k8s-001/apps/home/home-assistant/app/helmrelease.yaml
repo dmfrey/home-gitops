@@ -55,42 +55,42 @@ spec:
           #     runAsGroup: 0
           #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
-          git-clone:
-            image:
-              repository: alpine/git
-              tag: v2.47.2
+          # git-clone:
+          #   image:
+          #     repository: alpine/git
+          #     tag: v2.47.2
 
-            command:
-              # - sleep
-              # - "3600"
+          #   command:
+          #     # - sleep
+          #     # - "3600"
 
-              - "/bin/sh"
-              - -c
-              - |
-                # whoami
-                # echo $HOME
-                #   # ls /.ssh
-                #   # cat /.gitconfig
-                #   # git config --global --add safe.directory /config
-                #   # git config -l
-                #   ssh-add ~/.ssh/id_ed25519
-                cd /config
-                #   cat .git/config
-                #   rm -rf .worktrees
-                #   rm -rf hass-config.git
-                #   ls -la
-                git fetch origin
-                git reset origin/main
+          #     - "/bin/sh"
+          #     - -c
+          #     - |
+          #       # whoami
+          #       # echo $HOME
+          #       #   # ls /.ssh
+          #       #   # cat /.gitconfig
+          #       #   # git config --global --add safe.directory /config
+          #       #   # git config -l
+          #       #   ssh-add ~/.ssh/id_ed25519
+          #       cd /config
+          #       #   cat .git/config
+          #       #   rm -rf .worktrees
+          #       #   rm -rf hass-config.git
+          #       #   ls -la
+          #       git fetch origin
+          #       git reset origin/main
 
-              # - git
-              # - clone
-              # - git@github.com:dmfrey/hass-config.git
-              # - /config
+          #     # - git
+          #     # - clone
+          #     # - git@github.com:dmfrey/hass-config.git
+          #     # - /config
 
-            securityContext:
-              readOnlyRootFilesystem: false
-              allowPrivilegeEscalation: true
-              capabilities: { drop: ["ALL"] }
+          #   securityContext:
+          #     readOnlyRootFilesystem: false
+          #     allowPrivilegeEscalation: true
+          #     capabilities: { drop: ["ALL"] }
 
         containers:
           *app :
@@ -261,8 +261,8 @@ spec:
           *app :
             # fix-permissions:
             #   - path: /config
-            git-clone:
-              - path: /config
+            # git-clone:
+            #   - path: /config
             *app :
               - path: /config
             codeserver:
@@ -288,16 +288,16 @@ spec:
         defaultMode: 256
         advancedMounts:
           *app :
-            git-clone:
-              - path: /.ssh/id_ed25519
-                subPath: ssh-privatekey
-                readOnly: true
-              - path: /.ssh/known_hosts
-                subPath: known-hosts
-              - path: /.gitconfig
-                subPath: dot-gitconfig
-              - path: /.ssh/config
-                subPath: ssh-config
+            # git-clone:
+            #   - path: /.ssh/id_ed25519
+            #     subPath: ssh-privatekey
+            #     readOnly: true
+            #   - path: /.ssh/known_hosts
+            #     subPath: known-hosts
+            #   - path: /.gitconfig
+            #     subPath: dot-gitconfig
+            #   - path: /.ssh/config
+            #     subPath: ssh-config
             *app :
               - path: /config/.ssh/id_ed25519
                 subPath: ssh-privatekey
@@ -342,8 +342,8 @@ spec:
         medium: Memory
         advancedMounts:
           *app :
-            git-clone:
-              - path: /tmp
+            # git-clone:
+            #   - path: /tmp
             *app :
               - path: /tmp
             matter-server:
