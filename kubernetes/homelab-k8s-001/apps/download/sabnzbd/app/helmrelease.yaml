@@ -141,11 +141,14 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+        supplementalGroups:
+          - 568
+          - 1568
 
     service:
       *app :
@@ -198,8 +201,9 @@ spec:
                 subPath: sabnzbd.ini
 
       downloads:
-        enabled: true
-        existingClaim: nfs-downloads
+        type: nfs
+        server: 192.168.30.5
+        path: /media/downloads
         globalMounts:
           - path: /data/downloads
             readOnly: false
