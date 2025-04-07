@@ -18,7 +18,7 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -57,7 +57,7 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: starr-apps-secret
+                  name: recyclarr-secret
 
     service:
       app:

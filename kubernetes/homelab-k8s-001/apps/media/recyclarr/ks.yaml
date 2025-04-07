@@ -9,15 +9,10 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: media-common
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/recyclarr/app"
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
