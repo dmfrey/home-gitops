@@ -56,7 +56,7 @@ spec:
               SONARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: starr-apps-secret
+                    name: sonarr-secret
                     key: SONARR_API_KEY
 
             ports:
@@ -92,7 +92,7 @@ spec:
           #     APIKEY:
           #       valueFrom:
           #         secretKeyRef:
-          #           name: starr-apps-secret
+          #           name: sonarr-secret
           #           key: SONARR_API_KEY
 
           #   resources:
