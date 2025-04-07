@@ -52,8 +52,8 @@ spec:
 
             env:
               TZ: America/New_York
-              PUID: 568
-              PGID: 568
+              PUID: 1000
+              PGID: 1000
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
@@ -92,11 +92,11 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 109, 1568, 65534]
+        supplementalGroups: [44, 109, 568, 1568, 65534]
         seccompProfile: { type: RuntimeDefault }
       affinity:
         podAntiAffinity:
@@ -158,7 +158,9 @@ spec:
           - path: /config/log
 
       media:
-        existingClaim: nfs-media
+        type: nfs
+        server: 192.168.30.5
+        path: /media
 
       transcode:
         enabled: true
