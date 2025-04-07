@@ -62,8 +62,6 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
-    - name: download-common-mount
-      namespace: *namespace
     - name: sabnzbd-config
       namespace: *namespace
     - name: rook-ceph-cluster
@@ -82,8 +80,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      APP_UID: "1568"
-      APP_GID: "1568"
       VOLSYNC_CLAIM: sabnzbd-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
