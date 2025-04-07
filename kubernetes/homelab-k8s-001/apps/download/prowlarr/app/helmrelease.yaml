@@ -166,7 +166,7 @@ spec:
 
       backups:
         type: nfs
-        server: "192.168.30.5"
+        server: 192.168.30.5
         path: /plexbackups/backups/prowlarr
         globalMounts:
           - path: /config/Backups
