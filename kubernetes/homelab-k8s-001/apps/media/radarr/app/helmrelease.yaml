@@ -56,7 +56,7 @@ spec:
               RADARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: starr-apps-secret
+                    name: radarr-secret
                     key: RADARR_API_KEY
 
             ports:
@@ -92,7 +92,7 @@ spec:
           #     APIKEY:
           #       valueFrom:
           #         secretKeyRef:
-          #           name: starr-apps-secret
+          #           name: radarr-secret
           #           key: RADARR_API_KEY
 
           #   resources:
