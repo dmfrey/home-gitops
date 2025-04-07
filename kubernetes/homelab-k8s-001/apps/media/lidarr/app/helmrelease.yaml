@@ -91,12 +91,14 @@ spec:
           #     - --enable-additional-metrics
 
           #   env:
-          #     - name: URL
-          #       value: "http://localhost:8686"
-          #     - name: CONFIG
-          #       value: "/config/config.xml"
-          #     - name: PORT
-          #       value: &metricsPort 9709
+          #     URL: "http://localhost:8686"
+          #     CONFIG: "/config/config.xml"
+          #     PORT: &metricsPort 9709
+          #     APIKEY:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: lidarr-secret
+          #           key: LIDARR_API_KEY
 
           #   ports:
           #     - name: metrics
