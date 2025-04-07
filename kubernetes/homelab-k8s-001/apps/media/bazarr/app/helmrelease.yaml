@@ -52,7 +52,7 @@ spec:
               BAZARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: starr-apps-secret
+                    name: bazarr-secret
                     key: BAZARR_API_KEY
 
             envFrom:
@@ -120,7 +120,7 @@ spec:
           #     APIKEY:
           #       valueFrom:
           #         secretKeyRef:
-          #           name: starr-apps-secret
+          #           name: bazarr-secret
           #           key: BAZARR_API_KEY
 
           #   resources:
