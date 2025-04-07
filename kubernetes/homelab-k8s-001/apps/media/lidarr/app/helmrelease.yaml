@@ -57,7 +57,7 @@ spec:
               LIDARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: starr-apps-secret
+                    name: lidarr-secret
                     key: LIDARR_API_KEY
 
             ports:
@@ -107,12 +107,13 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
         supplementalGroups:
+          - 568
           - 1568
 
     service:
