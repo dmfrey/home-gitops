@@ -13,8 +13,6 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
-    - name: download-common-mount
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: pod-gateway

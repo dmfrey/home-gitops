@@ -6,7 +6,6 @@ namespace: download
 components:
   - ../../components/common
 resources:
-  - ./common/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./rdt-client/ks.yaml
