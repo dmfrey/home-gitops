@@ -101,11 +101,11 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 1568, 10000, 65534]
+        supplementalGroups: [44, 568, 1568, 10000, 65534]
         seccompProfile: { type: RuntimeDefault }
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
@@ -194,7 +194,9 @@ spec:
           - path: /config/Library/Application Support/Plex Media Server/Logs
 
       media:
-        existingClaim: nfs-media
+        type: nfs
+        server: 192.168.30.5
+        path: /media
 
       transcode:
         type: custom
@@ -215,7 +217,7 @@ spec:
 
       backup:
         type: nfs
-        server: "192.168.30.5"
+        server: 192.168.30.5
         path: /plexbackups/backups/plex
         globalMounts:
           - path: /config/Backups
