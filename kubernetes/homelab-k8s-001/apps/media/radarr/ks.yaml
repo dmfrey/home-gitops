@@ -15,14 +15,13 @@ spec:
   dependsOn:
     - name: media-common
       namespace: media
-    - name: media-common-mounts
-      namespace: media
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/radarr/app"
+  retryInterval: 2m
   postBuild:
     substitute:
       APP: *app
@@ -58,6 +57,7 @@ spec:
     substitute:
       APP: *app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

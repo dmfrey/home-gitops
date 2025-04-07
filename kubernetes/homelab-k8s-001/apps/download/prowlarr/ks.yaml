@@ -13,8 +13,6 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
-    - name: media-common-mounts
-      namespace: media
     - name: pod-gateway
       namespace: network
     - name: volsync

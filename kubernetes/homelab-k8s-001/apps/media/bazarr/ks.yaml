@@ -15,8 +15,6 @@ spec:
   dependsOn:
     - name: media-common
       namespace: *namespace
-    - name: media-common-mounts
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync

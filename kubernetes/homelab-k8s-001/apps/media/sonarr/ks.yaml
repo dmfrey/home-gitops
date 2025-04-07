@@ -15,8 +15,6 @@ spec:
   dependsOn:
     - name: media-common
       namespace: *namespace
-    - name: media-common-mounts
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -29,6 +27,7 @@ spec:
       VOLSYNC_CLAIM: sonarr-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -58,6 +57,7 @@ spec:
     substitute:
       APP: *app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
