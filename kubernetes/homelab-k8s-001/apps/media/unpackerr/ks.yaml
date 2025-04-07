@@ -10,20 +10,14 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: media-common
-      namespace: *namespace
     - name: lidarr
       namespace: *namespace
     - name: sonarr
       namespace: *namespace
     - name: radarr
       namespace: *namespace
-    # - name: readarr
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/unpackerr/app"
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -32,4 +26,4 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: false
+  wait: true
