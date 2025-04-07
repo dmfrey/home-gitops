@@ -203,7 +203,7 @@ spec:
                 "ips": ["192.168.50.4/24"]
               }]
 
-          hostNetwork: true
+          # hostNetwork: true
 
     defaultPodOptions:
       securityContext:
