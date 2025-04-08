@@ -9,7 +9,7 @@ tasks:
 
   apt:
     desc: Set up APT tools
-    deps: [apt-update, setup-build]
+    deps: [setup-build]
     cmds: []
     preconditions:
       - which apt
