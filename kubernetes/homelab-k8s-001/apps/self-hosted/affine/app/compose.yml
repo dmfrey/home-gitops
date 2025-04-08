@@ -53,7 +53,7 @@ services:
     restart: unless-stopped
 
   postgres:
-    image: postgres:16
+    image: postgres:17
     container_name: postgres
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
