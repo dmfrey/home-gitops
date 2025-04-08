@@ -1,0 +1,36 @@
+tap "fluxcd/tap"
+tap "go-task/tap"
+tap "siderolabs/tap"
+
+ build-essential
+ gpg
+ wget
+ curl
+
+ age
+cloudflared
+fluxcd/tap/flux
+gh
+go-task/tap/go-task
+gum
+helm
+helmfile
+jq
+k9s
+krew
+kubecolor
+kubeconform
+kubernetes-cli
+kustomize
+minijinja-cli
+mise
+moreutils
+siderolabs/tap/talosctl
+ sops
+stern
+talhelper
+viddy
+yq
+
+cask "1password"
+cask "1password-cli"
