@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app affine-db
+  namespace: &namespace self-hosted
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/cnpg
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: datastore
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-affine
+      namespace: *namespace
+  interval: 1h
+  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-db"
+  postBuild:
+    substitute:
+      APP: *app
+      DB: affine
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app affine-kv
+  namespace: &namespace self-hosted
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: dragonfly-operator
+      namespace: datastore
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  healthChecks:
+    - apiVersion: dragonflydb.io/v1alpha1
+      kind: Dragonfly
+      name: affine-kv-cluster
+      namespace: *namespace
+  interval: 1h
+  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-kv"
+  postBuild:
+    substitute:
+      APP: *app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
