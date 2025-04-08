@@ -9,9 +9,8 @@ tasks:
 
   apt:
     desc: Set up APT tools
-    cmds:
-      - task: apt-update
-      - sudo apt install build-essential gpg wget curl
+    deps: [apt-update, setup-build]
+    cmds: []
     preconditions:
       - which apt
       - test -f {{.WORKSTATION_RESOURCES_DIR}}/apt_packages.txt
@@ -43,3 +42,9 @@ tasks:
       - sudo apt update
     preconditions:
       - which apt
+
+  setup-build:
+    internal: true
+    deps: [apt-update]
+    cmds:
+      - sudo apt install build-essential gpg wget curl
