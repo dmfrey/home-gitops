@@ -10,7 +10,7 @@ tasks:
   apt:
     desc: Set up APT tools
     cmds:
-      - sudo apt update
+      - task: apt-update
       - sudo apt install build-essential gpg wget curl
     preconditions:
       - which apt
@@ -36,3 +36,10 @@ tasks:
     preconditions:
       - kubectl krew version
       - which kubectl
+
+  apt-update:
+    internal: true
+    cmds:
+      - sudo apt update
+    preconditions:
+      - which apt
