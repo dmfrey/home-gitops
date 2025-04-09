@@ -84,7 +84,7 @@ tasks:
       - curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/download/v0.4.5/krew-linux_amd64.tar.gz
       - tar zxvf krew-linux_amd64.tar.gz
       - ./krew-linux_amd64 install krew
-      - echo "export PATH="$HOME/.krew/bin:$PATH"
+      - echo "export PATH=$HOME/.krew/bin:$PATH"
       - rm krew-linux_amd64 krew-linux_amd64.tar.gz
 
   install-minijinja-cli:
