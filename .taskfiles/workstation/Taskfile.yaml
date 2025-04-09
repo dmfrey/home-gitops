@@ -71,7 +71,7 @@ tasks:
   install-helmfile:
     internal: true
     cmds:
-      - curl -L https://github.com/robertellis/helmfile/releases/download/v0.150.0/helmfile-linux-amd64 | tar xz helmfile
+      - curl -L https://github.com/helmfile/helmfile/releases/download/v0.171.0/helmfile_0.171.0_linux_amd64.tar.gz | tar xz helmfile
       - sudo mv helmfile /usr/local/bin/helmfile
       - sudo chmod +x /usr/local/bin/helmfile
       - helmfile --version
