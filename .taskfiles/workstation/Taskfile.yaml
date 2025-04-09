@@ -12,7 +12,8 @@ tasks:
     deps: [setup-build, add-deb-mise]
     cmds:
       - task: apt-update
-      - sudo apt install -y age sops mise
+      - sudo apt install -y age mise
+      - task: install-sops
     preconditions:
       - which apt
 
@@ -54,3 +55,10 @@ tasks:
     cmds:
       - wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg 1> /dev/null
       - echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
+
+  install-sops:
+    internal: true
+    cmds:
+      - curl -LO https://github.com/getsops/sops/releases/download/v3.10.1/sops-v3.10.1.linux.amd64
+      - mv sops-v3.10.1.linux.amd64 /usr/local/bin/sops
+      - chmod +x /usr/local/bin/sops
