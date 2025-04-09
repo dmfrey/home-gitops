@@ -12,8 +12,9 @@ tasks:
     deps: [setup-build, add-deb-mise]
     cmds:
       - task: apt-update
-      - sudo apt install -y age mise
+      - sudo apt install -y age mise kubectl helm kustomize jq yq
       - task: install-sops
+      - task: install-helmfile
     preconditions:
       - which apt
 
@@ -59,6 +60,11 @@ tasks:
   install-sops:
     internal: true
     cmds:
-      - curl -LO https://github.com/getsops/sops/releases/download/v3.10.1/sops-v3.10.1.linux.amd64
-      - sudo mv sops-v3.10.1.linux.amd64 /usr/local/bin/sops
+      - sudo curl -L https://github.com/getsops/sops/releases/download/v3.10.1/sops-v3.10.1.linux.amd64 -o /usr/local/bin/sops
       - sudo chmod +x /usr/local/bin/sops
+
+  install-helmfile:
+    internal: true
+    cmds:
+      - sudo curl -L https://github.com/robertellis/helmfile/releases/download/v0.150.0/helmfile-linux-amd64 -o /usr/local/bin/helmfile
+      - sudo chmod +x /usr/local/bin/helmfile
