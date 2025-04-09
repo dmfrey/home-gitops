@@ -16,9 +16,11 @@ tasks:
       - sudo snap install kubectl --classic
       - sudo snap install helm --classic
       - sudo snap install kustomize
+      - sudo snap install k9s
       - task: install-sops
       - task: install-helmfile
       - task: install-krew
+      - task: install-minijinja-cli
     preconditions:
       - which apt
 
@@ -81,5 +83,11 @@ tasks:
     cmds:
       - curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/download/v0.4.5/krew-linux_amd64.tar.gz
       - tar zxvf krew-linux_amd64.tar.gz
-      - sudo ./krew-linux_amd64 install krew
-      - kubectl krew
+      - ./krew-linux_amd64 install krew
+      - echo "export PATH="$HOME/.krew/bin:$PATH"
+      - rm krew-linux_amd64 krew-linux_amd64.tar.gz
+
+  install-minijinja-cli:
+    internal: true
+    cmds:
+      - curl -sSfL https://github.com/mitsuhiko/minijinja/releases/latest/download/minijinja-cli-installer.sh | sh
