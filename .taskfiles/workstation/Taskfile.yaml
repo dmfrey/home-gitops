@@ -45,8 +45,8 @@ tasks:
 
   setup-build:
     internal: true
-    deps: [apt-update]
     cmds:
+      - task: apt-update
       - sudo apt install build-essential gpg wget curl
       - sudo install -dm 755 /etc/apt/keyrings
 
