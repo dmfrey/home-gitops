@@ -91,3 +91,9 @@ tasks:
     internal: true
     cmds:
       - curl -sSfL https://github.com/mitsuhiko/minijinja/releases/latest/download/minijinja-cli-installer.sh | sh
+
+  install-fluxcd:
+    internal: true
+    cmds:
+      - curl -s https://fluxcd.io/install.sh | sudo bash
+      - echo ". <(flux completion bash)"
