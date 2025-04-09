@@ -79,7 +79,7 @@ tasks:
   install-krew:
     internal: true
     cmds:
-      - curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/download/v0.4.5/krew-linux_amd64.tar.gz | tar xz
-      - chmod +x krew-linux-amd64
-      - sudo ./krew-linux-amd64 install
+      - curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/download/v0.4.5/krew-linux_amd64.tar.gz
+      - tar zxvf krew-linux_amd64.tar.gz
+      - sudo ./krew-linux_amd64 install krew
       - kubectl krew
