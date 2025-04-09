@@ -121,13 +121,10 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 65539
-        seccompProfile: { type: RuntimeDefault }
 
     service:
       *app :
@@ -148,9 +145,9 @@ spec:
           gethomepage.dev/name: Prowlarr
           gethomepage.dev/icon: prowlarr.png
           gethomepage.dev/description: Download Indexes
-          # gethomepage.dev/widget.type: jellyfin
-          # gethomepage.dev/widget.url: http://jellyfin.media.svc.cluster.local:8096
-          # gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_TOKEN}}` }}"
+          gethomepage.dev/widget.type: prowlarr
+          gethomepage.dev/widget.url: http://prowlarr.download.svc.cluster.local:9696
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_TOKEN}}` }}"
         parentRefs:
           - name: internal
             namespace: kube-system

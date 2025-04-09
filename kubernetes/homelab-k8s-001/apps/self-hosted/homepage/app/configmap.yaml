@@ -50,14 +50,14 @@ data:
     traefik: false
   services.yaml: |
     - Downloads:
-        - Prowlarr:
-            href: https://prowlarr.dmfrey.com
-            description: Download Indexes
-            icon: prowlarr.png
-            widget:
-              type: prowlarr
-              url: http://prowlarr.download.svc.cluster.local:9696
-              key: {{HOMEPAGE_VAR_PROWLARR_TOKEN}}
+        # - Prowlarr:
+        #     href: https://prowlarr.dmfrey.com
+        #     description: Download Indexes
+        #     icon: prowlarr.png
+        #     widget:
+        #       type: prowlarr
+        #       url: http://prowlarr.download.svc.cluster.local:9696
+        #       key: {{HOMEPAGE_VAR_PROWLARR_TOKEN}}
         - Lidarr:
             href: https://lidarr.dmfrey.com
             description: Music Downloads
