@@ -113,10 +113,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
-        supplementalGroups:
-          - 568
-          - 1568
 
     service:
       *app :
@@ -141,7 +137,7 @@ spec:
           gethomepage.dev/icon: lidarr.png
           gethomepage.dev/description: Music Downloads
           gethomepage.dev/widget.type: lidarr
-          gethomepage.dev/widget.url: http://lidarr.media.svc.cluster.local:9709
+          gethomepage.dev/widget.url: http://lidarr.media.svc.cluster.local:8686
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_LIDARR_TOKEN}}` }}"
         parentRefs:
           - name: internal
