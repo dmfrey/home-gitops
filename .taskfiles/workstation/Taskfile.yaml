@@ -22,6 +22,7 @@ tasks:
       - task: install-krew
       - task: install-minijinja-cli
       - task: install-fluxcd
+      - task: install-talosctl
     preconditions:
       - which apt
 
@@ -55,7 +56,7 @@ tasks:
     internal: true
     cmds:
       - task: apt-update
-      - sudo apt install build-essential gpg wget curl
+      - sudo apt install build-essential gpg wget curl bash-completion
       - sudo install -dm 755 /etc/apt/keyrings
 
   add-deb-mise:
@@ -98,3 +99,8 @@ tasks:
     cmds:
       - curl -s https://fluxcd.io/install.sh | sudo bash
       - echo ". <(flux completion bash)"
+
+  install-talosctl:
+    internal: true
+    cmds:
+      - curl -sL https://talos.dev/install | sh
