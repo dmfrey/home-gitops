@@ -21,6 +21,7 @@ tasks:
       - task: install-helmfile
       - task: install-krew
       - task: install-minijinja-cli
+      - task: install-fluxcd
     preconditions:
       - which apt
 
