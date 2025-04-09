@@ -16,7 +16,7 @@ tasks:
       - sudo snap install kubectl --classic
       - sudo snap install helm --classic
       - sudo snap install kustomize
-      - sudo snap install k9s
+      - task: install-k9s
       - task: install-sops
       - task: install-helmfile
       - task: install-krew
@@ -104,3 +104,10 @@ tasks:
     internal: true
     cmds:
       - curl -sL https://talos.dev/install | sh
+
+  install-k9s:
+    internal: true
+    cmds:
+      - curl -L https://github.com/derailed/k9s/releases/download/v0.40.10/k9s_Linux_amd64.tar.gz | tar xz k9s
+      - sudo mv k9s /usr/local/bin/k9s
+      - sudo chmod +x /usr/local/bin/k9s
