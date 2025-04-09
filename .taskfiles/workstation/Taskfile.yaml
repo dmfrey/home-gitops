@@ -11,12 +11,9 @@ tasks:
     desc: Set up APT tools
     deps: [setup-build]
     cmds:
-      - sudo apt install -y ${cat {{.WORKSTATION_RESOURCES_DIR}}/apt_packages.txt}
-    sources:
-      - '{{.WORKSTATION_RESOURCES_DIR}}/apt_packages.txt'
+      - sudo apt install -y age sops mise
     preconditions:
       - which apt
-      - test -f {{.WORKSTATION_RESOURCES_DIR}}/apt_packages.txt
 
   brew:
     desc: Set up Homebrew tools
