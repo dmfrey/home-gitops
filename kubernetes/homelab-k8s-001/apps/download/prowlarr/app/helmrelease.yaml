@@ -141,7 +141,7 @@ spec:
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Download
+          gethomepage.dev/group: Downloads
           gethomepage.dev/name: Prowlarr
           gethomepage.dev/icon: prowlarr.png
           gethomepage.dev/description: Download Indexes
