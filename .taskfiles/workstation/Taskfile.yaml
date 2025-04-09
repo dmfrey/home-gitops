@@ -12,9 +12,13 @@ tasks:
     deps: [setup-build, add-deb-mise]
     cmds:
       - task: apt-update
-      - sudo apt install -y age mise kubectl helm kustomize jq yq
+      - sudo apt install -y age mise jq yq
+      - sudo snap install kubectl --classic
+      - sudo snap install helm --classic
+      - sudo snap install kustomize
       - task: install-sops
       - task: install-helmfile
+      - task: install-krew
     preconditions:
       - which apt
 
@@ -62,9 +66,19 @@ tasks:
     cmds:
       - sudo curl -L https://github.com/getsops/sops/releases/download/v3.10.1/sops-v3.10.1.linux.amd64 -o /usr/local/bin/sops
       - sudo chmod +x /usr/local/bin/sops
+      - sops --version
 
   install-helmfile:
     internal: true
     cmds:
       - sudo curl -L https://github.com/robertellis/helmfile/releases/download/v0.150.0/helmfile-linux-amd64 -o /usr/local/bin/helmfile
       - sudo chmod +x /usr/local/bin/helmfile
+      - helmfile --version
+
+  install-krew:
+    internal: true
+    cmds:
+      - curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux-amd64
+      - chmod +x krew-linux-amd64
+      - sudo ./krew-linux-amd64 install
+      - kubectl krew
