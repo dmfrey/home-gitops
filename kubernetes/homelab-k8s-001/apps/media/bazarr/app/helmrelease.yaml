@@ -49,15 +49,10 @@ spec:
 
             env:
               TZ: America/New_York
-              BAZARR__API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: bazarr-secret
-                    key: BAZARR_API_KEY
 
             envFrom:
               - secretRef:
-                  name: pmm-secret
+                  name: bazarr-secret
 
             probes:
               liveness: &probes
