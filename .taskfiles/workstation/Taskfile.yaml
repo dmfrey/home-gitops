@@ -10,7 +10,10 @@ tasks:
   apt:
     desc: Set up APT tools
     deps: [setup-build]
-    cmds: []
+    cmds:
+      - sudo apt install -y ${cat {{.WORKSTATION_RESOURCES_DIR}}/apt_packages.txt}
+    sources:
+      - '{{.WORKSTATION_RESOURCES_DIR}}/apt_packages.txt'
     preconditions:
       - which apt
       - test -f {{.WORKSTATION_RESOURCES_DIR}}/apt_packages.txt
@@ -48,3 +51,11 @@ tasks:
     deps: [apt-update]
     cmds:
       - sudo apt install build-essential gpg wget curl
+      - sudo install -dm 755 /etc/apt/keyrings
+
+  add-deb-mise:
+    internal: true
+    cmds:
+      - wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg 1> /dev/null
+      - echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
+      - task: apt-update
