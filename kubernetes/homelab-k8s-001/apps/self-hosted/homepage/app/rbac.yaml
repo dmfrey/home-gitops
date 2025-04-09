@@ -20,7 +20,8 @@ rules:
       - extensions
       - networking.k8s.io
     resources:
-      - ingresses
+      - httproutes
+      - gateways
     verbs:
       - get
       - list
