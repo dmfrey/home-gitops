@@ -9,7 +9,7 @@ tasks:
 
   apt:
     desc: Set up APT tools
-    deps: [setup-build]
+    deps: [setup-build, add-deb-mise]
     cmds:
       - sudo apt install -y age sops mise
     preconditions:
