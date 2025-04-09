@@ -49,23 +49,6 @@ data:
     ingress: false
     traefik: false
   services.yaml: |
-    - Downloads:
-        # - Prowlarr:
-        #     href: https://prowlarr.dmfrey.com
-        #     description: Download Indexes
-        #     icon: prowlarr.png
-        #     widget:
-        #       type: prowlarr
-        #       url: http://prowlarr.download.svc.cluster.local:9696
-        #       key: {{HOMEPAGE_VAR_PROWLARR_TOKEN}}
-        - Lidarr:
-            href: https://lidarr.dmfrey.com
-            description: Music Downloads
-            icon: lidarr.png
-            widget:
-              type: lidarr
-              url: http://lidarr.media.svc.cluster.local:8686
-              key: {{HOMEPAGE_VAR_LIDARR_TOKEN}}
     - Home:
         - Home-Assistant:
             href: https://home.dmfrey.com
