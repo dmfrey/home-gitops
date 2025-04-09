@@ -58,22 +58,6 @@ data:
               type: prowlarr
               url: http://prowlarr.download.svc.cluster.local:9696
               key: {{HOMEPAGE_VAR_PROWLARR_TOKEN}}
-        - Sonarr:
-            href: https://sonarr.dmfrey.com
-            description: TV Downloads
-            icon: sonarr.png
-            widget:
-              type: sonarr
-              url: http://sonarr.media.svc.cluster.local:8989
-              key: {{HOMEPAGE_VAR_SONARR_TOKEN}}
-        - Radarr:
-            href: https://radarr.dmfrey.com
-            description: Movie Downloads
-            icon: radarr.png
-            widget:
-              type: radarr
-              url: http://radarr.media.svc.cluster.local:7878
-              key: {{HOMEPAGE_VAR_RADARR_TOKEN}}
         - Lidarr:
             href: https://lidarr.dmfrey.com
             description: Music Downloads
@@ -82,30 +66,6 @@ data:
               type: lidarr
               url: http://lidarr.media.svc.cluster.local:8686
               key: {{HOMEPAGE_VAR_LIDARR_TOKEN}}
-        - SABnzbd:
-            href: https://sabnzbd.dmfrey.com
-            description: NZB Download Client
-            icon: sabnzbd.png
-            widget:
-              type: sabnzbd
-              url: http://sabnzbd.download.svc.cluster.local:8080
-              key: {{HOMEPAGE_VAR_SABNZBD_TOKEN}}
-        - qBittorrent:
-            href: https://rdt.dmfrey.com
-            description: Torrent Client
-            icon: qbittorrent.png
-            widget:
-              type: qbittorrent
-              url: http://rdt-client.download.svc.cluster.local:6500
-    - Games:
-        - RomM:
-            href: https://romm.dmfrey.com
-            icon: romm.png
-            description: Retro Games
-            widget:
-              type: romm
-              url: http://romm.media.svc.cluster.local:8080
-              fields: ["platforms", "totalRoms"]
     - Home:
         - Home-Assistant:
             href: https://home.dmfrey.com
@@ -172,17 +132,6 @@ data:
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - Observability:
-        - Grafana:
-            href: https://grafana.dmfrey.com
-            icon: grafana.png
-            description: Application Health and Alerting
-            widget:
-              type: grafana
-              url: http://grafana.observability.svc.cluster.local:3000
-              username: {{HOMEPAGE_VAR_GRAFANA_USERNAME}}
-              password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
-              totalalerts: true
-              alertstriggered: true
         - Prometheus:
             href: https://prometheus.dmfrey.com
             icon: prometheus.png
@@ -191,40 +140,6 @@ data:
               type: prometheus
               url: http://prometheus-operated.observability.svc.cluster.local:9090
     - Video:
-        - Jellyfin:
-            href: https://jellyfin.dmfrey.com
-            icon: jellyfin.png
-            description: Media Player
-            widget:
-              type: jellyfin
-              url: http://jellyfin.media.svc.cluster.local:8096
-              key: {{HOMEPAGE_VAR_JELLYFIN_TOKEN}}
-        - Overseerr:
-            href: https://request.dmfrey.com
-            icon: overseerr.png
-            description: Media Request Management
-            widget:
-              type: overseerr
-              url: http://overseerr.media.svc.cluster.local:5055
-              key: {{HOMEPAGE_VAR_OVERSEERR_TOKEN}}
-        - Plex:
-            href: https://plex.dmfrey.com
-            icon: plex.png
-            description: Media Player
-            widget:
-              type: plex
-              url: https://plex.media.svc.cluster.local:32400
-              key: {{HOMEPAGE_VAR_PLEX_TOKEN}}
-        # - Tautulli:
-        #     href: https://tautulli.dmfrey.com
-        #     icon: tautulli.png
-        #     description: Plex Stream Monitoring
-        #     widget:
-        #       type: tautulli
-        #       url: http://tautulli.media.svc.cluster.local:8081
-        #       key: {{HOMEPAGE_VAR_TAUTULLI_TOKEN}}
-        #       enableUser: true
-        #       showEpisodeNumber: true
         - Wizarr:
             href: https://join.dmfrey.com
             icon: wizarr.png
