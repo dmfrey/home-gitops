@@ -11,6 +11,7 @@ tasks:
     desc: Set up APT tools
     deps: [setup-build, add-deb-mise]
     cmds:
+      - task: apt-update
       - sudo apt install -y age sops mise
     preconditions:
       - which apt
@@ -40,8 +41,6 @@ tasks:
     internal: true
     cmds:
       - sudo apt update
-    preconditions:
-      - which apt
 
   setup-build:
     internal: true
@@ -55,4 +54,3 @@ tasks:
     cmds:
       - wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg 1> /dev/null
       - echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
-      - task: apt-update
