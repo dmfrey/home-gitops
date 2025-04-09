@@ -60,5 +60,5 @@ tasks:
     internal: true
     cmds:
       - curl -LO https://github.com/getsops/sops/releases/download/v3.10.1/sops-v3.10.1.linux.amd64
-      - mv sops-v3.10.1.linux.amd64 /usr/local/bin/sops
-      - chmod +x /usr/local/bin/sops
+      - sudo mv sops-v3.10.1.linux.amd64 /usr/local/bin/sops
+      - sudo chmod +x /usr/local/bin/sops
