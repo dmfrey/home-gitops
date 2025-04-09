@@ -215,16 +215,16 @@ data:
               type: plex
               url: https://plex.media.svc.cluster.local:32400
               key: {{HOMEPAGE_VAR_PLEX_TOKEN}}
-        - Tautulli:
-            href: https://tautulli.dmfrey.com
-            icon: tautulli.png
-            description: Plex Stream Monitoring
-            widget:
-              type: tautulli
-              url: http://tautulli.media.svc.cluster.local:8081
-              key: {{HOMEPAGE_VAR_TAUTULLI_TOKEN}}
-              enableUser: true
-              showEpisodeNumber: true
+        # - Tautulli:
+        #     href: https://tautulli.dmfrey.com
+        #     icon: tautulli.png
+        #     description: Plex Stream Monitoring
+        #     widget:
+        #       type: tautulli
+        #       url: http://tautulli.media.svc.cluster.local:8081
+        #       key: {{HOMEPAGE_VAR_TAUTULLI_TOKEN}}
+        #       enableUser: true
+        #       showEpisodeNumber: true
         - Wizarr:
             href: https://join.dmfrey.com
             icon: wizarr.png
