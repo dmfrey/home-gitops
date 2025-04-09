@@ -138,10 +138,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
-        supplementalGroups:
-          - 568
-          - 1568
 
     service:
       *app :
@@ -164,7 +160,7 @@ spec:
           gethomepage.dev/description: Subtitle Downloads
           gethomepage.dev/widget.type: bazarr
           gethomepage.dev/widget.url: http://bazarr.media.svc.cluster.local:6767
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_BAZARR_TOKEN}}` }}"
+          gethomepage.dev/widget.key: "{{ `{{BAZARR_API_KEY}}` }}"
         parentRefs:
           - name: internal
             namespace: kube-system
