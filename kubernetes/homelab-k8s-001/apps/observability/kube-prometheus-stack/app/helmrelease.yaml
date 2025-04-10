@@ -68,8 +68,6 @@ spec:
             gethomepage.dev/name: Alert Manager
             gethomepage.dev/icon: alertmanager.png
             gethomepage.dev/description: Application & System Alerts
-            gethomepage.dev/widget.type: alertmanager
-            gethomepage.dev/widget.url: http://alertmanager-operated.observability.svc.cluster.local:9093
           parentRefs:
             - name: internal
               namespace: kube-system
