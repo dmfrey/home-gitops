@@ -95,7 +95,12 @@ spec:
     route:
       *app :
         hostnames: ["openweb.dmfrey.com"]
-        # annotations: 
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: AI
+          gethomepage.dev/name: OpenWeb UI
+          gethomepage.dev/icon: ollama.png
+          gethomepage.dev/description: AI Model Management & Chat
         parentRefs:
           - name: external
             namespace: kube-system

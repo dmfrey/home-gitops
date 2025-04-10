@@ -7,10 +7,6 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   bookmarks.yaml: |
-    - AI:
-        - OpenWeb UI:
-            - icon: ollama.png
-              href: 'https://openweb.dmfrey.com'
     - Communicate:
         - Discord:
             - icon: discord.png
@@ -115,9 +111,11 @@ data:
         style: row
         columns: 3
         icon: mdi-network
+      AI:
+        style: row
+        icon: mdi-ai
       Games:
         style: row
-        columns: 3
         icon: mdi-minecraft
       Calendar:
         style: column
