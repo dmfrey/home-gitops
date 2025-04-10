@@ -118,7 +118,12 @@ spec:
     route:
       *app :
         hostnames: ["zigbee2mqtt-02.dmfrey.com"]
-        # annotations: 
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Second Floor
+          gethomepage.dev/icon: zigbee2mqtt.png
+          gethomepage.dev/description: Zigbee2MQTT Controller for Second Floor
         parentRefs:
           - name: internal
             namespace: kube-system
