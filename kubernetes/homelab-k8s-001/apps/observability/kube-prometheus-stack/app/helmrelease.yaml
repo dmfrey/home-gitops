@@ -62,7 +62,14 @@ spec:
         main:
           enabled: true
           hostnames: ["alertmanager.dmfrey.com"]
-          # annotations:
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/group: Observability
+            gethomepage.dev/name: Alert Manager
+            gethomepage.dev/icon: alertmanager.png
+            gethomepage.dev/description: Application & System Alerts
+            gethomepage.dev/widget.type: alertmanager
+            gethomepage.dev/widget.url: http://alertmanager-operated.observability.svc.cluster.local:9093
           parentRefs:
             - name: internal
               namespace: kube-system
@@ -97,7 +104,14 @@ spec:
         main:
           enabled: true
           hostnames: ["prometheus.dmfrey.com"]
-          # annotations:
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/group: Observability
+            gethomepage.dev/name: Prometheus
+            gethomepage.dev/icon: prometheus.png
+            gethomepage.dev/description: Application & System Metrics
+            gethomepage.dev/widget.type: prometheus
+            gethomepage.dev/widget.url: http://prometheus-operated.observability.svc.cluster.local:9090
           parentRefs:
             - name: internal
               namespace: kube-system
