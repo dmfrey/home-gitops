@@ -112,10 +112,12 @@ data:
         columns: 3
         icon: mdi-network
       AI:
-        style: column
+        style: row
+        columns: 3
         icon: mdi-ai
       Games:
-        style: column
+        style: row
+        columns: 3
         icon: mdi-minecraft
       Calendar:
         style: column
