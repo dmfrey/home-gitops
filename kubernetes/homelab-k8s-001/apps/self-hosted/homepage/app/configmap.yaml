@@ -50,18 +50,18 @@ data:
     traefik: false
   services.yaml: |
     - Home:
-        - Home-Assistant:
-            href: https://home.dmfrey.com
-            icon: home-assistant.png
-            description: Home Automation Software
-            widget:
-              type: homeassistant
-              url: https://home.dmfrey.com
-              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
-        - Home-Assistant-Code-Server:
-            href: https://hass-code.dmfrey.com
-            icon: vscode.png
-            description: Home Assistant Code Server
+        # - Home-Assistant:
+        #     href: https://home.dmfrey.com
+        #     icon: home-assistant.png
+        #     description: Home Automation Software
+        #     widget:
+        #       type: homeassistant
+        #       url: https://home.dmfrey.com
+        #       key: {{HOMEPAGE_VAR_HASS_TOKEN}}
+        # - Home-Assistant-Code-Server:
+        #     href: https://hass-code.dmfrey.com
+        #     icon: vscode.png
+        #     description: Home Assistant Code Server
         - Zigbee2MQTT:
             href: https://zigbee2mqtt.dmfrey.com
             icon: zigbee2mqtt.png

@@ -235,7 +235,15 @@ spec:
     route:
       *app :
         hostnames: ["home.dmfrey.com"]
-        # annotations:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Home Assistant
+          gethomepage.dev/icon: home-assistant.png
+          gethomepage.dev/description: Home Automation Software
+          gethomepage.dev/widget.type: home-assistant
+          gethomepage.dev/widget.url: https://home.dmfrey.com
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_HASS_TOKEN}}` }}"
         parentRefs:
           - name: external
             namespace: kube-system
@@ -246,7 +254,12 @@ spec:
                 port: *port
       code:
         hostnames: ["hass-code.dmfrey.com"]
-        # annotations:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Home Assistant Code Server
+          gethomepage.dev/icon: vscode.png
+          gethomepage.dev/description: Online Code Editor
         parentRefs:
           - name: internal
             namespace: kube-system
