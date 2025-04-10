@@ -50,13 +50,6 @@ data:
     traefik: false
   services.yaml: |
     - Infrastructure:
-        - Gatus:
-            href: https://status.dmfrey.com
-            description: Application Status
-            icon: gatus.png
-            widget:
-              type: gatus
-              url: http://gatus.observability.svc.cluster.local:8080
         - QNAP:
             href: https://192.168.30.5:7080/cgi-bin/
             description: QNAP NAS TS-462
