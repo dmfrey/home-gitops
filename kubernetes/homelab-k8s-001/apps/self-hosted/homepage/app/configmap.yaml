@@ -114,7 +114,7 @@ data:
       AI:
         style: row
         columns: 3
-        icon: mdi-ai
+        icon: si-ollama
       Games:
         style: row
         columns: 3
