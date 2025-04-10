@@ -241,7 +241,7 @@ spec:
           gethomepage.dev/name: Home Assistant
           gethomepage.dev/icon: home-assistant.png
           gethomepage.dev/description: Home Automation Software
-          gethomepage.dev/widget.type: home-assistant
+          gethomepage.dev/widget.type: homeassistant
           gethomepage.dev/widget.url: https://home.dmfrey.com
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_HASS_TOKEN}}` }}"
         parentRefs:
