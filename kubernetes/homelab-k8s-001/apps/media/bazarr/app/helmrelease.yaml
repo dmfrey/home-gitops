@@ -49,6 +49,32 @@ spec:
 
             env:
               TZ: America/New_York
+              POSTGRESS_ENABLED: true
+              POSTGRES_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-bazarr-app
+                    key: host
+              POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-bazarr-app
+                    key: port
+              POSTGRES_DATABASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-bazarr-app
+                    key: dbname
+              POSTGRES_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-bazarr-app
+                    key: username
+              POSTGRES_PASSWD:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-bazarr-app
+                    key: password
 
             envFrom:
               - secretRef:
