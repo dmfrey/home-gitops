@@ -49,22 +49,6 @@ data:
     ingress: false
     traefik: false
   services.yaml: |
-    - Home:
-        # - Zigbee2MQTT:
-        #     href: https://zigbee2mqtt.dmfrey.com
-        #     icon: zigbee2mqtt.png
-        #     description: Zigbee2MQTT Controller for First Floor
-        # - Zigbee2MQTT-02:
-        #     href: https://zigbee2mqtt.dmfrey.com
-        #     icon: zigbee2mqtt.png
-        #     description: Zigbee2MQTT Controller for Second Floor
-        - ESPHome:
-            href: https://esphome.dmfrey.com
-            icon: esphome.png
-            description: ESPHome Controller
-            widget:
-              type: esphome
-              url: http://esphome.home.svc.cluster.local:6052
     - Infrastructure:
         - Gatus:
             href: https://status.dmfrey.com
