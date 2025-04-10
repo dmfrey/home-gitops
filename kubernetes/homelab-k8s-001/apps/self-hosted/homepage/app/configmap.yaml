@@ -113,9 +113,11 @@ data:
         icon: mdi-network
       AI:
         style: row
+        columns: 3
         icon: mdi-ai
       Games:
         style: row
+        columns: 3
         icon: mdi-minecraft
       Calendar:
         style: column
