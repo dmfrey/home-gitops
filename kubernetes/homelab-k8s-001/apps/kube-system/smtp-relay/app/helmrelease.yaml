@@ -18,7 +18,7 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -30,27 +30,13 @@ spec:
 
   values:
 
-    defaultPodOptions:
-      annotations:
-        configmap.reloader.stakater.com/reload: *app
-        secret.reloader.stakater.com/reload: *app
-
     controllers:
-      smtp-relay:
+      *app :
         replicas: 3
         strategy: RollingUpdate
 
-        pod:
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: *app
-
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/foxcpp/maddy
               tag: 0.8.1
@@ -68,40 +54,35 @@ spec:
               - secretRef:
                   name: smtp-relay-secret
 
-            ports:
-              - name: http
-                containerPort: &port 2525
-              - name: metrics
-                containerPort: &metrics 9749
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+
+    defaultPodOptions:
+      annotations:
+        configmap.reloader.stakater.com/reload: *app
+        secret.reloader.stakater.com/reload: *app
 
     service:
-      app:
-        enabled: true
-        controller: smtp-relay
+      *app :
+        controller: *app
         type: LoadBalancer
-        loadBalancerIP: 192.168.30.225
-        externalTrafficPolicy: Local
+        annotations:
+          lbipam.cilium.io/ips: 192.168.30.225, ::ffff:192.168.30.225
         ports:
           http:
-            port: *port
+            port: &port 2525
+            primary: true
           metrics:
-            enabled: true
-            port: *metrics
-
-    serviceMonitor:
-      app:
-        enabled: true
-        serviceName: *app
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
+            port: &metrics 9749
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: *app
         globalMounts:
@@ -110,9 +91,23 @@ spec:
             readOnly: true
 
       data:
-        enabled: true
         type: emptyDir
         medium: Memory
         sizeLimit: 1Gi
         globalMounts:
           - path: /dev/shm
+
+      tmp:
+        type: emptyDir
+        medium: Memory
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
