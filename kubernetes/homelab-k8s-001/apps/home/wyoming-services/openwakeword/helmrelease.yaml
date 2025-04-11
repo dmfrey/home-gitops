@@ -57,7 +57,7 @@ spec:
         type: LoadBalancer
         annotations:
           app.kubernetes.io/name: *app
-          lbipam.cilium.io/ips: 192.168.30.104
+          lbipam.cilium.io/ips: 192.168.30.104, ::ffff:192.168.30.104
         ports:
           http:
             port: 10400
