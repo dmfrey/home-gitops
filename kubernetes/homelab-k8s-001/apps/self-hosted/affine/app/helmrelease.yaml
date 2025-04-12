@@ -47,8 +47,12 @@ spec:
               repository: ghcr.io/toeverything/affine-graphql
               tag: stable-40f218c@sha256:634f4f00de3613db6711d5d03cc2e519476d91b9c1894a225e03d06e38e300ca
 
+            command: ['sh', '-c', 'node ./scripts/self-host-predeploy && node ./dist/index.js']
+
             env:
               TZ: America/New_York
+              NODE_ENV: production
+              NODE_OPTIONS: "--import=./scripts/register.js"
               AFFINE_SERVER_HOST: &host affine.dmfrey.com
               AFFINE_SERVER_HTTPS: true
               # AFFINE_SERVER_EXTERNAL_URL: https://affine.dmfrey.com
@@ -68,23 +72,12 @@ spec:
               REDIS_SERVER_HOST: affine-kv-cluster.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
 
-            # envFrom:
-            #   - secretRef:
-            #       name: romm-secret
-
             resources:
               requests:
                 memory: 350Mi
                 cpu: 100m
               limits:
                 memory: 1024Mi
-
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities:
-            #     drop:
-            #       - ALL
 
     defaultPodOptions:
       securityContext:
@@ -100,6 +93,8 @@ spec:
         ports:
           http:
             port: &port 3010
+          ws:
+            port: &wsPort 5555
 
     route:
       *app :
@@ -113,6 +108,8 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+              - name: *app
+                port: *wsPort
 
     persistence:
       affine-data:
