@@ -33,6 +33,7 @@ spec:
 
             env:
               TZ: America/New_York
+              LOG_LEVEL: debug
 
             resources:
               requests:
