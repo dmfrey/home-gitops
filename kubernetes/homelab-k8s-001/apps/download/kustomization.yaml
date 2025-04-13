@@ -5,9 +5,25 @@ kind: Kustomization
 namespace: download
 components:
   - ../../components/common
+
 resources:
   - ./flaresolverr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./rdt-client/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Namespace
+      metadata:
+        name: not-used
+      spec:
+        template:
+          metadata:
+            labels:
+              vpn.home.arpa/routed-gateway: "true"
+    target:
+      version: v1
+      kind: Namespace
