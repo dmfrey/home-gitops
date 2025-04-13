@@ -10,3 +10,4 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./rdt-client/ks.yaml
   - ./prowlarr/ks.yaml
+  - ./qbittorrent.yaml
