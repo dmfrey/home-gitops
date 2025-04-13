@@ -106,14 +106,14 @@ spec:
 
     persistence:
       config:
-        existingClaim: qbittorrent
+        existingClaim: ${VOLSYNC_CLAIM}
 
       media:
         type: nfs
         server: 192.168.30.5
-        path: /media/downloads/qbittorrent
+        path: /media
         globalMounts:
-          - path: /data/downloads/qbittorrent
+          - path: /media/downloads/qbittorrent
             subPath: downloads/qbittorrent
 
       tmp:
