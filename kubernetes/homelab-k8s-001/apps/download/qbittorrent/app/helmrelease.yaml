@@ -91,7 +91,7 @@ spec:
             protocol: TCP
 
     route:
-      app:
+      *app :
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
           - qb.dmfrey.com
