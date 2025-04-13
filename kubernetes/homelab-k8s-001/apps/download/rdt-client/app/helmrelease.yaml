@@ -136,4 +136,4 @@ spec:
         path: /media/downloads/torrents
         globalMounts:
           - path: /data/downloads/torrents
-            readOnly: false
+            subPath: downloads/torrents

@@ -220,7 +220,7 @@ spec:
         path: /media/downloads/nzb
         globalMounts:
           - path: /data/downloads/nzb
-            readOnly: false
+            subPath: downloads/nzb
 
       tmp:
         type: emptyDir
