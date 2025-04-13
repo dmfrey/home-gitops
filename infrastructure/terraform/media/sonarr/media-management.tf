@@ -9,7 +9,7 @@ resource "sonarr_media_management" "settings" {
   skip_free_space_check       = false
   minimum_free_space          = 100
   recycle_bin_days            = 7
-  chmod_folder                = "775"
+  chmod_folder                = "755"
   chown_group                 = "1000"
   download_propers_repacks    = "doNotPrefer"
   episode_title_required      = "always"

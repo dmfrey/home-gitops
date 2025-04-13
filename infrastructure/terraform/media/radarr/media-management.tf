@@ -8,7 +8,7 @@ resource "radarr_media_management" "settings" {
   skip_free_space_check_when_importing        = false
   minimum_free_space_when_importing           = 100
   set_permissions_linux                       = true
-  chmod_folder                                = "775"
+  chmod_folder                                = "755"
   chown_group                                 = "1000"
   paths_default_static                        = false
   enable_media_info                           = true
