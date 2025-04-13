@@ -18,7 +18,7 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -145,10 +145,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
-        supplementalGroups:
-          - 568
-          - 1568
 
     service:
       *app :
