@@ -41,21 +41,21 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          fix-permissions:
-            image:
-              repository: busybox
-              tag: stable
+        # initContainers:
+        #   fix-permissions:
+        #     image:
+        #       repository: busybox
+        #       tag: stable
 
-            command: ["sh", "-c", "chown -R 1000:1000 /app/*"]
+        #     command: ["sh", "-c", "chown -R 1000:1000 /app/*"]
 
-            securityContext:
-              runAsNonRoot: false
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+        #     securityContext:
+        #       runAsNonRoot: false
+        #       readOnlyRootFilesystem: true
+        #       allowPrivilegeEscalation: true
+        #       runAsUser: 0
+        #       runAsGroup: 0
+        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           *app :
@@ -113,8 +113,6 @@ spec:
           gethomepage.dev/description: Torrent Client
           gethomepage.dev/widget.type: qbittorrent
           gethomepage.dev/widget.url: http://rdt-client.download.svc.cluster.local:6500
-          # gethomepage.dev/widget.username: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}` }}"
-          # gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}` }}"
         parentRefs:
           - name: internal
             namespace: kube-system
