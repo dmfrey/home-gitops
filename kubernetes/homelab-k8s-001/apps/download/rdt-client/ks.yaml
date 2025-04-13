@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      vpn.home.arpa/routed-gateway: "true"
   components:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
