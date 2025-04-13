@@ -65,8 +65,8 @@ spec:
 
             env:
               TZ: America/New_York
-              PUID: "1000"
-              PGID: "1000"
+              PUID: 911
+              PGID: 1001
 
             ports:
               - name: http
@@ -90,10 +90,12 @@ spec:
 
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        # runAsUser: 1000
+        # runAsGroup: 1000
+        fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 1000
 
     service:
       *app :
@@ -126,7 +128,7 @@ spec:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-          - path: /data/db
+          - path: /data
 
       downloads:
         type: nfs
