@@ -89,9 +89,6 @@ spec:
       hostname: rdt
 
       securityContext:
-        # runAsNonRoot: true
-        # runAsUser: 1000
-        # runAsGroup: 1000
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:

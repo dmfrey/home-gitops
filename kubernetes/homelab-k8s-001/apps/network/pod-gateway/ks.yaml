@@ -23,17 +23,17 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
-  patches:
-    - patch: |
-        apiVersion: apps/v1
-        kind: Namespace
-        metadata:
-          name: not-used
-        spec:
-          template:
-            metadata:
-              labels:
-                vpn.home.arpa/routed-gateway: "true"
-      target:
-        kind: Namespace
-        name: download
+  # patches:
+  #   - patch: |
+  #       apiVersion: apps/v1
+  #       kind: Namespace
+  #       metadata:
+  #         name: not-used
+  #       spec:
+  #         template:
+  #           metadata:
+  #             labels:
+  #               vpn.home.arpa/routed-gateway: "true"
+  #     target:
+  #       kind: Namespace
+  #       name: download
