@@ -25,5 +25,5 @@ patches:
             labels:
               vpn.home.arpa/routed-gateway: "true"
     target:
-      version: v1
       kind: Namespace
+      labelSelector: "kubernetes.io/metadata.name=download"
