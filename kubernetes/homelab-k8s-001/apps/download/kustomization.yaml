@@ -14,16 +14,7 @@ resources:
   - ./qbittorrent/ks.yaml
 
 patches:
-  - patch: |-
-      apiVersion: apps/v1
-      kind: Namespace
-      metadata:
-        name: not-used
-      spec:
-        template:
-          metadata:
-            labels:
-              vpn.home.arpa/routed-gateway: "true"
-    target:
-      kind: Namespace
-      labelSelector: "kubernetes.io/metadata.name=download"
+ - path: patch.yaml
+   target:
+     kind: Namespace
+     name: download

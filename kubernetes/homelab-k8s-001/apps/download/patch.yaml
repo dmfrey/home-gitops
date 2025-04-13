@@ -1,0 +1,3 @@
+- op: add
+  path: /metadata/labels/vpn.home.arpa/routed-gateway
+  value: "true"
