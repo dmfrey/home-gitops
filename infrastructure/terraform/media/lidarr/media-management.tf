@@ -11,7 +11,7 @@ resource "lidarr_media_management" "settings" {
   skip_free_space_check                       = false
   minimum_free_space                          = 100
   download_propers_repacks                    = "preferAndUpgrade"
-  allow_fingerprinting                        = "always"
+  allow_fingerprinting                        = "newFiles"
   extra_file_extensions                       = "info"
   file_date                                   = "none"
   recycle_bin_days                            = 7
