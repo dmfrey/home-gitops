@@ -9,7 +9,7 @@ resource "readarr_media_management" "settings" {
   minimum_free_space                          = 100
   set_permissions                             = true
   chmod_folder                                = "755"
-  chown_group                                 = "kah"
+  chown_group                                 = "1000"
   import_extra_files                          = true
   file_date                                   = "none"
   extra_file_extensions                       = "srt"

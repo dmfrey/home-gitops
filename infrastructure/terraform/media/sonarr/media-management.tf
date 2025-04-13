@@ -10,7 +10,7 @@ resource "sonarr_media_management" "settings" {
   minimum_free_space          = 100
   recycle_bin_days            = 7
   chmod_folder                = "775"
-  chown_group                 = "1568"
+  chown_group                 = "1000"
   download_propers_repacks    = "doNotPrefer"
   episode_title_required      = "always"
   extra_file_extensions       = "srt"

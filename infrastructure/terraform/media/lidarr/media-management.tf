@@ -7,11 +7,11 @@ resource "lidarr_media_management" "settings" {
   import_extra_files                          = true
   set_permissions                             = false
   chmod_folder                                = "755"
-  chown_group                                 = "kah"
+  chown_group                                 = "1000"
   skip_free_space_check                       = false
   minimum_free_space                          = 100
   download_propers_repacks                    = "preferAndUpgrade"
-  allow_fingerprinting                        = "never"
+  allow_fingerprinting                        = "always"
   extra_file_extensions                       = "info"
   file_date                                   = "none"
   recycle_bin_days                            = 7
