@@ -198,6 +198,8 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           *app :
+            fix-permissions:
+              - path: /config
             *app :
               - path: /config
 
