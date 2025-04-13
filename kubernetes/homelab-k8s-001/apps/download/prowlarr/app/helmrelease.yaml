@@ -119,6 +119,9 @@ spec:
           #         - ALL
 
     defaultPodOptions:
+      labels:
+        vpn.home.arpa/enabled: "true"
+
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
