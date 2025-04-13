@@ -217,9 +217,9 @@ spec:
       downloads:
         type: nfs
         server: 192.168.30.5
-        path: /media/downloads
+        path: /media/downloads/nzb
         globalMounts:
-          - path: /data/downloads
+          - path: /data/downloads/nzb
             readOnly: false
 
       tmp:
