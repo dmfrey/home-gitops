@@ -14,7 +14,7 @@ resources:
   - ./qbittorrent/ks.yaml
 
 patches:
- - path: patch.yaml
+ - path: ./patch.yaml
    target:
      kind: Namespace
      name: download
