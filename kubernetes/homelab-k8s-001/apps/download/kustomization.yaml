@@ -11,4 +11,4 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./rdt-client/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
+  # - ./qbittorrent/ks.yaml
