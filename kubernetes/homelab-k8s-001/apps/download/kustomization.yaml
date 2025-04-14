@@ -4,7 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: download
 components:
-  - ../../components/pod-gateway
+  - ../../components/common
 
 resources:
   - ./flaresolverr/ks.yaml
@@ -12,3 +12,16 @@ resources:
   - ./rdt-client/ks.yaml
   - ./prowlarr/ks.yaml
   # - ./qbittorrent/ks.yaml
+
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: LabelTransformer
+    metadata:
+      name: not-used
+    labels:
+      routed-gatway: "true"
+    fieldSpecs:
+      - kind: Namespace
+        path: metadata/labels
+        create: true
