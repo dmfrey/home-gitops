@@ -30,6 +30,10 @@ spec:
     controllers:
       *app :
 
+        annotations:
+          reloader.stakater.com/auto: "true"
+          setGateway: "true"
+
         containers:
           *app :
             image:
