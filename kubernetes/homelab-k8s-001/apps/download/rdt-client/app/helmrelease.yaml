@@ -78,9 +78,6 @@ spec:
                 memory: 765M
 
     defaultPodOptions:
-      annotations:
-        vpn.home.arpa/enabled: "true"
-
       dnsConfig:
         options:
           - name: ndots

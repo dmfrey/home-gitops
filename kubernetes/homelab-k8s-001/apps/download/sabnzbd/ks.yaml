@@ -9,7 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-      vpn.home.arpa/routed-gateway: "true"
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/common"
   prune: true

@@ -6,4 +6,4 @@ metadata:
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
-    vpn.home.arpa/routed-gateway: "true"
+    routed-gateway: "true"

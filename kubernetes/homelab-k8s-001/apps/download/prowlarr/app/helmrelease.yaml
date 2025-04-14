@@ -40,7 +40,6 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
-          vpn.home.arpa/enabled: "true"
 
         containers:
 
@@ -120,9 +119,6 @@ spec:
           #         - ALL
 
     defaultPodOptions:
-      labels:
-        vpn.home.arpa/enabled: "true"
-
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

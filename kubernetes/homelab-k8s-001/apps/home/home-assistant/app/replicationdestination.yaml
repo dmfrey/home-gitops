@@ -20,7 +20,7 @@ spec:
     accessModes: ["ReadWriteOnce"]
     capacity: "5Gi"
     moverPodLabels:
-      vpn.home.arpa/enabled: "false"
+      setGateway: "false"
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
@@ -50,7 +50,7 @@ spec:
     accessModes: ["ReadWriteOnce"]
     capacity: "5Gi"
     moverPodLabels:
-      vpn.home.arpa/enabled: "false"
+      setGateway: "false"
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000

@@ -19,7 +19,7 @@ spec:
     storageClassName: "ceph-block"
     accessModes: ["ReadWriteOnce"]
     moverPodLabels:
-      vpn.home.arpa/enabled: "false"
+      setGateway: "false"
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
@@ -47,7 +47,7 @@ spec:
     storageClassName: "ceph-block"
     accessModes: ["ReadWriteOnce"]
     moverPodLabels:
-      vpn.home.arpa/enabled: "false"
+      setGateway: "false"
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000

@@ -24,14 +24,11 @@ spec:
 
   driftDetection:
     mode: enabled
-    
+
   values:
 
     controllers:
       *app :
-
-        annotations:
-          vpn.home.arpa/enabled: "true"
 
         containers:
           *app :
