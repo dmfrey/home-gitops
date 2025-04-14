@@ -26,6 +26,10 @@ spec:
 
     controllers:
       *app :
+
+        annotations:
+          vpn.home.arpa/enabled: "true"
+
         containers:
           *app :
             image:
@@ -68,9 +72,6 @@ spec:
                 memory: 8Gi
 
     defaultPodOptions:
-      labels:
-        vpn.home.arpa/enabled: "true"
-
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
