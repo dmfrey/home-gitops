@@ -35,6 +35,9 @@ spec:
 
       *app :
 
+        annotations:
+          vpn.home.arpa/enabled: "true"
+
         containers:
           app:
             image:
