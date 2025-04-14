@@ -6,3 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./networkpolicy.yaml
+commonLabels:
+  app.kubernetes.io/name: pod-gateway
+  app.kubernetes.io/instance: vpn-gateway
