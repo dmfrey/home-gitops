@@ -103,6 +103,7 @@ spec:
 
         networkPolicy:
           enabled: false
+
       netshoot:
         enabled: true
         resources:
@@ -139,8 +140,8 @@ spec:
       VXLAN_IP_NETWORK: 172.16.1
 
     webhook:
-      gatewayAnnotation: setGateway
       gatewayDefault: true
+      gatewayAnnotation: setGateway
       gatewayLabel: setGateway
       namespaceSelector:
         type: label
