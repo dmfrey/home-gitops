@@ -20,7 +20,7 @@ transformers:
     metadata:
       name: not-used
     labels:
-      routed-gatway: "true"
+      routed-gateway: "true"
     fieldSpecs:
       - kind: Namespace
         path: metadata/labels
