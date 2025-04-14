@@ -128,7 +128,7 @@ spec:
       downloads:
         type: nfs
         server: 192.168.30.5
-        path: /media/downloads/torrents
+        path: /media
         globalMounts:
           - path: /data/downloads/torrents
             subPath: downloads/torrents
