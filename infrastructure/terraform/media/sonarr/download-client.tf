@@ -7,7 +7,7 @@ resource "sonarr_download_client_qbittorrent" "rdt-client" {
   remove_completed_downloads = true
 }
 
-resource "sonarr_download_client_qbittorrent" "rdt-client" {
+resource "sonarr_remote_path_mapping" "rdt-client" {
   host        = sonarr_download_client_qbittorrent.rdt-client.host
   remote_path = "/media/downloads/torrents/series/"
   local_path  = "/media/downloads/torrents/series/"

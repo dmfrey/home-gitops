@@ -10,11 +10,11 @@ resource "readarr_download_client_qbittorrent" "rdt-client" {
   tags                       = [1]
 }
 
-# resource "readarr_download_client_qbittorrent" "rdt-client" {
-#   host        = readarr_download_client_qbittorrent.rdt-client.host
-#   remote_path = "/media/downloads/torrents/book/"
-#   local_path  = "/media/downloads/torrents/book/"
-# }
+resource "readarr_remote_path_mapping" "rdt-client" {
+  host        = readarr_download_client_qbittorrent.rdt-client.host
+  remote_path = "/media/downloads/torrents/book/"
+  local_path  = "/media/downloads/torrents/book/"
+}
 
 resource "readarr_download_client_sabnzbd" "sabnzbd" {
   name                       = "sabnzbd"

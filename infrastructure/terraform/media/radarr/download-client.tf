@@ -7,7 +7,7 @@ resource "radarr_download_client_qbittorrent" "rdt-client" {
   remove_completed_downloads = true
 }
 
-resource "radarr_download_client_qbittorrent" "rdt-client" {
+resource "radarr_remote_path_mapping" "rdt-client" {
   host        = radarr_download_client_qbittorrent.rdt-client.host
   remote_path = "/media/downloads/torrents/movies/"
   local_path  = "/media/downloads/torrents/movies/"
