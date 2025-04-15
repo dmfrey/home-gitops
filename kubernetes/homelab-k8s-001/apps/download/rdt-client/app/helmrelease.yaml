@@ -87,11 +87,8 @@ spec:
       hostname: rdt
 
       securityContext:
-        fsGroup: 568
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 1000
-          - 1568
 
     service:
       *app :
