@@ -18,7 +18,7 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -82,10 +82,10 @@ spec:
 
             resources:
               requests:
-                memory: 350Mi
-                cpu: 5m
+                memory: 1024Mi
+                cpu: 150m
               limits:
-                memory: 431Mi
+                memory: 2048Mi
 
             securityContext: &securityContext
               allowPrivilegeEscalation: false
