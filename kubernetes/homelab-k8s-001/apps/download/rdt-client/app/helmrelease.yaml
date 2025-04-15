@@ -66,8 +66,8 @@ spec:
 
             env:
               TZ: America/New_York
-              PUID: 911
-              PGID: 1001
+              PUID: 1000 # 911
+              PGID: 1000 # 1001
 
             ports:
               - name: http
