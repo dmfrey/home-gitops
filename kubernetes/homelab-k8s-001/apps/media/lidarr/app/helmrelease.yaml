@@ -67,7 +67,7 @@ spec:
               TZ: America/New_York
               LIDARR__INSTANCE_NAME: *app
               LIDARR__PORT: &port 8686
-              LIDARR__LOG_LEVEL: info
+              LIDARR__LOG_LEVEL: debug
               LIDARR__ANALYTICS_ENABLED: "False"
               LIDARR__APPLICATION_URL: "https://lidarr.dmfrey.com"
               LIDARR__API_KEY:
