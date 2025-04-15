@@ -7,6 +7,12 @@ resource "lidarr_download_client_qbittorrent" "rdt-client" {
   remove_completed_downloads = true
 }
 
+resource "lidarr_remote_path_mapping" "rdt-client" {
+  host        = lidarr_download_client_qbittorrent.rdt-client.host
+  remote_path = "/media/downloads/torrents/music/"
+  local_path  = "/media/downloads/torrents/music/"
+}
+
 resource "lidarr_download_client_sabnzbd" "sabnzbd" {
   enable   = true
   priority = 1
