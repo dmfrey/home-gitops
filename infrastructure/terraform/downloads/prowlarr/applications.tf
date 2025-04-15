@@ -7,14 +7,14 @@ resource "prowlarr_application_lidarr" "lidarr" {
   sync_categories = [3000, 3010, 3030, 3040, 3050, 3060]
 }
 
-resource "prowlarr_application_readarr" "readarr" {
-  name            = "Readarr"
-  sync_level      = "fullSync"
-  base_url        = var.readarr_url
-  prowlarr_url    = var.prowlarr_url
-  api_key         = var.READARR_API_KEY
-  sync_categories = [3030, 7000, 7010, 7020, 7030, 7040, 7050, 7060]
-}
+# resource "prowlarr_application_readarr" "readarr" {
+#   name            = "Readarr"
+#   sync_level      = "fullSync"
+#   base_url        = var.readarr_url
+#   prowlarr_url    = var.prowlarr_url
+#   api_key         = var.READARR_API_KEY
+#   sync_categories = [3030, 7000, 7010, 7020, 7030, 7040, 7050, 7060]
+# }
 
 resource "prowlarr_application_radarr" "radarr" {
   name            = "Radarr"
