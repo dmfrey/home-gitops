@@ -8,10 +8,10 @@ variable "LIDARR_API_KEY" {
   sensitive = true
 }
 
-variable "READARR_API_KEY" {
-  type      = string
-  sensitive = true
-}
+# variable "READARR_API_KEY" {
+#   type      = string
+#   sensitive = true
+# }
 
 variable "RADARR_API_KEY" {
   type      = string
@@ -43,10 +43,10 @@ variable "lidarr_url" {
   default = "http://lidarr.media.svc.cluster.local:8686"
 }
 
-variable "readarr_url" {
-  type    = string
-  default = "http://readarr.media.svc.cluster.local:8787"
-}
+# variable "readarr_url" {
+#   type    = string
+#   default = "http://readarr.media.svc.cluster.local:8787"
+# }
 
 variable "radarr_url" {
   type    = string
