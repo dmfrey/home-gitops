@@ -7,6 +7,12 @@ resource "radarr_download_client_qbittorrent" "rdt-client" {
   remove_completed_downloads = true
 }
 
+resource "radarr_download_client_qbittorrent" "rdt-client" {
+  host        = radarr_download_client_qbittorrent.rdt-client.host
+  remote_path = "/media/downloads/torrents/movies/"
+  local_path  = "/media/downloads/torrents/movies/"
+}
+
 resource "radarr_download_client_sabnzbd" "sabnzbd" {
   enable   = true
   priority = 1
@@ -20,6 +26,6 @@ resource "radarr_download_client_sabnzbd" "sabnzbd" {
 
 resource "radarr_remote_path_mapping" "sabnzbd" {
   host        = radarr_download_client_sabnzbd.sabnzbd.host
-  remote_path = "/data/downloads/nzb/complete/"
+  remote_path = "/media/downloads/nzb/complete/"
   local_path  = "/media/downloads/nzb/complete/"
 }

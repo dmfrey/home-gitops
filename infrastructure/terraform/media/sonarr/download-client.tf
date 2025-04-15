@@ -7,6 +7,12 @@ resource "sonarr_download_client_qbittorrent" "rdt-client" {
   remove_completed_downloads = true
 }
 
+resource "sonarr_download_client_qbittorrent" "rdt-client" {
+  host        = sonarr_download_client_qbittorrent.rdt-client.host
+  remote_path = "/media/downloads/torrents/series/"
+  local_path  = "/media/downloads/torrents/series/"
+}
+
 resource "sonarr_download_client_sabnzbd" "sabnzbd" {
   enable   = true
   priority = 1
@@ -20,6 +26,6 @@ resource "sonarr_download_client_sabnzbd" "sabnzbd" {
 
 resource "sonarr_remote_path_mapping" "sabnzbd" {
   host        = sonarr_download_client_sabnzbd.sabnzbd.host
-  remote_path = "/data/downloads/nzb/complete/"
+  remote_path = "/media/downloads/nzb/complete/"
   local_path  = "/media/downloads/nzb/complete/"
 }
