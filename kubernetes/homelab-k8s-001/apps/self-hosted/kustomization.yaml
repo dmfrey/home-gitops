@@ -7,6 +7,6 @@ components:
   - ../../components/common
 
 resources:
-  - ./affine/ks.yaml
+  # - ./affine/ks.yaml
   - ./hedgedoc/ks.yaml
   - ./homepage/ks.yaml
