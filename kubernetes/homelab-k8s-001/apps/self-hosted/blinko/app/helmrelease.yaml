@@ -47,6 +47,8 @@ spec:
               repository: blinkospace/blinko
               tag: 0.52.4@sha256:1bed8db0fd978a649f7f597b6810882f128bef5757d74db41e92252cb1142c3e
 
+            command: ["sh", "-c", "prisma migrate deploy && node seed.js && node server.js"]
+
             env:
               TZ: America/New_York
               NODE_ENV: production
