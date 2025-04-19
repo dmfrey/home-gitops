@@ -84,7 +84,7 @@ spec:
     route:
       *app :
         hostnames:
-          - *host
+          - notes.dmfrey.com
         parentRefs:
           - name: external
             namespace: kube-system
