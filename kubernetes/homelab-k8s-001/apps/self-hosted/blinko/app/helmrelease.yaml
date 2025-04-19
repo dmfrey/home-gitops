@@ -1,0 +1,123 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app affine
+
+spec:
+
+  interval: 1h
+
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+
+  maxHistory: 2
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: -1
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
+  driftDetection:
+    mode: enabled
+
+  values:
+
+    controllers:
+
+      *app :
+        type: statefulset
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/toeverything/affine-graphql
+              tag: stable-40f218c@sha256:634f4f00de3613db6711d5d03cc2e519476d91b9c1894a225e03d06e38e300ca
+
+            command: ['sh', '-c', 'node ./scripts/self-host-predeploy && node ./dist/index.js']
+
+            env:
+              TZ: America/New_York
+              NODE_ENV: production
+              NODE_OPTIONS: "--import=./scripts/register.js"
+              AFFINE_SERVER_HOST: &host affine.dmfrey.com
+              AFFINE_SERVER_HTTPS: true
+              # AFFINE_SERVER_EXTERNAL_URL: https://affine.dmfrey.com
+
+              UPLOAD_LOCATION: /affine/self-host/storage
+              CONFIG_LOCATION: /affine/self-host/config
+
+              MAILER_HOST: smtp-relay.kube-system.svc.cluster.local
+              MAILER_PORT: 2525
+
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-affine-app
+                    key: uri
+
+              REDIS_SERVER_HOST: affine-kv-cluster.self-hosted.svc.cluster.local
+              REDIS_SERVER_PORT: 6379
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 100m
+              limits:
+                memory: 1024Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      *app :
+        controller: *app
+        ports:
+          http:
+            port: &port 3010
+          ws:
+            port: &wsPort 5555
+
+    route:
+      *app :
+        hostnames:
+          - *host
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+              - name: *app
+                port: *wsPort
+
+    persistence:
+      affine-data:
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+          - path: /affine/self-host
+            readOnly: false
+
+      tmp:
+        type: emptyDir
+        medium: Memory
