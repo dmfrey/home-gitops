@@ -4,6 +4,17 @@ version: '3'
 
 tasks:
 
+  add-node:
+    desc: Add Talos config to a node [IP=required]
+    cmd: |
+      bash {{.SCRIPTS_DIR}}/render-machine-config.sh {{.TALOS_DIR}}/promote/controlplane.yaml.j2 {{.TALOS_DIR}}/nodes/{{.IP}}.yaml.j2 \
+        | talosctl --nodes {{.IP}} apply-config --insecure --file /dev/stdin
+    requires:
+      vars: [IP]
+    preconditions:
+      - test -f {{.SCRIPTS_DIR}}/render-machine-config.sh
+      - which talosctl
+
   apply-node:
     desc: Apply Talos config to a node [IP=required] [MODE=auto]
     cmd: |

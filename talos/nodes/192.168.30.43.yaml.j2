@@ -1,0 +1,11 @@
+machine:
+  network:
+    hostname: dmf-intel-003
+#   disks:
+#     - device: /dev/disk/by-id/ata-Gigastone_SSD_GSTG512G240417_0355
+#       partitions:
+#         - mountpoint: /var/mnt/extra
+  install:
+    diskSelector:
+      model: Gigastone SSD
+    image: factory.talos.dev/installer/deee80e4ca4ed205ba87d67b33af7b023264d01ac97c1ce13ab083e6d70074f0:{{ ENV.TALOS_VERSION }}
