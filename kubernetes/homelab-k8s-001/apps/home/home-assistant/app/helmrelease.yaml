@@ -96,7 +96,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.4.2
+              tag: 2025.4.3
 
             env:
               TZ: America/New_York
@@ -176,7 +176,7 @@ spec:
 
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.99.2
+              tag: 4.99.3
 
             args:
               - "/config"
