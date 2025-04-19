@@ -2,6 +2,7 @@
 locals {
   oauth_apps = [
     "grafana",
+    "blinko",
     "hedgedoc",
     "openweb",
     "romm",
@@ -27,6 +28,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
       redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
       launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+    },
+    blinko = {
+      client_id     = module.onepassword_application["blinko"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["blinko"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/blinko.png"
+      redirect_uri  = "https://notes.${var.cluster_domain}/api/auth/callback/blinko"
+      launch_url    = "https://notes.${var.cluster_domain}/"
     },
     hedgedoc = {
       client_id     = module.onepassword_application["hedgedoc"].fields["AUTHENTIK_CLIENT_ID"]
