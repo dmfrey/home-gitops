@@ -51,7 +51,7 @@ spec:
               TZ: America/New_York
               NODE_ENV: production
               NEXTAUTH_URL: https://auth.dmfrey.com
-              NEXT_PUBLIC_BASE_URL: &host https://notes.dmfrey.com
+              NEXT_PUBLIC_BASE_URL: https://notes.dmfrey.com
               # NEXTAUTH_SECRET: set in externalsecret
               DATABASE_URL:
                 valueFrom:
