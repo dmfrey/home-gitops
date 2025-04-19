@@ -60,6 +60,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: notes
       VOLSYNC_CLAIM: blinko-data
       VOLSYNC_CAPACITY: 10Gi
   prune: true
