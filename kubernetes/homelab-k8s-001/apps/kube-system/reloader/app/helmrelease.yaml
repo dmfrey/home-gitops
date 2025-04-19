@@ -16,7 +16,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: reloader
+  name: &app reloader
 
 spec:
 
@@ -28,24 +28,17 @@ spec:
 
   values:
 
-    reloader:
-      podMonitor:
-        enabled: true
+    fullnameOverride: *app
 
-      reloadStrategy: annotations
+    reloader:
+      enableHA: true
 
       deployment:
+        replicas: 1
 
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: node-role.kubernetes.io/control-plane
-                  operator: Exists
+      readOnlyRootFileSystem: true
 
-        resources:
-          requests:
-            cpu: 5m
-            memory: 96M
+      podMonitor:
+        enabled: true
+        namespace: "{{ .Release.Namespace }}"
 
