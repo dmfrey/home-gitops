@@ -55,6 +55,7 @@ spec:
               NEXTAUTH_URL: https://auth.dmfrey.com
               NEXT_PUBLIC_BASE_URL: https://notes.dmfrey.com
               # NEXTAUTH_SECRET: set in externalsecret
+              NEXT_PRIVATE_STANDALONE: true
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
