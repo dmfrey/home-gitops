@@ -100,7 +100,7 @@ spec:
       blinko-data:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-          - path: /app/
+          - path: /app/.blinko
             readOnly: false
 
       tmp:
