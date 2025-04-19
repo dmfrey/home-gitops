@@ -8,5 +8,6 @@ components:
 
 resources:
   # - ./affine/ks.yaml
+  - ./blinko/ks.yaml
   - ./hedgedoc/ks.yaml
   - ./homepage/ks.yaml
