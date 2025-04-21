@@ -52,7 +52,8 @@ spec:
             env:
               TZ: America/New_York
               NODE_ENV: production
-              NEXTAUTH_URL: https://auth.dmfrey.com
+              NEXTAUTH_URL: https://notes.dmfrey.com
+              NEXTAUTH_URL_INTERNAL: http://blinko.self-hosted.svc.cluster.local:1111
               NEXT_PUBLIC_BASE_URL: https://notes.dmfrey.com
               # NEXTAUTH_SECRET: set in externalsecret
               NEXT_PRIVATE_STANDALONE: true
