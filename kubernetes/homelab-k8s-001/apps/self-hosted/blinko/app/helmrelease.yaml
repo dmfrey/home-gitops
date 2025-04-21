@@ -89,6 +89,12 @@ spec:
       *app :
         hostnames:
           - notes.dmfrey.com
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Tools
+          gethomepage.dev/name: Blinko Notes
+          gethomepage.dev/icon: blinko.png
+          gethomepage.dev/description: Notes
         parentRefs:
           - name: external
             namespace: kube-system

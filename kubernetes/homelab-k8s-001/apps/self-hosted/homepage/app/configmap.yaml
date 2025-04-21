@@ -111,6 +111,10 @@ data:
         style: row
         columns: 3
         icon: mdi-network
+      Tools:
+        style: row
+        columns: 3
+        icon: mdi-tools
       AI:
         style: row
         columns: 3
