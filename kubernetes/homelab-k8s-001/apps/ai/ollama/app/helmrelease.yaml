@@ -59,11 +59,9 @@ spec:
               requests:
                 cpu: 2000m
                 memory: 16Gi
-                # amd.com/gpu: "1"
                 gpu.intel.com/i915: "1"
               limits:
                 memory: 16Gi
-                # amd.com/gpu: "1"
                 gpu.intel.com/i915: "1"
 
         pod:
@@ -93,8 +91,7 @@ spec:
 
     route:
       *app :
-        hostnames:
-          - ollama.dmfrey.com
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         parentRefs:
           - name: internal
             namespace: kube-system
