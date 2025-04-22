@@ -83,7 +83,7 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
+        # type: LoadBalancer
         # annotations:
           # lbipam.cilium.io/ips: 192.168.30.241 #, ::ffff:192.168.30.241
         ports:
