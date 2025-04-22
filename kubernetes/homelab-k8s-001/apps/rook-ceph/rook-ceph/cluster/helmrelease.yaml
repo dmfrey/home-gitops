@@ -89,27 +89,24 @@ spec:
           requireMsgr2: true
 
       storage:
-        useAllNodes: true
+        useAllNodes: false  # true
         useAllDevices: false
-        devicePathFilter: /dev/nvme0n1
+        # devicePathFilter: /dev/nvme0n1
         config:
           osdsPerDevice: "1"
-        # nodes:
-        #   - name: "dmf-amd-001"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
-        #   - name: "dmf-amd-002"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
-        #   - name: "dmf-amd-003"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
-        #   - name: "dmf-intel-001"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
-        #   - name: "dmf-intel-002"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
+        nodes:
+          - name: "dmf-amd-001"
+            devices:
+              - name: "/dev/nvme0n1"
+          - name: "dmf-intel-001"
+            devices:
+              - name: "/dev/nvme0n1"
+          - name: "dmf-intel-002"
+            devices:
+              - name: "/dev/nvme0n1"
+          # - name: "dmf-intel-003"
+          #   devices:
+          #     - name: "/dev/nvme0n1"
 
 
     cephBlockPools:
