@@ -83,26 +83,26 @@ spec:
     service:
       *app :
         controller: *app
-        type: LoadBalancer
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: ollama.dmfrey.com
-          lbipam.cilium.io/ips: 192.168.30.241 #, ::ffff:192.168.30.241
+        # type: LoadBalancer
+        # annotations:
+        #   external-dns.alpha.kubernetes.io/hostname: ollama.dmfrey.com
+        #   lbipam.cilium.io/ips: 192.168.30.241 #, ::ffff:192.168.30.241
         ports:
           http:
             port: &port 11434
 
-    # route:
-    #   *app :
-    #     hostnames:
-    #       - ollama.dmfrey.com
-    #     parentRefs:
-    #       - name: internal
-    #         namespace: kube-system
-    #         sectionName: https
-    #     rules:
-    #       - backendRefs:
-    #           - name: *app
-    #             port: *port
+    route:
+      *app :
+        hostnames:
+          - ollama.dmfrey.com
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
