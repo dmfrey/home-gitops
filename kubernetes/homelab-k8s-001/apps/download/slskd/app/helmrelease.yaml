@@ -1,0 +1,137 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app slskd
+
+spec:
+
+  interval: 1h
+
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+
+  install:
+    remediation:
+      retries: -1
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  values:
+
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/slskd/slskd
+              tag: 0.22.5@sha256:f5150c39758353c31788e8e3d6aa9f9c2910f2a46591d810fc2f4d0bac81a96a
+
+            env:
+              DOTNET_BUNDLE_EXTRACT_BASE_DIR: /tmp/.net
+              TZ: America/New_York
+              SLSKD_APP_DIR: /config
+              SLSKD_HTTP_PORT: &port 80
+              SLSKD_NO_AUTH: true
+              SLSKD_NO_HTTPS: true
+              SLSKD_SLSK_LISTEN_PORT: &soulseekPort 50300
+
+            envFrom:
+              - secretRef:
+                  name: slskd-secret
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      *app :
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.30.127, ::ffff:192.168.30.127
+        ports:
+          http:
+            primary: true
+            port: *port
+          soulseek:
+            enabled: true
+            port: *soulseekPort
+            protocol: TCP
+
+    route:
+      *app :
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+
+    persistence:
+      config:
+        existingClaim: slskd
+
+      config-file:
+        type: configMap
+        name: slskd-configmap
+        defaultMode: 0775
+        globalMounts:
+          - path: /config/slskd.yml
+            subPath: slskd.yml
+            readOnly: true
+          - path: /scripts/beets.sh
+            subPath: beets.sh
+            readOnly: true
+
+      media:
+        type: nfs
+        server: 192.168.30.5
+        path: /media
+        globalMounts:
+          - path: /media/downloads/soulseek
+            subPath: downloads/soulseek
+
+      tmp:
+        type: emptyDir
