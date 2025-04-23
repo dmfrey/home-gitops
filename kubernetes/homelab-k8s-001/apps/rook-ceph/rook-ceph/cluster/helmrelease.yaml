@@ -44,8 +44,6 @@ spec:
 
   values:
 
-    operatorNamespace: rook-ceph
-
     monitoring:
       enabled: true
       createPrometheusRules: true
@@ -53,13 +51,20 @@ spec:
     toolbox:
       enabled: true
 
-    configOverride: |
-      [global]
-      bdev_enable_discard = true
-      bdev_async_discard = true
-      osd_class_update_on_start = false
+    # configOverride: |
+    #   [global]
+    #   bdev_enable_discard = true
+    #   bdev_async_discard = true
+    #   osd_class_update_on_start = false
 
     cephClusterSpec:
+
+      cephConfig:
+        global:
+          bdev_enable_discard: "true" # quote
+          bdev_async_discard_threads: "1" # quote
+          osd_class_update_on_start: "false" # quote
+          device_failure_prediction_mode: local # requires mgr module
 
       crashCollector:
         disable: false
@@ -76,6 +81,8 @@ spec:
 
       mgr:
         modules:
+          - name: diskprediction_local
+            enabled: true
           - name: insights
             enabled: true
           - name: pg_autoscaler
@@ -91,7 +98,7 @@ spec:
       storage:
         useAllNodes: false  # true
         useAllDevices: false
-        devicePathFilter: /dev/nvme0n1
+        # devicePathFilter: /dev/nvme0n1
         config:
           osdsPerDevice: "1"
         nodes:
