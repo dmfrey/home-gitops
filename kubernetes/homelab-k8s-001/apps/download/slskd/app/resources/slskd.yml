@@ -31,4 +31,4 @@ web:
     api_keys:
       soulseek:
         key: ${SLSKD_API_KEY}
-        cidr: 0.0.0.0/0,::/0
+        cidr: 172.22.0.0/16
