@@ -29,6 +29,6 @@ shares:
 web:
   authentication:
     api_keys:
-      soulseek:
+      my_api_key:
         key: ${SLSKD_API_KEY}
         cidr: 172.22.0.0/16
