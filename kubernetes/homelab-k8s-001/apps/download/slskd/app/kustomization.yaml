@@ -11,6 +11,9 @@ configMapGenerator:
   - name: slskd-configmap
     files:
       - slskd.yml=./resources/slskd.yml
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -29,20 +29,23 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          config-setup:
-            image:
-              repository: ghcr.io/dmfrey/bash
-              tag: 5.2.26-alpine3.20
-            command:
-              - "/usr/local/bin/bash"
-              - -c
-              - |
-                envsubst < /tmp/slskd.yml > /config/slskd.yml
-                exit 0
-            envFrom:
-              - secretRef:
-                  name: slskd-secret
+        # initContainers:
+        #   config-setup:
+        #     image:
+        #       repository: ghcr.io/dmfrey/bash
+        #       tag: 5.2.26-alpine3.20
+
+        #     command:
+        #       - "/usr/local/bin/bash"
+        #       - -c
+        #       - |
+        #         envsubst < /tmp/slskd.yml > /config/slskd.yml
+        #         exit 0
+
+        #     envFrom:
+        #       - secretRef:
+        #           name: slskd-secret
+
         containers:
           *app :
             image:
@@ -136,7 +139,7 @@ spec:
         name: slskd-configmap
         defaultMode: 0775
         globalMounts:
-          - path: /tmp/slskd.yml
+          - path: /config/slskd.yml
             subPath: slskd.yml
             readOnly: true
           - path: /scripts/beets.sh
