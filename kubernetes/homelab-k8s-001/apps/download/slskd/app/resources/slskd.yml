@@ -25,3 +25,9 @@ shares:
     - \.ini$
     - Thumbs.db$
     - \.DS_Store$
+
+web:
+  authentication:
+    api_keys:
+      soulseek:
+        key: ${SLSKD_API_KEY}
