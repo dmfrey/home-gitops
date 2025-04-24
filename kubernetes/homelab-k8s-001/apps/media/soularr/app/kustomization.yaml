@@ -9,7 +9,7 @@ resources:
 
 
 configMapGenerator:
-  - name: slskd-configmap
+  - name: soularr-configmap
     files:
       - config.ini=./resources/config.ini
 
