@@ -41,9 +41,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        labels:
-          setGateway: false
-
         initContainers:
           config-setup:
             image:
@@ -84,6 +81,8 @@ spec:
                   - ALL
 
     defaultPodOptions:
+      labels:
+        setGateway: "false"
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
