@@ -26,6 +26,9 @@ shares:
     - Thumbs.db$
     - \.DS_Store$
 
+user:
+  username: ${SLSKD_USERNAME}`
+
 web:
   authentication:
     api_keys:
