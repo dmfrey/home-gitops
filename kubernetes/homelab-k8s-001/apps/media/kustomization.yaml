@@ -19,7 +19,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
   - ./sonarr/ks.yaml
-  - ./soularr/ks.yaml
+  # - ./soularr/ks.yaml
   - ./tautulli/ks.yaml
   - ./unpackerr/ks.yaml
   - ./wizarr/ks.yaml

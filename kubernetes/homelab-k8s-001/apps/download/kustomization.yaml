@@ -13,6 +13,7 @@ resources:
   # - ./qbittorrent/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./slskd/ks.yaml
+  - ./soularr/ks.yaml
 
 transformers:
   - |-
