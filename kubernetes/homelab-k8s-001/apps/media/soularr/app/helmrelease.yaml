@@ -62,7 +62,6 @@ spec:
             image:
               repository: mrusse08/soularr
               tag: latest
-              imagePullPolicy: Always
 
             env:
               TZ: America/New_York
