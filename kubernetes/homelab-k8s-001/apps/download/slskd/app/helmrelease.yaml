@@ -39,12 +39,20 @@ spec:
               - "/usr/local/bin/bash"
               - -c
               - |
+                rm /config/slskd.yml
                 envsubst < /tmp/slskd.yml > /config/slskd.yml
+                chown 1000:1000 /config/slskd.yml
                 exit 0
 
             envFrom:
               - secretRef:
                   name: slskd-secret
+
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
 
         containers:
           *app :
