@@ -50,7 +50,6 @@ spec:
               - "/usr/local/bin/bash"
               - -c
               - |
-                mkdir -p /config/assets
                 envsubst < /tmp/config.ini > /data/config.ini
                 exit 0
             envFrom:
