@@ -130,6 +130,8 @@ spec:
         externalLabels:
           cluster: homelab-k8s-001
 
+        externalUrl: https://prometheus.dmfrey.com
+
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
