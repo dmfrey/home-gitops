@@ -584,10 +584,10 @@ spec:
       passwordKey: GRAFANA_ADMIN_PASSWORD
       userKey: GRAFANA_ADMIN_USER
 
-    imageRenderer:
-      enabled: true
-      serviceMonitor:
-        enabled: true
+    # imageRenderer:
+    #   enabled: true
+    #   serviceMonitor:
+    #     enabled: true
 
     route:
       main:
