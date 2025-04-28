@@ -45,6 +45,15 @@ data:
     ingress: false
     traefik: false
   services.yaml: |
+    - Home:
+        - SMLight-SLZB-06M:
+            href: https://192.168.30.50
+            icon: zigbee.png
+            description: Zigbee Controller
+        - SMLight-SLZB-06-01:
+            href: https://192.168.30.51
+            icon: zigbee.png
+            description: Zigbee Controller
     - Infrastructure:
         - QNAP:
             href: https://192.168.30.5:7080/cgi-bin/
