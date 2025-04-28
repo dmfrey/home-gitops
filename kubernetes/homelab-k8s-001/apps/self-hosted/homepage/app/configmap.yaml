@@ -47,11 +47,11 @@ data:
   services.yaml: |
     - Home:
         - SMLight-SLZB-06M:
-            href: https://192.168.30.50
+            href: http://192.168.30.50
             icon: zigbee.png
             description: Zigbee Controller
         - SMLight-SLZB-06-01:
-            href: https://192.168.30.51
+            href: http://192.168.30.51
             icon: zigbee.png
             description: Zigbee Controller
     - Infrastructure:
