@@ -44,7 +44,15 @@ spec:
                 "namespace": "network",
                 "ips": ["192.168.50.9/24"]
               }]
-          hostNetwork: true
+
+          securityContext:
+            runAsUser: 0                      # Must be run as root user
+            runAsGroup: 0
+            runAsNonRoot: false               # Must be run as root user
+            fsGroup: 0
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 34
 
         containers:
           *app :
@@ -62,8 +70,8 @@ spec:
             env:
               TZ: "America/New_York"
               MATTER_SERVER__INSTANCE_NAME: *app
-              MATTER_SERVER__PORT: &wsPort 5580
-              MATTER_SERVER__APPLICATION_URL: &host matter.dmfrey.com
+              MATTER_SERVER__PORT: &port 5580
+              MATTER_SERVER__APPLICATION_URL: &host "matter.dmfrey.com"
 
             resources:
               requests:
@@ -71,29 +79,32 @@ spec:
               limits:
                 memory: "500M"
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 0                      # Must be run as root user
-        runAsGroup: 0
-        runAsNonRoot: false               # Must be run as root user
-        fsGroup: 0
-        fsGroupChangePolicy: "OnRootMismatch"
-        supplementalGroups:
-          - 34
-      hostNetwork: true
-
     service:
       *app :
         controller: *app
-        # type: LoadBalancer
-        # annotations:
-        #   external-dns.alpha.kubernetes.io/hostname: *host
-        #   lbipam.cilium.io/ips: 192.168.30.243, ::ffff:192.168.30.243
+        type: LoadBalancer
+        annotations:
+          # external-dns.alpha.kubernetes.io/hostname: *host
+          lbipam.cilium.io/ips: 192.168.30.243, ::ffff:192.168.30.243
         ports:
-          ws:
-            protocol: TCP
-            port: *wsPort
+          api:
             primary: true
+            protocol: TCP
+            port: *port
+        externalTrafficPolicy: Cluster
+
+    route:
+      app:
+        hostnames:
+          - *host
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

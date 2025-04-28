@@ -141,35 +141,35 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-          matter-server:
-            image:
-              repository: ghcr.io/home-assistant-libs/python-matter-server
-              tag: "7.0.1"
+          # matter-server:
+          #   image:
+          #     repository: ghcr.io/home-assistant-libs/python-matter-server
+          #     tag: "7.0.1"
 
-            args:
-              - --storage-path=/data
-              - --paa-root-cert-dir=/data/paa-root-cert
-              - --primary-interface=net1
-              - --log-level=debug
+          #   args:
+          #     - --storage-path=/data
+          #     - --paa-root-cert-dir=/data/paa-root-cert
+          #     - --primary-interface=net1
+          #     - --log-level=debug
 
-            env:
-              MATTER_SERVER__INSTANCE_NAME: matter-server
-              MATTER_SERVER__PORT: &matterPort 5580
-              # MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
+          #   env:
+          #     MATTER_SERVER__INSTANCE_NAME: matter-server
+          #     MATTER_SERVER__PORT: &matterPort 5580
+          #     # MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
 
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 256Mi
+          #   resources:
+          #     requests:
+          #       cpu: 10m
+          #     limits:
+          #       memory: 256Mi
 
-            securityContext:
-              runAsNonRoot: false
-              readOnlyRootFilesystem: false
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+          #   securityContext:
+          #     runAsNonRoot: false
+          #     readOnlyRootFilesystem: false
+          #     allowPrivilegeEscalation: true
+          #     runAsUser: 0
+          #     runAsGroup: 0
+          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
           codeserver:
             dependsOn: *app
@@ -227,8 +227,8 @@ spec:
         ports:
           http:
             port: *port
-          matter:
-            port: *matterPort
+          # matter:
+          #   port: *matterPort
           code:
             port: *codePort
 
