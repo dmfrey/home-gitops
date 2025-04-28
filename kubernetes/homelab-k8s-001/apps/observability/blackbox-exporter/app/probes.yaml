@@ -16,6 +16,8 @@ spec:
     staticConfig:
       static:
         - minio.dmfrey.com
+        - smlight-slzb-06m.homelab.frey.home
+        - smlight-slzb-06-01.homelab.frey.home
   #       - expanse.internal
   #       - garage-door.internal
   #       - hdhomerun.internal

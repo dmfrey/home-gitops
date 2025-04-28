@@ -4,7 +4,7 @@ kind: OCIRepository
 metadata:
   name: blackbox-exporter
 spec:
-  interval: 1h
+  interval: 5m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
@@ -20,7 +20,7 @@ metadata:
 
 spec:
 
-  interval: 30m
+  interval: 1h
 
   chartRef:
     kind: OCIRepository
@@ -28,30 +28,16 @@ spec:
 
   install:
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
 
   values:
 
     fullnameOverride: *app
-
-    ingress:
-      enabled: true
-      className: internal
-      # annotations:
-      hosts:
-        - host: blackbox-exporter.dmfrey.com
-          paths:
-            - path: /
-              pathType: Prefix
-              service:
-                identifier: *app
-                port: 9115
 
     securityContext:
       readOnlyRootFilesystem: true
