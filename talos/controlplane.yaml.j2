@@ -4,10 +4,10 @@ debug: false
 persist: true
 machine:
   type: controlplane
-  token: op://homelab5767/talos/MACHINE_TOKEN
+  token: op://kubernetes/talos/MACHINE_TOKEN
   ca:
-    crt: op://homelab5767/talos/MACHINE_CA_CRT
-    key: op://homelab5767/talos/MACHINE_CA_KEY
+    crt: op://kubernetes/talos/MACHINE_CA_CRT
+    key: op://kubernetes/talos/MACHINE_CA_KEY
   certSANs:
     - 192.168.30.20
     - homelab-k8s-001.homelab.frey.home
@@ -43,10 +43,6 @@ machine:
           - routes: []
             dhcp: false
             vlanId: 50
-            mtu: 1500
-          - routes: []
-            dhcp: false
-            vlanId: 51
             mtu: 1500
         mtu: 9000
         dhcp: true
@@ -160,8 +156,8 @@ machine:
     topology.kubernetes.io/region: dmf
     topology.kubernetes.io/zone: dmf-u
 cluster:
-  id: op://homelab5767/talos/CLUSTER_ID
-  secret: op://homelab5767/talos/CLUSTER_SECRET
+  id: op://kubernetes/talos/CLUSTER_ID
+  secret: op://kubernetes/talos/CLUSTER_SECRET
   controlPlane:
     endpoint: https://homelab-k8s-001.homelab.frey.home:6443
   clusterName: homelab-k8s-001
@@ -175,16 +171,16 @@ cluster:
       - 172.23.0.0/16
   coreDNS:
     disabled: true
-  token: op://homelab5767/talos/CLUSTER_TOKEN
-  secretboxEncryptionSecret: op://homelab5767/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+  token: op://kubernetes/talos/CLUSTER_TOKEN
+  secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   ca:
-    crt: op://homelab5767/talos/CLUSTER_CA_CRT
-    key: op://homelab5767/talos/CLUSTER_CA_KEY
+    crt: op://kubernetes/talos/CLUSTER_CA_CRT
+    key: op://kubernetes/talos/CLUSTER_CA_KEY
   aggregatorCA:
-    crt: op://homelab5767/talos/CLUSTER_AGGREGATORCA_CRT
-    key: op://homelab5767/talos/CLUSTER_AGGREGATORCA_KEY
+    crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
+    key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
   serviceAccount:
-    key: op://homelab5767/talos/CLUSTER_SERVICEACCOUNT_KEY
+    key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
   apiServer:
     image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
@@ -222,8 +218,8 @@ cluster:
       service: {}
   etcd:
     ca:
-      crt: op://homelab5767/talos/CLUSTER_ETCD_CA_CRT
-      key: op://homelab5767/talos/CLUSTER_ETCD_CA_KEY
+      crt: op://kubernetes/talos/CLUSTER_ETCD_CA_CRT
+      key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
     advertisedSubnets:
