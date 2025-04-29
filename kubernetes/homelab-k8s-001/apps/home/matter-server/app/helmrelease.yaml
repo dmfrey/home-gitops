@@ -37,13 +37,13 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.9/24"]
-              }]
+          # annotations:
+          #   k8s.v1.cni.cncf.io/networks: |
+          #     [{
+          #       "name":"iot-vlan",
+          #       "namespace": "network",
+          #       "ips": ["192.168.50.9/24"]
+          #     }]
 
           hostNetwork: true
 
@@ -65,7 +65,8 @@ spec:
 
             args:
               - --storage-path=/data
-              - --primary-interface=net1
+              - --primary-interface=eth0
+              # net1
               - --log-level=debug
               - --log-level-sdk=detail
 
@@ -84,19 +85,18 @@ spec:
     service:
       *app :
         controller: *app
-        # type: LoadBalancer
-        # annotations:
+        type: LoadBalancer
+        annotations:
           # external-dns.alpha.kubernetes.io/hostname: *host
-          # lbipam.cilium.io/ips: 192.168.30.243, ::ffff:192.168.30.243
+          lbipam.cilium.io/ips: 192.168.30.243, ::ffff:192.168.30.243
         ports:
-          api:
-            primary: true
-            protocol: TCP
+          http:
             port: *port
+            protocol: TCP
         externalTrafficPolicy: Cluster
 
     route:
-      app:
+      *app :
         hostnames:
           - *host
         parentRefs:
