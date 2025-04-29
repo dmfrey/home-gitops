@@ -45,6 +45,8 @@ spec:
                 "ips": ["192.168.50.9/24"]
               }]
 
+          hostNetwork: true
+
           securityContext:
             runAsUser: 0                      # Must be run as root user
             runAsGroup: 0
