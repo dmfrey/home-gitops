@@ -49,6 +49,8 @@ spec:
 
             env:
               TZ: America/New_York
+              BAZARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              BAZARR__LOG_LEVEL: info
               POSTGRESS_ENABLED: true
               POSTGRES_HOST:
                 valueFrom:
