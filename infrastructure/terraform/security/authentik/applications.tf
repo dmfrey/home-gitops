@@ -3,7 +3,6 @@ locals {
   oauth_apps = [
     "grafana",
     "blinko",
-    "hedgedoc",
     "openweb",
     "romm",
     "spring-dev"
@@ -36,14 +35,6 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/blinko.png"
       redirect_uri  = "https://notes.${var.cluster_domain}/api/auth/callback/blinko"
       launch_url    = "https://notes.${var.cluster_domain}/"
-    },
-    hedgedoc = {
-      client_id     = module.onepassword_application["hedgedoc"].fields["AUTHENTIK_CLIENT_ID"]
-      client_secret = module.onepassword_application["hedgedoc"].fields["AUTHENTIK_CLIENT_SECRET"]
-      group         = "home"
-      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/hedgedoc.svg"
-      redirect_uri  = "https://kb.${var.cluster_domain}/api/private/auth/oidc/AUTHENTIK/callback"
-      launch_url    = "https://kb.${var.cluster_domain}/"
     },
     openweb = {
       client_id     = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_ID"]
