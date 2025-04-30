@@ -50,7 +50,6 @@ servers:
       - name: log
         configBlock: |-
           class error
-      - name: mdns
 
 affinity:
   nodeAffinity:
