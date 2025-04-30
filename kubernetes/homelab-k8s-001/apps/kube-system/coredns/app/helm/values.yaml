@@ -50,6 +50,7 @@ servers:
       - name: log
         configBlock: |-
           class error
+      - name: mdns:github.com/openshift/coredns-mdns
 
 affinity:
   nodeAffinity:
