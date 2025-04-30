@@ -125,10 +125,10 @@ spec:
     - name: skipper-db
       namespace: *namespace
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-      name: spring-cloud-dataflow
-      namespace: *namespace
+    # - apiVersion: helm.toolkit.fluxcd.io/v2
+    #   kind: HelmRelease
+    #   name: spring-cloud-dataflow
+    #   namespace: *namespace
     # - apiVersion: apps/v1
     #   kind: Deployment
     #   name: spring-cloud-dataflow-prometheus-proxy
