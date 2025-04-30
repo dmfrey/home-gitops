@@ -254,6 +254,10 @@ spec:
         #       value: Loki
 
       kubernetes:
+        etcd:
+          gnetId: 22236
+          revision: 1
+          datasource: prometheus
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
           gnetId: 15761
