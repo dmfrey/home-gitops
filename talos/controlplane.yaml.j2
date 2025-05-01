@@ -65,6 +65,7 @@ machine:
       - mitigations=off                     # Less security, faster puter
       - security=none                       # Less security, faster puter
       - talos.auditd.disabled=1             # Less security, faster puter
+      - selinux=0
     wipe: false
   files:
     - content: |-
