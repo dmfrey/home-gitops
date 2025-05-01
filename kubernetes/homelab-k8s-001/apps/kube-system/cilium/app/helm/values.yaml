@@ -31,7 +31,7 @@ cni:
 dashboards:
   enabled: true
 
-devices: eth+,enp+
+devices: eth+
 
 enableIPv4BIGTCP: true
 
