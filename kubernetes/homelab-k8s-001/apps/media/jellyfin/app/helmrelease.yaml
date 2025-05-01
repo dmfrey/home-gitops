@@ -77,11 +77,11 @@ spec:
 
             resources:
               requests:
-                amd.com/gpu: 1
+                # amd.com/gpu: 1
                 cpu: 1
                 memory: 4Gi
               limits:
-                amd.com/gpu: 1
+                # amd.com/gpu: 1
                 memory: 8Gi
 
             securityContext:
