@@ -96,7 +96,7 @@ spec:
           requireMsgr2: true
 
       storage:
-        useAllNodes: false  # true
+        useAllNodes: true
         useAllDevices: false
         # devicePathFilter: /dev/nvme0n1
         config:
