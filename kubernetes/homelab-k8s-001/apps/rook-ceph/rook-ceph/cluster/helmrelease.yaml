@@ -92,7 +92,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: /dev/nvme0n1
+        devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_* # /dev/nvme0n1
         config:
           osdsPerDevice: "1"
         # nodes:
