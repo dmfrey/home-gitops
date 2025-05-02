@@ -39,7 +39,7 @@ spec:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: openebs-hostpath
+        storageClassName: ceph-block
         resources:
           requests:
             storage: 25Gi
