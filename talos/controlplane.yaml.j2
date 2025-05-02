@@ -27,11 +27,11 @@ machine:
           - rw
     extraConfig:
       serializeImagePulls: false
-    extraMounts:
-      - destination: /var/mnt/extra
-        type: bind
-        source: /var/mnt/extra
-        options: ["bind", "rshared", "rw"]
+#    extraMounts:
+#      - destination: /var/mnt/extra
+#        type: bind
+#        source: /var/mnt/extra
+#        options: ["bind", "rshared", "rw"]
     defaultRuntimeSeccompProfileEnabled: true
     nodeIP:
       validSubnets: ["192.168.30.0/24"]
@@ -65,7 +65,7 @@ machine:
       - mitigations=off                     # Less security, faster puter
       - security=none                       # Less security, faster puter
       - talos.auditd.disabled=1             # Less security, faster puter
-      - selinux=0
+      - -selinux                            # Less security, faster puter
     wipe: false
   files:
     - content: |-
