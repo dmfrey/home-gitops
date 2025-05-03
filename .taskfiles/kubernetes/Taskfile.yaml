@@ -54,11 +54,11 @@ tasks:
     desc: Upgrade the ARC
     cmds:
       - helm -n actions-runner-system uninstall home-gitops-runner
-      - helm -n actions-runner-system uninstall hass-config-runner
+      # - helm -n actions-runner-system uninstall hass-config-runner
       - helm -n actions-runner-system uninstall actions-runner-controller
       - sleep 5
       - flux -n actions-runner-system reconcile hr actions-runner-controller
       - flux -n actions-runner-system reconcile hr home-gitops-runner
-      - flux -n actions-runner-system reconcile hr hass-config-runner
+      # - flux -n actions-runner-system reconcile hr hass-config-runner
     preconditions:
       - which flux helm
