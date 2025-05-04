@@ -42,6 +42,22 @@ spec:
           reloader.stakater.com/auto: "true"
           setGateway: "true"
 
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: stable
+
+            command: ["sh", "-c", "chown -R 1000:1000 /config/*"]
+
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+
         containers:
 
           *app :
