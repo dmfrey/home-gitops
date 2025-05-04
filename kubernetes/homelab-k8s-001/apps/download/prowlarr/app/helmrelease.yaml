@@ -42,21 +42,21 @@ spec:
           reloader.stakater.com/auto: "true"
           setGateway: "true"
 
-        # initContainers:
-        #   fix-permissions:
-        #     image:
-        #       repository: busybox
-        #       tag: stable
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: stable
 
-        #     command: ["sh", "-c", "chown -R 1000:1000 /config/*"]
+            command: ["sh", "-c", "chown -R 1000:1000 /config/*"]
 
-        #     securityContext:
-        #       runAsNonRoot: false
-        #       readOnlyRootFilesystem: true
-        #       allowPrivilegeEscalation: true
-        #       runAsUser: 0
-        #       runAsGroup: 0
-        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
 
@@ -182,9 +182,11 @@ spec:
         type: nfs
         server: 192.168.30.5
         path: /plexbackups/backups/prowlarr
-        globalMounts:
-          - path: /config/Backups
-            readOnly: false
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/Backups
+                readOnly: false
 
     # serviceMonitor:
     #   metrics:
