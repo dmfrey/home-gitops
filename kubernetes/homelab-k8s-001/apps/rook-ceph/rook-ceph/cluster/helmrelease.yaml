@@ -92,22 +92,22 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_* # /dev/nvme0n1
+        # devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_* # /dev/nvme0n1
         config:
           osdsPerDevice: "1"
-        # nodes:
-        #   - name: "dmf-amd-001"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
-        #   - name: "dmf-intel-001"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
-        #   - name: "dmf-intel-002"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
-        #   - name: "dmf-intel-003"
-        #     devices:
-        #       - name: "/dev/nvme0n1"
+        nodes:
+          - name: "dmf-amd-001"
+            devices:
+              - name: "/dev/disk/by-id/nvme-nvme.1e4b-3330313231363037363731-53504343204d2e32205043496520535344-00000001"
+          - name: "dmf-intel-001"
+            devices:
+              - name: "/dev/disk/by-id/nvme-nvme.1e4b-3330313437363531323236-53504343204d2e32205043496520535344-00000001"
+          - name: "dmf-intel-002"
+            devices:
+              - name: "/dev/disk/by-id/nvme-nvme.1e4b-3330313231363037383330-53504343204d2e32205043496520535344-00000001"
+          - name: "dmf-intel-003"
+            devices:
+              - name: "/dev/disk/by-id/nvme-eui.540000000017f643346f710000000045"
 
 
     cephBlockPools:
