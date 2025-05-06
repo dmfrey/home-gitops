@@ -8,7 +8,7 @@ spec:
   staticConfigs:
     - targets:
         - minio.dmfrey.com:9000
-  metricsPath: /metrics
+  metricsPath: /minio/v2/metrics
   relabelings:
     - action: replace
       targetLabel: job
