@@ -6,7 +6,7 @@ namespace: kube-system
 components:
   - ../../components/common
 resources:
-  - ./amd-device-plugin/ks.yaml
+  # - ./amd-device-plugin/ks.yaml
   - ./busybox/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
