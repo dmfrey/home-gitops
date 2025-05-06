@@ -77,11 +77,11 @@ spec:
 
             resources:
               requests:
-                # amd.com/gpu: 1
+                gpu.intel.com/i915: 1
                 cpu: 1
                 memory: 4Gi
               limits:
-                # amd.com/gpu: 1
+                gpu.intel.com/i915: 1
                 memory: 8Gi
 
             securityContext:
@@ -96,22 +96,8 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 109, 568, 1568, 65534]
+        supplementalGroups: [44, 109]
         seccompProfile: { type: RuntimeDefault }
-      # affinity:
-      #   podAntiAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       - labelSelector:
-      #           matchExpressions:
-      #             - key: app.kubernetes.io/name
-      #               operator: In
-      #               values: ["ollama"]
-      #             - key: app.kuberentes.io/component
-      #               operator: In
-      #               values: ["backend"]
-      #         topologyKey: kubernetes.io/hostname
-      # nodeSelector:
-      #   feature.node.kubernetes.io/pci-0300_1002.present: "true"
 
     service:
       *app :
