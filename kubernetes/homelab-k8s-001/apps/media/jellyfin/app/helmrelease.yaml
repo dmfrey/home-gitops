@@ -98,20 +98,20 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 109, 568, 1568, 65534]
         seccompProfile: { type: RuntimeDefault }
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values: ["ollama"]
-                  - key: app.kuberentes.io/component
-                    operator: In
-                    values: ["backend"]
-              topologyKey: kubernetes.io/hostname
-      nodeSelector:
-        feature.node.kubernetes.io/pci-0300_1002.present: "true"
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       - labelSelector:
+      #           matchExpressions:
+      #             - key: app.kubernetes.io/name
+      #               operator: In
+      #               values: ["ollama"]
+      #             - key: app.kuberentes.io/component
+      #               operator: In
+      #               values: ["backend"]
+      #         topologyKey: kubernetes.io/hostname
+      # nodeSelector:
+      #   feature.node.kubernetes.io/pci-0300_1002.present: "true"
 
     service:
       *app :
