@@ -31,7 +31,7 @@ spec:
 
   install:
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -49,15 +49,6 @@ spec:
         alertmanager:
           service:
             address: http://kube-prometheus-stack-alertmanager:9093
-
-      affinity:
-        nodeAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: node-role.kubernetes.io/control-plane
-                    operator: Exists
-              topologyKey: kubernetes.io/hostname
 
     rbac:
       create: true
