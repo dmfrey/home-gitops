@@ -17,21 +17,13 @@ machine:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
     clusterDNS:
       - 172.23.0.10
+    extraConfig:
+      serializeImagePulls: false
     extraMounts:
       - destination: /var/mnt/extra
         type: bind
         source: /var/mnt/extra
-        options:
-          - bind
-          - rshared
-          - rw
-    extraConfig:
-      serializeImagePulls: false
-#    extraMounts:
-#      - destination: /var/mnt/extra
-#        type: bind
-#        source: /var/mnt/extra
-#        options: ["bind", "rshared", "rw"]
+        options: ["bind", "rshared", "rw"]
     defaultRuntimeSeccompProfileEnabled: true
     nodeIP:
       validSubnets: ["192.168.30.0/24"]
@@ -57,46 +49,49 @@ machine:
           - homelab.dmfrey.com
     disableSearchDomain: true
   install:
+    diskSelector:
+      model: INTEL SSDSC2BB48
     extraKernelArgs:
+      - -init_on_alloc                      # Less security, faster puter
+      - -init_on_free                       # Less security, faster puter
+      - -selinux                            # Less security, faster puter
       - net.ifnames=0
+      - i915.enable_guc=3                   # Meteor Lake CPU / iGPU
       - apparmor=0                          # Less security, faster puter
       - init_on_alloc=0                     # Less security, faster puter
       - init_on_free=0                      # Less security, faster puter
+      - intel_iommu=on                      # PCI Passthrough
+      - iommu=pt                            # PCI Passthrough
       - mitigations=off                     # Less security, faster puter
       - security=none                       # Less security, faster puter
+      - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
       - talos.auditd.disabled=1             # Less security, faster puter
-      - -selinux                            # Less security, faster puter
     wipe: false
   files:
-    - content: |-
+    - # Spegel
+      op: create
+      path: /etc/cri/conf.d/20-customization.part
+      content: |
         [plugins."io.containerd.cri.v1.images"]
           discard_unpacked_layers = false
-        # [plugins."io.containerd.grpc.v1.cri"]
-        #   enable_unprivileged_ports = true
-        #   enable_unprivileged_icmp = true
-        # [plugins."io.containerd.grpc.v1.cri".containerd]
-        #   discard_unpacked_layers = false
-        # [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-        #   discard_unpacked_layers = false
-      permissions: 0o0
-      path: /etc/cri/conf.d/20-customization.part
-      op: create
-    - content: |-
+    - op: overwrite
+      path: /etc/nfsmount.conf
+      permissions: 0o644
+      content: |-
         [ NFSMount_Global_Options ]
         nfsvers=4.1
         hard=True
         nconnect=16
         noatime=True
-      permissions: 0o644
-      path: /etc/nfsmount.conf
-      op: overwrite
-  time:
-    disabled: false
-    servers:
-      - time.cloudflare.com
+
+#  time:
+#    disabled: false
+#    servers:
+#      - time.cloudflare.com
+
   sysctls:
-    fs.inotify.max_user_watches: 1048576   # Watchdog
     fs.inotify.max_user_instances: 8192    # Watchdog
+    fs.inotify.max_user_watches: 1048576   # Watchdog
     net.core.default_qdisc: fq             # 10Gb/s
     net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
     net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
@@ -124,6 +119,7 @@ machine:
     devices.system.cpu.cpu13.cpufreq.energy_performance_preference: balance_performance
     devices.system.cpu.cpu14.cpufreq.energy_performance_preference: balance_performance
     devices.system.cpu.cpu15.cpufreq.energy_performance_preference: balance_performance
+    devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
   features:
     rbac: true
     stableHostname: true
@@ -146,14 +142,12 @@ machine:
   udev:
     rules:
       - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
-      - KERNEL=="kfd", MODE="0666" SUBSYSTEM=="drm"
-      - KERNEL=="renderD*", MODE="0666"
+      - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
   kernel:
     modules:
       - name: nbd
   nodeLabels:
-    factory.talos.dev/schematic-prefix: b51b7b6129e8ba285ab83ef1059418c4
-    factory.talos.dev/schematic-suffix: 34de4223a7ae4b3905dd06512b923943
+    intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: dmf
     topology.kubernetes.io/zone: dmf-u
 cluster:
