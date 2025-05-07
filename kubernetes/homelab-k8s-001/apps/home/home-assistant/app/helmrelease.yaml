@@ -227,8 +227,8 @@ spec:
         ports:
           http:
             port: *port
-          # matter:
-          #   port: *matterPort
+          matter:
+            port: 5540
           code:
             port: *codePort
 
