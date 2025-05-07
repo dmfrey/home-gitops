@@ -213,7 +213,7 @@ spec:
 
       media:
         type: nfs
-        server: 192.168.30.5
+        server: nas.internal
         path: /media
 
       scripts:
@@ -228,7 +228,7 @@ spec:
 
       backups:
         type: nfs
-        server: "192.168.30.5"
+        server: nas.internal
         path: /plexbackups/backups/bazarr
         globalMounts:
           - path: /config/backup

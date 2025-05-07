@@ -170,13 +170,13 @@ spec:
 
       media:
         type: nfs
-        server: 192.168.30.5
+        server: nas.internal
         path: /media/
 
       backups:
         enabled: true
         type: nfs
-        server: "192.168.30.5"
+        server: nas.internal
         path: /plexbackups/backups/lidarr
         advancedMounts:
           *app :

@@ -182,7 +182,7 @@ spec:
       romm-assets:
         enabled: true
         type: nfs
-        server: 192.168.30.5
+        server: nas.internal
         path: /games/assets
         globalMounts:
           - path: /romm/assets
@@ -190,7 +190,7 @@ spec:
       romm-library:
         enabled: true
         type: nfs
-        server: 192.168.30.5
+        server: nas.internal
         path: /games/library
         globalMounts:
           - path: /romm/library
@@ -198,7 +198,7 @@ spec:
       romm-resources:
         enabled: true
         type: nfs
-        server: 192.168.30.5
+        server: nas.internal
         path: /games/resources
         globalMounts:
           - path: /romm/resources
