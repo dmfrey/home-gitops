@@ -15,6 +15,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://minio.dmfrey.com
+        - http://minio.internal:39010
+        - http://nas.internal:7080
         - smlight-slzb-06m.homelab.frey.home
         - smlight-slzb-06-01.homelab.frey.home
