@@ -61,7 +61,7 @@ data:
             icon: qnap.png
             widget:
               type: qnap
-              url: http://192.168.30.5:7080
+              url: http://nas.internal:7080
               username: {{HOMEPAGE_VAR_QNAP_USERNAME}}
               password: {{HOMEPAGE_VAR_QNAP_PASSWORD}}
     - Network:
