@@ -67,13 +67,25 @@ spec:
               - --storage-path=/data
               - --primary-interface=net1
               - --log-level=debug
-              - --log-level-sdk=detail
+              - --log-level-sdk=info
 
             env:
               TZ: "America/New_York"
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &port 5580
               MATTER_SERVER__APPLICATION_URL: &host "matter.dmfrey.com"
+              MATTER_SERVER__LOG_LEVEL: info
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
 
             resources:
               requests:
@@ -84,15 +96,11 @@ spec:
     service:
       *app :
         controller: *app
-        # type: LoadBalancer
-        # annotations:
-        #   # external-dns.alpha.kubernetes.io/hostname: *host
-        #   lbipam.cilium.io/ips: 192.168.30.243, ::ffff:192.168.30.243
         ports:
-          http:
+          ws:
+            primary: true
             port: *port
             protocol: TCP
-        # externalTrafficPolicy: Cluster
 
     route:
       *app :
