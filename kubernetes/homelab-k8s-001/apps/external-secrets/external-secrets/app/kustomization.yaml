@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./clustersecretstore.yaml
   - ./helmrelease.yaml
+  - ./secret-onepassword-secret.sops.yaml
 
 configMapGenerator:
   - name: external-secrets-values
