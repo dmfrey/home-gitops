@@ -138,13 +138,9 @@ spec:
             *app :
               - path: /data
 
-      # config:
-      #   type: emptyDir
-      #   medium: Memory
-      #   advancedMounts:
-      #     *app :
-      #       *app :
-      #         - path: /config
+      config:
+        type: emptyDir
+        medium: Memory
 
       config-file:
         type: configMap
