@@ -146,10 +146,10 @@ spec:
         name: frigate-configmap
         advancedMounts:
           *app :
-            config-setup:
-              - path: /tmp/config.yml
-                subPath: config.yml
-                readOnly: true
+            # config-setup:
+            #   - path: /tmp/config.yml
+            #     subPath: config.yml
+            #     readOnly: true
             *app :
               - path: /config/config.yml
                 subPath: config.yml
