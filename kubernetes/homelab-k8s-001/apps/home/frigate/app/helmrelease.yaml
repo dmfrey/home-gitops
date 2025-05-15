@@ -130,16 +130,12 @@ spec:
                 port: *port
 
     persistence:
-      data:
+      config:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
           *app :
             *app :
-              - path: /data
-
-      config:
-        type: emptyDir
-        medium: Memory
+              - path: /config
 
       config-file:
         type: configMap
