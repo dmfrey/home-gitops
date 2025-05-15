@@ -72,12 +72,8 @@ spec:
                 memory: 10Gi
 
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-
+              privileged: true
+              
     service:
       *app :
         controller: *app
