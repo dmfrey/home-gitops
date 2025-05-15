@@ -153,7 +153,7 @@ spec:
             *app :
               - path: /config/config.yml
                 subPath: config.yml
-                readOnly: true
+                readOnly: false
 
       cache:
         type: emptyDir
