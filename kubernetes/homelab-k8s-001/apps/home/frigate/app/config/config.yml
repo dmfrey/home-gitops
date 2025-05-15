@@ -12,8 +12,8 @@ auth:
 mqtt:
   host: mosquitto.home.svc.cluster.local
   topic_prefix: frigate
-  user: "{FRIGATE_MQTT_USERNAME}"
-  password: "{FRIGATE_MQTT_PASSWORD}"
+  user: "${FRIGATE_MQTT_USERNAME}"
+  password: "${FRIGATE_MQTT_PASSWORD}"
 
 database:
   path: /data/frigate.db
@@ -49,7 +49,7 @@ objects:
 go2rtc:
   streams:
     barn_door_camera_stream:
-      - nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_BARN_DOOR_CAMERA}
+      - "nest:?client_id=${FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret=${FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token=${FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id=${FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id=${FRIGATE_NEST_CAMERA_ID_BARN_DOOR_CAMERA}"
 
 cameras:
   barn_door_camera:
