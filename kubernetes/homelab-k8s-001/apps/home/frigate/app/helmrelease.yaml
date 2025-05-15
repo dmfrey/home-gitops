@@ -35,29 +35,28 @@ spec:
           configmap.reloader.stakater.com/reload: frigate-configmap
           secret.reloader.stakater.com/reload: frigate-secret
 
-        initContainers:
-          config-setup:
-            image:
-              repository: ghcr.io/dmfrey/bash
-              tag: 5.2.26-alpine3.20
+        # initContainers:
+        #   config-setup:
+        #     image:
+        #       repository: ghcr.io/dmfrey/bash
+        #       tag: 5.2.26-alpine3.20
 
-            command:
-              - "/usr/local/bin/bash"
-              - -c
-              - |
-                envsubst < /tmp/config.yml > /config/config.yml
-                exit 0
+        #     command:
+        #       - "/usr/local/bin/bash"
+        #       - -c
+        #       - |
+        #         envsubst < /tmp/config.yml > /config/config.yml
+        #         exit 0
 
-            envFrom:
-              - secretRef:
-                  name: frigate-secret
+        #     envFrom:
+        #       - secretRef:
+        #           name: frigate-secret
 
-            securityContext:
-              runAsNonRoot: false
-              runAsUser: 0
-              runAsGroup: 0
-              fsGroup: 0
-
+        #     securityContext:
+        #       runAsNonRoot: false
+        #       runAsUser: 0
+        #       runAsGroup: 0
+        #       fsGroup: 0
 
         containers:
           *app :
@@ -149,6 +148,10 @@ spec:
           *app :
             config-setup:
               - path: /tmp/config.yml
+                subPath: config.yml
+                readOnly: true
+            *app :
+              - path: /config/config.yml
                 subPath: config.yml
                 readOnly: true
 

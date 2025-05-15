@@ -7,63 +7,64 @@ logger:
 auth:
   enabled: False
   trusted_proxies:
+    - 172.22.0.0/16
     - 172.23.0.0/16
 
 mqtt:
   host: mosquitto.home.svc.cluster.local
   topic_prefix: frigate
-  user: "${FRIGATE_MQTT_USERNAME}"
-  password: "${FRIGATE_MQTT_PASSWORD}"
+  user: "{FRIGATE_MQTT_USERNAME}"
+  password: "{FRIGATE_MQTT_PASSWORD}"
 
 database:
   path: /data/frigate.db
 
-snapshots:
-  enabled: true
-  timestamp: false
-  bounding_box: true
-  retain:
-    default: 30
+# snapshots:
+#   enabled: true
+#   timestamp: false
+#   bounding_box: true
+#   retain:
+#     default: 30
 
-record:
-  enabled: true
-  retain:
-    days: 14
-    mode: all
+# record:
+#   enabled: true
+#   retain:
+#     days: 14
+#     mode: all
   # events:
   #   retain:
   #     default: 14
       # mode: active_objects
 
-objects:
-  track:
-    - person
-    - car
-    - dog
+# objects:
+#   track:
+#     - person
+#     - car
+#     - dog
   # filters:
   #   person:
   #     min_area: 2500
   #     max_area: 100000
   #     threshold: 0.7
 
-go2rtc:
-  streams:
-    barn_door_camera_stream:
-      - "nest:?client_id=${FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret=${FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token=${FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id=${FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id=${FRIGATE_NEST_CAMERA_ID_BARN_DOOR_CAMERA}"
+# go2rtc:
+#   streams:
+#     barn_door_camera_stream:
+#       - "nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_BARN_DOOR_CAMERA}"
 
-cameras:
-  barn_door_camera:
-    ffmpeg:
-      inputs:
-        # Use go2rtc stream name defined above in go2rtc.streams
-        # Point to localhost (127.0.0.1) because go2rtc runs inside the Frigate container
-        - path: rtsp://127.0.0.1:8554/barn_door_camera_stream
-          roles:
-            - detect
-            - record # Or clips
-    detect:
-      enabled: True
-      # ... your detection settings ...
-    record:
-      enabled: True
-      # ... your recording settings ...
+# cameras:
+#   barn_door_camera:
+#     ffmpeg:
+#       inputs:
+#         # Use go2rtc stream name defined above in go2rtc.streams
+#         # Point to localhost (127.0.0.1) because go2rtc runs inside the Frigate container
+#         - path: rtsp://127.0.0.1:8554/barn_door_camera_stream
+#           roles:
+#             - detect
+#             - record # Or clips
+#     detect:
+#       enabled: True
+#       # ... your detection settings ...
+#     record:
+#       enabled: True
+#       # ... your recording settings ...
