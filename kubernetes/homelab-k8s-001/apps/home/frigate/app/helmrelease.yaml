@@ -15,7 +15,7 @@ spec:
 
   install:
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -73,7 +73,7 @@ spec:
 
             securityContext:
               privileged: true
-              
+
     service:
       *app :
         controller: *app
