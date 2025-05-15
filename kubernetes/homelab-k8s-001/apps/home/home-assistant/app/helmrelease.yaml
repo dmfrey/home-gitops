@@ -351,6 +351,11 @@ spec:
         globalMounts:
           - path: /config/tts
 
+      media:
+        type: nfs
+        server: nas.internal
+        path: /media
+
       tmp:
         type: emptyDir
         medium: Memory
