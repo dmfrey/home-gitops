@@ -61,8 +61,8 @@ go2rtc:
       - nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_FRONT_YARD_CAMERA}
     garden_camera_stream:
       - nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_GARDEN_CAMERA}
-    kitchen_display_stream:
-      - nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_KITCHEN_DISPLAY}
+    # kitchen_display_stream:
+    #   - nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_KITCHEN_DISPLAY}
 
 cameras: # {}
   back_door_doorbell:
@@ -161,18 +161,18 @@ cameras: # {}
       enabled: True
       # ... your recording settings ...
 
-  kitchen_display:
-    ffmpeg:
-      inputs:
-        # Use go2rtc stream name defined above in go2rtc.streams
-        # Point to localhost (127.0.0.1) because go2rtc runs inside the Frigate container
-        - path: rtsp://127.0.0.1:8554/kitchen_display_stream
-          roles:
-            - detect
-            - record # Or clips
-    detect:
-      enabled: True
-      # ... your detection settings ...
-    record:
-      enabled: True
-      # ... your recording settings ...
+  # kitchen_display:
+  #   ffmpeg:
+  #     inputs:
+  #       # Use go2rtc stream name defined above in go2rtc.streams
+  #       # Point to localhost (127.0.0.1) because go2rtc runs inside the Frigate container
+  #       - path: rtsp://127.0.0.1:8554/kitchen_display_stream
+  #         roles:
+  #           - detect
+  #           - record # Or clips
+  #   detect:
+  #     enabled: True
+  #     # ... your detection settings ...
+  #   record:
+  #     enabled: True
+  #     # ... your recording settings ...
