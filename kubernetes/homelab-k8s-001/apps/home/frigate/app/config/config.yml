@@ -19,10 +19,10 @@ mqtt:
 database:
   path: /config/frigate.db
 
-detectors:
-  ov_0:
-    type: openvino
-    device: GPU
+# detectors:
+#   ov_0:
+#     type: openvino
+#     device: GPU
 
 go2rtc:
   streams:
