@@ -19,28 +19,28 @@ mqtt:
 database:
   path: /config/frigate.db
 
-# snapshots:
-#   enabled: true
-#   timestamp: false
-#   bounding_box: true
-#   retain:
-#     default: 30
+snapshots:
+  enabled: true
+  timestamp: false
+  bounding_box: true
+  retain:
+    default: 30
 
-# record:
-#   enabled: true
-#   retain:
-#     days: 14
-#     mode: all
-  # events:
-  #   retain:
-  #     default: 14
+record:
+  enabled: true
+  retain:
+    days: 14
+    mode: all
+  events:
+    retain:
+      default: 14
       # mode: active_objects
 
-# objects:
-#   track:
-#     - person
-#     - car
-#     - dog
+objects:
+  track:
+    - person
+    - car
+    - dog
   # filters:
   #   person:
   #     min_area: 2500
@@ -74,6 +74,7 @@ cameras: # {}
           roles:
             - detect
             - record # Or clips
+      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -90,6 +91,7 @@ cameras: # {}
           roles:
             - detect
             - record # Or clips
+      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -106,6 +108,7 @@ cameras: # {}
           roles:
             - detect
             - record # Or clips
+      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -122,6 +125,7 @@ cameras: # {}
           roles:
             - detect
             - record # Or clips
+      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -138,6 +142,7 @@ cameras: # {}
           roles:
             - detect
             - record # Or clips
+      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -154,6 +159,7 @@ cameras: # {}
           roles:
             - detect
             - record # Or clips
+      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
