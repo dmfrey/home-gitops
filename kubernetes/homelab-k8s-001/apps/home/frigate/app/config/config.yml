@@ -78,13 +78,13 @@ cameras: # {}
         - path: rtsp://127.0.0.1:8554/back_door_doorbell_stream
           roles:
             - detect
-            - record # Or clips
+            - clips # Or clips
       hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
     record:
-      enabled: True
+      enabled: False
       # ... your recording settings ...
 
   barn_door_camera:
@@ -129,13 +129,13 @@ cameras: # {}
         - path: rtsp://127.0.0.1:8554/front_door_doorbell_stream
           roles:
             - detect
-            - record # Or clips
+            - clips # Or clips
       hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
     record:
-      enabled: True
+      enabled: False
       # ... your recording settings ...
 
   front_yard_camera:
