@@ -121,7 +121,7 @@ spec:
         server: nas.internal
         path: /media
         globalMounts:
-          - path: /media/downloads/qbittorrent
+          - path: /media
             subPath: downloads/qbittorrent
 
       tmp:
