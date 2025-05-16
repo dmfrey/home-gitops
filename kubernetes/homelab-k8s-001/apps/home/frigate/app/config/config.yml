@@ -19,33 +19,10 @@ mqtt:
 database:
   path: /config/frigate.db
 
-snapshots:
-  enabled: true
-  timestamp: false
-  bounding_box: true
-  retain:
-    default: 30
-
-record:
-  enabled: true
-  retain:
-    days: 14
-    mode: all
-  # events:
-  #   retain:
-  #     default: 14
-  #     # mode: active_objects
-
-objects:
-  track:
-    - person
-    - car
-    - dog
-  # filters:
-  #   person:
-  #     min_area: 2500
-  #     max_area: 100000
-  #     threshold: 0.7
+detectors:
+  ov_0:
+    type: openvino
+    device: GPU
 
 go2rtc:
   streams:
@@ -63,6 +40,34 @@ go2rtc:
       - nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_GARDEN_CAMERA}
     # kitchen_display_stream:
     #   - nest:?client_id={FRIGATE_NEST_OAUTH_CLIENT_ID}&client_secret={FRIGATE_NEST_OAUTH_CLIENT_SECRET}&refresh_token={FRIGATE_NEST_DEVICE_REFRESH_TOKEN}&project_id={FRIGATE_NEST_DEVICE_ACCESS_PROJECT_ID}&device_id={FRIGATE_NEST_CAMERA_ID_KITCHEN_DISPLAY}
+
+objects:
+  track:
+    - person
+    - car
+    - dog
+  # filters:
+  #   person:
+  #     min_area: 2500
+  #     max_area: 100000
+  #     threshold: 0.7
+
+record:
+  enabled: true
+  retain:
+    days: 14
+    mode: all
+  # events:
+  #   retain:
+  #     default: 14
+  #     # mode: active_objects
+
+snapshots:
+  enabled: true
+  timestamp: false
+  bounding_box: true
+  retain:
+    default: 30
 
 cameras: # {}
   back_door_doorbell:
