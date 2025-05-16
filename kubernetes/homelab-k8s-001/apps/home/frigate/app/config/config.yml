@@ -24,6 +24,9 @@ database:
 #     type: openvino
 #     device: GPU
 
+ffmpeg:
+  hwaccel_args: preset-intel-qsv-h264
+
 genai:
   enabled: True
   provider: ollama
@@ -107,7 +110,6 @@ cameras:
           roles:
             - detect
             - record # Or clips
-      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -124,7 +126,6 @@ cameras:
           roles:
             - detect
             - record # Or clips
-      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -141,7 +142,6 @@ cameras:
   #         roles:
   #           - detect
   #           - clips # Or clips
-  #     hwaccel_args: preset-vaapi
   #   detect:
   #     enabled: True
   #     # ... your detection settings ...
@@ -158,7 +158,6 @@ cameras:
           roles:
             - detect
             - record # Or clips
-      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
@@ -175,7 +174,6 @@ cameras:
           roles:
             - detect
             - record # Or clips
-      hwaccel_args: preset-vaapi
     detect:
       enabled: True
       # ... your detection settings ...
