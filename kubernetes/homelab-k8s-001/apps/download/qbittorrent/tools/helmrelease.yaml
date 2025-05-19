@@ -148,6 +148,10 @@ spec:
               "--interval", "5"
             ]
 
+        pod:
+          labels:
+            setGateway: "false"
+
     defaultPodOptions:
       labels:
         setGateway: "false"
