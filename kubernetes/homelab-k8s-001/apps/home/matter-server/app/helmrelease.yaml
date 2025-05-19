@@ -76,16 +76,16 @@ spec:
               MATTER_SERVER__APPLICATION_URL: &host "matter.dmfrey.com"
               MATTER_SERVER__LOG_LEVEL: info
 
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: false
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
+            # probes:
+            #   liveness:
+            #     enabled: true
+            #   readiness:
+            #     enabled: true
+            #   startup:
+            #     enabled: false
+            #     spec:
+            #       failureThreshold: 30
+            #       periodSeconds: 5
 
             resources:
               requests:
