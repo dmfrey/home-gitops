@@ -82,7 +82,7 @@ spec:
               readiness:
                 enabled: true
               startup:
-                enabled: true
+                enabled: false
                 spec:
                   failureThreshold: 30
                   periodSeconds: 5
