@@ -27,7 +27,7 @@ detectors:
 ffmpeg:
   # hwaccel_args: preset-vaapi
   hwaccel_args: preset-intel-qsv-h264
-  
+
 genai:
   enabled: True
   provider: ollama
@@ -56,6 +56,9 @@ objects:
     - person
     - car
     - dog
+    - cat
+    - bird
+    - bear
   # filters:
   #   person:
   #     min_area: 2500
