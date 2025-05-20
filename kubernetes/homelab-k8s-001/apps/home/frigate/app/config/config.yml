@@ -19,11 +19,11 @@ mqtt:
 database:
   path: /config/frigate.db
 
-# detectors:
-#   ov_0:
-#     type: openvino
-#     device: GPU
-
+detectors:
+  coral:
+    type: edgetpu
+    device: pci
+    
 ffmpeg:
   hwaccel_args: preset-vaapi
 
