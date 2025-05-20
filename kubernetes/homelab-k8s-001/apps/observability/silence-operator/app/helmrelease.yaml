@@ -41,43 +41,12 @@ spec:
 
   values:
 
+    alertmanagerAddress: http://kube-prometheus-stack-alertmanager:9093
+
     image:
-      name: quay.io/giantswarm/silence-operator
+      registry: quay.io
+      name: giantswarm/silence-operator
+      tag: 0.16.1
 
-    operator:
-      config:
-        alertmanager:
-          service:
-            address: http://kube-prometheus-stack-alertmanager:9093
-
-    rbac:
-      create: true
-
-    extraDeploy:
-      - apiVersion: monitoring.giantswarm.io/v1alpha1
-        kind: Silence
-        metadata:
-          name: ceph-node-nfsmount-diskspace-warning
-          namespace: observability
-        spec:
-          matchers:
-            - name: alertname
-              value: CephNodeDiskspaceWarning
-              isRegex: false
-            - name: mountpoint
-              value: /etc/nfsmount.conf
-              isRegex: false
-
-      - apiVersion: monitoring.giantswarm.io/v1alpha1
-        kind: Silence
-        metadata:
-          name: ceph-node-local-diskspace-warning
-          namespace: observability
-        spec:
-          matchers:
-            - name: alertname
-              value: CephNodeDiskspaceWarning
-              isRegex: false
-            - name: device
-              value: /dev/sd.*
-              isRegex: true
+    networkPolicy:
+      enabled: false
