@@ -25,8 +25,9 @@ detectors:
     device: pci
 
 ffmpeg:
-  hwaccel_args: preset-vaapi
-
+  # hwaccel_args: preset-vaapi
+  hwaccel_args: preset-intel-qsv-h264
+  
 genai:
   enabled: True
   provider: ollama
@@ -127,7 +128,7 @@ cameras:
           - cat
           - bird
           - bear
-          
+
 
   driveway_camera:
     ffmpeg:

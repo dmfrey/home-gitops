@@ -66,6 +66,7 @@ spec:
 
             env:
               TZ: America/New_York
+              LIBVA_DRIVER_NAME: iHD
 
             envFrom:
               - secretRef:

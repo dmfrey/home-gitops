@@ -50,7 +50,7 @@ spec:
 
             env:
               TZ: America/New_York
-              LIBVA_DRIVER_NAME: i965
+              LIBVA_DRIVER_NAME: iHD
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
               # OLLAMA_MODELS: &pvc /models
