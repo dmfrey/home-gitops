@@ -124,6 +124,10 @@ cameras:
         objects:
           - person
           - dog
+          - cat
+          - bird
+          - bear
+          
 
   driveway_camera:
     ffmpeg:
