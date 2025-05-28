@@ -80,3 +80,5 @@ Thumbs.db
 kubeconfig
 onepassword.env
 talosconfig
+
+/tmp/
