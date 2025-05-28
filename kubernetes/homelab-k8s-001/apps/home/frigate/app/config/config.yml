@@ -16,6 +16,10 @@ mqtt:
   user: "{FRIGATE_MQTT_USERNAME}"
   password: "{FRIGATE_MQTT_PASSWORD}"
 
+classification:
+  bird:
+    enabled: true
+    
 database:
   path: /config/frigate.db
 
@@ -27,7 +31,7 @@ detectors:
 face_recognition:
   enabled: true
   model_size: small
-  
+
 ffmpeg:
   hwaccel_args: preset-vaapi
   # hwaccel_args: preset-intel-qsv-h264
