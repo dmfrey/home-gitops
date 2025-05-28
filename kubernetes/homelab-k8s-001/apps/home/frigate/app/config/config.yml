@@ -24,6 +24,10 @@ detectors:
     type: edgetpu
     device: pci
 
+face_recognition:
+  enabled: true
+  model_size: small
+  
 ffmpeg:
   hwaccel_args: preset-vaapi
   # hwaccel_args: preset-intel-qsv-h264
@@ -54,6 +58,7 @@ go2rtc:
 objects:
   track:
     - person
+    - face
     - car
     - dog
     - cat
