@@ -42,7 +42,8 @@ spec:
               [{
                 "name":"iot-vlan",
                 "namespace": "network",
-                "ips": ["192.168.50.9/24"]
+                "ips": ["192.168.50.9/24"],
+                "mac": "aa:8c:ae:86:6e:8a"
               }]
 
           # hostNetwork: true
