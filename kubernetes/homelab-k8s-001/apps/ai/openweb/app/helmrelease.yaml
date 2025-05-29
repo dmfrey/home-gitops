@@ -40,7 +40,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: 0.6.12-ollama
+              tag: 0.6.13-ollama
 
             env:
               WEBUI_NAME: OpenWeb UI
