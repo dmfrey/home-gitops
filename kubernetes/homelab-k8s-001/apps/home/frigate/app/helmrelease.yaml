@@ -65,7 +65,7 @@ spec:
               tag: 0.16.0-beta2@sha256:1e7eacf4259f9409f028535dc1b8cdc5d42fa66ec83ec45ff375682e8eca46e4
 
             args:
-              - -memory=4G
+              - --memory=4G
 
             env:
               TZ: America/New_York
