@@ -9,3 +9,4 @@ components:
 resources:
   - ./blinko/ks.yaml
   - ./homepage/ks.yaml
+  - ./omni-tools/ks.yaml
