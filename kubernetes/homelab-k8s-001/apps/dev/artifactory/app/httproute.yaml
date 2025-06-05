@@ -12,6 +12,6 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: artifactory
+        - name: artifactory-oss
           namespace: dev
           port: 8082
