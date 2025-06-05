@@ -49,7 +49,7 @@ spec:
         enabled: false
 
       persistence:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: artifactory-data
 
       postgresql:
         enabled: false
@@ -60,7 +60,7 @@ spec:
         secrets:
           url:
             name: pg-artifactory-app
-            key: jdbc-url
+            key: jdbc-uri
           user:
             name: pg-artifactory-app
             key: username
