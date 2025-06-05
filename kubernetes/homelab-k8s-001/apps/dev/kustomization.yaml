@@ -8,16 +8,3 @@ components:
 
 resources:
   - ./artifactory/ks.yaml
-
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: LabelTransformer
-    metadata:
-      name: not-used
-    labels:
-      routed-gateway: "true"
-    fieldSpecs:
-      - kind: Namespace
-        path: metadata/labels
-        create: true
