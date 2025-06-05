@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/helmrepository_v1.json
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: jfrog
+spec:
+  interval: 1h
+  url: https://charts.jfrog.io
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app artifactory-oss
+spec:
+
+  interval: 1h
+
+  chart:
+    spec:
+      chart: artifactory-oss
+      version: 107.111.9
+      sourceRef:
+        kind: HelmRepository
+        name: jfrog
+
+  maxHistory: 2
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: -1
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
+  values:
+
+    artifactory:
+
+      nginx:
+        enabled: false
+
+      persistence:
+        existingClaim: ${VOLSYNC_CLAIM}
+
+      postgresql:
+        enabled: false
+
+      database:
+        type: postgresql
+        driver: org.postgresql.Driver
+        secrets:
+          url:
+            name: pg-artifactory-app
+            key: jdbc-url
+          user:
+            name: pg-artifactory-app
+            key: username
+          password:
+            name: pg-artifactory-app
+            key: password

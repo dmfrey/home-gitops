@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dev
+components:
+  - ../../components/common
+
+resources:
+  - ./artifactory/ks.yaml
+
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: LabelTransformer
+    metadata:
+      name: not-used
+    labels:
+      routed-gateway: "true"
+    fieldSpecs:
+      - kind: Namespace
+        path: metadata/labels
+        create: true
