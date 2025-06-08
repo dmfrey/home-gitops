@@ -48,7 +48,7 @@ input_text: !include_dir_merge_named input_texts
 notify: !include notify.yaml
 scene: !include scenes.yaml
 schedule: !include_dir_merge_named schedule
-# script: !include_dir_merge_named scripts
+script: !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors
 template: !include_dir_merge_list templates
 
