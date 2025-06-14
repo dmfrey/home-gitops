@@ -32,7 +32,7 @@ spec:
   install:
     disableHooks: true
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -54,7 +54,7 @@ spec:
         name: openebs-hostpath
         isDefaultClass: false
         basePath: *hostPath
-        
+
       helperPod:
         image:
           registry: quay.io/
@@ -84,3 +84,12 @@ spec:
       replicated:
         mayastor:
           enabled: false
+
+    loki:
+      enabled: false
+
+    alloy:
+      enabled: false
+
+    minio:
+      enabled: false
