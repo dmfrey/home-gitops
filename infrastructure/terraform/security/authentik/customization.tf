@@ -42,3 +42,12 @@ resource "authentik_policy_expression" "user-settings-authorization" {
   return True
   EOT
 }
+
+resource "authentik_property_mapping_provider_scope" "groups" {
+  name        = "Group Membership"
+  scope_name  = "groups"
+  description = "See Which Groups you belong to"
+  expression  = <<EOF
+return [group.name for group in user.ak_groups.all()]
+EOF
+}
