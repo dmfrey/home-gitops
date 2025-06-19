@@ -3,6 +3,7 @@ locals {
   oauth_apps = [
     "grafana",
     "blinko",
+    "jellyfin",
     "openweb",
     "romm",
     "spring-dev"
@@ -35,6 +36,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/blinko.png"
       redirect_uri  = "https://notes.${var.cluster_domain}/api/auth/callback/blinko"
       launch_url    = "https://notes.${var.cluster_domain}/"
+    },
+    jellyfin = {
+      client_id     = module.onepassword_application["jellyfin"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["jellyfin"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "media"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/jellyfin.png"
+      redirect_uri  = "https://jellyfin.${var.cluster_domain}/sso/OID/redirect/Authentik"
+      launch_url    = "https://jellyfin.${var.cluster_domain}/"
     },
     openweb = {
       client_id     = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_ID"]
