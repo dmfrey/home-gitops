@@ -130,23 +130,35 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config
 
       # Separate PVC for cache to avoid backing up cache files
       cache:
         existingClaim: jellyfin-cache
-        globalMounts:
-          - path: /cache
-            readOnly: false
+        advancedMounts:
+          *app :
+            *app :
+              - path: /cache
+                readOnly: false
 
       logs:
         type: emptyDir
-        globalMounts:
-          - path: /config/log
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/log
 
       media:
         type: nfs
         server: nas.internal
         path: /media
+        advancedMounts:
+          *app :
+            *app :
+              - path: /media
 
       transcode:
         enabled: true
@@ -161,10 +173,16 @@ spec:
                 resources:
                   requests:
                     storage: 500Gi
-        globalMounts:
-          - path: /config/transcodes
-            readOnly: false
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/transcodes
+                readOnly: false
 
       tmp:
         type: emptyDir
         sizeLimit: 10Gi
+        advancedMounts:
+          *app :
+            *app :
+              - path: /tmp
