@@ -89,26 +89,26 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-          busybox:
-            image:
-              repository: docker.io/library/busybox
-              tag: latest
+          # busybox:
+          #   image:
+          #     repository: docker.io/library/busybox
+          #     tag: latest
 
-            command:
-              - sleep
-              - "3600"
+          #   command:
+          #     - sleep
+          #     - "3600"
 
-            resources:
-              requests:
-                cpu: 50m
-                memory: 150Mi
-              limits:
-                memory: 300Mi
+          #   resources:
+          #     requests:
+          #       cpu: 50m
+          #       memory: 150Mi
+          #     limits:
+          #       memory: 300Mi
 
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+          #   securityContext:
+          #     allowPrivilegeEscalation: false
+          #     readOnlyRootFilesystem: true
+          #     capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
       securityContext:
@@ -155,8 +155,8 @@ spec:
           *app :
             *app :
               - path: /config
-            busybox:
-              - path: /config
+            # busybox:
+            #   - path: /config
 
       # Separate PVC for cache to avoid backing up cache files
       cache:
