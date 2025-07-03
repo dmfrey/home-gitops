@@ -38,7 +38,7 @@ releases:
   - name: external-secrets
     namespace: external-secrets
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 0.18.1
+    version: 0.18.2
     values: ['../kubernetes/homelab-k8s-001/apps/external-secrets/external-secrets/app/helm/values.yaml']
     hooks:
       - # Apply cluster secret store configuration
