@@ -4,6 +4,7 @@ locals {
     "grafana",
     "blinko",
     "jellyfin",
+    "linkwarden",
     "openweb",
     "romm",
     "spring-dev"
@@ -44,6 +45,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/jellyfin.png"
       redirect_uri  = "https://jellyfin.${var.cluster_domain}/sso/OID/redirect/Authentik"
       launch_url    = "https://jellyfin.${var.cluster_domain}/"
+    },
+    linkwarden = {
+      client_id     = module.onepassword_application["linkwarden"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["linkwarden"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/linkwarden.png"
+      redirect_uri  = "https://bookmarks.${var.cluster_domain}/api/auth/callback/linkwarden"
+      launch_url    = "https://bookmarks.${var.cluster_domain}/"
     },
     openweb = {
       client_id     = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_ID"]
