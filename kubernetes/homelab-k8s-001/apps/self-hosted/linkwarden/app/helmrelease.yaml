@@ -53,6 +53,13 @@ spec:
               TZ: America/New_York
               NODE_ENV: production
 
+              STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
+              HOME: /data/config
+              PDF_MAX_BUFFER: 100
+              MONOLITH_MAX_BUFFER: 100
+              SCREENSHOT_MAX_BUFFER: 100
+
+              NEXTAUTH_URL: https://bookmarks.dmfrey.com/api/v1/auth
               NEXT_PUBLIC_AUTHENTIK_ENABLED: true
               NEXT_PUBLIC_DISABLE_REGISTRATION: true
               NEXT_PUBLIC_CREDENTIALS_ENABLED: false
@@ -77,19 +84,19 @@ spec:
               - secretRef:
                   name: linkwarden-secret
 
-            # resources:
-            #   requests:
-            #     memory: 350Mi
-            #     cpu: 100m
-            #   limits:
-            #     memory: 1024Mi
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
 
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
 
     service:
@@ -107,8 +114,10 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Tools
           gethomepage.dev/name: Linkwarden Bookmarks
-          gethomepage.dev/icon: linkwarden.png
-          gethomepage.dev/description: Bookmarks
+          gethomepage.dev/icon: linkwarden.svg
+          gethomepage.dev/description: Bookmark Management
+          gethomepage.dev/widget.type: linkwarden
+          gethomepage.dev/widget.url: "http://linkwarden.self-hosted.svc.cluster.local:3000"
         parentRefs:
           - name: external
             namespace: kube-system
@@ -121,12 +130,12 @@ spec:
     persistence:
       data:
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            *app :
-              - path: /data
-                readOnly: false
+        globalMounts:
+          - path: /data/config
+            readOnly: false
 
-      tmp:
+      next-cache:
         type: emptyDir
         medium: Memory
+        globalMounts:
+          - path: /data/.next/cache
