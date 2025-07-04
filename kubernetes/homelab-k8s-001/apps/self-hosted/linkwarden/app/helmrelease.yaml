@@ -57,7 +57,7 @@ spec:
               MONOLITH_MAX_BUFFER: 100
               SCREENSHOT_MAX_BUFFER: 100
 
-              # NEXTAUTH_URL: https://bookmarks.dmfrey.com/api/v1/auth
+              NEXTAUTH_URL: https://bookmarks.dmfrey.com/api/v1/auth
               NEXT_PUBLIC_AUTHENTIK_ENABLED: true
               NEXT_PUBLIC_DISABLE_REGISTRATION: true
               NEXT_PUBLIC_CREDENTIALS_ENABLED: false
