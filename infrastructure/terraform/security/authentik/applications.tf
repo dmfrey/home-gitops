@@ -51,7 +51,7 @@ locals {
       client_secret = module.onepassword_application["linkwarden"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "home"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/linkwarden.png"
-      redirect_uri  = "https://bookmarks.${var.cluster_domain}/api/auth/callback/linkwarden"
+      redirect_uri  = "https://bookmarks.${var.cluster_domain}/api/vi/auth/callback/authentik"
       launch_url    = "https://bookmarks.${var.cluster_domain}/"
     },
     openweb = {
