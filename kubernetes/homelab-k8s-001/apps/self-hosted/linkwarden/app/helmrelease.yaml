@@ -126,12 +126,6 @@ spec:
                 port: *port
 
     persistence:
-      data:
-        type: emptyDir
-        medium: Memory
-        globalMounts:
-          - path: /data
-
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
