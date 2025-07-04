@@ -34,39 +34,39 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app linkwarden
-  namespace: &namespace self-hosted
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/gatus/external
-    - ../../../../components/volsync
-  dependsOn:
-    - name: linkwarden-db
-      namespace: *namespace
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
-  interval: 1h
-  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/linkwarden/app"
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_CLAIM: linkwarden-data
-      VOLSYNC_CAPACITY: 5Gi
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: true
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app linkwarden
+#   namespace: &namespace self-hosted
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   components:
+#     - ../../../../components/gatus/external
+#     - ../../../../components/volsync
+#   dependsOn:
+#     - name: linkwarden-db
+#       namespace: *namespace
+#     - name: rook-ceph-cluster
+#       namespace: rook-ceph
+#     - name: volsync
+#       namespace: volsync-system
+#   interval: 1h
+#   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/linkwarden/app"
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       VOLSYNC_CLAIM: linkwarden-data
+#       VOLSYNC_CAPACITY: 5Gi
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: true
