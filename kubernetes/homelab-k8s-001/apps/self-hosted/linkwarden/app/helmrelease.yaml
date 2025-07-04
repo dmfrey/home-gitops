@@ -47,8 +47,6 @@ spec:
               repository: ghcr.io/linkwarden/linkwarden
               tag: v2.11.2@sha256:ecf4f27b03741971cb8d68d25b4a772418d6ddf40947bdfbb8f9cda53a1faba2
 
-            # command: ["sh", "-c", "prisma migrate deploy && node seed.js && node server.js"]
-
             env:
               TZ: America/New_York
               NODE_ENV: production
@@ -129,6 +127,12 @@ spec:
 
     persistence:
       data:
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /data
+
+      config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data/config
