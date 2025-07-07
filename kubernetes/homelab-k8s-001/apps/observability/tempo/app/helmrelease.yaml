@@ -114,6 +114,8 @@ spec:
         enabled: true
         storageClass: ceph-block
 
+      terminationGracePeriodSeconds: 60
+
     serviceMonitor:
       enabled: true
 
