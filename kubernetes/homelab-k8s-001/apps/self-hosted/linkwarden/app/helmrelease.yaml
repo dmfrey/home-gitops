@@ -136,4 +136,4 @@ spec:
         type: emptyDir
         medium: Memory
         globalMounts:
-          - path: /data/apps/web/.next/cache
+          - path: /data/.next/cache
