@@ -138,8 +138,8 @@ spec:
         globalMounts:
           - path: /data/.next/cache
 
-      cache:
-        type: emptyDir
-        medium: Memory
-        globalMounts:
-          - path: /.cache
+      # cache:
+      #   type: emptyDir
+      #   medium: Memory
+      #   globalMounts:
+      #     - path: /.cache
