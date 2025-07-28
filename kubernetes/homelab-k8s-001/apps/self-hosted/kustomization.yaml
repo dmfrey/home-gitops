@@ -9,5 +9,5 @@ components:
 resources:
   - ./blinko/ks.yaml
   - ./homepage/ks.yaml
-  # - ./linkwarden/ks.yaml
+  - ./linkwarden/ks.yaml
   - ./omni-tools/ks.yaml
