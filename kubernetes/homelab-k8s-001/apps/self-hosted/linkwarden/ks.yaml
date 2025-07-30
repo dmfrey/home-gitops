@@ -60,6 +60,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: bookmarks
       VOLSYNC_CLAIM: linkwarden-data
       VOLSYNC_CAPACITY: 10Gi
   prune: true
