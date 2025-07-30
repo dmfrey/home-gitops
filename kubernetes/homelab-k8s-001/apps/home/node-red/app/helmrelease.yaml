@@ -35,7 +35,7 @@ spec:
           *app :
             image:
               repository: nodered/node-red
-              tag: 4.0.9-18-minimal
+              tag: 4.1.0-18-minimal
 
             env:
               TZ: America/New_York
