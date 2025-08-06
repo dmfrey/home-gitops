@@ -63,6 +63,7 @@ spec:
       GATUS_SUBDOMAIN: bookmarks
       VOLSYNC_CLAIM: linkwarden-data
       VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository

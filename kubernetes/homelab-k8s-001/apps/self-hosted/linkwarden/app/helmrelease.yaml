@@ -141,8 +141,8 @@ spec:
       tmp:
         type: emptyDir
 
-      cache:
-        type: emptyDir
-        medium: Memory
-        globalMounts:
-          - path: /data/config/.cache
+      # cache:
+      #   type: emptyDir
+      #   medium: Memory
+      #   globalMounts:
+      #     - path: /data/config/.cache
