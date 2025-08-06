@@ -131,13 +131,15 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data/config
-            readOnly: false
 
       next-cache:
         type: emptyDir
         medium: Memory
         globalMounts:
           - path: /data/.next/cache
+
+      tmp:
+        type: emptyDir
 
       # cache:
       #   type: emptyDir
