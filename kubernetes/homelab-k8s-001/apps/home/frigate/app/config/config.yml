@@ -19,7 +19,7 @@ mqtt:
 classification:
   bird:
     enabled: true
-    
+
 database:
   path: /config/frigate.db
 
@@ -190,7 +190,7 @@ cameras:
       inputs:
         # Use go2rtc stream name defined above in go2rtc.streams
         # Point to localhost (127.0.0.1) because go2rtc runs inside the Frigate container
-        - path: rtsp://127.0.0.1:8554/front_yard_camera_stream
+        - path: rtsp://127.0.0.1:8554/front_yard_camera_stream?video&audio
           roles:
             - detect
             - record # Or clips
