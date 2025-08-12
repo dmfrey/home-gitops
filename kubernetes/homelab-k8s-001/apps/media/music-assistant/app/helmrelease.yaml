@@ -116,3 +116,9 @@ spec:
         medium: Memory
         globalMounts:
           - path: /tmp
+
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /.audio
+            subPath: .audio
