@@ -41,21 +41,22 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        # initContainers:
-        #   fix-permissions:
-        #     image:
-        #       repository: busybox
-        #       tag: stable
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: stable
 
-        #     command: ["sh", "-c", "chown -R 1000:1000 /romm/assets/*"]
+            # command: ["sh", "-c", "chown -R 1000:1000 /romm/assets/*"]
+            command: ["sh", "-c", "mkdir /romm/config && cp /romm/backup/config.yml /romm/config && chown -R 1000:1000 /romm/config"]
 
-        #     securityContext:
-        #       runAsNonRoot: false
-        #       readOnlyRootFilesystem: true
-        #       allowPrivilegeEscalation: true
-        #       runAsUser: 0
-        #       runAsGroup: 0
-        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           *app :
@@ -182,18 +183,18 @@ spec:
           - path: /romm
             readOnly: false
 
-      romm-config:
-        type: emptyDir
-        globalMounts:
-          - path: /romm/config
+      # romm-config:
+      #   type: emptyDir
+      #   globalMounts:
+      #     - path: /romm/config
 
-      configuration:
-        type: configMap
-        name: romm-config
-        globalMounts:
-          - path: /romm/config/config.yml
-            subPath: config.yml
-        defaultMode: 0664
+      # configuration:
+      #   type: configMap
+      #   name: romm-config
+      #   globalMounts:
+      #     - path: /romm/config/config.yml
+      #       subPath: config.yml
+      #   defaultMode: 0664
 
       romm-assets:
         enabled: true
