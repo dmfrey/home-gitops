@@ -48,7 +48,8 @@ spec:
               tag: stable
 
             # command: ["sh", "-c", "chown -R 1000:1000 /romm/assets/*"]
-            command: ["sh", "-c", "cp /romm/backup/config.yml /romm/config && chown -R 1000:1000 /romm/config"]
+            # command: ["sh", "-c", "cp /romm/backup/config.yml /romm/config && chown -R 1000:1000 /romm/config"]
+            command: ["sh", "-c", "chown -R 1000:1000 /romm/config/*"]
 
             securityContext:
               runAsNonRoot: false
