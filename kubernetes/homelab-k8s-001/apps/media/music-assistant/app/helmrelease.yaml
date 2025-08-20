@@ -35,12 +35,24 @@ spec:
               TZ: America/New_York
               LOG_LEVEL: debug
 
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
             resources:
               requests:
-                cpu: 500m
-                memory: 250Mi
+                cpu: 47m
+                memory: 512Mi
               limits:
-                memory: 2500Mi
+                cpu: 500m
+                memory: 512Mi
 
         pod:
           annotations:
@@ -75,19 +87,22 @@ spec:
             port: &port 8095
           stream:
             port: &streamPort 8097
+          http2:
+            port: 1780
+          snapserver-player:
+            port: 1704
+          snapserver-control:
+            port: 1705
+          squeeze-cli:
+            port: 9090
+          squeeze-rpc:
+            port: 9000
+          squeeze-slimproto:
+            port: 3483
 
     route:
       *app :
         hostnames: ["music.dmfrey.com"]
-        # annotations:
-          # gethomepage.dev/enabled: "true"
-          # gethomepage.dev/group: Downloads
-          # gethomepage.dev/name: Lidarr
-          # gethomepage.dev/icon: lidarr.png
-          # gethomepage.dev/description: Music Downloads
-          # gethomepage.dev/widget.type: lidarr
-          # gethomepage.dev/widget.url: http://lidarr.media.svc.cluster.local:9709
-          # gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_LIDARR_TOKEN}}` }}"
         parentRefs:
           - name: internal
             namespace: kube-system
