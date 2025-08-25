@@ -6,6 +6,7 @@ locals {
     "jellyfin",
     "linkwarden",
     "openweb",
+    "pinepods",
     "romm",
     "spring-dev"
   ]
@@ -61,6 +62,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/openweb-ui.png"
       redirect_uri  = "https://openweb.${var.cluster_domain}/oauth/oidc/callback"
       launch_url    = "https://openweb.${var.cluster_domain}/"
+    },
+    pinepods = {
+      client_id     = module.onepassword_application["pinepods"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["pinepods"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "media"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/pinepods.png"
+      redirect_uri  = "https://podcasts.${var.cluster_domain}/api/auth/callback"
+      launch_url    = "https://podcasts.${var.cluster_domain}/"
     },
     romm = {
       client_id     = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_ID"]
