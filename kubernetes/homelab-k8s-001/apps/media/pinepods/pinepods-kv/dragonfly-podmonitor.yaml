@@ -1,0 +1,12 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: pinepods-kv-cluster
+spec:
+  selector:
+    matchLabels:
+      app: pinepods-kv-cluster
+  podTargetLabels: ["app"]
+  podMetricsEndpoints:
+    - port: admin
