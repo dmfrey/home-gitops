@@ -65,7 +65,7 @@ spec:
           *app :
             image:
               repository: rommapp/romm
-              tag: 4.1.5
+              tag: 4.1.4
 
             env:
               TZ: America/New_York
