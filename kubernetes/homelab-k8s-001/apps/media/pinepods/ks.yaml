@@ -97,6 +97,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: podcasts
       VOLSYNC_CLAIM: pinepods-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
