@@ -26,7 +26,6 @@ spec:
     controllers:
       *app :
         strategy: RollingUpdate
-        replicas: 2
 
         containers:
           *app :
@@ -36,7 +35,7 @@ spec:
 
             env:
               SYSTEM_UPGRADE_CONTROLLER_LEADER_ELECT: true
-              SYSTEM_UPGRADE_CONTROLLER_NAME: *app
+              SYSTEM_UPGRADE_CONTROLLER_NAME: "{{ .Release.Name }}"
               SYSTEM_UPGRADE_CONTROLLER_NAMESPACE: "{{ .Release.Namespace }}"
               SYSTEM_UPGRADE_CONTROLLER_NODE_NAME:
                 valueFrom:
@@ -51,7 +50,6 @@ spec:
               capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
-      hostUsers: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -74,5 +72,6 @@ spec:
             name: cluster-admin
           subjects:
             - identifier: system-upgrade-controller
+
     serviceAccount:
       system-upgrade-controller: {}
