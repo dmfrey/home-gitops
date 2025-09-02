@@ -5,7 +5,8 @@ kind: Plan
 metadata:
   name: talos
 spec:
-  version: ${TALOS_VERSION}
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+  version: v1.11.0
   concurrency: 1
   postCompleteDelay: 2m
   exclusive: true
@@ -16,9 +17,8 @@ spec:
       ignoreUpdates: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/os
-        operator: In
-        values: ["linux"]
+      - key: kubernetes.io/hostname
+        operator: Exists
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.3
     args:
