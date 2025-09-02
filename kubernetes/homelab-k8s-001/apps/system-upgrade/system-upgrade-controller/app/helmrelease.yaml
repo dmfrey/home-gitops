@@ -37,15 +37,11 @@ spec:
             env:
               SYSTEM_UPGRADE_CONTROLLER_LEADER_ELECT: true
               SYSTEM_UPGRADE_CONTROLLER_NAME: *app
-              SYSTEM_UPGRADE_CONTROLLER_NAMESPACE:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: metadata.namespace
+              SYSTEM_UPGRADE_CONTROLLER_NAMESPACE: "{{ .Release.Namespace }}"
               SYSTEM_UPGRADE_CONTROLLER_NODE_NAME:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
-              SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: "99"
               SYSTEM_UPGRADE_JOB_PRIVILEGED: false
 
             securityContext:
@@ -54,11 +50,8 @@ spec:
               capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
+      hostUsers: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-
-    serviceAccount:
-      name: *app
-      create: true
