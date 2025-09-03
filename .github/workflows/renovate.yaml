@@ -4,7 +4,8 @@ name: "Renovate"
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
     paths:
       - .renovaterc.json5
       - .renovate/**.json5
@@ -34,10 +35,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   renovate:
     name: Renovate
     runs-on: ubuntu-latest
+    permissions:
+      packages: read
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2.1.1
@@ -49,6 +55,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
+          persist-credentials: false
           token: "${{ steps.app-token.outputs.token }}"
 
       - name: Run Renovate
