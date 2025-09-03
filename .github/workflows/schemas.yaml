@@ -5,13 +5,18 @@ name: "Schemas"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: 0 0 * * *
   push:
-    branches: ["main"]
-    paths: [".github/workflows/schemas.yaml"]
+    branches:
+      - main
+    paths:
+      - .github/workflows/schemas.yaml
 
 env:
   UV_SYSTEM_PYTHON: "1"
+
+permissions:
+  contents: read
 
 jobs:
   publish:
@@ -20,10 +25,13 @@ jobs:
     permissions:
       contents: read
       packages: write
+
     steps:
 
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Install kubectl
         uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4.0.1
@@ -47,7 +55,7 @@ jobs:
       - name: Run crd-extractor
         run: curl -fsSL https://raw.githubusercontent.com/datreeio/CRDs-catalog/43e4407642d4c37683c88711f37caa6c9c20ca40/Utilities/crd-extractor.sh | bash
 
-      - name: Deploy to Cloudflare Pages
+      - name: Publish Schemas
         uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
         with:
           apiToken: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
