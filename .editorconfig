@@ -10,18 +10,12 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = false
 
-[{Makefile,go.mod,go.sum,*.go,.gitmodules}]
-indent_style = tab
-indent_size = 4
-
 [*.md]
 indent_size = 4
 trim_trailing_whitespace = false
 
-[{Dockerfile,*.bash,*.sh}]
-indent_style = space
+[*.sh]
 indent_size = 4
 
-[*.{bash,py,sh}]
-indent_style = space
+[{*.just,*.justfile}]
 indent_size = 4
