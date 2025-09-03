@@ -4,14 +4,21 @@ name: "Labeler"
 
 on:
   workflow_dispatch:
-  pull_request_target:
-    branches: ["main"]
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
 
 jobs:
   labeler:
     name: Labeler - Labeler
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2.1.1
