@@ -35,10 +35,6 @@ spec:
       namespace: system-upgrade
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/system-upgrade/system-upgrade-controller/plans
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: versions
   prune: true
   retryInterval: 2m
   sourceRef:
