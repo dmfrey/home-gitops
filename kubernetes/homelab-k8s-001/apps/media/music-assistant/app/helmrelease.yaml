@@ -37,10 +37,10 @@ spec:
 
             resources:
               requests:
-                # cpu: 47m
+                cpu: 128m
                 memory: 512Mi
               limits:
-                # cpu: 500m
+                cpu: 500m
                 memory: 1024Mi
 
         pod:
