@@ -6,15 +6,16 @@ resources:
   - ./alertmanagerconfig.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./ocirepository.yaml
 
-configMapGenerator:
-  - name: flux-kube-state-metrics-config
-    files:
-      - resources/kube-state-metrics-config.yaml
-    options:
-      labels:
-        app.kubernetes.io/part-of: flux
-        app.kubernetes.io/component: observability
+# configMapGenerator:
+#   - name: flux-kube-state-metrics-config
+#     files:
+#       - resources/kube-state-metrics-config.yaml
+#     options:
+#       labels:
+#         app.kubernetes.io/part-of: flux
+#         app.kubernetes.io/component: observability
 
-configurations:
-  - kustomizeconfig.yaml
+# configurations:
+#   - kustomizeconfig.yaml

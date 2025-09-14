@@ -1,17 +1,4 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: kube-prometheus-stack
-spec:
-  interval: 1h
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 77.6.2
-  url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
----
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -29,7 +16,7 @@ spec:
 
   install:
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -37,10 +24,10 @@ spec:
       strategy: rollback
       retries: 3
 
-  valuesFrom:
-  - kind: ConfigMap
-    name: flux-kube-state-metrics-config
-    valuesKey: kube-state-metrics-config.yaml
+  # valuesFrom:
+  # - kind: ConfigMap
+  #   name: flux-kube-state-metrics-config
+  #   valuesKey: kube-state-metrics-config.yaml
 
   driftDetection:
     mode: enabled
@@ -61,7 +48,8 @@ spec:
       route:
         main:
           enabled: true
-          hostnames: ["alertmanager.dmfrey.com"]
+          hostnames:
+            - alertmanager.dmfrey.com
           annotations:
             gethomepage.dev/enabled: "true"
             gethomepage.dev/group: Observability
