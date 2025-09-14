@@ -31,10 +31,10 @@ spec:
           *app :
             image:
               repository: ghcr.io/dmfrey/batch-demo-2
-              tag: 10412e265f7b9d8578416891c850b82d6038ac78
+              tag: 9acbae7e844a161504ad878f9324eacd3ad12505
 
             env:
-              FILE_NAME: "https://raw.githubusercontent.com/dmfrey/batch-demo-2/refs/heads/data/data/sample.csv"
+              FILE_NAME: "https://raw.githubusercontent.com/dmfrey/batch-demo-2/refs/heads/data/data/sample2.csv"
               SPRING_DATASOURCE_URL:
                 valueFrom:
                   secretKeyRef:

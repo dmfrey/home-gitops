@@ -1,0 +1,97 @@
+{
+  "id": null,
+  "title": "Spring Batch Monitoring (Per Job/Step)",
+  "tags": ["spring-batch", "prometheus"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "templating": {
+    "list": [
+      {
+        "name": "job",
+        "type": "query",
+        "datasource": "prometheus",
+        "refresh": 1,
+        "query": "label_values(batch_archive_processed, job)",
+        "includeAll": true,
+        "multi": true
+      },
+      {
+        "name": "step",
+        "type": "query",
+        "datasource": "prometheus",
+        "refresh": 1,
+        "query": "label_values(batch_archive_processed{job=\"$job\"}, step)",
+        "includeAll": true,
+        "multi": true
+      }
+    ]
+  },
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Processed Items (Last Hour)",
+      "datasource": "prometheus",
+      "targets": [
+        {
+          "expr": "sum(increase(batch_archive_processed{job=~\"$job\", step=~\"$step\"}[1h]))",
+          "legendFormat": "Processed"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 }
+    },
+    {
+      "type": "stat",
+      "title": "Errors (Last Hour)",
+      "datasource": "prometheus",
+      "targets": [
+        {
+          "expr": "sum(increase(batch_archive_errors{job=~\"$job\", step=~\"$step\"}[1h]))",
+          "legendFormat": "Errors"
+        }
+      ],
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Processed Rate (per Job/Step)",
+      "datasource": "prometheus",
+      "targets": [
+        {
+          "expr": "rate(batch_archive_processed{job=~\"$job\", step=~\"$step\"}[5m])",
+          "legendFormat": "{{job}} - {{step}}"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Error Rate (per Job/Step)",
+      "datasource": "prometheus",
+      "targets": [
+        {
+          "expr": "rate(batch_archive_errors{job=~\"$job\", step=~\"$step\"}[5m])",
+          "legendFormat": "{{job}} - {{step}}"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 10, "w": 12, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Step Duration (p50 / p95)",
+      "datasource": "prometheus",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(batch_archive_step_duration_seconds_bucket{job=~\"$job\", step=~\"$step\"}[5m])) by (le, job, step))",
+          "legendFormat": "p50 {{job}} - {{step}}"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(batch_archive_step_duration_seconds_bucket{job=~\"$job\", step=~\"$step\"}[5m])) by (le, job, step))",
+          "legendFormat": "p95 {{job}} - {{step}}"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 16, "w": 12, "h": 6 }
+    }
+  ]
+}
