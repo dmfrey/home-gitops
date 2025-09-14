@@ -1,0 +1,11 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pg-batch-demo-2-backup
+spec:
+  schedule: "@weekly"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: pg-batch-demo-2

@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app batch-demo-2
+spec:
+
+  interval: 1h
+
+  chartRef:
+    kind: OCIRepository
+    name: batch-demo-2
+
+  install:
+    remediation:
+      retries: -1
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  values:
+
+    controllers:
+      *app :
+        strategy: RollingUpdate
+
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/dmfrey/batch-demo-2
+              tag: 10412e265f7b9d8578416891c850b82d6038ac78
+
+            env: []
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
