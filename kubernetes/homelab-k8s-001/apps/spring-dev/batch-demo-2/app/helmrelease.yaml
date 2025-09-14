@@ -25,7 +25,7 @@ spec:
 
     controllers:
       *app :
-        strategy: RollingUpdate
+        type: job
 
         containers:
           *app :
@@ -33,7 +33,23 @@ spec:
               repository: ghcr.io/dmfrey/batch-demo-2
               tag: 10412e265f7b9d8578416891c850b82d6038ac78
 
-            env: []
+            env:
+              FILE_NAME: "https://raw.githubusercontent.com/dmfrey/batch-demo-2/refs/heads/data/data/sample.csv"
+              SPRING_DATASOURCE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-batch-demo-2-app
+                    key: jdbc-uri
+              SPRING_DATASOURCE_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-batch-demo-2-app
+                    key: username
+              SPRING_DATASOURCE_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-batch-demo-2-app
+                    key: password
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -45,3 +61,16 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+
+    service:
+      *app :
+        enabled: false
+        controller: *app
+
+    persistence:
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /tmp
