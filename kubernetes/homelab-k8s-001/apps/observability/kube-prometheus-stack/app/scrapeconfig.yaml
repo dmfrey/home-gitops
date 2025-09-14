@@ -3,16 +3,31 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: &name node-exporter
+  name: &name prometheus-pushgateway
 spec:
   staticConfigs:
     - targets:
-        - minio.dmfrey.com:9000
-  metricsPath: /minio/v2/metrics
-  relabelings:
-    - action: replace
-      targetLabel: job
-      replacement: *name
+        - prometheus-pushgateway:9091
+  # metricsPath: /minio/v2/metrics
+  # relabelings:
+  #   - action: replace
+  #     targetLabel: job
+  #     replacement: *name
+---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# apiVersion: monitoring.coreos.com/v1alpha1
+# kind: ScrapeConfig
+# metadata:
+#   name: &name node-exporter
+# spec:
+#   staticConfigs:
+#     - targets:
+#         - minio.dmfrey.com:9000
+#   metricsPath: /minio/v2/metrics
+#   relabelings:
+#     - action: replace
+#       targetLabel: job
+#       replacement: *name
 # ---
 # # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 # apiVersion: monitoring.coreos.com/v1alpha1
