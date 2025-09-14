@@ -19,6 +19,9 @@ machine:
       - 172.23.0.10
     extraConfig:
       serializeImagePulls: false
+      imageMaximumGCAge: 168h # One week
+      imageGCHighThresholdPercent: 50
+      imageGCLowThresholdPercent: 20
     extraMounts:
       - destination: /var/mnt/extra
         type: bind
