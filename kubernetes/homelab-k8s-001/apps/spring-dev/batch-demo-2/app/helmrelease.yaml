@@ -34,7 +34,7 @@ spec:
               tag: 9acbae7e844a161504ad878f9324eacd3ad12505
 
             env:
-              FILE_NAME: "https://raw.githubusercontent.com/dmfrey/batch-demo-2/refs/heads/data/data/sample2.csv"
+              FILE_NAME: "https://raw.githubusercontent.com/dmfrey/batch-demo-2/refs/heads/data/data/sample.csv"
               SPRING_DATASOURCE_URL:
                 valueFrom:
                   secretKeyRef:
@@ -50,6 +50,13 @@ spec:
                   secretKeyRef:
                     name: pg-batch-demo-2-app
                     key: password
+
+            resources:
+              requests:
+                cpu: 500m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
 
             securityContext:
               allowPrivilegeEscalation: false
