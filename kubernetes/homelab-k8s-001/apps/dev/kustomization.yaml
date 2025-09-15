@@ -6,5 +6,5 @@ namespace: dev
 components:
   - ../../components/common
 
-resources:
-  - ./artifactory/ks.yaml
+resources: []
+  # - ./artifactory/ks.yaml
