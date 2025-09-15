@@ -68,8 +68,8 @@ spec:
               limits:
                 memory: 2G
 
-        # serviceAccount:
-        #   identifier: *app
+        serviceAccount:
+          identifier: *app
 
     # defaultPodOptions:
     #   securityContext:
@@ -118,5 +118,5 @@ spec:
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
 
-    # serviceAccount:
-    #   *app : {}
+    serviceAccount:
+      *app : {}
