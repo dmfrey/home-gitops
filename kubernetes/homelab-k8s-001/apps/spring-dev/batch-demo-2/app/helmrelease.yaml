@@ -35,7 +35,7 @@ spec:
               tag: 4a9ba882370ed403cca44c3eb8a36349e1394a84
 
             env:
-              JAVA_OPTS: -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xshare:on -Xms512m -Xmx512m
+              JAVA_OPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xshare:on -Xms512m -Xmx512m"
               FILE_NAME: "https://raw.githubusercontent.com/dmfrey/batch-demo-2/refs/heads/data/data/sample.csv"
               SPRING_DATASOURCE_URL:
                 valueFrom:
