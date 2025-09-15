@@ -5,7 +5,8 @@ kind: Plan
 metadata:
   name: kubernetes
 spec:
-  version: v1.34.0
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+  version: v1.34.1
   concurrency: 1
   exclusive: true
   serviceAccountName: system-upgrade-controller

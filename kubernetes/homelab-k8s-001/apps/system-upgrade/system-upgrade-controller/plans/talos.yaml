@@ -17,11 +17,11 @@ spec:
       ignoreUpdates: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/hostname
-        operator: Exists
+      - key: kubernetes.io/os
+        operator: In
+        values: ["linux"]
   upgrade:
-    image: ghcr.io/jfroy/tnu:0.4.3
+    image: ghcr.io/jfroy/tnu:0.4.4
     args:
       - --node=$(SYSTEM_UPGRADE_NODE_NAME)
       - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
-      - --powercycle
