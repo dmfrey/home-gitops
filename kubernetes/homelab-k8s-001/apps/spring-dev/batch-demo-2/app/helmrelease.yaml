@@ -54,6 +54,7 @@ spec:
                   secretKeyRef:
                     name: pg-batch-demo-2-app
                     key: password
+              LOGGING_LEVEL_LIQUIBASE: info
 
             resources:
               requests:
