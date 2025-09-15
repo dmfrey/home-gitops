@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: spring-dev
 components:
   - ../../components/common
-resources:
-  - ./batch-demo-2/ks.yaml
+resources: []
+  # - ./batch-demo-2/ks.yaml
   # - ./gateway/ks.yaml
   # - ./time-service/ks.yaml
