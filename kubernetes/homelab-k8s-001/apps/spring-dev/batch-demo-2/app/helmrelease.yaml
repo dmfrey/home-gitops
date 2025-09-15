@@ -4,6 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app batch-demo-2
+
 spec:
 
   interval: 1h
@@ -31,7 +32,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/dmfrey/batch-demo-2
-              tag: 9acbae7e844a161504ad878f9324eacd3ad12505
+              tag: 2e4a238a2d634b2739c8e572841e80fa8f3de24f
 
             env:
               FILE_NAME: "https://raw.githubusercontent.com/dmfrey/batch-demo-2/refs/heads/data/data/sample.csv"
