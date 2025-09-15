@@ -64,16 +64,16 @@ spec:
                 cpu: 1500m
                 memory: 2Gi
 
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+    #         securityContext:
+    #           allowPrivilegeEscalation: false
+    #           readOnlyRootFilesystem: true
+    #           capabilities: { drop: ["ALL"] }
 
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 1000
+    #     runAsGroup: 1000
 
     service:
       *app :
