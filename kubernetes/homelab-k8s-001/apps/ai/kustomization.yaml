@@ -8,4 +8,4 @@ components:
 resources:
   - ./ollama/ks.yaml
   - ./openweb/ks.yaml
-  - ./k8sgpt/ks.yaml
+  # - ./k8sgpt/ks.yaml
