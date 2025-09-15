@@ -5,5 +5,5 @@ kind: Kustomization
 namespace: dataflow
 components:
   - ../../components/common
-resources:
-  - ./spring-cloud-dataflow/ks.yaml
+resources: []
+  # - ./spring-cloud-dataflow/ks.yaml
