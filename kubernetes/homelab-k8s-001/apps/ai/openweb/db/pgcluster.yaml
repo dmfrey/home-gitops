@@ -43,7 +43,7 @@ spec:
     recovery:
       source: &previous-cluster pg-openweb
       recoveryTarget:
-        targetTime: "2025-09-15 23:59:59.00000+0"
+        targetTime: "2025-09-15 23:59:59.00000+01"
 
   externalClusters:
     - name: *previous-cluster
