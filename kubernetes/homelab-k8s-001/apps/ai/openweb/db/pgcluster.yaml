@@ -41,6 +41,7 @@ spec:
     #   localeCType: en_US.utf8
     recovery:
       source: &previous-cluster pg-openweb-v0
+      recoveryTarget: {}
   externalClusters:
     - name: *previous-cluster
       barmanObjectStore:
