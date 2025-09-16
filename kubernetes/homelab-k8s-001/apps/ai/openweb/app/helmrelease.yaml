@@ -24,7 +24,7 @@ spec:
 
   chartRef:
     kind: OCIRepository
-    name: openweb
+    name: app-template
 
   maxHistory: 2
 
