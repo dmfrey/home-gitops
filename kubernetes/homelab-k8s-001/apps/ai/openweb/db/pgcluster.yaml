@@ -44,9 +44,6 @@ spec:
       source: clusterBackup
       database: openweb
       owner: openweb
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
       recoveryTarget:
         targetTime: "2025-09-15 23:59:59.00000+01"
 
