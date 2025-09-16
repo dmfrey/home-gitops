@@ -41,7 +41,7 @@ spec:
     #   localeCType: en_US.utf8
 
     recovery:
-      source: &previous-cluster pg-openweb-v0
+      source: &previous-cluster pg-openweb
       recoveryTarget: {}
 
   externalClusters:
