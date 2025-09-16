@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-blinko-backup
+  name: pg-linkwarden-backup
 spec:
   schedule: "@daily"
   immediate: true
