@@ -1,4 +1,18 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: openweb
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.3.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -94,7 +108,8 @@ spec:
 
     route:
       *app :
-        hostnames: ["openweb.dmfrey.com"]
+        hostnames:
+          - openweb.dmfrey.com
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: AI

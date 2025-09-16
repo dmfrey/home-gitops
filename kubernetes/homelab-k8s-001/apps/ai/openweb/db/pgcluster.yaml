@@ -32,13 +32,30 @@ spec:
   # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
 
   bootstrap:
-    initdb:
-      dataChecksums: true
-      database: openweb
-      owner: openweb
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
+    # initdb:
+    #   dataChecksums: true
+    #   database: openweb
+    #   owner: openweb
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
+      source: &previous-cluster pg-openweb-v0
+  externalClusters:
+    - name: *previous-cluster
+      barmanObjectStore:
+        wal:
+          compression: gzip
+          maxParallel: 8
+        destinationPath: s3://cnpg/
+        endpointURL: http://minio.internal:9000
+        s3Credentials:
+          accessKeyId:
+            name: pg-openweb-cnpg-secret
+            key: AWS_ACCESS_KEY_ID
+          secretAccessKey:
+            name: pg-openweb-cnpg-secret
+            key: AWS_SECRET_ACCESS_KEY
 
   backup:
     retentionPolicy: 30d
@@ -55,26 +72,5 @@ spec:
       wal:
         compression: gzip
         maxParallel: 8
-
-#  # RECOVERY
-#  bootstrap:
-#    recovery:
-#      source: &previous-cluster pg-openweb-v0
-#  ## Note: externalClusters is needed when recovering from an existing cnpg cluster
-#  externalClusters:
-#    - name: *previous-cluster
-#      barmanObjectStore:
-#        wal:
-#          compression: gzip
-#          maxParallel: 8
-#        destinationPath: s3://cnpg/
-#        endpointURL: http://minio.internal:9000
-#        s3Credentials:
-#          accessKeyId:
-#            name: pg-openweb-cnpg-secret
-#            key: AWS_ACCESS_KEY_ID
-#          secretAccessKey:
-#            name: pg-openweb-cnpg-secret
-#            key: AWS_SECRET_ACCESS_KEY
 
 
