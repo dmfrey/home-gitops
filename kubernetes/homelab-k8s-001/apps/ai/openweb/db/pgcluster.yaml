@@ -39,9 +39,11 @@ spec:
     #   encoding: "UTF8"
     #   localeCollate: en_US.utf8
     #   localeCType: en_US.utf8
+
     recovery:
       source: &previous-cluster pg-openweb-v0
       recoveryTarget: {}
+
   externalClusters:
     - name: *previous-cluster
       barmanObjectStore:
@@ -58,20 +60,20 @@ spec:
             name: pg-openweb-cnpg-secret
             key: AWS_SECRET_ACCESS_KEY
 
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      destinationPath: s3://cnpg/
-      endpointURL: http://minio.internal:9000
-      s3Credentials:
-        accessKeyId:
-          name: pg-openweb-cnpg-secret
-          key: AWS_SECRET_ACCESS_KEY_ID
-        secretAccessKey:
-          name: pg-openweb-cnpg-secret
-          key: AWS_SECRET_ACCESS_KEY
-      wal:
-        compression: gzip
-        maxParallel: 8
+  # backup:
+  #   retentionPolicy: 30d
+  #   barmanObjectStore:
+  #     destinationPath: s3://cnpg/
+  #     endpointURL: http://minio.internal:9000
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: pg-openweb-cnpg-secret
+  #         key: AWS_SECRET_ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: pg-openweb-cnpg-secret
+  #         key: AWS_SECRET_ACCESS_KEY
+  #     wal:
+  #       compression: gzip
+  #       maxParallel: 8
 
 
