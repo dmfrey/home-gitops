@@ -55,7 +55,7 @@ spec:
         s3Credentials:
           accessKeyId:
             name: pg-openweb-cnpg-secret
-            key: AWS_ACCESS_KEY_ID
+            key: AWS_SECRET_ACCESS_KEY_ID
           secretAccessKey:
             name: pg-openweb-cnpg-secret
             key: AWS_SECRET_ACCESS_KEY
