@@ -1,3 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: gatus
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.3.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -10,11 +25,11 @@ spec:
 
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: gatus
 
   install:
     remediation:
-      retries: 3
+      retries: -1
 
   upgrade:
     cleanupOnFail: true
@@ -45,13 +60,13 @@ spec:
               UNIQUE_FILENAMES: true
               METHOD: WATCH
 
-            restartPolicy: Always
-
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 128Mi
+
+            restartPolicy: Always
 
         containers:
 
@@ -104,6 +119,9 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
+        serviceAccount:
+          name: *app
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -148,10 +166,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-
-    serviceAccount:
-      create: true
-      name: *app
 
     persistence:
       config:

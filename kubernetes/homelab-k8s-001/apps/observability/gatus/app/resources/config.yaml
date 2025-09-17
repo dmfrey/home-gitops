@@ -1,19 +1,5 @@
 ---
-web:
-  port: ${WEB_PORT}
-
-storage:
-  type: postgres
-  path: ${POSTGRES_URI}?sslmode=require
-  caching: true
-
-metrics: true
-
 debug: true
-
-ui:
-  title: Status | Gatus
-  header: Status
 
 alerting:
   pushover:
@@ -43,3 +29,17 @@ endpoints:
       - "[STATUS] == 404"
     alerts:
       - type: pushover
+
+metrics: true
+
+storage:
+  type: postgres
+  path: ${POSTGRES_URI}?sslmode=require
+  caching: true
+
+ui:
+  title: Status | Gatus
+  header: Status
+
+web:
+  port: ${WEB_PORT}
