@@ -6,6 +6,6 @@ namespace: ai
 components:
   - ../../components/common
 resources:
-  - ./ollama/ks.yaml
+  # - ./ollama/ks.yaml
   - ./openweb/ks.yaml
   # - ./k8sgpt/ks.yaml

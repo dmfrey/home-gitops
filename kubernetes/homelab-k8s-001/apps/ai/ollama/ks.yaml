@@ -29,8 +29,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CLAIM: *app
-      VOLSYNC_CAPACITY: 100Gi
+      VOLSYNC_CLAIM: ollama-config
+      VOLSYNC_CAPACITY: 1Gi
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

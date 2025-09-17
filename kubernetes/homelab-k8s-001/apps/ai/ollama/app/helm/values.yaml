@@ -1,6 +1,9 @@
 ---
 ollama:
   models:
-    pull:
-      - llama3.2
-      - llama3.1
+    - llama3.1
+    - llama3.2
+    - llama3.3
+    - llava:7b
+    - nomic-embed-text
+    - qllama/bge-reranker-v2-m3

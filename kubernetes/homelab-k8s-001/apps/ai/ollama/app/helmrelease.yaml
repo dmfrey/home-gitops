@@ -1,4 +1,18 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: ollama
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.3.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -53,7 +67,7 @@ spec:
               LIBVA_DRIVER_NAME: iHD
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
-              # OLLAMA_MODELS: &pvc /models
+              OLLAMA_MODELS: &pvc /models
               OLLAMA_GPU_ENABLED: "true"
               # OLLAMA_GPU_TYPE: amd
 
@@ -111,7 +125,14 @@ spec:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-          - path: /.ollama
+          - path: /root/.ollama
+
+      models:
+        type: nfs
+        server: nas.internal
+        path: /models
+        globalMounts:
+          - path: /models
 
       tmp:
         enabled: true
