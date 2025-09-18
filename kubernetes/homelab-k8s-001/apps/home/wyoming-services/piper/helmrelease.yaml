@@ -102,7 +102,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 192.168.30.102, ::ffff:192.168.30.102
+          lbipam.cilium.io/ips: 192.168.30.102 #, ::ffff:192.168.30.102
         ports:
           *app :
             port: 10200
