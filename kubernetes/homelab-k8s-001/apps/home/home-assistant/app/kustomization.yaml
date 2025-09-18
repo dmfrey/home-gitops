@@ -4,7 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./externalsecret.yaml
-  - ./helmrelease.yaml
+  # - ./helmrelease.yaml
   - ./pgcluster.yaml
   - ./pvc.yaml
   - ./replicationdestination.yaml
@@ -13,6 +13,7 @@ resources:
   - ./scheduledbackup.yaml
   # - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
+
 configMapGenerator:
   - name: hass-config
     files:
