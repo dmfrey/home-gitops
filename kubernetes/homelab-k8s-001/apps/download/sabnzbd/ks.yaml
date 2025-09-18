@@ -70,11 +70,11 @@ spec:
       namespace: volsync-system
     - name: pod-gateway
       namespace: network
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-      name: *app
-      namespace: *namespace
+  # healthChecks:
+  #   - apiVersion: helm.toolkit.fluxcd.io/v2
+  #     kind: HelmRelease
+  #     name: *app
+  #     namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/app"
   postBuild:
