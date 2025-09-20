@@ -28,11 +28,13 @@ spec:
     name: silence-operator
 
   install:
+    crds: CreateReplace
     remediation:
       retries: -1
 
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 3
@@ -41,8 +43,8 @@ spec:
 
     alertmanagerAddress: http://kube-prometheus-stack-alertmanager:9093
 
-    # image:
-      # registry: quay.io
+    image:
+      registry: quay.io
 
     networkPolicy:
       enabled: false
