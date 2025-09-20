@@ -14,7 +14,7 @@ resources:
   # - ./otel/ks.yaml
   - ./prometheus-pushgateway/ks.yaml
   - ./promtail/ks.yaml
-  # - ./silence-operator/ks.yaml
+  - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./tempo/ks.yaml
   - ./unpoller/ks.yaml
