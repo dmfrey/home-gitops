@@ -16,8 +16,8 @@ http:
     - 127.0.0.1
     - ::1
 
-homeassistant:
-  name: Home
+# homeassistant:
+  # name: Home
 
 recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
