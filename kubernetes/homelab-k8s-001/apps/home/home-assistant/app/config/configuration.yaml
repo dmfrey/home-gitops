@@ -19,16 +19,6 @@ http:
 homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
-  # Location required to calculate the time the sun rises and sets
-  # latitude: !env_var HASS_LATITUDE
-  # longitude: !env_var HASS_LONGITUDE
-  # Impacts weather/sunrise data (altitude above sea level in meters)
-  # elevation: 210.81
-  # metric for Metric, us_customary for US Customary
-  # unit_system: us_customary
-  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  # time_zone: America/New_York
-  # country: US
   packages: !include_dir_named packages
   external_url: https://home.dmfrey.com
   internal_url: http://192.168.30.242:8123
@@ -56,7 +46,7 @@ template: !include_dir_merge_list templates
 frontend:
   themes: !include_dir_merge_named themes
 
-zone: !include zone.yaml
+# zone: !include zone.yaml
 
 # configuration.yaml entry which defines a Home Assistant sensor from MQTT
 mqtt:
