@@ -780,11 +780,11 @@ spec:
             sectionName: https
 
     persistence:
-      enabled: true
-      type: pvc
-      finalizers:
-        - kubernetes.io/pvc-protection
-      existingClaim: grafana
+      enabled: false
+      # type: pvc
+      # finalizers:
+      #   - kubernetes.io/pvc-protection
+      # existingClaim: grafana
 
     plugins:
       - grafana-clock-panel
