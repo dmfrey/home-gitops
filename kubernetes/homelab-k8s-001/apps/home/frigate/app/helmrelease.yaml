@@ -84,7 +84,7 @@ spec:
 
             env:
               TZ: America/New_York
-              LIBVA_DRIVER_NAME: iHD
+              LIBVA_DRIVER_NAME: i965 # iHD
 
             envFrom:
               - secretRef:
@@ -108,12 +108,12 @@ spec:
 
             resources:
               requests:
+                cpu: 500m
+                memory: 1Gi
                 gpu.intel.com/i915: 1
-                cpu: 1000m
-                memory: 4Gi
               limits:
+                memory: 4Gi
                 gpu.intel.com/i915: 1
-                memory: 10Gi
 
             securityContext:
               privileged: true
