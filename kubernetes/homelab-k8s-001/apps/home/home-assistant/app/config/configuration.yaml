@@ -20,8 +20,8 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
   packages: !include_dir_named packages
-  external_url: https://home.dmfrey.com
-  internal_url: http://192.168.30.242:8123
+  # external_url: https://home.dmfrey.com
+  # internal_url: http://192.168.30.242:8123
 
 recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
