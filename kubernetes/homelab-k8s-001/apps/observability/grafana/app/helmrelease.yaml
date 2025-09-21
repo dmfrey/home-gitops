@@ -276,6 +276,8 @@ spec:
 
     dashboards:
 
+      default:
+
         blackbox-exporter:
           # renovate: depName="Prometheus Blackbox Exporter"
           gnetId: 7587
