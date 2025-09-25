@@ -86,7 +86,7 @@ spec:
               # Dragonfly (Redis)
               ENABLE_WEBSOCKET_SUPPORT: true
               WEBSOCKET_MANAGER: redis
-              REDIS_URL: redis://openweb-kv-cluster.ai.svc.cluster.local
+              WEBSOCKET_REDIS_URL: redis://openweb-kv-cluster.ai.svc.cluster.local
 
             envFrom:
               - secretRef:
@@ -94,8 +94,7 @@ spec:
 
             resources:
               requests:
-                cpu: 200m
-                memory: 2Gi
+                cpu: 500m
               limits:
                 memory: 2Gi
 
