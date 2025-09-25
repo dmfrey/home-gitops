@@ -50,6 +50,7 @@ spec:
     controllers:
       *app :
         type: statefulset
+        replicas: 3
 
         annotations:
           reloader.stakater.com/auto: "true"
@@ -59,43 +60,55 @@ spec:
             image:
               # repository: docker.io/ollama/ollama
               # tag: 0.7.0
-              repository: ghcr.io/tyzbit/ollama-intel-gpu
-              tag: latest
+              # repository: ghcr.io/tyzbit/ollama-intel-gpu
+              # tag: latest
+              repository: intelanalytics/ipex-llm-inference-cpp-xpu
+              tag: 2.3.0-SNAPSHOT
+
+            command:
+              - /bin/sh
+              - -c
+              - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
 
             env:
               TZ: America/New_York
-              LIBVA_DRIVER_NAME: iHD
+              # LIBVA_DRIVER_NAME: iHD
+              no_proxy: localhost,127.0.0.1
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: &pvc /models
-              OLLAMA_GPU_ENABLED: "true"
-              # OLLAMA_GPU_TYPE: amd
+              # OLLAMA_GPU_ENABLED: "true"
+
+              DEVICE: Arc
+              OLLAMA_INTEL_GPU: true
+              OLLAMA_NUM_GPU: 999
+              ZES_ENABLE_SYSMAN: 1
 
               # ollama-intel-gpu
-              ONEAPI_DEVICE_SELECTOR: level_zero:0
-              IPEX_LLM_NUM_CTX: 16384
+              # ONEAPI_DEVICE_SELECTOR: level_zero:0
+              # IPEX_LLM_NUM_CTX: 16384
 
             resources:
               requests:
-                cpu: 2000m
-                memory: 16Gi
-                gpu.intel.com/i915: "1"
+                cpu: 200m
               limits:
-                memory: 16Gi
+                memory: 24Gi
                 gpu.intel.com/i915: "1"
+
+            securityContext:
+              privileged: true
 
         pod:
           affinity:
-            nodeAffinity:
+            podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: intel.feature.node.kubernetes.io/gpu
+                - topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - "true"
-          nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
+                          - "{{ .Release.Name }}"
 
     service:
       *app :
@@ -133,6 +146,10 @@ spec:
         path: /models
         globalMounts:
           - path: /models
+
+      dri:
+        type: hostPath
+        hostPath: /dev/dri
 
       tmp:
         enabled: true
