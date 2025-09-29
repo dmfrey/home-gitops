@@ -159,6 +159,23 @@ spec:
                 drop:
                   - ALL
 
+          busybox:
+            image:
+              repository: busybox
+              tag: stable
+
+            command:
+              - sleep
+              - "3600"
+
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
