@@ -193,25 +193,25 @@ spec:
         #   http:
         #     port: *port
 
-    route:
-      *app :
-        hostnames: ["romm.dmfrey.com"]
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Games
-          gethomepage.dev/name: RomM
-          gethomepage.dev/icon: romm.png
-          gethomepage.dev/description: Retro Games
-          gethomepage.dev/widget.type: romm
-          gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
-        parentRefs:
-          - name: external
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
+    # route:
+    #   *app :
+    #     hostnames: ["romm.dmfrey.com"]
+    #     annotations:
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Games
+    #       gethomepage.dev/name: RomM
+    #       gethomepage.dev/icon: romm.png
+    #       gethomepage.dev/description: Retro Games
+    #       gethomepage.dev/widget.type: romm
+    #       gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
+    #     parentRefs:
+    #       - name: external
+    #         namespace: kube-system
+    #         sectionName: https
+    #     rules:
+    #       - backendRefs:
+    #           - name: *app
+    #             port: *port
 
     persistence:
       romm-data:
