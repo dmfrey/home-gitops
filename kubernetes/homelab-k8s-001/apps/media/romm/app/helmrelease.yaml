@@ -187,10 +187,11 @@ spec:
 
     service:
       *app :
+        enabled: false
         controller: *app
-        ports:
-          http:
-            port: *port
+        # ports:
+        #   http:
+        #     port: *port
 
     route:
       *app :
