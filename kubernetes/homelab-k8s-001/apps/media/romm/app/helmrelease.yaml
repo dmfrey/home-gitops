@@ -214,10 +214,10 @@ spec:
                 port: *port
 
     persistence:
-      romm-data:
+      romm:
         existingClaim: ${VOLSYNC_CLAIM}
-        globalMounts:
-          - path: /romm
+        # globalMounts:
+        #   - path: /romm
 
       # romm-config:
       #   type: emptyDir
