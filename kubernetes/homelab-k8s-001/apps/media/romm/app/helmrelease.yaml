@@ -55,25 +55,26 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        # initContainers:
-        #   fix-permissions:
-        #     image:
-        #       repository: busybox
-        #       tag: stable
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: stable
 
         #     # command: ["sh", "-c", "chown -R 1000:1000 /romm/assets/*"]
         #     # command: ["sh", "-c", "cp /romm/backup/config.yml /romm/config && chown -R 1000:1000 /romm/config"]
         #     # command: ["sh", "-c", "chown -R 1000:1000 /romm/config/* && ls -la /romm && ls -la /romm/config"]
         #     # command: ["sh", "-c", "chmod 775 /romm/config /romm/backup"]
         #     command: ["sh", "-c", "chmod 666 /romm/config/config.yml && ls -la /romm && ls -la /romm/config && ls -la /romm/backup && cat /romm/config/config.yml"]
+            command: ["sh", "-c", "mkdir -p /romm/config && chmod 775 /romm/config && cp /romm/backup/config.yml /romm/config && chmod 666 /romm/config/config.yml && chown -R 1000:1000 /romm/config && ls -la /romm && ls -la /romm/config && cat /romm/config/config.yml"]
 
-        #     securityContext:
-        #       runAsNonRoot: false
-        #       readOnlyRootFilesystem: true
-        #       allowPrivilegeEscalation: true
-        #       runAsUser: 0
-        #       runAsGroup: 0
-        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+            securityContext:
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              runAsUser: 0
+              runAsGroup: 0
+              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           *app :
@@ -165,8 +166,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
-        # supplementalGroups:
-        #   - 1568
 
     service:
       *app :
@@ -202,18 +201,18 @@ spec:
           - path: /romm
             readOnly: false
 
-      romm-config:
-        type: emptyDir
-        globalMounts:
-          - path: /romm/config
+      # romm-config:
+      #   type: emptyDir
+      #   globalMounts:
+      #     - path: /romm/config
 
-      configuration:
-        type: configMap
-        name: romm-config
-        globalMounts:
-          - path: /romm/config/config.yml
-            subPath: config.yml
-        defaultMode: 0664
+      # configuration:
+      #   type: configMap
+      #   name: romm-config
+      #   globalMounts:
+      #     - path: /romm/config/config.yml
+      #       subPath: config.yml
+      #   defaultMode: 0664
 
       romm-assets:
         enabled: true
