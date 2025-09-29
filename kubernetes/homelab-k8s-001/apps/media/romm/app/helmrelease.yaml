@@ -67,7 +67,7 @@ spec:
         # #     # command: ["sh", "-c", "chmod 775 /romm/config /romm/backup"]
         # #     command: ["sh", "-c", "chmod 666 /romm/config/config.yml && ls -la /romm && ls -la /romm/config && ls -la /romm/backup && cat /romm/config/config.yml"]
         #     command: ["sh", "-c", "mkdir -p /romm/config && chmod 775 /romm/config && cp /romm/backup/config.yml /romm/config/ && chmod 666 /romm/config/config.yml && chown -R 1000:1000 /romm/config && ls -la /romm && ls -la /romm/config && cat /romm/config/config.yml"]
-            command: ["sh", "-c", "chown -R 1000:1000 /romm/config && cp /tmp/config.yml /romm/config/ && ls -la /romm && cat /romm/config/config.yml"]
+            command: ["sh", "-c", "mkdir -p /romm/config && chown -R 1000:1000 /romm/config && cp /tmp/config.yml /romm/config/ && ls -la /romm && cat /romm/config/config.yml"]
 
             securityContext:
               runAsNonRoot: false
@@ -78,88 +78,88 @@ spec:
               capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
+          # *app :
+          #   image:
+          #     repository: rommapp/romm
+          #     tag: 4.3.0
+
+          #   env:
+          #     TZ: America/New_York
+          #     ENABLE_SCHEDULED_RESCAN: "true"
+          #     SCHEDULED_RESCAN_CRON: "0 3 * * *"
+          #     ENABLE_SCHEDULED_UPDATE_SWITCH_TITLEDB: "false"
+          #     ENABLE_SCHEDULED_UPDATE_MAME_XML: "false"
+          #     ENABLE_RESCAN_ON_FILESYSTEM_CHANGE: "true"
+          #     RESCAN_ON_FILESYSTEM_CHANGE_DELAY: 5
+          #     FLASHPOINT_API_ENABLED: true
+          #     HLTB_API_ENABLED: true
+          #     ROMM_PORT: &port 8080
+          #     ROMM_DB_DRIVER: postgresql
+          #     DB_HOST:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: pg-romm-app
+          #           key: host
+          #     DB_PORT:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: pg-romm-app
+          #           key: port
+          #     DB_NAME:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: pg-romm-app
+          #           key: dbname
+          #     DB_USER:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: pg-romm-app
+          #           key: username
+          #     DB_PASSWD:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: pg-romm-app
+          #           key: password
+          #     REDIS_HOST: romm-kv-cluster.media.svc.cluster.local
+          #     REDIS_PORT: 6379
+          #     OIDC_ENABLED: true
+          #     OIDC_PROVIDER: authentik
+          #     OIDC_CLIENT_ID:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: romm-secret
+          #           key: ROMM_CLIENT_ID
+          #     OIDC_CLIENT_SECRET:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: romm-secret
+          #           key: ROMM_CLIENT_SECRET
+          #     OIDC_REDIRECT_URI: https://romm.dmfrey.com/api/oauth/openid
+          #     OIDC_SERVER_APPLICATION_URL: https://auth.dmfrey.com/application/o/romm
+
+          #   envFrom:
+          #     - secretRef:
+          #         name: romm-secret
+
+          #   ports:
+          #     - name: http
+          #       containerPort: *port
+
+          #   resources:
+          #     requests:
+          #       memory: 350Mi
+          #       cpu: 100m
+          #     limits:
+          #       memory: 1024Mi
+
+          #   securityContext:
+          #     allowPrivilegeEscalation: false
+          #     readOnlyRootFilesystem: true
+          #     capabilities:
+          #       drop:
+          #         - ALL
+
           *app :
-            image:
-              repository: rommapp/romm
-              tag: 4.3.0
-
-            env:
-              TZ: America/New_York
-              ENABLE_SCHEDULED_RESCAN: "true"
-              SCHEDULED_RESCAN_CRON: "0 3 * * *"
-              ENABLE_SCHEDULED_UPDATE_SWITCH_TITLEDB: "false"
-              ENABLE_SCHEDULED_UPDATE_MAME_XML: "false"
-              ENABLE_RESCAN_ON_FILESYSTEM_CHANGE: "true"
-              RESCAN_ON_FILESYSTEM_CHANGE_DELAY: 5
-              FLASHPOINT_API_ENABLED: true
-              HLTB_API_ENABLED: true
-              ROMM_PORT: &port 8080
-              ROMM_DB_DRIVER: postgresql
-              DB_HOST:
-                valueFrom:
-                  secretKeyRef:
-                    name: pg-romm-app
-                    key: host
-              DB_PORT:
-                valueFrom:
-                  secretKeyRef:
-                    name: pg-romm-app
-                    key: port
-              DB_NAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: pg-romm-app
-                    key: dbname
-              DB_USER:
-                valueFrom:
-                  secretKeyRef:
-                    name: pg-romm-app
-                    key: username
-              DB_PASSWD:
-                valueFrom:
-                  secretKeyRef:
-                    name: pg-romm-app
-                    key: password
-              REDIS_HOST: romm-kv-cluster.media.svc.cluster.local
-              REDIS_PORT: 6379
-              OIDC_ENABLED: true
-              OIDC_PROVIDER: authentik
-              OIDC_CLIENT_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: romm-secret
-                    key: ROMM_CLIENT_ID
-              OIDC_CLIENT_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: romm-secret
-                    key: ROMM_CLIENT_SECRET
-              OIDC_REDIRECT_URI: https://romm.dmfrey.com/api/oauth/openid
-              OIDC_SERVER_APPLICATION_URL: https://auth.dmfrey.com/application/o/romm
-
-            envFrom:
-              - secretRef:
-                  name: romm-secret
-
-            ports:
-              - name: http
-                containerPort: *port
-
-            resources:
-              requests:
-                memory: 350Mi
-                cpu: 100m
-              limits:
-                memory: 1024Mi
-
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-
-          busybox:
             image:
               repository: busybox
               tag: stable
@@ -176,14 +176,14 @@ spec:
               runAsGroup: 0
               capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: false # true
-        runAsUser: 0 # 1000
-        runAsGroup: 0 # 1000
-        # fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 1000
+    #     runAsGroup: 1000
+    #     fsGroup: 1000
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     seccompProfile: { type: RuntimeDefault }
 
     service:
       *app :
