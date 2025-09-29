@@ -67,7 +67,7 @@ spec:
         # #     # command: ["sh", "-c", "chmod 775 /romm/config /romm/backup"]
         # #     command: ["sh", "-c", "chmod 666 /romm/config/config.yml && ls -la /romm && ls -la /romm/config && ls -la /romm/backup && cat /romm/config/config.yml"]
         #     command: ["sh", "-c", "mkdir -p /romm/config && chmod 775 /romm/config && cp /romm/backup/config.yml /romm/config/ && chmod 666 /romm/config/config.yml && chown -R 1000:1000 /romm/config && ls -la /romm && ls -la /romm/config && cat /romm/config/config.yml"]
-            command: ["sh", "-c", "ls -la /romm/config && cat /romm/config/config.yml"]
+            command: ["sh", "-c", "chown -R 1000:1000 /rom/config && cp /tmp/config.yml /romm/config/ && ls -la /romm && cat /romm/config/config.yml"]
 
             securityContext:
               runAsNonRoot: false
@@ -207,13 +207,13 @@ spec:
       #   globalMounts:
       #     - path: /romm/config
 
-      # configuration:
-      #   type: configMap
-      #   name: romm-config
-      #   globalMounts:
-      #     - path: /tmp/config.yml
-      #       subPath: config.yml
-      #   defaultMode: 0664
+      configuration:
+        type: configMap
+        name: romm-config
+        globalMounts:
+          - path: /tmp/config.yml
+            subPath: config.yml
+        defaultMode: 0664
 
       romm-assets:
         enabled: true
