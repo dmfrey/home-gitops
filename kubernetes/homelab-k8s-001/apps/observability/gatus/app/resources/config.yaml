@@ -40,6 +40,15 @@ storage:
 ui:
   title: Status | Gatus
   header: Status
+  logo: https://avatars.githubusercontent.com/u/946892
+  link: https://github.com/dmfrey
+  buttons:
+    - name: Github
+      link: https://github.com/dmfrey
+
+    - name: Homelab
+      link: https://github.com/dmfrey/home-gitops
+
 
 web:
   port: ${WEB_PORT}
