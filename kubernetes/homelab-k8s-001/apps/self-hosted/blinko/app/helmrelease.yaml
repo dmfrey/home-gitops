@@ -59,7 +59,7 @@ spec:
           *app :
             image:
               repository: blinkospace/blinko
-              tag: 1.6.2@sha256:9e90b4e615d8009f83b84afcf1c4020e97ec31cb6906b06014d02ef5cc850d97
+              tag: 1.6.3@sha256:a0bc1924a0b963b63bc2ffb8dbda15c12729672291f74b8a2e15f86125ab6934
 
             # command: ["sh", "-c", "prisma migrate deploy && node seed.js && node server.js"]
 
