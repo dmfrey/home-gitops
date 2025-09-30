@@ -51,11 +51,11 @@ spec:
 
             resources:
               requests:
-                cpu: 384m
-                memory: 512Mi
+                cpu: 500m
+                memory: 1Gi
               limits:
-                cpu: 512m
-                memory: 1024Mi
+                cpu: 1000m
+                memory: 2Gi
 
         pod:
           annotations:
