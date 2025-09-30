@@ -39,27 +39,27 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          fix-permissions:
-            image:
-              repository: busybox
-              tag: stable
+        # initContainers:
+        #   fix-permissions:
+        #     image:
+        #       repository: busybox
+        #       tag: stable
 
-            command: ["sh", "-c", "chown -R 1000:1000 /data/* /data/.cache"]
+        #     command: ["sh", "-c", "chown -R 1000:1000 /data/* /data/.cache"]
 
-            securityContext:
-              runAsNonRoot: false
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+        #     securityContext:
+        #       runAsNonRoot: false
+        #       readOnlyRootFilesystem: true
+        #       allowPrivilegeEscalation: true
+        #       runAsUser: 0
+        #       runAsGroup: 0
+        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
           *app :
             image:
               repository: ghcr.io/music-assistant/server
-              tag: 2.5.8  # 2.6.0@sha256:9b0b0c8476e5b208265cbede313558ca20202bbeaebfd70a3467081e75827e67
+              tag: 2.6.0 # 2.5.8  # 2.6.0@sha256:9b0b0c8476e5b208265cbede313558ca20202bbeaebfd70a3467081e75827e67
 
             env:
               TZ: America/New_York
