@@ -45,7 +45,7 @@ spec:
               repository: busybox
               tag: stable
 
-            command: ["sh", "-c", "chown -R 1000:1000 /data/*"]
+            command: ["sh", "-c", "chown -R 1000:1000 /data/* /data/.cache"]
 
             securityContext:
               runAsNonRoot: false
