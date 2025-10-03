@@ -5,3 +5,6 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./pvc.yaml
+  - ./replicationdestination.yaml
+  - ./replicationsource-r2.yaml
+  - ./replicationsource.yaml

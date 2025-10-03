@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: "music-assistant-cache-r2"
+spec:
+  sourcePVC: "music-assistant-cache"
+  trigger:
+    schedule: "30 0 * * *"
+  restic:
+    copyMethod: "Snapshot"
+    pruneIntervalDays: 14
+    repository: "music-assistant-cache-volsync-r2-secret"
+    volumeSnapshotClassName: "csi-ceph-blockpool"
+    cacheCapacity: "2Gi"
+    cacheStorageClassName: "ceph-block"
+    cacheAccessModes: ["ReadWriteOnce"]
+    storageClassName: "ceph-block"
+    accessModes: ["ReadWriteOnce"]
+    moverPodLabels:
+      setGateway: "false"
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    retain:
+      daily: 7
