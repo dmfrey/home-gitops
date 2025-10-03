@@ -39,13 +39,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        # initContainers:
-        #   fix-permissions:
-        #     image:
-        #       repository: busybox
-        #       tag: stable
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: stable
 
-        #     command: ["sh", "-c", "chown -R 1000:1000 /data/* /data/.cache"]
+            command: ["sh", "-c", "cp -R /data/.cache/* /cache/"]
 
         #     securityContext:
         #       runAsNonRoot: false
@@ -141,6 +141,11 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data
+
+      cache:
+        existingClaim: music-assistant-cache
+        globalMounts:
+          - path: /cache
 
       media:
         type: nfs
