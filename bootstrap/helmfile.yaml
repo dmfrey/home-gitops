@@ -17,7 +17,7 @@ releases:
   - name: coredns
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.43.3
+    version: 1.44.3
     values: ['../kubernetes/homelab-k8s-001/apps/kube-system/coredns/app/helm/values.yaml']
     needs: ['kube-system/cilium']
 
