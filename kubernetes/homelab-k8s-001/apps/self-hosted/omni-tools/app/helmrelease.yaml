@@ -46,7 +46,7 @@ spec:
           *app :
             image:
               repository: iib0011/omni-tools
-              tag: 0.5.0
+              tag: 0.6.0
 
     service:
       *app :
