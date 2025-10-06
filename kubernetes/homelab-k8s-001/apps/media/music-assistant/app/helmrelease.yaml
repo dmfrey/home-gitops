@@ -77,7 +77,7 @@ spec:
 
             env:
               TZ: America/New_York
-              LOG_LEVEL: trace
+              LOG_LEVEL: debug
 
             # probes:
             #   liveness:
