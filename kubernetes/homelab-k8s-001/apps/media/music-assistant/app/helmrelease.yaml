@@ -65,6 +65,12 @@ spec:
               TZ: America/New_York
               LOG_LEVEL: debug
 
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+
             resources:
               requests:
                 cpu: 500m
