@@ -65,11 +65,11 @@ spec:
               TZ: America/New_York
               LOG_LEVEL: info
 
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
+            # probes:
+            #   liveness:
+            #     enabled: true
+            #   readiness:
+            #     enabled: true
 
             # resources:
             #   requests:
