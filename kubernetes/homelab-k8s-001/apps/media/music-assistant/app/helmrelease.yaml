@@ -26,6 +26,20 @@ spec:
     kind: OCIRepository
     name: music-assistant
 
+  maxHistory: 2
+
+  install:
+    remediation:
+      retries: 3
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
   driftDetection:
     mode: enabled
 
@@ -59,11 +73,11 @@ spec:
           *app :
             image:
               repository: ghcr.io/music-assistant/server
-              tag: 2.6.0 # 2.5.8  # 2.6.0@sha256:9b0b0c8476e5b208265cbede313558ca20202bbeaebfd70a3467081e75827e67
+              tag: 2.6.0@sha256:9b0b0c8476e5b208265cbede313558ca20202bbeaebfd70a3467081e75827e67
 
             env:
               TZ: America/New_York
-              LOG_LEVEL: info
+              LOG_LEVEL: trace
 
             # probes:
             #   liveness:
@@ -79,10 +93,10 @@ spec:
             #     cpu: 1000m
             #     memory: 2Gi
 
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: { add: ["DAC_READ_SEARCH", "SYS_ADMIN"] }
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { add: ["DAC_READ_SEARCH", "SYS_ADMIN"] }
 
         pod:
           annotations:
@@ -102,8 +116,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
-        # supplementalGroups:
-        #   - 100
 
     service:
       *app :
@@ -134,7 +146,8 @@ spec:
 
     route:
       *app :
-        hostnames: ["music.dmfrey.com"]
+        hostnames:
+          - music.dmfrey.com
         parentRefs:
           - name: internal
             namespace: kube-system
