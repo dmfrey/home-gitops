@@ -119,6 +119,8 @@ spec:
             port: &streamPort 8097
           http2:
             port: 1780
+          sxm-proxy:
+            port: 8100
           # snapserver-player:
           #   port: 1704
           # snapserver-control:
