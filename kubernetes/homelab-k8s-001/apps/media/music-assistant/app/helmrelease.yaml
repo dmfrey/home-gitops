@@ -47,7 +47,7 @@ spec:
 
     controllers:
 
-      *app :
+      music-assistant:
         type: statefulset
 
         annotations:
@@ -70,7 +70,7 @@ spec:
         #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/music-assistant/server
               tag: 2.6.0@sha256:9b0b0c8476e5b208265cbede313558ca20202bbeaebfd70a3467081e75827e67
@@ -118,8 +118,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
 
     service:
-      *app :
-        controller: *app
+      app:
         # type: LoadBalancer
         # annotations:
           # lbipam.cilium.io/ips: 192.168.30.245 #, ::ffff:192.168.30.245
@@ -145,7 +144,7 @@ spec:
           #   port: 3483
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -156,10 +155,6 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
       data:
