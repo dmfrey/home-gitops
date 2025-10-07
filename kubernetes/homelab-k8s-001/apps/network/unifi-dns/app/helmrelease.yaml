@@ -89,11 +89,14 @@ spec:
 
     policy: sync
 
-    sources: ["gateway-httproute", "service"]
+    sources:
+      - gateway-httproute
+      - service
 
-    txtOwnerId: "homelab-k8s-001"
-    txtPrefix: "homelab-k8s-001."
-    domainFilters: ["dmfrey.com"]
+    txtOwnerId: homelab-k8s-001
+    txtPrefix: homelab-k8s-001.
+    domainFilters:
+      - dmfrey.com
 
     serviceMonitor:
       enabled: true
