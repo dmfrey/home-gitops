@@ -35,3 +35,4 @@ spec:
         certificateRefs:
           - kind: Secret
             name: dmfrey-com-tls
+            namespace: network

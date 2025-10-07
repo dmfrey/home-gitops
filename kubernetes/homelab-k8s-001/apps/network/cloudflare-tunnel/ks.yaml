@@ -4,7 +4,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cloudflare-tunnel
-  namespace: &namespace network
+  # namespace: &namespace network
 spec:
   commonMetadata:
     labels:
@@ -21,5 +21,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  # targetNamespace: *namespace
   timeout: 5m
