@@ -64,7 +64,9 @@ spec:
               - secretRef:
                   name: cloudflare-tunnel-secret
 
-            args: ["tunnel", "run"]
+            args:
+              - tunnel
+              - run
 
             probes:
               liveness: &probes
@@ -79,8 +81,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: false
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -112,12 +112,26 @@ spec:
         endpoints:
           - port: http
 
+    configMaps:
+      config:
+        data:
+          config.yaml: |-
+            ingress:
+              - hostname: dmfrey.com
+                originRequest:
+                  originServerName: dmfrey.com
+                service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
+              - hostname: "*.dmfrey.com"
+                originRequest:
+                  originServerName: external.dmfrey.com
+                service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
+              - service: http_status:404
+
     persistence:
 
       config:
         type: configMap
-        name: cloudflare-tunnel-configmap
+        identifier: config
         globalMounts:
           - path: /etc/cloudflared/config.yaml
             subPath: config.yaml
-            readOnly: true
