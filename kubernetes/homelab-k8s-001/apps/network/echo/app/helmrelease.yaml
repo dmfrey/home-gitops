@@ -84,5 +84,5 @@ spec:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-external
-            namespace: kube-system
+            namespace: network
             sectionName: https
