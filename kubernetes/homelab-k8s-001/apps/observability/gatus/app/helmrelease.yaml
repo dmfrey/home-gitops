@@ -46,27 +46,45 @@ spec:
 
         initContainers:
 
-          init-config:
-
+          gatus-sidecar:
             image:
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.30.10@sha256:835d79d8fbae62e42d8a86929d4e3c5eec2e869255dd37756b5a3166c2f22309
+              repository: ghcr.io/home-operations/gatus-sidecar
+              tag: 0.0.8@sha256:79c4622f9b379d6bb4e81d775dc4290ddab65eb2d1e4fa4d37a3e7aeef1975d5
 
-            env:
-              FOLDER: /config
-              LABEL: gatus.io/enabled
-              NAMESPACE: ALL
-              RESOURCE: both
-              UNIQUE_FILENAMES: true
-              METHOD: WATCH
-
-            restartPolicy: Always
+            args:
+              - --auto-httproute
+              - --enable-httproute
+              - --enable-service
 
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 128Mi
+                memory: 64Mi
+
+            restartPolicy: Always
+
+          # init-config:
+
+          #   image:
+          #     repository: ghcr.io/kiwigrid/k8s-sidecar
+          #     tag: 1.30.10@sha256:835d79d8fbae62e42d8a86929d4e3c5eec2e869255dd37756b5a3166c2f22309
+
+          #   env:
+          #     FOLDER: /config
+          #     LABEL: gatus.io/enabled
+          #     NAMESPACE: ALL
+          #     RESOURCE: both
+          #     UNIQUE_FILENAMES: true
+          #     METHOD: WATCH
+
+          #   restartPolicy: Always
+
+          #   resources:
+          #     requests:
+          #       cpu: 10m
+          #     limits:
+          #       memory: 128Mi
 
         containers:
 
@@ -77,15 +95,11 @@ spec:
               tag: v5.26.0@sha256:3c0314bd1b1e9d7c34d8f2efee16b380770a9639ec5386cc305e8df104e097dc
 
             env:
-              - name: TZ
-                value: America/New_York
-              - name: BASE_URL
-                value: https://status.dmfrey.com
-              - name: GATUS_CONFIG_PATH
-                value: /config
-              - name: GATUS_DELAY_START_SECONDS
-                value: 5
-              - name: POSTGRES_URI
+              GATUS_CONFIG_PATH: /config
+              GATUS_DELAY_START_SECONDS: 5
+              GATUS_WEB_PORT: &port 8080
+              TZ: America/New_York
+              POSTGRES_URI:
                 secretKeyRef:
                   name: pg-gatus-app
                   key: uri
@@ -101,7 +115,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: &port 8080
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -131,26 +145,22 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
 
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: node-role.kubernetes.io/control-plane
-                    operator: Exists
-              topologyKey: kubernetes.io/hostname
-
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
             port: *port
 
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+
     route:
-      *app :
-        hostnames: ["status.dmfrey.com"]
+      app:
         annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Observability
           gethomepage.dev/name: Gatus
@@ -158,6 +168,9 @@ spec:
           gethomepage.dev/description: Application Status
           gethomepage.dev/widget.type: gatus
           gethomepage.dev/widget.url: http://gatus.observability.svc.cluster.local:8080
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+          - status.dmfrey.com
         parentRefs:
           - name: external
             namespace: kube-system
@@ -167,31 +180,48 @@ spec:
               - name: *app
                 port: *port
 
+    rbac:
+      roles:
+        gatus:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - services
+              verbs:
+                - get
+                - watch
+                - list
+            - apiGroups:
+                - gateway.networking.k8s.io
+              resources:
+                - gateways
+                - httproutes
+              verbs:
+                - get
+                - watch
+                - list
+
+      bindings:
+        gatus:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: gatus
+          subjects:
+            - identifier: gatus
+
     persistence:
       config:
         type: emptyDir
 
       config-file:
         type: configMap
-        name: gatus-configmap
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
 
-    serviceMonitor:
-      metrics:
-        serviceName: *app
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-            metricRelabelings:
-              - action: labeldrop
-                regex: (pod)
-              - action: replace
-                sourceLabels: ["service"]
-                targetLabel: instance
-
+    serviceAccount:
+      gatus: {}
