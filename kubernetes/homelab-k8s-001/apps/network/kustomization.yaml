@@ -8,6 +8,7 @@ components:
 resources:
   - ./cloudflare-dns/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
+  - ./echo/ks.yaml
   - ./external-services/ks.yaml
   - ./multus/ks.yaml
   - ./pod-gateway/ks.yaml
