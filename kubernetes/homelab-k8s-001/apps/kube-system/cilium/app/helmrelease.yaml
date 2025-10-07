@@ -38,9 +38,9 @@ spec:
       strategy: rollback
       retries: 3
 
-  valuesFrom:
-    - kind: ConfigMap
-      name: cilium-values
+  # valuesFrom:
+  #   - kind: ConfigMap
+  #     name: cilium-values
 
   driftDetection:
     mode: enabled
