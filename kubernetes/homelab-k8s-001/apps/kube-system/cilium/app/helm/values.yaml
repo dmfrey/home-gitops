@@ -40,10 +40,10 @@ endpointRoutes:
 
 envoy:
   enabled: false
-  rollOutPods: true
-  prometheus:
-     serviceMonitor:
-       enabled: true
+  # rollOutPods: true
+  # prometheus:
+  #    serviceMonitor:
+  #      enabled: true
 
 gatewayAPI:
   enabled: true

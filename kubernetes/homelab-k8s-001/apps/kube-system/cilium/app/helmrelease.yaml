@@ -47,8 +47,8 @@ spec:
 
   values:
 
-    hubble:
-      enabled: false
+    # hubble:
+    #   enabled: false
 
       # metrics:
       #   enabled:
