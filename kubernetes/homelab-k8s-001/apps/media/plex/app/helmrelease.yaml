@@ -159,9 +159,9 @@ spec:
 
     route:
       app:
-        hostnames:
-          - "{{ .Release.Name }}.dmfrey.com"
         annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 404"]
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Plex
@@ -170,6 +170,8 @@ spec:
           gethomepage.dev/widget.type: plex
           gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: external
             namespace: kube-system
