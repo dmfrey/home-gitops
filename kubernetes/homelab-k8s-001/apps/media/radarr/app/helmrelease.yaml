@@ -157,7 +157,7 @@ spec:
           gethomepage.dev/widget.url: http://radarr.media.svc.cluster.local:7878
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_RADARR_TOKEN}}` }}"
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

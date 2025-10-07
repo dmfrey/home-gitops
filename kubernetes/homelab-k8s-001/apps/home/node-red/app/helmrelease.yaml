@@ -90,7 +90,7 @@ spec:
           gethomepage.dev/icon: node-red.png
           gethomepage.dev/description: Low-code programming for event-driven applications
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

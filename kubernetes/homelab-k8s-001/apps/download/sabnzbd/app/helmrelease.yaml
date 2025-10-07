@@ -202,7 +202,7 @@ spec:
           gethomepage.dev/widget.url: http://sabnzbd.download.svc.cluster.local:8080
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SABNZBD_TOKEN}}` }}"
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

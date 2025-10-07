@@ -276,7 +276,7 @@ spec:
           gethomepage.dev/icon: vscode.png
           gethomepage.dev/description: Online Code Editor
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

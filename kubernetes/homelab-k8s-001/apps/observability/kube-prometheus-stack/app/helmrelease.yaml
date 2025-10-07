@@ -71,7 +71,7 @@ spec:
             gethomepage.dev/icon: alertmanager.png
             gethomepage.dev/description: Application & System Alerts
           parentRefs:
-            - name: internal-envoy
+            - name: envoy-internal
               namespace: network
               sectionName: https
 
@@ -114,7 +114,7 @@ spec:
             gethomepage.dev/widget.type: prometheus
             gethomepage.dev/widget.url: http://prometheus-operated.observability.svc.cluster.local:9090
           parentRefs:
-            - name: internal-envoy
+            - name: envoy-internal
               namespace: network
               sectionName: https
 

@@ -106,7 +106,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

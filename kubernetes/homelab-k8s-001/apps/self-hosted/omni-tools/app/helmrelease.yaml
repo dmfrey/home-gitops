@@ -65,7 +65,7 @@ spec:
           gethomepage.dev/icon: omni-tools.png
           gethomepage.dev/description: "Collection of powerful web-based tools"
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

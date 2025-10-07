@@ -138,7 +138,7 @@ spec:
           gethomepage.dev/icon: zigbee2mqtt.png
           gethomepage.dev/description: Zigbee2MQTT Controller for First Floor
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

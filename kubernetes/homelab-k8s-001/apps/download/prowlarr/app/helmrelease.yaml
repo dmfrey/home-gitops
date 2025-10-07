@@ -180,7 +180,7 @@ spec:
           gethomepage.dev/widget.url: http://prowlarr.download.svc.cluster.local:9696
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_TOKEN}}` }}"
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:

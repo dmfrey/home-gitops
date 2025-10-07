@@ -118,7 +118,7 @@ spec:
           - "{{ .Release.Name }}.dmfrey.com"
           - qb.dmfrey.com
         parentRefs:
-          - name: internal-envoy
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:
