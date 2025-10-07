@@ -120,7 +120,7 @@ spec:
           gethomepage.dev/widget.type: esphome
           gethomepage.dev/widget.url: http://esphome.home.svc.cluster.local:6052
         hostnames:
-          - "{{ .Release.Name }}.dmfrey.com"
+          - ${{ .Release.Name }}.dmfrey.com
         parentRefs:
           - name: envoy-internal
             namespace: network
