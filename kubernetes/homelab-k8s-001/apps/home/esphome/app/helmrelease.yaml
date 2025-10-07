@@ -109,8 +109,9 @@ spec:
 
     route:
       *app :
-        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
           gethomepage.dev/name: ESPHome
@@ -118,6 +119,8 @@ spec:
           gethomepage.dev/description: ESPHome Controller
           gethomepage.dev/widget.type: esphome
           gethomepage.dev/widget.url: http://esphome.home.svc.cluster.local:6052
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: internal
             namespace: kube-system
