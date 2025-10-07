@@ -113,8 +113,8 @@ spec:
       *app :
         hostnames: ["piper.dmfrey.com"]
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-envoy
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

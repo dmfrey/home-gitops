@@ -110,8 +110,8 @@ spec:
           gethomepage.dev/icon: blinko.png
           gethomepage.dev/description: Notes
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

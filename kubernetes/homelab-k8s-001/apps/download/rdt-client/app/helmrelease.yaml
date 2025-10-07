@@ -123,8 +123,8 @@ spec:
           gethomepage.dev/widget.type: qbittorrent
           gethomepage.dev/widget.url: http://rdt-client.download.svc.cluster.local:6500
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-envoy
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

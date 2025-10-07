@@ -71,8 +71,8 @@ spec:
             gethomepage.dev/icon: alertmanager.png
             gethomepage.dev/description: Application & System Alerts
           parentRefs:
-            - name: internal
-              namespace: kube-system
+            - name: internal-envoy
+              namespace: network
               sectionName: https
 
       alertmanagerSpec:
@@ -114,8 +114,8 @@ spec:
             gethomepage.dev/widget.type: prometheus
             gethomepage.dev/widget.url: http://prometheus-operated.observability.svc.cluster.local:9090
           parentRefs:
-            - name: internal
-              namespace: kube-system
+            - name: internal-envoy
+              namespace: network
               sectionName: https
 
       prometheusSpec:

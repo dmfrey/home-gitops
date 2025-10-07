@@ -145,8 +145,8 @@ spec:
           gethomepage.dev/widget.type: pinepods
           gethomepage.dev/widget.url: http://pinepods.media.svc.cluster.local:8080
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

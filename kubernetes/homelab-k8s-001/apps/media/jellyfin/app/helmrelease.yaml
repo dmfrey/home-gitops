@@ -154,8 +154,8 @@ spec:
           gethomepage.dev/widget.url: http://jellyfin.media.svc.cluster.local:8096
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_JELLYFIN_TOKEN}}` }}"
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

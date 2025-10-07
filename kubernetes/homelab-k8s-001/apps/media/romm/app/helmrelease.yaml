@@ -205,8 +205,8 @@ spec:
           gethomepage.dev/widget.type: romm
           gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

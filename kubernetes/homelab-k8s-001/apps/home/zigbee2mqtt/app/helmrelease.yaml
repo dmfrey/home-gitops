@@ -138,8 +138,8 @@ spec:
           gethomepage.dev/icon: zigbee2mqtt.png
           gethomepage.dev/description: Zigbee2MQTT Controller for First Floor
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-envoy
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

@@ -65,8 +65,8 @@ spec:
           gethomepage.dev/icon: omni-tools.png
           gethomepage.dev/description: "Collection of powerful web-based tools"
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-envoy
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

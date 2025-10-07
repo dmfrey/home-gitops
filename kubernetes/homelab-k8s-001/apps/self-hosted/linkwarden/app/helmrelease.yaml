@@ -132,8 +132,8 @@ spec:
           gethomepage.dev/widget.url: "http://linkwarden.self-hosted.svc.cluster.local:3000"
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}` }}"
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

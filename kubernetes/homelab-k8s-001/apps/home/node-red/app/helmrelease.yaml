@@ -90,8 +90,8 @@ spec:
           gethomepage.dev/icon: node-red.png
           gethomepage.dev/description: Low-code programming for event-driven applications
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-envoy
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

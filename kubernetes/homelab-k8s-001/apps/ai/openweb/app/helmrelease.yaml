@@ -116,8 +116,8 @@ spec:
           gethomepage.dev/icon: ollama.png
           gethomepage.dev/description: AI Model Management & Chat
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
