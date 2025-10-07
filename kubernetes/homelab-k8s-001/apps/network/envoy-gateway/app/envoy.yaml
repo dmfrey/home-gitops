@@ -49,7 +49,7 @@ kind: Gateway
 metadata:
   name: envoy-external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.turbo.ac
+    external-dns.alpha.kubernetes.io/target: &hostname external.dmfrey.com
     gatus.home-operations.com/endpoint: |-
       client:
         dns-resolver: tcp://1.1.1.1:53
@@ -59,7 +59,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.69.126
+      lbipam.cilium.io/ips: 192.168.30.210
   listeners:
     - name: http
       protocol: HTTP
@@ -76,7 +76,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: turbo-ac-tls
+            name: dmfrey-com-tls
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
@@ -84,7 +84,7 @@ kind: Gateway
 metadata:
   name: envoy-internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname internal.turbo.ac
+    external-dns.alpha.kubernetes.io/target: &hostname internal.dmfrey.com
     gatus.home-operations.com/endpoint: |-
       group: internal
       guarded: true
@@ -96,7 +96,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.69.121
+      lbipam.cilium.io/ips: 192.168.30.211
   listeners:
     - name: http
       protocol: HTTP
@@ -113,7 +113,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: turbo-ac-tls
+            name: dmfrey-com-tls
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_clienttrafficpolicies.yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
