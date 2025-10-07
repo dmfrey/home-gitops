@@ -95,7 +95,7 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
-            url: "https://{{ .Release.Name }}.dmfrey.com/home"
+            url: "https://{{ .Release.Name }}.dmfrey.com/auth/login"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Tautulli
