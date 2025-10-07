@@ -83,6 +83,6 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
-          - name: external
-            namespace: network
+          - name: internal
+            namespace: kube-system
             sectionName: https
