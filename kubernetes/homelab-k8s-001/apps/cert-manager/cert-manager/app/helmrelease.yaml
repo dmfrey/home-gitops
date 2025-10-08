@@ -1,4 +1,19 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: cert-manager
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: v1.17.1
+  url: oci://ghcr.io/home-operations/charts-mirror/cert-manager
+  verify:
+    provider: cosign
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -23,18 +38,9 @@ spec:
       strategy: rollback
       retries: 3
 
+  valuesFrom:
+    - kind: ConfigMap
+      name: cert-manager-values
+
   driftDetection:
     mode: enabled
-
-  values:
-
-    crds:
-      enabled: true
-
-    dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
-    dns1RecursiveNameserversOnly: true
-
-    prometheus:
-      enabled: true
-      servicemonitor:
-        enabled: true
