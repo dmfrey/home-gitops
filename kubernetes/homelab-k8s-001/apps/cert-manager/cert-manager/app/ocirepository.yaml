@@ -11,4 +11,4 @@ spec:
     operation: copy
   ref:
     tag: v1.19.0
-  url: ci://quay.io/jetstack/charts/cert-manager
+  url: oci://quay.io/jetstack/charts/cert-manager
