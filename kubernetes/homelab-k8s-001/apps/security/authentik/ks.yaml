@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app authentik-database
-  namespace: &namespace security
+  name: authentik-database
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
@@ -20,19 +16,17 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: pg-authentik
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/database"
   postBuild:
     substitute:
-      APP: *app
+      APP: authentik-database
       DB: authentik
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -40,12 +34,8 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app authentik-kv
-  namespace: &namespace security
+  name: authentik-kv
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
@@ -55,18 +45,16 @@ spec:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: authentik-kv-cluster
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/kv"
   postBuild:
     substitute:
-      APP: *app
+      APP: authentik-kv
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -74,17 +62,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app authentik
-  namespace: &namespace security
+  name: authentik
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: authentik-database
-      namespace: *namespace
     - name: authentik-kv
-      namespace: *namespace
     - name: smtp-relay
       namespace: kube-system
     - name: grafana
@@ -93,43 +75,35 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: authentik
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   timeout: 5m
-  targetNamespace: *namespace
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app authentik-provision
-  namespace: &namespace security
+  name: authentik-provision
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: authentik
-      namespace: *namespace
     - name: plex
       namespace: media
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
   postBuild:
     substitute:
-      APP: *app
+      APP: authentik-provision
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
 
