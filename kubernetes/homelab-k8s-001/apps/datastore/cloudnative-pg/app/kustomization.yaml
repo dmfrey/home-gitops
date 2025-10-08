@@ -5,5 +5,6 @@ kind: Kustomization
 namespace: datastore
 resources:
   - ./helmrelease.yaml
+  - ./ocirepository.yaml
   - ./prometheusrule.yaml
 
