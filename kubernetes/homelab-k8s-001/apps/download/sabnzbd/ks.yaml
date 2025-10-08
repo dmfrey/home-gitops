@@ -4,20 +4,14 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app sabnzbd-common
-  namespace: &namespace download
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/common"
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -25,14 +19,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app sabnzbd-config
-  namespace: &namespace download
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: sabnzbd-common
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/config"
   postBuild:
@@ -40,12 +29,10 @@ spec:
       - kind: Secret
         name: sabnzbd-secret
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -53,28 +40,18 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app sabnzbd
-  namespace: &namespace download
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: sabnzbd-config
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
     - name: pod-gateway
       namespace: network
-  # healthChecks:
-  #   - apiVersion: helm.toolkit.fluxcd.io/v2
-  #     kind: HelmRelease
-  #     name: *app
-  #     namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/app"
   postBuild:
@@ -83,10 +60,8 @@ spec:
       VOLSYNC_CLAIM: sabnzbd-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
