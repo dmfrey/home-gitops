@@ -9,13 +9,17 @@ spec:
 
   interval: 1h
 
-  chart:
-    spec:
-      chart: rabbitmq-cluster-operator
-      version: 4.4.34
-      sourceRef:
-        kind: HelmRepository
-        name: bitnami
+  chartRef:
+    kind: OCIRepository
+    name: rabbitmq-cluster-operator
+
+  # chart:
+  #   spec:
+  #     chart: rabbitmq-cluster-operator
+  #     version: 4.4.34
+  #     sourceRef:
+  #       kind: HelmRepository
+  #       name: bitnami
 
   install:
     remediation:

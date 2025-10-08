@@ -1,11 +1,25 @@
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/helmrepository_v1.json
+# apiVersion: source.toolkit.fluxcd.io/v1
+# kind: HelmRepository
+# metadata:
+#   name: bitnami
+# spec:
+#   interval: 1h
+#   url: oci://registry-1.docker.io/bitnamicharts
+#   type: oci
+#   timeout: 3m
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/helmrepository_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
-  name: bitnami
+  name: rabbitmq-cluster-operator
 spec:
-  interval: 1h
-  url: oci://registry-1.docker.io/bitnamicharts
-  type: oci
-  timeout: 3m
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.4.34
+  url: oci://registry-1.docker.io/bitnamicharts/rabbitmq-cluster-operator
