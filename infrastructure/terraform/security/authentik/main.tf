@@ -16,7 +16,7 @@ terraform {
 }
 
 provider "onepassword" {
-  url                   = var.service_account_json != null ? "http://nas.internal:8080" : null
+  url                   = var.service_account_json != null ? "http://onepassword.external-secrets.svc.cluster.local" : null
   token                 = var.service_account_json
   service_account_token = var.onepassword_sa_token
 }
