@@ -4,21 +4,12 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dataflow-services
-  namespace: &namespace dataflow
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: rabbitmq-cluster-operator
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: rabbitmq.com/v1beta1
-      kind: RabbitmqCluster
-      name: rabbit-dataflow
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/services"
   postBuild:
@@ -30,7 +21,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: dataflow   # *namespace
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -38,11 +28,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dataflow-db
-  namespace: &namespace dataflow
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
@@ -50,11 +36,6 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-dataflow
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/dataflow-db"
   postBuild:
@@ -67,7 +48,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -75,11 +55,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app skipper-db
-  namespace: &namespace dataflow
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
@@ -87,11 +63,6 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-skipper
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/skipper-db"
   postBuild:
@@ -104,7 +75,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -112,35 +82,11 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dataflow
-  namespace: &namespace dataflow
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: dataflow-services
-      namespace: *namespace
     - name: dataflow-db
-      namespace: *namespace
     - name: skipper-db
-      namespace: *namespace
-  healthChecks:
-    # - apiVersion: helm.toolkit.fluxcd.io/v2
-    #   kind: HelmRelease
-    #   name: spring-cloud-dataflow
-    #   namespace: *namespace
-    # - apiVersion: apps/v1
-    #   kind: Deployment
-    #   name: spring-cloud-dataflow-prometheus-proxy
-    #   namespace: *namespace
-    # - apiVersion: apps/v1
-    #   kind: Deployment
-    #   name: spring-cloud-dataflow-server
-    #   namespace: *namespace
-    # - apiVersion: apps/v1
-    #   kind: Deployment
-    #   name: spring-cloud-dataflow-server
-    #   namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/dataflow/spring-cloud-dataflow/app"
   postBuild:
@@ -152,5 +98,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
