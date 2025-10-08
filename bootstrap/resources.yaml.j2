@@ -12,6 +12,7 @@ metadata:
   name: onepassword-secret
   namespace: external-secrets
 stringData:
+  1password-credentials.json: op://kubernetes/1password/OP_CREDENTIALS_JSON
   token: op://kubernetes/1password/OP_CONNECT_TOKEN
 ---
 apiVersion: v1
@@ -21,27 +22,6 @@ metadata:
   namespace: flux-system
 stringData:
   age.agekey: op://kubernetes/sops/SOPS_PRIVATE_KEY
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: dmfrey-com-tls
-  namespace: kube-system
-  annotations:
-    cert-manager.io/alt-names: '*.dmfrey.com,dmfrey.com'
-    cert-manager.io/certificate-name: dmfrey-com
-    cert-manager.io/common-name: dmfrey.com
-    cert-manager.io/ip-sans: ""
-    cert-manager.io/issuer-group: ""
-    cert-manager.io/issuer-kind: ClusterIssuer
-    cert-manager.io/issuer-name: letsencrypt-production
-    cert-manager.io/uri-sans: ""
-  labels:
-    controller.cert-manager.io/fao: "true"
-type: kubernetes.io/tls
-data:
-  tls.crt: op://kubernetes/dmfrey-com-tls/tls.crt
-  tls.key: op://kubernetes/dmfrey-com-tls/tls.key
 ---
 apiVersion: v1
 kind: Secret
