@@ -57,6 +57,9 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - changed-files
+    permissions:
+      contents: read
+      packages: write
     strategy:
       matrix: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
     steps:
