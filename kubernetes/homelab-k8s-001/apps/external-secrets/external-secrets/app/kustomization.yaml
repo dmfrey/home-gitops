@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./clustersecretstore.yaml
   - ./helmrelease.yaml
+  - ./ocirepository.yaml
   - ./secret-onepassword-secret.sops.yaml
 
 configMapGenerator:
