@@ -4,20 +4,11 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app tofu-controller
-  namespace: &namespace flux-system
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/flux-system/tofu-controller/app
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: *namespace
   timeout: 5m
