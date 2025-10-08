@@ -8,10 +8,10 @@ resources:
   - ./ocirepository.yaml
   - ./secret-onepassword-secret.sops.yaml
 
-configMapGenerator:
-  - name: external-secrets-values
-    files:
-      - values.yaml=./helm/values.yaml
+# configMapGenerator:
+#   - name: external-secrets-values
+#     files:
+#       - values.yaml=./helm/values.yaml
 
-configurations:
-  - ./helm/kustomizeconfig.yaml
+# configurations:
+#   - ./helm/kustomizeconfig.yaml
