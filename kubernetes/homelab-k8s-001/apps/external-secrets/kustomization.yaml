@@ -12,3 +12,4 @@ replacements:
 
 resources:
   - ./external-secrets/ks.yaml
+  - ./onepassword/ks.yaml
