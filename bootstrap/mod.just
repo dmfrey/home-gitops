@@ -3,7 +3,7 @@ set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 bootstrap_dir := justfile_dir() + '/bootstrap'
-kubernetes_dir := justfile_dir() + '/kubernetes'
+kubernetes_dir := justfile_dir() + '/kubernetes/homelab-k8s-001'
 controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 nodes := `talosctl config info -o yaml | yq -e '.nodes | join (" ")'`
 
@@ -56,7 +56,7 @@ wait:
 [doc('Apply Kubernetes namespaces')]
 namespaces:
     just log info "Running stage..." "stage" "$0"
-    find "{{ kubernetes_dir }}/homelab-k8s-001/apps" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | while IFS= read -r ns; do \
+    find "{{ kubernetes_dir }}/apps" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | while IFS= read -r ns; do \
         if ! kubectl create namespace "$ns" --dry-run=client -o yaml | kubectl apply --server-side --field-manager flux-client-side-apply -f -; then \
             just log fatal "Failed to apply namespace" "stage" "$0" "namespace" "$ns"; \
         fi; \
