@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app blinko-db
-  namespace: &namespace self-hosted
+  name: blinko-db
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
@@ -18,12 +14,11 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: pg-blinko
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/blinko/blinko-db"
   postBuild:
     substitute:
-      APP: *app
+      APP: blinko-db
       DB: blinko
   prune: true
   retryInterval: 2m
@@ -31,7 +26,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
 ---
@@ -39,18 +33,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app blinko
-  namespace: &namespace self-hosted
+  name: blinko
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: blinko-db
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -59,7 +48,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/blinko/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: blinko
       GATUS_SUBDOMAIN: notes
       VOLSYNC_CLAIM: blinko-data
       VOLSYNC_CAPACITY: 10Gi
@@ -68,6 +57,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
