@@ -12,10 +12,6 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-authentik
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/database"
   postBuild:
