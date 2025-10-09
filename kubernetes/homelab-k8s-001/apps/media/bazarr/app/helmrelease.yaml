@@ -1,18 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: bazarr
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 4.3.0
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
----
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -188,8 +174,9 @@ spec:
 
     route:
       *app :
-        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
+          # gatus.home-operations.com/endpoint: |-
+          #   conditions: ["[STATUS] == 200"]
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
           gethomepage.dev/name: Bazarr
@@ -198,14 +185,12 @@ spec:
           gethomepage.dev/widget.type: bazarr
           gethomepage.dev/widget.url: http://bazarr.media.svc.cluster.local:6767
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_BAZARR_TOKEN}}` }}"
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-internal
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
       add-ons:
