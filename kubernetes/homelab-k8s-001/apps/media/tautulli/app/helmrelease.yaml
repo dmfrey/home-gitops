@@ -1,18 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: tautulli
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 4.3.0
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
----
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -93,8 +79,6 @@ spec:
     route:
       *app :
         annotations:
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 401"]
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Tautulli
