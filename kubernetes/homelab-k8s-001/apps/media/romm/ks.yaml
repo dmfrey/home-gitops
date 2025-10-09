@@ -74,20 +74,14 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app romm
+  name: romm
   namespace: &namespace media
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: romm-db
-      namespace: *namespace
     - name: romm-kv
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -96,7 +90,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/media/romm/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: romm
       VOLSYNC_CLAIM: romm-data-1
       VOLSYNC_CAPACITY: 5Gi
   prune: true
