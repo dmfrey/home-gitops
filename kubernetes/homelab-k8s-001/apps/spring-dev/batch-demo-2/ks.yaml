@@ -12,11 +12,6 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-batch-demo-2
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/spring-dev/batch-demo-2/batch-demo-2-db"
   postBuild:
@@ -28,7 +23,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
 ---
