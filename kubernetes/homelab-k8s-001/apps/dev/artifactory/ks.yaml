@@ -33,7 +33,6 @@ metadata:
   name: &app artifactory
 spec:
   components:
-    # - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: artifactory-db
