@@ -51,7 +51,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app openweb
+  name: openweb
 spec:
   components:
     - ../../../../components/volsync
@@ -66,10 +66,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/ai/openweb/app"
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: *app
-      GATUS_PATH: /health
-      VOLSYNC_CLAIM: *app
+      VOLSYNC_CLAIM: openweb
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   retryInterval: 2m
