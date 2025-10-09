@@ -64,16 +64,16 @@ spec:
             #       failureThreshold: 30
             #       periodSeconds: 10
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
             resources:
               requests:
                 cpu: 100m
               limits:
                 memory: 8Gi
-
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
       securityContext:
@@ -84,19 +84,17 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      app:
-        forceRename: "{{ .Release.Name }}"
-        primary: true
-        ports:
-          http:
-            port: *port
-      bittorrent:
+      *app :
+        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.30.60 #, ::ffff:192.168.30.60
-          externalTrafficPolicy: Local
         ports:
-          bittorrent-tcp:
+          http:
+            primary: true
+            port: *port
+          bittorrent:
+            enabled: true
             port: *torrentPort
             protocol: TCP
 
@@ -111,25 +109,12 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - name: *app
                 port: *port
 
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-
-      incomplete:
-        type: custom
-        volumeSpec:
-          ephemeral:
-            volumeClaimTemplate:
-              spec:
-                accessModes: ["ReadWriteOnce"]
-                resources:
-                  requests:
-                    storage: 1Mi # Ignored
-                storageClassName: openebs-hostpath
-                volumeMode: Filesystem
 
       media:
         type: nfs
@@ -139,18 +124,5 @@ spec:
           - path: /media/downloads/qbittorrent
             subPath: downloads/qbittorrent
 
-      qbrr:
-        type: image
-        image: ghcr.io/buroa/qbrr:0.1.1@sha256:fe4a1d100ba896999253a5122d9c77cc4920779d618c23f765458cb6ec7383ca
-        globalMounts:
-          - readOnly: true
-
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          qbittorrent:
-            app:
-              - path: /config/qBittorrent/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
