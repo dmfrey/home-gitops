@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app homepage
+  name: homepage
 
 spec:
 
@@ -26,15 +26,14 @@ spec:
   values:
 
     controllers:
-      *app :
-        replicas: 1
+      homepage:
         strategy: RollingUpdate
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/gethomepage/homepage
               tag: v1.5.0
@@ -55,7 +54,7 @@ spec:
                 memory: 2G
 
         serviceAccount:
-          identifier: *app
+          identifier: homepage
 
     # defaultPodOptions:
     #   securityContext:
@@ -67,14 +66,13 @@ spec:
     #     seccompProfile: { type: RuntimeDefault }
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
             port: &port 3000
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -84,10 +82,6 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
 
@@ -109,4 +103,4 @@ spec:
             path: /app/config/widgets.yaml
 
     serviceAccount:
-      *app : {}
+      homepage: {}
