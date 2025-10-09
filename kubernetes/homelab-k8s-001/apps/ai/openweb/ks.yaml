@@ -54,7 +54,6 @@ metadata:
   name: &app openweb
 spec:
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: openweb-db
