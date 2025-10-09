@@ -25,9 +25,6 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  annotations:
-    gatus.home-operations.com/endpoint: |-
-      conditions: ["[STATUS] == 200"]
   labels:
     app.kubernetes.io/instance: &app unifi
     app.kubernetes.io/name: *app
