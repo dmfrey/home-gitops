@@ -81,13 +81,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: pinepods-db
-      namespace: *namespace
     - name: pinepods-kv
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -96,8 +93,6 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/media/pinepods/app"
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: podcasts
       VOLSYNC_CLAIM: pinepods-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true

@@ -1,18 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: pinepods
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 4.3.0
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
----
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -135,8 +121,10 @@ spec:
 
     route:
       *app :
-        hostnames: ["podcasts.dmfrey.com"]
         annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+            url: "https://podcasts.dmfrey.com"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Podcasts
           gethomepage.dev/name: PinePods
@@ -144,14 +132,12 @@ spec:
           gethomepage.dev/description: Podcast Aggregator
           gethomepage.dev/widget.type: pinepods
           gethomepage.dev/widget.url: http://pinepods.media.svc.cluster.local:8080
+        hostnames:
+          - podcasts.dmfrey.com
         parentRefs:
           - name: envoy-external
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
       config:
