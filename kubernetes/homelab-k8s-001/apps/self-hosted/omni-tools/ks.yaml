@@ -3,11 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app omni-tools
+  name: omni-tools
 spec:
-  components: []
-    # - ../../../../components/gatus/guarded
-  dependsOn: []
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/omni-tools/app"
   prune: true

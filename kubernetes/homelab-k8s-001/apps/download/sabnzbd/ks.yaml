@@ -42,7 +42,6 @@ metadata:
   name: &app sabnzbd
 spec:
   components:
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: sabnzbd-config

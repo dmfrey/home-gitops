@@ -34,7 +34,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: zigbee2mqtt-common
@@ -75,7 +74,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: zigbee2mqtt-common

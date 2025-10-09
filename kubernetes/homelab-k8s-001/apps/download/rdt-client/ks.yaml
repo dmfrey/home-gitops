@@ -6,7 +6,6 @@ metadata:
   name: &app rdt-client
 spec:
   components:
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster

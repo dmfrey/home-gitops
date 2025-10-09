@@ -6,7 +6,6 @@ metadata:
   name: &app prowlarr
 spec:
   components:
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: pod-gateway
