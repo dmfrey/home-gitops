@@ -7,6 +7,9 @@ metadata:
   annotations:
     gatus.home-operations.com/endpoint: |-
       conditions: ["[STATUS] == 404"]
+      alerts:
+        - type: pushover
+
 spec:
   hostnames:
     - flux-webhook.dmfrey.com
