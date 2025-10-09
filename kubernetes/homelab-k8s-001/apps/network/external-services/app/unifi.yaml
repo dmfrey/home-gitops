@@ -39,7 +39,7 @@ spec:
   parentRefs:
   - kind: Gateway
     name: envoy-internal
-    namespace: kube-system
+    namespace: network
   rules:
   - backendRefs:
     - kind: Service
