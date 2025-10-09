@@ -1,5 +1,6 @@
 ---
-debug: true
+# debug: true
+logLevel: debug
 
 alerting:
   pushover:
