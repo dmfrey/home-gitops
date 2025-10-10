@@ -1,6 +1,7 @@
 
 locals {
   oauth_apps = [
+    "gatus",
     "grafana",
     "blinko",
     "jellyfin",
@@ -23,6 +24,14 @@ module "onepassword_application" {
 # Step 2: Parse the secrets using regex to extract client_id and client_secret
 locals {
   applications = {
+    gatus = {
+      client_id     = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "monitoring"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/gatus.svb"
+      redirect_uri  = "https://status.${var.cluster_domain}/authorization-code/callback"
+      launch_url    = "https://status.${var.cluster_domain}/"
+    },
     grafana = {
       client_id     = module.onepassword_application["grafana"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["grafana"].fields["AUTHENTIK_CLIENT_SECRET"]
