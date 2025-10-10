@@ -35,7 +35,6 @@ metadata:
   name: linkwarden
 spec:
   components:
-    - ../../../../components/gatus/external
     - ../../../../components/volsync
   dependsOn:
     - name: linkwarden-db
@@ -48,7 +47,6 @@ spec:
   postBuild:
     substitute:
       APP: linkwarden
-      GATUS_SUBDOMAIN: bookmarks
       VOLSYNC_CLAIM: linkwarden-data
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi

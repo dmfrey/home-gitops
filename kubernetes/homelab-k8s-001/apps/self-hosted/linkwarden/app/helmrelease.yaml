@@ -106,9 +106,10 @@ spec:
 
     route:
       *app :
-        hostnames:
-          - bookmarks.dmfrey.com
         annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+            url: "https://bookmarks.dmfrey.com"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Tools
           gethomepage.dev/name: Linkwarden Bookmarks
@@ -117,6 +118,8 @@ spec:
           gethomepage.dev/widget.type: linkwarden
           gethomepage.dev/widget.url: "http://linkwarden.self-hosted.svc.cluster.local:3000"
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}` }}"
+        hostnames:
+          - bookmarks.dmfrey.com
         parentRefs:
           - name: envoy-external
             namespace: network
