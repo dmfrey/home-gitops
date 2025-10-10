@@ -39,6 +39,7 @@ spec:
 
             args:
               - --auto-httproute
+              - --auto-service
               - --enable-httproute
               - --enable-service
 
