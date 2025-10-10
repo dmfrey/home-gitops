@@ -253,6 +253,10 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
       code:
         hostnames:
           - hass-code.dmfrey.com
