@@ -1,17 +1,4 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: grafana
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 10.0.0
-  url: oci://ghcr.io/grafana/helm-charts/grafana
----
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -762,8 +749,9 @@ spec:
     route:
       main:
         enabled: true
-        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: grafana.png
           gethomepage.dev/name: Grafana
@@ -773,7 +761,8 @@ spec:
           gethomepage.dev/widget.url: http://grafana.observability.svc.cluster.local:3000
           gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
           gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
-
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-external
             namespace: network
