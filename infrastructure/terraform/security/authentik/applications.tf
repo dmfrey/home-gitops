@@ -28,7 +28,7 @@ locals {
       client_id     = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "monitoring"
-      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/gatus.svb"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/gatus.svg"
       redirect_uri  = "https://status.${var.cluster_domain}/authorization-code/callback"
       launch_url    = "https://status.${var.cluster_domain}/"
     },
