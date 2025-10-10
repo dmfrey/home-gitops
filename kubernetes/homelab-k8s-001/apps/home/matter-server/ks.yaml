@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app matter-server
-  namespace: &namespace home
+  name: matter-server
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -20,7 +16,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/home/matter-server/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: matter-server
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: matter-server-data
@@ -31,6 +27,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

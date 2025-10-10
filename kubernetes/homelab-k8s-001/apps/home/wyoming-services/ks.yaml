@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app piper
-  namespace: &namespace home
+  name: piper
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -20,7 +16,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/piper"
   postBuild:
     substitute:
-      APP: *app
+      APP: piper
       VOLSYNC_CLAIM: piper-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
@@ -28,7 +24,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -36,23 +31,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app openwakeword
-  namespace: &namespace home
+  name: openwakeword
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/openwakeword"
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -60,12 +47,8 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app whisper
-  namespace: &namespace home
+  name: whisper
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -77,7 +60,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/whisper"
   postBuild:
     substitute:
-      APP: *app
+      APP: whisper
       VOLSYNC_CLAIM: whisper-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
@@ -85,6 +68,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

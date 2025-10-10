@@ -3,17 +3,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app frigate
-  namespace: &namespace home
+  name: frigate
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
     - name: mosquitto
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -22,14 +17,13 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/home/frigate/app"
   postBuild:
     substitute:
-      APP: *app
-      VOLSYNC_CLAIM: *app
+      APP: frigate
+      VOLSYNC_CLAIM: frigate
       VOLSYNC_CAPACITY: 25Gi
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

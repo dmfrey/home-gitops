@@ -3,20 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app esphome
-  namespace: &namespace home
+  name: esphome
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
     - name: home-assistant
-      namespace: *namespace
     - name: mosquitto
-      namespace: *namespace
-    # - name: multus-config
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -25,7 +18,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/home/esphome/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: esphome
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: esphome-config-1
@@ -35,6 +28,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app mosquitto
-  namespace: &namespace home
+  name: mosquitto
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -20,7 +16,7 @@ spec:
   path: ./kubernetes/homelab-k8s-001/apps/home/mosquitto/app
   postBuild:
     substitute:
-      APP: *app
+      APP: mosquitto
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: mosquitto-data
@@ -30,5 +26,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
