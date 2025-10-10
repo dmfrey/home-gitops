@@ -3,21 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cilium
-  namespace: &namespace kube-system
+  name: cilium
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/cilium/app"
   prune: true # let's not make happy accidents
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
 ---
@@ -25,23 +19,17 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cilium-gateway
-  namespace: &namespace kube-system
+  name: cilium-gateway
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/cilium/gateway"
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 15m
   wait: true

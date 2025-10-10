@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app node-feature-discovery
-  namespace: &namespace kube-system
+  name: node-feature-discovery
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/node-feature-discovery/app"
   prune: true
@@ -16,7 +12,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -24,15 +19,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app node-feature-discovery-rules
-  namespace: &namespace kube-system
+  name: node-feature-discovery-rules
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: node-feature-discovery
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/node-feature-discovery/rules"
   prune: true
@@ -40,6 +30,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
