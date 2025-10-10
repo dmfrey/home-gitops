@@ -5,6 +5,7 @@ namespace: home
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./ocirepository.yaml
 
 configMapGenerator:
   - name: frigate-configmap
