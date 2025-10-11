@@ -20,15 +20,14 @@ spec:
   postBuild:
     substitute:
       APP: plex
-      GATUS_PATH: /identity
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
+  wait: false
