@@ -74,9 +74,9 @@ spec:
               NEXT_PUBLIC_OLLAMA_ENDPOINT_URL: http://ollama.ai.svc.cluster.local:11434
               OLLAMA_MODEL: llama3.2
 
-              NEXT_PUBLIC_EMAIL_PROVIDER: true
-              EMAIL_FROM: bookmarks@dmfrey.com
-              EMAIL_SERVER: smtp://smtp-relay.kube-system.svc.cluster.local:2525
+              # NEXT_PUBLIC_EMAIL_PROVIDER: true
+              # EMAIL_FROM: bookmarks@dmfrey.com
+              # EMAIL_SERVER: smtp://smtp-relay.kube-system.svc.cluster.local:2525
 
             envFrom:
               - secretRef:
