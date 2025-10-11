@@ -6,7 +6,7 @@ resources:
   - ./alertmanagerconfig.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  # - ./ocirepository.yaml
+  - ./ocirepository.yaml
   - ./prometheusrule.yaml
 
 # configMapGenerator:
