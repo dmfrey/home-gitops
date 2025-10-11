@@ -93,16 +93,21 @@ spec:
                 enabled: false
 
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: 500m
                 memory: 4Gi
-                gpu.intel.com/i915: 1
               limits:
                 memory: 16Gi
-                gpu.intel.com/i915: 1
 
             securityContext:
               privileged: true
+
+    defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: frigate
 
     service:
       *app :
