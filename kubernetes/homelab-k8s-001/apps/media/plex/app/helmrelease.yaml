@@ -202,18 +202,18 @@ spec:
         server: nas.internal
         path: /media
 
-      transcode:
-        type: custom
-        volumeSpec:
-          ephemeral:
-            volumeClaimTemplate:
-              spec:
-                storageClassName: ceph-block
-                accessModes:
-                  - ReadWriteOnce
-                resources:
-                  requests:
-                    storage: 500Gi
+      # transcode:
+      #   type: custom
+      #   volumeSpec:
+      #     ephemeral:
+      #       volumeClaimTemplate:
+      #         spec:
+      #           storageClassName: ceph-block
+      #           accessModes:
+      #             - ReadWriteOnce
+      #           resources:
+      #             requests:
+      #               storage: 500Gi
 
       tmp:
         type: emptyDir
