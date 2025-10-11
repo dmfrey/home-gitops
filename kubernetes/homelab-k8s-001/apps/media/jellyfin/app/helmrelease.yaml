@@ -76,12 +76,12 @@ spec:
                 enabled: false
 
             resources:
+              claims:
+                - name: gpu
               requests:
-                gpu.intel.com/i915: 1
                 cpu: 1
                 memory: 4Gi
               limits:
-                gpu.intel.com/i915: 1
                 memory: 8Gi
 
             securityContext:
@@ -111,6 +111,9 @@ spec:
           #     capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: plex
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
