@@ -13,29 +13,29 @@ spec:
     kind: OCIRepository
     name: plex
 
-  maxHistory: 2
+  # maxHistory: 2
 
-  install:
-    createNamespace: true
-    remediation:
-      retries: -1
+  # install:
+  #   createNamespace: true
+  #   remediation:
+  #     retries: -1
 
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  # upgrade:
+  #   cleanupOnFail: true
+  #   remediation:
+  #     retries: 3
 
-  uninstall:
-    keepHistory: false
+  # uninstall:
+  #   keepHistory: false
 
-  driftDetection:
-    mode: enabled
+  # driftDetection:
+  #   mode: enabled
 
   values:
 
     controllers:
 
-      *app :
+      plex:
         type: statefulset
 
         annotations:
@@ -43,7 +43,7 @@ spec:
           backup.home.arpa/enabled: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/home-operations/plex
               tag: 1.42.2.10156@sha256:9ad8a3506e1d8ebda873a668603c1a2c10e6887969564561be669efd65ae8871
@@ -72,7 +72,7 @@ spec:
                 spec:
                   httpGet:
                     path: /identity
-                    port: 32400
+                    port: &port 32400
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -91,7 +91,7 @@ spec:
                 cpu: 100m # 500m
                 # memory: 2Gi
               limits:
-                memory: 16Gi
+                memory: 8Gi
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -112,16 +112,16 @@ spec:
         # seccompProfile: { type: RuntimeDefault }
 
     service:
-      *app :
-        controller: *app
+      app:
         type: LoadBalancer
         annotations:
           # external-dns.alpha.kubernetes.io/hostname: &host plex.dmfrey.com
           lbipam.cilium.io/ips: 192.168.30.227 #, ::ffff:192.168.30.227
+        externalTrafficPolicy: Local
         ports:
           http:
-            port: &port 32400
-            primary: true
+            port: *port
+            # primary: true
           # dnla-tcp:
           #   port: 32469
           #   protocol: TCP
@@ -165,26 +165,26 @@ spec:
             namespace: network
             sectionName: https
         rules:
-          - backendRefs:
-              - name: *app
+          - # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
+            backendRefs:
+              - identifier: app
                 port: *port
             filters:
               - type: RequestHeaderModifier
                 requestHeaderModifier:
-                  remove: ["Range"]
+                  remove:
+                    - Range
             matches:
               - path:
                   type: PathPrefix
                   value: /library/streams
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
 
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        globalMounts:
-          - path: /config
 
       # Separate PVC for cache to avoid backing up cache files
       cache:
