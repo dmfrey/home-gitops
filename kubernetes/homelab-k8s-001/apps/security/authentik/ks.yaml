@@ -59,8 +59,8 @@ spec:
   dependsOn:
     - name: authentik-database
     - name: authentik-kv
-    - name: smtp-relay
-      namespace: kube-system
+    # - name: smtp-relay
+    #   namespace: kube-system
     - name: grafana
       namespace: observability
   interval: 1h
