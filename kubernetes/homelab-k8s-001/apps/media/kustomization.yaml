@@ -14,7 +14,7 @@ resources:
   - ./music-assistant/ks.yaml
   - ./overseerr/ks.yaml
   - ./pinepods/ks.yaml
-  - ./plex/ks.yaml
+  # - ./plex/ks.yaml
   - ./plex-meta-manager/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
