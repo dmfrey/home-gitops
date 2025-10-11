@@ -132,7 +132,8 @@ machine:
     modules:
       - name: nbd
   nodeLabels:
-    intel.feature.node.kubernetes.io/gpu: "true"
+    node.kubernetes.io/gpu: "true"
+    # intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: dmf
     topology.kubernetes.io/zone: dmf-u
 cluster:

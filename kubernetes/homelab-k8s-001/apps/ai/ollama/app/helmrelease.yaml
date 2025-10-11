@@ -75,11 +75,12 @@ spec:
               # IPEX_LLM_NUM_CTX: 16384
 
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: 200m
               limits:
                 memory: 24Gi
-                gpu.intel.com/i915: "1"
 
             securityContext:
               privileged: true
@@ -95,6 +96,11 @@ spec:
                         operator: In
                         values:
                           - "{{ .Release.Name }}"
+
+    defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: ollama
 
     service:
       *app :
