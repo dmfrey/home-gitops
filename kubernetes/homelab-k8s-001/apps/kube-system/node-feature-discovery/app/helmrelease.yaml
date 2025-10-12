@@ -9,13 +9,9 @@ spec:
 
   interval: 1h
 
-  chart:
-    spec:
-      chart: node-feature-discovery
-      version: 0.18.1
-      sourceRef:
-        kind: HelmRepository
-        name: kubernetes-sigs-nfd
+  chartRef:
+    kind: OCIRepository
+    name: kubernetes-sigs-nfd
 
   maxHistory: 2
 
