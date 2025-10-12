@@ -91,10 +91,11 @@ spec:
                 containerPort: &port 8040
 
             resources:
-              # requests:
-                # cpu: 10m
+              requests:
+                cpu: 10m
+                memory: 128Mi
               limits:
-                memory: 1Gi
+                memory: 512Gi
 
             # securityContext:
               # allowPrivilegeEscalation: false
