@@ -111,7 +111,8 @@ spec:
 
       resources:
         requests:
-          cpu: 200m
+          cpu: 50m
+          memory: 512Mi
         limits:
           memory: 1024Mi
 
@@ -132,9 +133,10 @@ spec:
 
       resources:
         requests:
-          cpu: 100m
+          cpu: 50m
+          memory: 384Mi
         limits:
-          memory: 1024Mi
+          memory: 512Mi
 
       volumes: *postgresCredsVolume
       volumeMounts: *postgresCredsVolumeMounts
