@@ -79,10 +79,10 @@ spec:
               claims:
                 - name: gpu
               requests:
-                cpu: 1
-                memory: 4Gi
+                memory: 1Gi
               limits:
-                memory: 8Gi
+                cpu: 1
+                memory: 2Gi
 
             securityContext:
               allowPrivilegeEscalation: false
@@ -185,24 +185,24 @@ spec:
             *app :
               - path: /media
 
-      # transcode:
-      #   enabled: true
-      #   type: custom
-      #   volumeSpec:
-      #     ephemeral:
-      #       volumeClaimTemplate:
-      #         spec:
-      #           storageClassName: ceph-block
-      #           accessModes:
-      #             - ReadWriteOnce
-      #           resources:
-      #             requests:
-      #               storage: 500Gi
-      #   advancedMounts:
-      #     *app :
-      #       *app :
-      #         - path: /config/transcodes
-      #           readOnly: false
+      transcode:
+        enabled: true
+        type: custom
+        volumeSpec:
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                storageClassName: ceph-block
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 500Gi
+        advancedMounts:
+          *app :
+            *app :
+              - path: /config/transcodes
+                readOnly: false
 
       tmp:
         type: emptyDir
