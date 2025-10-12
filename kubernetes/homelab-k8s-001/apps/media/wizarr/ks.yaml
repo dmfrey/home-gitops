@@ -4,7 +4,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: wizarr
-  namespace: &namespace media
 spec:
   components:
     - ../../../../components/volsync
@@ -18,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: wizarr
-      GATUS_SUBDOMAIN: join
       VOLSYNC_CLAIM: wizarr-data
       VOLSYNC_CAPACITY: 1Gi
   prune: true
@@ -26,6 +24,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

@@ -3,32 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app soularr
-  namespace: &namespace media
+  name: soularr
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  # components:
-  #   - ../../../../components/volsync
-  # dependsOn:
-  #   - name: rook-ceph-cluster
-  #     namespace: rook-ceph
-  #   - name: volsync
-  #     namespace: volsync-system
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/soularr/app"
-  # postBuild:
-  #   substitute:
-  #     APP: *app
-  #     VOLSYNC_CLAIM: sonarr-config
-  #     VOLSYNC_CAPACITY: 1Gi
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

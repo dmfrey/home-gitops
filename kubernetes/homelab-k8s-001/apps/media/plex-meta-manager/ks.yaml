@@ -3,32 +3,24 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app plex-meta-manager
-  namespace: &namespace media
+  name: plex-meta-manager
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
+    - name: plex
+    - name: radarr
+    - name: sonarr
+    - name: tautulli
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
-    - name: plex
-      namespace: *namespace
-    - name: tautulli
-      namespace: *namespace
-    - name: radarr
-      namespace: *namespace
-    - name: sonarr
-      namespace: *namespace
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/media/plex-meta-manager/app
   postBuild:
     substitute:
-      APP: *app
+      APP: plex-meta-manager
       VOLSYNC_CLAIM: pmm-config
       VOLSYNC_CAPACITY: 5Gi
   prune: true
@@ -36,6 +28,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

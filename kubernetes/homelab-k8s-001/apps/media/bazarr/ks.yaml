@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app bazarr-db
-  namespace: &namespace media
+  name: bazarr-db
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
@@ -16,23 +12,17 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-bazarr
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/bazarr/bazarr-db"
   postBuild:
     substitute:
-      APP: *app
+      APP: bazarr-db
       DB: bazarr
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
 ---
@@ -40,17 +30,12 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app bazarr
-  namespace: &namespace media
+  name: bazarr
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
     - name: bazarr-db
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -59,15 +44,13 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/media/bazarr/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: bazarr
       VOLSYNC_CLAIM: bazarr-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false

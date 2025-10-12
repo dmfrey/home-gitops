@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app lidarr
-  namespace: &namespace media
+  name: lidarr
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -20,16 +16,14 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: lidarr
       VOLSYNC_CLAIM: lidarr-config
       VOLSYNC_CAPACITY: 5Gi
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -38,21 +32,17 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: lidarr-provision
-  namespace: &namespace media
 spec:
   dependsOn:
+    - name: lidarr
     - name: tofu-controller
       namespace: flux-system
-    - name: lidarr
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/lidarr/provision"
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true

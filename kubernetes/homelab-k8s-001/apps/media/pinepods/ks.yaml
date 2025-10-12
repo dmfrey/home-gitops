@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pinepods-db
-  namespace: &namespace media
+  name: pinepods-db
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
@@ -16,23 +12,17 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-pinepods
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/pinepods/pinepods-db"
   postBuild:
     substitute:
-      APP: *app
+      APP: pinepods-db
       DB: pinepods
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
 ---
@@ -40,33 +30,20 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pinepods-kv
-  namespace: &namespace media
+  name: pinepods-kv
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: dragonflydb.io/v1alpha1
-      kind: Dragonfly
-      name: pinepods-kv-cluster
-      namespace: *namespace
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/pinepods/pinepods-kv"
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -75,7 +52,6 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: pinepods
-  namespace: &namespace media
 spec:
   components:
     - ../../../../components/volsync
@@ -98,6 +74,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true

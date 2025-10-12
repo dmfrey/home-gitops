@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app radarr
-  namespace: &namespace media
+  name: radarr
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -20,7 +16,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/media/radarr/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: radarr
       VOLSYNC_CLAIM: radarr-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
@@ -29,7 +25,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -37,15 +32,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app radarr-provision
-  namespace: &namespace media
+  name: radarr-provision
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: radarr
-      namespace: *namespace
     - name: tofu-controller
       namespace: flux-system
   interval: 1h
@@ -56,6 +46,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
