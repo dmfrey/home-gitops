@@ -71,13 +71,12 @@ spec:
             #   readiness:
             #     enabled: true
 
-            # resources:
-            #   requests:
-            #     cpu: 500m
-            #     memory: 1Gi
-            #   limits:
-            #     cpu: 1000m
-            #     memory: 2Gi
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+              limits:
+                memory: 1024Mi
 
             securityContext:
               allowPrivilegeEscalation: false
