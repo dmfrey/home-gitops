@@ -3,14 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app flux-instance
+  name: flux-instance
 spec:
+  dependsOn:
+    - name: flux-operator
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/flux-system/flux-instance/app
-  prune: true # let's not make happy accidents
+  prune: false # let's not make happy accidents
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  timeout: 5m
   wait: false
