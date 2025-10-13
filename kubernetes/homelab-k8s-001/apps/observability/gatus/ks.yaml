@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app gatus-services
-  namespace: &namespace observability
+  name: gatus-services
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
@@ -16,23 +12,17 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-gatus
-      namespace: *namespace
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/gatus/services
   postBuild:
     substitute:
-      APP: *app
+      APP: gatus-services
       DB: gatus
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
 ---
@@ -40,28 +30,16 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app gatus
-  namespace: &namespace observability
+  name: gatus
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: gatus-services
-      namespace: *namespace
-    # - name: authentik
-    #   namespace: security
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/gatus/app
-  postBuild:
-    substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: status
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   timeout: 5m
   wait: false
