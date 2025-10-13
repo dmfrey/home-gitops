@@ -23,9 +23,7 @@ spec:
       strategy: rollback
       retries: 3
 
-  # driftDetection:
-  #   mode: enabled
+  values:
 
-  valuesFrom:
-    - kind: ConfigMap
-      name: flux-operator-values
+    serviceMonitor:
+      create: true
