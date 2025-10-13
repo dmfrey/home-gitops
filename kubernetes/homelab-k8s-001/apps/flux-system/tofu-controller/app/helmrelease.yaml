@@ -4,13 +4,14 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &name tofu-controller
-spec:
 
-  interval: 1h
+spec:
 
   chartRef:
     kind: OCIRepository
     name: tofu-controller
+
+  interval: 1h
 
   values:
 
