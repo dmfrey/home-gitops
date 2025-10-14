@@ -5,7 +5,7 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 
 mod bootstrap "bootstrap"
 mod kube "kubernetes/homelab-k8s-001"
-# mod talos "talos"
+mod talos "talos"
 
 [private]
 default:
