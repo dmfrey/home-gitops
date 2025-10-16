@@ -10,5 +10,5 @@ components:
 replacements:
   - path: ../../components/replacements/ks.yaml
 
-resources:
-  - ./openebs/ks.yaml
+resources: []
+  # - ./openebs/ks.yaml
