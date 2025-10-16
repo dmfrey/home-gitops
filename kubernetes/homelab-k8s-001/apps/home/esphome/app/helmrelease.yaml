@@ -3,33 +3,19 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app esphome
+  name: esphome
 spec:
-
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: esphome
 
-  maxHistory: 2
-
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
+  interval: 1h
 
   values:
 
     controllers:
-      *app :
+      esphome:
         type: statefulset
 
         annotations:
@@ -52,7 +38,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/esphome/esphome
               tag: 2025.10.0@sha256:5255a3a2b70ec6028444e30632dbe9b0661279bdfcfee79ffcc2bd2c8d25bdf0
@@ -84,17 +70,16 @@ spec:
                   - ALL
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
             port: &port 6052
             primary: true
           api:
-            port: &apiPort 6053
+            port: 6053
 
     route:
-      *app :
+      app:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
@@ -113,10 +98,6 @@ spec:
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config
 
       secrets:
         type: secret
