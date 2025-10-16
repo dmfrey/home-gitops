@@ -1,0 +1,28 @@
+---
+customization:
+  extraKernelArgs:
+    - -init_on_alloc                      # Less security, faster puter
+    - -init_on_free                       # Less security, faster puter
+    - -selinux                            # Less security, faster puter
+    - net.ifnames=0
+    - i915.enable_guc=3                   # Raptor Lake CPU / iGPU
+    - apparmor=0                          # Less security, faster puter
+    - init_on_alloc=0                     # Less security, faster puter
+    - init_on_free=0                      # Less security, faster puter
+    - intel_iommu=on                      # PCI Passthrough
+    - iommu=pt                            # PCI Passthrough
+    - mitigations=off                     # Less security, faster puter
+    - security=none                       # Less security, faster puter
+    - sysctl.kernel.kexec_load_disabled=1 # Raptor Lake CPU / iGPU
+    - talos.auditd.disabled=1             # Less security, faster puter
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/gasket-driver          # M.2 Google Coral accelerators
+      - siderolabs/i915                   # Intel iGPU
+      - siderolabs/intel-ice-firmware      # Intel Ethernet firmware
+      - siderolabs/intel-ucode            # Intel iGPU
+      - siderolabs/mei                    # Intel Management Engine drivers
+      - siderolabs/nut-client             # Network UPS Tools
+      - siderolabs/nvme-cli               # NVMe command line tools
+      - siderolabs/util-linux-tools       # Useful Linux tools
+      # - siderolabs/nfsrahead              # NFS Performance

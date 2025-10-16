@@ -1,9 +1,10 @@
 machine:
-  network:
-    hostname: dmf-intel-001
   disks:
     - device: /dev/disk/by-id/wwn-0x5000000000038747
       partitions:
         - mountpoint: /var/mnt/extra
-  install:
-    image: factory.talos.dev/installer/043102e6c22fe0c2c3adb05d0e442865aa52efdcfeddf856a259ee1a2022bb2c:{{ ENV.TALOS_VERSION }}
+  network:
+    hostname: dmf-intel-001
+  nodeLabels:
+    topology.kubernetes.io/zone: dmf-u
+  type: controlplane

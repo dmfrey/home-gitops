@@ -1,0 +1,276 @@
+---
+version: v1alpha1
+debug: false
+persist: true
+machine:
+
+  ca:
+    crt: op://kubernetes/talos/MACHINE_CA_CRT
+    {% if ENV.IS_CONTROLLER %}
+    key: op://kubernetes/talos/MACHINE_CA_KEY
+    {% endif %}
+
+  features:
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: false
+      resolveMemberNames: true
+    kubePrism:
+      enabled: true
+      port: 7445
+    {% if ENV.IS_CONTROLLER %}
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:admin
+      allowedKubernetesNamespaces:
+        - actions-runner-system
+        - system-upgrade
+    {% endif %}
+    rbac: true
+    stableHostname: true
+
+  files:
+    - # Spegel
+      op: create
+      path: /etc/cri/conf.d/20-customization.part
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+          device_ownership_from_security_context = true
+    - op: overwrite
+      path: /etc/nfsmount.conf
+      permissions: 0o644
+      content: |-
+        [ NFSMount_Global_Options ]
+        nfsvers=4.1
+        hard=True
+        nconnect=16
+        noatime=True
+
+  install:
+    diskSelector:
+      model: INTEL SSDSC2BB48
+    image: factory.talos.dev/installer/043102e6c22fe0c2c3adb05d0e442865aa52efdcfeddf856a259ee1a2022bb2c:v1.11.2
+    wipe: false
+
+  kernel:
+    modules:
+      - name: nbd
+
+  kubelet:
+    clusterDNS:
+      - 172.23.0.10
+    defaultRuntimeSeccompProfileEnabled: true
+    disableManifestsDirectory: true
+    extraConfig:
+      featureGates:
+        ImageVolume: true
+        ResourceHealthStatus: true
+      serializeImagePulls: false
+      imageMaximumGCAge: 168h # One week
+      imageGCHighThresholdPercent: 50
+      imageGCLowThresholdPercent: 20
+    extraMounts:
+      - destination: /var/mnt/extra
+        type: bind
+        source: /var/mnt/extra
+        options: ["bind", "rshared", "rw"]
+    image: ghcr.io/siderolabs/kubelet:v1.34.1
+    nodeIP:
+      validSubnets:
+        - 192.168.30.0/24
+
+  network:
+    interfaces:
+      - interface: eth0
+        vlans:
+          - routes: []
+            dhcp: false
+            vlanId: 50
+            mtu: 1500
+        mtu: 9000
+        dhcp: true
+        vip:
+          ip: 192.168.30.20
+    extraHostEntries:
+      - ip: 192.168.30.20
+        aliases:
+          - homelab-k8s-001.homelab.frey.home
+      - ip: 192.168.30.20
+        aliases:
+          - homelab.dmfrey.com
+    disableSearchDomain: true
+
+  nodeLabels:
+    node.kubernetes.io/gpu: "true"
+    topology.kubernetes.io/region: dmf
+
+  sysctls:
+    fs.inotify.max_user_instances: 8192    # Watchdog
+    fs.inotify.max_user_watches: 1048576   # Watchdog
+    net.core.default_qdisc: fq             # 10Gb/s
+    net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
+    net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+    net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
+    net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+    net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+    net.ipv4.tcp_window_scaling: 1         # 10Gb/s
+    vm.nr_hugepages: 1024                  # PostgreSQL
+
+  sysfs:
+    devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
+
+  token: op://kubernetes/talos/MACHINE_TOKEN
+
+  udev:
+    rules:
+      - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
+      - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+
+cluster:
+  ca:
+    crt: op://kubernetes/talos/CLUSTER_CA_CRT
+    {% if ENV.IS_CONTROLLER %}
+    key: op://kubernetes/talos/CLUSTER_CA_KEY
+    {% endif %}
+
+  clusterName: homelab-k8s-001
+
+  controlPlane:
+    endpoint: https://homelab-k8s-001.homelab.frey.home:6443
+
+  discovery:
+    enabled: true
+    registries:
+      kubernetes:
+        disabled: true
+      service:
+        disabled: false
+
+  id: op://kubernetes/talos/CLUSTER_ID
+
+  network:
+    cni:
+      name: none
+    dnsDomain: cluster.local
+    podSubnets:
+      - 172.22.0.0/16
+    serviceSubnets:
+      - 172.23.0.0/16
+
+  secret: op://kubernetes/talos/CLUSTER_SECRET
+
+  token: op://kubernetes/talos/CLUSTER_TOKEN
+
+  {% if ENV.IS_CONTROLLER %}
+  aggregatorCA:
+    crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
+    key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
+
+  allowSchedulingOnControlPlanes: true
+
+  apiServer:
+    auditPolicy:
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      rules:
+        - level: Metadata
+    certSANs:
+      - 192.168.30.20
+      - homelab-k8s-001.homelab.frey.home
+      - homelab.dmfrey.com
+      - 127.0.0.1
+
+    disablePodSecurityPolicy: true
+
+    extraArgs:
+      enable-aggregator-routing: true
+      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
+      runtime-config: admissionregistration.k8s.io/v1beta1=true
+
+    image: registry.k8s.io/kube-apiserver:v1.34.1
+
+  controllerManager:
+    extraArgs:
+      bind-address: 0.0.0.0
+    image: registry.k8s.io/kube-controller-manager:v1.34.1
+
+  coreDNS:
+    disabled: true
+
+  etcd:
+    advertisedSubnets:
+      - 192.168.30.0/24
+    ca:
+      crt: op://kubernetes/talos/CLUSTER_ETCD_CA_CRT
+      key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+
+  proxy:
+    disabled: true
+    image: registry.k8s.io/kube-proxy:v1.34.1
+
+  scheduler:
+    config:
+      apiVersion: kubescheduler.config.k8s.io/v1
+      kind: KubeSchedulerConfiguration
+      profiles:
+        - schedulerName: default-scheduler
+          plugins:
+            score:
+              disabled:
+                - name: ImageLocality
+          pluginConfig:
+            - name: PodTopologySpread
+              args:
+                defaultingType: List
+                defaultConstraints:
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+    extraArgs:
+      bind-address: 0.0.0.0
+    image: registry.k8s.io/kube-scheduler:v1.34.1
+
+  secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+
+  serviceAccount:
+    key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
+  {% endif %}
+
+#---
+#apiVersion: v1alpha1
+#kind: UserVolumeConfig
+#name: local-hostpath
+#provisioning:
+#  diskSelector:
+#    match: disk.model == "NT-128 2242" && !system_disk
+#  minSize: 1TB
+
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m
+
+---
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: nut-client
+configFiles:
+  - content: |-
+        MONITOR qnapups@${NAS_SERVER} 1 ${NUT_USER} ${NUT_PASSWORD} slave
+        SHUTDOWNCMD "/sbin/poweroff"
+    mountPath: /usr/local/etc/nut/upsmon.conf
+environment:
+  - NAS_SERVER=nas.internal
+  - NUT_USER=op://kubernetes/qnap/NUT_USER
+  - NUT_PASSWORD=op://kubernetes/qnap/NUT_PASSWORD
