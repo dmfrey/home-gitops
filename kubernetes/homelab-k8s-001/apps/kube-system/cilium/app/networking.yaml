@@ -47,17 +47,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kube-vip
+  name: kube-api
   annotations:
-    lbipam.cilium.io/ips: 192.168.30.20 #, ::ffff:192.168.30.20
+    external-dns.alpha.kubernetes.io/hostname: k8s.dmfrey.com
+    lbipam.cilium.io/ips: 192.168.30.20
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Cluster
+  externalTrafficPolicy: Local
   selector:
     k8s-app: kube-apiserver
     tier: control-plane
   ports:
-    - name: https
-      port: 6443
-      protocol: TCP
-      targetPort: 6443
+    - port: 6443
