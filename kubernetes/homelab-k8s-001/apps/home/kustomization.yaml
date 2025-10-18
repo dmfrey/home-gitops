@@ -5,12 +5,10 @@ kind: Kustomization
 namespace: home
 
 components:
-  - ../../components/common
-
-replacements:
-  - path: ../../components/replacements/ks.yaml
+  - ../../components/alerts
 
 resources:
+  - ./namespace.yaml
   - ./esphome/ks.yaml
   # - ./frigate/ks.yaml
   - ./home-assistant/ks.yaml

@@ -5,12 +5,10 @@ kind: Kustomization
 namespace: spring-dev
 
 components:
-  - ../../components/common
+  - ../../components/alerts
 
-replacements:
-  - path: ../../components/replacements/ks.yaml
-
-resources: []
+resources:
+  - ./namespace.yaml
   # - ./batch-demo-2/ks.yaml
   # - ./gateway/ks.yaml
   # - ./time-service/ks.yaml

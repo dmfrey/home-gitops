@@ -5,10 +5,8 @@ kind: Kustomization
 namespace: gateway
 
 components:
-  - ../../components/common
+  - ../../components/alerts
 
-replacements:
-  - path: ../../components/replacements/ks.yaml
-
-resources: []
+resources:
+  - ./namespace.yaml
   # - ./spring-cloud-gateway/ks.yaml

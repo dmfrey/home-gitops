@@ -5,10 +5,8 @@ kind: Kustomization
 namespace: openebs-system
 
 components:
-  - ../../components/common
+  - ../../components/alerts
 
-replacements:
-  - path: ../../components/replacements/ks.yaml
-
-resources: []
+resources:
+  - ./namespace.yaml
   # - ./openebs/ks.yaml

@@ -7,22 +7,24 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: spegel
 
-  install:
-    remediation:
-      retries: 3
+  interval: 1h
 
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  values:
 
-  valuesFrom:
-    - kind: ConfigMap
-      name: spegel-values
+    grafanaDashboard:
+      enabled: true
+
+    service:
+      registry:
+        hostPort: 29999
+
+    serviceMonitor:
+      enabled: true
+
+    spegel:
+      containerdSock: /run/containerd/containerd.sock
+      containerdRegistryConfigPath: /etc/cri/conf.d/hosts

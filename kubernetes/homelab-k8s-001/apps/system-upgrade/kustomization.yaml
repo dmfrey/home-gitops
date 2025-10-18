@@ -5,12 +5,10 @@ kind: Kustomization
 namespace: system-upgrade
 
 components:
-  - ../../components/common
-
-replacements:
-  - path: ../../components/replacements/ks.yaml
+  - ../../components/alerts
 
 resources:
+  - ./namespace.yaml
   - ./system-upgrade-controller/ks.yaml
 
 # configMapGenerator:
