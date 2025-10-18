@@ -10,6 +10,12 @@ machine:
     key: op://kubernetes/talos/MACHINE_CA_KEY
     {% endif %}
 
+#  certSANs:
+#    - 192.168.30.20
+#    - homelab-k8s-001.homelab.frey.home
+#    - homelab.dmfrey.com
+#    - 127.0.0.1
+
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -75,11 +81,11 @@ machine:
       imageMaximumGCAge: 168h # One week
       imageGCHighThresholdPercent: 50
       imageGCLowThresholdPercent: 20
-    extraMounts:
-      - destination: /var/mnt/extra
-        type: bind
-        source: /var/mnt/extra
-        options: ["bind", "rshared", "rw"]
+#    extraMounts:
+#      - destination: /var/mnt/extra
+#        type: bind
+#        source: /var/mnt/extra
+#        options: ["bind", "rshared", "rw"]
     image: ghcr.io/siderolabs/kubelet:v1.34.1
     nodeIP:
       validSubnets:
@@ -183,8 +189,9 @@ cluster:
       rules:
         - level: Metadata
     certSANs:
-      - 192.168.30.20
       - homelab-k8s-001.homelab.frey.home
+      - 192.168.30.20
+#      - homelab-k8s-001.homelab.frey.home
       - homelab.dmfrey.com
       - 127.0.0.1
 
@@ -253,7 +260,7 @@ cluster:
 #provisioning:
 #  diskSelector:
 #    match: disk.model == "NT-128 2242" && !system_disk
-#  minSize: 1TB
+#  minSize: 100GB
 
 ---
 apiVersion: v1alpha1
