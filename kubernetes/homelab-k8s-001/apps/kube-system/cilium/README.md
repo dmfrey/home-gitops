@@ -3,12 +3,12 @@
 ## UniFi BGP
 
 ```sh
-router bgp 64510
+router bgp 65510
   bgp router-id 192.168.86.1
   no bgp ebgp-requires-policy
 
   neighbor k8s peer-group
-  neighbor k8s remote-as 64511
+  neighbor k8s remote-as 65511
 
   neighbor 192.168.30.41 peer-group k8s
   neighbor 192.168.30.42 peer-group k8s
