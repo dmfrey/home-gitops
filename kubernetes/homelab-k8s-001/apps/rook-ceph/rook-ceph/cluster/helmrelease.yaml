@@ -104,7 +104,6 @@ spec:
             devices:
               - name: "/dev/disk/by-id/nvme-eui.540000000017f643346f710000000045"
 
-
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -122,7 +121,7 @@ spec:
             - discard
           parameters:
             imageFormat: "2"
-            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
+            imageFeatures: layering # ,fast-diff,object-map,deep-flatten,exclusive-lock
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
