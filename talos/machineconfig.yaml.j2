@@ -61,7 +61,7 @@ machine:
   install:
     diskSelector:
       model: INTEL SSDSC2BB48
-    image: factory.talos.dev/installer/043102e6c22fe0c2c3adb05d0e442865aa52efdcfeddf856a259ee1a2022bb2c:v1.11.2
+    image: factory.talos.dev/installer/043102e6c22fe0c2c3adb05d0e442865aa52efdcfeddf856a259ee1a2022bb2c:v1.10.7
     wipe: false
 
   kernel:
@@ -69,8 +69,8 @@ machine:
       - name: nbd
 
   kubelet:
-    clusterDNS:
-      - 172.23.0.10
+#    clusterDNS:
+#      - 172.23.0.10
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
@@ -78,9 +78,9 @@ machine:
         ImageVolume: true
         ResourceHealthStatus: true
       serializeImagePulls: false
-      imageMaximumGCAge: 168h # One week
-      imageGCHighThresholdPercent: 50
-      imageGCLowThresholdPercent: 20
+#      imageMaximumGCAge: 168h # One week
+#      imageGCHighThresholdPercent: 50
+#      imageGCLowThresholdPercent: 20
 #    extraMounts:
 #      - destination: /var/mnt/extra
 #        type: bind
@@ -101,16 +101,16 @@ machine:
             mtu: 1500
         mtu: 9000
         dhcp: true
-        vip:
-          ip: 192.168.30.20
-    extraHostEntries:
-      - ip: 192.168.30.20
-        aliases:
-          - homelab-k8s-001.homelab.frey.home
-      - ip: 192.168.30.20
-        aliases:
-          - homelab.dmfrey.com
-    disableSearchDomain: true
+#        vip:
+#          ip: 192.168.30.20
+#    extraHostEntries:
+#      - ip: 192.168.30.20
+#        aliases:
+#          - homelab-k8s-001.homelab.frey.home
+#      - ip: 192.168.30.20
+#        aliases:
+#          - homelab.dmfrey.com
+#    disableSearchDomain: true
 
   nodeLabels:
     node.kubernetes.io/gpu: "true"
@@ -150,7 +150,8 @@ cluster:
   clusterName: homelab-k8s-001
 
   controlPlane:
-    endpoint: https://homelab-k8s-001.homelab.frey.home:6443
+#    endpoint: https://homelab-k8s-001.homelab.frey.home:6443
+    endpoint: https://k8s.internal:6443
 
   discovery:
     enabled: true
@@ -167,9 +168,9 @@ cluster:
       name: none
     dnsDomain: cluster.local
     podSubnets:
-      - 172.22.0.0/16
+      - 10.42.0.0/16
     serviceSubnets:
-      - 172.23.0.0/16
+      - 10.43.0.0/16
 
   secret: op://kubernetes/talos/CLUSTER_SECRET
 
@@ -189,11 +190,12 @@ cluster:
       rules:
         - level: Metadata
     certSANs:
-      - homelab-k8s-001.homelab.frey.home
-      - 192.168.30.20
+      - k8s.internal
 #      - homelab-k8s-001.homelab.frey.home
-      - homelab.dmfrey.com
-      - 127.0.0.1
+#      - 192.168.30.20
+#      - homelab-k8s-001.homelab.frey.home
+#      - homelab.dmfrey.com
+#      - 127.0.0.1
 
     disablePodSecurityPolicy: true
 
