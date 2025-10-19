@@ -7,16 +7,16 @@ router bgp 65510
   bgp router-id 192.168.86.1
   no bgp ebgp-requires-policy
 
-  neighbor k8s peer-group
-  neighbor k8s remote-as 65511
+  neighbor K8S peer-group
+  neighbor K8S remote-as 65511
 
-  neighbor 192.168.30.41 peer-group k8s
-  neighbor 192.168.30.42 peer-group k8s
-  neighbor 192.168.30.43 peer-group k8s
+  neighbor 192.168.30.41 peer-group K8S
+  neighbor 192.168.30.42 peer-group K8S
+  neighbor 192.168.30.43 peer-group K8S
 
   address-family ipv4 unicast
-    neighbor k8s next-hop-self
-    neighbor k8s soft-reconfiguration inbound
+    neighbor K8S next-hop-self
+    neighbor K8S soft-reconfiguration inbound
   exit-address-family
 exit
 ```
