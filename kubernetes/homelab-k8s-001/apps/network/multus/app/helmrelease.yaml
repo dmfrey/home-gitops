@@ -5,77 +5,79 @@ kind: HelmRelease
 metadata:
   name: &app multus
 spec:
-  interval: 1h
+
   chartRef:
     kind: OCIRepository
     name: multus
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
 
   values:
 
-    controllers:
-      *app :
-        type: daemonset
+    cni:
+      binPath: /opt/cni/bin
+      netPath: /etc/cni/net.d
+    multus:
+      resources:
+        requests:
+          cpu: 10m
+        limits:
+          memory: 512Mi
 
-        initContainers:
-          cni-plugins:
-            image:
-              repository: ghcr.io/home-operations/cni-plugins
-              tag: 1.8.0
+    # controllers:
+    #   *app :
+    #     type: daemonset
 
-        containers:
-          *app :
-            image:
-              repository: ghcr.io/k8snetworkplumbingwg/multus-cni
-              tag: v4.2.2@sha256:7591a27cd28eeafd6dfb197618b06dabd9446a7026164b9b21fee67adc925761
+    #     initContainers:
+    #       cni-plugins:
+    #         image:
+    #           repository: ghcr.io/home-operations/cni-plugins
+    #           tag: 1.8.0
 
-            args:
-              - --cleanup-config-on-exit=true
-              - --multus-cni-conf-dir=/tmp
+    #     containers:
+    #       *app :
+    #         image:
+    #           repository: ghcr.io/k8snetworkplumbingwg/multus-cni
+    #           tag: v4.2.2@sha256:7591a27cd28eeafd6dfb197618b06dabd9446a7026164b9b21fee67adc925761
 
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 32Mi
+    #         args:
+    #           - --cleanup-config-on-exit=true
+    #           - --multus-cni-conf-dir=/tmp
 
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { add: ["NET_ADMIN"], drop: ["ALL"] }
+    #         resources:
+    #           requests:
+    #             cpu: 10m
+    #           limits:
+    #             memory: 32Mi
 
-        serviceAccount:
-          name: *app
+    #         securityContext:
+    #           allowPrivilegeEscalation: false
+    #           readOnlyRootFilesystem: true
+    #           capabilities: { add: ["NET_ADMIN"], drop: ["ALL"] }
 
-    defaultPodOptions:
-      hostNetwork: true
-      priorityClassName: system-node-critical
-      tolerations:
-        - key: CriticalAddonsOnly
-          operator: Exists
+    #     serviceAccount:
+    #       name: *app
 
-    persistence:
-      etc-cni-net-d:
-        type: hostPath
-        hostPath: /etc/cni/net.d
-        globalMounts:
-          - path: /host/etc/cni/net.d
+    # defaultPodOptions:
+    #   hostNetwork: true
+    #   priorityClassName: system-node-critical
+    #   tolerations:
+    #     - key: CriticalAddonsOnly
+    #       operator: Exists
 
-      opt-cni-bin:
-        type: hostPath
-        hostPath: /opt/cni/bin
-        globalMounts:
-          - path: /host/opt/cni/bin
+    # persistence:
+    #   etc-cni-net-d:
+    #     type: hostPath
+    #     hostPath: /etc/cni/net.d
+    #     globalMounts:
+    #       - path: /host/etc/cni/net.d
 
-      tmp:
-        type: emptyDir
-        medium: Memory
+    #   opt-cni-bin:
+    #     type: hostPath
+    #     hostPath: /opt/cni/bin
+    #     globalMounts:
+    #       - path: /host/opt/cni/bin
+
+    #   tmp:
+    #     type: emptyDir
+    #     medium: Memory
