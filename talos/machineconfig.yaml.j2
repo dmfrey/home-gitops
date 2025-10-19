@@ -10,12 +10,6 @@ machine:
     key: op://kubernetes/talos/MACHINE_CA_KEY
     {% endif %}
 
-#  certSANs:
-#    - 192.168.30.20
-#    - homelab-k8s-001.homelab.frey.home
-#    - homelab.dmfrey.com
-#    - 127.0.0.1
-
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -76,14 +70,6 @@ machine:
         ImageVolume: true
         ResourceHealthStatus: true
       serializeImagePulls: false
-#      imageMaximumGCAge: 168h # One week
-#      imageGCHighThresholdPercent: 50
-#      imageGCLowThresholdPercent: 20
-#    extraMounts:
-#      - destination: /var/mnt/extra
-#        type: bind
-#        source: /var/mnt/extra
-#        options: ["bind", "rshared", "rw"]
     image: ghcr.io/siderolabs/kubelet:v1.34.1
     nodeIP:
       validSubnets:
@@ -99,16 +85,6 @@ machine:
             mtu: 1500
         mtu: 9000
         dhcp: true
-#        vip:
-#          ip: 192.168.30.20
-#    extraHostEntries:
-#      - ip: 192.168.30.20
-#        aliases:
-#          - homelab-k8s-001.homelab.frey.home
-#      - ip: 192.168.30.20
-#        aliases:
-#          - homelab.dmfrey.com
-#    disableSearchDomain: true
 
   nodeLabels:
     node.kubernetes.io/gpu: "true"
@@ -189,11 +165,6 @@ cluster:
         - level: Metadata
     certSANs:
       - k8s.internal
-#      - homelab-k8s-001.homelab.frey.home
-#      - 192.168.30.20
-#      - homelab-k8s-001.homelab.frey.home
-#      - homelab.dmfrey.com
-#      - 127.0.0.1
 
     disablePodSecurityPolicy: true
 

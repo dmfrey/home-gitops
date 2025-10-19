@@ -47,7 +47,7 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 192.168.30.77 #, ::ffff:192.168.30.77
+          lbipam.cilium.io/ips: 192.168.29.77 #, ::ffff:192.168.30.77
         externalTrafficPolicy: Cluster
         ports:
           shadowsocks:
