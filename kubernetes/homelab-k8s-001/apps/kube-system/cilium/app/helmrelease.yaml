@@ -7,28 +7,11 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: cilium
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
-
-  # valuesFrom:
-  #   - kind: ConfigMap
-  #     name: cilium-values
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
@@ -54,9 +37,9 @@ spec:
         enabled: false
       hostRoot: /sys/fs/cgroup
 
-    cluster:
-      id: 1
-      name: homelab-k8s-001
+    # cluster:
+    #   id: 1
+    #   name: homelab-k8s-001
 
     cni:
       exclusive: false
@@ -74,18 +57,13 @@ spec:
     envoy:
       enabled: false
 
-    # gatewayAPI:
-    #   enabled: true
-    #   enableAlpn: true
-    #   xffNumTrustedHops: 1
-
     hubble:
       enabled: false
 
     ipam:
       mode: kubernetes
 
-    ipv4NativeRoutingCIDR: 172.22.0.0/16
+    ipv4NativeRoutingCIDR: 10.42.0.0/16
 
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 7445
@@ -94,7 +72,7 @@ spec:
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
     l2announcements:
-      enabled: true
+      enabled: false
 
     loadBalancer:
       algorithm: maglev
