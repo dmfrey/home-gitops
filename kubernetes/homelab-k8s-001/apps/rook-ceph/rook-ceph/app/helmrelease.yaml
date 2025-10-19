@@ -7,38 +7,22 @@ metadata:
 
 spec:
 
-  interval: 1h
-  timeout: 15m
-
   chartRef:
     kind: OCIRepository
     name: rook-ceph
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
-      # NOTE: Enable the driver and shapshotter if you want to use CephFS
-      enableCephfsDriver: true
-      enableCephfsSnapshotter: true
       enableLiveness: true
       serviceMonitor:
         enabled: true
 
-    enableDiscoveryDaemon: true
+    image:
+      repository: ghcr.io/rook/ceph
 
     monitoring:
       enabled: true
