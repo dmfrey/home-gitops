@@ -7,8 +7,8 @@ logger:
 auth:
   enabled: False
   trusted_proxies:
-    - 172.22.0.0/16
-    - 172.23.0.0/16
+    - 10.42.0.0/16
+    - 10.43.0.0/16
 
 mqtt:
   host: mosquitto.home.svc.cluster.local

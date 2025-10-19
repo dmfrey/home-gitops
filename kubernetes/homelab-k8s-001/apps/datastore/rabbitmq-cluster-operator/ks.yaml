@@ -13,4 +13,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: datastore
   timeout: 5m

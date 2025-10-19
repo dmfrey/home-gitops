@@ -24,6 +24,7 @@ spec:
     name: flux-system
     namespace: flux-system
   timeout: 5m
+  targetNamespace: dev
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -52,5 +53,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: dev
   timeout: 5m
   wait: true

@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg
+  name: cloudnative-pg
 spec:
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/datastore/cloudnative-pg/app"
@@ -13,4 +13,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: datastore
   timeout: 5m
