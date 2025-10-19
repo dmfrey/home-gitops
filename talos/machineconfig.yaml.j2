@@ -121,10 +121,9 @@ cluster:
     key: op://kubernetes/talos/CLUSTER_CA_KEY
     {% endif %}
 
-  clusterName: homelab-k8s-001
+  clusterName: k8s
 
   controlPlane:
-#    endpoint: https://homelab-k8s-001.homelab.frey.home:6443
     endpoint: https://k8s.internal:6443
 
   discovery:
