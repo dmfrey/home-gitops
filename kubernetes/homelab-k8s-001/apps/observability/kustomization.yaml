@@ -9,15 +9,17 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./blackbox-exporter/ks.yaml
-  - ./gatus/ks.yaml
-  - ./grafana/ks.yaml
-  - ./kube-prometheus-stack/ks.yaml
-  - ./loki/ks.yaml
+  # - ./blackbox-exporter/ks.yaml
+  # - ./gatus/ks.yaml
+  # - ./grafana/ks.yaml
+  # - ./kube-prometheus-stack/ks.yaml
+  # - ./loki/ks.yaml
+  # - ./promtail/ks.yaml
+  # - ./silence-operator/ks.yaml
+  # - ./smartctl-exporter/ks.yaml
+  # - ./unpoller/ks.yaml
+
+
   # - ./otel/ks.yaml
   # - ./prometheus-pushgateway/ks.yaml
-  - ./promtail/ks.yaml
-  - ./silence-operator/ks.yaml
-  - ./smartctl-exporter/ks.yaml
   # - ./tempo/ks.yaml
-  - ./unpoller/ks.yaml

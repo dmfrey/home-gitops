@@ -1,10 +1,6 @@
 machine:
-#  disks:
-#    - device: /dev/disk/by-id/wwn-0x5000000000038747
-#      partitions:
-#        - mountpoint: /var/mnt/extra
   network:
-    hostname: dmf-intel-001
+    hostname: k8s-0
   nodeLabels:
     topology.kubernetes.io/zone: dmf-u
   type: controlplane

@@ -9,6 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./cloudnative-pg/ks.yaml
-  - ./dragonfly-operator/ks.yaml
+  # - ./cloudnative-pg/ks.yaml
+  # - ./dragonfly-operator/ks.yaml
+
   # - ./rabbitmq-cluster-operator/ks.yaml
