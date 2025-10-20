@@ -39,7 +39,7 @@ data "authentik_flow" "default-brand-user-settings" {
 
 resource "authentik_brand" "home" {
   domain           = var.cluster_domain
-  default          = true
+  default          = false
   branding_title   = "Home"
   branding_logo    = "/static/dist/assets/icons/icon_left_brand.svg"
   branding_favicon = "/static/dist/assets/icons/icon.png"
