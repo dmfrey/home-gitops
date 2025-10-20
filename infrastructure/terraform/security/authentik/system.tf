@@ -25,7 +25,7 @@ data "authentik_flow" "default-brand-user-settings" {
 # }
 
 # Create/manage the default brand
-resource "authentik_brand" "default" {
+# resource "authentik_brand" "default" {
 #   domain           = "authentik-default"
 #   default          = false
 #   branding_title   = "authentik"
