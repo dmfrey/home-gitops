@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &name tofu-controller
+  name: tofu-controller
 
 spec:
 
@@ -15,19 +15,15 @@ spec:
 
   values:
 
-    fullnameOverride: *name
-
-    allowBreakTheGlass: true
     allowCrossNamespaceRefs: true
 
-    installCRDs: true
+    # installCRDs: true
 
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
-        endpoint:
-          interval: 1m
+        interval: 1m
 
     runner:
       serviceAccount:
