@@ -9,4 +9,4 @@ components:
 
 resources:
   - ./namespace.yaml
-  # - ./authentik/ks.yaml
+  - ./authentik/ks.yaml
