@@ -37,10 +37,6 @@ spec:
         enabled: false
       hostRoot: /sys/fs/cgroup
 
-    # cluster:
-    #   id: 1
-    #   name: homelab-k8s-001
-
     cni:
       exclusive: false
 

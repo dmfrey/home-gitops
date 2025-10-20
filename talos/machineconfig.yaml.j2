@@ -1,7 +1,5 @@
 ---
 version: v1alpha1
-debug: false
-persist: true
 machine:
 
   ca:
@@ -22,19 +20,18 @@ machine:
       port: 7445
     {% if ENV.IS_CONTROLLER %}
     kubernetesTalosAPIAccess:
-      enabled: true
-      allowedRoles:
-        - os:admin
       allowedKubernetesNamespaces:
         - actions-runner-system
         - system-upgrade
+      allowedRoles:
+        - os:admin
+      enabled: true
     {% endif %}
     rbac: true
     stableHostname: true
 
   files:
-    - # Spegel
-      op: create
+    - op: create
       path: /etc/cri/conf.d/20-customization.part
       content: |
         [plugins."io.containerd.cri.v1.images"]
@@ -45,7 +42,7 @@ machine:
     - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644
-      content: |-
+      content: |
         [ NFSMount_Global_Options ]
         nfsvers=4.1
         hard=True
@@ -55,7 +52,7 @@ machine:
   install:
     diskSelector:
       model: INTEL SSDSC2BB48
-    image: factory.talos.dev/installer/043102e6c22fe0c2c3adb05d0e442865aa52efdcfeddf856a259ee1a2022bb2c:v1.10.7
+    image: factory.talos.dev/installer/043102e6c22fe0c2c3adb05d0e442865aa52efdcfeddf856a259ee1a2022bb2c:v1.11.2
     wipe: false
 
   kernel:
@@ -78,31 +75,37 @@ machine:
   network:
     interfaces:
       - interface: eth0
+        dhcp: true
+        mtu: 1500
         vlans:
           - routes: []
             dhcp: false
             vlanId: 50
             mtu: 1500
-        mtu: 9000
-        dhcp: true
 
   nodeLabels:
     node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: dmf
 
   sysctls:
-    fs.inotify.max_user_instances: 8192    # Watchdog
-    fs.inotify.max_user_watches: 1048576   # Watchdog
-    net.core.default_qdisc: fq             # 10Gb/s
-    net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
-    net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
-    net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
-    net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
-    net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
-    net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
-    net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
-    net.ipv4.tcp_window_scaling: 1         # 10Gb/s
-    vm.nr_hugepages: 1024                  # PostgreSQL
+    fs.inotify.max_user_instances: "8192"    # Watchdog
+    fs.inotify.max_user_watches: "1048576"   # Watchdog
+#    net.core.default_qdisc: fq               # 10Gb/s
+#    net.core.rmem_max: "67108864"            # 10Gb/s | Cloudflared / QUIC
+#    net.core.wmem_max: "67108864"            # 10Gb/s | Cloudflared / QUIC
+#    net.ipv4.neigh.default.gc_thresh1: "4096"
+#    net.ipv4.neigh.default.gc_thresh2: "8192"
+#    net.ipv4.neigh.default.gc_thresh3: "16384"
+#    net.ipv4.tcp_congestion_control: bbr     # 10Gb/s
+#    net.ipv4.tcp_fastopen: "3"               # Send and accept data in the opening SYN packet
+#    net.ipv4.tcp_mtu_probing: "1"            # 10Gb/s | Jumbo frames
+#    net.ipv4.tcp_rmem: 4096 87380 33554432   # 10Gb/s
+#    net.ipv4.tcp_window_scaling: "1"
+#    net.ipv4.tcp_wmem: 4096 65536 33554432   # 10Gb/s
+#    sunrpc.tcp_max_slot_table_entries: "128"
+#    sunrpc.tcp_slot_table_entries: "128"
+    user.max_user_namespaces: "11255"
+    vm.nr_hugepages: 1024                    # PostgreSQL
 
   sysfs:
     devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
@@ -168,7 +171,7 @@ cluster:
     disablePodSecurityPolicy: true
 
     extraArgs:
-      enable-aggregator-routing: true
+      enable-aggregator-routing: "true"
       feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
 
