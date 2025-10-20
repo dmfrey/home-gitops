@@ -1,3 +1,8 @@
+module "onepassword_users" {
+  source   = "github.com/dmfrey/terraform-1password-item"
+  vault    = "Kubernetes"
+  item     = "users"
+}
 
 locals {
   authentik_groups = {
@@ -48,4 +53,45 @@ resource "authentik_source_plex" "plex" {
   allowed_servers = [
     local.authentik_plex_client_id
   ]
+}
+
+resource "authentik_user" "Dan" {
+  username = "dmfrey"
+  name     = module.onepassword_users.fields["USERS_DMFREY_NAME"]
+  email    = module.onepassword_users.fields["USERS_DMFREY_EMAIL"]
+  password = module.onepassword_users.fields["USERS_DMFREY_PASSWORD"]
+  groups = concat(
+    [data.authentik_group.admins.id],
+    values(authentik_group.default)[*].id
+  )
+}
+
+resource "authentik_user" "Steph" {
+  username = "sdfrey"
+  name     = module.onepassword_users.fields["USERS_SDFREY_NAME"]
+  email    = module.onepassword_users.fields["USERS_SDFREY_EMAIL"]
+  password = module.onepassword_users.fields["USERS_SDFREY_PASSWORD"]
+  groups = concat(
+    values(authentik_group.default)[*].id
+  )
+}
+
+resource "authentik_user" "Camdyn" {
+  username = "cgfrey"
+  name     = module.onepassword_users.fields["USERS_CGFREY_NAME"]
+  email    = module.onepassword_users.fields["USERS_CGFREY_EMAIL"]
+  password = module.onepassword_users.fields["USERS_CGFREY_PASSWORD"]
+  groups = concat(
+    values(authentik_group.default)[*].id
+  )
+}
+
+resource "authentik_user" "Molly" {
+  username = "mkfrey"
+  name     = module.onepassword_users.fields["USERS_MKFREY_NAME"]
+  email    = module.onepassword_users.fields["USERS_MKFREY_EMAIL"]
+  password = module.onepassword_users.fields["USERS_MKFREY_PASSWORD"]
+  groups = concat(
+    values(authentik_group.default)[*].id
+  )
 }
