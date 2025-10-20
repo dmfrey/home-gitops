@@ -27,6 +27,10 @@ resource "authentik_group" "grafana_admin" {
   is_superuser = false
 }
 
+data "authentik_group" "grafana_admin" {
+  name = "Grafana Admins"
+}
+
 resource "authentik_group" "default" {
   for_each     = local.authentik_groups
   name         = each.value.name
@@ -62,6 +66,7 @@ resource "authentik_user" "Dan" {
   password = module.onepassword_users.fields["USERS_DMFREY_PASSWORD"]
   groups = concat(
     [data.authentik_group.admins.id],
+    [data.authentik_group.grafana_admin.id],
     values(authentik_group.default)[*].id
   )
 }
