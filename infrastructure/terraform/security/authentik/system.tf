@@ -26,16 +26,16 @@ data "authentik_flow" "default-brand-user-settings" {
 
 # Create/manage the default brand
 resource "authentik_brand" "default" {
-  domain           = "authentik-default"
-  default          = false
-  branding_title   = "authentik"
-  branding_logo    = "/static/dist/assets/icons/icon_left_brand.svg"
-  branding_favicon = "/static/dist/assets/icons/icon.png"
+#   domain           = "authentik-default"
+#   default          = false
+#   branding_title   = "authentik"
+#   branding_logo    = "/static/dist/assets/icons/icon_left_brand.svg"
+#   branding_favicon = "/static/dist/assets/icons/icon.png"
 
-  flow_authentication = data.authentik_flow.default-brand-authentication.id
-  flow_invalidation   = data.authentik_flow.default-brand-invalidation.id
-  flow_user_settings  = data.authentik_flow.default-brand-user-settings.id
-}
+#   flow_authentication = data.authentik_flow.default-brand-authentication.id
+#   flow_invalidation   = data.authentik_flow.default-brand-invalidation.id
+#   flow_user_settings  = data.authentik_flow.default-brand-user-settings.id
+# }
 
 resource "authentik_brand" "home" {
   domain           = var.cluster_domain
