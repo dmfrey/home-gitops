@@ -9,21 +9,21 @@ components:
 
 resources:
   - ./namespace.yaml
-#  - ./bazarr/ks.yaml
-#  - ./jellyfin/ks.yaml
-#  - ./jellyplex-watched/ks.yaml
-#  - ./lidarr/ks.yaml
-#  - ./music-assistant/ks.yaml
-#  - ./overseerr/ks.yaml
-#  - ./pinepods/ks.yaml
-#  - ./plex/ks.yaml
-#  - ./plex-meta-manager/ks.yaml
-#  - ./radarr/ks.yaml
-#  - ./recyclarr/ks.yaml
-#  - ./romm/ks.yaml
-#  - ./sonarr/ks.yaml
-#  - ./tautulli/ks.yaml
-#  - ./unpackerr/ks.yaml
-#  - ./wizarr/ks.yaml
+  - ./bazarr/ks.yaml
+  - ./jellyfin/ks.yaml
+  - ./jellyplex-watched/ks.yaml
+  - ./lidarr/ks.yaml
+  - ./music-assistant/ks.yaml
+  - ./overseerr/ks.yaml
+  - ./pinepods/ks.yaml
+  - ./plex/ks.yaml
+  - ./plex-meta-manager/ks.yaml
+  - ./radarr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./romm/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./tautulli/ks.yaml
+  - ./unpackerr/ks.yaml
+  - ./wizarr/ks.yaml
 
   # - ./soularr/ks.yaml
