@@ -10,6 +10,6 @@ components:
 resources:
   - ./namespace.yaml
   # - ./blinko/ks.yaml
-  # - ./homepage/ks.yaml
-  # - ./linkwarden/ks.yaml
-  # - ./omni-tools/ks.yaml
+  - ./homepage/ks.yaml
+  - ./linkwarden/ks.yaml
+  - ./omni-tools/ks.yaml
