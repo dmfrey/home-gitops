@@ -19,10 +19,10 @@ data "authentik_flow" "default-brand-user-settings" {
   slug = "default-user-settings-flow"
 }
 
-import {
-  to = authentik_brand.default
-  id = data.authentik_brand.authentik-default.id
-}
+# import {
+#   to = authentik_brand.default
+#   id = data.authentik_brand.authentik-default.id
+# }
 
 # Create/manage the default brand
 resource "authentik_brand" "default" {
