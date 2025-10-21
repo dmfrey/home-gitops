@@ -20,8 +20,7 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              { "dst": "192.0.0.0/8", "gw": "192.168.50.1" },
-              { "dst": "224.0.0.0/4" }
+              {"dst": "0.0.0.0/0", "gw": "192.168.50.1"}
             ]
           }
         },
@@ -29,10 +28,6 @@ spec:
             "type": "tuning",
             "capabilities": {
                 "mac": true
-            },
-            "sysctl": {
-              "net.ipv6.conf.net1.accept_ra": "1",
-              "net.ipv6.conf.net1.accept_ra_rt_info_max_plen": "128"
             }
         }
       ]
