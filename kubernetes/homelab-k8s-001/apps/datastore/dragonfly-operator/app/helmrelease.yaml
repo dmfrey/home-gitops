@@ -67,9 +67,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-        # serviceAccount:
-          # identifier: *app
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -104,5 +101,5 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
 
-    # serviceAccount:
-      # *app : {}
+    serviceAccount:
+      dragonfly-operator: {}
