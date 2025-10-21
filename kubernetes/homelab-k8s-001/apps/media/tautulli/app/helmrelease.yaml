@@ -107,6 +107,19 @@ spec:
           - path: /config
             readOnly: false
 
+      backups:
+        type: nfs
+        server: nas.internal
+        path: /plexbackups/backups/tautulli
+        globalMounts:
+          - path: /config/backups
+            readOnly: false
+
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+
     serviceMonitor:
       metrics:
         enabled: true
