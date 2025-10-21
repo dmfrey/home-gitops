@@ -7,21 +7,12 @@ metadata:
 
 spec:
 
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: dragonfly-operator
 
-  install:
-    remediation:
-      retries: 3
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
 
   values:
 
@@ -76,8 +67,8 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-        serviceAccount:
-          identifier: *app
+        # serviceAccount:
+          # identifier: *app
 
     defaultPodOptions:
       securityContext:
@@ -113,5 +104,5 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
 
-    serviceAccount:
-      *app : {}
+    # serviceAccount:
+      # *app : {}
