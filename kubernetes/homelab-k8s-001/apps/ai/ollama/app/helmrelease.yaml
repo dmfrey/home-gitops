@@ -108,7 +108,7 @@ spec:
         type: LoadBalancer
         annotations:
           # external-dns.alpha.kubernetes.io/hostname: ollama.dmfrey.com
-          lbipam.cilium.io/ips: 192.168.30.241 #, ::ffff:192.168.30.241
+          lbipam.cilium.io/ips: 192.168.29.241
         ports:
           http:
             port: &port 11434
