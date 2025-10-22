@@ -53,28 +53,28 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-          codeserver:
-            # dependsOn: home-assistant
+          # codeserver:
+          #   # dependsOn: home-assistant
 
-            image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.105.1
+          #   image:
+          #     repository: ghcr.io/coder/code-server
+          #     tag: 4.105.1
 
-            args:
-              - "/config"
-              - --auth
-              - "none"
-              - --user-data-dir
-              - "/config/.vscode"
-              - --extensions-dir
-              - "/config/.vscode"
+          #   args:
+          #     - "/config"
+          #     - --auth
+          #     - "none"
+          #     - --user-data-dir
+          #     - "/config/.vscode"
+          #     - --extensions-dir
+          #     - "/config/.vscode"
 
-            env:
-              TZ: America/New_York
+          #   env:
+          #     TZ: America/New_York
 
-            ports:
-              - name: code
-                containerPort: &codePort 8080
+          #   ports:
+          #     - name: code
+          #       containerPort: &codePort 8080
 
     defaultPodOptions:
       annotations:
@@ -128,22 +128,22 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-      code:
-        hostnames:
-          - hass-code.dmfrey.com
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
-          gethomepage.dev/name: Home Assistant Code Server
-          gethomepage.dev/icon: vscode.png
-          gethomepage.dev/description: Online Code Editor
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *codePort
+      # code:
+      #   hostnames:
+      #     - hass-code.dmfrey.com
+      #   annotations:
+      #     gethomepage.dev/enabled: "true"
+      #     gethomepage.dev/group: Home
+      #     gethomepage.dev/name: Home Assistant Code Server
+      #     gethomepage.dev/icon: vscode.png
+      #     gethomepage.dev/description: Online Code Editor
+      #   parentRefs:
+      #     - name: envoy-internal
+      #       namespace: network
+      #   rules:
+      #     - backendRefs:
+      #         - identifier: app
+      #           port: *codePort
 
     persistence:
       config:
