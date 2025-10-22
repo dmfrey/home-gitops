@@ -3,31 +3,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app music-assistant
+  name: music-assistant
 spec:
-
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: music-assistant
 
-  maxHistory: 2
-
-  install:
-    remediation:
-      retries: 3
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
@@ -87,8 +70,8 @@ spec:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{
-                "name":"iot-vlan",
-                "namespace": "network",
+                "name": "iot-vlan",
+                "namespace": "kube-system",
                 "ips": ["192.168.50.5/24"],
                 "mac": "ae:81:6a:d4:48:85"
               }]

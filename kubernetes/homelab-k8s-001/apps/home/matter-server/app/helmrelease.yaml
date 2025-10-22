@@ -41,8 +41,8 @@ spec:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{
-                "name":"iot-vlan",
-                "namespace": "network",
+                "name": "iot-vlan",
+                "namespace": "kube-system",
                 "ips": ["192.168.50.9/24"],
                 "mac": "aa:8c:ae:86:6e:8a"
               }]
