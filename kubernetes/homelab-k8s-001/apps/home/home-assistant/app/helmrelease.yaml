@@ -42,20 +42,6 @@ spec:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
 
-            probes:
-              liveness:
-                custom: true
-                spec:
-                  httpGet:
-                    path: /manifest.json
-                    port: *port
-                  initialDelaySeconds: 3
-                  periodSeconds: 3
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
-
             resources:
               requests:
                 cpu: 10m
