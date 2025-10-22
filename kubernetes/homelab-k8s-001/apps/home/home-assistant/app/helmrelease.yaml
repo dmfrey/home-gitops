@@ -102,8 +102,8 @@ spec:
           http:
             appProtocol: kubernetes.io/ws
             port: &port 8123
-          code:
-            port: *codePort
+          # code:
+          #   port: *codePort
 
     route:
       app:
