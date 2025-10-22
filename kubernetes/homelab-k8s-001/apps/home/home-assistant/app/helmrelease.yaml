@@ -24,59 +24,6 @@ spec:
           reloader.stakater.com/auto: "true"
           secret.reloader.stakater.com/reload: pg-home-assistant-app
 
-        # initContainers:
-          # fix-permissions:
-          #   image:
-          #     repository: busybox
-          #     tag: stable
-
-          #   command: ["sh", "-c", "chown -R 1000:1000 /config/.*"]
-
-          #   securityContext:
-          #     runAsNonRoot: false
-          #     readOnlyRootFilesystem: true
-          #     allowPrivilegeEscalation: true
-          #     runAsUser: 0
-          #     runAsGroup: 0
-          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
-
-          # git-clone:
-          #   image:
-          #     repository: alpine/git
-          #     tag: v2.47.2
-
-          #   command:
-          #     # - sleep
-          #     # - "3600"
-
-          #     - "/bin/sh"
-          #     - -c
-          #     - |
-          #       # whoami
-          #       # echo $HOME
-          #       #   # ls /.ssh
-          #       #   # cat /.gitconfig
-          #       #   # git config --global --add safe.directory /config
-          #       #   # git config -l
-          #       #   ssh-add ~/.ssh/id_ed25519
-          #       cd /config
-          #       #   cat .git/config
-          #       #   rm -rf .worktrees
-          #       #   rm -rf hass-config.git
-          #       #   ls -la
-          #       git fetch origin
-          #       git reset origin/main
-
-          #     # - git
-          #     # - clone
-          #     # - git@github.com:dmfrey/hass-config.git
-          #     # - /config
-
-          #   securityContext:
-          #     readOnlyRootFilesystem: false
-          #     allowPrivilegeEscalation: true
-          #     capabilities: { drop: ["ALL"] }
-
         containers:
           app:
             image:
@@ -93,12 +40,7 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: home-assistant-secret
-                # prefix: "HASS_"
-
-            ports:
-              - name: http
-                containerPort: &port 8123
+                  name: "{{ .Release.Name }}-secret"
 
             probes:
               liveness:
