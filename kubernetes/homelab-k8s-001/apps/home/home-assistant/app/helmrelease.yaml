@@ -124,10 +124,9 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https
         rules:
           - backendRefs:
-              - name: app
+              - identifier: app
                 port: *port
       code:
         hostnames:
@@ -141,10 +140,9 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
         rules:
           - backendRefs:
-              - name: app
+              - identifier:: app
                 port: *codePort
 
     persistence:
