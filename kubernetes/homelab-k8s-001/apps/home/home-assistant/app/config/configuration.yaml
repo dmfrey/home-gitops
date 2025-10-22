@@ -9,19 +9,15 @@ http:
   ip_ban_enabled: true
   login_attempts_threshold: 5
   use_x_forwarded_for: true
-  trusted_proxies:
-    - 10.42.0.0/15
-    - 192.0.0.0/9
-    - 192.168.29.0/24
-    - 127.0.0.1
-    # - 192.168.29.0/24
-    # - 10.42.0.0/16
+  # trusted_proxies:
+  #   - 192.168.29.0/24
+  #   - 10.42.0.0/16
 
 # homeassistant:
   # name: Home
 
-recorder:
-  db_url: !env_var HASS_RECORDER_DB_URL
+# recorder:
+#   db_url: !env_var HASS_RECORDER_DB_URL
 
 automation: !include automations.yaml
 binary_sensor: !include_dir_merge_list binary_sensors
@@ -46,13 +42,13 @@ frontend:
 # zone: !include zone.yaml
 
 # configuration.yaml entry which defines a Home Assistant sensor from MQTT
-mqtt:
-  sensor:
-    - name: "propane_tank_1_sensor_voltage"
-      state_topic: "propane/1/voltage"
-      value_template: "{{ value }}"
-      unit_of_measurement: "units"
-    - name: "propane_tank_1_percentage"
-      state_topic: "propane/1/percentage"
-      value_template: "{{ value }}"
-      unit_of_measurement: "%"
+# mqtt:
+#   sensor:
+#     - name: "propane_tank_1_sensor_voltage"
+#       state_topic: "propane/1/voltage"
+#       value_template: "{{ value }}"
+#       unit_of_measurement: "units"
+#     - name: "propane_tank_1_percentage"
+#       state_topic: "propane/1/percentage"
+#       value_template: "{{ value }}"
+#       unit_of_measurement: "%"
