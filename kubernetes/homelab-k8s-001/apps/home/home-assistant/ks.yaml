@@ -13,7 +13,7 @@ spec:
       namespace: datastore
     - name: mosquitto
     - name: multus-networks
-      namespace: network
+      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
