@@ -74,10 +74,6 @@ spec:
             env:
               TZ: America/New_York
 
-            ports:
-              - name: code
-                containerPort: &codePort 8080
-
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
@@ -104,8 +100,10 @@ spec:
           http:
             appProtocol: kubernetes.io/ws
             port: &port 8123
-          code:
-            port: *codePort
+      code:
+        ports:
+          http:
+            port: &codePort 8080
 
     route:
       app:
@@ -143,7 +141,7 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: code
                 port: *codePort
 
     persistence:
