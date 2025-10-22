@@ -142,7 +142,7 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - identifier:: app
+              - identifier: app
                 port: *codePort
 
     persistence:
