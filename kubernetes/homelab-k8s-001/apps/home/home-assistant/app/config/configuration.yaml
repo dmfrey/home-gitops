@@ -10,8 +10,12 @@ http:
   login_attempts_threshold: 5
   use_x_forwarded_for: true
   trusted_proxies:
+    - 10.42.0.0/15
+    - 192.0.0.0/9
     - 192.168.29.0/24
-    - 10.42.0.0/16
+    - 127.0.0.1
+    # - 192.168.29.0/24
+    # - 10.42.0.0/16
 
 # homeassistant:
   # name: Home
