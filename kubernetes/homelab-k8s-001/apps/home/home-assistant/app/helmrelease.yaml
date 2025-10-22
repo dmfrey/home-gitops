@@ -54,7 +54,7 @@ spec:
               capabilities: { drop: ["ALL"] }
 
           codeserver:
-            dependsOn: home-assistant
+            # dependsOn: home-assistant
 
             image:
               repository: ghcr.io/coder/code-server
