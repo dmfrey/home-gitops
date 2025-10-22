@@ -17,7 +17,7 @@ spec:
 
     controllers:
 
-      *app :
+      home-assistant:
         type: statefulset
 
         annotations:
@@ -78,10 +78,10 @@ spec:
           #     capabilities: { drop: ["ALL"] }
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.10.3
+              tag: 2025.10.3@sha256:94c9906ffd11a2958ca07235686ab30927a7b0a684856f9a8c2f7d2b1a6e2e21
 
             env:
               TZ: America/New_York
@@ -116,48 +116,17 @@ spec:
 
             resources:
               requests:
-                cpu: 47m
-                memory: 1024Mi
+                cpu: 10m
               limits:
-                memory: 2048Mi
+                memory: 2Gi
 
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-          # matter-server:
-          #   image:
-          #     repository: ghcr.io/home-assistant-libs/python-matter-server
-          #     tag: "7.0.1"
-
-          #   args:
-          #     - --storage-path=/data
-          #     - --paa-root-cert-dir=/data/paa-root-cert
-          #     - --primary-interface=net1
-          #     - --log-level=debug
-
-          #   env:
-          #     MATTER_SERVER__INSTANCE_NAME: matter-server
-          #     MATTER_SERVER__PORT: &matterPort 5580
-          #     # MATTER_SERVER__APPLICATION_URL: matter.dmfrey.com
-
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 256Mi
-
-          #   securityContext:
-          #     runAsNonRoot: false
-          #     readOnlyRootFilesystem: false
-          #     allowPrivilegeEscalation: true
-          #     runAsUser: 0
-          #     runAsGroup: 0
-          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
-
           codeserver:
-            dependsOn: *app
+            dependsOn: home-assistant
 
             image:
               repository: ghcr.io/coder/code-server
@@ -179,47 +148,37 @@ spec:
               - name: code
                 containerPort: &codePort 8080
 
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"iot-vlan",
-                "namespace": "network",
-                "ips": ["192.168.50.4/24"],
-                "mac": "c6:2a:0a:f1:3d:f8"
-              }]
-
-          # hostNetwork: true
-
     defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"iot-vlan",
+            "namespace": "network",
+            "ips": ["192.168.50.4/24"],
+            "mac": "c6:2a:0a:f1:3d:f8"
+          }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 20    # dialout
-          - 85    # usb
-          - 568
 
     service:
-      *app :
-        controller: *app
+      app:
         type: LoadBalancer
         annotations:
           # external-dns.alpha.kubernetes.io/hostname: home.dmfrey.com
           lbipam.cilium.io/ips: 192.168.29.242
         ports:
           http:
-            port: *port
-          matter:
-            port: 5540
+            appProtocol: kubernetes.io/ws
+            port: &port 8123
           code:
             port: *codePort
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -238,9 +197,8 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
-        rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
       code:
         hostnames:
@@ -257,80 +215,33 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *codePort
 
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            # fix-permissions:
-            #   - path: /config
-            # git-clone:
-            #   - path: /config
-            *app :
-              - path: /config
-            codeserver:
-              - path: /config
+        globalMounts:
+          - path: /config
 
       llmvision:
         existingClaim: home-assistant-llmvision
         advancedMounts:
-          *app :
-            *app :
+          home-assistant:
+            app:
               - path: /config/www/llmvision
-
-      matter-server-data:
-        existingClaim: home-assistant-matter-server-data
-        advancedMounts:
-          *app :
-            matter-server:
-              - path: /data
-
-      # deploy-key:
-      #   type: secret
-      #   name: home-assistant-deploy-key
-      #   defaultMode: 256
-      #   advancedMounts:
-      #     *app :
-            # git-clone:
-            #   - path: /.ssh/id_ed25519
-            #     subPath: ssh-privatekey
-            #     readOnly: true
-            #   - path: /.ssh/known_hosts
-            #     subPath: known-hosts
-            #   - path: /.gitconfig
-            #     subPath: dot-gitconfig
-            #   - path: /.ssh/config
-            #     subPath: ssh-config
-            # *app :
-            #   - path: /config/.ssh/id_ed25519
-            #     subPath: ssh-privatekey
-            #     readOnly: true
-            #   - path: /config/.ssh/known_hosts
-            #     subPath: known-hosts
-            #   - path: /config/.ssh/config
-            #     subPath: ssh-config
-            # codeserver:
-            #   - path: /home/coder/.ssh/id_ed25519
-            #     subPath: ssh-privatekey
-            #     readOnly: true
-            #   - path: /home/coder/.ssh/known_hosts
-            #     subPath: known-hosts
-            #   - path: /home/coder/.gitconfig
-            #     subPath: dot-gitconfig
-            #   - path: /home/coder/.ssh/config
-            #     subPath: ssh-config
 
       configuration:
         type: configMap
         name: hass-config
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config/configuration.yaml
-                subPath: configuration.yaml
+        globalMounts:
+          - path: /config/configuration.yaml
+            subPath: configuration.yaml
+
+      config-cache:
+        existingClaim: "{{ .Release.Name }}-cache"
+        globalMounts:
+          - path: /config/.venv
 
       config-logs:
         type: emptyDir
@@ -349,17 +260,6 @@ spec:
 
       tmp:
         type: emptyDir
-        medium: Memory
-        advancedMounts:
-          *app :
-            # git-clone:
-            #   - path: /tmp
-            *app :
-              - path: /tmp
-            matter-server:
-              - path: /tmp
-            codeserver:
-              - path: /tmp
 
       backups:
         enabled: true
@@ -367,8 +267,8 @@ spec:
         server: nas.internal
         path: /homeassistant
         advancedMounts:
-          *app :
-            *app :
+          home-assistant:
+            app:
               - path: /config/backups
                 readOnly: false
 
