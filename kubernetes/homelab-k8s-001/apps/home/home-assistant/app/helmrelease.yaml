@@ -166,10 +166,10 @@ spec:
 
     service:
       app:
-        type: LoadBalancer
-        annotations:
+        # type: LoadBalancer
+        # annotations:
           # external-dns.alpha.kubernetes.io/hostname: home.dmfrey.com
-          lbipam.cilium.io/ips: 192.168.29.242
+          # lbipam.cilium.io/ips: 192.168.29.242
         ports:
           http:
             appProtocol: kubernetes.io/ws
