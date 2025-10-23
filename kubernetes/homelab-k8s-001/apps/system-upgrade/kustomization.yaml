@@ -9,4 +9,4 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./system-upgrade-controller/ks.yaml
+  - ./tuppr/ks.yaml
