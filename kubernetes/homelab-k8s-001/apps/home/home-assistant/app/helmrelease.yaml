@@ -171,11 +171,6 @@ spec:
         globalMounts:
           - path: /config/.venv
 
-      config-logs:
-        type: emptyDir
-        globalMounts:
-          - path: /config/logs
-
       config-tts:
         type: emptyDir
         globalMounts:
