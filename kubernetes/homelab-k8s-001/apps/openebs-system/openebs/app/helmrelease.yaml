@@ -7,31 +7,24 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: openebs
 
-  install:
-    disableHooks: true
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    disableHooks: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
 
   values:
 
+    preUpgradeHook:
+      enabled: false
+
     localpv-provisioner:
+      analytics:
+        enabled: false
       localpv:
         image:
           registry: quay.io/
-        basePath: &hostPath /var/mnt/extra/openebs/local
+        basePath: &hostPath /var/mnt/local-hostpath
 
       hostpathClass:
         enabled: true

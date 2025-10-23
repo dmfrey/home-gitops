@@ -226,14 +226,14 @@ cluster:
     key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
 
-#---
-#apiVersion: v1alpha1
-#kind: UserVolumeConfig
-#name: local-hostpath
-#provisioning:
-#  diskSelector:
-#    match: disk.model == "NT-128 2242" && !system_disk
-#  minSize: 100GB
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-hostpath
+provisioning:
+  diskSelector:
+    match: disk.model == "NT-128 2242"  # && !system_disk
+  minSize: 50GB
 
 ---
 apiVersion: v1alpha1
