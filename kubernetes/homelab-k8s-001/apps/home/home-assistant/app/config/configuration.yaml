@@ -16,8 +16,8 @@ http:
 # homeassistant:
   # name: Home
 
-# recorder:
-#   db_url: !env_var HASS_RECORDER_DB_URL
+recorder:
+  db_url: !env_var HASS_RECORDER_DB_URL
 
 automation: !include automations.yaml
 binary_sensor: !include_dir_merge_list binary_sensors
