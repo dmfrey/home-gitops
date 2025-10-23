@@ -88,8 +88,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
-          - 20    # dialout
-          - 85    # usb
           - 568
 
     service:
