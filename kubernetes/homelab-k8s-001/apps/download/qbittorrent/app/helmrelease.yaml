@@ -31,7 +31,7 @@ spec:
             env:
               TZ: America/New_York
               QBT_WEBUI_PORT: &port 80
-              QBT_TORRENTING_PORT: &torrentPort 50413
+              QBT_TORRENTING_PORT: 50413
 
             # probes:
             #   liveness: &probes
