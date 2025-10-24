@@ -105,7 +105,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
-          gethomepage.dev/name: qBittorrent
+          gethomepage.dev/name: RDT Client
           gethomepage.dev/icon: qbittorrent.png
           gethomepage.dev/description: Torrent Client
           gethomepage.dev/widget.type: qbittorrent

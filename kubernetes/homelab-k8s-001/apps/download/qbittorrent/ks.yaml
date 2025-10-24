@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app qbittorrent
+  name: qbittorrent
 spec:
   components:
     - ../../../../components/volsync
@@ -14,9 +14,8 @@ spec:
   path: ./kubernetes/homelab-k8s-001/apps/download/qbittorrent/app
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: qb
-      VOLSYNC_CLAIM: *app
+      APP: qbittorrent
+      VOLSYNC_CLAIM: qbittorrent
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
@@ -24,22 +23,21 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: download
-  timeout: 5m
   wait: false
----
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app qbittorrent-tools
-spec:
-  interval: 1h
-  path: ./kubernetes/homelab-k8s-001/apps/download/qbittorrent/tools
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: download
-  timeout: 5m
-  wait: false
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app qbittorrent-tools
+# spec:
+#   interval: 1h
+#   path: ./kubernetes/homelab-k8s-001/apps/download/qbittorrent/tools
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: download
+#   timeout: 5m
+#   wait: false

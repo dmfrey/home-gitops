@@ -7,35 +7,23 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: qbittorrent
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
     controllers:
-      *app :
+      qbittorrent:
 
         annotations:
           reloader.stakater.com/auto: "true"
           setGateway: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.2@sha256:31ac39705e31f7cdcc04dc46c1c0b0cdf8dc6f9865d4894efc097a33adc41524
@@ -72,9 +60,8 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 512Mi
               limits:
-                memory: 1Gi
+                memory: 2Gi
 
     defaultPodOptions:
       securityContext:
@@ -85,37 +72,55 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      *app :
-        controller: *app
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.29.60
+      app:
+        # type: LoadBalancer
+        # annotations:
+        #   lbipam.cilium.io/ips: 192.168.29.60
         ports:
           http:
-            primary: true
             port: *port
-          bittorrent:
-            enabled: true
-            port: *torrentPort
-            protocol: TCP
+          # bittorrent:
+          #   enabled: true
+          #   port: *torrentPort
+          #   protocol: TCP
 
     route:
-      *app :
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/name: qBittorrent
+          gethomepage.dev/icon: qbittorrent.png
+          gethomepage.dev/description: Torrent Client
+          gethomepage.dev/widget.type: qbittorrent
+          gethomepage.dev/widget.url: http://qbittorrent.download.svc.cluster.local:6500
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
-          - qb.dmfrey.com
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
+
+    configMaps:
+      config:
+        data:
+          .qbt.toml: |-
+            [qbittorrent]
+            addr = "http://localhost:80"
 
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
+
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config/.qbt.toml
+            subPath: .qbt.toml
 
       media:
         type: nfs
@@ -124,6 +129,10 @@ spec:
         globalMounts:
           - path: /media/downloads/qbittorrent
             subPath: downloads/qbittorrent
+
+      qbrr:
+        type: image
+        image: ghcr.io/buroa/qbrr:0.1.1@sha256:fe4a1d100ba896999253a5122d9c77cc4920779d618c23f765458cb6ec7383ca
 
       tmp:
         type: emptyDir
