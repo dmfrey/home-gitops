@@ -149,8 +149,9 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
-            url: "https://plex.dmfrey.com/identity"
+            url: "https://{{ .Release.Name }}.dmfrey.com/identity"
           gethomepage.dev/enabled: "true"
+          gethomepage.dev/href: "https://{{ .Release.Name }}.dmfrey.com"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Plex
           gethomepage.dev/icon: plex.png
