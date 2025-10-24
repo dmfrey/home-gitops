@@ -1,5 +1,0 @@
----
-providerRegex: |
-  ^(dmf-(amd|intel|rpi)-00[1-4])$
-
-bypassDnsResolution: true

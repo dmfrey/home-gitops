@@ -14,13 +14,11 @@ resources:
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
   - ./generic-device-plugin/ks.yaml
-  # - ./intel-device-plugin/ks.yaml
   - ./intel-gpu-resource-driver/ks.yaml
-  # - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/ks.yaml
   - ./multus/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
-  # - ./smtp-relay/ks.yaml
+  - ./smtp-relay/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
