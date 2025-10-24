@@ -12,5 +12,3 @@ spec:
   ref:
     tag: 6.30.0
   url: oci://ghcr.io/home-operations/charts-mirror/loki
-  verify:
-    provider: cosign
