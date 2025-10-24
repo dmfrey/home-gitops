@@ -100,6 +100,24 @@ data:
                 - type: lidarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr, lidarr>
                   service_group: Downloads # group name where widget exists
                   service_name: Lidarr # service name for that widget
+    - Observability:
+        - Grafana:
+            href: http://grafana.dmfrey.com
+            icon: grafana.png
+            description: Monitoring Dashboards
+            widget:
+              type: prometheusmetric
+              url: http://prometheus-operated.observability.svc.cluster.local:9090
+              refreshInterval: 10000 # optional - in milliseconds, defaults to 10s
+              metrics:
+                  - label: Dashboards
+                    query: grafana_stat_totals_dashboard
+                  - label: Data sources
+                    query: grafana_stat_totals_datasource
+                  - label: Total alerts
+                    query: grafana_stat_totals_alert_rules
+                  - label: Alerts triggered
+                    query: grafana_alerting_alerts{state="alertin|nodata|error"}
   settings.yaml: |
     title: Dashboard
     favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
