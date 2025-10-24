@@ -13,5 +13,5 @@ spec:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
   configMapRef:
-    name: external-cnpg-grafana-dashboard-dashboard
+    name: cnpg-grafana-dashboard
     key: cnp.json
