@@ -14,8 +14,8 @@ metadata:
     gethomepage.dev/description: Monitoring Dashboards
     gethomepage.dev/widget.type: grafana
     gethomepage.dev/widget.url: http://grafana-service.observability.svc.cluster.local:3000
-    # gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
-    gethomepage.dev/widget.token: '{{`{{HOMEPAGE_VAR_GRAFANA_TOKEN}}`}}'
+    gethomepage.dev/widget.username: 'admin'
+    gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
 spec:
   hostnames:
     - grafana.dmfrey.com
