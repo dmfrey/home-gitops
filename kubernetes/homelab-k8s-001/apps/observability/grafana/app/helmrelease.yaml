@@ -759,14 +759,13 @@ spec:
           gethomepage.dev/description: Monitoring Dashboards
           gethomepage.dev/widget.type: grafana
           gethomepage.dev/widget.url: http://grafana.observability.svc.cluster.local:3000
-          gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
-          gethomepage.dev/widget.password: '{{`{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}`}}'
+          # gethomepage.dev/widget.username: '{{`{{HOMEPAGE_VAR_GRAFANA_USERNAME}}`}}'
+          gethomepage.dev/widget.token: '{{`{{HOMEPAGE_VAR_GRAFANA_TOKEN}}`}}'
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https
 
     persistence:
       enabled: false
