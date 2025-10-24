@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   # renovate: datasource=github-releases depName=dragonflydb/dragonfly-operator
   - https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/v1.3.0/manifests/crd.yaml
+  - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./rbac.yaml
-  - ./dashboard
