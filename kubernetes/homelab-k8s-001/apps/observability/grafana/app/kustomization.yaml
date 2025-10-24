@@ -2,21 +2,9 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - ./externalsecret.yaml
+  - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-
-# configMapGenerator:
-#   - name: flux-dashboards
-#     files:
-#       - https://raw.githubusercontent.com/jfroy/flatops/refs/heads/main/kubernetes/apps/observability/grafana/app/resources/flux-control-plane.json
-#     options:
-#       annotations:
-#         grafana_folder: Flux
-#         kustomize.toolkit.fluxcd.io/substitute: disabled
-#       labels:
-#         grafana_dashboard: ""
-
-# generatorOptions:
-#   disableNameSuffixHash: true
