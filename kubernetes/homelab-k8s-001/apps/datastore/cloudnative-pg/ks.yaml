@@ -26,7 +26,7 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   interval: 1h
-  path: ./kubernetes/homelab-k8s-001/apps/database/cloudnative-pg/barman-cloud
+  path: ./kubernetes/homelab-k8s-001/apps/datastore/cloudnative-pg/barman-cloud
   postBuild:
     substitute:
       # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
