@@ -9,6 +9,7 @@ metadata:
 
 spec:
   configuration:
+
     destinationPath: s3://cnpg/
     endpointURL: http://minio.internal:9000
 
@@ -23,3 +24,5 @@ spec:
     wal:
       compression: gzip
       maxParallel: 8
+
+  retentionPolicy: 30d

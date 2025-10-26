@@ -5,32 +5,17 @@ kind: Cluster
 metadata:
   name: pg-linkwarden
   annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
     secret.reloader.stakater.com/reload: pg-linkwarden-cnpg-secret
 
 spec:
 
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.6-31
-  primaryUpdateStrategy: unsupervised # let k8s handle upgrades
-  primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
 
-  storage:
-    size: 5Gi
-    storageClass: ceph-block
-
-  walStorage:
-    storageClass: ceph-block
-    size: 5Gi
-
-  postgresql:
-    parameters:
-      max_connections: "600"
-      shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
-
-  monitoring:
-    enablePodMonitor: true
-  # configured according to below link to allow customizing of initdb via Flux
-  # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
+  backup:
+    volumeSnapshot:
+      className: csi-ceph-blockpool
 
   bootstrap:
     initdb:
@@ -41,26 +26,30 @@ spec:
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
 
-  backup:
-    retentionPolicy: 30d
+  monitoring:
+    enablePodMonitor: true
 
-    barmanObjectStore:
-      destinationPath: s3://cnpg/
-      endpointURL: http://minio.internal:9000
-      s3Credentials:
-        accessKeyId:
-          name: pg-linkwarden-cnpg-secret
-          key: AWS_SECRET_ACCESS_KEY_ID
-        secretAccessKey:
-          name: pg-linkwarden-cnpg-secret
-          key: AWS_SECRET_ACCESS_KEY
-      wal:
-        compression: gzip
-        maxParallel: 8
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: linkwarden
 
-    volumeSnapshot:
-      className: csi-ceph-blockpool
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
 
+  primaryUpdateStrategy: unsupervised # let k8s handle upgrades
+  primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
+
+  storage:
+    size: 5Gi
+    storageClass: ceph-block
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi
 
 
 #  # RECOVERY
