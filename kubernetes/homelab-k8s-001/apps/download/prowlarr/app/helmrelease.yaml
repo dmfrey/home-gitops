@@ -63,7 +63,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/home-operations/prowlarr
-              tag: 2.1.5.5213
+              tag: 2.1.5.5216
 
             env:
               TZ: America/New_York
