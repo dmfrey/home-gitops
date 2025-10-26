@@ -14,4 +14,27 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: datastore
-  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudnative-pg-barman-cloud
+spec:
+  dependsOn:
+    - name: cert-manager
+      namespace: cert-manager
+  interval: 1h
+  path: ./kubernetes/homelab-k8s-001/apps/database/cloudnative-pg/barman-cloud
+  postBuild:
+    substitute:
+      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
+      SIDECAR_IMAGE_VERSION: v0.7.0
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: datastore
+  wait: true
