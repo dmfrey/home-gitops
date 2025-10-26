@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -42,6 +43,7 @@ spec:
 
   backup:
     retentionPolicy: 30d
+
     barmanObjectStore:
       destinationPath: s3://cnpg/
       endpointURL: http://minio.internal:9000
@@ -55,6 +57,11 @@ spec:
       wal:
         compression: gzip
         maxParallel: 8
+
+    volumeSnapshot:
+      className: csi-ceph-blockpool
+
+
 
 #  # RECOVERY
 #  bootstrap:

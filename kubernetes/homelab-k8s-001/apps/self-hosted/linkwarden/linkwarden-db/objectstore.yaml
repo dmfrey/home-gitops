@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: linkwarden
+  annotations:
+    secret.reloader.stakater.com/reload: pg-linkwarden-cnpg-secret
+
+spec:
+  configuration:
+    destinationPath: s3://cnpg/
+    endpointURL: http://minio.internal:9000
+
+    s3Credentials:
+      accessKeyId:
+        name: pg-linkwarden-cnpg-secret
+        key: AWS_SECRET_ACCESS_KEY_ID
+      secretAccessKey:
+        name: pg-linkwarden-cnpg-secret
+        key: AWS_SECRET_ACCESS_KEY
+
+    wal:
+      compression: gzip
+      maxParallel: 8
