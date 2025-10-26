@@ -7,23 +7,11 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: cloudnative-pg
 
-  install:
-    remediation:
-      retries: 3
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
+  interval: 1h
 
   values:
 
@@ -34,8 +22,6 @@ spec:
       podMonitorEnabled: false
       grafanaDashboard:
         create: true
-        # labels:
-        #   grafana_dashboard: "true"
         annotations:
           kustomize.toolkit.fluxcd.io/substitute: disabled
           grafana_folder: Datastore
