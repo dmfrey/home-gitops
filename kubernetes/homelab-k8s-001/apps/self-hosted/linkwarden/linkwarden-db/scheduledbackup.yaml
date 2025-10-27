@@ -4,12 +4,17 @@ apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: pg-linkwarden-backup
+
 spec:
+
   schedule: "@daily"
   immediate: true
   backupOwnerReference: self
+
   cluster:
     name: pg-linkwarden
+
   method: plugin
+
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io

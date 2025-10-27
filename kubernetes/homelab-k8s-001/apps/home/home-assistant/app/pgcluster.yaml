@@ -1,36 +1,21 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: pg-home-assistant
-  namespace: home
   annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
     secret.reloader.stakater.com/reload: pg-home-assistant-cnpg-secret
 
 spec:
 
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.6-31
-  primaryUpdateStrategy: unsupervised # let k8s handle upgrades
-  primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.10
 
-  storage:
-    size: 25Gi
-    storageClass: ceph-block
-
-  walStorage:
-    storageClass: ceph-block
-    size: 25Gi
-
-  postgresql:
-    parameters:
-      max_connections: "600"
-      shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
-
-  monitoring:
-    enablePodMonitor: true
-  # configured according to below link to allow customizing of initdb via Flux
-  # https://cloudnative-pg.io/documentation/1.20/bootstrap/#configure-the-application-database
+  backup:
+    volumeSnapshot:
+      className: csi-ceph-blockpool
 
   bootstrap:
     initdb:
@@ -41,21 +26,30 @@ spec:
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
 
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      destinationPath: s3://cnpg/
-      endpointURL: http://minio.internal:9000
-      s3Credentials:
-        accessKeyId:
-          name: pg-home-assistant-cnpg-secret
-          key: AWS_SECRET_ACCESS_KEY_ID
-        secretAccessKey:
-          name: pg-home-assistant-cnpg-secret
-          key: AWS_SECRET_ACCESS_KEY
-      wal:
-        compression: gzip
-        maxParallel: 8
+  monitoring:
+    enablePodMonitor: true
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: home-assistant
+
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
+
+  primaryUpdateStrategy: unsupervised # let k8s handle upgrades
+  primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
+
+  storage:
+    size: 25Gi
+    storageClass: ceph-block
+
+  walStorage:
+    storageClass: ceph-block
+    size: 25Gi
 
 #  # RECOVERY
 #  bootstrap:
