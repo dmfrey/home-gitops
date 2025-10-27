@@ -29,6 +29,12 @@ spec:
   monitoring:
     enablePodMonitor: true
 
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: authentik
+
   postgresql:
     parameters:
       max_connections: "600"
