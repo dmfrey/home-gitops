@@ -37,10 +37,10 @@ spec:
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags
+    - --dir=s3://dragonflydb/authentik
 
   snapshot:
-    cron: '0 0 * * *'
-    dir: 's3://dragonflydb/authentik'
+    cron: 0 0 * * *
 
   resources:
     requests:
