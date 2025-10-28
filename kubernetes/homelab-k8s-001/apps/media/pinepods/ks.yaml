@@ -33,6 +33,8 @@ kind: Kustomization
 metadata:
   name: pinepods-kv
 spec:
+  components:
+    - ../../../../components/dragonflydb
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
@@ -40,6 +42,9 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/pinepods/pinepods-kv"
+  postBuild:
+    substitute:
+      DB: pinepods-kv
   prune: true
   sourceRef:
     kind: GitRepository
