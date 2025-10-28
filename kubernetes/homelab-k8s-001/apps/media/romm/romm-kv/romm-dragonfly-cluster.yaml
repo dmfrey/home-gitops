@@ -3,20 +3,38 @@ apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
   name: romm-kv-cluster
+
 spec:
-  image: ghcr.io/dragonflydb/dragonfly:v1.34.2@sha256:d5312167ab5125f916218e71994323800926038eb284e2da8ed41d47e9c2b44e
+
   replicas: 3
+
+  image: ghcr.io/dragonflydb/dragonfly:v1.34.2@sha256:d5312167ab5125f916218e71994323800926038eb284e2da8ed41d47e9c2b44e
+
   env:
     - name: MAX_MEMORY
       valueFrom:
         resourceFieldRef:
           resource: limits.memory
           divisor: 1Mi
+    - name: DFLY_s3_endpoint
+      value: 'http://minio.internal:9000'
+    - name: DFLY_s3_use_https
+      value: 'false'
+
+  envFrom:
+    - secretRef:
+        name: romm-kv-secret
+
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags
+
+  snapshot:
+    cron: '0 0 * * *'
+    dir: 's3://dragonflydb/romm'
+
   resources:
     requests:
       cpu: 100m
