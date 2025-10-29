@@ -26,6 +26,12 @@ spec:
 
       route:
         enabled: true
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Observability
+          gethomepage.dev/name: VictoriaLogs
+          gethomepage.dev/icon: victoria-logs.png
+          gethomepage.dev/description: System & Application Logs
         hostnames:
           - victoria-logs.dmfrey.com
         parentRefs:
