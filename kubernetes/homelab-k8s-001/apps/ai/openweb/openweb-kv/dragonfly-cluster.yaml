@@ -35,13 +35,10 @@ spec:
     - --lock_on_hashtags
     - --s3_endpoint=minio.internal:9000
     - --s3_use_https=false
-    # - --dir=s3://dragonflydb/openweb
-    # - --dbfilename=backup-{timestamp}
 
   snapshot:
     cron: 0 0 * * *
     dir: "s3://dragonflydb/openweb"
-    
 
   resources:
     requests:
