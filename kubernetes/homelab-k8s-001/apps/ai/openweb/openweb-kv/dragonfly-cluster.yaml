@@ -17,31 +17,31 @@ spec:
         resourceFieldRef:
           resource: limits.memory
           divisor: 1Mi
-    # - name: AWS_ACCESS_KEY_ID
-    #   valueFrom:
-    #     secretKeyRef:
-    #       name: openweb-kv-secret
-    #       key: AWS_ACCESS_KEY_ID
-    # - name: AWS_SECRET_ACCESS_KEY
-    #   valueFrom:
-    #     secretKeyRef:
-    #       name: openweb-kv-secret
-    #       key: AWS_SECRET_ACCESS_KEY
-    # - name: DFLY_s3_endpoint
-    #   value: 'minio.internal:9000'
-    # - name: DFLY_s3_use_https
-    #   value: 'false'
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: openweb-kv-secret
+          key: AWS_ACCESS_KEY_ID
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: openweb-kv-secret
+          key: AWS_SECRET_ACCESS_KEY
 
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags
+    - --s3_endpoint=minio.internal:9000
+    - --s3_use_https=false
     # - --dir=s3://dragonflydb/openweb
     # - --dbfilename=backup-{timestamp}
 
-  # snapshot:
-  #   cron: 0 0 * * *
+  snapshot:
+    cron: 0 0 * * *
+    dir: "s3://dragonflydb/openweb"
+    
 
   resources:
     requests:
