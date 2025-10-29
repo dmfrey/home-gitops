@@ -64,7 +64,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: openweb-db
-    # - name: openweb-kv
+    - name: openweb-kv
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
