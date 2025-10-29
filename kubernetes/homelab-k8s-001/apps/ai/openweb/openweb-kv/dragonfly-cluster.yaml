@@ -38,6 +38,7 @@ spec:
     - --cluster_mode=emulated
     - --lock_on_hashtags
     - --dir=s3://dragonflydb/openweb
+    - --dbfilename=backup-{timestamp}
 
   snapshot:
     cron: 0 0 * * *
