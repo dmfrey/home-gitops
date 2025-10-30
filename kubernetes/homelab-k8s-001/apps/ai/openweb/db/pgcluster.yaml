@@ -18,13 +18,22 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    initdb:
-      dataChecksums: true
-      database: openweb
-      owner: openweb
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
+    # initdb:
+    #   dataChecksums: true
+    #   database: openweb
+    #   owner: openweb
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
+      source: source
+
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: openweb
 
   monitoring:
     enablePodMonitor: true
@@ -50,28 +59,3 @@ spec:
   walStorage:
     storageClass: ceph-block
     size: 25Gi
-
-    # recovery:
-    #   source: clusterBackup
-    #   database: openweb
-    #   owner: openweb
-    #   recoveryTarget: {}
-    #     targetTime: "2025-09-15 23:59:59.00000+01"
-
-  # externalClusters:
-  #   - name: clusterBackup
-  #     barmanObjectStore:
-  #       serverName: pg-openweb
-  #       wal:
-  #         compression: gzip
-  #         maxParallel: 8
-  #       destinationPath: s3://cnpg/
-  #       endpointURL: http://minio.internal:9000
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: pg-openweb-cnpg-secret
-  #           key: AWS_SECRET_ACCESS_KEY_ID
-  #         secretAccessKey:
-  #           name: pg-openweb-cnpg-secret
-  #           key: AWS_SECRET_ACCESS_KEY
-

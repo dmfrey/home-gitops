@@ -18,13 +18,22 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    initdb:
-      dataChecksums: true
-      database: linkwarden
-      owner: linkwarden
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
+    # initdb:
+    #   dataChecksums: true
+    #   database: linkwarden
+    #   owner: linkwarden
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
+      source: source
+
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: linkwarden
 
   monitoring:
     enablePodMonitor: true
@@ -50,27 +59,3 @@ spec:
   walStorage:
     storageClass: ceph-block
     size: 5Gi
-
-
-#  # RECOVERY
-#  bootstrap:
-#    recovery:
-#      source: &previous-cluster pg-linkwarden-v0
-#  ## Note: externalClusters is needed when recovering from an existing cnpg cluster
-#  externalClusters:
-#    - name: *previous-cluster
-#      barmanObjectStore:
-#        wal:
-#          compression: gzip
-#          maxParallel: 8
-#        destinationPath: s3://cnpg/
-#        endpointURL: http://minio.internal:9000
-#        s3Credentials:
-#          accessKeyId:
-#            name: pg-linkwarden-cnpg-secret
-#            key: AWS_ACCESS_KEY_ID
-#          secretAccessKey:
-#            name: pg-linkwarden-cnpg-secret
-#            key: AWS_SECRET_ACCESS_KEY
-
-

@@ -18,13 +18,22 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    initdb:
-      dataChecksums: true
-      database: bazarr
-      owner: bazarr
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
+    # initdb:
+    #   dataChecksums: true
+    #   database: bazarr
+    #   owner: bazarr
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
+      source: source
+
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: bazarr
 
   monitoring:
     enablePodMonitor: true
