@@ -14,15 +14,22 @@ spec:
           "type": "macvlan",
           "master": "eth0.50",
           "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
           "ipam": {
             "type": "static",
             "routes": [
-              {"dst": "0.0.0.0/0", "gw": "192.168.50.1"}
+              {"dst": "192.0.0.0/8", "gw": "192.168.50.1"},
+              { "dst": "224.0.0.0/4" }
             ]
           }
         },
         {
-            "type": "sbr"
+            "type": "tuning",
+            "capabilities": {
+                "mac": true
+            }
         }
       ]
     }
