@@ -24,6 +24,8 @@ spec:
     #   localeCollate: en_US.utf8
     #   localeCType: en_US.utf8
     recovery:
+      owner: gatus
+      encoding: "UTF8"
       source: source
 
   externalClusters:

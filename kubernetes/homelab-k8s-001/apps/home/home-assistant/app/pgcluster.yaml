@@ -26,6 +26,8 @@ spec:
     #   localeCollate: en_US.utf8
     #   localeCType: en_US.utf8
     recovery:
+      database: home-assistant
+      owner: home-assistant
       source: source
 
   externalClusters:

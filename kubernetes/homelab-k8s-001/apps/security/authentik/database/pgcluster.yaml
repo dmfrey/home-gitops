@@ -26,6 +26,8 @@ spec:
     #   localeCollate: en_US.utf8
     #   localeCType: en_US.utf8
     recovery:
+      database: authentik
+      owner: authentik
       source: source
 
   externalClusters:
