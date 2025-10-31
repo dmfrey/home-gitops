@@ -48,7 +48,6 @@ spec:
               - --model=small
               - --language=en
               - --data-dir=/data
-              - --download-dir /data
 
             env:
               TZ: America/New_York
