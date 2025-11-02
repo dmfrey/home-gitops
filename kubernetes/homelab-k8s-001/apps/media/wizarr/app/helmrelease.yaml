@@ -36,8 +36,8 @@ spec:
                 memory: 1024Mi
 
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
