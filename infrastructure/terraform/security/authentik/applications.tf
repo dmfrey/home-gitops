@@ -1,6 +1,7 @@
 
 locals {
   oauth_apps = [
+    "affine",
     "gatus",
     "grafana",
     "blinko",
@@ -24,6 +25,14 @@ module "onepassword_application" {
 # Step 2: Parse the secrets using regex to extract client_id and client_secret
 locals {
   applications = {
+    affine = {
+      client_id     = module.onepassword_application["affine"].fields["AUTHENTIK_CLIENT_ID"]
+      client_secret = module.onepassword_application["affine"].fields["AUTHENTIK_CLIENT_SECRET"]
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/affine.svg"
+      redirect_uri  = "https://affine.${var.cluster_domain}/oauth/callback"
+      launch_url    = "https://affine.${var.cluster_domain}/"
+    },
     gatus = {
       client_id     = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_SECRET"]
