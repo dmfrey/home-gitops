@@ -9,6 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./affine-db/ks.yaml
   # - ./blinko/ks.yaml
   - ./homepage/ks.yaml
   - ./linkwarden/ks.yaml
