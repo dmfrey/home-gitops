@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: affine-kv-cluster
+spec:
+  selector:
+    matchLabels:
+      app: affine-kv-cluster
+  podTargetLabels: ["app"]
+  podMetricsEndpoints:
+    - port: admin

@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/dragonflydb.io/dragonfly_v1alpha1.json
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: affine-kv-cluster
+
+spec:
+
+  replicas: 3
+
+  image: ghcr.io/dragonflydb/dragonfly:v1.34.2@sha256:d5312167ab5125f916218e71994323800926038eb284e2da8ed41d47e9c2b44e
+
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Mi
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: affine-kv-secret
+          key: AWS_ACCESS_KEY_ID
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: affine-kv-secret
+          key: AWS_SECRET_ACCESS_KEY
+
+  args:
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=2
+    - --cluster_mode=emulated
+    - --lock_on_hashtags
+    - --s3_endpoint=minio.internal:9000
+    - --s3_use_https=false
+
+  snapshot:
+    cron: 0 0 * * *
+    dir: "s3://dragonflydb/affine"
+
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      memory: 512Mi

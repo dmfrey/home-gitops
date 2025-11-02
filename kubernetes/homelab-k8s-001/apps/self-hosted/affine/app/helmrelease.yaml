@@ -1,0 +1,233 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app affine
+
+spec:
+
+  interval: 1h
+
+  chartRef:
+    kind: OCIRepository
+    name: affine
+
+  maxHistory: 2
+
+  install:
+    createNamespace: true
+    remediation:
+      retries: -1
+
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+
+  uninstall:
+    keepHistory: false
+
+  driftDetection:
+    mode: enabled
+
+  values:
+
+    controllers:
+
+      *app :
+        type: statefulset
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          *app :
+            image:
+              repository: rommapp/romm
+              tag: 4.3.2
+
+            env:
+              TZ: America/New_York
+              ENABLE_SCHEDULED_RESCAN: "true"
+              SCHEDULED_RESCAN_CRON: "0 3 * * *"
+              ENABLE_SCHEDULED_UPDATE_SWITCH_TITLEDB: "false"
+              ENABLE_SCHEDULED_UPDATE_MAME_XML: "false"
+              ENABLE_RESCAN_ON_FILESYSTEM_CHANGE: "true"
+              RESCAN_ON_FILESYSTEM_CHANGE_DELAY: 5
+              FLASHPOINT_API_ENABLED: true
+              HLTB_API_ENABLED: true
+              ROMM_PORT: &port 8080
+              ROMM_DB_DRIVER: postgresql
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-romm-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-romm-app
+                    key: port
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-romm-app
+                    key: dbname
+              DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-romm-app
+                    key: username
+              DB_PASSWD:
+                valueFrom:
+                  secretKeyRef:
+                    name: pg-romm-app
+                    key: password
+              REDIS_HOST: romm-kv-cluster.media.svc.cluster.local
+              REDIS_PORT: 6379
+              OIDC_ENABLED: true
+              OIDC_PROVIDER: authentik
+              OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-secret
+                    key: ROMM_CLIENT_ID
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-secret
+                    key: ROMM_CLIENT_SECRET
+              OIDC_REDIRECT_URI: https://romm.dmfrey.com/api/oauth/openid
+              OIDC_SERVER_APPLICATION_URL: https://auth.dmfrey.com/application/o/romm
+
+            envFrom:
+              - secretRef:
+                  name: romm-secret
+
+            ports:
+              - name: http
+                containerPort: *port
+
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 100m
+              limits:
+                memory: 1024Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+          # *app :
+          #   image:
+          #     repository: busybox
+          #     tag: stable
+
+          #   command:
+          #     - sleep
+          #     - "3600"
+
+          #   securityContext:
+          #     runAsNonRoot: false
+          #     readOnlyRootFilesystem: true
+          #     allowPrivilegeEscalation: true
+          #     runAsUser: 0
+          #     runAsGroup: 0
+          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      *app :
+        enabled: true # false
+        controller: *app
+        ports:
+          http:
+            port: *port
+
+    route:
+      *app :
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Games
+          gethomepage.dev/name: RomM
+          gethomepage.dev/icon: romm.png
+          gethomepage.dev/description: Retro Games
+          gethomepage.dev/widget.type: romm
+          gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
+        hostnames:
+          - romm.dmfrey.com
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+
+    persistence:
+      romm:
+        existingClaim: ${VOLSYNC_CLAIM}
+        # globalMounts:
+        #   - path: /romm
+
+      romm-config:
+        enabled: true
+        type: nfs
+        server: nas.internal
+        path: /games/config
+        globalMounts:
+          - path: /romm/config
+
+      # configuration:
+      #   type: configMap
+      #   name: romm-config
+      #   globalMounts:
+      #     - path: /tmp/config.yml
+      #       subPath: config.yml
+      #   defaultMode: 0664
+
+      romm-assets:
+        enabled: true
+        type: nfs
+        server: nas.internal
+        path: /games/assets
+        globalMounts:
+          - path: /romm/assets
+
+      romm-library:
+        enabled: true
+        type: nfs
+        server: nas.internal
+        path: /games/library
+        globalMounts:
+          - path: /romm/library
+
+      romm-resources:
+        enabled: true
+        type: nfs
+        server: nas.internal
+        path: /games/resources
+        globalMounts:
+          - path: /romm/resources
+
+      nginx-conf:
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /etc/nginx/conf.d
+
+      tmp:
+        type: emptyDir
+        medium: Memory
