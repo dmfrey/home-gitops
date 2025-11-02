@@ -35,9 +35,13 @@ spec:
               limits:
                 memory: 1024Mi
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
     defaultPodOptions:
       securityContext:
-        readOnlyRootFilesystem: true
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
