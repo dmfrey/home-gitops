@@ -3,45 +3,27 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app wizarr
+  name: wizarr
 
 spec:
-
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: wizarr
 
-  maxHistory: 2
-
-  install:
-    createNamespace: true
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
     controllers:
 
-      *app :
+      wizarr:
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/wizarrrr/wizarr
               tag: v2025.10.8
@@ -50,29 +32,27 @@ spec:
               TZ: America/New_York
 
             resources:
-              requests:
-                memory: 180Mi
-                cpu: 15m
               limits:
-                memory: 350Mi
+                memory: 1024Mi
 
     defaultPodOptions:
       securityContext:
-        # runAsUser: 568
-        # runAsGroup: 568
-        fsGroup: 568
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
-            port: &port 5690
+            port: 5690
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -87,7 +67,6 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https
 
     persistence:
       config:
