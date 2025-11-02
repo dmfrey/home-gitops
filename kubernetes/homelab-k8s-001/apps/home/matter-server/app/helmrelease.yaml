@@ -3,67 +3,29 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app matter-server
+  name: matter-server
 spec:
-
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: matter-server
 
-  maxHistory: 3
-
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-      strategy: uninstall
-
-  uninstall:
-    keepHistory: false
+  interval: 1h
 
   values:
 
     controllers:
 
-      *app :
-        type: statefulset
+      matter-server:
 
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name": "iot-vlan",
-                "namespace": "kube-system",
-                "ips": ["192.168.50.9/24"],
-                "mac": "aa:8c:ae:86:6e:8a"
-              }]
-
-          # hostNetwork: true
-
-          securityContext:
-            runAsUser: 0                      # Must be run as root user
-            runAsGroup: 0
-            runAsNonRoot: false               # Must be run as root user
-            fsGroup: 0
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 34
-
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/home-assistant-libs/python-matter-server
-              tag: 8.1.0
-              pullPolicy: IfNotPresent
+              tag: 8.1.0@sha256:170aa093ce91c76cde4cc390918307590f0f5558fcec93f913af3cb019e6562a
 
             args:
               - --storage-path=/data
@@ -73,48 +35,50 @@ spec:
 
             env:
               TZ: "America/New_York"
-              MATTER_SERVER__INSTANCE_NAME: *app
+              MATTER_SERVER__INSTANCE_NAME: "{{ .Release.Name }}"
               MATTER_SERVER__PORT: &port 5580
               MATTER_SERVER__APPLICATION_URL: &host "matter.dmfrey.com"
               MATTER_SERVER__LOG_LEVEL: info
 
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
-            #   startup:
-            #     enabled: false
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 5
-
             resources:
-              requests:
-                memory: "100M"
               limits:
-                memory: "500M"
+                memory: 100Mi
+
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot-vlan",
+            "namespace": "kube-system",
+            "ips": ["192.168.50.9/24"],
+            "mac": "aa:8c:ae:86:6e:8a"
+          }]
+      hostUsers: false
+      securityContext:
+        runAsNonRoot: false # Must be run as root user
+        runAsUser: 0        # Must be run as root user
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 34
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
-          ws:
-            primary: true
+          http:
             port: *port
-            protocol: TCP
 
     route:
-      *app :
+      app:
         hostnames:
           - *host
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: "{{ .Release.Name }}"
                 port: *port
 
     persistence:
@@ -123,4 +87,3 @@ spec:
 
       tmp:
         type: emptyDir
-        medium: Memory
