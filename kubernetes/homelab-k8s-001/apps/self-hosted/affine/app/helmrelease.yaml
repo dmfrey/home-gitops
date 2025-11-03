@@ -57,6 +57,7 @@ spec:
               TZ: America/New_York
               NODE_ENV: production
               AFFINE_INDEXER_ENABLED: false
+              AFFINE_OIDC_ISSUER: "https://aut.dmfrey.com/application/o/affine/.well-known/openid-configuration"
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /affine/config
               DATABASE_URL:
@@ -70,9 +71,9 @@ spec:
               REDIS_SERVER_PORT: 6379
               UPLOAD_LOCATION: /affine/storage
 
-            # envFrom:
-            #   - secretRef:
-            #       name: affine-secret
+            envFrom:
+              - secretRef:
+                  name: affine-secret
 
             resources:
               limits:
