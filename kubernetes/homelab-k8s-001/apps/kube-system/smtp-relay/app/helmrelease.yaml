@@ -65,6 +65,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: smtp-relay.dmfrey.com
           lbipam.cilium.io/ips: 192.168.29.225
+        externalTrafficPolicy: Local
         ports:
           smtp:
             port: *port
