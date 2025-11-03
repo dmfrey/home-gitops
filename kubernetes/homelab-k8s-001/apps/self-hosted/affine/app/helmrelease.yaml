@@ -34,7 +34,7 @@ spec:
             env:
               TZ: America/New_York
               AFFINE_INDEXER_ENABLED: false
-              AFFINE_SERVER_EXTERNAL_URL: "{{ Release.name }}.dmfrey.com"
+              AFFINE_SERVER_EXTERNAL_URL: "{{ Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /affine/config
               DATABASE_URL:
                 valueFrom:
@@ -56,7 +56,7 @@ spec:
             env:
               TZ: America/New_York
               AFFINE_INDEXER_ENABLED: false
-              AFFINE_SERVER_EXTERNAL_URL: "{{ Release.name }}.dmfrey.com"
+              AFFINE_SERVER_EXTERNAL_URL: "{{ Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /affine/config
               DATABASE_URL:
                 valueFrom:
@@ -112,14 +112,14 @@ spec:
           # gethomepage.dev/widget.type: romm
           # gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
         hostnames:
-          - "{{ Release.name }}.dmfrey.com"
+          - "{{ Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-internal
             namespace: network
 
     persistence:
       config:
-        existingClaim: "{{ Release.name }}"
+        existingClaim: "{{ Release.Name }}"
         globalMounts:
           - path: /affine/config
 
