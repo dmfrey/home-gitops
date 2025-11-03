@@ -55,6 +55,7 @@ spec:
 
             env:
               TZ: America/New_York
+              NODE_ENV: production
               AFFINE_INDEXER_ENABLED: false
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /affine/config
