@@ -45,7 +45,7 @@ spec:
           *app :
             image:
               repository: madeofpendletonwool/pinepods
-              tag: 0.8.1@sha256:ab2af358f25775d010fcad2481b44f8def507740195aa64ff7ef2b5e7d72d699
+              tag: 0.8.2@sha256:ee412e52e59b6c49f4f852c41db82e9a258563ddc2e31d7c6e7ef824b8abcb70
 
             env:
               TZ: America/New_York
