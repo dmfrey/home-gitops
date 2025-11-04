@@ -33,9 +33,11 @@ spec:
 
             env:
               TZ: America/New_York
+              NODE_ENV: production
               AFFINE_INDEXER_ENABLED: false
+              AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/.well-known/openid-configuration"
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
-              CONFIG_LOCATION: /affine/config
+              CONFIG_LOCATION: /root/.affine/config
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
@@ -43,9 +45,11 @@ spec:
                     key: uri
               MAILER_HOST: smtp-relay.kube-system.svc.cluster.local
               MAILER_PORT: 25
+              MAILER_SENDER: "Affine No Reply <noreply@homelab5767.cc>"
+              MAILER_IGNORE_TLS: true
               REDIS_SERVER_HOST: affine-kv-cluster.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
-              UPLOAD_LOCATION: /affine/storage
+              UPLOAD_LOCATION: /root/.affine/storage
 
         containers:
           app:
@@ -57,9 +61,9 @@ spec:
               TZ: America/New_York
               NODE_ENV: production
               AFFINE_INDEXER_ENABLED: false
-              AFFINE_OIDC_ISSUER: "https://aut.dmfrey.com/application/o/affine/.well-known/openid-configuration"
+              AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/.well-known/openid-configuration"
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
-              CONFIG_LOCATION: /affine/config
+              CONFIG_LOCATION: /root/.affine/config
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
@@ -67,11 +71,11 @@ spec:
                     key: uri
               MAILER_HOST: smtp-relay.kube-system.svc.cluster.local
               MAILER_PORT: 25
-              MAILER_SENDER: noreply@homelab5767.cc
+              MAILER_SENDER: "Affine No Reply <noreply@homelab5767.cc>"
               MAILER_IGNORE_TLS: true
               REDIS_SERVER_HOST: affine-kv-cluster.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
-              UPLOAD_LOCATION: /affine/storage
+              UPLOAD_LOCATION: /root/.affine/storage
 
             envFrom:
               - secretRef:
@@ -80,22 +84,6 @@ spec:
             resources:
               limits:
                 memory: 2Gi
-
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities:
-            #     drop:
-            #       - ALL
-
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
-    #     fsGroup: 1000
-    #     fsGroupChangePolicy: OnRootMismatch
-    #     seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
@@ -113,8 +101,6 @@ spec:
           gethomepage.dev/name: Affine
           gethomepage.dev/icon: affine.png
           gethomepage.dev/description: A privacy-focused, local-first, open-source, and ready-to-use alternative for Notion & Miro.
-          # gethomepage.dev/widget.type: romm
-          # gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
@@ -125,7 +111,7 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /affine/config
+          - path: /root/.affine/config
 
       uploads:
         enabled: true
@@ -133,7 +119,7 @@ spec:
         server: nas.internal
         path: /media/affine
         globalMounts:
-          - path: /affine/storage
+          - path: /root/.affine/storage
 
       tmp:
         type: emptyDir
