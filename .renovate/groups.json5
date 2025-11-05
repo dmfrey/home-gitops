@@ -1,24 +1,25 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
     {
-      "description": ["1Password Connect Group"],
-      "groupName": "1Password Connnect",
-      "matchPackagePatterns": ["1password/connect"],
-      "matchDatasources": ["docker"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
+      description: "1Password Connect Group",
+      groupName: "1password-connect",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/1password/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
     },
     {
-      "description": ["Actions Runner Controller Group"],
-      "groupName": "Actions Runner Controller",
-      "matchPackagePatterns": ["gha-runner-scale-set"],
-      "matchDatasources": ["docker", "helm"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
+      description: "Actions Runner Controller Group",
+      groupName: "actions-runner-controller",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/gha-runner-scale-set-controller/", "/gha-runner-scale-set/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      "separateMinorPatch": true
+      minimumGroupSize: 2,
     },
     {
       description: "Flux Operator Group",
@@ -57,24 +58,24 @@
       minimumGroupSize: 5,
     },
     {
-      "description": ["Rook-Ceph Group"],
-      "groupName": "Rook-Ceph",
-      "matchPackagePatterns": ["rook.ceph"],
-      "matchDatasources": ["helm"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
+      description: "Rook-Ceph Group",
+      groupName: "rook-ceph",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      "separateMinorPatch": true
+      minimumGroupSize: 2,
     },
     {
-      "description": ["Talos Group"],
-      "groupName": "Talos",
-      "matchPackagePatterns": ["siderolabs/talosctl", "siderolabs/installer"],
-      "matchDatasources": ["docker"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
+      description: "Talos Group",
+      groupName: "talos",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/installer/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      "separateMinorPatch": true
-    }
-  ]
+      minimumGroupSize: 2,
+    },
+  ],
 }
