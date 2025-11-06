@@ -7,29 +7,11 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: radarr
 
-  maxHistory: 2
-
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
@@ -65,10 +47,9 @@ spec:
 
             resources:
               requests:
-                cpu: 5m
-                memory: 128Mi
+                cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 350Mi
 
             securityContext:
               allowPrivilegeEscalation: false
