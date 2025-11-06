@@ -17,6 +17,7 @@ spec:
     controllers:
 
       matter-server:
+        type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
