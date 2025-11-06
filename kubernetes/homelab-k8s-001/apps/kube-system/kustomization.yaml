@@ -9,7 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./busybox/ks.yaml
+  # - ./busybox/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
