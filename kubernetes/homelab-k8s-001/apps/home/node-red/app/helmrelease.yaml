@@ -6,25 +6,11 @@ metadata:
   name: &app node-red
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: node-red
 
-  maxHistory: 2
-
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
+  interval: 1h
 
   values:
 
@@ -46,10 +32,9 @@ spec:
 
             resources:
               requests:
-                memory: 350Mi
-                cpu: 150m
+                cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 350Mi
 
     defaultPodOptions:
       securityContext:
