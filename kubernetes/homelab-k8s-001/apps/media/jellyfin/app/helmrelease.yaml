@@ -7,29 +7,11 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: jellyfin
 
-  maxHistory: 2
-
-  install:
-    createNamespace: true
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
@@ -79,10 +61,9 @@ spec:
               claims:
                 - name: gpu
               requests:
-                memory: 1Gi
+                cpu: 10m
               limits:
-                cpu: 1
-                memory: 2Gi
+                memory: 500Mi
 
             securityContext:
               allowPrivilegeEscalation: false
