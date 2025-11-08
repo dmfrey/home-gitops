@@ -6,11 +6,11 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
 
-configMapGenerator:
-  - name: piper-config
-    files:
-      - ./resources/pre_process_map.yaml
-      - ./resources/voice_to_speaker.yaml
+# configMapGenerator:
+#   - name: piper-config
+#     files:
+#       - ./resources/pre_process_map.yaml
+#       - ./resources/voice_to_speaker.yaml
 
-generatorOptions:
-  disableNameSuffixHash: true
+# generatorOptions:
+#   disableNameSuffixHash: true

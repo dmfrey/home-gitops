@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app piper
+  name: piper
 
 spec:
 
@@ -17,20 +17,23 @@ spec:
 
     controllers:
 
-      *app :
+      piper:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: rhasspy/wyoming-piper
-              tag: 1.6.3@sha256:2f5de2c89bfb87e7b625265315a9d9f6deb5db44cec3a3e9aa0087d002eac459
+              tag: 2.1.2 # 1.6.3@sha256:2f5de2c89bfb87e7b625265315a9d9f6deb5db44cec3a3e9aa0087d002eac459
 
             args:
-              - --voice=en_US-hfc_female-medium
+              - --voice
+              - en_US-hfc_female-medium
+              - --data-dir
+              - /data
 
             env:
               TZ: America/New_York
@@ -46,19 +49,19 @@ spec:
               limits:
                 memory: 350Mi
 
-          api:
-            image:
-              repository: ghcr.io/matatonic/openedai-speech-min
-              tag: 0.18.2
+          # api:
+          #   image:
+          #     repository: ghcr.io/matatonic/openedai-speech-min
+          #     tag: 0.18.2
 
-            env:
-              TTS_HOME: voices
-              HF_HOME: voices
+          #   env:
+          #     TTS_HOME: voices
+          #     HF_HOME: voices
 
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+          #   securityContext:
+          #     allowPrivilegeEscalation: false
+          #     readOnlyRootFilesystem: true
+          #     capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
       securityContext:
@@ -69,45 +72,44 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      *app :
-        controller: *app
+      app:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.29.102
         ports:
-          *app :
-            port: 10200
-          http:
-            port: &port 8000
+          app:
+            http: 10200
+          # http:
+          #   port: &port 8000
 
-    route:
-      *app :
-        hostnames: ["piper.dmfrey.com"]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
+    # route:
+    #   *app :
+    #     hostnames: ["piper.dmfrey.com"]
+    #     parentRefs:
+    #       - name: envoy-internal
+    #         namespace: network
+    #         sectionName: https
+    #     rules:
+    #       - backendRefs:
+    #           - name: *app
+    #             port: *port
 
     persistence:
-      config:
-        type: configMap
-        name: piper-config
-        globalMounts:
-          - path: /app/config
+      # config:
+      #   type: configMap
+      #   name: piper-config
+      #   globalMounts:
+      #     - path: /app/config
 
       data:
-        existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            *app :
-              - path: /data
-            api:
-              - path: /app/voices
+        existingClaim: "{{ .Release.Name }}"
+        # advancedMounts:
+        #   *app :
+        #     *app :
+        #       - path: /data
+        #     api:
+        #       - path: /app/voices
 
       tmp:
         type: emptyDir
-        medium: Memory
+        # medium: Memory

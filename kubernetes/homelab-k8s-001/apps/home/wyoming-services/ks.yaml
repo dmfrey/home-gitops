@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: piper
-      VOLSYNC_CLAIM: piper-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
