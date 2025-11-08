@@ -38,7 +38,7 @@ spec:
               TZ: "America/New_York"
               MATTER_SERVER__INSTANCE_NAME: "{{ .Release.Name }}"
               MATTER_SERVER__PORT: &port 5580
-              MATTER_SERVER__APPLICATION_URL: &host "matter.dmfrey.com"
+              MATTER_SERVER__APPLICATION_URL: "{{ .Release.Name }}.dmfrey.com"
               MATTER_SERVER__LOG_LEVEL: info
 
             resources:
@@ -84,7 +84,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
 
       tmp:
         type: emptyDir

@@ -17,9 +17,9 @@ spec:
   postBuild:
     substitute:
       APP: matter-server
-      APP_UID: "0"
-      APP_GID: "0"
-      VOLSYNC_CLAIM: matter-server-data
+      # APP_UID: "0"
+      # APP_GID: "0"
+      # VOLSYNC_CLAIM: matter-server-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   retryInterval: 2m
