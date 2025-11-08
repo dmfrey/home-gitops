@@ -77,8 +77,8 @@ spec:
         annotations:
           lbipam.cilium.io/ips: 192.168.29.102
         ports:
-          app:
-            http: 10200
+          http:
+            port: 10200
           # http:
           #   port: &port 8000
 
