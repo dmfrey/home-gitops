@@ -71,8 +71,9 @@ spec:
                 - name: gpu
               requests:
                 cpu: 100m
-              limits:
                 memory: 2Gi
+              limits:
+                memory: 4Gi
 
             securityContext:
               allowPrivilegeEscalation: false
