@@ -70,17 +70,17 @@ spec:
           http:
             port: *port
 
-    route:
-      app:
-        hostnames:
-          - *host
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - name: "{{ .Release.Name }}"
-                port: *port
+    # route:
+    #   app:
+    #     hostnames:
+    #       - *host
+    #     parentRefs:
+    #       - name: envoy-internal
+    #         namespace: network
+    #     rules:
+    #       - backendRefs:
+    #           - name: "{{ .Release.Name }}"
+    #             port: *port
 
     persistence:
       data:
