@@ -9,6 +9,7 @@ resources:
   - ./objectstore.yaml
   - ./ocirepository.yaml
   - ./pgcluster.yaml
+  # - ./podmonitor.yaml
   - ./pvc.yaml
   - ./replicationdestination.yaml
   - ./replicationsource.yaml

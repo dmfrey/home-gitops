@@ -1,0 +1,10 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: pg-home-assistant
+spec:
+  selector:
+    matchLabels:
+      cnpg.io/cluster: pg-home-assistant
+  podMetricsEndpoints:
+  - port: metrics
