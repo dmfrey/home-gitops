@@ -17,17 +17,17 @@ spec:
   #     className: csi-ceph-blockpool
 
   bootstrap:
-    # initdb:
-    #   dataChecksums: true
-    #   database: romm
-    #   owner: romm
-    #   encoding: "UTF8"
-    #   localeCollate: en_US.utf8
-    #   localeCType: en_US.utf8
-    recovery:
+    initdb:
+      dataChecksums: true
       database: romm
       owner: romm
-      source: source
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+    # recovery:
+    #   database: romm
+    #   owner: romm
+    #   source: source
 
   # externalClusters:
   #   - name: source
