@@ -1,24 +1,24 @@
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: romm-db
-# spec:
-#   dependsOn:
-#     - name: cloudnative-pg
-#       namespace: datastore
-#     - name: rook-ceph-cluster
-#       namespace: rook-ceph
-#   interval: 1h
-#   path: "./kubernetes/homelab-k8s-001/apps/media/romm/romm-db"
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   targetNamespace: media
-#   wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: romm-db
+spec:
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: datastore
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  interval: 1h
+  path: "./kubernetes/homelab-k8s-001/apps/media/romm/romm-db"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: media
+  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
