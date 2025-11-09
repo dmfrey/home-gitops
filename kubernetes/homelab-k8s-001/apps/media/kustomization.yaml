@@ -20,7 +20,7 @@ resources:
   - ./plex-meta-manager/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
-  # - ./romm/ks.yaml
+  - ./romm/ks.yaml
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./unpackerr/ks.yaml
