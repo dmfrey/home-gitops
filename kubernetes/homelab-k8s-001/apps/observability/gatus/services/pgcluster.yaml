@@ -35,8 +35,9 @@ spec:
         parameters:
           barmanObjectName: gatus
 
+  # To be removed in a future release
   monitoring:
-    enablePodMonitor: true
+    enablePodMonitor: false
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
