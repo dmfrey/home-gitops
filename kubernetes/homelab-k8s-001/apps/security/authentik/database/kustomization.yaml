@@ -6,4 +6,5 @@ kind: Kustomization
 resources:
   - ./objectstore.yaml
   - ./pgcluster.yaml
+  # - ./podmonitor.yaml
   - ./scheduledbackup.yaml

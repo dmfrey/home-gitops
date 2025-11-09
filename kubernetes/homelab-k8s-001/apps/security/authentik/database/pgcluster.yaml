@@ -37,8 +37,9 @@ spec:
         parameters:
           barmanObjectName: authentik
 
+  # To be removed in a future release
   monitoring:
-    enablePodMonitor: true
+    enablePodMonitor: false
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
