@@ -3,10 +3,9 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-romm
+  name: romm-cnpg
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-    secret.reloader.stakater.com/reload: pg-romm-cnpg-secret
 
 spec:
 
@@ -18,17 +17,17 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    # initdb:
-    #   dataChecksums: true
-    #   database: romm
-    #   owner: romm
-    #   encoding: "UTF8"
-    #   localeCollate: en_US.utf8
-    #   localeCType: en_US.utf8
-    recovery:
+    initdb:
+      dataChecksums: true
       database: romm
       owner: romm
-      source: source
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+    # recovery:
+    #   database: romm
+    #   owner: romm
+    #   source: source
 
   externalClusters:
     - name: source
@@ -70,25 +69,3 @@ spec:
   walStorage:
     storageClass: ceph-block
     size: 5Gi
-
-#  # RECOVERY
-#  bootstrap:
-#    recovery:
-          #      source: &previous-cluster pg-romm-v0
-#  ## Note: externalClusters is needed when recovering from an existing cnpg cluster
-#  externalClusters:
-#    - name: *previous-cluster
-#      barmanObjectStore:
-#        wal:
-#          compression: bzip2
-#          maxParallel: 8
-#        destinationPath: s3://cnpg/
-          #        endpointURL: http://minio.internal:9000
-#        s3Credentials:
-#          accessKeyId:
-#            name: pg-romm-cnpg-secret
-#            key: AWS_ACCESS_KEY_ID
-#          secretAccessKey:
-#            name: cpg-romm-cnpg-secret
-#            key: AWS_SECRET_ACCESS_KEY
-

@@ -3,11 +3,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: romm-kv-cluster
+  name: romm-dragonflydb
 spec:
   selector:
     matchLabels:
-      app: romm-kv-cluster
-  podTargetLabels: ["app"]
+      app: romm-dragonflydb
+  podTargetLabels:
+    - app
   podMetricsEndpoints:
     - port: admin

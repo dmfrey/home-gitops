@@ -1,10 +1,10 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: pg-romm
+  name: romm-cnpg
 spec:
   selector:
     matchLabels:
-      cnpg.io/cluster: pg-romm
+      cnpg.io/cluster: romm-cnpg
   podMetricsEndpoints:
   - port: metrics

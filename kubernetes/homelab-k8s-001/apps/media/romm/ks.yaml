@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: romm-db
 spec:
-  components:
-    - ../../../../components/cnpg
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
@@ -14,17 +12,12 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/romm/romm-db"
-  postBuild:
-    substitute:
-      APP: romm-db
-      DB: romm
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: media
-  timeout: 5m
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -33,8 +26,6 @@ kind: Kustomization
 metadata:
   name: romm-kv
 spec:
-  components:
-    - ../../../../components/dragonflydb
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
@@ -42,17 +33,13 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/romm/romm-kv"
-  postBuild:
-    substitute:
-      DB: romm-kv
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: media
-  timeout: 5m
-  wait: false
+  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -74,7 +61,6 @@ spec:
   postBuild:
     substitute:
       APP: romm
-      VOLSYNC_CLAIM: romm-data-1
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
@@ -82,5 +68,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: media
-  timeout: 5m
   wait: true

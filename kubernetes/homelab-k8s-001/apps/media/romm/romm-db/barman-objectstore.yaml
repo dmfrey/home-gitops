@@ -3,9 +3,9 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: romm
+  name: romm-cnpg
   annotations:
-    secret.reloader.stakater.com/reload: pg-romm-cnpg-secret
+    secret.reloader.stakater.com/reload: romm-cnpg-s3-secret
 
 spec:
   configuration:
@@ -15,10 +15,10 @@ spec:
 
     s3Credentials:
       accessKeyId:
-        name: pg-romm-cnpg-secret
+        name: romm-cnpg-s3-secret
         key: AWS_SECRET_ACCESS_KEY_ID
       secretAccessKey:
-        name: pg-romm-cnpg-secret
+        name: romm-cnpg-s3-secret
         key: AWS_SECRET_ACCESS_KEY
 
     wal:

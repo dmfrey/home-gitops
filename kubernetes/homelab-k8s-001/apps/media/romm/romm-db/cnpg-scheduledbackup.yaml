@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-romm-backup
+  name: romm-cnpg
 
 spec:
 
@@ -12,7 +12,7 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-romm
+    name: romm-cnpg
 
   method: plugin
 

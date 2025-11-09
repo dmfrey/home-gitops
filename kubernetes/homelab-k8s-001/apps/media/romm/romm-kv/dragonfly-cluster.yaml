@@ -3,7 +3,9 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: romm-kv-cluster
+  name: romm-dragonflydb
+  annotations:
+    secret.reloader.stakater.com/reload: romm-dragonflydb-s3-secret
 
 spec:
 
@@ -20,12 +22,12 @@ spec:
     - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
-          name: romm-kv-secret
+          name: romm-dragonflydb-s3-secret
           key: AWS_ACCESS_KEY_ID
     - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
-          name: romm-kv-secret
+          name: romm-dragonflydb-s3-secret
           key: AWS_SECRET_ACCESS_KEY
 
   args:

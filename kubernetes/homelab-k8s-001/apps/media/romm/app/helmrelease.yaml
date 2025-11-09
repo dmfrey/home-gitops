@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app romm
+  name: romm
 
 spec:
 
@@ -17,7 +17,7 @@ spec:
 
     controllers:
 
-      *app :
+      romm:
         type: statefulset
 
         annotations:
@@ -46,7 +46,7 @@ spec:
         #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
-          *app :
+          app:
             image:
               repository: rommapp/romm
               tag: 4.3.2
@@ -66,29 +66,29 @@ spec:
               DB_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-romm-app
+                    name: romm-cnpg-app
                     key: host
               DB_PORT:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-romm-app
+                    name: romm-cnpg-app
                     key: port
               DB_NAME:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-romm-app
+                    name: romm-cnpg-app
                     key: dbname
               DB_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-romm-app
+                    name: romm-cnpg-app
                     key: username
               DB_PASSWD:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-romm-app
+                    name: romm-cnpg-app
                     key: password
-              REDIS_HOST: romm-kv-cluster.media.svc.cluster.local
+              REDIS_HOST: romm-dragonflydb.media.svc.cluster.local
               REDIS_PORT: 6379
               OIDC_ENABLED: true
               OIDC_PROVIDER: authentik
@@ -109,10 +109,6 @@ spec:
               - secretRef:
                   name: romm-secret
 
-            ports:
-              - name: http
-                containerPort: *port
-
             resources:
               requests:
                 cpu: 100m
@@ -126,23 +122,6 @@ spec:
                 drop:
                   - ALL
 
-          # *app :
-          #   image:
-          #     repository: busybox
-          #     tag: stable
-
-          #   command:
-          #     - sleep
-          #     - "3600"
-
-          #   securityContext:
-          #     runAsNonRoot: false
-          #     readOnlyRootFilesystem: true
-          #     allowPrivilegeEscalation: true
-          #     runAsUser: 0
-          #     runAsGroup: 0
-          #     capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -153,15 +132,13 @@ spec:
         seccompProfile: { type: RuntimeDefault }
 
     service:
-      *app :
-        enabled: true # false
-        controller: *app
+      app:
         ports:
           http:
             port: *port
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -173,7 +150,7 @@ spec:
           gethomepage.dev/widget.type: romm
           gethomepage.dev/widget.url: http://romm.media.svc.cluster.local:8080
         hostnames:
-          - romm.dmfrey.com
+          - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-external
             namespace: network
@@ -181,9 +158,7 @@ spec:
 
     persistence:
       romm:
-        existingClaim: ${VOLSYNC_CLAIM}
-        # globalMounts:
-        #   - path: /romm
+        existingClaim: "{{ .Release.Name }}"
 
       romm-config:
         enabled: true
@@ -192,14 +167,6 @@ spec:
         path: /games/config
         globalMounts:
           - path: /romm/config
-
-      # configuration:
-      #   type: configMap
-      #   name: romm-config
-      #   globalMounts:
-      #     - path: /tmp/config.yml
-      #       subPath: config.yml
-      #   defaultMode: 0664
 
       romm-assets:
         enabled: true
