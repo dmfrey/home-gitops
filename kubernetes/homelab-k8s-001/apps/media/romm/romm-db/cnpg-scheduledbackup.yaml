@@ -14,7 +14,8 @@ spec:
   cluster:
     name: romm-cnpg
 
-  method: plugin
+  method: volumeSnapshot
+  # method: plugin
 
-  pluginConfiguration:
-    name: barman-cloud.cloudnative-pg.io
+  # pluginConfiguration:
+  #   name: barman-cloud.cloudnative-pg.io
