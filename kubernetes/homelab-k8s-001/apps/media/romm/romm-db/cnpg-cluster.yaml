@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-romm
+  name: romm-cnpg
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 
