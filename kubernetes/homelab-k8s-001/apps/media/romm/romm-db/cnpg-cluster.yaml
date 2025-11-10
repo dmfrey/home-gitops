@@ -29,22 +29,22 @@ spec:
     #   owner: romm
     #   source: source
 
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: romm
+  # externalClusters:
+  #   - name: source
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters:
+  #         barmanObjectName: romm
 
   # To be removed in a future release
   monitoring:
     enablePodMonitor: false
 
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: romm
+  # plugins:
+  #   - name: barman-cloud.cloudnative-pg.io
+  #     isWALArchiver: true
+  #     parameters:
+  #       barmanObjectName: romm
 
   postgresql:
     parameters:
