@@ -40,11 +40,11 @@ spec:
   monitoring:
     enablePodMonitor: false
 
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: romm
+  # plugins:
+  #   - name: barman-cloud.cloudnative-pg.io
+  #     isWALArchiver: true
+  #     parameters:
+  #       barmanObjectName: romm
 
   postgresql:
     parameters:
