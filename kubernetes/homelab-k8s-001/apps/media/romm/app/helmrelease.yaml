@@ -62,6 +62,8 @@ spec:
               FLASHPOINT_API_ENABLED: true
               HLTB_API_ENABLED: true
               HASHEOUS_API_ENABLED: true
+              LAUNCHBOX_API_ENABLED: true
+              PLAYMATCH_API_ENABLED: true
               ROMM_PORT: &port 8080
               ROMM_DB_DRIVER: postgresql
               DB_HOST:
