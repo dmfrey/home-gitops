@@ -17,6 +17,7 @@ spec:
 
     controllers:
       gatus:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
