@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: flaresolverr/flaresolverr
-              tag: v3.4.4
+              tag: v3.4.5
 
             env:
               TZ: America/New_York
