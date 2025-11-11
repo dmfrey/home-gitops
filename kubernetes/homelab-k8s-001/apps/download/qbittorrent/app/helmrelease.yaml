@@ -93,7 +93,9 @@ spec:
           gethomepage.dev/icon: qbittorrent.png
           gethomepage.dev/description: Torrent Client
           gethomepage.dev/widget.type: qbittorrent
-          gethomepage.dev/widget.url: http://qbittorrent.download.svc.cluster.local:6500
+          gethomepage.dev/widget.url: http://qbittorrent.download.svc.cluster.local:80
+          gethomepage.dev/widget.enableLeechProgress: "true"
+          gethomepage.dev/widget.enableLeechSize: "true"
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
