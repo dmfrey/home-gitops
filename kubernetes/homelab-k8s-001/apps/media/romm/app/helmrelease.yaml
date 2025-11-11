@@ -63,6 +63,7 @@ spec:
               HLTB_API_ENABLED: true
               HASHEOUS_API_ENABLED: true
               LAUNCHBOX_API_ENABLED: true
+              ENABLE_SCHEDULED_UPDATE_LAUNCHBOX_METADATA: true
               PLAYMATCH_API_ENABLED: true
               ROMM_PORT: &port 8080
               ROMM_DB_DRIVER: postgresql
