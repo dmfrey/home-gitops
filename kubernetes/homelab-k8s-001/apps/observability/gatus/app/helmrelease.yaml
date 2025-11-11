@@ -3,30 +3,20 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app gatus
+  name: gatus
 
 spec:
-
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: gatus
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
 
   values:
 
     controllers:
-      *app :
+      gatus:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -53,7 +43,7 @@ spec:
 
         containers:
 
-          *app :
+          app:
 
             image:
               repository: ghcr.io/twin/gatus
@@ -61,17 +51,16 @@ spec:
 
             env:
               GATUS_CONFIG_PATH: /config
-              GATUS_DELAY_START_SECONDS: 5
               GATUS_WEB_PORT: &port 8080
               TZ: America/New_York
-              POSTGRES_URI:
-                secretKeyRef:
-                  name: pg-gatus-app
-                  key: uri
+              # POSTGRES_URI:
+              #   secretKeyRef:
+              #     name: pg-gatus-app
+              #     key: uri
 
             envFrom:
               - secretRef:
-                  name: gatus-secret
+                  name: "{{ .Release.Name }}-secret"
 
             probes:
               liveness: &probes
@@ -96,10 +85,14 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {add: ["NET_RAW"], drop: ["ALL"]}
 
-        serviceAccount:
-          name: *app
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              storageClass: ceph-block
+              accessMode: ReadWriteOnce
+              size: 5Gi
 
     defaultPodOptions:
       securityContext:
@@ -108,7 +101,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
@@ -139,11 +131,6 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     rbac:
       roles:

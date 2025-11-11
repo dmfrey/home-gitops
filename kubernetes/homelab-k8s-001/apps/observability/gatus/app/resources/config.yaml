@@ -17,20 +17,45 @@ connectivity:
     target: 1.1.1.1:53
     interval: 1m
 
+endpoints:
+  - name: Cloudflare
+    group: connectivity
+    url: icmp://1.1.1.1
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Google
+    group: connectivity
+    url: icmp://8.8.8.8
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: Quad9
+    group: connectivity
+    url: icmp://9.9.9.9
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
 metrics: true
 
-security:
-  oidc:
-    issuer-url: https://auth.dmfrey.com/application/o/gatus/
-    client-id: ${GATUS_CLIENT_ID}
-    client-secret: ${GATUS_CLIENT_SECRET}
-    redirect-url: https://status.dmfrey.com/authorization-code/callback
-    scopes: [openid, profile, email]
+# security:
+#   oidc:
+#     issuer-url: https://auth.dmfrey.com/application/o/gatus/
+#     client-id: ${GATUS_CLIENT_ID}
+#     client-secret: ${GATUS_CLIENT_SECRET}
+#     redirect-url: https://status.dmfrey.com/authorization-code/callback
+#     scopes: [openid, profile, email]
 
 storage:
-  type: postgres
-  path: ${POSTGRES_URI}?sslmode=require
+#   type: postgres
+#   path: ${POSTGRES_URI}?sslmode=require
+#   caching: true
+  type: sqlite
   caching: true
+  path: ${GATUS_CONFIG_PATH}/gatus.db
 
 ui:
   title: Status | Gatus
