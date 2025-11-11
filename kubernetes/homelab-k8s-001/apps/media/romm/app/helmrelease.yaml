@@ -61,6 +61,7 @@ spec:
               RESCAN_ON_FILESYSTEM_CHANGE_DELAY: 5
               FLASHPOINT_API_ENABLED: true
               HLTB_API_ENABLED: true
+              HASHEOUS_API_ENABLED: true
               ROMM_PORT: &port 8080
               ROMM_DB_DRIVER: postgresql
               DB_HOST:
