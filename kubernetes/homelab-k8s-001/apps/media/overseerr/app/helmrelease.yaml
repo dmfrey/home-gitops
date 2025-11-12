@@ -86,8 +86,9 @@ spec:
             resources:
               requests:
                 cpu: 5m
-              limits:
                 memory: 500Mi
+              limits:
+                memory: 1Gi
 
             securityContext:
               allowPrivilegeEscalation: false
