@@ -27,7 +27,7 @@ spec:
           migration:
             image:
               repository: ghcr.io/toeverything/affine
-              tag: 0.25.3@sha256:1ca80161750a41364641073fd28e19fdb9b8101f735e1985378b15510423b841
+              tag: 0.25.4@sha256:f6b5ec392082be4d820922f0e982dcea32829105103192d5a2f3d8bbc3dc82ba
 
             command: ["sh", "-c", "node ./scripts/self-host-predeploy.js"]
 
@@ -55,7 +55,7 @@ spec:
           app:
             image:
               repository: ghcr.io/toeverything/affine
-              tag: 0.25.3@sha256:1ca80161750a41364641073fd28e19fdb9b8101f735e1985378b15510423b841
+              tag: 0.25.4@sha256:f6b5ec392082be4d820922f0e982dcea32829105103192d5a2f3d8bbc3dc82ba
 
             env:
               TZ: America/New_York
