@@ -193,16 +193,3 @@ spec:
               - path: /config/backups
                 readOnly: false
 
-    # serviceMonitor:
-    #   *app :
-    #     serviceName: *app
-    #     endpoints:
-    #       - port: http
-    #         scheme: http
-    #         path: /api/prometheus
-    #         interval: 30s
-    #         scrapeTimeout: 10s
-    #         bearerTokenSecret:
-    #           name: home-assistant-secret
-    #           key: PROMETHEUS_TOKEN
-
