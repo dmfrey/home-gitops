@@ -1,14 +1,4 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: oci-terraform-authentik
-spec:
-  interval: 1h
-  url: oci://ghcr.io/dmfrey/terraform/authentik
-  ref:
-    tag: main
----
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/infra.contrib.fluxcd.io/terraform_v1alpha1.json
 apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
@@ -17,7 +7,7 @@ metadata:
 spec:
 
   approvePlan: auto
-  interval: 1h
+  interval: 15m
   path: "./"
 
   sourceRef:
