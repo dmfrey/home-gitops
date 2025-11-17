@@ -120,16 +120,16 @@
  "notifications": {
   "agents": {
    "email": {
-    "enabled": false,
+    "enabled": true,
     "options": {
-     "emailFrom": "",
-     "smtpHost": "",
-     "smtpPort": 587,
+     "emailFrom": "admin@dmfrey.com",
+     "smtpHost": "smtp-relay.kube-system.svc.cluster.local",
+     "smtpPort": 25,
      "secure": false,
-     "ignoreTls": false,
+     "ignoreTls": true,
      "requireTls": false,
-     "allowSelfSigned": false,
-     "senderName": "Overseerr"
+     "allowSelfSigned": true,
+     "senderName": "Request"
     }
    },
    "discord": {
