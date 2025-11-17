@@ -128,7 +128,7 @@
      "secure": false,
      "ignoreTls": true,
      "requireTls": false,
-     "allowSelfSigned": true,
+     "allowSelfSigned": false,
      "senderName": "Request"
     }
    },
