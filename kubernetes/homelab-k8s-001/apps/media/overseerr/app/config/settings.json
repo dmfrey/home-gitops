@@ -5,7 +5,7 @@
  "main": {
   "apiKey": "${OVERSEERR_API_KEY}",
   "applicationTitle": "Overseerr",
-  "applicationUrl": "",
+  "applicationUrl": "https://request.dmfrey.com",
   "csrfProtection": false,
   "cacheImages": true,
   "defaultPermissions": 32,
