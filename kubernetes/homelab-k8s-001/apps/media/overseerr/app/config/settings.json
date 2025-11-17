@@ -122,7 +122,7 @@
    "email": {
     "enabled": true,
     "options": {
-     "emailFrom": "admin@dmfrey.com",
+     "emailFrom": "noreply@homelab5767.cc",
      "smtpHost": "smtp-relay.kube-system.svc.cluster.local",
      "smtpPort": 25,
      "secure": false,
