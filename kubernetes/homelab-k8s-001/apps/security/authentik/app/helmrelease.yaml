@@ -47,11 +47,11 @@ spec:
 
       log_level: info
 
-      # email:
-      #   host: "smtp-relay.kube-system.svc.cluster.local"
-      #   port: 2525
-      #   use_tls: false
-      #   from: "authentik@dmfrey.com"
+      email:
+        host: smtp-relay.kube-system.svc.cluster.local
+        port: 25
+        use_tls: false
+        from: noreply@homelab5767.cc
 
       error_reporting:
         enabled: false
