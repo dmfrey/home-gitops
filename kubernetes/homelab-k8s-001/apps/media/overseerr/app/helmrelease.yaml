@@ -23,35 +23,35 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          config-setup:
-            image:
-              repository: ghcr.io/dmfrey/bash
-              tag: 5.2.26-alpine3.20
+        # initContainers:
+        #   config-setup:
+        #     image:
+        #       repository: ghcr.io/dmfrey/bash
+        #       tag: 5.2.26-alpine3.20
 
-            command:
-              - "/usr/local/bin/bash"
-              - -c
-              - |
-                envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
-                if [ -s /config/settings.json ]
-                then
-                  cp /tmp/settings-resolved.json /config/settings.json
-                  # jq -s '.[0] * .[1]' /config/settings.json /tmp/settings-resolved.json | jq > /config/settings.json
-                else
-                  cp /tmp/settings-resolved.json /config/settings.json
-                fi
-                exit 0
+        #     command:
+        #       - "/usr/local/bin/bash"
+        #       - -c
+        #       - |
+        #         envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
+        #         if [ -s /config/settings.json ]
+        #         then
+        #           cp /tmp/settings-resolved.json /config/settings.json
+        #           # jq -s '.[0] * .[1]' /config/settings.json /tmp/settings-resolved.json | jq > /config/settings.json
+        #         else
+        #           cp /tmp/settings-resolved.json /config/settings.json
+        #         fi
+        #         exit 0
 
-            envFrom:
-              - secretRef:
-                  name: overseerr-secret
+        #     envFrom:
+        #       - secretRef:
+        #           name: overseerr-secret
 
-            env:
-              - name: ORGANIZATION
-                value: homelab5767
-              - name: SECRET_DOMAIN
-                value: dmfrey.com
+        #     env:
+        #       - name: ORGANIZATION
+        #         value: homelab5767
+        #       - name: SECRET_DOMAIN
+        #         value: dmfrey.com
 
         containers:
           app:
@@ -172,17 +172,17 @@ spec:
           overseerr:
             app:
               - path: /app/config
-            config-setup:
-              - path: /config
-                readOnly: false
+            # config-setup:
+            #   - path: /config
+            #     readOnly: false
 
-      config-template:
-        enabled: true
-        type: configMap
-        name: overseerr-config-template
-        globalMounts:
-          - path: /tmp/config-template
-            readOnly: true
+      # config-template:
+      #   enabled: true
+      #   type: configMap
+      #   name: overseerr-config-template
+      #   globalMounts:
+      #     - path: /tmp/config-template
+      #       readOnly: true
 
       tmp:
         type: emptyDir
