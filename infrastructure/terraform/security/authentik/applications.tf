@@ -116,7 +116,10 @@ resource "authentik_provider_oauth2" "oauth2" {
   authorization_flow    = authentik_flow.provider-authorization-implicit-consent.uuid
   authentication_flow   = authentik_flow.authentication.uuid
   invalidation_flow     = data.authentik_flow.default-provider-invalidation-flow.id
-  property_mappings     = data.authentik_property_mapping_provider_scope.oauth2.ids
+  property_mappings = concat(
+    data.authentik_property_mapping_provider_scope.oauth2.ids,
+    [authentik_property_mapping_provider_scope.email_verified.id],
+  )
   access_token_validity = "hours=4"
   signing_key           = data.authentik_certificate_key_pair.generated.id
   allowed_redirect_uris = [
