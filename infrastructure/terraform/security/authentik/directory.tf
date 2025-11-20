@@ -100,3 +100,13 @@ resource "authentik_user" "Molly" {
     values(authentik_group.default)[*].id
   )
 }
+
+resource "authentik_user" "Tony" {
+  username = "mkfrey"
+  name     = module.onepassword_users.fields["USERS_ADFREY_NAME"]
+  email    = module.onepassword_users.fields["USERS_ADFREY_EMAIL"]
+  password = module.onepassword_users.fields["USERS_ADFREY_PASSWORD"]
+  groups = concat(
+    values(authentik_group.default)[*].id
+  )
+}
