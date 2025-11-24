@@ -13,9 +13,9 @@ spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.10
 
-  backup:
-    volumeSnapshot:
-      className: csi-ceph-blockpool
+  # backup:
+  #   volumeSnapshot:
+  #     className: csi-ceph-blockpool
 
   bootstrap:
     # initdb:
