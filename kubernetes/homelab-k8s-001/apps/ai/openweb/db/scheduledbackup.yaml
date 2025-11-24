@@ -3,13 +3,39 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-openweb-backup
+  name: pg-openweb-backup-barman-cloud
+
 spec:
+
   schedule: "@daily"
+
   immediate: true
+
   backupOwnerReference: self
+
   cluster:
     name: pg-openweb
+
   method: plugin
+
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pg-openweb-backup-volume-snapshot
+
+spec:
+
+  schedule: "@daily"
+
+  immediate: true
+
+  backupOwnerReference: self
+
+  cluster:
+    name: pg-openweb
+
+  method: volumeSnapshot
