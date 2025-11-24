@@ -45,6 +45,7 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: bazarr
+        serverName: pg-bazarr
 
   postgresql:
     parameters:
