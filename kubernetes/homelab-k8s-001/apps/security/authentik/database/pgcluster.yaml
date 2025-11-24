@@ -57,10 +57,10 @@ spec:
 
   resources:
     requests:
-      memory: 1024Mi
+      memory: 2Gi
       cpu: 1
     limits:
-      memory: 2048Mi
+      memory: 4Gi
       cpu: 2
 
   storage:
@@ -70,21 +70,3 @@ spec:
   walStorage:
     storageClass: ceph-block
     size: 20Gi
-
-#    recovery:
-#      source: &previous-cluster pg-authentik-v0
-#  externalClusters:
-#    - name: *previous-cluster
-#      barmanObjectStore:
-#        wal:
-#          compression: bzip2
-#          maxParallel: 8
-#        destinationPath: s3://cnpg/
-#        endpointURL: http://minio.internal:9000
-#        s3Credentials:
-#          accessKeyId:
-#            name: pg-authentik-cnpg-secret
-#            key: AWS_ACCESS_KEY_ID
-#          secretAccessKey:
-#            name: cpg-authentik-cnpg-secret
-#            key: AWS_SECRET_ACCESS_KEY
