@@ -78,9 +78,11 @@ machine:
         dhcp: true
         mtu: 1500
         vlans:
-          - routes: []
+          - vlanId: 50
             dhcp: false
-            vlanId: 50
+            mtu: 1500
+          - vlanId: 90
+            dhcp: false
             mtu: 1500
 
   nodeLabels:
