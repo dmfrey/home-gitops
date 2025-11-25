@@ -17,7 +17,7 @@ on:
         description: Dry Run
         type: boolean
         default: false
-        required: false
+        required: true
       logLevel:
         description: Log Level
         type: choice

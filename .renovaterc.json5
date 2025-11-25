@@ -5,10 +5,12 @@
     'docker:enableMajor',
     'helpers:pinGitHubActionDigests',
     'github>dmfrey/home-gitops//.renovate/autoMerge.json5',
+    'github>dmfrey/home-gitops//.renovate/changelogs.json5',
     'github>dmfrey/home-gitops//.renovate/customManagers.json5',
     'github>dmfrey/home-gitops//.renovate/grafanaDashboards.json5',
     'github>dmfrey/home-gitops//.renovate/groups.json5',
     'github>dmfrey/home-gitops//.renovate/labels.json5',
+    'github>dmfrey/home-gitops//.renovate/overrides.json5',
     'github>dmfrey/home-gitops//.renovate/semanticCommits.json5',
     ':automergeBranch',
     ':disableRateLimiting',
@@ -26,18 +28,12 @@
     '**/resources/**',
   ],
   flux: {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml$/',
-    ],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   'helm-values': {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml$/',
-    ],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   kubernetes: {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml$/',
-    ],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
 }
