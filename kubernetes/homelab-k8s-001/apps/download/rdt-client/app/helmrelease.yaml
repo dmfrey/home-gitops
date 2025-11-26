@@ -3,44 +3,25 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app rdt-client
+  name: rdt-client
 
 spec:
-
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: rdt-client
 
-  maxHistory: 2
-
-  install:
-    createNamespace: true
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
-
-  driftDetection:
-    mode: enabled
-
+  interval: 1h
   values:
 
     controllers:
 
-      *app :
+      rdt-client:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
-          setGateway: "true"
+          # setGateway: "true"
 
         # initContainers:
         #   fix-permissions:
@@ -59,7 +40,7 @@ spec:
         #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
-          *app :
+          app:
             image:
               repository: rogerfar/rdtclient
               tag: 2.0.119
@@ -69,10 +50,6 @@ spec:
               PUID: 1000 # 911
               PGID: 1000 # 1001
 
-            ports:
-              - name: http
-                containerPort: &port 6500
-
             resources:
               requests:
                 cpu: 49m
@@ -81,6 +58,15 @@ spec:
                 memory: 512Mi
 
     defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "vpn",
+            "namespace": "kube-system",
+            "ips": ["192.168.90.23/24"],
+            "mac": "a6:3e:4f:09:e4:9c"
+          }]
+
       dnsConfig:
         options:
           - name: ndots
@@ -88,20 +74,23 @@ spec:
 
       hostname: rdt
 
+      labels:
+        setGateway: "false"
+
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
-            port: *port
+            port: 6500
 
     route:
-      *app :
-        hostnames: ["rdt.dmfrey.com"]
+      app:
+        hostnames:
+          - rdt.dmfrey.com
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
@@ -113,17 +102,17 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
+            # sectionName: https
+        # rules:
+        #   - backendRefs:
+        #       - identifier: app
+        #         port: *port
 
     persistence:
-      config:
+      data:
         existingClaim: ${VOLSYNC_CLAIM}
-        globalMounts:
-          - path: /data
+        # globalMounts:
+        #   - path: /data
 
       downloads:
         type: nfs
