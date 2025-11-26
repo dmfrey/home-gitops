@@ -9,7 +9,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./flaresolverr/ks.yaml
-  - ./rdt-client/ks.yaml
+  # - ./rdt-client/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./sabnzbd/ks.yaml
