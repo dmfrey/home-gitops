@@ -10,7 +10,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./affine/ks.yaml
-  # - ./blinko/ks.yaml
   - ./homepage/ks.yaml
   - ./linkwarden/ks.yaml
   - ./omni-tools/ks.yaml
+  - ./thelounge/ks.yaml
