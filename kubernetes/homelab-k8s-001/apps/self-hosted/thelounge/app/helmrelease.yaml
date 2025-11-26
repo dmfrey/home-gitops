@@ -9,7 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: thelounge
-    namespace: flux-system
 
   interval: 1h
 
