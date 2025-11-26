@@ -72,6 +72,10 @@ spec:
             "ips": ["192.168.90.22/24"],
             "mac": "32:0b:d8:1f:b6:e4"
           }]
+
+      labels:
+        setGateway: "false"
+
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
