@@ -20,7 +20,7 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
-          setGateway: "true"
+          # setGateway: "true"
 
         containers:
           app:
