@@ -64,6 +64,14 @@ spec:
                 memory: 2Gi
 
     defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "vpn-vlan",
+            "namespace": "kube-system",
+            "ips": ["192.168.90.22/24"],
+            "mac": "32:0b:d8:1f:b6:e4"
+          }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -73,16 +81,9 @@ spec:
 
     service:
       app:
-        # type: LoadBalancer
-        # annotations:
-        #   lbipam.cilium.io/ips: 192.168.29.60
         ports:
           http:
             port: *port
-          # bittorrent:
-          #   enabled: true
-          #   port: *torrentPort
-          #   protocol: TCP
 
     route:
       app:
@@ -132,9 +133,9 @@ spec:
           - path: /media/downloads/qbittorrent
             subPath: downloads/qbittorrent
 
-      qbrr:
-        type: image
-        image: ghcr.io/buroa/qbrr:0.1.2@sha256:f930dbb4de49ffe3348d1d4f8187ce27590842bc4d6a89c3aa84234d7e99f46b
+      # qbrr:
+      #   type: image
+      #   image: ghcr.io/buroa/qbrr:0.1.2@sha256:f930dbb4de49ffe3348d1d4f8187ce27590842bc4d6a89c3aa84234d7e99f46b
 
       tmp:
         type: emptyDir
