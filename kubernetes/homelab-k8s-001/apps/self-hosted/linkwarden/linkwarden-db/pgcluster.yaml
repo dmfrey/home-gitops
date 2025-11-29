@@ -55,6 +55,14 @@ spec:
   primaryUpdateStrategy: unsupervised # let k8s handle upgrades
   primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
 
+  resources:
+    requests:
+      memory: 1024Mi
+      cpu: 250m
+    limits:
+      memory: 2048Mi
+      cpu: 1000m
+
   storage:
     size: 5Gi
     storageClass: ceph-block

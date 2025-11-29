@@ -58,10 +58,10 @@ spec:
   resources:
     requests:
       memory: 2Gi
-      cpu: 1
+      cpu: 250m
     limits:
       memory: 4Gi
-      cpu: 2
+      cpu: 1000m
 
   storage:
     storageClass: ceph-block
