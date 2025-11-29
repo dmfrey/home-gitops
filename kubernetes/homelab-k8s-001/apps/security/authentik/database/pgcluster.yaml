@@ -57,11 +57,11 @@ spec:
 
   resources:
     requests:
-      memory: 2Gi
       cpu: 250m
+      memory: 512Mi
     limits:
-      memory: 4Gi
       cpu: 1000m
+      memory: 512Mi
 
   storage:
     storageClass: ceph-block
