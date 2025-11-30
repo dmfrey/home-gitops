@@ -9,6 +9,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./autobrr/ks.yaml
+  - ./cross-seed/ks.yaml
   - ./flaresolverr/ks.yaml
   # - ./rdt-client/ks.yaml
   - ./nzbget/ks.yaml
