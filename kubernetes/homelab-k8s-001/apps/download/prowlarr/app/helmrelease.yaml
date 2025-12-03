@@ -126,6 +126,9 @@ spec:
           #         - ALL
 
     defaultPodOptions:
+      labels:
+        setGateway: "false"
+
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
