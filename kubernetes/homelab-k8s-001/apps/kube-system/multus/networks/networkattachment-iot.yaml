@@ -3,6 +3,8 @@ apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
   name: iot-vlan
+#               { "dst": "::/0", "gw": "${IPV6_IOT_PREFIX}::1" }
+
 spec:
   config: |-
     {
@@ -18,8 +20,7 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              { "dst": "0.0.0.0/0", "gw": "192.168.50.1" },
-              { "dst": "::/0", "gw": "${IPV6_IOT_PREFIX}::1" }
+              { "dst": "0.0.0.0/0", "gw": "192.168.50.1" }
             ]
           }
         },
