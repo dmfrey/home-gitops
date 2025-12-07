@@ -63,13 +63,13 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { add: ["DAC_READ_SEARCH", "SYS_ADMIN"] }
 
-        pod:
+        pod:  # , "${IPV6_IOT_PREFIX}:5::1/64"
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{
                 "name": "iot-vlan",
                 "namespace": "kube-system",
-                "ips": ["192.168.50.5/24", "${IPV6_IOT_PREFIX}:5::1/64"],
+                "ips": ["192.168.50.5/24"],
                 "mac": "ae:81:6a:d4:48:85"
               }]
 
