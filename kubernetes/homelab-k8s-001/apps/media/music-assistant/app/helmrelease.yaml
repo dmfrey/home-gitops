@@ -69,7 +69,7 @@ spec:
               [{
                 "name": "iot-vlan",
                 "namespace": "kube-system",
-                "ips": ["192.168.50.5/24"],
+                "ips": ["192.168.50.5/24", "${IPV6_IOT_PREFIX}:5::1/64"],
                 "mac": "ae:81:6a:d4:48:85"
               }]
 
