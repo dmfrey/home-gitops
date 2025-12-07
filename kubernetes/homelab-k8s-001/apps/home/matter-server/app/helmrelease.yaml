@@ -46,12 +46,12 @@ spec:
                 memory: 350Mi
 
     defaultPodOptions:
-      annotations:
+      annotations:  #, "${IPV6_IOT_PREFIX}:9::1/64"
         k8s.v1.cni.cncf.io/networks: |
           [{
             "name": "iot-vlan",
             "namespace": "kube-system",
-            "ips": ["192.168.50.9/24", "${IPV6_IOT_PREFIX}:9::1/64"],
+            "ips": ["192.168.50.9/24"],
             "mac": "aa:8c:ae:86:6e:8a"
           }]
       hostUsers: false
