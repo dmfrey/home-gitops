@@ -23,6 +23,10 @@ spec:
       APP_GID: "0"
       VOLSYNC_CLAIM: esphome-config-1
       VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+        optional: false
   prune: true
   sourceRef:
     kind: GitRepository

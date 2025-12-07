@@ -19,6 +19,10 @@ spec:
       APP: music-assistant
       VOLSYNC_CLAIM: music-assistant
       VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+        optional: false
   prune: true
   sourceRef:
     kind: GitRepository
