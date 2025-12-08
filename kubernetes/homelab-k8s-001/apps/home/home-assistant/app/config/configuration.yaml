@@ -106,6 +106,7 @@ template:
             hours: 23
             minutes: 59
 
+  - triggers:
     - trigger:
         - platform: time
           at: "00:00"
