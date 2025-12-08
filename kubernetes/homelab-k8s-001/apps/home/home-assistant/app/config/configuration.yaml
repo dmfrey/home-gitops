@@ -71,24 +71,24 @@ template:
       state: '{% if is_state(''group.family'', ''home'')-%}home{%else%}not_home{% endif %}'
 
   - triggers:
-    - trigger:
-        - platform: "time"
-          at: "00:00"
-      action:
-        - service: calendar.get_events
-          target:
-            entity_id: calendar.school_calendar
-          data:
-            duration:
-              minutes: 5
-          response_variable: calendar
-        - variables:
-            events: >
-              {{
-                calendar['calendar.school_calendar'].events
-                | map(attribute='summary')
-                | list
-              }}
+      - trigger: time_pattern
+        hours: 0
+        minutes: 0
+    actions:
+      - action: calendar.get_events
+        target:
+          entity_id: calendar.school_calendar
+        data:
+          duration:
+            minutes: 5
+        response_variable: calendar
+      - variables:
+          events: >
+            {{
+              calendar['calendar.school_calendar'].events
+              | map(attribute='summary')
+              | list
+            }}
     binary_sensor:
       - name: "School Day"
         state: "{{ 'School Day' in events }}"
