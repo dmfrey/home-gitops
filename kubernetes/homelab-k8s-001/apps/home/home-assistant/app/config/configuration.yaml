@@ -34,7 +34,79 @@ schedule: !include_dir_merge_named schedule
 script: !include scripts.yaml
   # !include_dir_merge_named scripts
 sensor: !include_dir_merge_list sensors
-template: !include_dir_merge_list templates
+# template: !include_dir_merge_list templates
+
+template:
+  - triggers:
+    - trigger:
+        - platform: time
+          at: "00:00"
+      action:
+        - service: calendar.get_events
+          target:
+            entity_id: calendar.school_calendar
+          data:
+            duration:
+              minutes: 5
+          response_variable: calendar
+        - variables:
+            events: >
+              {{
+                calendar['calendar.school_calendar'].events
+                | map(attribute='summary')
+                | list
+              }}
+      binary_sensor:
+        - name: "School Day"
+          state: "{{ 'School Day' in events }}"
+          auto_off:
+            hours: 14
+            minutes: 20
+        - name: "Holiday"
+          state: "{{ 'Holiday' in events }}"
+          auto_off:
+            hours: 23
+            minutes: 59
+        - name: "Snow Day"
+          state: "{{ 'Snow Day' in events }}"
+          auto_off:
+            hours: 23
+            minutes: 59
+
+    - trigger:
+        - platform: time
+          at: "00:00"
+      action:
+        - service: calendar.get_events
+          target:
+            entity_id: calendar.work_calendar
+          data:
+            duration:
+              minutes: 5
+          response_variable: calendar
+        - variables:
+            events: >
+              {{
+                calendar['calendar.work_calendar'].events
+                | map(attribute='summary')
+                | list
+              }}
+      binary_sensor:
+        - name: "Work Day"
+          state: "{{ 'Work Day' in events }}"
+          auto_off:
+            hours: 17
+            minutes: 30
+        - name: "Work Holiday"
+          state: "{{ 'Work Holiday' in events }}"
+          auto_off:
+            hours: 23
+            minutes: 59
+        - name: "Work Travel"
+          state: "{{ 'Work Travel' in events }}"
+          auto_off:
+            hours: 23
+            minutes: 59
 
 frontend:
   themes: !include_dir_merge_named themes
