@@ -72,7 +72,7 @@ template:
 
   - triggers:
     - trigger:
-        - platform: time
+        - platform: "time"
           at: "00:00"
       action:
         - service: calendar.get_events
@@ -108,7 +108,7 @@ template:
 
   - triggers:
     - trigger:
-        - platform: time
+        - platform: "time"
           at: "00:00"
       action:
         - service: calendar.get_events
