@@ -107,24 +107,24 @@ template:
           minutes: 59
 
   - triggers:
-    - trigger:
-        - platform: "time"
-          at: "00:00"
-      action:
-        - service: calendar.get_events
-          target:
-            entity_id: calendar.work_calendar
-          data:
-            duration:
-              minutes: 5
-          response_variable: calendar
-        - variables:
-            events: >
-              {{
-                calendar['calendar.work_calendar'].events
-                | map(attribute='summary')
-                | list
-              }}
+      - trigger: time_pattern
+        hours: 0
+        minutes: 0
+    actions:
+      - action: calendar.get_events
+        target:
+          entity_id: calendar.work_calendar
+        data:
+          duration:
+            minutes: 5
+        response_variable: calendar
+      - variables:
+          events: >
+            {{
+              calendar['calendar.work_calendar'].events
+              | map(attribute='summary')
+              | list
+            }}
     binary_sensor:
       - name: "Work Day"
         state: "{{ 'Work Day' in events }}"
