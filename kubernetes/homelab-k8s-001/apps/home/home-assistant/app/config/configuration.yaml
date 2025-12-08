@@ -20,7 +20,7 @@ recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
 
 automation: !include automations.yaml
-binary_sensor: !include_dir_merge_list binary_sensors
+# binary_sensor: !include_dir_merge_list binary_sensors
 group: !include_dir_merge_named groups
 input_boolean: !include_dir_merge_named input_booleans
 input_button: !include_dir_merge_named input_buttons
@@ -37,6 +37,29 @@ script: !include scripts.yaml
 # template: !include_dir_merge_list templates
 
 template:
+  - binary_sensor:
+    - unique_id: 55c017c0-9c0d-471a-bb61-37461a3394c8
+      default_entity_id: binary_sensor.family_home
+      name: Family Home
+      state: '{{ is_state(''person.daniel_frey'', ''home'') or is_state(''person.stephanie_frey'', ''home'') or is_state(''person.camdyn_frey'', ''home'') or is_state(''person.molly_frey'', ''home'') }}'
+
+  - binary_sensor:
+    - unique_id: 23c097c4-cf57-4b5e-8995-4fbfa3593758
+      default_entity_id: binary_sensor.girls_home
+      name: Girls Home
+      state: '{{ is_state(''person.camdyn_frey'', ''home'') or is_state(''person.molly_frey'', ''home'') }}'
+
+  - binary_sensor:
+    - unique_id: 5d29db3a-bcfd-4cb3-9256-0037da8870f0
+      default_entity_id: binary_sensor.parents_home
+      name: Parents Home
+      state: '{{ is_state(''person.daniel_frey'', ''Home'') or is_state(''person.stephanie_frey'', ''Home'') }}'
+
+  - binary_sensor:
+    - default_entity_id: binary_sensor.we_are_out_of_bed
+      name: We are out of bed
+      state: '{{ is_state(''binary_sensor.sleepnumber_our_bed_daniel_is_in_bed'', ''off'') and is_state(''binary_sensor.sleepnumber_our_bed_stephanie_is_in_bed'', ''off'') }}'
+
   - sensor:
     - default_entity_id: sensor.do_not_disturb
       name: Do Not Disturb
