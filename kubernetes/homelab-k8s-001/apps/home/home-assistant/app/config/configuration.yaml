@@ -33,10 +33,20 @@ scene: !include scenes.yaml
 schedule: !include_dir_merge_named schedule
 script: !include scripts.yaml
   # !include_dir_merge_named scripts
-sensor: !include_dir_merge_list sensors
+# sensor: !include_dir_merge_list sensors
 # template: !include_dir_merge_list templates
 
 template:
+  - sensor:
+    - default_entity_id: sensor.do_not_disturb
+      name: Do Not Disturb
+      state: '{{ 7 > now().hour < 23 }}'
+
+  - sensor:
+    - default_entity_id: sensor.anyone_home
+      name: Home Status
+      state: '{% if is_state(''group.family'', ''home'')-%}home{%else%}not_home{% endif %}'
+
   - triggers:
     - trigger:
         - platform: time
