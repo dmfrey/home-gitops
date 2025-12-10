@@ -9,7 +9,7 @@ spec:
 
   kubernetes:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-    version: v1.34.2
+    version: v1.34.3
 
   healthChecks:
     - apiVersion: volsync.backube/v1alpha1
