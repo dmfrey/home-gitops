@@ -35,7 +35,8 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: bazarr
-
+          serverName: pg-bazarr
+          
   # To be removed in a future release
   monitoring:
     enablePodMonitor: false
@@ -45,7 +46,6 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: bazarr
-        serverName: pg-bazarr
 
   postgresql:
     parameters:
