@@ -6,7 +6,7 @@ kind: Kustomization
 resources:
   - ./cnpg-cluster.yaml
   - ./objectstore.yaml
-  - ./pgcluster.yaml
+  # - ./pgcluster.yaml
   - ./podmonitor.yaml
   - ./scheduledbackup.yaml
 
