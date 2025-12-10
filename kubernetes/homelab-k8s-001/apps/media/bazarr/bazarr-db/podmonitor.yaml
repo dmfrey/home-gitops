@@ -3,10 +3,10 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: pg-bazarr
+  name: bazarr-cnpg
 spec:
   selector:
     matchLabels:
-      cnpg.io/cluster: pg-bazarr
+      cnpg.io/cluster: bazarr-cnpg
   podMetricsEndpoints:
   - port: metrics

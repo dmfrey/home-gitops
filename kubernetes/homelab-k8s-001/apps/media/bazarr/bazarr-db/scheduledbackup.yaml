@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-bazarr-backup-barman-cloud
+  name: bazarr-cnpg-backup-barman-cloud
 
 spec:
 
@@ -12,7 +12,7 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-bazarr
+    name: bazarr-cnpg
 
   method: plugin
 
@@ -23,7 +23,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-bazarr-backup-volume-snapshot
+  name: bazarr-cnpg-backup-volume-snapshot
 
 spec:
 
@@ -32,6 +32,6 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-bazarr
+    name: bazarr-cnpg
 
   method: volumeSnapshot
