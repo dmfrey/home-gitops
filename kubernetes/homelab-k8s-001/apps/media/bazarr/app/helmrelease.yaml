@@ -37,27 +37,27 @@ spec:
               POSTGRES_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-bazarr-app
+                    name: bazarr-cnpg-app
                     key: host
               POSTGRES_PORT:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-bazarr-app
+                    name: bazarr-cnpg-app
                     key: port
               POSTGRES_DATABASE:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-bazarr-app
+                    name: bazarr-cnpg-app
                     key: dbname
               POSTGRES_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-bazarr-app
+                    name: bazarr-cnpg-app
                     key: username
               POSTGRES_PASSWD:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-bazarr-app
+                    name: bazarr-cnpg-app
                     key: password
 
             envFrom:
