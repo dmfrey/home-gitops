@@ -6,7 +6,6 @@ metadata:
   name: pg-bazarr
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-    secret.reloader.stakater.com/reload: pg-bazarr-cnpg-secret
 
 spec:
 
@@ -70,25 +69,3 @@ spec:
   walStorage:
     storageClass: ceph-block
     size: 5Gi
-
-#  # RECOVERY
-#  bootstrap:
-#    recovery:
-          #      source: &previous-cluster pg-bazarr-v0
-#  ## Note: externalClusters is needed when recovering from an existing cnpg cluster
-#  externalClusters:
-#    - name: *previous-cluster
-#      barmanObjectStore:
-#        wal:
-#          compression: bzip2
-#          maxParallel: 8
-#        destinationPath: s3://cnpg/
-          #        endpointURL: http://minio.internal:9000
-#        s3Credentials:
-#          accessKeyId:
-#            name: pg-bazarr-cnpg-secret
-#            key: AWS_ACCESS_KEY_ID
-#          secretAccessKey:
-#            name: cpg-bazarr-cnpg-secret
-#            key: AWS_SECRET_ACCESS_KEY
-
