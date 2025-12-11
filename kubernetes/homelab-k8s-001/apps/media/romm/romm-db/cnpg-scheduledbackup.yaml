@@ -1,23 +1,23 @@
-# ---
-# # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
-# apiVersion: postgresql.cnpg.io/v1
-# kind: ScheduledBackup
-# metadata:
-#   name: romm-cnpg-barman-cloud
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: romm-cnpg-barman-cloud
 
-# spec:
+spec:
 
-#   schedule: "@daily"
-#   immediate: true
-#   backupOwnerReference: self
+  schedule: "@daily"
+  immediate: true
+  backupOwnerReference: self
 
-#   cluster:
-#     name: romm-cnpg
+  cluster:
+    name: romm-cnpg
 
-#   method: plugin
+  method: plugin
 
-#   pluginConfiguration:
-#     name: barman-cloud.cloudnative-pg.io
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
 apiVersion: postgresql.cnpg.io/v1
