@@ -47,7 +47,7 @@ spec:
     substitute:
       APP: bazarr
       VOLSYNC_CLAIM: bazarr-config
-      VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

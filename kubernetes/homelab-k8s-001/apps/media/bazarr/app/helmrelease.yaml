@@ -176,19 +176,19 @@ spec:
       add-ons:
         type: emptyDir
 
-      cache:
-        type: emptyDir
-        medium: Memory
-        globalMounts:
-          - path: /config/cache
+      # cache:
+      #   type: emptyDir
+      #   medium: Memory
+      #   globalMounts:
+      #     - path: /config/cache
 
       config:
         existingClaim: ${VOLSYNC_CLAIM}
 
-      log:
-        type: emptyDir
-        globalMounts:
-          - path: /config/log
+      # log:
+      #   type: emptyDir
+      #   globalMounts:
+      #     - path: /config/log
 
       media:
         type: nfs
