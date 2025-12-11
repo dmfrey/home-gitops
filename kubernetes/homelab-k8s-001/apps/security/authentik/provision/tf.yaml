@@ -25,7 +25,7 @@ spec:
     - name: TF_LOG
       value: TRACE
 
-    - name: cluster_domain
+    - name: CLUSTER_DOMAIN
       value: dmfrey.com
 
     - name: proxy_applications
