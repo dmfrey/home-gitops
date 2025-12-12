@@ -4,11 +4,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  # - ./barman-objectstore.yaml
+  - ./barman-objectstore.yaml
   # - ./cnpg-cluster.yaml
   # - ./cnpg-podmonitor.yaml
   # - ./cnpg-scheduledbackup.yaml
   - ./externalsecret.yaml
-  - ./objectstore.yaml
+  # - ./objectstore.yaml
   - ./pgcluster.yaml
   - ./scheduledbackup.yaml
