@@ -15,7 +15,7 @@ spec:
       kind: Cluster
       name: pg-affine
   interval: 1h
-  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/db"
+  path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-db"
   postBuild:
     substitute:
       APP: affine-db
