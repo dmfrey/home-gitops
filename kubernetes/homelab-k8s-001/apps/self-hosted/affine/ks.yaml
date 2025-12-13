@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: affine-db
 spec:
-  components:
-    - ../../../../components/cnpg
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
@@ -16,11 +14,7 @@ spec:
   #     name: pg-affine
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-db"
-  postBuild:
-    substitute:
-      APP: affine-db
-      DB: affine
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
