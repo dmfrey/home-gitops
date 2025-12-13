@@ -47,7 +47,7 @@ spec:
               MAILER_PORT: 25
               MAILER_SENDER: "Affine No Reply <noreply@homelab5767.cc>"
               MAILER_IGNORE_TLS: true
-              REDIS_SERVER_HOST: affine-kv-cluster.self-hosted.svc.cluster.local
+              REDIS_SERVER_HOST: affine-dragonflydb.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
               UPLOAD_LOCATION: /root/.affine/storage
               selfHosted: true
@@ -74,7 +74,7 @@ spec:
               MAILER_PORT: 25
               MAILER_SENDER: "Affine No Reply <noreply@homelab5767.cc>"
               MAILER_IGNORE_TLS: true
-              REDIS_SERVER_HOST: affine-kv-cluster.self-hosted.svc.cluster.local
+              REDIS_SERVER_HOST: affine-dragonflydb.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
               UPLOAD_LOCATION: /root/.affine/storage
               selfHosted: true

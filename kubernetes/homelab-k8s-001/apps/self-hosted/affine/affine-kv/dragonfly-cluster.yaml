@@ -3,7 +3,9 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: affine-kv-cluster
+  name: affine-dragonflydb
+  annotations:
+    secret.reloader.stakater.com/reload: affine-dragonflydb-s3-secret
 
 spec:
 

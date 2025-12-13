@@ -3,11 +3,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: affine-kv-cluster
+  name: affine-dragonflydb
 spec:
   selector:
     matchLabels:
-      app: affine-kv-cluster
-  podTargetLabels: ["app"]
+      app: affine-dragonflydb
+  podTargetLabels:
+    - app
   podMetricsEndpoints:
     - port: admin
