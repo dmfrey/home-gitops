@@ -10,10 +10,10 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-affine
+  # healthChecks:
+  #   - apiVersion: postgresql.cnpg.io/v1
+  #     kind: Cluster
+  #     name: pg-affine
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-db"
   postBuild:
