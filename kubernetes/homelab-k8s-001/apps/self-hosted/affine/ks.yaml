@@ -46,7 +46,7 @@ spec:
   postBuild:
     substitute:
       DB: affine-kv
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
