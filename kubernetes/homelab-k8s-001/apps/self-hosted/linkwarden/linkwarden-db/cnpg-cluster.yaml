@@ -37,10 +37,6 @@ spec:
           barmanObjectName: linkwarden
           serverName: pg-linkwarden
 
-  # To be removed in a future release
-  monitoring:
-    enablePodMonitor: false
-
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
