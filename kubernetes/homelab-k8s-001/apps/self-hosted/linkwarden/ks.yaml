@@ -8,16 +8,12 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
-  # healthChecks:
-  #   - apiVersion: postgresql.cnpg.io/v1
-  #     kind: Cluster
-  #     name: pg-linkwarden
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: linkwarden-cnpg
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/linkwarden/linkwarden-db"
-  postBuild:
-    substitute:
-      APP: linkwarden-db
-      DB: linkwarden
   prune: true
   sourceRef:
     kind: GitRepository
