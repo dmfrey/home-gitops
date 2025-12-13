@@ -12,6 +12,10 @@ spec:
       namespace: datastore
     - name: rook-ceph-cluster
       namespace: rook-ceph
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: bazarr-cnpg
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/bazarr/bazarr-db"
   postBuild:
