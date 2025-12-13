@@ -20,7 +20,7 @@ spec:
     substitute:
       APP: affine-db
       DB: affine
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -46,7 +46,7 @@ spec:
   postBuild:
     substitute:
       DB: affine-kv
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
