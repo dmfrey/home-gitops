@@ -10,7 +10,7 @@ metadata:
 spec:
 
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.10
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.11
 
   backup:
     volumeSnapshot:
@@ -36,7 +36,7 @@ spec:
         parameters:
           barmanObjectName: bazarr
           serverName: pg-bazarr
-          
+
   # To be removed in a future release
   monitoring:
     enablePodMonitor: false
