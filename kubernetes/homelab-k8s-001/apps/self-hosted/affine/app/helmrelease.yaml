@@ -22,6 +22,7 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: affine-cnpg-app
 
         initContainers:
           migration:
@@ -41,7 +42,7 @@ spec:
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-affine-app
+                    name: affine-cnpg-app
                     key: uri
               MAILER_HOST: smtp-relay.kube-system.svc.cluster.local
               MAILER_PORT: 25
@@ -68,7 +69,7 @@ spec:
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-affine-app
+                    name: affine-cnpg-app
                     key: uri
               MAILER_HOST: smtp-relay.kube-system.svc.cluster.local
               MAILER_PORT: 25
