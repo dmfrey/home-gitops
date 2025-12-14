@@ -6,7 +6,6 @@ metadata:
   name: pg-pinepods
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-    secret.reloader.stakater.com/reload: pg-pinepods-cnpg-secret
 
 spec:
 

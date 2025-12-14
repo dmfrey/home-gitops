@@ -5,7 +5,7 @@ kind: ObjectStore
 metadata:
   name: pinepods
   annotations:
-    secret.reloader.stakater.com/reload: pg-pinepods-cnpg-secret
+    secret.reloader.stakater.com/reload: pinepods-cnpg-s3-secret
 
 spec:
   configuration:
@@ -15,7 +15,7 @@ spec:
 
     s3Credentials:
       accessKeyId:
-        name: pg-pinepods-cnpg-secret
+        name: pinepods-cnpg-s3-secret
         key: AWS_SECRET_ACCESS_KEY_ID
       secretAccessKey:
         name: pg-pinepods-cnpg-secret
