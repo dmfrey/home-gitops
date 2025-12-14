@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: bazarr-db
 spec:
-  components:
-    - ../../../../components/cnpg
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
@@ -18,10 +16,6 @@ spec:
       name: bazarr-cnpg
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/bazarr/bazarr-db"
-  postBuild:
-    substitute:
-      APP: bazarr-db
-      DB: bazarr
   prune: true
   sourceRef:
     kind: GitRepository
