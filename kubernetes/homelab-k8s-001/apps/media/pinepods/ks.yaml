@@ -31,8 +31,6 @@ kind: Kustomization
 metadata:
   name: pinepods-kv
 spec:
-  components:
-    - ../../../../components/dragonflydb
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
