@@ -3,7 +3,9 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: pinepods-kv-cluster
+  name: pinepods-dragonflydb
+  annotations:
+    secret.reloader.stakater.com/reload: pinepods-dragonflydb-s3-secret
 
 spec:
 

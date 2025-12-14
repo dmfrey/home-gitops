@@ -35,7 +35,7 @@ spec:
               SEARCH_API_URL: 'https://search.pinepods.online/api/search'
               PEOPLE_API_URL: 'https://people.pinepods.online'
 
-              VALKEY_HOST: pinepods-kv-cluster.media.svc.cluster.local
+              VALKEY_HOST: pinepods-dragonflydb.media.svc.cluster.local
 
               DB_TYPE: postgresql
               DB_HOST:
