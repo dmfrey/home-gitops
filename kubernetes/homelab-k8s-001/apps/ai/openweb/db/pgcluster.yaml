@@ -6,7 +6,6 @@ metadata:
   name: pg-openweb
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-    secret.reloader.stakater.com/reload: pg-openweb-cnpg-secret
 
 spec:
 
