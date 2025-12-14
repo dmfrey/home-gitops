@@ -17,17 +17,17 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    initdb:
-      dataChecksums: true
-      database: openweb
-      owner: openweb
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
-    # recovery:
+    # initdb:
+    #   dataChecksums: true
     #   database: openweb
     #   owner: openweb
-    #   source: source
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
+      database: openweb
+      owner: openweb
+      source: source
 
   externalClusters:
     - name: source
