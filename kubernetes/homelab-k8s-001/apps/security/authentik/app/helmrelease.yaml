@@ -7,23 +7,11 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: authentik
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
+  interval: 1h
 
   values:
 
@@ -64,7 +52,7 @@ spec:
         password: file:///postgres-creds/password
 
       redis:
-        host: authentik-kv-cluster.security.svc.cluster.local
+        host: authentik-dragonflydb.security.svc.cluster.local
 
     geoip:
       enabled: true

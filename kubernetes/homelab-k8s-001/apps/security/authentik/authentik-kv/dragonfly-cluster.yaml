@@ -3,7 +3,7 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: authentik-kv-cluster
+  name: authentik-dragonflydb
   annotations:
     secret.reloader.stakater.com/reload: authentik-dragonflydb-s3-secret
 
