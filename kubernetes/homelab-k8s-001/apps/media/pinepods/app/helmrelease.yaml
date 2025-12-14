@@ -41,27 +41,27 @@ spec:
               DB_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-pinepods-app
+                    name: pinepods-cnpg-app
                     key: host
               DB_PORT:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-pinepods-app
+                    name: pinepods-cnpg-app
                     key: port
               DB_NAME:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-pinepods-app
+                    name: pinepods-cnpg-app
                     key: dbname
               DB_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-pinepods-app
+                    name: pinepods-cnpg-app
                     key: username
               DB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-pinepods-app
+                    name: pinepods-cnpg-app
                     key: password
 
             # envFrom:

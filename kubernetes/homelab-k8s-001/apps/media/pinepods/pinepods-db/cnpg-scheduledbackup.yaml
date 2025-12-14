@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-pinepods-backup-barman-cloud
+  name: pinepods-cnpg-barman-cloud
 
 spec:
 
@@ -12,7 +12,7 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-pinepods
+    name: pinepods-cnpg
 
   method: plugin
 
@@ -23,7 +23,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-pinepods-backup-volume-snapshot
+  name: pinepods-cnpg-volume-snapshot
 
 spec:
 
@@ -32,6 +32,6 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-pinepods
+    name: pinepods-cnpg
 
   method: volumeSnapshot
