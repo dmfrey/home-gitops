@@ -28,6 +28,8 @@ spec:
       database: openweb
       owner: openweb
       source: source
+      recoveryTarget:
+        backupID: 20251214T191621
 
   externalClusters:
     - name: source
