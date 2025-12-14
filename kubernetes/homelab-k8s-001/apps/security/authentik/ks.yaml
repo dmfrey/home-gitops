@@ -14,6 +14,7 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: authentik-cnpg
+      namespace: security
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/authentik-db"
   prune: true
