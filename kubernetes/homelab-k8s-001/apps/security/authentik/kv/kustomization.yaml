@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./authentik-dragonfly-cluster.yaml
   - ./authentik-dragonfly-podmonitor.yaml
+  - ./externalsecret.yaml
