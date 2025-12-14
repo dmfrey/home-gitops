@@ -6,7 +6,6 @@ metadata:
   name: pg-home-assistant
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-    secret.reloader.stakater.com/reload: pg-home-assistant-cnpg-secret
 
 spec:
 
@@ -36,6 +35,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: home-assistant
+          serverName: pg-home-assistant
 
   # To be removed in a future release
   monitoring:
@@ -70,26 +70,3 @@ spec:
   walStorage:
     storageClass: ceph-block
     size: 25Gi
-
-#  # RECOVERY
-#  bootstrap:
-#    recovery:
-#      source: &previous-cluster pg-home-assistant-v0
-#  ## Note: externalClusters is needed when recovering from an existing cnpg cluster
-#  externalClusters:
-#    - name: *previous-cluster
-#      barmanObjectStore:
-#        wal:
-#          compression: gzip
-#          maxParallel: 8
-#        destinationPath: s3://cnpg/
-#        endpointURL: http://minio.internal:9000
-#        s3Credentials:
-#          accessKeyId:
-#            name: pg-home-assistant-cnpg-secret
-#            key: AWS_ACCESS_KEY_ID
-#          secretAccessKey:
-#            name: pg-home-assistant-cnpg-secret
-#            key: AWS_SECRET_ACCESS_KEY
-
-
