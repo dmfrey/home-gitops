@@ -2,42 +2,28 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app openweb
+  name: openweb
 
 spec:
-
-  interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: openweb
 
-  maxHistory: 2
-
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-
-  uninstall:
-    keepHistory: false
+  interval: 1h
 
   values:
 
     controllers:
 
-      *app :
+      openweb:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.6.41-ollama
@@ -72,7 +58,7 @@ spec:
               # Dragonfly (Redis)
               ENABLE_WEBSOCKET_SUPPORT: true
               WEBSOCKET_MANAGER: redis
-              WEBSOCKET_REDIS_URL: redis://openweb-kv-cluster.ai.svc.cluster.local
+              WEBSOCKET_REDIS_URL: redis://openweb-dragonflydb.ai.svc.cluster.local
 
             envFrom:
               - secretRef:
@@ -86,14 +72,13 @@ spec:
                 memory: 1Gi
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
-            port: &port 8080
+            port: 8080
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -108,7 +93,6 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https
 
     persistence:
 

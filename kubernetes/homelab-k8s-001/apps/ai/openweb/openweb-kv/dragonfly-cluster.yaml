@@ -3,7 +3,7 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: openweb-kv-cluster
+  name: openweb-dragonflydb
 
 spec:
 
