@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: authentik-database
 spec:
-  components:
-    - ../../../../components/cnpg
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
@@ -14,10 +12,6 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/database"
-  postBuild:
-    substitute:
-      APP: authentik-database
-      DB: authentik
   prune: true
   sourceRef:
     kind: GitRepository
@@ -33,8 +27,6 @@ kind: Kustomization
 metadata:
   name: authentik-kv
 spec:
-  components:
-    - ../../../../components/dragonflydb
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
@@ -42,10 +34,6 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/kv"
-  postBuild:
-    substitute:
-      APP: authentik-kv
-      DB: authentik-kv
   prune: true
   sourceRef:
     kind: GitRepository
@@ -64,8 +52,8 @@ spec:
   dependsOn:
     - name: authentik-database
     - name: authentik-kv
-    # - name: smtp-relay
-    #   namespace: kube-system
+    - name: smtp-relay
+      namespace: kube-system
     - name: grafana
       namespace: observability
   interval: 1h
