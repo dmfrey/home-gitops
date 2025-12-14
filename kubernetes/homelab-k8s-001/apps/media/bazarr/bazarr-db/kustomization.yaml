@@ -8,4 +8,5 @@ resources:
   - ./objectstore.yaml
   - ./podmonitor.yaml
   - ./scheduledbackup.yaml
+  - ./externalsecret.yaml
 
