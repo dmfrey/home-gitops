@@ -6,16 +6,16 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./objectstore.yaml
+  # - ./objectstore.yaml
   - ./ocirepository.yaml
-  - ./pgcluster.yaml
-  - ./podmonitor.yaml
+  # - ./pgcluster.yaml
+  # - ./podmonitor.yaml
   - ./pvc.yaml
   - ./replicationdestination.yaml
   - ./replicationsource.yaml
   - ./replicationsource-r2.yaml
-  - ./scheduledbackup.yaml
-  # - ./secret-home-assistant.sops.yaml
+  # - ./scheduledbackup.yaml
+              # - ./secret-home-assistant.sops.yaml
   - ./secret-deploy-key.sops.yaml
 
 configMapGenerator:
