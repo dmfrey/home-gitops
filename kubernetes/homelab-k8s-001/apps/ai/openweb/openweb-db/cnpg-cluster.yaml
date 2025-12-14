@@ -17,19 +17,17 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    # initdb:
-    #   dataChecksums: true
-    #   database: openweb
-    #   owner: openweb
-    #   encoding: "UTF8"
-    #   localeCollate: en_US.utf8
-    #   localeCType: en_US.utf8
-    recovery:
+    initdb:
+      dataChecksums: true
       database: openweb
       owner: openweb
-      source: source
-      recoveryTarget:
-        backupID: 20251214T191621
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+    # recovery:
+    #   database: openweb
+    #   owner: openweb
+    #   source: source
 
   externalClusters:
     - name: source
@@ -37,7 +35,6 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: openweb
-          serverName: pg-openweb
 
   # To be removed in a future release
   monitoring:
