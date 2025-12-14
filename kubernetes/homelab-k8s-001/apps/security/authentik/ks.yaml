@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: authentik-database
+  name: authentik-db
 spec:
   dependsOn:
     - name: cloudnative-pg
@@ -50,7 +50,7 @@ metadata:
   name: authentik
 spec:
   dependsOn:
-    - name: authentik-database
+    - name: authentik-db
     - name: authentik-kv
     - name: smtp-relay
       namespace: kube-system
