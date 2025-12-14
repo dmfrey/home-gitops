@@ -8,11 +8,11 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: openweb-cnpg
-      namespace: ai
+  # healthChecks:
+  #   - apiVersion: postgresql.cnpg.io/v1
+  #     kind: Cluster
+  #     name: openweb-cnpg
+  #     namespace: ai
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/ai/openweb/openweb-db"
   prune: true
