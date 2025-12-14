@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-authentik-backup-barman-cloud
+  name: authentik-cnpg-barman-cloud
 
 spec:
 
@@ -12,7 +12,7 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-authentik
+    name: authentik-cnpg
 
   method: plugin
 
@@ -23,7 +23,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-authentik-backup-volume-snapshot
+  name: authentik-cnpg-volume-snapshot
 
 spec:
 
@@ -32,6 +32,6 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-authentik
+    name: authentik-cnpg
 
   method: volumeSnapshot

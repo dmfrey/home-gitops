@@ -6,6 +6,6 @@ kind: Kustomization
 resources:
   - ./barman-objectstore.yaml
   - ./cnpg-cluster.yaml
-  - ./cnpg-podmonitor.yaml
+  # - ./cnpg-podmonitor.yaml
   - ./cnpg-scheduledbackup.yaml
   - ./externalsecret.yaml

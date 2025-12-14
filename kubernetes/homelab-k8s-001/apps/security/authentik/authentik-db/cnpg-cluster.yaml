@@ -3,10 +3,9 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-authentik
+  name: authentik-cnpg
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-    secret.reloader.stakater.com/reload: pg-authentik-cnpg-secret
 
 spec:
 
@@ -36,10 +35,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: authentik
-
-  # To be removed in a future release
-  monitoring:
-    enablePodMonitor: false
+          serverName: pg-authentik
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
@@ -61,7 +57,7 @@ spec:
       memory: 512Mi
     limits:
       cpu: 1000m
-      memory: 512Mi
+      memory: 1Gi
 
   storage:
     storageClass: ceph-block

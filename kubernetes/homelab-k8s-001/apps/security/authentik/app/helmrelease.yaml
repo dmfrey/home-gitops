@@ -76,10 +76,6 @@ spec:
         limits:
           memory: 512Mi
 
-    # blueprints:
-    #   configMaps: []
-    #   secrets: []
-
     prometheus:
       rules:
         enabled: true
@@ -91,7 +87,7 @@ spec:
         minReplicas: 2
 
       deploymentAnnotations:
-        secret.reloader.stakater.com/reload: pg-authentik-app
+        secret.reloader.stakater.com/reload: authentik-cnpg-app
 
       metrics:
         serviceMonitor:
@@ -106,7 +102,7 @@ spec:
       volumes: &postgresCredsVolume
         - name: postgres-creds
           secret:
-            secretName: pg-authentik-app
+            secretName: authentik-cnpg-app
       volumeMounts: &postgresCredsVolumeMounts
         - name: postgres-creds
           mountPath: /postgres-creds
