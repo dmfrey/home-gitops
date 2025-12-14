@@ -18,7 +18,7 @@ spec:
         name: pinepods-cnpg-s3-secret
         key: AWS_SECRET_ACCESS_KEY_ID
       secretAccessKey:
-        name: pg-pinepods-cnpg-secret
+        name: pinepods-cnpg-s3-secret
         key: AWS_SECRET_ACCESS_KEY
 
     wal:
