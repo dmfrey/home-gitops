@@ -3,11 +3,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: openweb-kv-cluster
+  name: openweb-dragonflydb
 spec:
   selector:
     matchLabels:
-      app: openweb-kv-cluster
-  podTargetLabels: ["app"]
+      app: openweb-dragonflydb
+  podTargetLabels:
+    - app
   podMetricsEndpoints:
     - port: admin
