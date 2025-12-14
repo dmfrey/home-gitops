@@ -10,7 +10,7 @@ spec:
       namespace: datastore
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/ai/openweb/db"
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
