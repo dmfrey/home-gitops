@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-openweb-backup-barman-cloud
+  name: openweb-cnpg-barman-cloud
 
 spec:
 
@@ -14,7 +14,7 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-openweb
+    name: openweb-cnpg
 
   method: plugin
 
@@ -25,7 +25,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-openweb-backup-volume-snapshot
+  name: openweb-cnpg-volume-snapshot
 
 spec:
 
@@ -36,6 +36,6 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-openweb
+    name: openweb-cnpg
 
   method: volumeSnapshot

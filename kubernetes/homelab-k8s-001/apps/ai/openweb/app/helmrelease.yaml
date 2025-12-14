@@ -52,7 +52,7 @@ spec:
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: pg-openweb-app
+                    name: openweb-cnpg-app
                     key: uri
 
               # Dragonfly (Redis)

@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-openweb
+  name: openweb-cnpg
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 
@@ -35,6 +35,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: openweb
+          serverName: pg-openweb
 
   # To be removed in a future release
   monitoring:
