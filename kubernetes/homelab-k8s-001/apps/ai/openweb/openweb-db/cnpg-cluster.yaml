@@ -10,7 +10,7 @@ metadata:
 spec:
 
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.11
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.7
 
   backup:
     volumeSnapshot:
