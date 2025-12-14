@@ -8,3 +8,4 @@ resources:
   - ./pgcluster.yaml
   - ./podmonitor.yaml
   - ./scheduledbackup.yaml
+  - ./externalsecret.yaml
