@@ -22,7 +22,7 @@ spec:
     substitute:
       APP: bazarr-db
       DB: bazarr
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
