@@ -17,17 +17,17 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    initdb:
-      dataChecksums: true
-      database: home-assistant
-      owner: home-assistant
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
-    # recovery:
+    # initdb:
+    #   dataChecksums: true
     #   database: home-assistant
     #   owner: home-assistant
-    #   source: source
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
+      database: home-assistant
+      owner: home-assistant
+      source: source
 
   externalClusters:
     - name: source
