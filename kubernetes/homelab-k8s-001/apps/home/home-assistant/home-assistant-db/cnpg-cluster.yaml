@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg-home-assistant
+  name: home-assistant-cnpg
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 
@@ -17,17 +17,17 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    # initdb:
-    #   dataChecksums: true
-    #   database: home-assistant
-    #   owner: home-assistant
-    #   encoding: "UTF8"
-    #   localeCollate: en_US.utf8
-    #   localeCType: en_US.utf8
-    recovery:
+    initdb:
+      dataChecksums: true
       database: home-assistant
       owner: home-assistant
-      source: source
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+    # recovery:
+    #   database: home-assistant
+    #   owner: home-assistant
+    #   source: source
 
   externalClusters:
     - name: source
@@ -35,11 +35,6 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: home-assistant
-          serverName: pg-home-assistant
-
-  # To be removed in a future release
-  monitoring:
-    enablePodMonitor: false
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io

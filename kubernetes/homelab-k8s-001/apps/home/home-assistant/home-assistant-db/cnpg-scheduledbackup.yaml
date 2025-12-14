@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-home-assistant-backup-barman-cloud
+  name: home-assistant-cnpg-barman-cloud
 
 spec:
 
@@ -12,7 +12,7 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-home-assistant
+    name: home-assistant-cnpg
 
   method: plugin
 
@@ -23,7 +23,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: pg-home-assistant-backup-volume-snapshot
+  name: home-assistant-cnpg-volume-snapshot
 
 spec:
 
@@ -32,6 +32,6 @@ spec:
   backupOwnerReference: self
 
   cluster:
-    name: pg-home-assistant
+    name: home-assistant-cnpg
 
   method: volumeSnapshot
