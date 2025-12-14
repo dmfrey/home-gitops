@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: pinepods-db
 spec:
-  components:
-    - ../../../../components/cnpg
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
@@ -14,10 +12,6 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/pinepods/pinepods-db"
-  postBuild:
-    substitute:
-      APP: pinepods-db
-      DB: pinepods
   prune: true
   sourceRef:
     kind: GitRepository
