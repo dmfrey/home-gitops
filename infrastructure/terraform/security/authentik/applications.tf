@@ -30,80 +30,80 @@ locals {
       client_secret = module.onepassword_application["affine"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "home"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/affine.svg"
-      redirect_uri  = "https://affine.${var.cluster_domain}/oauth/callback"
-      launch_url    = "https://affine.${var.cluster_domain}/"
+      redirect_uri  = "https://affine.${var.CLUSTER_DOMAIN}/oauth/callback"
+      launch_url    = "https://affine.${var.CLUSTER_DOMAIN}/"
     },
     gatus = {
       client_id     = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["gatus"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "monitoring"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/gatus.svg"
-      redirect_uri  = "https://status.${var.cluster_domain}/authorization-code/callback"
-      launch_url    = "https://status.${var.cluster_domain}/"
+      redirect_uri  = "https://status.${var.CLUSTER_DOMAIN}/authorization-code/callback"
+      launch_url    = "https://status.${var.CLUSTER_DOMAIN}/"
     },
     grafana = {
       client_id     = module.onepassword_application["grafana"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["grafana"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "monitoring"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
-      redirect_uri  = "https://grafana.${var.cluster_domain}/login/generic_oauth"
-      launch_url    = "https://grafana.${var.cluster_domain}/login/generic_oauth"
+      redirect_uri  = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
+      launch_url    = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
     },
     blinko = {
       client_id     = module.onepassword_application["blinko"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["blinko"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "home"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/blinko.png"
-      redirect_uri  = "https://notes.${var.cluster_domain}/api/auth/callback/blinko"
-      launch_url    = "https://notes.${var.cluster_domain}/"
+      redirect_uri  = "https://notes.${var.CLUSTER_DOMAIN}/api/auth/callback/blinko"
+      launch_url    = "https://notes.${var.CLUSTER_DOMAIN}/"
     },
     jellyfin = {
       client_id     = module.onepassword_application["jellyfin"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["jellyfin"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "media"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/jellyfin.png"
-      redirect_uri  = "https://jellyfin.${var.cluster_domain}/sso/OID/redirect/Authentik"
-      launch_url    = "https://jellyfin.${var.cluster_domain}/"
+      redirect_uri  = "https://jellyfin.${var.CLUSTER_DOMAIN}/sso/OID/redirect/Authentik"
+      launch_url    = "https://jellyfin.${var.CLUSTER_DOMAIN}/"
     },
     linkwarden = {
       client_id     = module.onepassword_application["linkwarden"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["linkwarden"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "home"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/linkwarden.png"
-      redirect_uri  = "https://bookmarks.${var.cluster_domain}/api/v1/auth/callback/authentik"
-      launch_url    = "https://bookmarks.${var.cluster_domain}/"
+      redirect_uri  = "https://bookmarks.${var.CLUSTER_DOMAIN}/api/v1/auth/callback/authentik"
+      launch_url    = "https://bookmarks.${var.CLUSTER_DOMAIN}/"
     },
     openweb = {
       client_id     = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["openweb"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "ai"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/openweb-ui.png"
-      redirect_uri  = "https://openweb.${var.cluster_domain}/oauth/oidc/callback"
-      launch_url    = "https://openweb.${var.cluster_domain}/"
+      redirect_uri  = "https://openweb.${var.CLUSTER_DOMAIN}/oauth/oidc/callback"
+      launch_url    = "https://openweb.${var.CLUSTER_DOMAIN}/"
     },
     pinepods = {
       client_id     = module.onepassword_application["pinepods"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["pinepods"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "media"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/pinepods.png"
-      redirect_uri  = "https://podcasts.${var.cluster_domain}/api/auth/callback"
-      launch_url    = "https://podcasts.${var.cluster_domain}/"
+      redirect_uri  = "https://podcasts.${var.CLUSTER_DOMAIN}/api/auth/callback"
+      launch_url    = "https://podcasts.${var.CLUSTER_DOMAIN}/"
     },
     romm = {
       client_id     = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["romm"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "games"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/romm.png"
-      redirect_uri  = "https://romm.${var.cluster_domain}/api/oauth/openid"
-      launch_url    = "https://romm.${var.cluster_domain}/"
+      redirect_uri  = "https://romm.${var.CLUSTER_DOMAIN}/api/oauth/openid"
+      launch_url    = "https://romm.${var.CLUSTER_DOMAIN}/"
     },
     spring-dev = {
       client_id     = module.onepassword_application["spring-dev"].fields["AUTHENTIK_CLIENT_ID"]
       client_secret = module.onepassword_application["spring-dev"].fields["AUTHENTIK_CLIENT_SECRET"]
       group         = "developers"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
-      redirect_uri  = "https://spring-dev-gateway.${var.cluster_domain}/login/oauth2/code/sso"
-      launch_url    = "https://spring-dev-gateway.${var.cluster_domain}/"
+      redirect_uri  = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso"
+      launch_url    = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/"
     }
   }
 }
@@ -172,14 +172,14 @@ resource "authentik_application" "application" {
 #     log_level : "debug"
 #     authentik_host : "http://authentik-server.security.svc.cluster.local:80"
 #     authentik_host_insecure : false
-#     authentik_host_browser : "https://auth.${var.cluster_domain}"
+#     authentik_host_browser : "https://auth.${var.CLUSTER_DOMAIN}"
 #     object_naming_template : "ak-outpost-%(name)s"
 #     kubernetes_replicas : 2
 #     kubernetes_namespace : "security"
 #     kubernetes_ingress_annotations : {
 #       "cert-manager.io/cluster-issuer" : "letsencrypt-production",
 #       "nginx.ingress.kubernetes.io/cors-allow-credentials": "true",
-#       "nginx.ingress.kubernetes.io/cors-allow-origin": "https://${var.cluster_domain}",
+#       "nginx.ingress.kubernetes.io/cors-allow-origin": "https://${var.CLUSTER_DOMAIN}",
 #       "nginx.ingress.kubernetes.io/cors-allow-methods": "PUT, GET, POST, OPTIONS, DELETE, PATCH",
 #       "nginx.ingress.kubernetes.io/enable-cors": "true"
 #     }
