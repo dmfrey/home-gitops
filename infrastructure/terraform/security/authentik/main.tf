@@ -19,8 +19,8 @@ provider "onepassword" {
   # connect_url           = var.service_account_json != null ? "http://onepassword.external-secrets.svc.cluster.local" : null
   # connect_token         = var.service_account_json
   # service_account_token = var.onepassword_sa_token
-  # connect_url   = var.OP_CONNECT_HOST
-  # connect_token = var.OP_CONNECT_TOKEN
+  connect_url   = var.OP_CONNECT_HOST
+  connect_token = var.OP_CONNECT_TOKEN
 }
 
 module "onepassword_authentik" {
