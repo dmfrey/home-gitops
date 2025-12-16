@@ -16,20 +16,20 @@ resources:
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
-  - ./sabnzbd/ks.yaml
+  # - ./sabnzbd/ks.yaml
 
   # - ./slskd/ks.yaml
   # - ./soularr/ks.yaml
 
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: LabelTransformer
-    metadata:
-      name: not-used
-    labels:
-      routed-gateway: "true"
-    fieldSpecs:
-      - kind: Namespace
-        path: metadata/labels
-        create: true
+# transformers:
+#   - |-
+#     apiVersion: builtin
+#     kind: LabelTransformer
+#     metadata:
+#       name: not-used
+#     labels:
+#       routed-gateway: "true"
+#     fieldSpecs:
+#       - kind: Namespace
+#         path: metadata/labels
+#         create: true
