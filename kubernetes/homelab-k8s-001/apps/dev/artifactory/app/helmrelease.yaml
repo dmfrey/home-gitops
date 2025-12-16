@@ -21,7 +21,7 @@ spec:
   chart:
     spec:
       chart: artifactory-oss
-      version: 107.125.8
+      version: 107.125.9
       sourceRef:
         kind: HelmRepository
         name: jfrog
