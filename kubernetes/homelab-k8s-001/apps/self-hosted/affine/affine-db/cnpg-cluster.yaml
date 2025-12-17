@@ -17,19 +17,19 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    # initdb:
-    #   dataChecksums: true
-    #   database: affine
-    #   owner: affine
-    #   encoding: "UTF8"
-    #   localeCollate: en_US.utf8
-    #   localeCType: en_US.utf8
-    #   postInitTemplateSQL:
-    #     - CREATE EXTENSION IF NOT EXISTS vector;
-    recovery:
+    initdb:
+      dataChecksums: true
       database: affine
       owner: affine
-      source: source
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+      postInitTemplateSQL:
+        - CREATE EXTENSION IF NOT EXISTS vector;
+    # recovery:
+    #   database: affine
+    #   owner: affine
+    #   source: source
 
   externalClusters:
     - name: source
