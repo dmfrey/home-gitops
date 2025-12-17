@@ -8,8 +8,8 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: pod-gateway
-      namespace: network
+    # - name: pod-gateway
+    #   namespace: network
     - name: volsync
       namespace: volsync-system
   interval: 1h
