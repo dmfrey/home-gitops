@@ -17,3 +17,7 @@ spec:
 
     serviceMonitor:
       create: true
+
+    web:
+      networkPolicy:
+        create: false
