@@ -67,8 +67,8 @@ spec:
 
   storage:
     storageClass: ceph-block
-    size: 5Gi
+    size: 10Gi
 
   walStorage:
     storageClass: ceph-block
-    size: 5Gi
+    size: 10Gi
