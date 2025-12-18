@@ -58,7 +58,7 @@ spec:
 
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.106.3
+              tag: 4.107.0
 
             args:
               - "/config"
