@@ -54,6 +54,8 @@ kind: Kustomization
 metadata:
   name: affine-indexer
 spec:
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
