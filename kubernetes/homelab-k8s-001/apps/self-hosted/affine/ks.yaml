@@ -57,6 +57,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-indexer"
   postBuild:
