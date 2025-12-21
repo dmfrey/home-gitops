@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: manticoresearch/manticore
-              tag: 1.15.0
+              tag: dev-16.0.8-c47134f
 
             env:
               TZ: America/New_York
