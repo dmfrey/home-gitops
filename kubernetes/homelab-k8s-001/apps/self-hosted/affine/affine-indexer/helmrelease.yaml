@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: manticore
+
+spec:
+
+  chartRef:
+    kind: OCIRepository
+    name: manticore
+
+  interval: 1h
+
+  values:
+
+    controllers:
+
+      affine:
+        type: statefulset
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+          # secret.reloader.stakater.com/reload: affine-cnpg-app
+
+        containers:
+          app:
+            image:
+              repository: manticoresearch/manticore
+              tag: 1.15.0
+
+            env:
+              TZ: America/New_York
+
+            # envFrom:
+            #   - secretRef:
+            #       name: affine-secret
+
+            # resources:
+            #   limits:
+            #     memory: 2Gi
+
+    service:
+      app:
+        ports:
+          http:
+            port: 9308
+
+    # route:
+    #   app:
+    #     annotations:
+    #       # gatus.home-operations.com/endpoint: |-
+    #       #   conditions: ["[STATUS] == 200"]
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Tools
+    #       gethomepage.dev/name: Affine
+    #       gethomepage.dev/icon: affine.png
+    #       gethomepage.dev/description: A privacy-focused, local-first, open-source, and ready-to-use alternative for Notion & Miro.
+    #     hostnames:
+    #       - "{{ .Release.Name }}.dmfrey.com"
+    #     parentRefs:
+    #       - name: envoy-internal
+    #         namespace: network
+
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/lib/manticore
+
+      tmp:
+        type: emptyDir
