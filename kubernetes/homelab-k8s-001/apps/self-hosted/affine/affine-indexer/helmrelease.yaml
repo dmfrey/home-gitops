@@ -17,7 +17,7 @@ spec:
 
     controllers:
 
-      affine:
+      affine-indexer:
         type: statefulset
 
         annotations:
