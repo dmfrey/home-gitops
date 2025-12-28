@@ -9,7 +9,8 @@ spec:
 
   chartRef:
     kind: OCIRepository
-    name: onepassword
+    name: app-template
+    namespace: flux-system
 
   interval: 1h
 

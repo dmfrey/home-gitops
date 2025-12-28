@@ -5,10 +5,26 @@ kind: Kustomization
 metadata:
   name: onepassword
 spec:
-  dependsOn:
-    - name: external-secrets
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/external-secrets/onepassword/app
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: external-secrets
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: onepassword-store
+spec:
+  dependsOn:
+    - name: onepassword
+  interval: 1h
+  path: ./kubernetes/homelab-k8s-001/apps/external-secrets/onepassword/store
   prune: false
   sourceRef:
     kind: GitRepository
