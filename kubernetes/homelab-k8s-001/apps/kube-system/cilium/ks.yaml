@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/kube-system/cilium/app"
-  prune: true # let's not make happy accidents
+  prune: false # let's not make happy accidents
   sourceRef:
     kind: GitRepository
     name: flux-system
