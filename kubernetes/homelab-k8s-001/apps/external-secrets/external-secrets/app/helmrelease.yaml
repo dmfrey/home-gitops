@@ -1,4 +1,18 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: external-secrets
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.2.0
+  url: oci://ghcr.io/external-secrets/charts/external-secrets
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -7,50 +21,41 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: external-secrets
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
 
   values:
 
-    installCRDs: true
+    # installCRDs: true
+
+    grafanaDashboard:
+      enabled: true
 
     leaderElect: true
 
-    image:
-      repository: ghcr.io/external-secrets/external-secrets
-
-    webhook:
-      image:
-        repository: ghcr.io/external-secrets/external-secrets
-
-      serviceMonitor:
-        enabled: true
-        interval: 1m
-
-    certController:
-      image:
-        repository: ghcr.io/external-secrets/external-secrets
-
-      serviceMonitor:
-        enabled: true
-        interval: 1m
+    # image:
+    #   repository: ghcr.io/external-secrets/external-secrets
 
     serviceMonitor:
       enabled: true
       interval: 1m
 
-    grafanaDashboard:
-      enabled: true
+    webhook:
+      replicaCount: 2
+      # image:
+      #   repository: ghcr.io/external-secrets/external-secrets
+
+      # serviceMonitor:
+      #   enabled: true
+      #   interval: 1m
+
+    # certController:
+    #   image:
+    #     repository: ghcr.io/external-secrets/external-secrets
+
+    #   serviceMonitor:
+    #     enabled: true
+    #     interval: 1m
