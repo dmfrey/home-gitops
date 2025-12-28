@@ -29,15 +29,10 @@ spec:
 
   values:
 
-    # installCRDs: true
-
     grafanaDashboard:
       enabled: true
 
     leaderElect: true
-
-    # image:
-    #   repository: ghcr.io/external-secrets/external-secrets
 
     serviceMonitor:
       enabled: true
@@ -45,17 +40,3 @@ spec:
 
     webhook:
       replicaCount: 2
-      # image:
-      #   repository: ghcr.io/external-secrets/external-secrets
-
-      # serviceMonitor:
-      #   enabled: true
-      #   interval: 1m
-
-    # certController:
-    #   image:
-    #     repository: ghcr.io/external-secrets/external-secrets
-
-    #   serviceMonitor:
-    #     enabled: true
-    #     interval: 1m
