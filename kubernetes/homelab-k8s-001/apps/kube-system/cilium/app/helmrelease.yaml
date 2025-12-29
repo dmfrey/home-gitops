@@ -1,4 +1,18 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: cilium
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.18.5
+  url: oci://ghcr.io/home-operations/charts-mirror/cilium
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -33,7 +47,7 @@ spec:
       enabled: true
 
     cgroup:
-      autoMount:
+      automount:
         enabled: false
       hostRoot: /sys/fs/cgroup
 
@@ -74,7 +88,8 @@ spec:
       algorithm: maglev
       mode: dsr
 
-    localRedirectPolicy: true
+    localRedirectPolicies:
+      enabled: true
 
     operator:
       dashboards:
@@ -121,3 +136,7 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
+
+    socketLB:
+      enabled: true
+      hostNamespaceOnly: true
