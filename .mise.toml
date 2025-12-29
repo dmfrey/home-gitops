@@ -4,20 +4,13 @@ KUBECONFIG = "{{config_root}}/kubeconfig"
 MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
 TALOSCONFIG = "{{config_root}}/talosconfig"
-# Directory paths
-ROOT_DIR = "{{config_root}}"
-BOOTSTRAP_DIR = "{{config_root}}/bootstrap"
-KUBERNETES_DIR = "{{config_root}}/kubernetes/homelab-k8s-001"
-SCRIPTS_DIR = "{{config_root}}/scripts"
-TALOS_DIR = "{{config_root}}/talos"
-# Included file paths
-_.file = [
-  "{{config_root}}/onepassword.env",
-  "{{config_root}}/kubernetes/homelab-k8s-001/apps/system-upgrade/versions.env"
-]
-# _.python.venv = { path = "{{config_root}}/.venv", create = true }
+JUST_UNSTABLE = "1"
 
-# [tools]
-# "python" = "3.13"
-# "uv" = "latest"
-# "pipx:flux-local" = "latest"
+_.file = [
+  "{{config_root}}/onepassword.env"
+]
+
+[tools]
+"aqua:helm/helm" = "3.19.4"
+"uv" = "latest"
+"pipx:flux-local" = "latest"
