@@ -30,6 +30,9 @@ spec:
 
             env:
               TZ: America/New_York
+              ENABLE_OPENAI_API: False
+              ENABLE_OLLAMA_API: True
+              ENABLE_IMAGE_GENERATION: True
               WEBUI_NAME: OpenWeb UI
               WEBUI_URL: https://openweb.dmfrey.com
               DATA_DIR: /data
@@ -69,10 +72,9 @@ spec:
 
             resources:
               requests:
-                cpu: 10m
-                memory: 512Mi
+                cpu: 500m
               limits:
-                memory: 1Gi
+                memory: 2Gi
 
     service:
       app:
