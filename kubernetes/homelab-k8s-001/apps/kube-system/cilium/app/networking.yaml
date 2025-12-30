@@ -1,4 +1,14 @@
 ---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cilium.io/ciliumloadbalancerippool_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: pool
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+    - cidr: 192.168.29.0/24
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
 kind: CiliumBGPAdvertisement
@@ -47,3 +57,19 @@ spec:
           peerAddress: 192.168.86.1
           peerConfigRef:
             name: l3-bgp-peer-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-api
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: k8s.dmfrey.com
+    lbipam.cilium.io/ips: 192.168.29.120
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    k8s-app: kube-apiserver
+    tier: control-plane
+  ports:
+    - port: 6443

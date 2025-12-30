@@ -29,8 +29,7 @@ releases:
           - --server-side
           - --namespace=kube-system
           - --field-manager=kustomize-controller
-          - --kustomize
-          - ../../kubernetes/homelab-k8s-001/apps/kube-system/cilium/config
+          - --filename=../../kubernetes/homelab-k8s-001/apps/kube-system/cilium/app/networking.yaml
         events:
           - postsync
         showlogs: true
