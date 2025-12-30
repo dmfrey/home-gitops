@@ -32,7 +32,7 @@ spec:
 
             env:
               TZ: America/New_York
-              PLEX_ADVERTISE_URL: https://plex.dmfrey.com:443,http://192.168.29.227:32400,plex.media.svc.cluster.local:32400
+              PLEX_ADVERTISE_URL: https://plex.dmfrey.com:443,http://192.168.29.227:32400,http://plex.media.svc.cluster.local:32400
               PLEX_NO_AUTH_NETWORKS: 192.168.0.0/16
               PLEX_PREFERENCE_NAME: "FriendlyName=homelab5767"
               PLEX_PREFERENCE_DLNA: "DlnaEnabled=1"
