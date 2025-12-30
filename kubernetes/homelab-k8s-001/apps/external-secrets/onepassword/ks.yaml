@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/external-secrets/onepassword/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -30,7 +30,7 @@ spec:
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/external-secrets/onepassword/store
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
