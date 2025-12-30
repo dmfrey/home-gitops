@@ -29,6 +29,7 @@ spec:
               tag: 0.6.43-ollama
 
             env:
+              TZ: America/New_York
               WEBUI_NAME: OpenWeb UI
               WEBUI_URL: https://openweb.dmfrey.com
               DATA_DIR: /data
@@ -56,9 +57,11 @@ spec:
                     key: uri
 
               # Dragonfly (Redis)
+              REDIS_URL: redis://openweb-dragonflydb.ai.svc.cluster.local/0
+              THREAD_POOL_SIZE: 10
               ENABLE_WEBSOCKET_SUPPORT: true
               WEBSOCKET_MANAGER: redis
-              WEBSOCKET_REDIS_URL: redis://openweb-dragonflydb.ai.svc.cluster.local
+              WEBSOCKET_REDIS_URL: redis://openweb-dragonflydb.ai.svc.cluster.local/1
 
             envFrom:
               - secretRef:
