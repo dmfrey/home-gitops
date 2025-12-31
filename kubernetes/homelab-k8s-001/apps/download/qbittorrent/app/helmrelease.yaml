@@ -20,7 +20,6 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
-          # setGateway: "true"
 
         containers:
           app:
@@ -61,7 +60,7 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 2Gi
+                memory: 8Gi
 
     defaultPodOptions:
       annotations:
