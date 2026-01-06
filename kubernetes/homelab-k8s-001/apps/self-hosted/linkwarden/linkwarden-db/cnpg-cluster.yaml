@@ -35,7 +35,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: linkwarden
-          serverName: pg-linkwarden
+          serverName: linkwarden-cnpg  # pg-linkwarden
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
