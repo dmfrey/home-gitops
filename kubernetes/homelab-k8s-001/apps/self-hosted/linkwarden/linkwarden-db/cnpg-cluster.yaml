@@ -64,5 +64,5 @@ spec:
     storageClass: ceph-block
 
   walStorage:
+    size: 50Gi
     storageClass: ceph-block
-    size: 25Gi
