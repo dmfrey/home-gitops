@@ -1,6 +1,9 @@
+---
 machine:
-  network:
-    hostname: k8s-1
+  type: controlplane
   nodeLabels:
     topology.kubernetes.io/zone: dmf-u
-  type: controlplane
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: k8s-1
