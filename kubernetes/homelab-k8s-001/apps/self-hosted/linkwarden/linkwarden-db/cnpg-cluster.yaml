@@ -9,7 +9,7 @@ metadata:
 
 spec:
 
-  instances: 3
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
 
   backup:
