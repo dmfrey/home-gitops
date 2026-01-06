@@ -60,9 +60,9 @@ spec:
       memory: 1024Mi
 
   storage:
-    size: 5Gi
+    size: 25Gi
     storageClass: ceph-block
 
   walStorage:
     storageClass: ceph-block
-    size: 5Gi
+    size: 25Gi
