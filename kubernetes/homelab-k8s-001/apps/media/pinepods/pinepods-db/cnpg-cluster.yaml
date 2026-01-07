@@ -9,7 +9,7 @@ metadata:
 
 spec:
 
-  instances: 3
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
 
   backup:
@@ -35,7 +35,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: pinepods
-          serverName: pg-pinepods
+          serverName: pinepods-cnpg
 
   # To be removed in a future release
   monitoring:
@@ -58,10 +58,10 @@ spec:
   resources:
     requests:
       cpu: 250m
-      memory: 512Mi
+      memory: 1024Mi
     limits:
       cpu: 1000m
-      memory: 1024Mi
+      memory: 2048Mi
 
   storage:
     storageClass: ceph-block
