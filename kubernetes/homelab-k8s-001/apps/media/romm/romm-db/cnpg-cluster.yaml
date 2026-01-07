@@ -9,7 +9,7 @@ metadata:
 
 spec:
 
-  instances: 3
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
 
   backup:
@@ -57,10 +57,10 @@ spec:
   resources:
     requests:
       cpu: 250m
-      memory: 256Mi
+      memory: 512Mi
     limits:
       cpu: 1000m
-      memory: 512Mi
+      memory: 1024Mi
 
   storage:
     storageClass: ceph-block
