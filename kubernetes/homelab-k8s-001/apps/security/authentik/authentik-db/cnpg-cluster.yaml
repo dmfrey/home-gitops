@@ -9,7 +9,7 @@ metadata:
 
 spec:
 
-  instances: 3
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
 
   backup:
@@ -35,7 +35,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: authentik
-          serverName: pg-authentik
+          serverName: authentik-cnpg
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
