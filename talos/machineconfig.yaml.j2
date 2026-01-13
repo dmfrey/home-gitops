@@ -279,10 +279,6 @@ kind: ExtensionServiceConfig
 name: nut-client
 configFiles:
   - content: |-
-        MONITOR qnapups@${NAS_SERVER} 1 ${NUT_USER} ${NUT_PASSWORD} slave
+        op://kubernetes/unifi/NUT_MONITOR
         SHUTDOWNCMD "/sbin/poweroff"
     mountPath: /usr/local/etc/nut/upsmon.conf
-environment:
-  - NAS_SERVER=nas.internal
-  - NUT_USER=op://kubernetes/qnap/NUT_USER
-  - NUT_PASSWORD=op://kubernetes/qnap/NUT_PASSWORD
