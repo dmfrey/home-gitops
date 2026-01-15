@@ -128,8 +128,7 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
-            url: "https://{{ .Release.Name }}.dmfrey.com/identity"
+            conditions: ["[STATUS] == 401"]
           gethomepage.dev/enabled: "true"
           gethomepage.dev/href: "https://{{ .Release.Name }}.dmfrey.com"
           gethomepage.dev/group: Video
