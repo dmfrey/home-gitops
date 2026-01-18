@@ -20,6 +20,7 @@ recorder:
   db_url: !env_var HASS_RECORDER_DB_URL
 
 automation: !include automations.yaml
+customize: !include customize.yaml
 # binary_sensor: !include_dir_merge_list binary_sensors
 group: !include_dir_merge_named groups
 input_boolean: !include_dir_merge_named input_booleans
