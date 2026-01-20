@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app lidarr
+  name: lidarr
 
 spec:
 
@@ -17,37 +17,37 @@ spec:
 
     controllers:
 
-      *app :
+      lidarr:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          fix-permissions:
-            image:
-              repository: busybox
-              tag: stable
+        # initContainers:
+        #   fix-permissions:
+        #     image:
+        #       repository: busybox
+        #       tag: stable
 
-            command: ["sh", "-c", "chown -R 1000:1000 /config/*"]
+        #     command: ["sh", "-c", "chown -R 1000:1000 /config/*"]
 
-            securityContext:
-              runAsNonRoot: false
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: true
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
+        #     securityContext:
+        #       runAsNonRoot: false
+        #       readOnlyRootFilesystem: true
+        #       allowPrivilegeEscalation: true
+        #       runAsUser: 0
+        #       runAsGroup: 0
+        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/home-operations/lidarr
               tag: 3.1.2
 
             env:
               TZ: America/New_York
-              LIDARR__INSTANCE_NAME: *app
+              LIDARR__INSTANCE_NAME: lidarr
               LIDARR__PORT: &port 8686
               LIDARR__LOG_LEVEL: debug
               LIDARR__ANALYTICS_ENABLED: "False"
@@ -58,50 +58,19 @@ spec:
                     name: lidarr-secret
                     key: LIDARR_API_KEY
 
-            ports:
-              - name: http
-                containerPort: *port
-
             resources:
               requests:
                 cpu: 10m
+                memory: 512Mi
               limits:
-                memory: 1Gi
+                memory: 2Gi
 
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
-
-          # sidecars:
-          # exporter:
-          #   dependsOn: *app
-
-          #   image:
-          #     repository: ghcr.io/onedr0p/exportarr
-          #     tag: v2.1.0
-
-          #   args:
-          #     - *app
-          #     - --enable-additional-metrics
-
-          #   env:
-          #     URL: "http://localhost:8686"
-          #     CONFIG: "/config/config.xml"
-          #     PORT: &metricsPort 9709
-          #     APIKEY:
-          #       valueFrom:
-          #         secretKeyRef:
-          #           name: lidarr-secret
-          #           key: LIDARR_API_KEY
-
-          #   ports:
-          #     - name: metrics
-          #       containerPort: *metricsPort
-
-          #   securityContext: *securityContext
 
     defaultPodOptions:
       securityContext:
@@ -112,20 +81,14 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      *app :
-        controller: *app
-        # type: LoadBalancer
-        # annotations:
-        #   lbipam.cilium.io/ips: 192.168.29.232 #, ::ffff:192.168.30.232
+      app:
         ports:
           http:
             port: *port
             primary: true
-          # metrics:
-          #   port: *metricsPort
 
     route:
-      *app :
+      app:
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
           gethomepage.dev/enabled: "true"
@@ -139,11 +102,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
       config:
