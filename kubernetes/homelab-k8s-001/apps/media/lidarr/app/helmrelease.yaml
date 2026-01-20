@@ -118,8 +118,8 @@ spec:
         server: nas.internal
         path: /plexbackups/backups/lidarr
         advancedMounts:
-          *app :
-            *app :
+          lidarr:
+            app:
               - path: /config/Backups
                 readOnly: false
 
@@ -127,17 +127,6 @@ spec:
         type: emptyDir
         medium: Memory
         advancedMounts:
-          *app :
-            *app :
+          lidarr:
+            app:
               - path: /tmp
-
-    # serviceMonitor:
-    #   metrics:
-    #     enabled: true
-    #     serviceName: *app
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 10m
-    #         scrapeTimeout: 10s
