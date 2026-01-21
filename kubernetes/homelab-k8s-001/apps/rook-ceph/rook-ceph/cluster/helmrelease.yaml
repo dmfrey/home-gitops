@@ -7,25 +7,11 @@ metadata:
 
 spec:
 
-  interval: 1h
-  timeout: 15m
-
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster
 
-  install:
-    remediation:
-      retries: -1
-
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
-
-  driftDetection:
-    mode: enabled
+  interval: 1h
 
   values:
 
@@ -45,7 +31,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
 
     cephClusterSpec:
 
@@ -88,23 +73,18 @@ spec:
         connections:
           requireMsgr2: true
 
+      resources:
+        osd:
+          limits:
+            memory: 8Gi
+
       storage:
         useAllNodes: true
         useAllDevices: false
         config:
           osdsPerDevice: "1"
-        # nodes:
-        #   - name: "k8s-0"
-        #     devices:
-        #       - name: "/dev/disk/by-id/nvme-nvme.1e4b-3330313437363531323236-53504343204d2e32205043496520535344-00000001"
-        #   - name: "k8s-1"
-        #     devices:
-        #       - name: "/dev/disk/by-id/nvme-nvme.1e4b-3330313231363037383330-53504343204d2e32205043496520535344-00000001"
-        #   - name: "k8s-2"
-        #     devices:
-        #       - name: "/dev/disk/by-id/nvme-eui.540000000017f643346f710000000045"
         devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
-        
+
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -121,6 +101,8 @@ spec:
           mountOptions:
             - discard
           parameters:
+            compression_mode: aggressive
+            compression_algorithm: zstd
             imageFormat: "2"
             imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
