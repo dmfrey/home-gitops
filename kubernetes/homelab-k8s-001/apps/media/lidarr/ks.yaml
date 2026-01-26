@@ -18,7 +18,7 @@ spec:
     substitute:
       APP: lidarr
       VOLSYNC_CLAIM: lidarr-config
-      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository
