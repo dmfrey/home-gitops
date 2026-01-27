@@ -19,6 +19,7 @@ spec:
       APP: lidarr
       VOLSYNC_CLAIM: lidarr-config
       VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository
