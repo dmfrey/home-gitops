@@ -34,7 +34,7 @@ spec:
               - -c
 
             args:
-              - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && cmod 0700 /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
+              - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && chmod 0700 /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
 
         containers:
 
