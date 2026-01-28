@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app mosquitto
+  name: mosquitto
 
 spec:
 
@@ -17,24 +17,11 @@ spec:
 
     controllers:
 
-      *app :
+      mosquitto:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
-
-        containers:
-
-          *app :
-            image:
-              repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: 2.0.22@sha256:e011726bdfa757011bc8b8716e03b7c35d2c3f623d9f658c2c6bf66e909ea42e
-
-            resources:
-              requests:
-                cpu: 100m
-              limits:
-                memory: 350Mi
 
         initContainers:
           user-import:
@@ -47,11 +34,23 @@ spec:
               - -c
 
             args:
-              - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
+              - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && cmod 0700 /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
+
+        containers:
+
+          app:
+            image:
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.22@sha256:e011726bdfa757011bc8b8716e03b7c35d2c3f623d9f658c2c6bf66e909ea42e
+
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 350Mi
 
     service:
-      *app :
-        controller: *app
+      app:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: mqtt.dmfrey.com
@@ -95,7 +94,7 @@ spec:
         type: emptyDir
         advancedMounts:
           mosquitto:
-            *app :
+            app:
               - path: /mosquitto/external_config
             user-import:
               - path: /data/external_config
