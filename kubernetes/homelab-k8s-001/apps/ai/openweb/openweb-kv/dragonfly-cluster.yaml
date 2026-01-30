@@ -7,7 +7,7 @@ metadata:
 
 spec:
 
-  replicas: 3
+  replicas: 1
 
   image: ghcr.io/dragonflydb/dragonfly:v1.36.0@sha256:af221b68138afb0b0238401c335493cfc2b060d577c5d6c018ddf6a29d3119f9
 
