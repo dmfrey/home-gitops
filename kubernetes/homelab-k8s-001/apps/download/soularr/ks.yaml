@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app soularr
+  name: soularr
 spec:
   # components:
   #   - ../../../../components/volsync
@@ -16,7 +16,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/download/soularr/app"
   # postBuild:
   #   substitute:
-  #     APP: *app
+  #     APP: soularr
   #     VOLSYNC_CLAIM: sonarr-config
   #     VOLSYNC_CAPACITY: 1Gi
   prune: true

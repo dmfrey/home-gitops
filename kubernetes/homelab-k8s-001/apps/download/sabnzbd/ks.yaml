@@ -41,7 +41,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app sabnzbd
+  name: sabnzbd
 spec:
   components:
     - ../../../../components/volsync
@@ -57,7 +57,7 @@ spec:
   path: "./kubernetes/homelab-k8s-001/apps/download/sabnzbd/app"
   postBuild:
     substitute:
-      APP: *app
+      APP: sabnzbd
       VOLSYNC_CLAIM: sabnzbd-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
