@@ -19,6 +19,7 @@ spec:
       APP: overseerr
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_CACHE_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
