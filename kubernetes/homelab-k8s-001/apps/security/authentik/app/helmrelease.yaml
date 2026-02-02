@@ -20,7 +20,7 @@ spec:
 
       image:
         repository: ghcr.io/goauthentik/server
-        tag: 2025.12.2
+        tag: 2025.12.3
         pullPolicy: IfNotPresent
 
       envFrom:
