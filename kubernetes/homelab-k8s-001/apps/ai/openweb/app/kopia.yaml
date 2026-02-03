@@ -45,7 +45,7 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: openweb
+  name: openweb-kopia
 spec:
   sourcePVC: openweb
   trigger:
