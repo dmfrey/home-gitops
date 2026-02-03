@@ -1,46 +1,46 @@
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: openweb
-spec:
-  accessModes:
-    - ReadWriteOnce
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: openweb-dst
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: ceph-block
----
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationDestination
-metadata:
-  name: openweb-dst
-  labels:
-    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
-spec:
-  trigger:
-    manual: restore-once
-  kopia:
-    accessModes:
-      - ReadWriteOnce
-    capacity: 2Gi
-    cleanupCachePVC: true
-    cleanupTempPVC: true
-    copyMethod: Snapshot
-    enableFileDeletion: true
-    moverSecurityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-    repository: openweb-volsync-secret
-    sourceIdentity:
-      sourceName: openweb
-    storageClassName: ceph-block
-    volumeSnapshotClassName: csi-ceph-blockpool
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: openweb
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   dataSourceRef:
+#     kind: ReplicationDestination
+#     apiGroup: volsync.backube
+#     name: openweb-dst
+#   resources:
+#     requests:
+#       storage: 2Gi
+#   storageClassName: ceph-block
+# ---
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationDestination
+# metadata:
+#   name: openweb-dst
+#   labels:
+#     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+# spec:
+#   trigger:
+#     manual: restore-once
+#   kopia:
+#     accessModes:
+#       - ReadWriteOnce
+#     capacity: 2Gi
+#     cleanupCachePVC: true
+#     cleanupTempPVC: true
+#     copyMethod: Snapshot
+#     enableFileDeletion: true
+#     moverSecurityContext:
+#       runAsUser: 1000
+#       runAsGroup: 1000
+#       fsGroup: 1000
+#     repository: openweb-volsync-secret
+#     sourceIdentity:
+#       sourceName: openweb
+#     storageClassName: ceph-block
+#     volumeSnapshotClassName: csi-ceph-blockpool
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
@@ -49,7 +49,7 @@ metadata:
 spec:
   sourcePVC: openweb
   trigger:
-    schedule: 0 * * * *
+    manual: "2026-02-03T09:24:00-01"
   kopia:
     accessModes:
       - ReadWriteOnce # Use ReadOnlyMany for CephFS
