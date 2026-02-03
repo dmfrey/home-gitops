@@ -1,0 +1,22 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: openweb-backup
+spec:
+  sourcePVC: openweb
+  trigger:
+    manual: true
+  kopia:
+    copyMethod: Snapshot
+    volumeSnapshotClassName: csi-ceph-blockpool
+    repo: openweb-volsync-secret
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    destination:
+      nfs:
+        server: 192.168.30.5
+        path: /VolsyncKopia
+        mountPath: /kopia
