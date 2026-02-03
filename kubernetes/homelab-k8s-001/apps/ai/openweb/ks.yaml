@@ -75,7 +75,7 @@ spec:
       APP: openweb
       VOLSYNC_CLAIM: openweb
       VOLSYNC_CAPACITY: 2Gi
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
