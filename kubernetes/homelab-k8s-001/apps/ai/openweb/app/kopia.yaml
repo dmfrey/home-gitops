@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: openweb
   trigger:
-    manual: "2026-02-03T09:24:00-03"
+    manual: "2026-02-03T09:24:00-04"
   kopia:
     accessModes:
       - ReadWriteOnce # Use ReadOnlyMany for CephFS
