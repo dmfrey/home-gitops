@@ -6,7 +6,7 @@ metadata:
 spec:
   sourcePVC: openweb
   trigger:
-    manual: "initial-backup-2026-02-03T15:34:00-01"
+    manual: "initial-backup-2026-02-03T15:38:00-01"
   kopia:
     accessModes:
       - ReadWriteOnce
@@ -20,6 +20,6 @@ spec:
       runAsUser: 1000
       runAsGroup: 1000
       fsGroup: 1000
-    retain:
-      hourly: 24
-      daily: 7
+    # retain:
+    #   hourly: 24
+    #   daily: 7
