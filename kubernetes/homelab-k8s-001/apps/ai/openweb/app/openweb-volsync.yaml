@@ -2,11 +2,11 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: openweb-backup
+  name: openweb
 spec:
   sourcePVC: openweb
   trigger:
-    manual: 2026-02-03T15:20:00-01
+    manual: "initial-backup-2026-02-03T15:34:00-01"
   kopia:
     accessModes:
       - ReadWriteOnce
