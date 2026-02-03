@@ -8,13 +8,21 @@ spec:
   trigger:
     manual: true
   kopia:
+    accessModes:
+      - ReadWriteOnce
+    compression: zstd-fastest
     copyMethod: Snapshot
+    storageClassName: ceph-block
     volumeSnapshotClassName: csi-ceph-blockpool
-    repo: openweb-volsync-secret
+    repository: openweb-volsync-secret
+    parallelism: 2
     moverSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
       fsGroup: 1000
+    retain:
+      hourly: 24
+      daily: 7
     destination:
       nfs:
         server: 192.168.30.5
