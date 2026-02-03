@@ -42,6 +42,7 @@
 #     storageClassName: ceph-block
 #     volumeSnapshotClassName: csi-ceph-blockpool
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
@@ -49,7 +50,7 @@ metadata:
 spec:
   sourcePVC: openweb
   trigger:
-    manual: "2026-02-03T09:24:00-02"
+    manual: "2026-02-03T09:24:00-03"
   kopia:
     accessModes:
       - ReadWriteOnce # Use ReadOnlyMany for CephFS
