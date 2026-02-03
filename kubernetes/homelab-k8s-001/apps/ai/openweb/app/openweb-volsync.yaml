@@ -23,8 +23,3 @@ spec:
     retain:
       hourly: 24
       daily: 7
-    destination:
-      nfs:
-        server: 192.168.30.5
-        path: /VolsyncKopia
-        mountPath: /kopia
