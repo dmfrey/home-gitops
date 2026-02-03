@@ -59,8 +59,8 @@ kind: Kustomization
 metadata:
   name: openweb
 spec:
-  components: []
-    # - ../../../../components/volsync
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: openweb-db
     - name: openweb-kv
