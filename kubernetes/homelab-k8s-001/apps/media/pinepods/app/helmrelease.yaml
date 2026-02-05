@@ -126,7 +126,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/pinepods
 
