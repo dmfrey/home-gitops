@@ -78,9 +78,9 @@ spec:
                       name: grafana-admin-password-secret
                       key: GF_SECURITY_ADMIN_PASSWORD
 
-              # envFrom:
-              #   - secretRef:
-              #       name: grafana-ouath-secret
+              envFrom:
+                - secretRef:
+                    name: grafana-ouath-secret
 
               securityContext:
                 allowPrivilegeEscalation: false
