@@ -18,9 +18,9 @@ spec:
 
     auth:
       disable_login_form: "false"
-      # oauth_auto_login:
-      # oauth_allow_insecure_email_lookup: true
-      # signout_redirect_url: https://auth.dmfrey.com/application/o/grafana/end-session/
+      oauth_auto_login: "false"
+      oauth_allow_insecure_email_lookup: "true"
+      signout_redirect_url: https://auth.dmfrey.com/application/o/grafana/end-session/
 
     auth.anonymous:
       enabled: "true"
