@@ -67,13 +67,9 @@ spec:
                     name: pinepods-cnpg-app
                     key: password
 
-            # envFrom:
-            #   - secretRef:
-            #       name: pinepods-secret
-
-            ports:
-              - name: http
-                containerPort: &port 8040
+            envFrom:
+              - secretRef:
+                  name: pinepods-secret
 
             resources:
               requests:
@@ -102,7 +98,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 8040
 
     route:
       app:
