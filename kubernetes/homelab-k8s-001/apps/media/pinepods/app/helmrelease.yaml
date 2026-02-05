@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app pinepods
+  name: pinepods
 
 spec:
 
@@ -17,20 +17,23 @@ spec:
 
     controllers:
 
-      *app :
+      pinepods:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: madeofpendletonwool/pinepods
               tag: 0.8.2@sha256:ee412e52e59b6c49f4f852c41db82e9a258563ddc2e31d7c6e7ef824b8abcb70
 
             env:
               TZ: America/New_York
+              PUID: 1000
+              GUID: 1000
+
               # Basic Server Info
               SEARCH_API_URL: 'https://search.pinepods.online/api/search'
               PEOPLE_API_URL: 'https://people.pinepods.online'
@@ -96,14 +99,13 @@ spec:
     #     # seccompProfile: { type: RuntimeDefault }
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
             port: *port
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -135,11 +137,19 @@ spec:
         globalMounts:
           - path: /opt/pinepods/downloads
 
-      cache:
-        type: emptyDir
+      backup:
+        type: nfs
+        server: nas.internal
+        path: /plexbackups/backups/pinepods
         globalMounts:
-          - path: /pinepods/cache
+          - path: /opt/pinepods/backups
 
-      tmp:
+      tmpfs:
         type: emptyDir
-        medium: Memory
+        advancedMounts:
+          pinepods:
+            app:
+              - path: /pinepods/cache
+                subPath: cache
+              - path: /tmp
+                subPath: tmp

@@ -75,13 +75,10 @@ spec:
   postBuild:
     substitute:
       APP: pinepods
-      VOLSYNC_CLAIM: pinepods-data
-      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: media
-  timeout: 5m
   wait: true
