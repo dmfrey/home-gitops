@@ -38,7 +38,8 @@ spec:
 
             args:
               - --without-password
-              - --log-level=debug
+              - --disable-csrf-token-checks
+              # - --log-level=debug
 
             probes:
               liveness: &probes
