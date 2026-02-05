@@ -81,6 +81,14 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Infrastructure
+          gethomepage.dev/name: Kopia
+          gethomepage.dev/icon: kopia.png
+          gethomepage.dev/description: Backup and Restore for PVCs.
+          gethomepage.dev/widget.type: kopia
+          gethomepage.dev/widget.url: "http://kopia.volsync-system.svc.cluster.local"
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
 
