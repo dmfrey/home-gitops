@@ -102,7 +102,7 @@ data:
                   service_name: Lidarr # service name for that widget
     - Observability:
         - Grafana:
-            href: http://grafana.dmfrey.com
+            href: https://grafana.dmfrey.com
             icon: grafana.png
             description: Monitoring Dashboards
             widget:
