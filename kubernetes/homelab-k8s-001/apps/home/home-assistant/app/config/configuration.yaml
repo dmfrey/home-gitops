@@ -71,6 +71,19 @@ template:
       name: Home Status
       state: '{% if is_state(''group.family'', ''home'')-%}home{%else%}not_home{% endif %}'
 
+  - sensor:
+      - name: "Low Battery Devices"
+        unique_id: low_battery_devices_count
+        state: >
+          {{ states.sensor
+            | selectattr('attributes.device_class', 'defined')
+            | selectattr('attributes.device_class', 'eq', 'battery')
+            | selectattr('state', 'is_number')
+            | selectattr('state', 'int', '<=', 15)
+            | list
+            | count
+          }}
+
   - triggers:
       - trigger: time_pattern
         hours: 0
