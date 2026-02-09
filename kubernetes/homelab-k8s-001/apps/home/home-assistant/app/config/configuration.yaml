@@ -75,12 +75,18 @@ template:
       - name: "Low Battery Devices"
         unique_id: low_battery_devices_count
         state: >
-          {{ states.sensor
-              | selectattr('entity_id', 'search', '_battery')
-              | rejectattr('state', 'in', ['unavailable', 'unknown'])
-              | where('state | float(100) <= 15')
-              | list | count
-          }}
+          {% set low_numeric = states.sensor
+            | selectattr('entity_id', 'search', 'battery')
+            | rejectattr('state', 'in', ['unavailable', 'unknown'])
+            | select('attr.state | is_number and attr.state | float(100) <= 15')
+            | list | count %}
+
+          {% set low_binary = states.binary_sensor
+            | selectattr('entity_id', 'search', 'battery')
+            | selectattr('state', 'eq', 'on')
+            | list | count %}
+
+          {{ low_numeric + low_binary }}
 
   - triggers:
       - trigger: time_pattern
