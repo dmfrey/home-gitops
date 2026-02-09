@@ -77,11 +77,11 @@ template:
         state: >
           {{ states.sensor
               | selectattr('attributes.device_class', 'eq', 'battery')
-              | rejectattr('state', 'in', ['unavailable', 'unknown', 'None', '']) # Reject known bad string states
-              | map(attribute='state') # Get the state value of each filtered sensor
-              | map('float', 100) # Convert to float, defaulting to 100 if conversion fails
-              | select('<=', 15) # Select only numbers less than or equal to 15
-              | list | count # Count the remaining items
+              | rejectattr('state', 'in', ['unavailable', 'unknown', 'None', ''])
+              | map(attribute='state')
+              | map('float', 100)
+              | select('<=', 15)
+              | list | count
           }}
 
   - triggers:
