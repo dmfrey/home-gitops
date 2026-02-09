@@ -76,10 +76,9 @@ template:
         unique_id: low_battery_devices_count
         state: >
           {{ states.sensor
-              | selectattr('attributes.device_class', 'eq', 'battery')
-              | map(attribute='state')
-              | map('int', 100)
-              | select('<=', 15)
+              | selectattr('entity_id', 'search', '_battery')
+              | rejectattr('state', 'in', ['unavailable', 'unknown'])
+              | where('state | float(100) <= 15')
               | list | count
           }}
 
