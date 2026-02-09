@@ -72,17 +72,32 @@ template:
       state: '{% if is_state(''group.family'', ''home'')-%}home{%else%}not_home{% endif %}'
 
   - sensor:
-      - name: "Low Battery Devices"
-        unique_id: low_battery_devices_count
-        state: >
-          {{ states.sensor
-              | selectattr('attributes.device_class', 'eq', 'battery')
-              | rejectattr('state', 'in', ['unavailable', 'unknown', 'None', ''])
-              | map(attribute='state')
-              | map('float', 100)
-              | select('<=', 15)
-              | list | count
-          }}
+    - name: "Low Battery Devices"
+      unique_id: low_battery_devices_count
+      state: >
+        {{ states.sensor
+            | selectattr('attributes.device_class', 'eq', 'battery')
+            | rejectattr('state', 'in', ['unavailable', 'unknown', 'None', ''])
+            | map(attribute='state')
+            | map('float', 100)
+            | select('<=', 15)
+            | list | count
+        }}
+
+  - sensor:
+    - name: "Offline Devices Count"
+      unique_id: offline_devices_count
+      state: >
+        {% set count = namespace(value=0) %}
+        {% set domains_to_check = ['light', 'switch', 'sensor', 'binary_sensor', 'media_player', 'climate', 'fan', 'lock', 'cover', 'camera'] %}
+        {% for state in states %}
+          {% if state.domain in domains_to_check and state.state in ['unavailable', 'unknown'] %}
+            {# You can add specific entities to ignore here if they are always unavailable/unknown #}
+            {# For example: and state.entity_id != 'sensor.some_template_sensor_that_is_often_unavailable' #}
+            {% set count.value = count.value + 1 %}
+          {% endif %}
+        {% endfor %}
+        {{ count.value }}
 
   - triggers:
       - trigger: time_pattern
