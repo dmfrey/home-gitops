@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app overseerr
+  name: overseerr
 
 spec:
 
@@ -22,36 +22,6 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
-
-        # initContainers:
-        #   config-setup:
-        #     image:
-        #       repository: ghcr.io/dmfrey/bash
-        #       tag: 5.2.26-alpine3.20
-
-        #     command:
-        #       - "/usr/local/bin/bash"
-        #       - -c
-        #       - |
-        #         envsubst < /tmp/config-template/settings.json > /tmp/settings-resolved.json
-        #         if [ -s /config/settings.json ]
-        #         then
-        #           cp /tmp/settings-resolved.json /config/settings.json
-        #           # jq -s '.[0] * .[1]' /config/settings.json /tmp/settings-resolved.json | jq > /config/settings.json
-        #         else
-        #           cp /tmp/settings-resolved.json /config/settings.json
-        #         fi
-        #         exit 0
-
-        #     envFrom:
-        #       - secretRef:
-        #           name: overseerr-secret
-
-        #     env:
-        #       - name: ORGANIZATION
-        #         value: homelab5767
-        #       - name: SECRET_DOMAIN
-        #         value: dmfrey.com
 
         containers:
           app:
@@ -93,38 +63,6 @@ spec:
                 drop:
                   - ALL
 
-          # exporter:
-          #   image:
-          #     repository: ghcr.io/willfantom/overseerr-exporter
-          #     tag: 1.2.1
-
-          #   args:
-          #     - --overseerr.address
-          #     - "http://localhost:5055"
-          #     - --overseerr.api-key
-          #     - "$(OVERSEERR_API_KEY)"
-
-          #   envFrom:
-          #     - secretRef:
-          #         name: overseerr-secret
-
-          #   ports:
-          #     - name: metrics
-          #       containerPort: &metricsPort 9850
-
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 128Mi
-
-          #   securityContext:
-          #     allowPrivilegeEscalation: false
-          #     readOnlyRootFilesystem: true
-          #     capabilities:
-          #       drop:
-          #         - ALL
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -141,9 +79,6 @@ spec:
         ports:
           http:
             port: *port
-            # primary: true
-          # metrics:
-          #   port: *metricsPort
 
     route:
       app:
@@ -168,35 +103,13 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          overseerr:
-            app:
-              - path: /app/config
-            # config-setup:
-            #   - path: /config
-            #     readOnly: false
+        globalMounts:
+          - path: /app/config
 
-      # config-template:
-      #   enabled: true
-      #   type: configMap
-      #   name: overseerr-config-template
-      #   globalMounts:
-      #     - path: /tmp/config-template
-      #       readOnly: true
-
-      tmp:
+      tmpfs:
         type: emptyDir
-        advancedMounts:
-          overseerr:
-            app:
-              - path: /tmp
-
-    # serviceMonitor:
-    #   metrics:
-    #     serviceName: *app
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 10m
-    #         scrapeTimeout: 10s
+        globalMounts:
+          - path: /app/config/logs
+            subPath: logs
+          - path: /tmp
+            subPath: tmp
