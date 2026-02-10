@@ -11,6 +11,6 @@ _.file = [
 ]
 
 [tools]
-"aqua:helm/helm" = "4.1.0"
+"aqua:helm/helm" = "4.1.1"
 "uv" = "latest"
 "pipx:flux-local" = "latest"
