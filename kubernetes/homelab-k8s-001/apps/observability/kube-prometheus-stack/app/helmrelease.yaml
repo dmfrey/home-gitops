@@ -7,39 +7,19 @@ metadata:
 
 spec:
 
-  interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack
     namespace: observability
 
-  install:
-    remediation:
-      retries: -1
+  interval: 1h
 
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  valuesFrom:
+  - kind: ConfigMap
+    name: flux-metrics-configmap
+    valuesKey: flux-metrics.yaml
 
-  # valuesFrom:
-  # - kind: ConfigMap
-  #   name: flux-kube-state-metrics-config
-  #   valuesKey: kube-state-metrics-config.yaml
-
-  driftDetection:
-    mode: enabled
-
-  # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
   values:
-
-    # crds:
-    #   enabled: true
-    #   upgradeJob:
-    #     enabled: true
-    #     forceConflicts: true
 
     cleanPrometheusOperatorObjectNames: true
 
@@ -59,13 +39,10 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: network
-              sectionName: https
 
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
-          global:
-            resolveTimeout: 5m
 
         externalUrl: https://alertmanager.dmfrey.com
 
@@ -102,22 +79,10 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: network
-              sectionName: https
 
       prometheusSpec:
 
         externalUrl: https://prometheus.dmfrey.com
-        version: v2.55.1 # override 'unsupported Prometheus version' error
-
-        image:
-          registry: docker.io
-          repository: prompp/prompp
-          tag: 0.7.4
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 64535
-          runAsGroup: 64535
-          fsGroup: 64535
 
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
@@ -127,9 +92,6 @@ spec:
 
         retention: 14d
         retentionSize: 50GB
-
-        # replicas: 2
-        # replicaExternalLabelName: "__replica__" # must match with thanos value `.query.replicaLabel[0]`
 
         resources:
           requests:
@@ -148,39 +110,44 @@ spec:
     prometheus-node-exporter:
       fullnameOverride: node-exporter
 
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
+      # prometheus:
+      #   monitor:
+      #     enabled: true
+      #     relabelings:
+      #       - action: replace
+      #         regex: (.*)
+      #         replacement: $1
+      #         sourceLabels:
+      #           - __meta_kubernetes_pod_node_name
+      #         targetLabel: kubernetes_node
 
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
 
-      metricLabelsAllowlist:
-        - pods=[*]
-        - deployments=[*]
-        - persistentvolumeclaims=[*]
+      # metricLabelsAllowlist:
+      #   - pods=[*]
+      #   - deployments=[*]
+      #   - persistentvolumeclaims=[*]
 
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
+      # prometheus:
+      #   monitor:
+      #     enabled: true
+      #     relabelings:
+      #       - action: replace
+      #         regex: (.*)
+      #         replacement: $1
+      #         sourceLabels:
+      #           - __meta_kubernetes_pod_node_name
+      #         targetLabel: kubernetes_node
 
     grafana:
       enabled: false
       forceDeployDashboards: true
+      operator:
+        dashboardsConfigMapRefEnabled: true
+        folder: observability
+        matchLabels:
+          grafana.internal/instance: grafana
 
     additionalPrometheusRulesMap:
       dockerhub-rules:
@@ -189,7 +156,7 @@ spec:
             rules:
               - alert: DockerhubRateLimitRisk
                 annotations:
-                  summary: Kubernetes cluster Dockerhub rate limit risk
+                  summary: There are {{ $value }} containers pulling from Dockerhub. This may lead to rate limiting.
                 expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
                 labels:
                   severity: critical

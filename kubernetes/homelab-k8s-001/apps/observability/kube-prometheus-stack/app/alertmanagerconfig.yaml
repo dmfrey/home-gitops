@@ -8,13 +8,10 @@ metadata:
 spec:
 
   route:
-    groupBy: ["alertname", "job"]
-    groupInterval: 10m
-    groupWait: 1m
     receiver: pushover
     repeatInterval: 12h
     routes:
-      - receiver: "null"
+      - receiver: blackhole
         matchers:
           - name: alertname
             value: InfoInhibitor
@@ -32,8 +29,17 @@ spec:
           - name: severity
             value: critical
             matchType: =
+    groupBy:
+      - alertname
+      - cluster
+      - job
+    groupInterval: 5m
+    groupWait: 1m
+
   inhibitRules:
-    - equal: ["alertname", "namespace"]
+    - equal:
+        - alertname
+        - namespace
       sourceMatch:
         - name: severity
           value: critical
@@ -42,8 +48,9 @@ spec:
         - name: severity
           value: warning
           matchType: =
+
   receivers:
-    - name: "null"
+    - name: blackhole
     - name: heartbeat
       webhookConfigs:
         - urlSecret:
