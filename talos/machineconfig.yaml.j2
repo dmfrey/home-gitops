@@ -66,6 +66,7 @@ machine:
       featureGates:
         ImageVolume: true
         ResourceHealthStatus: true
+      imageMaximumGCAge: 24h
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.35.0
     nodeIP:
