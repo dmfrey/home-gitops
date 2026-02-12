@@ -27,8 +27,8 @@ spec:
               TZ: America/New_York
 
               # Core settings (loaded from .env)
-              ENCRYPTION_KEY: dummy
-              LOG_LEVEL: INFO
+              ENCRYPTION_KEY: 
+              LOG_LEVEL: DEBUG
               DATABASE_URL: sqlite+aiosqlite:///./data/unifi_toolkit.db
 
               # Deployment settings
