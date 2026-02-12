@@ -66,7 +66,9 @@ machine:
       featureGates:
         ImageVolume: true
         ResourceHealthStatus: true
-      imageMaximumGCAge: 24h
+      # imageMaximumGCAge: 24h
+      imageGCHighThresholdPercent: 65
+      imageGCLowThresholdPercent: 50
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.35.0
     nodeIP:
@@ -196,6 +198,11 @@ cluster:
       key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
+      ## Remove when new SSD installed
+      # Default: 100
+      heartbeat-interval: "250"
+      # Default: 1000
+      election-timeout: "2500"
 
   proxy:
     disabled: true

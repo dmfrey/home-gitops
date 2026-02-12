@@ -4,17 +4,36 @@ customization:
     - -init_on_alloc                      # Less security, faster puter
     - -init_on_free                       # Less security, faster puter
     - -selinux                            # Less security, faster puter
+
+    # --- Performance & Security Tradeoffs ---
+    - mitigations=off                     # Disables CPU speculative execution mitigations
+    - apparmor=0                          # Disable AppArmor LSM
+    - security=none                       # Disable default security profile
+    - init_on_alloc=0                     # Disable zeroing memory on allocation
+    - init_on_free=0                      # Disable zeroing memory on free
+    - talos.auditd.disabled=1             # Disable Linux audit daemon
+
+    # --- Hardware Enablement & Virtualization ---
+    - intel_iommu=on                      # Enable the IOMMU
+    - iommu=pt                            # Use passthrough mode for IOMMU
+    - i915.enable_guc=3                   # Enable GuC/HuC for 13th-gen Intel iGPU
+    - sysctl.kernel.kexec_load_disabled=1 # Security hardening
+
+    # --- System Configuration ---
     - net.ifnames=0
-    - i915.enable_guc=3                   # Raptor Lake CPU / iGPU
-    - apparmor=0                          # Less security, faster puter
-    - init_on_alloc=0                     # Less security, faster puter
-    - init_on_free=0                      # Less security, faster puter
-    - intel_iommu=on                      # PCI Passthrough
-    - iommu=pt                            # PCI Passthrough
-    - mitigations=off                     # Less security, faster puter
-    - security=none                       # Less security, faster puter
-    - sysctl.kernel.kexec_load_disabled=1 # Raptor Lake CPU / iGPU
-    - talos.auditd.disabled=1             # Less security, faster puter
+
+    # --- Recommended Performance Tuning Arguments (for future reference) ---
+    #
+    # # Sets the I/O scheduler to prioritize latency, which is critical for etcd.
+    # # This is the most direct tuning for the disk I/O issues.
+    # - elevator=mq-deadline
+    #
+    # # Tells the kernel the Time Stamp Counter is reliable, reducing timing-related overhead.
+    # - tsc=reliable
+    #
+    # # Isolates specific CPU cores from OS timer ticks, reducing jitter for sensitive workloads.
+    # # The core list should be chosen based on your CPU topology (e.g., a few E-cores).
+    # - nohz_full=4,5,6,7
   systemExtensions:
     officialExtensions:
       - siderolabs/gasket-driver          # M.2 Google Coral accelerators
