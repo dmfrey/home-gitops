@@ -23,14 +23,28 @@ spec:
               repository: ghcr.io/crosstalk-solutions/unifi-toolkit
               tag: 1.8
 
-            # env:
-            #   TZ: America/New_York
-            #   DEPLOYMENT_TYPE: local
-            #   DOMAIN: "{{ .Release.Name }}.dmfrey.com"
+            env:
+              TZ: America/New_York
 
-            # envFrom:
-            #   - secretRef:
-            #       name: "{{ .Release.Name }}-secret"
+              # Core settings (loaded from .env)
+              ENCRYPTION_KEY: dummy
+              LOG_LEVEL: INFO
+              DATABASE_URL: sqlite+aiosqlite:///./data/unifi_toolkit.db
+
+              # Deployment settings
+              DEPLOYMENT_TYPE: local
+              AUTH_USERNAME: admin
+              AUTH_PASSWORD_HASH:
+
+              # UniFi settings (optional)
+              # Set in External Secret
+
+              # Tool settings
+              STALKER_REFRESH_INTERVAL: 60
+
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
 
             # probes:
             #   liveness: &probes
@@ -83,9 +97,9 @@ spec:
         globalMounts:
           - path: /app/data
 
-      env:
-        type: secret
-        name: "{{ .Release.Name }}-secret"
-        globalMounts:
-          - path: /app/.env
-            subPath: .env
+      # env:
+      #   type: secret
+      #   name: "{{ .Release.Name }}-secret"
+      #   globalMounts:
+      #     - path: /app/.env
+      #       subPath: .env
