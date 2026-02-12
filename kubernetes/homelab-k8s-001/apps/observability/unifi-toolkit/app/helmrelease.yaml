@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/crosstalk-solutions/unifi-toolkit
-              tag: 1.8
+              tag: 1.9
 
             # env:
             #   TZ: America/New_York
