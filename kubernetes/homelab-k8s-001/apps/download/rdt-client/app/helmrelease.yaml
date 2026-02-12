@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: rogerfar/rdtclient
-              tag: 2.0.119
+              tag: 2.0.120
 
             env:
               TZ: America/New_York
