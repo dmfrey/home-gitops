@@ -5,6 +5,13 @@ kind: Kustomization
 metadata:
   name: unifi-toolkit
 spec:
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/unifi-toolkit/app
   postBuild:

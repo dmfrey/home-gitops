@@ -23,14 +23,14 @@ spec:
               repository: ghcr.io/crosstalk-solutions/unifi-toolkit
               tag: 1.8
 
-            env:
-              TZ: America/New_York
-              DEPLOYMENT_TYPE: local
-              DOMAIN: "{{ .Release.Name }}.dmfrey.com"
+            # env:
+            #   TZ: America/New_York
+            #   DEPLOYMENT_TYPE: local
+            #   DOMAIN: "{{ .Release.Name }}.dmfrey.com"
 
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+            # envFrom:
+            #   - secretRef:
+            #       name: "{{ .Release.Name }}-secret"
 
             # probes:
             #   liveness: &probes
@@ -76,3 +76,16 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/data
+
+      env:
+        type: secret
+        name: "{{ .Release.Name }}-secret"
+        globalMounts:
+          - path: /app/.env
+            subPath: .env
