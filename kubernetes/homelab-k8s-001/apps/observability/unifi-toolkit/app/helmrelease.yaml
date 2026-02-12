@@ -27,19 +27,19 @@ spec:
               TZ: America/New_York
 
               # Core settings (loaded from .env)
-              ENCRYPTION_KEY: dummy
+              # ENCRYPTION_KEY: dummy
               LOG_LEVEL: INFO
               DATABASE_URL: sqlite+aiosqlite:///./data/unifi_toolkit.db
 
               # Deployment settings
               DEPLOYMENT_TYPE: local
-              AUTH_USERNAME: admin
-              AUTH_PASSWORD_HASH:
+              # AUTH_USERNAME: admin
+              # AUTH_PASSWORD_HASH:
 
               # UniFi settings (optional)
               # Set in External Secret
               UNIFI_VERIFY_SSL: false
-              
+
               # Tool settings
               STALKER_REFRESH_INTERVAL: 60
 
