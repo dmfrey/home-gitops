@@ -38,7 +38,8 @@ spec:
 
               # UniFi settings (optional)
               # Set in External Secret
-
+              UNIFI_VERIFY_SSL: false
+              
               # Tool settings
               STALKER_REFRESH_INTERVAL: 60
 
