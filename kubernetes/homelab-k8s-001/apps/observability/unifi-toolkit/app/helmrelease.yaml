@@ -17,6 +17,9 @@ spec:
     controllers:
       unifi-toolkit:
 
+        annotations:
+          reloader.stakater.com/auto: "true"
+
         containers:
           app:
             image:
