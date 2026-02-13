@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: 0.7.2-ollama
+              tag: v0.8.0-ollama
 
             env:
               TZ: America/New_York
