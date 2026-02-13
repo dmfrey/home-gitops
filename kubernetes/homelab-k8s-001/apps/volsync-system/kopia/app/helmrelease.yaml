@@ -43,7 +43,7 @@ spec:
 
             probes:
               liveness: &probes
-                enabled: true
+                enabled: false # true
                 custom: true
                 spec:
                   httpGet:
