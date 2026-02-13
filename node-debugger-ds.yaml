@@ -19,7 +19,7 @@ spec:
       - operator: "Exists"
       containers:
       - name: debugger
-        image: ubuntu:22.04
+        image: ubuntu:24.04
         # This command will update packages, install nvme-cli, and then sleep for an hour
         command: ["/bin/sh", "-c", "apt-get update && apt-get install -y nvme-cli && sleep 3600"]
         securityContext:
