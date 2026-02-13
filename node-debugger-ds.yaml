@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-debugger-ds
+  namespace: default
+  labels:
+    app: node-debugger
+spec:
+  selector:
+    matchLabels:
+      app: node-debugger
+  template:
+    metadata:
+      labels:
+        app: node-debugger
+    spec:
+      # This toleration allows the pod to run on control-plane nodes
+      tolerations:
+      - operator: "Exists"
+      containers:
+      - name: debugger
+        image: ubuntu:22.04
+        # This command will update packages, install nvme-cli, and then sleep for an hour
+        command: ["/bin/sh", "-c", "apt-get update && apt-get install -y nvme-cli && sleep 3600"]
+        securityContext:
+          # Privileged access is required to see the node's hardware devices
+          privileged: true
+        volumeMounts:
+        - name: dev-mount
+          mountPath: /dev
+      volumes:
+      - name: dev-mount
+        hostPath:
+          path: /dev
