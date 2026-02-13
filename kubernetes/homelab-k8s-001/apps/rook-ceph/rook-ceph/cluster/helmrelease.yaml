@@ -36,6 +36,7 @@ spec:
 
       cephConfig:
         global:
+          osd_memory_target: "4294967296" # 4Gi
           bdev_enable_discard: "true" # quote
           bdev_async_discard_threads: "1" # quote
           osd_class_update_on_start: "false" # quote
