@@ -28,7 +28,6 @@ machine:
       enabled: true
     {% endif %}
     rbac: true
-#    stableHostname: true
 
   files:
     - op: create
@@ -75,45 +74,39 @@ machine:
       validSubnets:
         - 192.168.30.0/24
 
-#  network:
-#    interfaces:
-#      - interface: eth0
-#        dhcp: true
-#        mtu: 1500
-#        vlans:
-#          - vlanId: 50
-#            dhcp: false
-#            mtu: 1500
-#          - vlanId: 90
-#            dhcp: false
-#            mtu: 1500
-
   nodeLabels:
     node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: dmf
 
   sysctls:
-    fs.inotify.max_user_instances: "8192"    # Watchdog
-    fs.inotify.max_user_watches: "1048576"   # Watchdog
-#    net.core.default_qdisc: fq               # 10Gb/s
-#    net.core.rmem_max: "67108864"            # 10Gb/s | Cloudflared / QUIC
-#    net.core.wmem_max: "67108864"            # 10Gb/s | Cloudflared / QUIC
-#    net.ipv4.neigh.default.gc_thresh1: "4096"
-#    net.ipv4.neigh.default.gc_thresh2: "8192"
-#    net.ipv4.neigh.default.gc_thresh3: "16384"
-#    net.ipv4.tcp_congestion_control: bbr     # 10Gb/s
-#    net.ipv4.tcp_fastopen: "3"               # Send and accept data in the opening SYN packet
-#    net.ipv4.tcp_mtu_probing: "1"            # 10Gb/s | Jumbo frames
-#    net.ipv4.tcp_rmem: 4096 87380 33554432   # 10Gb/s
-#    net.ipv4.tcp_window_scaling: "1"
-#    net.ipv4.tcp_wmem: 4096 65536 33554432   # 10Gb/s
-#    sunrpc.tcp_max_slot_table_entries: "128"
-#    sunrpc.tcp_slot_table_entries: "128"
-    user.max_user_namespaces: "11255"
-    vm.nr_hugepages: "1024"                    # PostgreSQL
+    # --- Filesystem Watchers (Good for Kubernetes) ---
+    fs.inotify.max_user_instances: "8192"
+    fs.inotify.max_user_watches: "1048576"
+
+    # --- Virtual Memory Tuning (For Smoother I/O) ---
+    vm.dirty_background_ratio: "5"
+    vm.dirty_ratio: "10"
+    vm.nr_hugepages: "1024"                    # For PostgreSQL
+
+    # --- Network Performance Tuning (For 2.5GbE) ---
+    net.core.default_qdisc: fq
+    net.core.somaxconn: "4096"
+    net.ipv4.tcp_congestion_control: bbr
+
+    # --- NFS Client Tuning ---
+    sunrpc.tcp_max_slot_table_entries: "128"
+
+    # --- More Aggressive Network Settings (Optional - for future consideration) ---
+    # # The following settings can be beneficial but are more aggressive.
+    # # They increase memory usage in exchange for potentially higher throughput.
+    # net.core.rmem_max: "16777216"
+    # net.core.wmem_max: "16777216"
+    # net.ipv4.tcp_rmem: 4096 87380 16777216
+    # net.ipv4.tcp_wmem: 4096 65536 16777216
 
   sysfs:
     devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
+    # devices.system.cpu.intel_pstate.energy_performance_preference: "performance"
 
   token: op://kubernetes/talos/MACHINE_TOKEN
 

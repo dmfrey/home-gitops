@@ -18,6 +18,7 @@ customization:
     - iommu=pt                            # Use passthrough mode for IOMMU
     - i915.enable_guc=3                   # Enable GuC/HuC for 13th-gen Intel iGPU
     - sysctl.kernel.kexec_load_disabled=1 # Security hardening
+    # - intel_pstate.energy_performance_preference=performance # Prioritize performance for Intel CPU
 
     # --- System Configuration ---
     - net.ifnames=0
@@ -38,9 +39,9 @@ customization:
     officialExtensions:
       - siderolabs/gasket-driver          # M.2 Google Coral accelerators
       - siderolabs/i915                   # Intel iGPU
-      - siderolabs/intel-ice-firmware      # Intel Ethernet firmware
       - siderolabs/intel-ucode            # Intel iGPU
       - siderolabs/mei                    # Intel Management Engine drivers
+      - siderolabs/nfsrahead              # NFS Performance
       - siderolabs/nut-client             # Network UPS Tools
       - siderolabs/nvme-cli               # NVMe command line tools
       - siderolabs/util-linux-tools       # Useful Linux tools
