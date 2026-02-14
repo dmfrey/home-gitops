@@ -80,11 +80,18 @@ spec:
             memory: 8Gi
 
       storage:
-        useAllNodes: true
-        useAllDevices: false
+        useAllNodes: false
+        # useAllDevices: false
+        nodes:
+          - name: "k8s-0"
+            devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
+          - name: "k8s-1"
+            devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
+          - name: "k8s-2"
+            devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
         config:
           osdsPerDevice: "1"
-        devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
+        # devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
 
     cephBlockPools:
       - name: ceph-blockpool
