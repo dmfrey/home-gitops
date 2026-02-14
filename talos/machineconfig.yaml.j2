@@ -65,6 +65,7 @@ machine:
       featureGates:
         ImageVolume: true
         ResourceHealthStatus: true
+        UserNamespacesSupport: true
       # imageMaximumGCAge: 24h
       imageGCHighThresholdPercent: 65
       imageGCLowThresholdPercent: 50
@@ -95,6 +96,8 @@ machine:
 
     # --- NFS Client Tuning ---
     sunrpc.tcp_max_slot_table_entries: "128"
+
+    user.max_user_namespaces: "11255"
 
     # --- More Aggressive Network Settings (Optional - for future consideration) ---
     # # The following settings can be beneficial but are more aggressive.
@@ -170,7 +173,7 @@ cluster:
 
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true
+      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true,UserNamespacesSupport=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
 
     image: registry.k8s.io/kube-apiserver:v1.35.1
