@@ -19,8 +19,8 @@ spec:
   postBuild:
     substitute:
       APP: jellyfin
-      APP_UID: "568"
-      APP_GID: "568"
+      APP_UID: "1000"
+      APP_GID: "1000"
       VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CAPACITY: 20Gi
   prune: true
@@ -29,5 +29,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: media
-  timeout: 5m
   wait: false

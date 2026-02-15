@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app jellyfin
+  name: jellyfin
 
 spec:
 
@@ -17,7 +17,7 @@ spec:
 
     controllers:
 
-      *app :
+      jellyfin:
         type: statefulset
 
         annotations:
@@ -25,7 +25,7 @@ spec:
 
         containers:
 
-          *app :
+          app:
 
             image:
               repository: jellyfin/jellyfin
@@ -71,27 +71,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-          # busybox:
-          #   image:
-          #     repository: docker.io/library/busybox
-          #     tag: latest
-
-          #   command:
-          #     - sleep
-          #     - "3600"
-
-          #   resources:
-          #     requests:
-          #       cpu: 50m
-          #       memory: 150Mi
-          #     limits:
-          #       memory: 300Mi
-
-          #   securityContext:
-          #     allowPrivilegeEscalation: false
-          #     readOnlyRootFilesystem: true
-          #     capabilities: { drop: ["ALL"] }
-
     defaultPodOptions:
       resourceClaims:
         - name: gpu
@@ -106,14 +85,13 @@ spec:
         seccompProfile: { type: RuntimeDefault }
 
     service:
-      *app :
-        controller: *app
+      app:
         ports:
           http:
-            port: &port 8096
+            port: 8096
 
     route:
-      *app :
+      app:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
@@ -135,37 +113,22 @@ spec:
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config
-            # busybox:
-            #   - path: /config
+        globalMounts:
+          - path: /config
 
       # Separate PVC for cache to avoid backing up cache files
       cache:
         existingClaim: jellyfin-cache
-        advancedMounts:
-          *app :
-            *app :
-              - path: /cache
-                readOnly: false
-
-      logs:
-        type: emptyDir
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config/log
+        globalMounts:
+          - path: /cache
+            readOnly: false
 
       media:
         type: nfs
         server: nas.internal
         path: /media
-        advancedMounts:
-          *app :
-            *app :
-              - path: /media
+        globalMounts:
+          - path: /media
 
       transcode:
         enabled: true
@@ -180,16 +143,15 @@ spec:
                 resources:
                   requests:
                     storage: 500Gi
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config/transcodes
-                readOnly: false
+        globalMounts:
+          - path: /config/transcodes
+            readOnly: false
 
-      tmp:
+      tmpfs:
         type: emptyDir
         sizeLimit: 10Gi
-        advancedMounts:
-          *app :
-            *app :
-              - path: /tmp
+        globalMounts:
+          - path: /config/log
+            subPath: log
+          - path: /tmp
+            subPath: tmp
