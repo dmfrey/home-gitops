@@ -38,7 +38,6 @@ spec:
             use_tcp: true
         port: 53
         plugins:
-          # - name: log
           - name: errors
           - name: health
             configBlock: |-
@@ -52,7 +51,7 @@ spec:
           - name: autopath
             parameters: "@kubernetes"
           - name: forward
-            parameters: . /etc/resolv.conf
+            parameters: . 192.168.30.1
           - name: cache
             configBlock: |-
               prefetch 20
