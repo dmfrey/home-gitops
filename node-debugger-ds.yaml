@@ -15,7 +15,7 @@ spec:
       - operator: "Exists"
       containers:
       - name: debugger
-        image: ubuntu:22.04
+        image: ubuntu:24.04
         command: ["/bin/sh", "-c", "apt-get update && apt-get install -y nvme-cli procps && sleep 36000"]
         securityContext:
           privileged: true
