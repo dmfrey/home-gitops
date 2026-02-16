@@ -39,8 +39,7 @@ spec:
           bdev_async_discard_threads: "1" # quote
           bdev_enable_discard: "true" # quote
           bluestore_cache_size_ssd: "4294967296" # 4Gi
-          debug_osd: "0/5"
-          debug_msgr: "0/5" # Optional, but often helpful for reducing noise
+
           device_failure_prediction_mode: local # requires mgr module
           osd_class_update_on_start: "false" # quote
           osd_memory_target: "4294967296" # 4Gi
