@@ -9,7 +9,7 @@ resources:
 configMapGenerator:
   - name: rackpeek
     files:
-      - config.yaml=./resources/config.yml
+      - config.yaml=./resources/config.yaml
     options:
       labels:
         kustomize.toolkit.fluxcd.io/substitute: disabled
