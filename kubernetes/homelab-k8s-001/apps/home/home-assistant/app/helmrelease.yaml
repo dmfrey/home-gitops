@@ -71,6 +71,14 @@ spec:
             env:
               TZ: America/New_York
 
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - "/bin/sh"
+                    - "-c"
+                    - "code-server --install-extension home-assistant.home-assistant"
+
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
