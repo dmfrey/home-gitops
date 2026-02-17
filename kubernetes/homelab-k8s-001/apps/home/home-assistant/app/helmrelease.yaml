@@ -75,7 +75,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-secret"
-                    key: CODE_SERVER_ADD-ON_HASS_TOKEN
+                    key: CODE_SERVER_ADDON_HASS_TOKEN
 
     defaultPodOptions:
       annotations:
