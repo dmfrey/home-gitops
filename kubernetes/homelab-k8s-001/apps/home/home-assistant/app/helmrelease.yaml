@@ -67,11 +67,15 @@ spec:
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
-              # - --install-extension
-              # - "keesschollaart.vscode-home-assistant"
 
             env:
               TZ: America/New_York
+              HASS_SERVER: http://localhost:8123
+              HASS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-secret"
+                    key: CODE_SERVER_ADD-ON_HASS_TOKEN
 
     defaultPodOptions:
       annotations:
