@@ -4,46 +4,50 @@ This document provides a visual overview of the homelab network and server rack 
 
 ```mermaid
 graph TD
-    subgraph Internet Edge
+    subgraph "Internet Edge"
         I(Internet)
         UCI[Unifi UCI Modem]
     end
 
-    subgraph Unifi Rack 1 (Network Core)
+    subgraph "Unifi Rack 1 (Network Core)"
         direction LR
-        UDMSE[UDM-SE
-(Router, Firewall)]
-        PatchPanel[24-Port Keystone Patch Panel]
-        USWPM24(USW Pro Max 24
-(Core Switch))
+        UDMSE["UDM-SE
+(Router, Firewall)"]
+        PatchPanel["24-Port Keystone Patch Panel"]
+        USWPM24("USW Pro Max 24
+(Core Switch)")
     end
 
-    subgraph Unifi Rack 2 (Power & UPS)
+    subgraph "Unifi Rack 2 (Power & UPS)"
         direction LR
-        PDU[Unifi UPS PDU Pro]
-        UPS[Unifi UPS 2U]
-        RPS[Unifi USP RPS]
+        PDU["Unifi UPS PDU Pro"]
+        UPS["Unifi UPS 2U"]
+        RPS["Unifi USP RPS"]
     end
 
-    subgraph Main Server Rack (Servers & Storage)
+    subgraph "Main Server Rack"
         direction TD
-        k8s0[k8s-0
-(GEEKOM Mini IT13)]
-        k8s1[k8s-1
-(GEEKOM Mini IT13)]
-        k8s2[k8s-2
-(GEEKOM Mini IT13)]
-        QNAP[QNAP TS-462 NAS]
+        k8s0["k8s-0
+(GEEKOM Mini IT13)
+On Shelf Above Rack"]
+        k8s1["k8s-1
+(GEEKOM Mini IT13)
+On Shelf Above Rack"]
+        k8s2["k8s-2
+(GEEKOM Mini IT13)
+On Shelf Above Rack"]
+        QNAP["QNAP TS-462 NAS
+On Shelf Above Rack"]
     end
 
-    subgraph Distributed Switches & Access Points
-        USWUltra8[USW Ultra 8 Port
-(Dist. Switch)]
-        USWFlex[USW Flex
-(Outdoor Switch)]
-        U6LR(U6-LR AP)
-        U7Pro(U7 Pro AP)
-        U7Outdoor(U7 Outdoor AP)
+    subgraph "Distributed Switches & Access Points"
+        USWUltra8["USW Ultra 8 Port
+(Dist. Switch)"]
+        USWFlex["USW Flex
+(Outdoor Switch)"]
+        U6LR["U6-LR AP"]
+        U7Pro["U7 Pro AP"]
+        U7Outdoor["U7 Outdoor AP"]
     end
 
     %% --- Internet Edge Connections ---
@@ -54,7 +58,7 @@ graph TD
     UDMSE -- "10GbE SFP+ / VLAN 1" --> USWPM24
     PatchPanel -- "Eth" --> USWPM24
 
-    %% --- Inter-Rack Connections ---
+    %% --- Inter-Rack Connections (Main Switch to Servers/NAS) ---
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s0
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s1
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s2
@@ -67,13 +71,7 @@ graph TD
     %% --- Distributed Network ---
     USWPM24 -- "Port 24" --> USWUltra8
     USWUltra8 -- "Downlink" --> USWFlex
-    USWUltra8 --> U7Pro[U7 Pro AP]
-    USWUltra8 --> U6LR[U6-LR AP (Barn)]
-    USWFlex --> U7Outdoor[U7 Outdoor AP]
-
-    %% --- Node / NAS Placement Labels (Not part of Mermaid graph, but for clarity) ---
-    k8s0 -.- placement_k8s_label[On Shelf Above Main Server Rack]
-    k8s1 -.- placement_k8s_label
-    k8s2 -.- placement_k8s_label
-    QNAP -.- placement_qnap_label[On Shelf Above Main Server Rack]
+    USWUltra8 --> U7Pro
+    USWUltra8 --> U6LR["U6-LR AP (Barn)"]
+    USWFlex --> U7Outdoor["U7 Outdoor AP"]
 ```
