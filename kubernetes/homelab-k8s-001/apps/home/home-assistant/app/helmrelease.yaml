@@ -54,7 +54,6 @@ spec:
               capabilities: { drop: ["ALL"] }
 
           codeserver:
-            # dependsOn: home-assistant
 
             image:
               repository: ghcr.io/coder/code-server
@@ -92,10 +91,6 @@ spec:
 
     service:
       app:
-        # type: LoadBalancer
-        # annotations:
-          # external-dns.alpha.kubernetes.io/hostname: home.dmfrey.com
-          # lbipam.cilium.io/ips: 192.168.29.242
         ports:
           http:
             appProtocol: kubernetes.io/ws
@@ -169,18 +164,18 @@ spec:
         globalMounts:
           - path: /config/.venv
 
-      config-tts:
-        type: emptyDir
-        globalMounts:
-          - path: /config/tts
-
       media:
         type: nfs
         server: nas.internal
         path: /media
 
-      tmp:
+      tmpfs:
         type: emptyDir
+        globalMounts:
+          - path: /config/tts
+            subPath: tts
+          - path: /tmp
+            subPath: tmp
 
       backups:
         enabled: true
