@@ -48,11 +48,13 @@ On Shelf Above Rack"]
 (Dist. Switch)
 (Basement)"]
         USWFlex["USW Flex
-(Outdoor Switch)"]
+(Outdoor Switch)
+(Patio)"]
         U6LR["U6-LR AP"]
         U7Pro["U7 Pro AP
 (Basement)"]
-        U7Outdoor["U7 Outdoor AP"]
+        U7Outdoor["U7 Outdoor AP
+(Patio)"]
     end
 
     %% --- Internet Edge Connections ---
