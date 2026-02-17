@@ -67,8 +67,8 @@ spec:
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
-              - --install-extension
-              - "keesschollaart.vscode-home-assistant"
+              # - --install-extension
+              # - "keesschollaart.vscode-home-assistant"
 
             env:
               TZ: America/New_York
