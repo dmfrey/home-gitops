@@ -50,7 +50,8 @@ On Shelf Above Rack"]
         USWFlex["USW Flex
 (Outdoor Switch)
 (Patio)"]
-        U6LR["U6-LR AP"]
+        U6LR_Barn["U6-LR AP (Barn)"]
+        U6LR_Hallway["U6-LR AP (Hallway)"]
         U7Pro["U7 Pro AP
 (Basement)"]
         U7Outdoor["U7 Outdoor AP
@@ -76,6 +77,8 @@ On Shelf Above Rack"]
     USWPM24 -- "Port 10" --> RPS
     USWPM24 -- "Port 11 / VLAN 10" --> EpsonPrinter
 
+    USWPM24 -- "Port 23" --> U6LR_Hallway
+
     %% --- Power Connections (Conceptual) ---
     PDU --- UPS
     UPS --- RPS
@@ -84,6 +87,5 @@ On Shelf Above Rack"]
     USWPM24 -- "Port 24" --> USWUltra8
     USWUltra8 -- "Downlink" --> USWFlex
     USWUltra8 --> U7Pro
-    USWUltra8 --> U6LR["U6-LR AP (Barn)"]
-    USWFlex --> U7Outdoor["U7 Outdoor AP"]
+            USWUltra8 --> U6LR_Barn["U6-LR AP (Barn)"]    USWFlex --> U7Outdoor["U7 Outdoor AP"]
 ```
