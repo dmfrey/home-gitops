@@ -45,11 +45,13 @@ On Shelf Above Rack"]
 
     subgraph "Distributed Switches & Access Points"
         USWUltra8["USW Ultra 8 Port
-(Dist. Switch)"]
+(Dist. Switch)
+(Basement)"]
         USWFlex["USW Flex
 (Outdoor Switch)"]
         U6LR["U6-LR AP"]
-        U7Pro["U7 Pro AP"]
+        U7Pro["U7 Pro AP
+(Basement)"]
         U7Outdoor["U7 Outdoor AP"]
     end
 
