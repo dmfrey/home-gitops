@@ -13,7 +13,7 @@ graph TD
         direction LR
         UDMSE["UDM-SE
 (Router, Firewall)"]
-        PatchPanel["24-Port Keystone Patch Panel"]
+
         USWPM24("USW Pro Max 24
 (Core Switch)")
     end
@@ -55,7 +55,7 @@ On Shelf Above Rack"]
 
     %% --- Unifi Rack 1 Internal Connections ---
     UDMSE -- "10GbE SFP+ / VLAN 1" --> USWPM24
-    PatchPanel -- "Eth" --> USWPM24
+
 
     %% --- Inter-Rack Connections (Main Switch to Servers/NAS) ---
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s0
