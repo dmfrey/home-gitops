@@ -88,5 +88,5 @@ On Shelf Above Rack"]
     USWUltra8 -- "Port 7" --> USWFlex
     USWUltra8 -- "Port 1" --> U7Pro
             USWUltra8 -- "Port 2" --> U6LR_Barn["U6-LR AP (Barn)"]
-    USWFlex --> U7Outdoor["U7 Outdoor AP"]
+    USWFlex -- "Port 3" --> U7Outdoor["U7 Outdoor AP"]
 ```
