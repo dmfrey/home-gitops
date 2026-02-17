@@ -26,7 +26,6 @@ graph TD
     end
 
     subgraph "Main Server Rack"
-        direction TD
         k8s0["k8s-0
 (GEEKOM Mini IT13)
 On Shelf Above Rack"]
