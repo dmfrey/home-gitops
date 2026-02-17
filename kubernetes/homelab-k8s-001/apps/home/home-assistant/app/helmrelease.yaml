@@ -24,14 +24,6 @@ spec:
           reloader.stakater.com/auto: "true"
           secret.reloader.stakater.com/reload: home-assistant-cnpg-app
 
-        # initContainers:
-        #   copy-configuration:
-        #     image:
-        #       repository: busybox
-        #       tag: stable
-
-        #     command: ["sh", "-c", "if [ ! -f /config/configuration.yaml ]; then cp /tmp/configuration.yaml /config/configuration.yaml; fi"]
-
         containers:
           app:
             image:
@@ -153,24 +145,17 @@ spec:
         globalMounts:
           - path: /config
 
+      config-cache:
+        existingClaim: "{{ .Release.Name }}-cache"
+        globalMounts:
+          - path: /config/.venv
+
       llmvision:
         existingClaim: home-assistant-llmvision
         advancedMounts:
           home-assistant:
             app:
               - path: /config/www/llmvision
-
-      # configuration:
-      #   type: configMap
-      #   name: hass-config
-      #   globalMounts:
-      #     - path: /tmp/configuration.yaml
-      #       subPath: configuration.yaml
-
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /config/.venv
 
       media:
         type: nfs

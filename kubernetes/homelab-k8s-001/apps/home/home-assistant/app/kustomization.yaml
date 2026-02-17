@@ -12,9 +12,9 @@ resources:
   - ./replicationsource.yaml
   - ./replicationsource-r2.yaml
 
-configMapGenerator:
-  - name: hass-config
-    files:
-      - ./config/configuration.yaml
-    options:
-      disableNameSuffixHash: true
+# configMapGenerator:
+#   - name: hass-config
+#     files:
+#       - ./config/configuration.yaml
+#     options:
+#       disableNameSuffixHash: true
