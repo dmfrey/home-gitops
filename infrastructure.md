@@ -26,7 +26,7 @@ graph TD
     end
 
     subgraph "Home Devices"
-        EpsonPrinter["Epson WF-4820 Series Printer\n192.168.10.5"]
+        EpsonPrinter["Epson WF-4820 Series Printer"]
     end
 
     subgraph "Main Server Rack"
