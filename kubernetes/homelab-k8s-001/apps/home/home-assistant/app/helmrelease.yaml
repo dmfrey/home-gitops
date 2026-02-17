@@ -67,17 +67,11 @@ spec:
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
+              - --install-extension
+              - "keesschollaart.vscode-home-assistant"
 
             env:
               TZ: America/New_York
-
-            lifecycle:
-              postStart:
-                exec:
-                  command:
-                    - "/bin/sh"
-                    - "-c"
-                    - "code-server --install-extension home-assistant.home-assistant"
 
     defaultPodOptions:
       annotations:
