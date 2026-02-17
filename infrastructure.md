@@ -25,6 +25,10 @@ graph TD
         RPS["Unifi USP RPS"]
     end
 
+    subgraph "Home Devices"
+        EpsonPrinter["Epson WF-4820 Series Printer\n192.168.10.5"]
+    end
+
     subgraph "Main Server Rack"
         k8s0["k8s-0
 (GEEKOM Mini IT13)
@@ -62,6 +66,11 @@ On Shelf Above Rack"]
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s1
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s2
     USWPM24 -- "10GbE SFP+ / VLAN 30" --> QNAP
+
+    USWPM24 -- "Port 8" --> UPS
+    USWPM24 -- "Port 9" --> PDU
+    USWPM24 -- "Port 10" --> RPS
+    USWPM24 -- "Port 11 / VLAN 10" --> EpsonPrinter
 
     %% --- Power Connections (Conceptual) ---
     PDU --- UPS
