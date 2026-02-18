@@ -46,17 +46,17 @@ data:
     traefik: false
   services.yaml: |
     - Home:
-        - SMLight-SLZB-06M:
-            href: http://192.168.30.50
+        - SMLight-SLZB-06-01:
+            href: http://zigbee-1.internal
             icon: zigbee.png
             description: Zigbee Controller
-        - SMLight-SLZB-06-01:
-            href: http://192.168.30.51
+        - SMLight-SLZB-06M:
+            href: http://zigbee-2.internal
             icon: zigbee.png
             description: Zigbee Controller
     - Infrastructure:
         - QNAP:
-            href: https://192.168.30.5:7080/cgi-bin/
+            href: https://nas.internal:7080/cgi-bin/
             description: QNAP NAS TS-462
             icon: qnap.png
             widget:
