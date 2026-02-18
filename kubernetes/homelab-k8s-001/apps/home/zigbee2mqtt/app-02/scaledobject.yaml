@@ -3,7 +3,7 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: zigbee-2
+  name: zigbee2mqtt-02
 spec:
   advanced:
     restoreToOriginalReplicaCount: true
