@@ -23,6 +23,7 @@ metadata:
   name: zigbee2mqtt
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: zigbee2mqtt-common
@@ -57,6 +58,7 @@ metadata:
   name: zigbee2mqtt-02
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: zigbee2mqtt-common
