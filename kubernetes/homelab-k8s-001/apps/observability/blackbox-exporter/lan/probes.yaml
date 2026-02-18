@@ -15,10 +15,14 @@ spec:
   targets:
     staticConfig:
       static:
+        - k8s-0.internal
+        - k8s-1.internal
+        - k8s-2.internal
         - nas.internal
-        # - minio.internal
-        # - smlight-slzb-06m.homelab.frey.home
-        # - smlight-slzb-06-01.homelab.frey.home
+        - minio.internal
+        - zigbee-1.internal
+        - zigbee-2.internal
+
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
@@ -30,13 +34,38 @@ kind: Probe
 metadata:
   name: lan-tcp
 spec:
+
   module: tcp_connect
+
   prober:
     url: blackbox-exporter-lan.observability.svc.cluster.local:9115
+
   targets:
     staticConfig:
       static:
         - nas.internal:2049
+
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: lan-http
+spec:
+  module: http_2xx
+
+  prober:
+    url: blackbox-exporter-lan.observability.svc.cluster.local:9115
+
+  targets:
+    staticConfig:
+      static:
+        - http://minio.internal:39010
+
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
