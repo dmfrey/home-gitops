@@ -12,8 +12,8 @@ spec:
   maxReplicaCount: 1
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: Deployment
-    name: zigbee
+    kind: StatefulSet
+    name: zigbee2mqtt
   triggers:
     - type: prometheus
       metadata:
