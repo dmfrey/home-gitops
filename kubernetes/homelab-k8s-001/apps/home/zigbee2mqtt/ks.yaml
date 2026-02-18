@@ -37,8 +37,7 @@ spec:
   postBuild:
     substitute:
       APP: zigbee2mqtt
-      APP_UID: "568"
-      APP_GID: "568"
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
@@ -72,8 +71,7 @@ spec:
   postBuild:
     substitute:
       APP: zigbee2mqtt-02
-      APP_UID: "568"
-      APP_GID: "568"
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: data-zigbee2mqtt-02
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
