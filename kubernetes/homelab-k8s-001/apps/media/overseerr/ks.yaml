@@ -6,6 +6,7 @@ metadata:
   name: overseerr
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -17,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: overseerr
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CACHE_CAPACITY: 5Gi

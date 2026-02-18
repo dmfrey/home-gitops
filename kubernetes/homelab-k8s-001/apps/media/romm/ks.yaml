@@ -57,6 +57,7 @@ metadata:
   name: romm
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: romm-db
@@ -70,6 +71,7 @@ spec:
   postBuild:
     substitute:
       APP: romm
+      CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:

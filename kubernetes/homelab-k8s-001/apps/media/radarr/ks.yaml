@@ -6,6 +6,7 @@ metadata:
   name: radarr
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -17,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: radarr
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: radarr-config
       VOLSYNC_CAPACITY: 2Gi
   prune: true

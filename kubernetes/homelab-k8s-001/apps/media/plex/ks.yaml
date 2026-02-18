@@ -6,6 +6,7 @@ metadata:
   name: plex
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
@@ -19,6 +20,7 @@ spec:
   postBuild:
     substitute:
       APP: plex
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi

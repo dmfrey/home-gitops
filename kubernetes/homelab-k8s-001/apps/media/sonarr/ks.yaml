@@ -6,6 +6,7 @@ metadata:
   name: sonarr
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -17,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: sonarr
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: sonarr-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true

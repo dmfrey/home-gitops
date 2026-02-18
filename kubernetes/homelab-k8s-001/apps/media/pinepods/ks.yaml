@@ -62,6 +62,7 @@ metadata:
   name: pinepods
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: pinepods-db
@@ -75,6 +76,7 @@ spec:
   postBuild:
     substitute:
       APP: pinepods
+      CONTROLLER: StatefulSet
   prune: true
   sourceRef:
     kind: GitRepository

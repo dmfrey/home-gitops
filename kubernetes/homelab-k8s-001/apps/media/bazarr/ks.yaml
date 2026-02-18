@@ -32,6 +32,7 @@ metadata:
   name: bazarr
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: bazarr-db
@@ -44,6 +45,7 @@ spec:
   postBuild:
     substitute:
       APP: bazarr
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: bazarr-config
       VOLSYNC_CAPACITY: 5Gi
   prune: true
