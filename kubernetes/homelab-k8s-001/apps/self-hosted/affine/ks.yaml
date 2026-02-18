@@ -55,6 +55,7 @@ metadata:
   name: affine-indexer
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -66,6 +67,7 @@ spec:
   postBuild:
     substitute:
       APP: affine-indexer
+      CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:

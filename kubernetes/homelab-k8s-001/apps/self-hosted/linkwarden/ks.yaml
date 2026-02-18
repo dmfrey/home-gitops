@@ -30,6 +30,7 @@ metadata:
   name: linkwarden
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: linkwarden-db
@@ -42,6 +43,7 @@ spec:
   postBuild:
     substitute:
       APP: linkwarden
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: linkwarden-data
       VOLSYNC_CAPACITY: 20Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
