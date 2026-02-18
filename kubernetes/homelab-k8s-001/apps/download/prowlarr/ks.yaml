@@ -6,6 +6,7 @@ metadata:
   name: prowlarr
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     # - name: pod-gateway
@@ -17,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: prowlarr
+      CONTROLER: StatefulSet
       VOLSYNC_CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true

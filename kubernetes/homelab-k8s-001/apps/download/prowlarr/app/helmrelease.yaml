@@ -22,7 +22,6 @@ spec:
 
         annotations:
           reloader.stakater.com/auto: "true"
-          setGateway: "true"
 
         # initContainers:
         #   fix-permissions:
