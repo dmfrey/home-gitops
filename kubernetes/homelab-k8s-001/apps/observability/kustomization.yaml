@@ -19,6 +19,3 @@ resources:
   - ./unifi-toolkit/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria-logs/ks.yaml
-
-
-  # - ./prometheus-pushgateway/ks.yaml

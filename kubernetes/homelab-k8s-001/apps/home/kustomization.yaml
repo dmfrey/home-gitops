@@ -17,5 +17,3 @@ resources:
   - ./mosquitto/ks.yaml
   - ./wyoming-services/ks.yaml
   - ./zigbee2mqtt/ks.yaml
-
-  # - ./frigate/ks.yaml
