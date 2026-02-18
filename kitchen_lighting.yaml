@@ -1,0 +1,79 @@
+# Automations for Kitchen Adaptive Lighting
+
+- alias: "Kitchen - Turn On Lights with Occupancy"
+  id: "kitchen_turn_on_with_occupancy"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_sensor_occupancy
+      to: "on"
+  condition:
+    # This template checks if there are no lights currently on in the kitchen area.
+    - condition: template
+      value_template: >-
+        {{ expand(area_entities('kitchen')) | selectattr('domain','eq','light') | selectattr('state','eq','on') | list | count == 0 }}
+    # Only run after sunrise.
+    - condition: state
+      entity_id: sun.sun
+      state: 'above_horizon'
+    # And not within 45 minutes of sunset.
+    - condition: template
+      value_template: "{{ (state_attr('sun.sun', 'next_setting') | as_timestamp - now() | as_timestamp) / 60 > 45 }}"
+  actions:
+    - action: light.turn_on
+      target:
+        area_id:
+          - kitchen
+          - dining_room
+          - foyer
+      data:
+        # This template block calculates the correct brightness and color temperature.
+        # It maps the lux value (from 0 to 1000) to a brightness (40% to 100%)
+        # and a color temperature (2700K to 6000K).
+        brightness_pct: >-
+          {% set lux = states('sensor.kitchen_sensor_illuminance') | int(0) %}
+          {% set lux_clamped = ([lux, 0] | max, 1000) | min %}
+          {% set brightness = 40 + ((lux_clamped / 1000) * 60) %}
+          {{ brightness | int }}
+        kelvin: >-
+          {% set lux = states('sensor.kitchen_sensor_illuminance') | int(0) %}
+          {% set lux_clamped = ([lux, 0] | max, 1000) | min %}
+          {% set kelvin = 2700 + ((lux_clamped / 1000) * 3300) %}
+          {{ kelvin | int }}
+
+- alias: "Kitchen - Adjust Adaptive Lighting"
+  id: "kitchen_adjust_adaptive_lighting"
+  trigger:
+    # Trigger whenever the illuminance sensor changes
+    - platform: state
+      entity_id: sensor.kitchen_sensor_illuminance
+  condition:
+    # This template checks if there is at least one light on in the kitchen area.
+    - condition: template
+      value_template: >-
+        {{ expand(area_entities('kitchen')) | selectattr('domain','eq','light') | selectattr('state','eq','on') | list | count > 0 }}
+    # Only run after sunrise.
+    - condition: state
+      entity_id: sun.sun
+      state: 'above_horizon'
+    # And not within 45 minutes of sunset.
+    - condition: template
+      value_template: "{{ (state_attr('sun.sun', 'next_setting') | as_timestamp - now() | as_timestamp) / 60 > 45 }}"
+  actions:
+    - action: light.turn_on
+      target:
+        area_id:
+          - kitchen
+          - dining_room
+          - foyer
+      data:
+        # This is the same template block as the other automation, ensuring consistency.
+        brightness_pct: >-
+          {% set lux = states('sensor.kitchen_sensor_illuminance') | int(0) %}
+          {% set lux_clamped = ([lux, 0] | max, 1000) | min %}
+          {% set brightness = 40 + ((lux_clamped / 1000) * 60) %}
+          {{ brightness | int }}
+        kelvin: >-
+          {% set lux = states('sensor.kitchen_sensor_illuminance') | int(0) %}
+          {% set lux_clamped = ([lux, 0] | max, 1000) | min %}
+          {% set kelvin = 2700 + ((lux_clamped / 1000) * 3300) %}
+          {{ kelvin | int }}
