@@ -1,13 +1,13 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/probe_v1.json
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/probe_v1.json
 kind: Probe
 apiVersion: monitoring.coreos.com/v1
 metadata:
-  name: devices
+  name: lan-icmp
 
 spec:
 
-  module: http_2xx
+  module: icmp
 
   prober:
     url: blackbox-exporter-lan.observability.svc.cluster.local:9115
@@ -15,7 +15,29 @@ spec:
   targets:
     staticConfig:
       static:
-        - http://minio.internal:39010
-        - http://nas.internal:7080
-        - smlight-slzb-06m.homelab.frey.home
-        - smlight-slzb-06-01.homelab.frey.home
+        - nas.internal
+        # - minio.internal
+        # - smlight-slzb-06m.homelab.frey.home
+        # - smlight-slzb-06-01.homelab.frey.home
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: lan-tcp
+spec:
+  module: tcp_connect
+  prober:
+    url: blackbox-exporter-lan.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - nas.internal:2049
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace
