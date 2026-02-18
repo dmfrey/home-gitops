@@ -6,6 +6,7 @@ metadata:
   name: ollama
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
@@ -20,6 +21,7 @@ spec:
   postBuild:
     substitute:
       APP: ollama
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: ollama-config
       VOLSYNC_CAPACITY: 1Gi
   retryInterval: 2m

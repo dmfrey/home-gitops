@@ -60,6 +60,7 @@ metadata:
   name: openweb
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: openweb-db
@@ -73,6 +74,7 @@ spec:
   postBuild:
     substitute:
       APP: openweb
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: openweb
       VOLSYNC_CAPACITY: 2Gi
   prune: true
