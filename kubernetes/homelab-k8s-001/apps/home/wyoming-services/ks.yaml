@@ -6,6 +6,7 @@ metadata:
   name: piper
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -17,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: piper
+      CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
@@ -51,6 +53,7 @@ metadata:
   name: whisper
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -62,6 +65,7 @@ spec:
   postBuild:
     substitute:
       APP: whisper
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: whisper-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true

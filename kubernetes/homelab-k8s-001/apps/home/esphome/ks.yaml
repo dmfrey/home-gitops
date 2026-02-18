@@ -6,6 +6,7 @@ metadata:
   name: esphome
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: home-assistant
@@ -21,6 +22,7 @@ spec:
       APP: esphome
       APP_UID: "0"
       APP_GID: "0"
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: esphome-config-1
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom:

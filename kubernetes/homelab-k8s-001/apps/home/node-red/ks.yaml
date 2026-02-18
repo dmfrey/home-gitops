@@ -6,6 +6,7 @@ metadata:
   name: node-red
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -17,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: node-red
+      CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: node-red
       VOLSYNC_CAPACITY: 5Gi
   prune: true

@@ -6,6 +6,7 @@ metadata:
   name: matter-server
 spec:
   components:
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -17,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: matter-server
+      CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret
