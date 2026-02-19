@@ -50,7 +50,7 @@ The purpose here is to learn k8s, while practicing Gitops.
 
 ## ⛵ Kubernetes
 
-My Kubernetes clusters are deployed with [Talos](https://www.talos.dev). One is a test clkuster, one is a low-power utility cluster, running important services, and the other is a semi-hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate NAS with ZFS for NFS/SMB shares, bulk file storage and backups.
+My Kubernetes cluster is deployed with [Talos](https://www.talos.dev). This is a semi-hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate a separate NAS for NFS/SMB shares, bulk file storage and backups.
 
 There is a template over at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to try and follow along with some of the practices I use here.
 
@@ -98,3 +98,38 @@ graph TD
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f30e/512.gif" alt="🌎" width="20" height="20"> DNS
 
 In my cluster there are two instances of [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) running. One for syncing private DNS records to my `UDM Pro Max` using [ExternalDNS webhook provider for UniFi](https://github.com/kashalls/external-dns-unifi-webhook), while another instance syncs public DNS to `Cloudflare`. This setup is managed by creating ingresses with two specific classes: `internal` for private DNS and `external` for public DNS. The `external-dns` instances then syncs the DNS records to their respective platforms accordingly.
+
+---
+
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f5a5/512.gif" alt="🖥️" width="20" height="20"> Hardware
+
+My cluster runs on a variety of energy-efficient hardware.
+
+### 💻 Compute & Storage
+
+| Device          | Manufacturer | Model             | CPU               | RAM   | Role                              |
+| --------------- | ------------ | ----------------- | ----------------- | ----- | --------------------------------- |
+| `k8s-0`         | GEEKOM       | Mini IT13         | Intel 13th Gen    | 64 GB | Kubernetes Control Plane & Worker |
+| `k8s-1`         | GEEKOM       | Mini IT13         | Intel 13th Gen    | 64 GB | Kubernetes Control Plane & Worker |
+| `k8s-2`         | GEEKOM       | Mini IT13         | Intel 13th Gen    | 64 GB | Kubernetes Control Plane & Worker |
+| `NAS`           | QNAP         | TS-462            | -                 | -     | Network Attached Storage          |
+
+> _Each Kubernetes node has the following disk layout:_
+> - **System:** 1x Samsung 870 EVO 1 TB SATA SSD
+> - **Ceph:** 1x Silicon Power US75 2 TB NVMe SSD
+> - **OpenEBS:** 1x KingSpec NT Series 128GB M.2 2242 SATA SSD
+> - **TPU:** 1x Coral M.2 Accelerator with Dual Edge TPU
+
+### 🌐 Network & Power
+
+| Device                       | Manufacturer | Model                        | Role                         |
+| ---------------------------- | ------------ | ---------------------------- | ---------------------------- |
+| Unifi Cable Internet          | Ubiquiti     | UCI                          | Modem                        |
+| Dream Machine SE             | Ubiquiti     | UDM SE                       | Core Router & Firewall       |
+| Switch Pro Max 24            | Ubiquiti     | USW Pro Max 24               | Core Switch                  |
+| Switch Ultra 8               | Ubiquiti     | USW Ultra 8 Port             | Distribution Switch          |
+| Switch Flex                  | Ubiquiti     | USW Flex                     | Outdoor Switch               |
+| Power Distribution Pro       | Ubiquiti     | UPS PDU Pro                  | Power Distribution           |
+| Rackmount UPS                | Ubiquiti     | UPS 2U                       | Uninterruptible Power Supply |
+| Redundant Power System       | Ubiquiti     | USP RPS                      | Redundant Power Supply       |
+| Cluster UPS                  | Ubiquiti     | UPS Tower                    | Uninterruptible Power Supply |
