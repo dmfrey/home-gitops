@@ -101,7 +101,7 @@ In my cluster there are two instances of [ExternalDNS](https://github.com/kubern
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f5a5/512.gif" alt="🖥️" width="20" height="20"> Hardware
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="20" height="20"> Hardware
 
 My cluster runs on a variety of energy-efficient hardware.
 
