@@ -112,11 +112,3 @@ spec:
         type: emptyDir
         # globalMounts:
           # - path: /config/.esphome
-
-      # deploy-key:
-      #   type: secret
-      #   name: home-assistant-deploy-key
-      #   defaultMode: 256
-      #   globalMounts:
-      #     - path: /root/.ssh/id_rsa
-      #       subPath: id_rsa

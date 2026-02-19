@@ -7,5 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-  - ./secret-deploy-key.sops.yaml
 
