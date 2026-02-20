@@ -20,6 +20,7 @@ spec:
         - k8s-2.internal
         - nas.internal
         - minio.internal
+        - ollama.internal
         - zigbee-1.internal
         - zigbee-2.internal
 
