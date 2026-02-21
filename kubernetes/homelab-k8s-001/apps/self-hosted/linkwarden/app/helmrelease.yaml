@@ -53,7 +53,7 @@ spec:
                     name: linkwarden-cnpg-app
                     key: uri
 
-              NEXT_PUBLIC_OLLAMA_ENDPOINT_URL: http://ollama.ai.svc.cluster.local:11434
+              NEXT_PUBLIC_OLLAMA_ENDPOINT_URL: http://ollama.internal:11434
               OLLAMA_MODEL: llama3.2
 
               NEXT_PUBLIC_EMAIL_PROVIDER: true
