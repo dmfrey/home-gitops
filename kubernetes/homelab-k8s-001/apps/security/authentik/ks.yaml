@@ -79,28 +79,28 @@ spec:
   targetNamespace: security
   timeout: 5m
   wait: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: authentik-provision
-spec:
-  dependsOn:
-    - name: authentik
-    - name: plex
-      namespace: media
-  interval: 1h
-  path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
-  postBuild:
-    substitute:
-      APP: authentik-provision
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: security
-  timeout: 5m
-  wait: true
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: authentik-provision
+# spec:
+#   dependsOn:
+#     - name: authentik
+#     - name: plex
+#       namespace: media
+#   interval: 1h
+#   path: "./kubernetes/homelab-k8s-001/apps/security/authentik/provision"
+#   postBuild:
+#     substitute:
+#       APP: authentik-provision
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: security
+#   timeout: 5m
+#   wait: true
 
