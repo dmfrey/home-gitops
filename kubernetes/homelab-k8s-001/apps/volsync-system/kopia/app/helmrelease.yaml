@@ -172,6 +172,7 @@ spec:
 
     service:
       app:
+        controller: kopia
         ports:
           http:
             port: *port
