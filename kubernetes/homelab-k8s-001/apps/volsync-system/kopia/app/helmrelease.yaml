@@ -31,8 +31,9 @@ spec:
               KOPIA_WEB_ENABLED: true
               KOPIA_WEB_PORT: &port 80
               TZ: America/New_York
-              KOPIA_CACHE_DIRECTORY: /tmp/cache
-              KOPIA_LOG_DIRECTORY: /tmp/logs
+              KOPIA_CONFIG_PATH: /config/repository.config
+              KOPIA_LOG_DIR: /config/logs
+              KOPIA_CACHE_DIR: /config/cache
               KOPIA_CHECK_FOR_UPDATES: "false"
 
             envFrom:
@@ -83,9 +84,9 @@ spec:
               tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
             env:
               TZ: America/New_York
-              KOPIA_CONFIG_PATH: /tmp/repository.config
-              KOPIA_CACHE_DIRECTORY: /tmp/cache
-              KOPIA_LOG_DIRECTORY: /tmp/logs
+              KOPIA_CONFIG_PATH: /config/repository.config
+              KOPIA_LOG_DIR: /config/logs
+              KOPIA_CACHE_DIR: /config/cache
             envFrom:
               - secretRef:
                   name: kopia-secret
@@ -118,9 +119,9 @@ spec:
               tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
             env:
               TZ: America/New_York
-              KOPIA_CONFIG_PATH: /tmp/repository.config
-              KOPIA_CACHE_DIRECTORY: /tmp/cache
-              KOPIA_LOG_DIRECTORY: /tmp/logs
+              KOPIA_CONFIG_PATH: /config/repository.config
+              KOPIA_LOG_DIR: /config/logs
+              KOPIA_CACHE_DIR: /config/cache
             envFrom:
               - secretRef:
                   name: kopia-secret
@@ -153,9 +154,9 @@ spec:
               tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
             env:
               TZ: America/New_York
-              KOPIA_CONFIG_PATH: /tmp/repository.config
-              KOPIA_CACHE_DIRECTORY: /tmp/cache
-              KOPIA_LOG_DIRECTORY: /tmp/logs
+              KOPIA_CONFIG_PATH: /config/repository.config
+              KOPIA_LOG_DIR: /config/logs
+              KOPIA_CACHE_DIR: /config/cache
             envFrom:
               - secretRef:
                   name: kopia-secret
@@ -243,13 +244,13 @@ spec:
         advancedMounts:
           kopia:
             app:
-              - path: /tmp
+              - path: /config
           maintenance:
             app:
-              - path: /tmp
+              - path: /config
           maintenance-quick:
             app:
-              - path: /tmp
+              - path: /config
           maintenance-verify:
             app:
-              - path: /tmp
+              - path: /config
