@@ -73,14 +73,10 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["jobs"]
   matchConditions:
-    - name: has-volsync-prefix
-      expression: >
-        object.metadata.name.startsWith("volsync-") || object.metadata.name.startsWith("kopia-")
-
     - name: has-volsync-labels
       expression: >
         object.metadata.?labels["app.kubernetes.io/created-by"].orValue("") == "volsync" ||
-        object.metadata.?labels["app.kubernetes.io/name"].orValue("") == "volsync-kopia"
+        object.metadata.?labels["volsync.backube/kopia-maintenance"].orValue("") == "true"
 
     - name: repository-volume-does-not-exist
       expression: >
