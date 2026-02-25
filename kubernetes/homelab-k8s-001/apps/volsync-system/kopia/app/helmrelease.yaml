@@ -125,7 +125,7 @@ spec:
       repository:
         type: nfs
         server: nas.internal
-        path: /VolsyncKopia
+        path: /Kopia
         globalMounts:
           - path: /repository
 

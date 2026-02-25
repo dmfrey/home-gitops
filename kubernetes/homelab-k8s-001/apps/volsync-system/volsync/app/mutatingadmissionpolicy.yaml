@@ -115,7 +115,7 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "nas.internal",
-                  path: "/VolsyncKopia"
+                  path: "/Kopia"
                 }
               }
             }
