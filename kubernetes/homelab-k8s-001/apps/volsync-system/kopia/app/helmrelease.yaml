@@ -84,11 +84,11 @@ spec:
             envFrom:
               - secretRef:
                   name: kopia-secret
-            args:
-              - maintenance
-              - run
-              - --full
-              - --force
+            command:
+              - /bin/sh
+              - -c
+              - |
+                kopia --cache-dir=/tmp/cache --log-dir=/tmp/logs maintenance run --full --force
             resources:
               requests:
                 cpu: 10m
@@ -98,69 +98,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
-
-      # maintenance-quick:
-      #   type: cronjob
-      #   cronjob:
-      #     schedule: "0 */4 * * *"
-      #     concurrencyPolicy: Forbid
-      #     failedJobsHistory: 1
-      #     successfulJobsHistory: 1
-      #   containers:
-      #     app:
-      #       image:
-      #         repository: ghcr.io/home-operations/kopia
-      #         tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
-      #       env:
-      #         TZ: America/New_York
-      #         KOPIA_CONFIG_PATH: /config/repository.config
-      #       envFrom:
-      #         - secretRef:
-      #             name: kopia-secret
-      #       args:
-      #         - maintenance
-      #         - run
-      #       resources:
-      #         requests:
-      #           cpu: 10m
-      #         limits:
-      #           memory: 512Mi
-      #       securityContext:
-      #         allowPrivilegeEscalation: false
-      #         readOnlyRootFilesystem: true
-      #         capabilities: {drop: ["ALL"]}
-
-      # maintenance-verify:
-      #   type: cronjob
-      #   cronjob:
-      #     schedule: "0 5 * * 0"
-      #     concurrencyPolicy: Forbid
-      #     failedJobsHistory: 1
-      #     successfulJobsHistory: 1
-      #   containers:
-      #     app:
-      #       image:
-      #         repository: ghcr.io/home-operations/kopia
-      #         tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
-      #       env:
-      #         TZ: America/New_York
-      #         KOPIA_CONFIG_PATH: /config/repository.config
-      #       envFrom:
-      #         - secretRef:
-      #             name: kopia-secret
-      #       args:
-      #         - repository
-      #         - verify
-      #         - --deep
-      #       resources:
-      #         requests:
-      #           cpu: 10m
-      #         limits:
-      #           memory: 1Gi
-      #       securityContext:
-      #         allowPrivilegeEscalation: false
-      #         readOnlyRootFilesystem: true
-      #         capabilities: {drop: ["ALL"]}
 
     defaultPodOptions:
       securityContext:
@@ -231,9 +168,7 @@ spec:
         advancedMounts:
           kopia:
             app:
-              - path: /config/cache
-                subPath: cache
-              - path: /config/logs
-                subPath: logs
               - path: /tmp
-                subPath: tmp
+          maintenance:
+            app:
+              - path: /tmp
