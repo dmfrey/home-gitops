@@ -31,6 +31,9 @@ spec:
               KOPIA_WEB_ENABLED: true
               KOPIA_WEB_PORT: &port 80
               TZ: America/New_York
+              KOPIA_CACHE_DIRECTORY: /tmp/cache
+              KOPIA_LOG_DIRECTORY: /tmp/logs
+              KOPIA_CHECK_FOR_UPDATES: "false"
 
             envFrom:
               - secretRef:
@@ -80,7 +83,9 @@ spec:
               tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
             env:
               TZ: America/New_York
-              KOPIA_CONFIG_PATH: /config/repository.config
+              KOPIA_CONFIG_PATH: /tmp/repository.config
+              KOPIA_CACHE_DIRECTORY: /tmp/cache
+              KOPIA_LOG_DIRECTORY: /tmp/logs
             envFrom:
               - secretRef:
                   name: kopia-secret
@@ -88,7 +93,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                kopia --cache-dir=/tmp/cache --log-dir=/tmp/logs maintenance run --full
+                kopia maintenance run --full
             resources:
               requests:
                 cpu: 10m
@@ -113,7 +118,9 @@ spec:
               tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
             env:
               TZ: America/New_York
-              KOPIA_CONFIG_PATH: /config/repository.config
+              KOPIA_CONFIG_PATH: /tmp/repository.config
+              KOPIA_CACHE_DIRECTORY: /tmp/cache
+              KOPIA_LOG_DIRECTORY: /tmp/logs
             envFrom:
               - secretRef:
                   name: kopia-secret
@@ -121,7 +128,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                kopia --cache-dir=/tmp/cache --log-dir=/tmp/logs maintenance run
+                kopia maintenance run
             resources:
               requests:
                 cpu: 10m
@@ -146,7 +153,9 @@ spec:
               tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
             env:
               TZ: America/New_York
-              KOPIA_CONFIG_PATH: /config/repository.config
+              KOPIA_CONFIG_PATH: /tmp/repository.config
+              KOPIA_CACHE_DIRECTORY: /tmp/cache
+              KOPIA_LOG_DIRECTORY: /tmp/logs
             envFrom:
               - secretRef:
                   name: kopia-secret
@@ -154,7 +163,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                kopia --cache-dir=/tmp/cache --log-dir=/tmp/logs repository verify --deep
+                kopia repository verify --deep
             resources:
               requests:
                 cpu: 10m
@@ -234,12 +243,7 @@ spec:
         advancedMounts:
           kopia:
             app:
-              - path: /config/cache
-                subPath: cache
-              - path: /config/logs
-                subPath: logs
               - path: /tmp
-                subPath: tmp
           maintenance:
             app:
               - path: /tmp
