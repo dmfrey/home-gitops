@@ -101,13 +101,6 @@ spec:
               }
             },
             JSONPatch{
-              op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
-              value: Object.spec.template.spec.containers.volumeMounts{
-                name: "cache",
-                mountPath: "/cache"
-              }
-            },
-            JSONPatch{
               op: "add", path: "/spec/template/spec/volumes/-",
               value: Object.spec.template.spec.volumes{
                 name: "repository",
@@ -115,13 +108,6 @@ spec:
                   server: "nas.internal",
                   path: "/VolsyncKopia"
                 }
-              }
-            },
-            JSONPatch{
-              op: "add", path: "/spec/template/spec/volumes/-",
-              value: Object.spec.template.spec.volumes{
-                name: "cache",
-                emptyDir: Object.spec.template.spec.volumes.emptyDir{}
               }
             }
           ]
