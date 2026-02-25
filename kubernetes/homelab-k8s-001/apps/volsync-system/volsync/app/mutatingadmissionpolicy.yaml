@@ -16,17 +16,22 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups:
+          - batch
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - jobs
   matchConditions:
     - name: has-volsync-job-name-prefix
-      expression: >
+      expression: >-
         object.metadata.name.startsWith("volsync-src-")
 
     - name: has-volsync-created-by-labels
-      expression: >
+      expression: >-
         object.metadata.?labels["app.kubernetes.io/created-by"].orValue("") == "volsync"
 
   failurePolicy: Fail
@@ -68,21 +73,26 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups:
+          - batch
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - jobs
   matchConditions:
     - name: has-volsync-job-name-prefix
-      expression: >
+      expression: >-
         object.metadata.name.startsWith("volsync-")
 
     - name: has-volsync-created-by-labels
-      expression: >
+      expression: >-
         object.metadata.?labels["app.kubernetes.io/created-by"].orValue("") == "volsync"
 
     - name: repository-volume-does-not-exist
-      expression: >
+      expression: >-
         !has(object.spec.template.spec.volumes) ||
         !object.spec.template.spec.volumes.exists(item, item.name == "repository")
 
@@ -101,13 +111,6 @@ spec:
               }
             },
             JSONPatch{
-              op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
-              value: Object.spec.template.spec.containers.volumeMounts{
-                name: "cache",
-                mountPath: "/cache"
-              }
-            },
-            JSONPatch{
               op: "add", path: "/spec/template/spec/volumes/-",
               value: Object.spec.template.spec.volumes{
                 name: "repository",
@@ -115,13 +118,6 @@ spec:
                   server: "nas.internal",
                   path: "/VolsyncKopia"
                 }
-              }
-            },
-            JSONPatch{
-              op: "add", path: "/spec/template/spec/volumes/-",
-              value: Object.spec.template.spec.volumes{
-                name: "cache",
-                emptyDir: Object.spec.template.spec.volumes.emptyDir{}
               }
             }
           ]
