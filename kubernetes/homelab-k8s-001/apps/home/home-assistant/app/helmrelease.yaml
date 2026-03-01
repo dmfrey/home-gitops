@@ -33,7 +33,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                CURRENT=$(python3 -c "import homeassistant; print(homeassistant.__version__)" 2>/dev/null || echo "unknown")
+                CURRENT=$(python3 -c "from homeassistant.const import __version__; print(__version__)" 2>/dev/null || echo "unknown")
                 VERSION_FILE=/config/.venv/.ha-version
                 if [ -f "$VERSION_FILE" ] && [ "$(cat $VERSION_FILE)" = "$CURRENT" ]; then
                   echo "HA $CURRENT unchanged, keeping .venv cache"
