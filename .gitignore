@@ -84,4 +84,6 @@ talosconfig
 /tmp/
 
 kubernetes/homelab-k8s-001/apps/home/home-assistant/app/automations/*
+kubernetes/homelab-k8s-001/apps/home/home-assistant/app/configuration/*
 kubernetes/homelab-k8s-001/apps/home/home-assistant/app/dashboards/*
+kubernetes/homelab-k8s-001/apps/home/home-assistant/app/details/*
