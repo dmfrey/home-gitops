@@ -85,6 +85,7 @@ spec:
                 add: ["NET_BIND_SERVICE"]
 
     defaultPodOptions:
+      terminationGracePeriodSeconds: 10
       securityContext:
         runAsNonRoot: true
         runAsUser: 568
