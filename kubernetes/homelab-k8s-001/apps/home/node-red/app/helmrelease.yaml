@@ -37,6 +37,7 @@ spec:
                 memory: 350Mi
 
     defaultPodOptions:
+      terminationGracePeriodSeconds: 10
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000

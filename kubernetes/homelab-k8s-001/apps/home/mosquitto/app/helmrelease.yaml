@@ -49,6 +49,9 @@ spec:
               limits:
                 memory: 350Mi
 
+    defaultPodOptions:
+      terminationGracePeriodSeconds: 15
+
     service:
       app:
         type: LoadBalancer
