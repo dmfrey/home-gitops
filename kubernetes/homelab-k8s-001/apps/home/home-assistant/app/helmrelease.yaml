@@ -24,6 +24,29 @@ spec:
           reloader.stakater.com/auto: "true"
           secret.reloader.stakater.com/reload: home-assistant-cnpg-app
 
+        initContainers:
+          venv-cleanup:
+            image:
+              repository: ghcr.io/home-operations/home-assistant
+              tag: 2026.2.3@sha256:d73c9c53a8562e12211f24fd7303c422051220636972485df291dbec885d8a3d
+            command:
+              - /bin/sh
+              - -c
+              - |
+                CURRENT=$(python3 -c "import homeassistant; print(homeassistant.__version__)" 2>/dev/null || echo "unknown")
+                VERSION_FILE=/config/.venv/.ha-version
+                if [ -f "$VERSION_FILE" ] && [ "$(cat $VERSION_FILE)" = "$CURRENT" ]; then
+                  echo "HA $CURRENT unchanged, keeping .venv cache"
+                else
+                  echo "HA version changed to $CURRENT, clearing .venv cache"
+                  rm -rf /config/.venv/*
+                fi
+                echo "$CURRENT" > "$VERSION_FILE"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
         containers:
           app:
             image:
