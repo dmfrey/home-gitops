@@ -54,6 +54,11 @@ machine:
     image: factory.talos.dev/installer/0b8db7b5044125c469b49c44d32ec196d82f1f2be727be65110822e0867f42e6:v1.12.4
     wipe: false
 
+  time:
+    servers:
+      - 192.168.30.1      # UDM-SE gateway on homelab VLAN — prefer local over internet
+      - time.cloudflare.com
+
   kernel:
     modules:
       - name: nbd
@@ -64,7 +69,7 @@ machine:
     extraConfig:
       featureGates:
         ImageVolume: true
-        ResourceHealthStatus: true
+        # ResourceHealthStatus: true  # re-enable when intel-gpu-resource-driver implements v1alpha1.DRAResourceHealth (currently causes kubelet spam on k8s-2)
         UserNamespacesSupport: true
       # imageMaximumGCAge: 24h
       imageGCHighThresholdPercent: 65
@@ -173,7 +178,8 @@ cluster:
 
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,ResourceHealthStatus=true,UserNamespacesSupport=true
+      # ResourceHealthStatus removed until intel-gpu-resource-driver implements v1alpha1.DRAResourceHealth
+      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,UserNamespacesSupport=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
 
     image: registry.k8s.io/kube-apiserver:v1.35.2
