@@ -42,6 +42,13 @@ keda state:
         kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite so "$name" autoscaling.keda.sh/paused{{ if state != "suspend" { "-" } else { "=true" } }}; \
     done
 
+[doc('Suspend or resume CNPG clusters for node maintenance')]
+cnpg state:
+    kubectl get clusters --no-headers -A | while read -r ns name _; do \
+        kubectl -n "$ns" patch cluster "$name" --type merge \
+            -p '{"spec":{"nodeMaintenanceWindow":{"inProgress":{{ if state == "suspend" { "true" } else { "false" } }},"reusePVC":true}}}'; \
+    done
+
 [doc('Suspend or resume VolSync')]
 volsync state:
     flux -n volsync-system {{ state }} kustomization volsync
