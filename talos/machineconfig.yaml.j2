@@ -59,9 +59,6 @@ machine:
       - 192.168.30.1      # UDM-SE gateway on homelab VLAN — prefer local over internet
       - time.cloudflare.com
 
-  kernel:
-    modules:
-      - name: nbd
 
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
@@ -71,7 +68,7 @@ machine:
         ImageVolume: true
         # ResourceHealthStatus: true  # re-enable when intel-gpu-resource-driver implements v1alpha1.DRAResourceHealth (currently causes kubelet spam on k8s-2)
         UserNamespacesSupport: true
-      # imageMaximumGCAge: 24h
+      imageMaximumGCAge: 24h
       imageGCHighThresholdPercent: 65
       imageGCLowThresholdPercent: 50
       serializeImagePulls: false
@@ -201,11 +198,6 @@ cluster:
       key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
-      ## Remove when new SSD installed
-      # Default: 100
-      # heartbeat-interval: "250"
-      # # Default: 1000
-      # election-timeout: "2500"
 
   proxy:
     disabled: true
