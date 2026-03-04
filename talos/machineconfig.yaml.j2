@@ -59,7 +59,6 @@ machine:
       - 192.168.30.1      # UDM-SE gateway on homelab VLAN — prefer local over internet
       - time.cloudflare.com
 
-
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
@@ -106,6 +105,7 @@ machine:
     # --- NFS Client Tuning ---
     sunrpc.tcp_max_slot_table_entries: "128"
 
+    # --- Process & Namespace Limits ---
     user.max_user_namespaces: "11255"
     kernel.pid_max: "1048576"              # Default 32768 is too low for large clusters; prevents PID exhaustion
 
