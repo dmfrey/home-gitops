@@ -10,7 +10,12 @@
       "WebFetch(domain:github.com)",
       "Bash(git status:*)",
       "Bash(git check-ignore:*)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:gatus.dmfrey.com)",
+      "Bash(xargs ls:*)",
+      "Bash(kubectl run:*)",
+      "Bash(python3:*)",
+      "Bash(kubectl explain:*)"
     ]
   }
 }
