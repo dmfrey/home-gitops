@@ -64,6 +64,7 @@ spec:
 
     unified_alerting:
       ha_listen_address: "0.0.0.0:9094"
+      ha_peers: "grafana-alerting.observability.svc.cluster.local:9094"
 
   deployment:
     spec:
