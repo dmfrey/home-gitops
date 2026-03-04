@@ -22,19 +22,11 @@ customization:
 
     # --- System Configuration ---
     - net.ifnames=0
+    - tsc=reliable                        # i7-13620H has invariant TSC; skip kernel verification overhead
 
-    # --- Recommended Performance Tuning Arguments (for future reference) ---
-    #
-    # # Sets the I/O scheduler to prioritize latency, which is critical for etcd.
-    # # This is the most direct tuning for the disk I/O issues.
-    # - elevator=mq-deadline
-    #
-    # # Tells the kernel the Time Stamp Counter is reliable, reducing timing-related overhead.
-    # - tsc=reliable
-    #
-    # # Isolates specific CPU cores from OS timer ticks, reducing jitter for sensitive workloads.
-    # # The core list should be chosen based on your CPU topology (e.g., a few E-cores).
-    # - nohz_full=4,5,6,7
+    # --- Intentionally left disabled ---
+    # - elevator=mq-deadline              # Kernel auto-selects per device: none (NVMe), mq-deadline (SATA) — global override would harm NVMe
+    # - nohz_full=4,5,6,7                # CPU tick isolation — marginal homelab benefit, complex to tune correctly
   systemExtensions:
     officialExtensions:
       - siderolabs/gasket-driver          # M.2 Google Coral accelerators

@@ -51,7 +51,7 @@ machine:
   install:
     diskSelector:
       model: Samsung SSD 870
-    image: factory.talos.dev/installer/0b8db7b5044125c469b49c44d32ec196d82f1f2be727be65110822e0867f42e6:v1.12.4
+    image: factory.talos.dev/installer/cfd2afa428fa5a48f71d9c0583c2fd870ce72d610861bc6f051bc55abf6c65b2:v1.12.4
     wipe: false
 
   time:
@@ -107,9 +107,12 @@ machine:
     sunrpc.tcp_max_slot_table_entries: "128"
 
     user.max_user_namespaces: "11255"
+    kernel.pid_max: "1048576"              # Default 32768 is too low for large clusters; prevents PID exhaustion
 
   sysfs:
     devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
+    kernel.mm.transparent_hugepage.enabled: never    # Eliminate THP compaction latency spikes (etcd, PostgreSQL)
+    kernel.mm.transparent_hugepage.defrag: never     # Stop background memory compaction entirely
     # energy_performance_preference is per-core on i7-13620H — not available at
     # intel_pstate level. Per-core path: /sys/devices/system/cpu/cpuX/cpufreq/energy_performance_preference
     # Current default is "balance_performance" which is appropriate for mini PC thermals.
