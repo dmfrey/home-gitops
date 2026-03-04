@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl exec:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl get:*)",
+      "WebFetch(domain:llmvision.gitbook.io)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(git status:*)",
+      "Bash(git check-ignore:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  }
+}
