@@ -15,7 +15,10 @@
       "Bash(xargs ls:*)",
       "Bash(kubectl run:*)",
       "Bash(python3:*)",
-      "Bash(kubectl explain:*)"
+      "Bash(kubectl explain:*)",
+      "Bash(kubectl api-resources:*)",
+      "Bash(kubectl top:*)",
+      "Bash(talosctl:*)"
     ]
   }
 }

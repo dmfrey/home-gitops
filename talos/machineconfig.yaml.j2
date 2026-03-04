@@ -13,7 +13,7 @@ machine:
     diskQuotaSupport: true
     hostDNS:
       enabled: true
-      forwardKubeDNSToHost: false # true # Requires Cilium socketLB features
+      forwardKubeDNSToHost: true # Requires Cilium socketLB features (confirmed active)
       resolveMemberNames: true
     kubePrism:
       enabled: true
