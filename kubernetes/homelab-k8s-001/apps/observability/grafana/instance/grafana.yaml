@@ -62,6 +62,9 @@ spec:
       enable_gzip: "true"
       root_url: https://grafana.dmfrey.com
 
+    unified_alerting:
+      ha_listen_address: "0.0.0.0:9094"
+
   deployment:
     spec:
       strategy:
