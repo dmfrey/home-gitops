@@ -166,7 +166,6 @@ spec:
         existingClaim: "{{ .Release.Name }}"
 
       romm-config:
-        enabled: true
         type: nfs
         server: nas.internal
         path: /games/config
@@ -174,7 +173,6 @@ spec:
           - path: /romm/config
 
       romm-assets:
-        enabled: true
         type: nfs
         server: nas.internal
         path: /games/assets
@@ -182,7 +180,6 @@ spec:
           - path: /romm/assets
 
       romm-library:
-        enabled: true
         type: nfs
         server: nas.internal
         path: /games/library
@@ -190,7 +187,6 @@ spec:
           - path: /romm/library
 
       romm-resources:
-        enabled: true
         type: nfs
         server: nas.internal
         path: /games/resources

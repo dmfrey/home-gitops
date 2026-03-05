@@ -131,7 +131,6 @@ spec:
           - path: /media
 
       transcode:
-        enabled: true
         type: custom
         volumeSpec:
           ephemeral:

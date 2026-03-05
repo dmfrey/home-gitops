@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app bazarr
+  name: bazarr
 
 spec:
 
@@ -17,14 +17,14 @@ spec:
 
     controllers:
 
-      *app :
+      bazarr:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/home-operations/bazarr
               tag: 1.5.6
@@ -116,7 +116,7 @@ spec:
           #     tag: v2.1.0
 
           #   args:
-          #     - *app
+          #     - bazarr
           #     - --enable-additional-metrics
 
           #   env:
@@ -145,17 +145,16 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      *app :
-        controller: *app
+      app:
+        controller: bazarr
         ports:
           http:
             port: *port
-            primary: true
           # metrics:
           #   port: *metricsPort
 
     route:
-      *app :
+      app:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
@@ -170,7 +169,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
 
     persistence:
       add-ons:
@@ -211,11 +209,10 @@ spec:
         path: /plexbackups/backups/bazarr
         globalMounts:
           - path: /config/backup
-            readOnly: false
 
     # serviceMonitor:
     #   metrics:
-    #     serviceName: *app
+    #     serviceName: bazarr
     #     endpoints:
     #       - port: metrics
     #         scheme: http

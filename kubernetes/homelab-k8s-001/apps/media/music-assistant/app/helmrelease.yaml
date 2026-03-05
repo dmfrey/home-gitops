@@ -137,7 +137,6 @@ spec:
           - path: /media
 
       tmp:
-        enabled: true
         type: emptyDir
         medium: Memory
         globalMounts:
