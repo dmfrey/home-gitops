@@ -3,7 +3,7 @@ libraries:
   Movies:
     remove_overlays: false
     collection_files:
-      - default: /config/pre-rolls.yml
+      - file: /config/pre-rolls.yml
   TV Shows:
     remove_overlays: false
   # Anime:
@@ -101,7 +101,6 @@ sonarr:
   root_folder_path: /media/tv_shows
   monitor: all
   quality_profile: Web-1080p
-  language_profile: English
   series_type: standard
   season_folder: true
   tag:

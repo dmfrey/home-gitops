@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-pmm () {
-    echo "*** pmm: $1 ***"
+kometa () {
+    echo "*** kometa: $1 ***"
 
-    python3 plex_meta_manager.py \
+    python3 kometa.py \
         --run \
         --read-only-config \
         --run-libraries "$1"
 }
 
-pmm "Movies"
-# pmm "TV Shows"
+kometa "Movies"
+# kometa "TV Shows"
