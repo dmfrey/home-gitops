@@ -98,7 +98,14 @@ tautulli:
 trakt:
   client_id: ${TRAKT_KOMETA_CLIENT_ID}
   client_secret: ${TRAKT_KOMETA_CLIENT_SECRET}
-  pin: ${TRAKT_KOMETA_PIN}
+  authorization:
+    access_token: ${TRAKT_KOMETA_ACCESS_TOKEN}
+    token_type: Bearer
+    expires_in: ${TRAKT_KOMETA_EXPIRES_IN}
+    refresh_token: ${TRAKT_KOMETA_REFRESH_TOKEN}
+    scope: public
+    created_at: ${TRAKT_KOMETA_CREATED_AT}
+  pin:
 
 mdblist:
   apikey: ${MDBLIST_KOMETA_API_KEY}
