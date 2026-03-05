@@ -101,7 +101,7 @@ trakt:
   pin: ${TRAKT_KOMETA_PIN}
 
 mdblist:
-  apikey: ${MDBLIST_KOMETA_CLIENT_ID}
+  apikey: ${MDBLIST_KOMETA_API_KEY}
   cache_expiration: 60
 
 radarr:
