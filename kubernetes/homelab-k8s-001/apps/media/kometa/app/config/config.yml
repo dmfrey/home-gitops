@@ -8,6 +8,7 @@ libraries:
       - default: resolution
         template_variables:
           use_576p: false
+          use_720p: false
       - default: audio_codec
   TV Shows:
     remove_overlays: false
@@ -15,6 +16,7 @@ libraries:
       - default: resolution
         template_variables:
           use_576p: false
+          use_720p: false
       - default: audio_codec
       - default: status
   # Anime:
