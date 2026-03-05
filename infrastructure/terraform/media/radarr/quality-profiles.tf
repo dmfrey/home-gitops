@@ -5,6 +5,11 @@ resource "radarr_quality_profile" "hd_1080p" {
   min_format_score    = 0
   cutoff_format_score = 10000
 
+  language = {
+    id   = 1
+    name = "English"
+  }
+
   quality_groups = [
     {
       qualities = [{ id = 9, name = "HDTV-1080p" }]
@@ -32,6 +37,11 @@ resource "radarr_quality_profile" "ultra_hd_2160p" {
   cutoff              = 31 # Remux-2160p
   min_format_score    = 0
   cutoff_format_score = 10000
+
+  language = {
+    id   = 1
+    name = "English"
+  }
 
   quality_groups = [
     {
