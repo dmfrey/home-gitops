@@ -4,8 +4,6 @@ sonarr:
   sonarr:  # A custom name used to identify this particular instance.
     base_url: http://sonarr.media.svc.cluster.local:8989
     api_key: !env_var SONARR_API_KEY
-    replace_existing_custom_formats: true
-
     quality_definition:
       type: series
 
@@ -31,7 +29,7 @@ sonarr:
           - 9b27ab6498ec0f31a3353992e19434ca  # DV (WEBDL)
           # HDR10Plus Boost - Uncomment the next line if any of your devices DO support HDR10+
           # - 0dad0a507451acddd754fe6dc3a7f5e7  # HDR10Plus Boost
-        quality_profiles:
+        assign_scores_to:
           - name: Ultra-HD-2160p
 
       - trash_ids:
@@ -68,6 +66,6 @@ sonarr:
           - 58790d4e2fdcd9733aa7ae68ba2bb503  # WEB Tier 02
           - d84935abd3f8556dcd51d4f27e22d0a6  # WEB Tier 03
           - d0c516558625b04b363fa6c5c2c7cfd4  # WEB Scene
-        quality_profiles:
+        assign_scores_to:
           - name: HD-1080p
           - name: Ultra-HD-2160p

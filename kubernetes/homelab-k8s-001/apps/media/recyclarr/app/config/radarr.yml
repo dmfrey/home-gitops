@@ -59,7 +59,7 @@ radarr:
           # Streaming Services
           - cc5e51a9e85a6296ceefe097a77f12f4  # BCORE
           - 2a6039655313bf5dab1e43523b62c374  # MA
-        quality_profiles:
+        assign_scores_to:
           - name: HD-1080p
           - name: Ultra-HD-2160p
 
@@ -67,7 +67,7 @@ radarr:
           # HQ Release Groups
           - ed27ebfef2f323e964fb1f61391bcb35  # HD Bluray Tier 01
           - c20c8647f2746a1f4c4262b0fbbeeeae  # HD Bluray Tier 02
-        quality_profiles:
+        assign_scores_to:
           - name: HD-1080p
 
       - trash_ids:
@@ -75,7 +75,7 @@ radarr:
           - 4d74ac4c4db0b64bff6ce0cffef99bf0  # UHD Bluray Tier 01
           - a58f517a70193f8e578056642178419d  # UHD Bluray Tier 02
           - e71939fae578037e7aed3ee219bbe7c1  # UHD Bluray Tier 03
-        quality_profiles:
+        assign_scores_to:
           - name: Ultra-HD-2160p
 
       - trash_ids:
@@ -97,7 +97,7 @@ radarr:
           # Unwanted
           - bfd8eb01832d646a0a89c4deb46f8564  # Upscaled
           - 9c38ebb7384dada637be8899efa68e6f  # SDR
-        quality_profiles:
+        assign_scores_to:
           - name: Ultra-HD-2160p
 
       # Custom Scoring
@@ -115,7 +115,7 @@ radarr:
           - c9fd353f8f5f1baf56dc601c4cb29920  # PCOK
           - e36a0ba1bc902b26ee40818a1d59b8bd  # PMTP
           - c2863d2a50c9acad1fb50e53ece60817  # STAN
-        quality_profiles:
+        assign_scores_to:
           - name: HD-1080p
             score: 0
           - name: Ultra-HD-2160p
