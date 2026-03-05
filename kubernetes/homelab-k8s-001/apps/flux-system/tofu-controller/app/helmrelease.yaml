@@ -27,8 +27,8 @@ spec:
 
     runner:
       image:
-        repository: ghcr.io/joryirving/opentofu-runner
-        tag: 1.11.5@sha256:7536662d052b1be6b4391aceaf0247010dc81034c4df5e2306831eb614547abe
+        repository: ghcr.io/flux-iac/tf-runner
+        tag: v0.16.1
       serviceAccount:
         create: true
         allowedNamespaces:
