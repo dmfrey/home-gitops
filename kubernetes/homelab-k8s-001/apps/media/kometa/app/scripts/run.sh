@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "*** kometa: Movies + TV Shows ***"
+echo "*** kometa: All Libraries ***"
 
 python3 kometa.py \
     --run \
-    --read-only-config \
-    --run-libraries "Movies,TV Shows"
+    --read-only-config
