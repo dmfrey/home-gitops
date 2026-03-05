@@ -95,6 +95,11 @@ tautulli:
   url: http://tautulli.media.svc.cluster.local:8181
   apikey: ${TAUTULLI_API_KEY}
 
+trakt:
+  client_id: ${TRAKT_KOMETA_CLIENT_ID}
+  client_secret: ${TRAKT_KOMETA_CLIENT_SECRET}
+  pin: ${TRAKT_KOMETA_PIN}
+
 radarr:
   url: http://radarr.media.svc.cluster.local:7878
   token: ${RADARR_API_KEY}
