@@ -10,4 +10,4 @@ kometa () {
 }
 
 kometa "Movies"
-# kometa "TV Shows"
+kometa "TV Shows"

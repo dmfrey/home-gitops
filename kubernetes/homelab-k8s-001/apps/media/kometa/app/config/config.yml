@@ -4,8 +4,15 @@ libraries:
     remove_overlays: false
     collection_files:
       - file: /config/pre-rolls.yml
+    overlay_files:
+      - default: resolution
+      - default: audio_codec
   TV Shows:
     remove_overlays: false
+    overlay_files:
+      - default: resolution
+      - default: audio_codec
+      - default: status
   # Anime:
   # Music:
 
