@@ -27,3 +27,8 @@ import {
   to = sonarr_auto_tag.series
   id = "1"
 }
+
+import {
+  to = sonarr_quality_profile.hd_1080p
+  id = "4"
+}

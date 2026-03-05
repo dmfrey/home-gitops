@@ -49,6 +49,7 @@ settings:
   missing_only_released: false
   only_filter_missing: false
   show_unmanaged: false
+  show_unfiltered: false
   show_filtered: false
   show_options: false
   show_missing: false
@@ -58,6 +59,8 @@ settings:
   ignore_ids:
   ignore_imdb_ids:
   item_refresh_delay: 0
+  overlay_artwork_filetype: webp_lossy
+  overlay_artwork_quality: 90
   playlist_sync_to_users: all
   playlist_report: false
   verify_ssl: true
@@ -73,6 +76,8 @@ plex:
   clean_bundles: false
   empty_trash: false
   optimize: false
+  verify_ssl: true
+  db_cache:
 
 tmdb:
   apikey: ${TMDB_API_KEY}
@@ -92,12 +97,13 @@ radarr:
   root_folder_path: /media/movies
   monitor: true
   availability: announced
-  quality_profile: Remux-1080p
   tag:
   search: false
   radarr_path:
   plex_path:
   upgrade_existing: false
+  monitor_existing: false
+  ignore_cache: false
 
 sonarr:
   url: http://sonarr.media.svc.cluster.local:8989
@@ -106,7 +112,6 @@ sonarr:
   add_existing: false
   root_folder_path: /media/tv_shows
   monitor: all
-  quality_profile: Web-1080p
   series_type: standard
   season_folder: true
   tag:
@@ -115,3 +120,5 @@ sonarr:
   sonarr_path:
   plex_path:
   upgrade_existing: false
+  monitor_existing: false
+  ignore_cache: false

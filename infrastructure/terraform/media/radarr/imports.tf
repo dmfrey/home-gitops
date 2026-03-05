@@ -22,3 +22,8 @@ import {
   to = radarr_auto_tag.movie
   id = "1"
 }
+
+import {
+  to = radarr_quality_profile.hd_1080p
+  id = "4"
+}

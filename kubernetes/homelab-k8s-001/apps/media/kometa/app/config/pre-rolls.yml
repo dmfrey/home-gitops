@@ -6,6 +6,7 @@ collections:
 
   Normal:
     build_collection: false
+    sync_mode: append
     server_preroll: /media/library/prerolls/normal/Plex4K.mp4; /media/library/prerolls/normal/LightSpeed-Plex4K.mp4
     schedule:
       - range(01/01-01/31) # January
