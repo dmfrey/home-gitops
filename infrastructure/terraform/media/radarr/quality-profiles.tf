@@ -31,7 +31,7 @@ resource "radarr_quality_profile" "hd_1080p" {
   ]
 
   lifecycle {
-    ignore_changes = [quality_groups]
+    ignore_changes = all
   }
 }
 
@@ -68,6 +68,6 @@ resource "radarr_quality_profile" "ultra_hd_2160p" {
   ]
 
   lifecycle {
-    ignore_changes = [quality_groups]
+    ignore_changes = all
   }
 }
