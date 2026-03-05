@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app sonarr
+  name: sonarr
 
 spec:
 
@@ -17,33 +17,30 @@ spec:
 
     controllers:
 
-      *app :
+      sonarr:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          app:
             image:
               repository: ghcr.io/home-operations/sonarr
               tag: 4.0.16.2946
 
             env:
               TZ: America/New_York
-              SONARR__INSTANCE_NAME: *app
+              SONARR__INSTANCE_NAME: sonarr
               SONARR__PORT: &port 8989
               SONARR__APPLICATION_URL: https://sonarr.dmfrey.com
               SONARR__LOG_LEVEL: info
+              SONARR__ANALYTICS_ENABLED: "False"
               SONARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
                     name: sonarr-secret
                     key: SONARR_API_KEY
-
-            ports:
-              - name: http
-                containerPort: *port
 
             resources:
               requests:
@@ -64,7 +61,7 @@ spec:
           #     tag: v2.1.0
 
           #   args:
-          #     - *app
+          #     - sonarr
           #     - --enable-additional-metrics
 
           #   env:
@@ -98,8 +95,8 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      *app :
-        controller: *app
+      app:
+        controller: sonarr
         # type: LoadBalancer
         # annotations:
         #   external-dns.alpha.kubernetes.io/hostname: &host sonarr.dmfrey.com
@@ -112,7 +109,7 @@ spec:
           #   port: *metricsPort
 
     route:
-      *app :
+      app:
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
           gethomepage.dev/enabled: "true"
@@ -126,19 +123,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            *app :
-              - path: /config
 
       media:
         type: nfs
@@ -146,28 +134,29 @@ spec:
         path: /media
 
       backups:
+        enabled: true
         type: nfs
         server: nas.internal
         path: /plexbackups/backups/sonarr
-        globalMounts:
-          - path: /config/Backups
-            readOnly: false
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /config/Backups
 
       tmp:
         type: emptyDir
         medium: Memory
         advancedMounts:
-          *app :
-            *app :
+          sonarr:
+            app:
               - path: /tmp
 
     # serviceMonitor:
     #   metrics:
-    #     serviceName: *app
+    #     serviceName: sonarr
     #     endpoints:
     #       - port: metrics
     #         scheme: http
     #         path: /metrics
     #         interval: 10m
     #         scrapeTimeout: 10s
-
