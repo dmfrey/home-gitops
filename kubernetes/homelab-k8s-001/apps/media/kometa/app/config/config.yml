@@ -6,11 +6,15 @@ libraries:
       - file: /config/pre-rolls.yml
     overlay_files:
       - default: resolution
+        template_variables:
+          use_576p: false
       - default: audio_codec
   TV Shows:
     remove_overlays: false
     overlay_files:
       - default: resolution
+        template_variables:
+          use_576p: false
       - default: audio_codec
       - default: status
   # Anime:
@@ -97,6 +101,7 @@ radarr:
   root_folder_path: /media/movies
   monitor: true
   availability: announced
+  quality_profile: HD-1080p
   tag:
   search: false
   radarr_path:
@@ -112,6 +117,7 @@ sonarr:
   add_existing: false
   root_folder_path: /media/tv_shows
   monitor: all
+  quality_profile: HD-1080p
   series_type: standard
   season_folder: true
   tag:
