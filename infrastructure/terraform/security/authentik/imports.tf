@@ -426,6 +426,12 @@ import {
   id = "spring-dev"
 }
 
+## Brand
+import {
+  to = authentik_brand.home
+  id = "500e88d0-a9c1-44c7-80a6-f19ac4ac08ef"
+}
+
 ## Application policy bindings
 import {
   to = authentik_policy_binding.application_policy_binding["affine"]
