@@ -55,37 +55,6 @@ spec:
                 drop:
                   - ALL
 
-          # exporter:
-          #   image:
-          #     repository: ghcr.io/onedr0p/exportarr
-          #     tag: v2.1.0
-
-          #   args:
-          #     - radarr
-          #     - --enable-additional-metrics
-
-          #   env:
-          #     URL: "http://localhost:7878"
-          #     PORT: &metricsPort 9708
-          #     APIKEY:
-          #       valueFrom:
-          #         secretKeyRef:
-          #           name: radarr-secret
-          #           key: RADARR_API_KEY
-
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 128Mi
-
-          #   securityContext:
-          #     allowPrivilegeEscalation: false
-          #     readOnlyRootFilesystem: true
-          #     capabilities:
-          #       drop:
-          #         - ALL
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -97,16 +66,9 @@ spec:
     service:
       app:
         controller: radarr
-        # type: LoadBalancer
-        # annotations:
-        #   external-dns.alpha.kubernetes.io/hostname: &host radarr.dmfrey.com
-        #   lbipam.cilium.io/ips: 192.168.29.231 #, ::ffff:192.168.30.
         ports:
           http:
             port: *port
-            primary: true
-          # metrics:
-          #   port: *metricsPort
 
     route:
       app:
@@ -150,14 +112,3 @@ spec:
           radarr:
             app:
               - path: /tmp
-
-    # serviceMonitor:
-    #   metrics:
-    #     enabled: true
-    #     serviceName: radarr
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 10m
-    #         scrapeTimeout: 10s

@@ -55,37 +55,6 @@ spec:
                 drop:
                   - ALL
 
-          # exporter:
-          #   image:
-          #     repository: ghcr.io/onedr0p/exportarr
-          #     tag: v2.1.0
-
-          #   args:
-          #     - sonarr
-          #     - --enable-additional-metrics
-
-          #   env:
-          #     URL: "http://localhost:8989"
-          #     PORT: &metricsPort 9707
-          #     APIKEY:
-          #       valueFrom:
-          #         secretKeyRef:
-          #           name: sonarr-secret
-          #           key: SONARR_API_KEY
-
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 128Mi
-
-          #   securityContext:
-          #     allowPrivilegeEscalation: false
-          #     readOnlyRootFilesystem: true
-          #     capabilities:
-          #       drop:
-          #         - ALL
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -96,17 +65,9 @@ spec:
 
     service:
       app:
-        controller: sonarr
-        # type: LoadBalancer
-        # annotations:
-        #   external-dns.alpha.kubernetes.io/hostname: &host sonarr.dmfrey.com
-        #   lbipam.cilium.io/ips: 192.168.31.230 #, ::ffff:192.168.30.230
         ports:
           http:
             port: *port
-            primary: true
-          # metrics:
-          #   port: *metricsPort
 
     route:
       app:
@@ -150,13 +111,3 @@ spec:
           sonarr:
             app:
               - path: /tmp
-
-    # serviceMonitor:
-    #   metrics:
-    #     serviceName: sonarr
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 10m
-    #         scrapeTimeout: 10s
