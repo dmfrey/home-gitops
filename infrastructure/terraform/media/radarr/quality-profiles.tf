@@ -29,6 +29,10 @@ resource "radarr_quality_profile" "hd_1080p" {
       qualities = [{ id = 30, name = "Remux-1080p" }]
     },
   ]
+
+  lifecycle {
+    ignore_changes = [quality_groups]
+  }
 }
 
 resource "radarr_quality_profile" "ultra_hd_2160p" {
@@ -62,4 +66,8 @@ resource "radarr_quality_profile" "ultra_hd_2160p" {
       qualities = [{ id = 31, name = "Remux-2160p" }]
     },
   ]
+
+  lifecycle {
+    ignore_changes = [quality_groups]
+  }
 }
