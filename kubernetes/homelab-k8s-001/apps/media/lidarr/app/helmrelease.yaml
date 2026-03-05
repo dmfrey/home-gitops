@@ -49,7 +49,7 @@ spec:
               TZ: America/New_York
               LIDARR__INSTANCE_NAME: lidarr
               LIDARR__PORT: &port 8686
-              LIDARR__LOG_LEVEL: debug
+              LIDARR__LOG_LEVEL: info
               LIDARR__ANALYTICS_ENABLED: "False"
               LIDARR__APPLICATION_URL: "https://lidarr.dmfrey.com"
               LIDARR__API_KEY:
@@ -82,6 +82,7 @@ spec:
 
     service:
       app:
+        controller: lidarr
         ports:
           http:
             port: *port
@@ -102,6 +103,11 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: app
+                port: *port
 
     persistence:
       config:
