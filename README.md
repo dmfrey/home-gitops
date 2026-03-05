@@ -58,7 +58,7 @@ There is a template over at [onedr0p/cluster-template](https://github.com/onedr0
 - **Networking & Service Mesh**: [cilium](https://github.com/cilium/cilium) provides eBPF-based networking, while [envoy](https://gateway.envoyproxy.io/) powers service-to-service communication with L7 proxying and traffic management. [cloudflared](https://github.com/cloudflare/cloudflared) secures ingress traffic via Cloudflare, and [external-dns](https://github.com/kubernetes-sigs/external-dns) keeps DNS records in sync automatically.
 - **Security & Secrets**: [cert-manager](https://github.com/cert-manager/cert-manager) automates SSL/TLS certificate management. For secrets, I use [external-secrets](https://github.com/external-secrets/external-secrets) with [1Password Connect](https://github.com/1Password/connect) to inject secrets into Kubernetes, and [sops](https://github.com/getsops/sops) to store and manage encrypted secrets in Git.
 - **Storage & Data Protection**: [rook](https://github.com/rook/rook) provides distributed storage for persistent volumes, with [volsync](https://github.com/backube/volsync) handling backups and restores. [spegel](https://github.com/spegel-org/spegel) improves reliability by running a stateless, cluster-local OCI image mirror.
-- **Automation & CI/CD**: [actions-runner-controller](https://github.com/actions/actions-runner-controller) runs self-hosted GitHub Actions runners directly in the cluster for continuous integration workflows. For IaC, I use [tofu-controller](https://github.com/weaveworks/tf-controller) as additional Flux component used to run Terraform from within a Kubernetes cluster.
+- **Automation & CI/CD**: [actions-runner-controller](https://github.com/actions/actions-runner-controller) runs self-hosted GitHub Actions runners directly in the cluster for continuous integration workflows. For IaC, I use [tofu-controller](https://github.com/flux-iac/tofu-controller) as additional Flux component used to run OpenTofu from within a Kubernetes cluster.
 
 ### GitOps
 
@@ -73,7 +73,7 @@ The way Flux works for me here is it will recursively search the `kubernetes/${c
 This Git repository contains the following directories under [Kubernetes](./kubernetes/).
 
 ```sh
-📁 kubernetes/home-k8s-001
+📁 kubernetes/homelab-k8s-001
 ├── 📁 apps       # applications
 ├── 📁 components # re-useable kustomize components
 └── 📁 flux       # flux system configuration
@@ -96,7 +96,7 @@ graph TD
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f30e/512.gif" alt="🌎" width="20" height="20"> DNS
 
-In my cluster there are two instances of [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) running. One for syncing private DNS records to my `UDM Pro Max` using [ExternalDNS webhook provider for UniFi](https://github.com/kashalls/external-dns-unifi-webhook), while another instance syncs public DNS to `Cloudflare`. This setup is managed by creating ingresses with two specific classes: `internal` for private DNS and `external` for public DNS. The `external-dns` instances then syncs the DNS records to their respective platforms accordingly.
+In my cluster there are two instances of [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) running. One for syncing private DNS records to my `UDM SE` using [ExternalDNS webhook provider for UniFi](https://github.com/kashalls/external-dns-unifi-webhook), while another instance syncs public DNS to `Cloudflare`. This setup is managed by creating ingresses with two specific classes: `internal` for private DNS and `external` for public DNS. The `external-dns` instances then syncs the DNS records to their respective platforms accordingly.
 
 ---
 
@@ -118,6 +118,12 @@ My cluster runs on a variety of energy-efficient hardware.
 > - **Ceph:** 1x Silicon Power US75 2 TB NVMe SSD
 > - **OpenEBS:** 1x KingSpec NT Series 128GB M.2 2242 SATA SSD
 > - **TPU:** 1x Coral M.2 Accelerator with Dual Edge TPU
+
+<details>
+  <summary>Click here to see my server rack</summary>
+
+  <img src="https://github.com/user-attachments/assets/d5dcd310-a607-4f75-ab02-3ceedfa166e5" align="center" width="250px" alt="rack" />
+</details>
 
 ### 🌐 Network & Power
 
