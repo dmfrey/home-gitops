@@ -38,7 +38,7 @@ spec:
     # App runs as root
     defaultPodOptions:
       annotations:
-        secret.reloader.stakater.com/reload: jellyplex-watched-secret,pmm-secret
+        secret.reloader.stakater.com/reload: jellyplex-watched-secret,kometa-secret
 
       #securityContext:
         #runAsUser: 1000

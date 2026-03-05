@@ -51,8 +51,7 @@ settings:
   ignore_ids:
   ignore_imdb_ids:
   item_refresh_delay: 0
-  playlist_sync_to_user: all
-  playlist_exclude_user:
+  playlist_sync_to_users: all
   playlist_report: false
   verify_ssl: true
   custom_repo:

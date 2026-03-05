@@ -8,22 +8,22 @@ resources:
   - ./ocirepository.yaml
 
 configMapGenerator:
-  - name: pmm-config-template
+  - name: kometa-config-template
     files:
       - ./config/config.yml
     options:
       labels:
         kustomize.toolkit.fluxcd.io/substitute: disabled
-  - name: pmm-playlists
+  - name: kometa-playlists
     files:
       - ./config/playlists.yml
     options:
       labels:
         kustomize.toolkit.fluxcd.io/substitute: disabled
-  - name: pmm-prerolls
+  - name: kometa-prerolls
     files:
       - ./config/pre-rolls.yml
-  - name: pmm-scripts
+  - name: kometa-scripts
     files:
       - ./scripts/run.sh
 

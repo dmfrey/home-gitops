@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: plex-meta-manager
+  name: kometa
 
 spec:
 
@@ -11,16 +11,16 @@ spec:
 
   chartRef:
     kind: OCIRepository
-    name: plex-meta-manager
+    name: kometa
 
   values:
 
     controllers:
 
-      plex-meta-manager:
+      kometa:
         type: cronjob
         annotations:
-          secret.reloader.stakater.com/reload: pmm-secret
+          secret.reloader.stakater.com/reload: kometa-secret
 
         cronjob:
           schedule: 0 6 * * *
@@ -54,7 +54,7 @@ spec:
 
             envFrom:
               - secretRef:
-                  name: pmm-secret
+                  name: kometa-secret
 
     persistence:
       config:
@@ -62,7 +62,7 @@ spec:
 
       config-playlists:
         type: configMap
-        name: pmm-playlists
+        name: kometa-playlists
         globalMounts:
           - path: /config/playlists.yml
             subPath: playlists.yml
@@ -70,7 +70,7 @@ spec:
 
       config-prerolls:
         type: configMap
-        name: pmm-prerolls
+        name: kometa-prerolls
         globalMounts:
           - path: /config/pre-rolls.yml
             subPath: pre-rolls.yml
@@ -78,14 +78,14 @@ spec:
 
       config-template:
         type: configMap
-        name: pmm-config-template
+        name: kometa-config-template
         globalMounts:
           - path: /tmp/config-template
             readOnly: true
 
       scripts:
         type: configMap
-        name: pmm-scripts
+        name: kometa-scripts
         globalMounts:
           - path: /scripts/run.sh
             subPath: run.sh

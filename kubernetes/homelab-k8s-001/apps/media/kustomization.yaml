@@ -18,7 +18,7 @@ resources:
   - ./overseerr/ks.yaml
   - ./pinepods/ks.yaml
   - ./plex/ks.yaml
-  - ./plex-meta-manager/ks.yaml
+  - ./kometa/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
