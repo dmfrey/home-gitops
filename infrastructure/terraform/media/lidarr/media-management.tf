@@ -29,8 +29,8 @@ resource "lidarr_naming" "naming" {
 
 resource "lidarr_root_folder" "music" {
   name                    = "Music"
-  quality_profile_id      = 2
-  metadata_profile_id     = 1
+  quality_profile_id      = lidarr_quality_profile.lossless.id
+  metadata_profile_id     = lidarr_metadata_profile.standard.id
   monitor_option          = "future"
   new_item_monitor_option = "all"
   path                    = "/media/music"

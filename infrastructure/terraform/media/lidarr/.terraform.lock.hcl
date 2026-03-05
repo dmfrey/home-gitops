@@ -1,24 +1,11 @@
-# This file is maintained automatically by "terraform init".
+# This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
-provider "registry.terraform.io/devopsarr/lidarr" {
+provider "registry.opentofu.org/devopsarr/lidarr" {
   version     = "1.13.0"
   constraints = "1.13.0"
   hashes = [
-    "h1:/WTGoEeF5sjK4Y/Hzh4JsEGJb54Vr7kTig8PBIjG0fE=",
-    "h1:0LUCIwm6bfsIlU0VXEdVZtCXQ4J00Hs4GS4nXF660JM=",
-    "h1:1MFh96FEPnKBHKZJ+TbrqW+UiqmpqWu17FxbQbhJK3E=",
-    "h1:3VhXDCYpB3spaqTvYQCKAWwKwPLv/6QlqCa95FoXmkI=",
-    "h1:4y7cTTykSdPqE5GzNLWEwTBLS0+kPp8yoeelseQBYd0=",
-    "h1:D48fqi9mm0CmElLG2VTN6tDvffJnzVxsefUGJzZR2qQ=",
-    "h1:Juit04fJSXMlo4/puw/LznC0RJ/ZJnoJq4Hj62MLMWw=",
-    "h1:SEGqO87xkqmNjX54kD+3gbrdsXcPG/tLmG9MGQWKab8=",
     "h1:TWD2KYnc4tUUCK3tawrwEX8s1IzfCUcD1la2u0pNBGg=",
-    "h1:XtXLUzQKwn7KI94dPb2Q/1niGss1VwInGJbDvVcCJBY=",
-    "h1:jiEmoDhvABiSyB7E5ziD0bN+g/rlv18ufNE0DLmeZlc=",
-    "h1:k4WlQKk26PKczms8El/IgNP5bBLVCVjyQYOO7homBmI=",
-    "h1:qddPf8eeQmJlpRFUEP4JEi4HxHV/46xuf6JSGgrHMqY=",
-    "h1:zEJ9M60Z5cOgclJ6zsc2i9ImVmk3tnza26CalA+bSho=",
     "zh:0cc57748498400684350d50517bd664c1d83c45e6c90fea6a59c4dd5761e4df2",
     "zh:10e162a80aad812b629ef762b28553c3dfb328523192fd18caea94b896131a53",
     "zh:1c253401680404d9fc61f53f010557eede2e2931f446c1623977024fe59731da",
