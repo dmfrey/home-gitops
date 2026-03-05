@@ -1,9 +1,3 @@
-module "onepassword_users" {
-  source   = "github.com/dmfrey/terraform-1password-item"
-  vault    = "Kubernetes"
-  item     = "users"
-}
-
 locals {
   authentik_groups = {
     ai             = { name = "AI" }
@@ -61,9 +55,9 @@ resource "authentik_source_plex" "plex" {
 
 resource "authentik_user" "Dan" {
   username = "dmfrey"
-  name     = module.onepassword_users.fields["USERS_DMFREY_NAME"]
-  email    = module.onepassword_users.fields["USERS_DMFREY_EMAIL"]
-  password = module.onepassword_users.fields["USERS_DMFREY_PASSWORD"]
+  name     = var.USERS_DMFREY_NAME
+  email    = var.USERS_DMFREY_EMAIL
+  password = var.USERS_DMFREY_PASSWORD
   groups = concat(
     [data.authentik_group.admins.id],
     [data.authentik_group.grafana_admin.id],
@@ -73,9 +67,9 @@ resource "authentik_user" "Dan" {
 
 resource "authentik_user" "Steph" {
   username = "sdfrey"
-  name     = module.onepassword_users.fields["USERS_SDFREY_NAME"]
-  email    = module.onepassword_users.fields["USERS_SDFREY_EMAIL"]
-  password = module.onepassword_users.fields["USERS_SDFREY_PASSWORD"]
+  name     = var.USERS_SDFREY_NAME
+  email    = var.USERS_SDFREY_EMAIL
+  password = var.USERS_SDFREY_PASSWORD
   groups = concat(
     values(authentik_group.default)[*].id
   )
@@ -83,9 +77,9 @@ resource "authentik_user" "Steph" {
 
 resource "authentik_user" "Camdyn" {
   username = "cgfrey"
-  name     = module.onepassword_users.fields["USERS_CGFREY_NAME"]
-  email    = module.onepassword_users.fields["USERS_CGFREY_EMAIL"]
-  password = module.onepassword_users.fields["USERS_CGFREY_PASSWORD"]
+  name     = var.USERS_CGFREY_NAME
+  email    = var.USERS_CGFREY_EMAIL
+  password = var.USERS_CGFREY_PASSWORD
   groups = concat(
     values(authentik_group.default)[*].id
   )
@@ -93,9 +87,9 @@ resource "authentik_user" "Camdyn" {
 
 resource "authentik_user" "Molly" {
   username = "mkfrey"
-  name     = module.onepassword_users.fields["USERS_MKFREY_NAME"]
-  email    = module.onepassword_users.fields["USERS_MKFREY_EMAIL"]
-  password = module.onepassword_users.fields["USERS_MKFREY_PASSWORD"]
+  name     = var.USERS_MKFREY_NAME
+  email    = var.USERS_MKFREY_EMAIL
+  password = var.USERS_MKFREY_PASSWORD
   groups = concat(
     values(authentik_group.default)[*].id
   )
@@ -103,9 +97,9 @@ resource "authentik_user" "Molly" {
 
 resource "authentik_user" "Tony" {
   username = "adfrey"
-  name     = module.onepassword_users.fields["USERS_ADFREY_NAME"]
-  email    = module.onepassword_users.fields["USERS_ADFREY_EMAIL"]
-  password = module.onepassword_users.fields["USERS_ADFREY_PASSWORD"]
+  name     = var.USERS_ADFREY_NAME
+  email    = var.USERS_ADFREY_EMAIL
+  password = var.USERS_ADFREY_PASSWORD
   groups = concat(
     values(authentik_group.default)[*].id
   )
