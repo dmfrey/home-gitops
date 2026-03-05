@@ -100,6 +100,10 @@ trakt:
   client_secret: ${TRAKT_KOMETA_CLIENT_SECRET}
   pin: ${TRAKT_KOMETA_PIN}
 
+mdblist:
+  apikey: ${MDLIST_KOMETA_CLIENT_ID}
+  cache_expiration: 60
+
 radarr:
   url: http://radarr.media.svc.cluster.local:7878
   token: ${RADARR_API_KEY}
