@@ -3,10 +3,6 @@ variable "RADARR_API_KEY" {
   sensitive = true
 }
 
-variable "SABNZBD_API_KEY" {
-  type      = string
-  sensitive = true
-}
 
 variable "radarr_url" {
   type    = string

@@ -1,31 +1,29 @@
-resource "radarr_download_client_qbittorrent" "rdt-client" {
-  name                       = "rdt-client"
+resource "radarr_download_client_qbittorrent" "qbittorrent" {
+  name                       = "qBittorrent"
   enable                     = true
-  host                       = "rdt-client.download.svc.cluster.local"
-  port                       = 6500
-  movie_category             = "movies"
+  host                       = "qbittorrent.download.svc.cluster.local"
+  port                       = 80
+  movie_category             = "movie"
   remove_completed_downloads = true
 }
 
-resource "radarr_remote_path_mapping" "rdt-client" {
-  host        = radarr_download_client_qbittorrent.rdt-client.host
-  remote_path = "/media/downloads/torrents/movies/"
-  local_path  = "/media/downloads/torrents/movies/"
+resource "radarr_remote_path_mapping" "qbittorrent" {
+  host        = radarr_download_client_qbittorrent.qbittorrent.host
+  remote_path = "/media/downloads/qbittorrent/"
+  local_path  = "/media/downloads/qbittorrent/"
 }
 
-resource "radarr_download_client_sabnzbd" "sabnzbd" {
-  enable   = true
-  priority = 1
-  name     = "sabnzbd"
-  host     = "sabnzbd.download.svc.cluster.local"
-  url_base = "/sabnzbd/"
-  port     = 8080
-  api_key  = var.SABNZBD_API_KEY
-  movie_category = "movie"
+resource "radarr_download_client_nzbget" "nzbget" {
+  enable         = true
+  priority       = 1
+  name           = "NZBGet"
+  host           = "nzbget.download.svc.cluster.local"
+  port           = 80
+  movie_category = "Movies"
 }
 
-resource "radarr_remote_path_mapping" "sabnzbd" {
-  host        = radarr_download_client_sabnzbd.sabnzbd.host
-  remote_path = "/media/downloads/nzb/complete/"
-  local_path  = "/media/downloads/nzb/complete/"
+resource "radarr_remote_path_mapping" "nzbget" {
+  host        = radarr_download_client_nzbget.nzbget.host
+  remote_path = "/media/downloads/nzbget/completed/Movies"
+  local_path  = "/media/downloads/nzbget/completed/Movies/"
 }
