@@ -23,11 +23,6 @@ variable "SONARR_API_KEY" {
   sensitive = true
 }
 
-variable "SABNZBD_API_KEY" {
-  type      = string
-  sensitive = true
-}
-
 variable "NZBPLANET_API_KEY" {
   type      = string
   sensitive = true

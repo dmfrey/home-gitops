@@ -1,18 +1,8 @@
-resource "prowlarr_download_client_qbittorrent" "rdt-client" {
-  name     = "rdt-client"
-  enable   = true
-  host     = "rdt-client.download.svc.cluster.local"
-  port     = 6500
-  category = "misc"
-}
-
-resource "prowlarr_download_client_sabnzbd" "sabnzbd" {
+resource "prowlarr_download_client_nzbget" "nzbget" {
   enable   = true
   priority = 1
-  name     = "sabnzbd"
-  host     = "sabnzbd.download.svc.cluster.local"
-  url_base = "/sabnzbd/"
-  port     = 8080
-  api_key  = var.SABNZBD_API_KEY
+  name     = "NZBGet"
+  host     = "nzbget.download.svc.cluster.local"
+  port     = 80
   category = "misc"
 }

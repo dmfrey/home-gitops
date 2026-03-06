@@ -23,24 +23,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        # initContainers:
-        #   fix-permissions:
-        #     image:
-        #       repository: busybox
-        #       tag: stable
-
-        #     command: ["sh", "-c", "chown -R 1000:1000 /config/*"]
-
-        #     securityContext:
-        #       runAsNonRoot: false
-        #       readOnlyRootFilesystem: true
-        #       allowPrivilegeEscalation: true
-        #       runAsUser: 0
-        #       runAsGroup: 0
-        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
-
         containers:
-
           app:
             image:
               repository: ghcr.io/home-operations/prowlarr
@@ -52,21 +35,15 @@ spec:
               PROWLARR__APP__THEME: dark
               PROWLARR__AUTH__METHOD: External
               PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              PROWLARR__AUTH__APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: prowlarr-secret
+                    key: PROWLARR__AUTH__APIKEY
               PROWLARR__LOG__DBENABLED: "False"
-              PROWLARR__LOG_LEVEL: info
+              PROWLARR__LOG__LEVEL: info
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
-              # PROWLARR__AUTHENTICATION_METHOD: External
-              # PROWLARR__APPLICATION_URL: "https://prowlarr.dmfrey.com"
-              # PROWLARR__API_KEY:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: prowlarr-secret
-              #       key: PROWLARR_API_KEY
-
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
 
             probes:
               liveness: &probes
@@ -81,8 +58,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              # startup:
-              #   enabled: false
 
             resources:
               requests:
@@ -95,39 +70,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
 
-          # sidecars:
-          # exporter:
-
-          #   image:
-          #     repository: ghcr.io/onedr0p/exportarr
-          #     tag: v2.1.0
-
-          #   args:
-          #     - *app
-          #     - --enable-additional-metrics
-
-          #   env:
-          #     URL: "http://localhost"
-          #     CONFIG: "/config/config.xml"
-          #     PORT: &metricsPort 9710
-
-          #   resources:
-          #     requests:
-          #       cpu: 10m
-          #     limits:
-          #       memory: 128Mi
-
-          #   securityContext:
-          #     allowPrivilegeEscalation: false
-          #     readOnlyRootFilesystem: true
-          #     capabilities:
-          #       drop:
-          #         - ALL
-
     defaultPodOptions:
-      labels:
-        setGateway: "false"
-
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -140,12 +83,10 @@ spec:
         ports:
           http:
             port: *port
-            # primary: true
-          # metrics:
-          #   port: *metricsPort
 
     route:
       app:
+        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
@@ -155,16 +96,9 @@ spec:
           gethomepage.dev/widget.type: prowlarr
           gethomepage.dev/widget.url: http://prowlarr.download.svc.cluster.local:9696
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_TOKEN}}` }}"
-        hostnames:
-          - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-internal
             namespace: network
-        #     sectionName: https
-        # rules:
-        #   - backendRefs:
-        #       - name: *app
-        #         port: *port
 
     persistence:
       config:
@@ -182,3 +116,8 @@ spec:
 
       tmp:
         type: emptyDir
+        medium: Memory
+        advancedMounts:
+          prowlarr:
+            app:
+              - path: /tmp

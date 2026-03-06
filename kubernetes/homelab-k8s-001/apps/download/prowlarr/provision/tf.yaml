@@ -1,0 +1,33 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: oci-terraform-prowlarr
+spec:
+  interval: 1h
+  url: oci://ghcr.io/dmfrey/terraform/prowlarr
+  ref:
+    tag: main
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: prowlarr-provisioner
+
+spec:
+
+  interval: 1h
+  path: "./"
+
+  approvePlan: auto
+
+  sourceRef:
+    kind: OCIRepository
+    name: oci-terraform-prowlarr
+
+  writeOutputsToSecret:
+    name: prowlarr-tfstate
+
+  varsFrom:
+    - kind: Secret
+      name: prowlarr-secret
