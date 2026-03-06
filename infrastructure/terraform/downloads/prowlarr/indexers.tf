@@ -4,6 +4,7 @@ resource "prowlarr_tag" "cross_seed" {
 
 resource "prowlarr_indexer" "usenet_nzbplanet" {
   enable          = true
+  redirect        = true
   name            = "NzbPlanet"
   implementation  = "Newznab"
   config_contract = "NewznabSettings"
@@ -64,6 +65,10 @@ resource "prowlarr_indexer" "torrent_btetree" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "prowlarr_indexer" "torrent_eztv" {
@@ -86,6 +91,10 @@ resource "prowlarr_indexer" "torrent_eztv" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "prowlarr_indexer" "torrent_knaben" {
@@ -104,6 +113,10 @@ resource "prowlarr_indexer" "torrent_knaben" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "prowlarr_indexer" "torrent_limetorrents" {
@@ -138,6 +151,10 @@ resource "prowlarr_indexer" "torrent_limetorrents" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "prowlarr_indexer" "torrent_showrss" {
@@ -160,6 +177,10 @@ resource "prowlarr_indexer" "torrent_showrss" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "prowlarr_indexer" "torrent_thepiratebay" {
@@ -182,6 +203,10 @@ resource "prowlarr_indexer" "torrent_thepiratebay" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "prowlarr_indexer" "torrent_torrentdownload" {
@@ -208,6 +233,10 @@ resource "prowlarr_indexer" "torrent_torrentdownload" {
       number_value: "1"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "prowlarr_indexer" "torrent_uindex" {
@@ -230,4 +259,8 @@ resource "prowlarr_indexer" "torrent_uindex" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
