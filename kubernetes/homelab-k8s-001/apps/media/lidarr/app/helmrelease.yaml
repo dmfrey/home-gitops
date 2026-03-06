@@ -57,6 +57,32 @@ spec:
                   secretKeyRef:
                     name: lidarr-secret
                     key: LIDARR_API_KEY
+              LIDARR__POSTGRES_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: host
+              LIDARR__POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: port
+              LIDARR__POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: user
+              LIDARR__POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: password
+              LIDARR__POSTGRES_MAIN_DB:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: dbname
+              LIDARR__POSTGRES_LOG_DB: lidarr-log
 
             resources:
               requests:
