@@ -18,8 +18,16 @@ resource "lidarr_quality_profile" "lossless" {
     },
   ]
 
+  format_items = [
+    {
+      format = lidarr_custom_format.disc_image.id
+      name   = lidarr_custom_format.disc_image.name
+      score  = -10000
+    }
+  ]
+
   lifecycle {
-    ignore_changes = all
+    ignore_changes = [quality_groups]
   }
 }
 
@@ -65,7 +73,15 @@ resource "lidarr_quality_profile" "standard" {
     },
   ]
 
+  format_items = [
+    {
+      format = lidarr_custom_format.disc_image.id
+      name   = lidarr_custom_format.disc_image.name
+      score  = -10000
+    }
+  ]
+
   lifecycle {
-    ignore_changes = all
+    ignore_changes = [quality_groups]
   }
 }
