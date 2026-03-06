@@ -23,64 +23,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          postgres-config:
-            image:
-              repository: busybox
-              tag: latest
-            command:
-              - /bin/sh
-              - -c
-              - |
-                CONFIG=/config/config.xml
-                [ -f "$CONFIG" ] || exit 0
-                patch() {
-                  field="$1" val="$2"
-                  sed -i "s|<${field} />|<${field}>${val}</${field}>|g" "$CONFIG"
-                  sed -i "s|<${field}>[^<]*</${field}>|<${field}>${val}</${field}>|g" "$CONFIG"
-                }
-                patch PostgresHost     "$POSTGRES_HOST"
-                patch PostgresPort     "$POSTGRES_PORT"
-                patch PostgresUser     "$POSTGRES_USER"
-                patch PostgresPassword "$POSTGRES_PASSWORD"
-                patch PostgresMainDb   "$POSTGRES_MAIN_DB"
-                patch PostgresLogDb    "$POSTGRES_LOG_DB"
-            env:
-              POSTGRES_HOST:
-                valueFrom:
-                  secretKeyRef:
-                    name: lidarr-cnpg-app
-                    key: host
-              POSTGRES_PORT:
-                valueFrom:
-                  secretKeyRef:
-                    name: lidarr-cnpg-app
-                    key: port
-              POSTGRES_USER:
-                valueFrom:
-                  secretKeyRef:
-                    name: lidarr-cnpg-app
-                    key: user
-              POSTGRES_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: lidarr-cnpg-app
-                    key: password
-              POSTGRES_MAIN_DB:
-                valueFrom:
-                  secretKeyRef:
-                    name: lidarr-cnpg-app
-                    key: dbname
-              POSTGRES_LOG_DB: lidarr-log
-            securityContext:
-              runAsNonRoot: true
-              runAsUser: 1000
-              runAsGroup: 1000
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities:
-                drop: ["ALL"]
-
         containers:
           app:
             image:
@@ -99,6 +41,32 @@ spec:
                   secretKeyRef:
                     name: lidarr-secret
                     key: LIDARR_API_KEY
+              LIDARR__POSTGRES__HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: host
+              LIDARR__POSTGRES__PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: port
+              LIDARR__POSTGRES__USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: user
+              LIDARR__POSTGRES__PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: password
+              LIDARR__POSTGRES__MAINDB:
+                valueFrom:
+                  secretKeyRef:
+                    name: lidarr-cnpg-app
+                    key: dbname
+              LIDARR__POSTGRES__LOGDB: lidarr-log
 
             resources:
               requests:
