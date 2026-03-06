@@ -1,6 +1,7 @@
 resource "lidarr_download_client_qbittorrent" "qbittorrent" {
   name                       = "qBittorrent"
   enable                     = true
+  priority                   = 1
   host                       = "qbittorrent.download.svc.cluster.local"
   port                       = 80
   music_category             = "music"
