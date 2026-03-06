@@ -23,17 +23,17 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    initdb:
-      dataChecksums: true
-      database: lidarr
-      owner: lidarr
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
-    # recovery:
+    # initdb:
+    #   dataChecksums: true
     #   database: lidarr
     #   owner: lidarr
-    #   source: source
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
+      database: lidarr
+      owner: lidarr
+      source: source
 
   externalClusters:
     - name: source
