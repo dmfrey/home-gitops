@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/batch/cronjob_v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: disc-image-splitter
+spec:
+  # Run every 2 hours
+  schedule: "0 */2 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: Never
+
+          containers:
+            - name: splitter
+              image: python:3.12-slim
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -e
+                  apt-get update -qq && \
+                    apt-get install -y -qq --no-install-recommends ffmpeg gosu 2>&1 | tail -1
+                  # Drop from root to uid/gid 1000 (matching Lidarr) for all NFS writes
+                  exec gosu 1000:1000 python3 /scripts/splitter.py
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                limits:
+                  cpu: "2"
+                  memory: 1Gi
+              securityContext:
+                runAsUser: 0
+                runAsNonRoot: false
+              volumeMounts:
+                - name: script
+                  mountPath: /scripts
+                - name: media
+                  mountPath: /media
+
+          volumes:
+            - name: script
+              configMap:
+                name: disc-image-splitter-script
+                defaultMode: 0755
+            - name: media
+              nfs:
+                server: nas.internal
+                path: /media
