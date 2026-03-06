@@ -14,6 +14,16 @@ import {
 }
 
 import {
+  to = lidarr_media_management.settings
+  id = "1"
+}
+
+import {
+  to = lidarr_naming.naming
+  id = "1"
+}
+
+import {
   to = lidarr_tag.music
   id = "1"
 }
@@ -38,7 +48,3 @@ import {
   id = "4"
 }
 
-import {
-  to = lidarr_root_folder.music
-  id = "5"
-}
