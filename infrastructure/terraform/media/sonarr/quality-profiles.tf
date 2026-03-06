@@ -21,6 +21,10 @@ resource "sonarr_quality_profile" "hd_1080p" {
       qualities = [{ id = 7, name = "Bluray-1080p" }]
     },
   ]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "sonarr_quality_profile" "ultra_hd_2160p" {
