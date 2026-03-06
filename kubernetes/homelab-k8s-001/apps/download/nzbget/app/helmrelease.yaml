@@ -63,9 +63,6 @@ spec:
             "mac": "a6:3e:4f:09:e4:9c"
           }]
 
-      labels:
-        setGateway: "false"
-        
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -101,3 +98,8 @@ spec:
 
       tmp:
         type: emptyDir
+        medium: Memory
+        advancedMounts:
+          nzbget:
+            app:
+              - path: /tmp
