@@ -4,17 +4,7 @@ import {
 }
 
 import {
-  to = sonarr_remote_path_mapping.qbittorrent
-  id = "3"
-}
-
-import {
   to = sonarr_download_client_nzbget.nzbget
-  id = "4"
-}
-
-import {
-  to = sonarr_remote_path_mapping.nzbget
   id = "4"
 }
 

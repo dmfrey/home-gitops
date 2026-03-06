@@ -5,25 +5,16 @@ resource "sonarr_download_client_qbittorrent" "qbittorrent" {
   port                       = 80
   tv_category                = "series"
   remove_completed_downloads = true
-}
-
-resource "sonarr_remote_path_mapping" "qbittorrent" {
-  host        = sonarr_download_client_qbittorrent.qbittorrent.host
-  remote_path = "/media/downloads/qbittorrent/"
-  local_path  = "/media/downloads/qbittorrent/"
+  remove_failed_downloads    = true
 }
 
 resource "sonarr_download_client_nzbget" "nzbget" {
-  enable      = true
-  priority    = 1
-  name        = "NZBGet"
-  host        = "nzbget.download.svc.cluster.local"
-  port        = 80
-  tv_category = "Series"
-}
-
-resource "sonarr_remote_path_mapping" "nzbget" {
-  host        = sonarr_download_client_nzbget.nzbget.host
-  remote_path = "/media/downloads/nzbget/completed/Series/"
-  local_path  = "/media/downloads/nzbget/completed/Series/"
+  enable                     = true
+  priority                   = 1
+  name                       = "NZBGet"
+  host                       = "nzbget.download.svc.cluster.local"
+  port                       = 80
+  tv_category                = "Series"
+  remove_completed_downloads = true
+  remove_failed_downloads    = true
 }

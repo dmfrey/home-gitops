@@ -8,15 +8,6 @@ import {
   id = "4"
 }
 
-import {
-  to = radarr_remote_path_mapping.qbittorrent
-  id = "4"
-}
-
-import {
-  to = radarr_remote_path_mapping.nzbget
-  id = "3"
-}
 
 import {
   to = radarr_root_folder.movies
