@@ -39,6 +39,10 @@ resource "prowlarr_indexer" "usenet_nzbplanet" {
       number_value: "0"
     }
   ]
+
+  lifecycle {
+    ignore_changes = [fields]
+  }
 }
 
 resource "prowlarr_indexer" "torrent_btetree" {
