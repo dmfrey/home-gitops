@@ -26,7 +26,7 @@ spec:
                 - |
                   set -e
                   apt-get update -qq && \
-                    apt-get install -y -qq --no-install-recommends ffmpeg gosu 2>&1 | tail -1
+                    apt-get install -y -qq --no-install-recommends shntool cuetools flac gosu 2>&1 | tail -1
                   # Drop from root to uid/gid 1000 (matching Lidarr) for all NFS writes
                   exec gosu 1000:1000 python3 /scripts/splitter.py
               resources:
