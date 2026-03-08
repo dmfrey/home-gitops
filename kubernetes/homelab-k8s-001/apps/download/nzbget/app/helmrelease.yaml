@@ -18,6 +18,28 @@ spec:
     controllers:
       nzbget:
 
+        initContainers:
+          install-tools:
+            image:
+              repository: alpine
+              tag: "3.23"
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                set -e
+                apk add --no-cache shntool flac cuetools
+                mkdir -p /tools/bin /tools/lib
+                cp /usr/bin/shnsplit /usr/bin/cueprint /usr/bin/metaflac /tools/bin/
+                cp /usr/bin/cuetag.sh /tools/bin/
+                # Copy all shared library dependencies (skip the musl loader itself)
+                for bin in /usr/bin/shnsplit /usr/bin/cueprint /usr/bin/metaflac; do
+                  ldd "$bin" | grep -oE '/[^ ]+\.so[^ ]*' | grep -v '^/lib/ld' \
+                    | xargs -I{} cp -n {} /tools/lib/ 2>/dev/null || true
+                done
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
+
         containers:
           app:
             image:
@@ -27,6 +49,8 @@ spec:
             env:
               NZBGET__PORT: &port 80
               TZ: America/New_York
+              PATH: /tools/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              LD_LIBRARY_PATH: /tools/lib
 
             probes:
               liveness: &probes
@@ -96,10 +120,16 @@ spec:
           - path: /media/downloads/nzbget
             subPath: downloads/nzbget
 
-      tmp:
+      tools:
         type: emptyDir
-        medium: Memory
         advancedMounts:
           nzbget:
+            install-tools:
+              - path: /tools
             app:
-              - path: /tmp
+              - path: /tools
+
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
