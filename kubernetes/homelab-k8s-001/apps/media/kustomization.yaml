@@ -11,7 +11,6 @@ components:
 resources:
   - ./namespace.yaml
   - ./bazarr/ks.yaml
-  - ./disc-image-splitter/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyplex-watched/ks.yaml
   - ./lidarr/ks.yaml
