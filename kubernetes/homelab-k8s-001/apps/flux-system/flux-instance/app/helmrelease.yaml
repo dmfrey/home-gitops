@@ -99,7 +99,7 @@ spec:
               kind: Deployment
               name: source-controller
 
-          - # Flux near OOM detection for Helm
+          - # Flux near OOM detection for Helm + history limit to prevent etcd fragmentation
             patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
@@ -110,6 +110,9 @@ spec:
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --oom-watch-interval=500ms
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --history-max=5
             target:
               kind: Deployment
               name: helm-controller
