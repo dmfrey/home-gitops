@@ -3,9 +3,9 @@
 NZBGet Post-Processing Extension: Disc Image Splitter
 
 Runs after a successful download. Scans NZBPP_DIRECTORY for a FLAC+CUE
-disc image, splits with shnsplit, applies CUE metadata with cuetag.sh,
-and places the individual tracks back into NZBPP_DIRECTORY using Lidarr's
-naming conventions so Lidarr picks them up in its normal completed-download
+disc image, splits with ffmpeg, applies tags with metaflac, and places
+the individual tracks back into NZBPP_DIRECTORY using Lidarr's naming
+conventions so Lidarr picks them up in its normal completed-download
 import flow:
 
   Sub-folder    : {Artist Name}/{Album Title} ({Release Year})/
@@ -17,11 +17,11 @@ multi-track music releases — only acts when exactly one FLAC + CUE are found.
 
 import os
 import re
-import shutil
 import subprocess
 import sys
-import tempfile
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import List, Optional
 
 # NZBGet environment variables
 NZBPP_DIRECTORY   = os.environ.get("NZBPP_DIRECTORY", "")
@@ -40,23 +40,95 @@ POSTPROCESS_ERROR   = 94
 POSTPROCESS_NONE    = 95  # not applicable — does not affect download status
 
 
-def sanitize(name):
+# ---------------------------------------------------------------------------
+# CUE sheet parser
+# ---------------------------------------------------------------------------
+
+@dataclass
+class CueTrack:
+    number: int
+    title: str = ""
+    performer: str = ""
+    index01: Optional[float] = None  # seconds from start of disc
+
+
+@dataclass
+class CueSheet:
+    performer: str = ""
+    title: str = ""
+    tracks: List[CueTrack] = field(default_factory=list)
+
+
+def _cue_timestamp_to_seconds(mm: int, ss: int, ff: int) -> float:
+    """Convert CUE MM:SS:FF (75 frames/sec) to fractional seconds."""
+    return mm * 60.0 + ss + ff / 75.0
+
+
+def parse_cue(cue_path: Path) -> CueSheet:
+    """Parse a CUE sheet file and return structured disc/track metadata."""
+    sheet = CueSheet()
+    current: Optional[CueTrack] = None
+
+    for encoding in ("utf-8-sig", "utf-8", "latin-1"):
+        try:
+            lines = cue_path.read_text(encoding=encoding).splitlines()
+            break
+        except (UnicodeDecodeError, LookupError):
+            continue
+    else:
+        return sheet
+
+    for line in lines:
+        line = line.strip()
+
+        m = re.match(r'PERFORMER\s+"(.*)"', line, re.IGNORECASE)
+        if m:
+            if current is not None:
+                current.performer = m.group(1)
+            else:
+                sheet.performer = m.group(1)
+            continue
+
+        m = re.match(r'TITLE\s+"(.*)"', line, re.IGNORECASE)
+        if m:
+            if current is not None:
+                current.title = m.group(1)
+            else:
+                sheet.title = m.group(1)
+            continue
+
+        m = re.match(r'TRACK\s+(\d+)\s+AUDIO', line, re.IGNORECASE)
+        if m:
+            if current is not None:
+                sheet.tracks.append(current)
+            current = CueTrack(number=int(m.group(1)))
+            continue
+
+        # Only INDEX 01 — this is the playback start (INDEX 00 is pre-gap)
+        m = re.match(r'INDEX\s+01\s+(\d+):(\d+):(\d+)', line, re.IGNORECASE)
+        if m and current is not None:
+            current.index01 = _cue_timestamp_to_seconds(
+                int(m.group(1)), int(m.group(2)), int(m.group(3))
+            )
+            continue
+
+    if current is not None:
+        sheet.tracks.append(current)
+
+    # Drop any tracks without a valid INDEX 01
+    sheet.tracks = [t for t in sheet.tracks if t.index01 is not None]
+    return sheet
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def sanitize(name: str) -> str:
     return ILLEGAL_CHARS.sub("_", name).strip()
 
 
-def cueprint(cue_path, fmt):
-    """Extract disc-level metadata from a CUE file using cueprint."""
-    try:
-        result = subprocess.run(
-            ["cueprint", "-d", fmt, str(cue_path)],
-            capture_output=True, text=True, timeout=10,
-        )
-        return result.stdout.strip()
-    except Exception:
-        return ""
-
-
-def get_flac_year(flac_path):
+def get_flac_year(flac_path: Path) -> str:
     """Extract the DATE tag from a FLAC file using metaflac."""
     try:
         result = subprocess.run(
@@ -71,7 +143,7 @@ def get_flac_year(flac_path):
     return ""
 
 
-def extract_year_from_path(path):
+def extract_year_from_path(path: Path) -> str:
     """Find a 4-digit year in the directory or parent directory names."""
     for part in reversed(path.parts):
         m = re.search(r"\b(19|20)\d{2}\b", part)
@@ -80,14 +152,23 @@ def extract_year_from_path(path):
     return ""
 
 
-def split_disc_image(flac_path, cue_path, output_base):
-    # --- Metadata ---
-    performer   = cueprint(cue_path, "%P") or flac_path.parent.name
-    album_title = cueprint(cue_path, "%T") or flac_path.stem
+# ---------------------------------------------------------------------------
+# Splitting
+# ---------------------------------------------------------------------------
+
+def split_disc_image(flac_path: Path, cue_path: Path, output_base: Path) -> bool:
+    sheet = parse_cue(cue_path)
+
+    performer   = sheet.performer or flac_path.parent.name
+    album_title = sheet.title or flac_path.stem
     year        = get_flac_year(flac_path) or extract_year_from_path(flac_path)
 
     if not performer or not album_title:
         print("  Could not determine performer/album from CUE")
+        return False
+
+    if not sheet.tracks:
+        print("  No tracks with INDEX 01 found in CUE file")
         return False
 
     album_dir_name = (
@@ -99,72 +180,66 @@ def split_disc_image(flac_path, cue_path, output_base):
         print("  Output already exists — skipping")
         return True
 
-    print(f"  Artist : {performer}")
-    print(f"  Album  : {album_title}" + (f" ({year})" if year else ""))
-    print(f"  Output : {out_dir}")
+    print(f"  Artist  : {performer}")
+    print(f"  Album   : {album_title}" + (f" ({year})" if year else ""))
+    print(f"  Tracks  : {len(sheet.tracks)}")
+    print(f"  Output  : {out_dir}")
 
-    # --- Split with shnsplit into a temp dir ---
-    with tempfile.TemporaryDirectory() as tmp:
-        tmp_path = Path(tmp)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    artist_san = sanitize(performer)
+    album_san  = sanitize(album_title)
+    moved = 0
 
-        result = subprocess.run(
-            [
-                "shnsplit",
-                "-f", str(cue_path),
-                "-t", "%n - %t",
-                "-o", "flac",
-                "-d", tmp,
-                str(flac_path),
-            ],
-            capture_output=True, text=True, timeout=600,
-        )
+    for i, track in enumerate(sheet.tracks):
+        track_num   = str(track.number).zfill(2)
+        track_title = sanitize(track.title or f"Track {track.number}")
+        out_file    = out_dir / f"{artist_san} - {album_san} - {track_num} - {track_title}.flac"
+
+        # Build ffmpeg split command.
+        # -ss / -t as output options give sample-accurate seeking for FLAC.
+        # -c:a flac re-encodes to ensure clean track boundaries.
+        cmd = [
+            "ffmpeg", "-y", "-loglevel", "error",
+            "-i", str(flac_path),
+            "-ss", f"{track.index01:.6f}",
+        ]
+        if i + 1 < len(sheet.tracks):
+            duration = sheet.tracks[i + 1].index01 - track.index01
+            cmd += ["-t", f"{duration:.6f}"]
+        cmd += ["-c:a", "flac", str(out_file)]
+
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
         if result.returncode != 0:
-            print(f"  ERROR shnsplit:\n{result.stderr[-500:]}")
-            return False
+            print(f"  ERROR ffmpeg track {track_num}: {result.stderr[-400:]}")
+            continue
 
-        split_files = sorted(tmp_path.glob("*.flac"))
-        if not split_files:
-            print("  ERROR: shnsplit produced no output files")
-            return False
+        # Apply FLAC tags with metaflac
+        tags = {
+            "TITLE":       track.title or f"Track {track.number}",
+            "ARTIST":      track.performer or performer,
+            "ALBUM":       album_title,
+            "TRACKNUMBER": str(track.number),
+        }
+        if year:
+            tags["DATE"] = year
 
-        print(f"  Split into {len(split_files)} tracks")
-
-        # --- Tag with cuetag.sh ---
-        tag_result = subprocess.run(
-            ["cuetag.sh", str(cue_path)] + [str(f) for f in split_files],
-            capture_output=True, text=True, timeout=120,
+        tag_args = [f"--set-tag={k}={v}" for k, v in tags.items()]
+        subprocess.run(
+            ["metaflac", "--remove-all-tags"] + tag_args + [str(out_file)],
+            capture_output=True, timeout=30,
         )
-        if tag_result.returncode != 0:
-            print(f"  WARNING cuetag.sh: {tag_result.stderr[-200:]}")
 
-        # --- Rename to Lidarr format and move to final output dir ---
-        out_dir.mkdir(parents=True, exist_ok=True)
-        artist_san = sanitize(performer)
-        album_san  = sanitize(album_title)
-        moved = 0
+        moved += 1
 
-        for f in split_files:
-            m = re.match(r"^(\d+)\s*-\s*(.*)", f.stem)
-            if m:
-                track_num   = m.group(1).zfill(2)
-                track_title = sanitize(m.group(2).strip())
-            else:
-                track_num   = "00"
-                track_title = sanitize(f.stem)
-
-            # Drop shnsplit pregap track (track 00 / silence before track 1)
-            if track_num == "00":
-                continue
-
-            new_name = f"{artist_san} - {album_san} - {track_num} - {track_title}.flac"
-            shutil.move(str(f), str(out_dir / new_name))
-            moved += 1
-
-        print(f"  Staged {moved} tracks to {out_dir}")
-        return moved > 0
+    print(f"  Staged {moved} tracks to {out_dir}")
+    return moved > 0
 
 
-def find_disc_images(directory):
+# ---------------------------------------------------------------------------
+# Discovery
+# ---------------------------------------------------------------------------
+
+def find_disc_images(directory: str):
     """
     Recursively find directories with exactly one FLAC + at least one CUE.
     Applies size and filename heuristics to exclude partial downloads.
@@ -208,6 +283,10 @@ def find_disc_images(directory):
     return results
 
 
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
 def main():
     if NZBPP_TOTALSTATUS != "SUCCESS":
         sys.exit(POSTPROCESS_NONE)
@@ -242,7 +321,7 @@ def main():
             else:
                 failed += 1
         except subprocess.TimeoutExpired:
-            print(f"  ERROR: shnsplit timed out on {flac_path.name}")
+            print(f"  ERROR: ffmpeg timed out on {flac_path.name}")
             failed += 1
         except Exception as exc:
             print(f"  ERROR: {exc}")

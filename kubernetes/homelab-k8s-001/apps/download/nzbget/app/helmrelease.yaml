@@ -29,12 +29,11 @@ spec:
                 set -e
                 echo "https://dl-cdn.alpinelinux.org/alpine/v3.23/community" >> /etc/apk/repositories
                 apk update -q
-                apk add --no-cache shntool flac cuetools
+                apk add --no-cache ffmpeg flac
                 mkdir -p /tools/bin /tools/lib
-                cp /usr/bin/shnsplit /usr/bin/cueprint /usr/bin/metaflac /tools/bin/
-                cp /usr/bin/cuetag.sh /tools/bin/
+                cp /usr/bin/ffmpeg /usr/bin/metaflac /tools/bin/
                 # Copy all shared library dependencies (skip the musl loader itself)
-                for bin in /usr/bin/shnsplit /usr/bin/cueprint /usr/bin/metaflac; do
+                for bin in /usr/bin/ffmpeg /usr/bin/metaflac; do
                   ldd "$bin" | grep -oE '/[^ ]+\.so[^ ]*' | grep -v '^/lib/ld' \
                     | xargs -I{} cp -n {} /tools/lib/ 2>/dev/null || true
                 done

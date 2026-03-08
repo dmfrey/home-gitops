@@ -15,7 +15,7 @@
     "Lidarr picks them up automatically via its normal completed-download import flow.",
     "Does nothing for movies, TV shows, or normal multi-track music releases.",
     "",
-    "Requires: shntool, cuetools, flac (installed via the NZBGet pod init container)."
+    "Requires: ffmpeg, flac/metaflac (installed via the NZBGet pod init container)."
   ],
   "options": []
 }
