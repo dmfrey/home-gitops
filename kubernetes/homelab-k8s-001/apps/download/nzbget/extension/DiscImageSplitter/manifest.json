@@ -1,21 +1,25 @@
 {
   "main": "main.py",
   "name": "DiscImageSplitter",
-  "displayName": "Disc Image Splitter",
+  "homepage": "",
   "kind": "POST-PROCESSING",
+  "displayName": "Disc Image Splitter",
   "version": "1.0",
-  "nzbgetMinVersion": "21",
   "author": "dmfrey",
   "license": "MIT",
   "about": "Splits FLAC+CUE disc image downloads into individual tracks for Lidarr import",
+  "queueEvents": "",
+  "requirements": [
+    "ffmpeg and metaflac must be available in PATH (provided by the NZBGet pod init container)."
+  ],
   "description": [
     "Detects single-file FLAC+CUE disc images in the completed download directory,",
-    "splits them with shnsplit, applies tags via cuetag.sh, and places the individual",
+    "splits them with ffmpeg, applies tags with metaflac, and places the individual",
     "tracks back into the same completed-download folder using Lidarr naming conventions.",
     "Lidarr picks them up automatically via its normal completed-download import flow.",
-    "Does nothing for movies, TV shows, or normal multi-track music releases.",
-    "",
-    "Requires: ffmpeg, flac/metaflac (installed via the NZBGet pod init container)."
+    "Does nothing for movies, TV shows, or normal multi-track music releases."
   ],
-  "options": []
+  "options": [],
+  "commands": [],
+  "taskTime": ""
 }
