@@ -27,7 +27,7 @@ resource "lidarr_quality_profile" "lossless" {
   ]
 
   lifecycle {
-    ignore_changes = [quality_groups]
+    ignore_changes = [quality_groups, format_items]
   }
 }
 
@@ -82,6 +82,6 @@ resource "lidarr_quality_profile" "standard" {
   ]
 
   lifecycle {
-    ignore_changes = [quality_groups]
+    ignore_changes = [quality_groups, format_items]
   }
 }
