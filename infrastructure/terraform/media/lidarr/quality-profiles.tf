@@ -18,14 +18,6 @@ resource "lidarr_quality_profile" "lossless" {
     },
   ]
 
-  format_items = [
-    {
-      format = lidarr_custom_format.disc_image.id
-      name   = lidarr_custom_format.disc_image.name
-      score  = 0
-    }
-  ]
-
   lifecycle {
     ignore_changes = [quality_groups, format_items]
   }
@@ -71,14 +63,6 @@ resource "lidarr_quality_profile" "standard" {
         { id = 14, name = "OGG Vorbis Q10" },
       ]
     },
-  ]
-
-  format_items = [
-    {
-      format = lidarr_custom_format.disc_image.id
-      name   = lidarr_custom_format.disc_image.name
-      score  = 0
-    }
   ]
 
   lifecycle {
