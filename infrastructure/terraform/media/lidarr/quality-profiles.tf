@@ -22,7 +22,7 @@ resource "lidarr_quality_profile" "lossless" {
     {
       format = lidarr_custom_format.disc_image.id
       name   = lidarr_custom_format.disc_image.name
-      score  = -10000
+      score  = 0
     }
   ]
 
@@ -77,7 +77,7 @@ resource "lidarr_quality_profile" "standard" {
     {
       format = lidarr_custom_format.disc_image.id
       name   = lidarr_custom_format.disc_image.name
-      score  = -10000
+      score  = 0
     }
   ]
 
