@@ -11,8 +11,9 @@ import flow:
   Sub-folder    : {Artist Name}/{Album Title} ({Release Year})/
   Track file    : {Artist Name} - {Album Title} - {track:00} - {Track Title}.flac
 
+Supports both single-file and multi-file (e.g. vinyl Side A/B) CUE sheets.
 Does nothing (exit POSTPROCESS_NONE) for movies, TV shows, or normal
-multi-track music releases — only acts when exactly one FLAC + CUE are found.
+multi-track music releases.
 """
 
 import os
@@ -49,14 +50,20 @@ class CueTrack:
     number: int
     title: str = ""
     performer: str = ""
-    index01: Optional[float] = None  # seconds from start of disc
+    index01: Optional[float] = None  # seconds from start of file
+
+
+@dataclass
+class CueFile:
+    filename: str
+    tracks: List[CueTrack] = field(default_factory=list)
 
 
 @dataclass
 class CueSheet:
     performer: str = ""
     title: str = ""
-    tracks: List[CueTrack] = field(default_factory=list)
+    files: List[CueFile] = field(default_factory=list)
 
 
 def _cue_timestamp_to_seconds(mm: int, ss: int, ff: int) -> float:
@@ -67,7 +74,8 @@ def _cue_timestamp_to_seconds(mm: int, ss: int, ff: int) -> float:
 def parse_cue(cue_path: Path) -> CueSheet:
     """Parse a CUE sheet file and return structured disc/track metadata."""
     sheet = CueSheet()
-    current: Optional[CueTrack] = None
+    current_file: Optional[CueFile] = None
+    current_track: Optional[CueTrack] = None
 
     for encoding in ("utf-8-sig", "utf-8", "latin-1"):
         try:
@@ -81,42 +89,52 @@ def parse_cue(cue_path: Path) -> CueSheet:
     for line in lines:
         line = line.strip()
 
+        m = re.match(r'FILE\s+"(.+?)"\s+\S+', line, re.IGNORECASE)
+        if m:
+            if current_track is not None and current_file is not None:
+                current_file.tracks.append(current_track)
+                current_track = None
+            current_file = CueFile(filename=m.group(1))
+            sheet.files.append(current_file)
+            continue
+
         m = re.match(r'PERFORMER\s+"(.*)"', line, re.IGNORECASE)
         if m:
-            if current is not None:
-                current.performer = m.group(1)
-            else:
+            if current_track is not None:
+                current_track.performer = m.group(1)
+            elif current_file is None:
                 sheet.performer = m.group(1)
             continue
 
         m = re.match(r'TITLE\s+"(.*)"', line, re.IGNORECASE)
         if m:
-            if current is not None:
-                current.title = m.group(1)
-            else:
+            if current_track is not None:
+                current_track.title = m.group(1)
+            elif current_file is None:
                 sheet.title = m.group(1)
             continue
 
         m = re.match(r'TRACK\s+(\d+)\s+AUDIO', line, re.IGNORECASE)
         if m:
-            if current is not None:
-                sheet.tracks.append(current)
-            current = CueTrack(number=int(m.group(1)))
+            if current_track is not None and current_file is not None:
+                current_file.tracks.append(current_track)
+            current_track = CueTrack(number=int(m.group(1)))
             continue
 
         # Only INDEX 01 — this is the playback start (INDEX 00 is pre-gap)
         m = re.match(r'INDEX\s+01\s+(\d+):(\d+):(\d+)', line, re.IGNORECASE)
-        if m and current is not None:
-            current.index01 = _cue_timestamp_to_seconds(
+        if m and current_track is not None:
+            current_track.index01 = _cue_timestamp_to_seconds(
                 int(m.group(1)), int(m.group(2)), int(m.group(3))
             )
             continue
 
-    if current is not None:
-        sheet.tracks.append(current)
+    if current_track is not None and current_file is not None:
+        current_file.tracks.append(current_track)
 
-    # Drop any tracks without a valid INDEX 01
-    sheet.tracks = [t for t in sheet.tracks if t.index01 is not None]
+    for cue_file in sheet.files:
+        cue_file.tracks = [t for t in cue_file.tracks if t.index01 is not None]
+
     return sheet
 
 
@@ -156,55 +174,40 @@ def extract_year_from_path(path: Path) -> str:
 # Splitting
 # ---------------------------------------------------------------------------
 
-def split_disc_image(flac_path: Path, cue_path: Path, output_base: Path) -> bool:
-    sheet = parse_cue(cue_path)
+def split_cue_file(
+    cue_file: CueFile,
+    dir_path: Path,
+    performer: str,
+    album_title: str,
+    year: str,
+    out_dir: Path,
+) -> int:
+    flac_path = dir_path / cue_file.filename
+    if not flac_path.exists():
+        flacs = list(dir_path.glob("*.flac"))
+        stem = Path(cue_file.filename).stem.lower()
+        flac_path = next((f for f in flacs if f.stem.lower() == stem), None)
+        if not flac_path:
+            print(f"  WARNING: FLAC not found for FILE entry: {cue_file.filename}")
+            return 0
 
-    performer   = sheet.performer or flac_path.parent.name
-    album_title = sheet.title or flac_path.stem
-    year        = get_flac_year(flac_path) or extract_year_from_path(flac_path)
-
-    if not performer or not album_title:
-        print("  Could not determine performer/album from CUE")
-        return False
-
-    if not sheet.tracks:
-        print("  No tracks with INDEX 01 found in CUE file")
-        return False
-
-    album_dir_name = (
-        f"{sanitize(album_title)} ({year})" if year else sanitize(album_title)
-    )
-    out_dir = output_base / sanitize(performer) / album_dir_name
-
-    if out_dir.exists() and any(out_dir.glob("*.flac")):
-        print("  Output already exists — skipping")
-        return True
-
-    print(f"  Artist  : {performer}")
-    print(f"  Album   : {album_title}" + (f" ({year})" if year else ""))
-    print(f"  Tracks  : {len(sheet.tracks)}")
-    print(f"  Output  : {out_dir}")
-
-    out_dir.mkdir(parents=True, exist_ok=True)
     artist_san = sanitize(performer)
     album_san  = sanitize(album_title)
-    moved = 0
+    tracks     = cue_file.tracks
+    moved      = 0
 
-    for i, track in enumerate(sheet.tracks):
+    for i, track in enumerate(tracks):
         track_num   = str(track.number).zfill(2)
         track_title = sanitize(track.title or f"Track {track.number}")
         out_file    = out_dir / f"{artist_san} - {album_san} - {track_num} - {track_title}.flac"
 
-        # Build ffmpeg split command.
-        # -ss / -t as output options give sample-accurate seeking for FLAC.
-        # -c:a flac re-encodes to ensure clean track boundaries.
         cmd = [
             "ffmpeg", "-y", "-loglevel", "error",
             "-i", str(flac_path),
             "-ss", f"{track.index01:.6f}",
         ]
-        if i + 1 < len(sheet.tracks):
-            duration = sheet.tracks[i + 1].index01 - track.index01
+        if i + 1 < len(tracks):
+            duration = tracks[i + 1].index01 - track.index01
             cmd += ["-t", f"{duration:.6f}"]
         cmd += ["-c:a", "flac", str(out_file)]
 
@@ -213,7 +216,6 @@ def split_disc_image(flac_path: Path, cue_path: Path, output_base: Path) -> bool
             print(f"  ERROR ffmpeg track {track_num}: {result.stderr[-400:]}")
             continue
 
-        # Apply FLAC tags with metaflac
         tags = {
             "TITLE":       track.title or f"Track {track.number}",
             "ARTIST":      track.performer or performer,
@@ -231,6 +233,47 @@ def split_disc_image(flac_path: Path, cue_path: Path, output_base: Path) -> bool
 
         moved += 1
 
+    return moved
+
+
+def split_disc_image(flac_paths: List[Path], cue_path: Path, output_base: Path) -> bool:
+    sheet = parse_cue(cue_path)
+
+    performer   = sheet.performer or cue_path.parent.name
+    album_title = sheet.title or cue_path.stem
+    year        = get_flac_year(flac_paths[0]) or extract_year_from_path(cue_path)
+
+    if not performer or not album_title:
+        print("  Could not determine performer/album from CUE")
+        return False
+
+    all_tracks = [t for f in sheet.files for t in f.tracks]
+    if not all_tracks:
+        print("  No tracks with INDEX 01 found in CUE file")
+        return False
+
+    album_dir_name = (
+        f"{sanitize(album_title)} ({year})" if year else sanitize(album_title)
+    )
+    out_dir = output_base / sanitize(performer) / album_dir_name
+
+    if out_dir.exists() and any(out_dir.glob("*.flac")):
+        print("  Output already exists — skipping")
+        return True
+
+    print(f"  Artist  : {performer}")
+    print(f"  Album   : {album_title}" + (f" ({year})" if year else ""))
+    print(f"  Files   : {len(sheet.files)}")
+    print(f"  Tracks  : {len(all_tracks)}")
+    print(f"  Output  : {out_dir}")
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    dir_path = cue_path.parent
+    moved = 0
+
+    for cue_file in sheet.files:
+        moved += split_cue_file(cue_file, dir_path, performer, album_title, year, out_dir)
+
     print(f"  Staged {moved} tracks to {out_dir}")
     return moved > 0
 
@@ -241,8 +284,8 @@ def split_disc_image(flac_path: Path, cue_path: Path, output_base: Path) -> bool
 
 def find_disc_images(directory: str):
     """
-    Recursively find directories with exactly one FLAC + at least one CUE.
-    Applies size and filename heuristics to exclude partial downloads.
+    Recursively find directories containing a CUE sheet where all referenced
+    FLACs are present and none are individually named tracks.
     """
     results = []
     scan_path = Path(directory)
@@ -260,25 +303,41 @@ def find_disc_images(directory: str):
         flacs = [f for f in files if f.lower().endswith(".flac")]
         cues  = [f for f in files if f.lower().endswith(".cue")]
 
-        if len(flacs) == 1 and cues:
-            flac_name = flacs[0]
-            flac_path = root_path / flac_name
+        if not cues or not flacs:
+            continue
 
-            if TRACK_FILENAME_RE.match(flac_name):
+        # Skip if any FLAC looks like an individual track
+        if any(TRACK_FILENAME_RE.match(f) for f in flacs):
+            continue
+
+        cue_path = root_path / cues[0]
+
+        # Parse CUE to find referenced FLACs
+        sheet = parse_cue(cue_path)
+        if not sheet.files:
+            continue
+
+        referenced = [cf.filename for cf in sheet.files]
+        flac_paths = []
+        for ref in referenced:
+            p = root_path / ref
+            if not p.exists():
+                stem = Path(ref).stem.lower()
+                p = next((root_path / f for f in flacs if Path(f).stem.lower() == stem), None)
+            if p and p.exists():
+                flac_paths.append(p)
+
+        if len(flac_paths) != len(referenced):
+            continue
+
+        # All referenced FLACs must meet minimum size
+        try:
+            if not all(p.stat().st_size >= MIN_DISC_IMAGE_BYTES for p in flac_paths):
                 continue
+        except OSError:
+            continue
 
-            try:
-                if flac_path.stat().st_size < MIN_DISC_IMAGE_BYTES:
-                    continue
-            except OSError:
-                continue
-
-            flac_stem   = Path(flac_name).stem.lower()
-            matched_cue = next(
-                (c for c in cues if Path(c).stem.lower() == flac_stem),
-                cues[0],
-            )
-            results.append((root_path, flac_path, root_path / matched_cue))
+        results.append((root_path, flac_paths, cue_path))
 
     return results
 
@@ -303,17 +362,16 @@ def main():
 
     processed = failed = 0
 
-    for dir_path, flac_path, cue_path in disc_images:
+    for dir_path, flac_paths, cue_path in disc_images:
         print(f"\nFound: {dir_path.name}")
-        print(f"  FLAC: {flac_path.name}")
+        for fp in flac_paths:
+            print(f"  FLAC: {fp.name}")
         print(f"  CUE : {cue_path.name}")
 
-        # Split tracks back into the same completed-download directory so
-        # Lidarr picks them up in its normal post-download import flow.
         output_base = dir_path
 
         try:
-            success = split_disc_image(flac_path, cue_path, output_base)
+            success = split_disc_image(flac_paths, cue_path, output_base)
             if success:
                 (dir_path / PROCESSED_MARKER).touch()
                 print("  Marked as processed.")
@@ -321,7 +379,7 @@ def main():
             else:
                 failed += 1
         except subprocess.TimeoutExpired:
-            print(f"  ERROR: ffmpeg timed out on {flac_path.name}")
+            print(f"  ERROR: ffmpeg timed out")
             failed += 1
         except Exception as exc:
             print(f"  ERROR: {exc}")
