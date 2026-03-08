@@ -21,6 +21,28 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
+        initContainers:
+          install-tools:
+            image:
+              repository: alpine
+              tag: "3.23"
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                set -e
+                echo "https://dl-cdn.alpinelinux.org/alpine/v3.23/community" >> /etc/apk/repositories
+                apk update -q
+                apk add --no-cache ffmpeg flac
+                mkdir -p /tools/bin /tools/lib
+                cp /usr/bin/ffmpeg /usr/bin/metaflac /tools/bin/
+                for bin in /usr/bin/ffmpeg /usr/bin/metaflac; do
+                  ldd "$bin" | grep -oE '/[^ ]+\.so[^ ]*' | grep -v '^/lib/ld' \
+                    | xargs -I{} cp -n {} /tools/lib/ 2>/dev/null || true
+                done
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
+
         containers:
           app:
             image:
@@ -31,6 +53,8 @@ spec:
               TZ: America/New_York
               QBT_WEBUI_PORT: &port 80
               QBT_TORRENTING_PORT: 50413
+              PATH: /tools/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              LD_LIBRARY_PATH: /tools/lib
 
             probes:
               liveness: &probes
@@ -135,6 +159,22 @@ spec:
         globalMounts:
           - path: /media/downloads/qbittorrent
             subPath: downloads/qbittorrent
+
+      tools:
+        type: emptyDir
+        advancedMounts:
+          qbittorrent:
+            install-tools:
+              - path: /tools
+            app:
+              - path: /tools
+
+      scripts:
+        type: configMap
+        name: qbittorrent-scripts
+        defaultMode: 0555
+        globalMounts:
+          - path: /config/scripts
 
       tmp:
         type: emptyDir
