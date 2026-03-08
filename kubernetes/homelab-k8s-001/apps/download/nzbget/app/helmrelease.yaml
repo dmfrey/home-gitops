@@ -27,6 +27,8 @@ spec:
             args:
               - |
                 set -e
+                echo "https://dl-cdn.alpinelinux.org/alpine/v3.23/community" >> /etc/apk/repositories
+                apk update -q
                 apk add --no-cache shntool flac cuetools
                 mkdir -p /tools/bin /tools/lib
                 cp /usr/bin/shnsplit /usr/bin/cueprint /usr/bin/metaflac /tools/bin/
