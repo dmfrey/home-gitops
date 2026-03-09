@@ -19,6 +19,9 @@ spec:
 
       home-projects:
 
+        annotations:
+          reloader.stakater.com/auto: "true"
+
         containers:
           app:
             image:
@@ -70,7 +73,7 @@ spec:
           - path: /etc/nginx/conf.d/default.conf
             subPath: default.conf
             readOnly: true
-            
+
       # Landing page → /usr/share/nginx/html/index.html
       index:
         type: configMap
