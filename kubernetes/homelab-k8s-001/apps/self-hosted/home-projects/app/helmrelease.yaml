@@ -78,7 +78,7 @@ spec:
         name: bedroom-suite-viewer-html
         globalMounts:
           - path: /usr/share/nginx/html/bedroom-suite-viewer.html
-            subPath: bedroom-suite-viewer-v2.html
+            subPath: bedroom-suite-viewer.html
             readOnly: true
 
       # Bedroom suite sheet layout → /usr/share/nginx/html/bedroom-suite-sheet-layout.html
