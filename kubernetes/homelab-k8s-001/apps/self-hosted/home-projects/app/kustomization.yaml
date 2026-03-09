@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1beta1.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./helmrelease.yaml
+  - ./ocirepository.yaml
+
+configMapGenerator:
+  - name: index-html
+    files:
+      - index.html=./resources/index.html
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+  - name: bedroom-suite-viewer-v2-html
+    files:
+      - bedroom-suite-viewer-v2.html=./resources/bedroom-suite-viewer-v2.html
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

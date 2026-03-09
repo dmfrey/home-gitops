@@ -1,0 +1,82 @@
+---
+# ── HelmRelease ──────────────────────────────────────────────────────────────
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: home-projects
+
+spec:
+
+  chartRef:
+    kind: OCIRepository
+    name: home-projects
+
+  interval: 1h
+
+  values:
+
+    controllers:
+
+      home-projects:
+
+        containers:
+          app:
+            image:
+              repository: nginx
+              tag: stable-alpine
+              pullPolicy: IfNotPresent
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 80
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+              readiness: *probes
+
+            resources:
+              requests:
+                cpu: 5m
+                memory: 16Mi
+              limits:
+                cpu: 50m
+                memory: 64Mi
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+            protocol: HTTP
+
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+
+    persistence:
+
+      # Landing page → /usr/share/nginx/html/index.html
+      index:
+        type: configMap
+        name: index-html
+        globalMounts:
+          - path: /usr/share/nginx/html/index.html
+            subPath: index.html
+            readOnly: true
+
+      # Bedroom suite viewer → /usr/share/nginx/html/bedroom-suite-viewer-v2.html
+      bedroom-suite:
+        type: configMap
+        name: bedroom-suite-viewer-v2-html
+        globalMounts:
+          - path: /usr/share/nginx/html/bedroom-suite-viewer-v2.html
+            subPath: bedroom-suite-viewer-v2.html
+            readOnly: true

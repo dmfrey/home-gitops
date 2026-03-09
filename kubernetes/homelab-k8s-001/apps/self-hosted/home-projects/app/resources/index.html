@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workshop Projects</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@200;300;400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --oak: #c8a96e;
+    --oak-light: #e2c99a;
+    --oak-dark: #8a6830;
+    --bg: #1a1714;
+    --surface: #211d19;
+    --surface2: #272118;
+    --text: #e8ddd0;
+    --muted: #7a6e64;
+    --border: rgba(200,169,110,0.15);
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+  }
+
+  /* ── Background texture ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(200,169,110,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(140,100,40,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ── Header ── */
+  header {
+    padding: 48px 64px 36px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+
+  .wordmark { display: flex; flex-direction: column; gap: 4px; }
+  .wordmark-top { font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); }
+  .wordmark h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 2.4rem; letter-spacing: 0.06em; color: var(--oak-light); line-height: 1; }
+  .wordmark-sub { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+  .header-meta { text-align: right; }
+  .header-meta p { font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); line-height: 1.9; }
+
+  /* ── Main ── */
+  main { flex: 1; padding: 56px 64px; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+  .section-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Project grid ── */
+  .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2px; margin-bottom: 64px; }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--oak), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card:hover { background: var(--surface2); border-color: rgba(200,169,110,0.3); }
+  .project-card:hover::before { opacity: 1; }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .card-icon {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(200,169,110,0.25);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: rgba(200,169,110,0.06);
+  }
+  .card-icon svg { width: 20px; height: 20px; stroke: var(--oak); fill: none; stroke-width: 1.5; }
+  .card-status { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+  .status-active   { background: rgba(200,169,110,0.12); border: 1px solid rgba(200,169,110,0.25); color: var(--oak); }
+  .status-planned  { background: rgba(122,110,100,0.12); border: 1px solid rgba(122,110,100,0.25); color: var(--muted); }
+  .status-complete { background: rgba(80,140,80,0.1);    border: 1px solid rgba(80,140,80,0.25);    color: #90c890; }
+
+  .card-title { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 1.35rem; letter-spacing: 0.04em; color: var(--oak-light); line-height: 1.2; }
+  .card-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.75; }
+
+  .card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(200,169,110,0.08); }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .meta-value { font-size: 0.7rem; color: var(--text); }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 24px; right: 24px;
+    width: 28px; height: 28px;
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.2s;
+  }
+  .card-arrow svg { width: 12px; height: 12px; stroke: var(--oak); fill: none; stroke-width: 2; }
+  .project-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+  /* Placeholder card */
+  .project-card.placeholder {
+    border-style: dashed;
+    border-color: rgba(200,169,110,0.1);
+    background: transparent;
+    cursor: default;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 200px;
+    gap: 10px;
+  }
+  .project-card.placeholder:hover { background: rgba(200,169,110,0.02); border-color: rgba(200,169,110,0.15); }
+  .placeholder-plus { font-size: 1.4rem; color: rgba(200,169,110,0.2); font-weight: 200; line-height: 1; }
+  .placeholder-text { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(200,169,110,0.25); }
+
+  /* ── Footer ── */
+  footer {
+    padding: 24px 64px;
+    border-top: 1px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  footer p { font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    header, main, footer { padding-left: 24px; padding-right: 24px; }
+    header { padding-top: 32px; }
+    .wordmark h1 { font-size: 1.8rem; }
+    .projects { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="header-inner">
+      <div class="wordmark">
+        <span class="wordmark-top">Workshop</span>
+        <h1>Project Index</h1>
+        <span class="wordmark-sub">Design &amp; Build Reference</span>
+      </div>
+      <div class="header-meta">
+        <p>White Oak · Walnut · Hardwood<br>Festool Domino Joinery<br>Salice Hardware</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-label">Active &amp; Planned Projects</div>
+
+    <div class="projects">
+
+      <!-- ── Bedroom Suite ── -->
+      <a href="bedroom-suite-viewer-v2.html" class="project-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <!-- Dresser icon -->
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="16" rx="1"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <circle cx="12" cy="8" r="1" fill="var(--oak)"/>
+              <circle cx="12" cy="16" r="1" fill="var(--oak)"/>
+            </svg>
+          </div>
+          <span class="card-status status-active">In Progress</span>
+        </div>
+        <div class="card-title">Master Bedroom Suite</div>
+        <div class="card-desc">9-piece white oak suite — nightstands, low dressers, tall dresser, bench, and plant stand. Festool Domino joinery throughout, Salice Progressa+ undermount slides.</div>
+        <div class="card-meta">
+          <div class="meta-item"><span class="meta-label">Pieces</span><span class="meta-value">9</span></div>
+          <div class="meta-item"><span class="meta-label">Material</span><span class="meta-value">White Oak</span></div>
+          <div class="meta-item"><span class="meta-label">Joinery</span><span class="meta-value">Domino</span></div>
+          <div class="meta-item"><span class="meta-label">Hardware</span><span class="meta-value">Salice</span></div>
+        </div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+        </div>
+      </a>
+
+      <!-- ── Placeholder slots ── -->
+      <div class="project-card placeholder">
+        <div class="placeholder-plus">+</div>
+        <div class="placeholder-text">Next Project</div>
+      </div>
+
+      <div class="project-card placeholder">
+        <div class="placeholder-plus">+</div>
+        <div class="placeholder-text">Next Project</div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Workshop Project Index &nbsp;·&nbsp; Built with Three.js &nbsp;·&nbsp; White Oak Bedroom Suite v1.0</p>
+  </footer>
+
+</div>
+</body>
+</html>
