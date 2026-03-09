@@ -130,12 +130,12 @@
   .meta-value { font-size: 0.7rem; color: var(--text); }
 
   .card-arrow {
-    position: absolute;
-    bottom: 24px; right: 24px;
     width: 28px; height: 28px;
     border: 1px solid rgba(200,169,110,0.2);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-left: auto;
     opacity: 0;
     transform: translateX(-6px);
     transition: all 0.2s;
@@ -245,6 +245,9 @@
             </svg>
           </div>
           <span class="card-status status-active">In Progress</span>
+          <div class="card-arrow">
+            <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+          </div>
         </div>
         <div class="card-title">Master Bedroom Suite</div>
         <div class="card-desc">9-piece white oak suite — nightstands, low dressers, tall dresser, bench, and plant stand. Festool Domino joinery throughout, Salice Progressa+ undermount slides.</div>
@@ -263,9 +266,6 @@
             <svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="1"/><line x1="1" y1="4" x2="11" y2="4"/><line x1="1" y1="7" x2="11" y2="7"/><line x1="4" y1="1" x2="4" y2="11"/></svg>
             Sheet Goods Layout
           </a>
-        </div>
-        <div class="card-arrow">
-          <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
         </div>
       </a>
 
