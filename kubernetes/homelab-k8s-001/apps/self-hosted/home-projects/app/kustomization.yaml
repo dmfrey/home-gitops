@@ -14,9 +14,15 @@ configMapGenerator:
     options:
       labels:
         kustomize.toolkit.fluxcd.io/substitute: disabled
-  - name: bedroom-suite-viewer-v2-html
+  - name: bedroom-suite-viewer-html
     files:
-      - bedroom-suite-viewer-v2.html=./resources/bedroom-suite-viewer-v2.html
+      - bedroom-suite-viewer.html=./resources/bedroom-suite-viewer-v2.html
+    options:
+      labels:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+  - name: bedroom-suite-sheet-layout-html
+    files:
+      - bedroom-suite-sheet-layout.html=./resources/bedroom-suite-sheet-layout-v3.html
     options:
       labels:
         kustomize.toolkit.fluxcd.io/substitute: disabled

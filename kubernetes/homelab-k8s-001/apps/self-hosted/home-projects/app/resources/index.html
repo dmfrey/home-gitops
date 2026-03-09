@@ -143,6 +143,39 @@
   .card-arrow svg { width: 12px; height: 12px; stroke: var(--oak); fill: none; stroke-width: 2; }
   .project-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
 
+  /* Card sub-links */
+  .card-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--oak);
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 2px;
+    background: rgba(200,169,110,0.05);
+    transition: all 0.15s;
+  }
+  .card-link:hover {
+    background: rgba(200,169,110,0.14);
+    border-color: rgba(200,169,110,0.4);
+    color: var(--oak-light);
+  }
+  .card-link svg {
+    width: 11px; height: 11px;
+    stroke: currentColor; fill: none; stroke-width: 1.5;
+    flex-shrink: 0;
+  }
+
   /* Placeholder card */
   .project-card.placeholder {
     border-style: dashed;
@@ -200,7 +233,7 @@
     <div class="projects">
 
       <!-- ── Bedroom Suite ── -->
-      <a href="bedroom-suite-viewer-v2.html" class="project-card">
+      <a href="bedroom-suite-viewer.html" class="project-card">
         <div class="card-header">
           <div class="card-icon">
             <!-- Dresser icon -->
@@ -220,6 +253,16 @@
           <div class="meta-item"><span class="meta-label">Material</span><span class="meta-value">White Oak</span></div>
           <div class="meta-item"><span class="meta-label">Joinery</span><span class="meta-value">Domino</span></div>
           <div class="meta-item"><span class="meta-label">Hardware</span><span class="meta-value">Salice</span></div>
+        </div>
+        <div class="card-links">
+          <a href="bedroom-suite-viewer.html" class="card-link" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="1"/><line x1="1" y1="5" x2="11" y2="5"/></svg>
+            3D Suite Viewer
+          </a>
+          <a href="bedroom-suite-sheet-layout.html" class="card-link" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="1"/><line x1="1" y1="4" x2="11" y2="4"/><line x1="1" y1="7" x2="11" y2="7"/><line x1="4" y1="1" x2="4" y2="11"/></svg>
+            Sheet Goods Layout
+          </a>
         </div>
         <div class="card-arrow">
           <svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
@@ -241,7 +284,7 @@
   </main>
 
   <footer>
-    <p>Workshop Project Index &nbsp;·&nbsp; Built with Three.js &nbsp;·&nbsp; White Oak Bedroom Suite v1.0</p>
+    <p>Workshop Project Index &nbsp;·&nbsp; Built with Three.js &nbsp;·&nbsp; White Oak Bedroom Suite v1.1</p>
   </footer>
 
 </div>

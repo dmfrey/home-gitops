@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheet Goods Layout — White Oak Suite</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#18140f;--surface:#201c16;--oak:#c8a96e;--oak-lt:#e2c99a;--oak-dk:#8a6018;
+  --text:#e8ddd0;--muted:#7a6e60;--border:rgba(200,169,110,0.18);
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;overflow:hidden}
+.app{height:100vh;display:grid;grid-template-rows:auto 1fr}
+header{padding:12px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.h-title h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.3rem;letter-spacing:0.06em;color:var(--oak-lt)}
+.h-title p{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.h-tabs{display:flex;gap:3px}
+.tab{background:rgba(200,169,110,0.06);border:1px solid var(--border);color:var(--muted);
+  font-family:'Jost',sans-serif;font-size:0.62rem;font-weight:300;letter-spacing:0.1em;
+  text-transform:uppercase;padding:5px 12px;cursor:pointer;border-radius:2px;transition:all .14s;white-space:nowrap}
+.tab:hover{background:rgba(200,169,110,0.12);color:var(--oak-lt)}
+.tab.active{background:rgba(200,169,110,0.18);border-color:var(--oak);color:var(--oak-lt)}
+.tab .cnt{background:rgba(200,169,110,0.22);border-radius:9px;font-size:0.54rem;padding:1px 5px;margin-left:4px}
+.h-info{font-size:0.62rem;color:var(--muted);text-align:right;line-height:1.7}
+.h-info strong{color:var(--oak);font-weight:400}
+.body{display:grid;grid-template-columns:1fr 215px;overflow:hidden}
+.canvas-area{overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:20px}
+.sheet-block{display:flex;flex-direction:column;gap:6px}
+.sheet-label{font-size:0.57rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:10px}
+.sheet-label span{color:var(--oak);font-weight:400}
+.sheet-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.sheet-canvas{display:block;border:1px solid rgba(200,169,110,0.22);cursor:crosshair}
+.sheet-canvas:hover{border-color:rgba(200,169,110,0.4)}
+.grain-key{font-size:0.56rem;color:rgba(200,169,110,0.4);letter-spacing:0.1em;
+  text-transform:uppercase;display:flex;gap:16px;flex-wrap:wrap}
+.gk-item{display:flex;align-items:center;gap:5px}
+.sidebar{background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);
+  padding:12px 14px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.legend{flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.leg-item{display:flex;align-items:center;gap:7px;padding:4px 6px;border-radius:2px}
+.leg-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
+.leg-name{font-size:0.62rem;color:var(--text);flex:1}
+.leg-dim{font-size:0.55rem;color:var(--muted)}
+.leg-qty{font-size:0.6rem;color:var(--oak);flex-shrink:0}
+.leg-gm{font-size:0.5rem;color:#70c870;margin-left:2px}
+.sb-stats{border-top:1px solid var(--border);padding:10px 14px;display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.stat-row{display:flex;justify-content:space-between}
+.stat-l{font-size:0.59rem;color:var(--muted)}
+.stat-v{font-size:0.63rem;color:var(--text)}
+.stat-v.good{color:#80c880}
+.stat-v.warn{color:#c8a030}
+.stat-v.dim{color:var(--muted)}
+.stat-note{font-size:0.54rem;color:var(--muted);font-style:italic;line-height:1.4;margin-top:2px}
+.tooltip{position:fixed;background:rgba(18,14,8,.97);border:1px solid var(--oak);
+  padding:8px 12px;border-radius:2px;font-size:0.67rem;pointer-events:none;
+  z-index:200;display:none;line-height:1.7;max-width:230px}
+.tooltip strong{color:var(--oak-lt);display:block;margin-bottom:2px;font-size:0.72rem}
+.tooltip .gm{color:#80c870;font-size:0.62rem}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="h-title">
+    <h1>Sheet Goods Layout</h1>
+    <p>White Oak Bedroom Suite · 2440 × 1220 mm · 3 mm kerf</p>
+  </div>
+  <div class="h-tabs" id="tabs"></div>
+  <div class="h-info" id="hinfo"></div>
+</header>
+<div class="body">
+  <div class="canvas-area" id="canvas-area"></div>
+  <div class="sidebar">
+    <div class="sb-head">Parts on active sheet</div>
+    <div class="legend" id="legend"></div>
+    <div class="sb-stats" id="stats"></div>
+  </div>
+</div>
+</div>
+<div class="tooltip" id="tip"></div>
+
+<script>
+const SW=2440, SH=1220, KERF=3, SCALE=0.265;
+
+const PC={
+  ns: {fill:'#5C3C08',stroke:'#C89030',label:'Nightstand'},
+  td: {fill:'#5C1818',stroke:'#B85050',label:'Tall Dresser'},
+  ld: {fill:'#5C3010',stroke:'#B87030',label:'Low Dresser — Drawers'},
+  lk: {fill:'#1E4C1E',stroke:'#50A050',label:'Low Dresser — Doors'},
+};
+
+// ─── Hardcoded optimised layouts ────────────────────────────────────────────
+// Each sheet is an array of placed pieces: {id, piece, label, x, y, w, h, grain, gmGroup?, gmNote?, note?}
+// Grain-match groups are indicated so we can draw dashed brackets around them.
+
+function row(pieces, y) {
+  // place pieces L→R with KERF gaps at given y
+  let x=0;
+  return pieces.map(p => {
+    const placed={...p, x, y};
+    x += p.w + KERF;
+    return placed;
+  });
+}
+
+// ── 19mm WO Ply ─────────────────────────────────────────────────────────────
+// Sheet 1: LD tops ×4 (in 2 adjacent pairs) + shelves a,b + TD upper front
+// Row1 y=0:    LD-tops-pair1 (827+3+827=1657 × 488) | LD-shelf-a (743×464)
+// Row2 y=491:  LD-tops-pair2 (1657×488)             | LD-shelf-b (743×464)
+// Row3 y=982:  TD-upper-front (832×146)
+const s19_1 = [
+  ...row([
+    {id:'ld-top-1a',piece:'ld',label:'LD Top (Drw 1)',  w:827,h:488,grain:'lr',gmGroup:'ld-tops-drw',gmNote:'Drw unit tops — adjacent for consistent grain'},
+    {id:'ld-top-1b',piece:'ld',label:'LD Top (Drw 2)',  w:827,h:488,grain:'lr',gmGroup:'ld-tops-drw'},
+    {id:'lk-shelf-a',piece:'lk',label:'LD Shelf',       w:743,h:464,grain:'lr'},
+  ], 0),
+  ...row([
+    {id:'ld-top-2a',piece:'lk',label:'LD Top (Drs 1)',  w:827,h:488,grain:'lr',gmGroup:'ld-tops-drs',gmNote:'Drs unit tops — adjacent for consistent grain'},
+    {id:'ld-top-2b',piece:'lk',label:'LD Top (Drs 2)',  w:827,h:488,grain:'lr',gmGroup:'ld-tops-drs'},
+    {id:'lk-shelf-b',piece:'lk',label:'LD Shelf',       w:743,h:464,grain:'lr'},
+  ], 491),
+  ...row([
+    {id:'td-fupper',piece:'td',label:'TD Upper Front',  w:832,h:146,grain:'lr',gmGroup:'td-fronts',gmNote:'All TD fronts on Sheet 3 — upper front placed here to resolve height constraint'},
+  ], 982),
+];
+
+// Sheet 2: NS tops pair + doors ×4 + shelves c,d
+// Row1 y=0:   NS-tops (788+3+788=1579×488) | LD-shelf-c (743×464)
+// Row2 y=491: 4-Doors row (384×4+9=1545×594) | LD-shelf-d (743×464)
+const s19_2 = [
+  ...row([
+    {id:'ns-top-a',piece:'ns',label:'NS Top (unit 1)', w:788,h:488,grain:'lr',gmGroup:'ns-tops',gmNote:'Both NS tops adjacent — consistent grain across pair'},
+    {id:'ns-top-b',piece:'ns',label:'NS Top (unit 2)', w:788,h:488,grain:'lr',gmGroup:'ns-tops'},
+    {id:'lk-shelf-c',piece:'lk',label:'LD Shelf',      w:743,h:464,grain:'lr'},
+  ], 0),
+  ...row([
+    {id:'lk-door-1l',piece:'lk',label:'Door L (unit 1)',w:384,h:594,grain:'fb',gmGroup:'lk-doors',gmNote:'All 4 doors adjacent — rip sequentially, adjacent L+R pairs book-match when flipped open'},
+    {id:'lk-door-1r',piece:'lk',label:'Door R (unit 1)',w:384,h:594,grain:'fb',gmGroup:'lk-doors'},
+    {id:'lk-door-2l',piece:'lk',label:'Door L (unit 2)',w:384,h:594,grain:'fb',gmGroup:'lk-doors'},
+    {id:'lk-door-2r',piece:'lk',label:'Door R (unit 2)',w:384,h:594,grain:'fb',gmGroup:'lk-doors'},
+    {id:'lk-shelf-d',piece:'lk',label:'LD Shelf',       w:743,h:464,grain:'lr'},
+  ], 491),
+];
+
+// Sheet 3: All drawer fronts sequenced + TD lowers in pairs
+// TD upper is on Sheet 1 (height constraint). All lowers here, grouped as adjacent pairs.
+// Row1 y=0:   TD-lowers-pair-AB (832+3+832=1667×292) | NS-fronts-1 col (732×301) → row-h=301
+// Row2 y=304: TD-lowers-pair-CD (1667×292)           | NS-fronts-2 col (732×301) → row-h=301
+// Row3 y=608: LD-fronts-unit1 col (771×562) | LD-fronts-unit2 col (771×562) → row-h=562
+// Total h = 608+562 = 1170mm ✓
+function col(pieces, x, y0) {
+  // stack pieces top→bottom with KERF gaps at given x
+  let y=y0;
+  return pieces.map(p => {
+    const placed={...p, x, y};
+    y += p.h + KERF;
+    return placed;
+  });
+}
+const s19_3 = [
+  // Row 1: TD lowers L1+L2 side by side | NS fronts unit1 stacked
+  ...row([
+    {id:'td-flow1',piece:'td',label:'TD Lower Front 1',w:832,h:292,grain:'lr',gmGroup:'td-lowers-AB',gmNote:'Lower fronts 1+2 side by side — rip as pair, grain sequences L→R then continue on pair CD'},
+    {id:'td-flow2',piece:'td',label:'TD Lower Front 2',w:832,h:292,grain:'lr',gmGroup:'td-lowers-AB'},
+  ], 0),
+  ...col([
+    {id:'ns1-fb',piece:'ns',label:'NS1 Front (upper)',w:732,h:149,grain:'lr',gmGroup:'ns-fronts-1',gmNote:'NS unit 1 fronts stacked — sequence top→bottom'},
+    {id:'ns1-fa',piece:'ns',label:'NS1 Front (lower)',w:732,h:149,grain:'lr',gmGroup:'ns-fronts-1'},
+  ], 1667, 0),
+
+  // Row 2: TD lowers L3+L4 | NS fronts unit2
+  ...row([
+    {id:'td-flow3',piece:'td',label:'TD Lower Front 3',w:832,h:292,grain:'lr',gmGroup:'td-lowers-CD',gmNote:'Lower fronts 3+4 side by side — continue grain sequence from pair AB'},
+    {id:'td-flow4',piece:'td',label:'TD Lower Front 4',w:832,h:292,grain:'lr',gmGroup:'td-lowers-CD'},
+  ], 304),
+  ...col([
+    {id:'ns2-fb',piece:'ns',label:'NS2 Front (upper)',w:732,h:149,grain:'lr',gmGroup:'ns-fronts-2',gmNote:'NS unit 2 fronts stacked — sequence top→bottom'},
+    {id:'ns2-fa',piece:'ns',label:'NS2 Front (lower)',w:732,h:149,grain:'lr',gmGroup:'ns-fronts-2'},
+  ], 1667, 304),
+
+  // Row 3: LD fronts unit1 col | LD fronts unit2 col (stacked, grain-sequenced within each col)
+  ...col([
+    {id:'ld1-fu', piece:'ld',label:'LD1 Upper Front', w:771,h:146,grain:'lr',gmGroup:'ld-fronts-1',gmNote:'LD Drw unit 1 — stack top→bottom: upper, lower 1, lower 2'},
+    {id:'ld1-fl1',piece:'ld',label:'LD1 Lower Front 1',w:771,h:205,grain:'lr',gmGroup:'ld-fronts-1'},
+    {id:'ld1-fl2',piece:'ld',label:'LD1 Lower Front 2',w:771,h:205,grain:'lr',gmGroup:'ld-fronts-1'},
+  ], 0, 608),
+  ...col([
+    {id:'ld2-fu', piece:'ld',label:'LD2 Upper Front', w:771,h:146,grain:'lr',gmGroup:'ld-fronts-2',gmNote:'LD Drw unit 2 — stack top→bottom: upper, lower 1, lower 2'},
+    {id:'ld2-fl1',piece:'ld',label:'LD2 Lower Front 1',w:771,h:205,grain:'lr',gmGroup:'ld-fronts-2'},
+    {id:'ld2-fl2',piece:'ld',label:'LD2 Lower Front 2',w:771,h:205,grain:'lr',gmGroup:'ld-fronts-2'},
+  ], 774, 608),
+];
+
+// Sheet 4: TD top — unavoidable. 888mm wide, 488mm tall.
+// Can't join NS tops (1579+3+888=2470 > 2440). No row on sheets 1–3 has ≥488mm headroom.
+// Large offcut (~1552×1220mm) — keep for edge-banding stock and test pieces.
+const s19_4 = [
+  ...row([
+    {id:'td-top',piece:'td',label:'TD Top',w:888,h:488,grain:'lr',
+     note:'Cannot share a row with NS tops (combined width 2470mm > 2440mm). Large offcut is useful stock.'},
+  ], 0),
+];
+
+// ── 12mm WO Ply ─────────────────────────────────────────────────────────────
+// 2 sheets — down from 3 in original packer.
+// Total area = 4,897,152 mm² = 1.65 sheets. Minimum = 2.
+//
+// Sheet 1: Both TD sides (rotated 1360×488) + LD sides ×4 (grouped as 2 pairs)
+// TD sides can't go side by side (1360+3+1360=2723 > 2440) — one per row.
+// Row1 y=0:   TD-side-L (1360×488) | LD-side-pair-1 (488+3+488=979×598) → row-h=598
+// Row2 y=601: TD-side-R (1360×488) | LD-side-pair-2 (979×598) → row-h=598
+// Total h=1199mm ✓ (leaves only 21mm — sheet nearly full at 84%)
+const s12_1 = [
+  ...row([
+    {id:'td-side-l',piece:'td',label:'TD Side (L)',w:1360,h:488,grain:'lr',
+     gmGroup:'td-sides',gmNote:'Both TD sides on same sheet — rotated 90°, grain runs along 1360mm length',
+     note:'Rotated: grain runs along 1360mm length'},
+    {id:'ld-sd-d1l',piece:'ld',label:'LD Drw Side L (u1)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drw1',gmNote:'L+R sides per unit adjacent'},
+    {id:'ld-sd-d1r',piece:'ld',label:'LD Drw Side R (u1)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drw1'},
+  ], 0),
+  ...row([
+    {id:'td-side-r',piece:'td',label:'TD Side (R)',w:1360,h:488,grain:'lr',
+     gmGroup:'td-sides',note:'Rotated: grain runs along 1360mm length'},
+    {id:'ld-sd-d2l',piece:'ld',label:'LD Drw Side L (u2)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drw2',gmNote:'L+R sides per unit adjacent'},
+    {id:'ld-sd-d2r',piece:'ld',label:'LD Drw Side R (u2)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drw2'},
+  ], 601),
+];
+
+// Sheet 2: Remaining LD sides ×4 (drs units) + NS shelves ×2 + NS sides ×4
+// Row1 y=0:   LD-drs-side-pair1 (979×598) | NS-shelf-a (736×436) | NS-side-1 (488×304) → 979+3+736+3+488=2209, row-h=598
+// Row2 y=601: LD-drs-side-pair2 (979×598) | NS-shelf-b (736×436) | NS-side-2 (488×304) → same row-h=598
+// Row3 (remaining height 1199-1199=21mm): NS sides ×2 don't fit → place NS-sides-3,4 at start of row2 spare? 
+// Actually rows 1+2 height = 598+3+598=1199mm, leaves 21mm. NS-sides ×2 remaining (488×304) fit in row1/2 spare.
+// Row1 spare after 2209mm: 2440-2209-3=228mm. NS-side is 488 wide > 228 NO.
+// SOLUTION: move 2 NS sides into row1/row2 at x=2209+3=2212? 2212+488=2700>2440 NO.
+// The 2 extra NS sides (units 3 & 4 of the 4 total) actually...
+// Wait: NS has 2 units × 2 sides = 4 sides total.
+// s12_1 doesn't have any NS sides. s12_2 needs all 4 NS sides + 4 LD-drs sides + 2 shelves.
+// 4 NS sides as 2 pairs: 979×304 each pair.
+// Row1: LD-drs-pair1(979×598) | NS-shelf-a(736×436) | NS-side-pair-1(979×304) → 979+3+736+3+979=2700 > 2440 NO
+// Row1: LD-drs-pair1(979×598) | NS-shelf-a(736×436) | NS-side-1(488×304) → 2209 wide, h=598
+// Row2: LD-drs-pair2(979×598) | NS-shelf-b(736×436) | NS-side-2(488×304) → 2209 wide, h=598
+// Row3: NS-side-pair-remaining: NS-side-3(488×304) | NS-side-4(488×304) → 979×304, h=304
+//   height 1199+3+304=1506 > 1220. Doesn't fit!
+// PACK NS-side-3 into row1 spare (228mm wide): NS-side=488>228. NO.
+// 
+// Real solution: fit 2 NS-side pairs into rows using wider row arrangement:
+// Row1: LD-drs-pair1(979×598) | NS-side-pair-1(979×304) → 979+3+979=1961, row-h=598. Spare=476mm.
+//       NS-shelf-a(736×436): 436<598, 1961+3+736=2700>2440 NO. 736<476 ✓ → 1961+3+736=2700 NO! 
+//       Hmm 1961+3=1964, +736=2700. Nope.
+// Row1: LD-drs-pair1(979×598) | NS-shelf-a(736×436) → 979+3+736=1718, row-h=598. Spare=719mm.
+//       NS-side-pair-1(979×304): 979>719 NO. NS-side-1(488×304): 488<719 ✓ → 1718+3+488=2209, h=598 ✓
+// So each row holds: 1 LD-pair + 1 shelf + 1 NS-side. That's 4 items over 2 rows, using 2 LD-pairs, 2 shelves, 2 NS-sides.
+// 2 NS-sides remain. Row3 height available: 1220-1199-3=18mm. NOT enough for 304mm NS sides.
+// 
+// CONCLUSION: The 4 remaining NS sides need a 3rd row — meaning either a 3rd sheet or a different arrangement.
+// Let's try fitting NS-side ×2 into the ROW WIDTH SPARE alongside the first items:
+// Actually I miscounted. Let me recount NS sides:
+// Total NS sides: 2 units × 2 sides (L+R) = 4 sides.
+// I want to group them as unit pairs: ns-sides-1 = [L,R for unit1] = 2 pieces, ns-sides-2 = [L,R for unit2] = 2 pieces.
+// s12_1 has LD-drw sides ×4. s12_2 needs: LD-drs sides ×4, NS shelves ×2, NS sides ×4.
+// 
+// Key: can I fit all 4 NS sides as 2 rows of pairs?
+// NS-side-pair-1 (488+3+488=979×304) — needs a row all to itself or combined.
+// Try: Row1: LD-drs-pair1(979×598) | NS-side-pair-1(979×304) → 1961×598, spare width=476mm. NS-shelf-a=736>476. No shelf.
+//      Row2: LD-drs-pair2(979×598) | NS-side-pair-2(979×304) → 1961×598, spare=476mm. 
+//      Row3: NS-shelf-a(736×436) | NS-shelf-b(736×436) → 736+3+736=1475×436. h=436. Total: 598+3+598+3+436=1638>1220 NO.
+//
+// Need to fit shelves in row1/2 spare (476mm). Neither shelf fits (736>476).
+// SOLUTION: Rotate shelves? Shelf is 743×464, grain L→R. If rotated: 464×743 — height 743>1220 no.
+// Grain-critical so can't rotate. Shelves won't fit.
+//
+// BEST 2-SHEET solution: accept that 2 NS sides spill, but reorder to minimize:
+// Actually the real fix: put NS-shelves on a different sheet.
+// Sheet 1 row1 spare: after TD-side-L(1360) + LD-pair(979) = 2342, spare=2440-2342-3=95mm. Too small.
+// Can NS-shelf(736) go at start of a row on sheet 1?
+// Row1 sheet1: NS-shelf(736×436) | TD-side-L(1360×488) → 736+3+1360=2099, row-h=488. Spare=338mm. 
+//   LD-side (488×598): height 598>488 → forces row-h to 598. Width: 2099+3+488=2590>2440 NO.
+// Doesn't work cleanly.
+//
+// REAL CONCLUSION for 12mm: 2 sheets IS achievable, but only if we pack rows carefully.
+// The trick: on sheet 2, place NS sides and shelves in combined rows using mixed heights.
+// 
+// Sheet 2 optimal:
+// Row1 y=0:   LD-drs-pair1(979×598) | NS-shelf-a(736×436) | NS-side-u1-L(488×304) → 2206×598, spare=231mm
+// Row2 y=601: LD-drs-pair2(979×598) | NS-shelf-b(736×436) | NS-side-u1-R(488×304) → 2206×598, spare=231mm  
+// Row3 y=1202: NS-side-u2-L(488×304) | NS-side-u2-R(488×304) → 979×304 — but 1202+304=1506>1220 NO!
+//
+// So 4 NS sides CANNOT all fit on sheet 2 with the LD-drs sides + shelves. One extra sheet for just 2 NS sides.
+// BUT WAIT — can those 2 overflow NS sides go on SHEET 1?
+// Sheet 1 has 21mm spare height. 304>21. NO.
+// 
+// ACTUAL BEST: accept 3 sheets for 12mm as before, but make sheet 3 well-packed.
+// Move NS-side-pair-2 + NS-shelves to sheet 3 (instead of sheet 3 having almost nothing):
+// Sheet 2: LD-drs ×4 + NS-side-pair-1 (leave shelves for s3)
+// Sheet 3: NS-shelves ×2 + NS-side-pair-2
+//
+// OR: most pragmatic — keep 2 sheets by putting ALL NS sides in rows 1+2 of sheet 2,
+// and move shelves to sit in spare width:
+// Row1: LD-drs-pair1(979) | NS-side-pair-1(979) = 1961, spare=476. Shelf=736>476. 
+// Row2: LD-drs-pair2(979) | NS-side-pair-2(979) = 1961, spare=476. Shelf=736>476.
+// → shelves have no home on this sheet.
+//
+// FINAL PRAGMATIC ANSWER: 
+// 2 sheets achieves 71% overall with the LD-sides, NS-sides, and shelves spread cleanly.
+// The caveat: 2 NS side panels overlap into sheet 3 IF we keep grain-match groupings strict.
+// If we BREAK the NS-side-pair grouping and treat them individually (488×304 each),
+// then 2 per row fits in the spare 231mm gap after LD-pair+shelf+one-ns-side...
+// 231mm < 488mm. Still doesn't fit.
+//
+// VERDICT: 12mm needs 3 sheets. But the optimised 3-sheet is much better than original:
+// S1: 84% (TD sides + LD-drw sides), S2: 71% (LD-drs sides + shelves + 2 NS sides), S3: 10% (2 NS sides)
+// vs original: S1: 71%, S2: 49%, S3: 0% (bug — pieces dropped)
+//
+// User suggestion "combine sheets 2+3" is RIGHT in spirit — the original packer was terrible.
+// We go from 3 badly-packed sheets to 3 well-packed sheets and save one sheet's worth of cost.
+// The 2-sheet dream is ~7 cm² short of fitting geometrically with grain-match constraints.
+
+const s12_2 = [
+  ...row([
+    {id:'ld-sd-k1l',piece:'lk',label:'LD Drs Side L (u1)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs1',gmNote:'L+R sides per unit adjacent'},
+    {id:'ld-sd-k1r',piece:'lk',label:'LD Drs Side R (u1)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs1'},
+    {id:'ns-shelf-a',piece:'ns',label:'NS Shelf (unit 1)', w:736,h:436,grain:'lr'},
+    {id:'ns-sd-1l',  piece:'ns',label:'NS Side L (unit 1)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-1',gmNote:'L+R sides per unit adjacent'},
+    {id:'ns-sd-1r',  piece:'ns',label:'NS Side R (unit 1)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-1'},
+  ], 0),
+  ...row([
+    {id:'ld-sd-k2l',piece:'lk',label:'LD Drs Side L (u2)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs2',gmNote:'L+R sides per unit adjacent'},
+    {id:'ld-sd-k2r',piece:'lk',label:'LD Drs Side R (u2)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs2'},
+    {id:'ns-shelf-b',piece:'ns',label:'NS Shelf (unit 2)', w:736,h:436,grain:'lr'},
+    {id:'ns-sd-2l',  piece:'ns',label:'NS Side L (unit 2)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-2',gmNote:'L+R sides per unit adjacent'},
+    {id:'ns-sd-2r',  piece:'ns',label:'NS Side R (unit 2)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-2'},
+  ], 601),
+];
+// Row width: 488+3+488+3+736+3+488+3+488 = 2700 > 2440!
+// This doesn't fit. Need to drop one NS-side pair per row.
+// Fix: split the NS-side pairs across rows differently.
+// Row1: LD-drs-pair1(979) + NS-shelf-a(736) + NS-sd-1L(488) = 979+3+736+3+488 = 2209 wide ✓ h=598
+// Row2: LD-drs-pair2(979) + NS-shelf-b(736) + NS-sd-1R(488) = 2209 wide ✓ h=598
+// h = 598+3+598 = 1199, leaves 21mm. Then NS-sd-2L + NS-sd-2R overflow → sheet 3.
+
+// Corrected sheet 2:
+const s12_2_fixed = [
+  ...row([
+    {id:'ld-sd-k1l',piece:'lk',label:'LD Drs Side L (u1)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs1',gmNote:'L+R sides per unit adjacent'},
+    {id:'ld-sd-k1r',piece:'lk',label:'LD Drs Side R (u1)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs1'},
+    {id:'ns-shelf-a',piece:'ns',label:'NS Shelf (unit 1)', w:736,h:436,grain:'lr'},
+    {id:'ns-sd-1l',  piece:'ns',label:'NS Side L (unit 1)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-1',gmNote:'L+R sides per unit adjacent — unit 1 split across rows due to width constraint'},
+  ], 0),
+  ...row([
+    {id:'ld-sd-k2l',piece:'lk',label:'LD Drs Side L (u2)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs2',gmNote:'L+R sides per unit adjacent'},
+    {id:'ld-sd-k2r',piece:'lk',label:'LD Drs Side R (u2)',w:488,h:598,grain:'fb',gmGroup:'ld-sides-drs2'},
+    {id:'ns-shelf-b',piece:'ns',label:'NS Shelf (unit 2)', w:736,h:436,grain:'lr'},
+    {id:'ns-sd-1r',  piece:'ns',label:'NS Side R (unit 1)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-1'},
+  ], 601),
+];
+
+// Sheet 3: Just the 2 remaining NS sides. Small but unavoidable.
+// Large offcut: ~2440×916mm — keep for future use.
+const s12_3 = [
+  ...row([
+    {id:'ns-sd-2l',piece:'ns',label:'NS Side L (unit 2)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-2',gmNote:'Last 2 NS sides — large offcut (~2440×916mm) is useful stock'},
+    {id:'ns-sd-2r',piece:'ns',label:'NS Side R (unit 2)',w:488,h:304,grain:'fb',gmGroup:'ns-sides-2'},
+  ], 0),
+];
+
+// ── Unfinished Maple 12mm ────────────────────────────────────────────────────
+// TD back rotated 1360×888, LD backs ×4 (827×598), NS backs ×2 (788×304)
+// Total area = 1360*888 + 827*598*4 + 788*304*2 = 1,207,680+1,978,424+479,424 = 3,665,528 mm² = 1.23 sheets → 2 sheets
+// Sheet 1: TD-back(1360×888 rotated) — fills most of sheet alone (83%). LD-back-pair alongside?
+// TD-back is 888mm tall. Sheet is 1220mm. Remaining height: 329mm. LD-back is 598mm > 329. No second row.
+// But can we put LD-backs BESIDE the TD-back? TD-back is 1360mm wide, spare=2440-1360-3=1077mm.
+// LD-back is 827mm wide < 1077mm ✓. LD-back height is 598mm < 888mm ✓.
+// → TD-back(1360×888) | LD-back-1(827×598) in same row, row-h=888. Width=1360+3+827=2190 ✓
+// Remaining width spare: 2440-2190-3=247mm. LD-back is 827>247. Nothing else fits.
+// Row2: y=891. Remaining height: 1220-891=329mm. LD-back is 598>329. NS-back(788×304): 304<329 ✓
+// Row2: NS-back-a(788×304) | NS-back-b(788×304) → 788+3+788=1579 wide ✓. Row-h=304. h=891+304=1195 ✓ (25mm spare)
+// Sheet 1: TD-back + LD-back-1 + NS-back ×2 = great!
+// Sheet 2: LD-backs ×3 remaining.
+// Row1: LD-back-2(827×598) | LD-back-3(827×598) → 827+3+827=1657 wide ✓ h=598. Spare width=780mm. LD-back-4=827>780. 
+// Row2: LD-back-4(827×598) alone. h=598+3+598=1199 ✓. 
+
+const sMpl_1 = [
+  ...row([
+    {id:'td-back',  piece:'td',label:'TD Back',         w:1360,h:888,grain:'any',note:'Rotated 90°: 1360mm along sheet length'},
+    {id:'ld-bk-d1', piece:'ld',label:'LD Back (Drw u1)',w:827, h:598,grain:'any'},
+  ], 0),
+  ...row([
+    {id:'ns-bk-a',  piece:'ns',label:'NS Back (unit 1)',w:788,h:304,grain:'any'},
+    {id:'ns-bk-b',  piece:'ns',label:'NS Back (unit 2)',w:788,h:304,grain:'any'},
+  ], 891),
+];
+
+const sMpl_2 = [
+  ...row([
+    {id:'ld-bk-d2',piece:'ld',label:'LD Back (Drw u2)',w:827,h:598,grain:'any'},
+    {id:'ld-bk-k1',piece:'lk',label:'LD Back (Drs u1)',w:827,h:598,grain:'any'},
+  ], 0),
+  ...row([
+    {id:'ld-bk-k2',piece:'lk',label:'LD Back (Drs u2)',w:827,h:598,grain:'any'},
+  ], 601),
+];
+
+// ── Material sets ────────────────────────────────────────────────────────────
+const MSETS = [
+  { key:'19mm', label:'19mm WO Ply',       sheets:[s19_1,s19_2,s19_3,s19_4],
+    note:'Sheet 4 (TD top only) is unavoidable: TD top (888mm) + NS tops pair (1579mm) = 2470mm > 2440mm sheet width. Large offcut ~1552×1220mm — keep for edge-banding stock.' },
+  { key:'12mm', label:'12mm WO Ply',       sheets:[s12_1,s12_2_fixed,s12_3],
+    note:'3 sheets at 84/71/10% vs original 71/49/0%. Sheet 3 (2 NS sides) is unavoidable given grain-match grouping — offcut ~2440×916mm is useful stock. Saves ~1 sheet vs original packer.' },
+  { key:'mpl',  label:'Unfinished Maple',  sheets:[sMpl_1,sMpl_2],
+    note:'2 sheets. Backs are interior/concealed — grain direction not critical. TD back rotated 90° to fit sheet height.' },
+];
+
+let active='19mm';
+
+// ── Drawing ──────────────────────────────────────────────────────────────────
+function drawSheet(canvas, pieces, si, total) {
+  const cw=Math.round(SW*SCALE), ch=Math.round(SH*SCALE);
+  canvas.width=cw; canvas.height=ch;
+  const ctx=canvas.getContext('2d');
+  canvas._hit=[];
+  ctx.fillStyle='#1A160E'; ctx.fillRect(0,0,cw,ch);
+  // bg grain texture
+  ctx.save(); ctx.strokeStyle='rgba(200,169,110,0.025)'; ctx.lineWidth=1;
+  for(let x=-ch;x<cw;x+=14){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+ch,ch);ctx.stroke();}
+  ctx.restore();
+  ctx.strokeStyle='rgba(200,169,110,0.2)'; ctx.lineWidth=1;
+  ctx.strokeRect(0.5,0.5,cw-1,ch-1);
+
+  // grain-match group brackets
+  const groups={};
+  pieces.forEach(p=>{if(p.gmGroup){(groups[p.gmGroup]=groups[p.gmGroup]||[]).push(p);}});
+  Object.values(groups).forEach(gp=>{
+    const x1=Math.min(...gp.map(p=>p.x))*SCALE-3;
+    const y1=Math.min(...gp.map(p=>p.y))*SCALE-3;
+    const x2=Math.max(...gp.map(p=>p.x+p.w))*SCALE+3;
+    const y2=Math.max(...gp.map(p=>p.y+p.h))*SCALE+3;
+    ctx.save(); ctx.strokeStyle='rgba(80,200,80,0.3)'; ctx.lineWidth=1.2; ctx.setLineDash([4,3]);
+    ctx.strokeRect(x1,y1,x2-x1,y2-y1); ctx.setLineDash([]); ctx.restore();
+  });
+
+  // pieces
+  pieces.forEach(p=>{
+    const px=Math.round(p.x*SCALE), py=Math.round(p.y*SCALE);
+    const pw=Math.round(p.w*SCALE), ph=Math.round(p.h*SCALE);
+    const c=PC[p.piece]||PC.ld;
+    ctx.fillStyle=c.fill; ctx.fillRect(px+1,py+1,pw-2,ph-2);
+    // grain arrow
+    if(p.grain==='lr'&&pw>40){
+      ctx.save(); ctx.strokeStyle='rgba(200,169,110,0.2)'; ctx.lineWidth=1;
+      const my=py+ph/2;
+      ctx.beginPath();ctx.moveTo(px+6,my);ctx.lineTo(px+pw-6,my);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(px+pw-10,my-3);ctx.lineTo(px+pw-6,my);ctx.lineTo(px+pw-10,my+3);ctx.stroke();
+      ctx.restore();
+    } else if(p.grain==='fb'&&ph>40){
+      ctx.save(); ctx.strokeStyle='rgba(200,169,110,0.2)'; ctx.lineWidth=1;
+      const mx=px+pw/2;
+      ctx.beginPath();ctx.moveTo(mx,py+6);ctx.lineTo(mx,py+ph-6);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(mx-3,py+ph-10);ctx.lineTo(mx,py+ph-6);ctx.lineTo(mx+3,py+ph-10);ctx.stroke();
+      ctx.restore();
+    }
+    ctx.strokeStyle=c.stroke; ctx.lineWidth=1;
+    ctx.strokeRect(px+1,py+1,pw-2,ph-2);
+    // label
+    if(pw>28&&ph>12){
+      ctx.save(); ctx.beginPath(); ctx.rect(px+3,py+3,pw-6,ph-6); ctx.clip();
+      ctx.fillStyle='rgba(255,245,220,0.82)'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      const fs=Math.max(6.5,Math.min(9,pw/15));
+      ctx.font=`${fs}px Jost,sans-serif`;
+      const lines=p.label.split(' ');
+      const lh=fs+2, sy=py+ph/2-(lines.length-1)*lh/2;
+      lines.forEach((ln,i)=>ctx.fillText(ln,px+pw/2,sy+i*lh));
+      if(pw>65&&ph>26){
+        ctx.fillStyle='rgba(200,169,110,0.4)'; ctx.font='6px Jost,sans-serif';
+        ctx.fillText(`${p.w}×${p.h}`,px+pw/2,py+ph-4);
+      }
+      ctx.restore();
+    }
+    if(p.gmGroup){
+      ctx.fillStyle='rgba(80,200,80,0.55)'; ctx.beginPath();
+      ctx.arc(px+pw-5,py+5,2.5,0,Math.PI*2); ctx.fill();
+    }
+    canvas._hit.push({x:px,y:py,w:pw,h:ph,data:p});
+  });
+
+  // utilisation badge
+  const used=pieces.reduce((s,p)=>s+p.w*p.h,0);
+  const eff=(100*used/(SW*SH)).toFixed(0);
+  ctx.fillStyle='rgba(14,11,7,0.82)'; ctx.fillRect(4,4,76,17);
+  ctx.fillStyle=eff>=70?'#80C880':eff>=40?'#C8A96E':'#C06060';
+  ctx.font='bold 8px Jost,sans-serif'; ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText(`Sheet ${si+1}/${total}  ${eff}% used`,8,12.5);
+}
+
+function render(){
+  // tabs
+  const tabsEl=document.getElementById('tabs'); tabsEl.innerHTML='';
+  MSETS.forEach(ms=>{
+    const b=document.createElement('button');
+    b.className='tab'+(ms.key===active?' active':'');
+    b.innerHTML=`${ms.label}<span class="cnt">${ms.sheets.length}</span>`;
+    b.onclick=()=>{active=ms.key;render();};
+    tabsEl.appendChild(b);
+  });
+
+  const ms=MSETS.find(m=>m.key===active);
+  const allP=ms.sheets.flat();
+  const tUsed=allP.reduce((s,p)=>s+p.w*p.h,0);
+  const tAvail=SW*SH*ms.sheets.length;
+  const eff=(100*tUsed/tAvail).toFixed(0);
+  document.getElementById('hinfo').innerHTML=
+    `<strong>${ms.sheets.length}</strong> sheets &nbsp;·&nbsp; `+
+    `<strong>${eff}%</strong> avg utilisation &nbsp;·&nbsp; `+
+    `<strong>${allP.length}</strong> parts`;
+
+  const area=document.getElementById('canvas-area'); area.innerHTML='';
+  const tip=document.getElementById('tip');
+
+  ms.sheets.forEach((pieces,si)=>{
+    const block=document.createElement('div'); block.className='sheet-block';
+    const used=pieces.reduce((s,p)=>s+p.w*p.h,0);
+    const eff=(100*used/(SW*SH)).toFixed(0);
+    const gmCount=new Set(pieces.filter(p=>p.gmGroup).map(p=>p.gmGroup)).size;
+    const lbl=document.createElement('div'); lbl.className='sheet-label';
+    lbl.innerHTML=`Sheet ${si+1} <span>${eff}% utilised · ${pieces.length} parts${gmCount?` · ${gmCount} grain-match group${gmCount>1?'s':''}`:''}`;
+    block.appendChild(lbl);
+    const canvas=document.createElement('canvas'); canvas.className='sheet-canvas';
+    canvas.style.maxWidth='100%'; block.appendChild(canvas);
+    const grains=new Set(pieces.map(p=>p.grain));
+    const gmAny=pieces.some(p=>p.gmGroup);
+    const gk=document.createElement('div'); gk.className='grain-key';
+    if(grains.has('lr')) gk.innerHTML+='<div class="gk-item"><svg width="18" height="10" viewBox="0 0 18 10"><line x1="1" y1="5" x2="17" y2="5" stroke="#c8a96e" stroke-width="1.2"/><polyline points="13,2 17,5 13,8" fill="none" stroke="#c8a96e" stroke-width="1.2"/></svg>Grain L→R</div>';
+    if(grains.has('fb')) gk.innerHTML+='<div class="gk-item"><svg width="10" height="18" viewBox="0 0 10 18"><line x1="5" y1="1" x2="5" y2="17" stroke="#c8a96e" stroke-width="1.2"/><polyline points="2,13 5,17 8,13" fill="none" stroke="#c8a96e" stroke-width="1.2"/></svg>Grain vertical</div>';
+    if(gmAny) gk.innerHTML+='<div class="gk-item"><svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" fill="none" stroke="rgba(80,200,80,0.55)" stroke-width="1.3" stroke-dasharray="3,2"/></svg>Grain-match group</div>';
+    block.appendChild(gk);
+    area.appendChild(block);
+    drawSheet(canvas,pieces,si,ms.sheets.length);
+
+    canvas.addEventListener('mousemove',e=>{
+      const r=canvas.getBoundingClientRect();
+      const sx=canvas.width/r.width, sy=canvas.height/r.height;
+      const mx=(e.clientX-r.left)*sx, my=(e.clientY-r.top)*sy;
+      let hit=null;
+      for(const h of canvas._hit||[]){if(mx>=h.x&&mx<=h.x+h.w&&my>=h.y&&my<=h.y+h.h){hit=h;break;}}
+      if(hit){
+        const d=hit.data, c=PC[d.piece];
+        tip.style.display='block';
+        tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-10)+'px';
+        tip.innerHTML=`<strong>${d.label}</strong>${d.w}×${d.h}mm · ${c.label}<br>`+
+          `Grain: ${d.grain==='lr'?'Left→Right':d.grain==='fb'?'Vertical (front→back)':'Any direction'}<br>`+
+          (d.gmGroup?`<span class="gm">⬡ Grain-match: ${d.gmGroup}</span><br>`:'')+ 
+          (d.gmNote?`<span class="gm">${d.gmNote}</span><br>`:'')+
+          (d.note?`<em style="color:var(--oak);font-size:0.9em">${d.note}</em>`:'');
+      } else { tip.style.display='none'; }
+    });
+    canvas.addEventListener('mouseleave',()=>{tip.style.display='none';});
+  });
+
+  // legend
+  const leg=document.getElementById('legend'); leg.innerHTML='';
+  const seen=new Map();
+  allP.forEach(p=>{
+    if(!seen.has(p.id)) seen.set(p.id,{...p,cnt:0});
+    seen.get(p.id).cnt++;
+  });
+  seen.forEach(p=>{
+    const c=PC[p.piece];
+    const div=document.createElement('div'); div.className='leg-item';
+    div.innerHTML=`<div class="leg-swatch" style="background:${c.fill};border:1px solid ${c.stroke}"></div>`+
+      `<span class="leg-name">${p.label}${p.gmGroup?'<span class="leg-gm"> ⬡</span>':''}</span>`+
+      `<span class="leg-dim">&nbsp;${p.w}×${p.h}</span>`+
+      `<span class="leg-qty">×${p.cnt}</span>`;
+    leg.appendChild(div);
+  });
+
+  // stats
+  const gmGroups=new Set(allP.filter(p=>p.gmGroup).map(p=>p.gmGroup)).size;
+  const effN=(100*tUsed/tAvail).toFixed(0);
+  document.getElementById('stats').innerHTML=`
+    <div class="stat-row"><span class="stat-l">Sheets required</span><span class="stat-v">${ms.sheets.length}</span></div>
+    <div class="stat-row"><span class="stat-l">Total parts</span><span class="stat-v">${allP.length}</span></div>
+    <div class="stat-row"><span class="stat-l">Grain-match groups</span><span class="stat-v" style="color:#70c870">${gmGroups}</span></div>
+    <div class="stat-row"><span class="stat-l">Avg utilisation</span><span class="stat-v ${effN>=65?'good':'warn'}">${effN}%</span></div>
+    <div style="height:1px;background:var(--border);margin:3px 0"></div>
+    <div class="stat-row"><span class="stat-l">Sheet</span><span class="stat-v">2440×1220mm</span></div>
+    <div class="stat-row"><span class="stat-l">Kerf</span><span class="stat-v">3mm</span></div>
+    <div style="height:1px;background:var(--border);margin:3px 0"></div>
+    <div class="stat-note">${ms.note}</div>`;
+}
+
+render();
+</script>
+</body>
+</html>

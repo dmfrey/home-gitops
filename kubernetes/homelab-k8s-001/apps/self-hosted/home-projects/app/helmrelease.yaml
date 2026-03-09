@@ -72,11 +72,20 @@ spec:
             subPath: index.html
             readOnly: true
 
-      # Bedroom suite viewer → /usr/share/nginx/html/bedroom-suite-viewer-v2.html
-      bedroom-suite:
+      # Bedroom suite viewer → /usr/share/nginx/html/bedroom-suite-viewer.html
+      bedroom-suite-viewer:
         type: configMap
-        name: bedroom-suite-viewer-v2-html
+        name: bedroom-suite-viewer-html
         globalMounts:
           - path: /usr/share/nginx/html/bedroom-suite-viewer-v2.html
             subPath: bedroom-suite-viewer-v2.html
+            readOnly: true
+
+      # Bedroom suite sheet layout → /usr/share/nginx/html/bedroom-suite-sheet-layout.html
+      bedroom-suite-sheet-layout:
+        type: configMap
+        name: bedroom-suite-sheet-layout-html
+        globalMounts:
+          - path: /usr/share/nginx/html/bedroom-suite-sheet-layout.html
+            subPath: bedroom-suite-sheet-layout.html
             readOnly: true
