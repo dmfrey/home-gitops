@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sheet Goods Layout — White Oak Suite</title>
+<title>Sheet Goods Layout v4 — White Oak Suite</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -92,6 +92,8 @@ const PC={
   td: {fill:'#5C1818',stroke:'#B85050',label:'Tall Dresser'},
   ld: {fill:'#5C3010',stroke:'#B87030',label:'Low Dresser — Drawers'},
   lk: {fill:'#1E4C1E',stroke:'#50A050',label:'Low Dresser — Doors'},
+  bn: {fill:'#1E3A5C',stroke:'#5090C0',label:'Bench'},
+  ps: {fill:'#3A1E5C',stroke:'#9050C0',label:'Plant Stand'},
 };
 
 // ─── Hardcoded optimised layouts ────────────────────────────────────────────
@@ -196,14 +198,30 @@ const s19_3 = [
   ], 774, 608),
 ];
 
-// Sheet 4: TD top — unavoidable. 888mm wide, 488mm tall.
-// Can't join NS tops (1579+3+888=2470 > 2440). No row on sheets 1–3 has ≥488mm headroom.
-// Large offcut (~1552×1220mm) — keep for edge-banding stock and test pieces.
+// Sheet 4: TD top + bench panels (×2) + plant stand panels (×2)
+// Row1 y=0:   TD-top(888×488) | Bench panel A (1308×336) → 888+3+1308=2199 ✓, row-h=488
+// Row2 y=491: Bench panel B (1308×336) alone → row-h=336
+// Row3 y=830: PS panel A (1136×336) | PS panel B (1136×336) → 1136+3+1136=2275 ✓, row-h=336
+// Total h: 830+336=1166 ✓
+// Utilisation: (888×488 + 1308×336×2 + 1136×336×2) / (2440×1220) = 69.7%
+// Note: bench & plant stand panels moved from solid oak to 19mm WO ply (design change)
 const s19_4 = [
   ...row([
     {id:'td-top',piece:'td',label:'TD Top',w:888,h:488,grain:'lr',
-     note:'Cannot share a row with NS tops (combined width 2470mm > 2440mm). Large offcut is useful stock.'},
+     note:'Cannot share row with NS tops (combined 2470mm > 2440mm).'},
+    {id:'bench-panel-a',piece:'bn',label:'Bench Panel (seat)',w:1308,h:336,grain:'lr',
+     gmGroup:'bench-panels',gmNote:'Both bench panels grain-sequenced — seat panel first, shelf panel below'},
   ], 0),
+  ...row([
+    {id:'bench-panel-b',piece:'bn',label:'Bench Panel (shelf)',w:1308,h:336,grain:'lr',
+     gmGroup:'bench-panels'},
+  ], 491),
+  ...row([
+    {id:'ps-panel-a',piece:'ps',label:'Plant Stand Panel (top)',w:1136,h:336,grain:'lr',
+     gmGroup:'ps-panels',gmNote:'Both plant stand panels adjacent — top panel + shelf panel'},
+    {id:'ps-panel-b',piece:'ps',label:'Plant Stand Panel (shelf)',w:1136,h:336,grain:'lr',
+     gmGroup:'ps-panels'},
+  ], 830),
 ];
 
 // ── 12mm WO Ply ─────────────────────────────────────────────────────────────
@@ -409,7 +427,7 @@ const sMpl_2 = [
 // ── Material sets ────────────────────────────────────────────────────────────
 const MSETS = [
   { key:'19mm', label:'19mm WO Ply',       sheets:[s19_1,s19_2,s19_3,s19_4],
-    note:'Sheet 4 (TD top only) is unavoidable: TD top (888mm) + NS tops pair (1579mm) = 2470mm > 2440mm sheet width. Large offcut ~1552×1220mm — keep for edge-banding stock.' },
+    note:'Sheet 4 contains TD top + bench panels (×2) + plant stand panels (×2). Bench & plant stand changed from slats to 19mm WO ply panels. 69.7% utilisation.' },
   { key:'12mm', label:'12mm WO Ply',       sheets:[s12_1,s12_2_fixed,s12_3],
     note:'3 sheets at 84/71/10% vs original 71/49/0%. Sheet 3 (2 NS sides) is unavoidable given grain-match grouping — offcut ~2440×916mm is useful stock. Saves ~1 sheet vs original packer.' },
   { key:'mpl',  label:'Unfinished Maple',  sheets:[sMpl_1,sMpl_2],
