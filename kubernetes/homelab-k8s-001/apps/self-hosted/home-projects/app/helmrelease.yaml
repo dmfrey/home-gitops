@@ -77,7 +77,7 @@ spec:
         type: configMap
         name: bedroom-suite-viewer-html
         globalMounts:
-          - path: /usr/share/nginx/html/bedroom-suite-viewer-v2.html
+          - path: /usr/share/nginx/html/bedroom-suite-viewer.html
             subPath: bedroom-suite-viewer-v2.html
             readOnly: true
 
