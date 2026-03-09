@@ -115,8 +115,7 @@ function init(){
   var mPly  =new THREE.MeshPhongMaterial({color:0xd2b470,specular:0x181006,shininess:22});
   var mMpl  =new THREE.MeshPhongMaterial({color:0xc4b282,specular:0x100c06,shininess:14});
   var mDrw  =new THREE.MeshPhongMaterial({color:0xc8a455,specular:0x281806,shininess:30});
-  var mSlA  =new THREE.MeshPhongMaterial({color:0xc8a045,specular:0x201008,shininess:35});
-  var mSlB  =new THREE.MeshPhongMaterial({color:0xb08838,specular:0x201008,shininess:30});
+
 
   var allMeshes=[]; var pieces=[];
   var L=32,R=32,RC=6,RV=2,DFT=19,ST=18,BT=12;
@@ -158,9 +157,9 @@ function init(){
     for(var i=0;i<n;i++) box(dfW,dh,DFT,mDrw,0,yb1+RV+i*(dh+RV)+dh/2,dfZ,g);
   }
 
-  function addSlats(railTopY,cw,cd,n,g){
-    var sl=cd-2*L,iw=cw-2*L,gap=(iw-n*32)/(n+1),by=railTopY-32,cy=by+16,sx=-cw/2+L+gap+16;
-    for(var i=0;i<n;i++) box(32,32,sl,(i%2===0?mSlA:mSlB),sx+i*(32+gap),cy,0,g);
+  function addPanel(railTopY,cw,cd,g){
+    var pw=cw-2*L,pd=cd-2*L,by=railTopY-19,cy=by+9.5;
+    box(pw,19,pd,mPly,0,cy,0,g);
   }
 
   // ── PIECE BUILDERS ───────────────────────────────────────────
@@ -181,8 +180,8 @@ function init(){
     var g=new THREE.Group(),CW=1200,CH=900,CD=400;
     addLegs(CW,CH,CD,g);
     addRails(300,CW,CD,g); addRails(868,CW,CD,g);
-    addSlats(332,CW,CD,17,g);
-    addSlats(900,CW,CD,17,g);
+    addPanel(332,CW,CD,g);
+    addPanel(900,CW,CD,g);
     g.position.set(px,0,pz);
     scene.add(g); pieces.push({g:g,label:'Plant Stand',dim:'1200×400×900'}); return g;
   }
@@ -191,8 +190,8 @@ function init(){
     var g=new THREE.Group(),CW=1372,CH=500,CD=400;
     addLegs(CW,CH,CD,g);
     addRails(100,CW,CD,g); addRails(468,CW,CD,g);
-    addSlats(132,CW,CD,20,g);
-    addSlats(500,CW,CD,20,g);
+    addPanel(132,CW,CD,g);
+    addPanel(500,CW,CD,g);
     g.position.set(px,0,pz);
     scene.add(g); pieces.push({g:g,label:'Bench',dim:'1372×400×500'}); return g;
   }
