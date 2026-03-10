@@ -4,39 +4,26 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: jellyplex-watched
-
 spec:
-
   interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: jellyplex-watched
-
   values:
-
     fullnameOverride: jellyplex-watched
-
     # App runs as root
     defaultPodOptions:
       annotations:
         secret.reloader.stakater.com/reload: jellyplex-watched-secret,kometa-secret
-
     controllers:
-
       jellyplex-watched:
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
-
           app:
-
             image:
               repository: ghcr.io/luigi311/jellyplex-watched
               tag: dev
-
             env:
               TZ: "America/New_York"
               ## Do not mark any shows/movies as played and instead just output to log if they would of been marked.
@@ -84,14 +71,12 @@ spec:
               WHITELIST_USERS: ""
               SYNC_FROM_PLEX_TO_JELLYFIN: "True"
               SYNC_FROM_JELLYFIN_TO_PLEX: "True"
-
             envFrom:
               - secretRef:
                   name: jellyplex-watched-secret
-
             resources:
               requests:
-                cpu: 50m
+                cpu: 10m
                 memory: 100Mi
               limits:
                 memory: 200Mi

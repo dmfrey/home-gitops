@@ -4,54 +4,39 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: mosquitto
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: mosquitto
-
   interval: 1h
-
   values:
-
     controllers:
-
       mosquitto:
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         initContainers:
           user-import:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.22@sha256:6852da90a65dfff7aa3a1c8b249e92bb83c17ea8bbcce56bedff8707332a1a29
-
             command:
               - "/bin/sh"
               - -c
-
             args:
               - ls -lart /data/mosquitto_init && ls -lart /data/mosquitto_secret && ls -larth /data/external_config && /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && chmod 0700 /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
-
         containers:
-
           app:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.22@sha256:6852da90a65dfff7aa3a1c8b249e92bb83c17ea8bbcce56bedff8707332a1a29
-
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
               limits:
                 memory: 350Mi
-
     defaultPodOptions:
       terminationGracePeriodSeconds: 15
-
     service:
       app:
         type: LoadBalancer
@@ -61,11 +46,9 @@ spec:
         ports:
           http:
             port: 1883
-
     persistence:
       data:
         existingClaim: ${VOLSYNC_CLAIM}
-
       mosquitto-config:
         enabled: true
         type: configMap
@@ -74,7 +57,6 @@ spec:
           - path: /mosquitto/config/mosquitto.conf
             subPath: mosquitto.conf
         defaultMode: 0664
-
       mosquitto-secret:
         enabled: true
         type: secret
@@ -82,7 +64,6 @@ spec:
         globalMounts:
           - path: /data/mosquitto_secret
         defaultMode: 0664
-
       mosquitto-init-config:
         enabled: true
         type: configMap
@@ -91,7 +72,6 @@ spec:
           - path: /data/mosquitto_init/load-users.sh
             subPath: load-users.sh
         defaultMode: 0775
-
       external-config:
         enabled: true
         type: emptyDir

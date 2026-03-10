@@ -4,66 +4,48 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app whisper
-
 spec:
-
   interval: 1h
-
   chartRef:
     kind: OCIRepository
     name: whisper
-
   maxHistory: 2
-
   install:
     remediation:
       retries: -1
-
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
-
   uninstall:
     keepHistory: false
-
   values:
-
     controllers:
-
       *app :
-
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           *app :
             image:
               repository: rhasspy/wyoming-whisper
               tag: 3.1.0@sha256:9501d2659eee83b6eead98d53842193e5fed011eda6c5b1c3ad36f3146b28fed
-
             args:
               - --model=small
               - --language=en
               - --data-dir=/data
-
             env:
               TZ: America/New_York
-
             resources:
               requests:
                 cpu: 500m
-                memory: 1Gi
+                memory: 1200Mi
               limits:
                 memory: 2Gi
-
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       terminationGracePeriodSeconds: 10
       securityContext:
@@ -72,7 +54,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-
     service:
       *app :
         controller: *app
@@ -83,11 +64,9 @@ spec:
           http:
             port: 10300
             protocol: TCP
-
     persistence:
       data:
         existingClaim: ${VOLSYNC_CLAIM}
-
       tmp:
         type: emptyDir
         medium: Memory

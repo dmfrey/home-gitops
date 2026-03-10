@@ -4,34 +4,23 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: jellyfin
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: jellyfin
-
   interval: 1h
-
   values:
-
     controllers:
-
       jellyfin:
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
-
           app:
-
             image:
               repository: jellyfin/jellyfin
               tag: 10.11.6@sha256:333b647716631443a43c7fabac4b0c46b4e2f036bad19547e00958f10f721b85
               pullPolicy: IfNotPresent
-
             env:
               TZ: America/New_York
               PUID: 1000
@@ -40,7 +29,6 @@ spec:
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
               JELLYFIN_PublishedServerUrl: https://jellyfin.dmfrey.com
-
             probes:
               liveness: &probes
                 enabled: false
@@ -56,21 +44,18 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-
             resources:
               claims:
                 - name: gpu
               requests:
                 cpu: 10m
-                memory: 2Gi
+                memory: 512Mi
               limits:
                 memory: 4Gi
-
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       resourceClaims:
         - name: gpu
@@ -82,14 +67,12 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 109]
-        seccompProfile: { type: RuntimeDefault }
-
+        seccompProfile: {type: RuntimeDefault}
     service:
       app:
         ports:
           http:
             port: 8096
-
     route:
       app:
         annotations:
@@ -109,27 +92,23 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
-
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /config
-
       # Separate PVC for cache to avoid backing up cache files
       cache:
         existingClaim: jellyfin-cache
         globalMounts:
           - path: /cache
             readOnly: false
-
       media:
         type: nfs
         server: nas.internal
         path: /media
         globalMounts:
           - path: /media
-
       transcode:
         type: custom
         volumeSpec:
@@ -145,7 +124,6 @@ spec:
         globalMounts:
           - path: /config/transcodes
             readOnly: false
-
       tmpfs:
         type: emptyDir
         sizeLimit: 10Gi

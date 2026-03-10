@@ -4,20 +4,14 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: nzbget
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: nzbget
-
   interval: 1h
-
   values:
-
     controllers:
       nzbget:
-
         initContainers:
           install-tools:
             image:
@@ -40,19 +34,16 @@ spec:
             securityContext:
               runAsUser: 0
               runAsNonRoot: false
-
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/nzbget
               tag: 26.0.0@sha256:0185f0b026696bfbb89f29aecf777b721a8aa288da90ceb1021b6ee52c6de8f7
-
             env:
               NZBGET__PORT: &port 80
               TZ: America/New_York
               PATH: /tools/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               LD_LIBRARY_PATH: /tools/lib
-
             probes:
               liveness: &probes
                 enabled: true
@@ -66,18 +57,15 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
-
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
               limits:
-                memory: 2Gi
-
+                memory: 256Mi
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |-
@@ -87,20 +75,17 @@ spec:
             "ips": ["192.168.90.21/24"],
             "mac": "a6:3e:4f:09:e4:9c"
           }]
-
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-
     service:
       app:
         ports:
           http:
             port: *port
-
     route:
       app:
         hostnames:
@@ -108,11 +93,9 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-
       media:
         type: nfs
         server: nas.internal
@@ -120,7 +103,6 @@ spec:
         globalMounts:
           - path: /media/downloads/nzbget
             subPath: downloads/nzbget
-
       tools:
         type: emptyDir
         advancedMounts:
@@ -129,7 +111,6 @@ spec:
               - path: /tools
             app:
               - path: /tools
-
       tmp:
         type: emptyDir
         globalMounts:

@@ -4,32 +4,23 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: plex
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: plex
-
   interval: 1h
-
   values:
-
     controllers:
-
       plex:
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
           backup.home.arpa/enabled: "true"
-
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/plex
               tag: 1.43.0.10492@sha256:8cb062f2b0660bd7811387e6c799da0ce5f18112078fe21485c11adcc83a9c1c
-
             env:
               TZ: America/New_York
               PLEX_ADVERTISE_URL: https://plex.dmfrey.com:443,http://192.168.29.227:32400,http://plex.media.svc.cluster.local:32400
@@ -42,11 +33,9 @@ spec:
               PLEX_PREFERENCE_PORT_MAPPING: "ManualPortMappingMode=1"
               PLEX_PREFERENCE_MAPPED_PORT: "ManualPortMappingPort=443"
               PLEX_PREFERENCE_LAN: "LanNetworksBandwidth=192.168.0.0/16"
-
             envFrom:
               - secretRef:
                   name: plex-secret
-
             probes:
               liveness: &probes
                 enabled: true
@@ -65,21 +54,18 @@ spec:
                 spec:
                   failureThreshold: 30
                   periodSeconds: 10
-
             resources:
               claims:
                 - name: gpu
               requests:
-                cpu: 100m
-                memory: 2Gi
+                cpu: 50m
+                memory: 512Mi
               limits:
                 memory: 4Gi
-
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       resourceClaims:
         - name: gpu
@@ -90,13 +76,12 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-
     service:
       app:
         type: LoadBalancer
         annotations:
           # external-dns.alpha.kubernetes.io/hostname: &host plex.dmfrey.com
-          lbipam.cilium.io/ips: 192.168.29.227 #, ::ffff:192.168.30.227
+          lbipam.cilium.io/ips: 192.168.29.227  #, ::ffff:192.168.30.227
         externalTrafficPolicy: Local
         ports:
           http:
@@ -123,7 +108,6 @@ spec:
           # gdm-4:
           #   port: 32414
           #   protocol: UDP
-
     route:
       app:
         annotations:
@@ -161,27 +145,22 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-
       # Separate PVC for cache to avoid backing up cache files
       cache:
         existingClaim: plex-cache
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server/Cache
-
       logs:
         type: emptyDir
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server/Logs
-
       media:
         type: nfs
         server: nas.internal
         path: /media
-
       transcode:
         type: custom
         volumeSpec:
@@ -194,11 +173,9 @@ spec:
                 resources:
                   requests:
                     storage: 500Gi
-
       tmp:
         type: emptyDir
         sizeLimit: 10Gi
-
       backup:
         type: nfs
         server: nas.internal

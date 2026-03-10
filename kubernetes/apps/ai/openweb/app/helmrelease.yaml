@@ -3,31 +3,22 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: openweb
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: openweb
-
   interval: 1h
-
   values:
-
     controllers:
-
       openweb:
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.8.10-ollama
-
             env:
               TZ: America/New_York
               ENABLE_OPENAI_API: False
@@ -39,9 +30,8 @@ spec:
               OLLAMA_BASE_URL: http://ollama.internal:11434
               # WEBUI_AUTH_TRUSTED_EMAIL_HEADER: X-authentik-email
               AUDIO_OPENAI_API_BASE_URL: https://piper.dmfrey.com/v1
-              AUDIO_OPENAI_API_KEY: sk-111111111111 # fake key needed to make ui happy
+              AUDIO_OPENAI_API_KEY: sk-111111111111  # fake key needed to make ui happy
               RAG_EMBEDDING_ENGINE: ollama
-
               # OAUTH
               ENABLE_OAUTH_SIGNUP: true
               OAUTH_MERGE_ACCOUNTS_BY_EMAIL: true
@@ -51,37 +41,31 @@ spec:
               # OAUTH_CLIENT_SECRET: in external secret
               OAUTH_SCOPES: openid email profile
               OPENID_REDIRECT_URI: https://openweb.dmfrey.com/oauth/oidc/callback
-
               # Postgres
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
                     name: openweb-cnpg-app
                     key: uri
-
               # Dragonfly (Redis)
               REDIS_URL: redis://openweb-dragonflydb.ai.svc.cluster.local/0
               THREAD_POOL_SIZE: 10
               ENABLE_WEBSOCKET_SUPPORT: true
               WEBSOCKET_MANAGER: redis
               WEBSOCKET_REDIS_URL: redis://openweb-dragonflydb.ai.svc.cluster.local/1
-
             envFrom:
               - secretRef:
                   name: openweb-secret
-
             resources:
               requests:
-                cpu: 500m
+                cpu: 10m
               limits:
                 memory: 2Gi
-
     service:
       app:
         ports:
           http:
             port: 8080
-
     route:
       app:
         annotations:
@@ -98,13 +82,10 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-
     persistence:
-
       data:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
-
       tmp:
         enabled: true
         type: emptyDir

@@ -4,23 +4,16 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: qbittorrent
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: qbittorrent
-
   interval: 1h
-
   values:
-
     controllers:
       qbittorrent:
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         initContainers:
           install-tools:
             image:
@@ -42,20 +35,17 @@ spec:
             securityContext:
               runAsUser: 0
               runAsNonRoot: false
-
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.4@sha256:bb82ad6668f8eda1d0fcce6c1341498bfa879155bb1295cd9d314a2c35c07a01
-
             env:
               TZ: America/New_York
               QBT_WEBUI_PORT: &port 80
               QBT_TORRENTING_PORT: 50413
               PATH: /tools/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               LD_LIBRARY_PATH: /tools/lib
-
             probes:
               liveness: &probes
                 enabled: true
@@ -74,18 +64,15 @@ spec:
                 spec:
                   failureThreshold: 30
                   periodSeconds: 10
-
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 100m
+                cpu: 25m
               limits:
                 memory: 8Gi
-
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |-
@@ -95,23 +82,19 @@ spec:
             "ips": ["192.168.90.22/24"],
             "mac": "32:0b:d8:1f:b6:e4"
           }]
-
       labels:
         setGateway: "false"
-
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-
     service:
       app:
         ports:
           http:
             port: *port
-
     route:
       app:
         annotations:
@@ -133,25 +116,21 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-
     configMaps:
       config:
         data:
           .qbt.toml: |-
             [qbittorrent]
             addr = "http://localhost:80"
-
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-
       config-file:
         type: configMap
         identifier: config
         globalMounts:
           - path: /config/.qbt.toml
             subPath: .qbt.toml
-
       media:
         type: nfs
         server: nas.internal
@@ -159,7 +138,6 @@ spec:
         globalMounts:
           - path: /media/downloads/qbittorrent
             subPath: downloads/qbittorrent
-
       tools:
         type: emptyDir
         advancedMounts:
@@ -168,13 +146,11 @@ spec:
               - path: /tools
             app:
               - path: /tools
-
       scripts:
         type: configMap
         name: qbittorrent-scripts
         defaultMode: 0555
         globalMounts:
           - path: /config/scripts
-
       tmp:
         type: emptyDir

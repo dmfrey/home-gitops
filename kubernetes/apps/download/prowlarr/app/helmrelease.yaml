@@ -4,31 +4,22 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: prowlarr
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: prowlarr
-
   interval: 1h
-
   values:
-
     controllers:
-
       prowlarr:
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/prowlarr
               tag: 2.3.3.5296@sha256:77af331ea53601fe4b8cc865d0bd3dc6eb73903a04483b49f7d5f78ee723510e
-
             env:
               TZ: America/New_York
               PROWLARR__APP__INSTANCE_NAME: Prowlarr
@@ -44,7 +35,6 @@ spec:
               PROWLARR__LOG__LEVEL: info
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
-
             probes:
               liveness: &probes
                 enabled: true
@@ -58,18 +48,15 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-
             resources:
               requests:
-                cpu: 100m
+                cpu: 25m
               limits:
                 memory: 1Gi
-
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -77,13 +64,11 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-
     service:
       app:
         ports:
           http:
             port: *port
-
     route:
       app:
         hostnames: ["{{ .Release.Name }}.dmfrey.com"]
@@ -99,11 +84,9 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
-
       backups:
         type: nfs
         server: nas.internal
@@ -113,7 +96,6 @@ spec:
             app:
               - path: /config/Backups
                 readOnly: false
-
       tmp:
         type: emptyDir
         medium: Memory

@@ -4,26 +4,18 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: home-assistant
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: home-assistant
-
   interval: 1h
-
   values:
-
     controllers:
-
       home-assistant:
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
           secret.reloader.stakater.com/reload: home-assistant-cnpg-app
-
         initContainers:
           venv-cleanup:
             image:
@@ -45,14 +37,12 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
+              capabilities: {drop: ["ALL"]}
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/home-assistant
               tag: 2026.3.1@sha256:067e54e2e107892a584936f064147f8bf47c0120eed34e272cf6eb6c8520b0de
-
             env:
               TZ: America/New_York
               HASS_RECORDER_DB_URL:
@@ -60,28 +50,22 @@ spec:
                   secretKeyRef:
                     name: home-assistant-cnpg-app
                     key: uri
-
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
               limits:
                 memory: 2Gi
-
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
+              capabilities: {drop: ["ALL"]}
           codeserver:
-
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.110.0
-
             args:
               - "/config"
               - --auth
@@ -90,7 +74,6 @@ spec:
               - "/config/.vscode"
               - --extensions-dir
               - "/config/.vscode"
-
             env:
               TZ: America/New_York
               HASS_SERVER: http://localhost:8123
@@ -99,7 +82,6 @@ spec:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-secret"
                     key: CODE_SERVER_ADDON_HASS_TOKEN
-
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
@@ -117,7 +99,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 568
-
     service:
       app:
         ports:
@@ -128,7 +109,6 @@ spec:
         ports:
           http:
             port: &codePort 8080
-
     route:
       app:
         annotations:
@@ -167,30 +147,25 @@ spec:
           - backendRefs:
               - identifier: code
                 port: *codePort
-
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /config
-
       config-cache:
         existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/.venv
-
       llmvision:
         existingClaim: home-assistant-llmvision
         advancedMounts:
           home-assistant:
             app:
               - path: /config/www/llmvision
-
       media:
         type: nfs
         server: nas.internal
         path: /media
-
       tmpfs:
         type: emptyDir
         globalMounts:
@@ -198,7 +173,6 @@ spec:
             subPath: tts
           - path: /tmp
             subPath: tmp
-
       backups:
         enabled: true
         type: nfs
@@ -209,4 +183,3 @@ spec:
             app:
               - path: /config/backups
                 readOnly: false
-

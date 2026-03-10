@@ -4,101 +4,73 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: authentik
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: authentik
-
   interval: 1h
-
   values:
-
     global:
       storageClass: ceph-block
-
       image:
         repository: ghcr.io/goauthentik/server
         tag: 2026.2.1
         pullPolicy: IfNotPresent
-
       envFrom:
         - secretRef:
             name: authentik-secret
-
     authentik:
-
       security_key: ""
-
       avatars: "gravatar,initials"
-
       log_level: info
-
       email:
         host: smtp-relay.kube-system.svc.cluster.local
         port: 25
         use_tls: false
         from: noreply@homelab5767.cc
-
       error_reporting:
         enabled: false
         send_pii: false
-
       postgresql:
         host: file:///postgres-creds/host
         port: 5432
         user: file:///postgres-creds/username
         password: file:///postgres-creds/password
-
       redis:
         host: authentik-dragonflydb.security.svc.cluster.local
-
     geoip:
       enabled: true
-
       existingSecret:
         secretName: authentik-secret
         accountId: MAXMIND_ACCOUNT_ID
         licenseKey: MAXMIND_LICENSE_KEY
-
       editionIds: "GeoLite2-City"
-
       image:
         repository: ghcr.io/maxmind/geoipupdate
         tag: v7.1.1
-
       updateInterval: 8
-
       resources:
         requests:
           cpu: 50m
         limits:
           memory: 512Mi
-
     prometheus:
       rules:
         enabled: true
-
     server:
-
       autoscaling:
         enabled: true
         minReplicas: 2
-
       deploymentAnnotations:
         secret.reloader.stakater.com/reload: authentik-cnpg-app
-
       metrics:
         serviceMonitor:
           enabled: true
-
       resources:
         requests:
-          cpu: 200m
+          cpu: 50m
         limits:
           memory: 1024Mi
-
       volumes: &postgresCredsVolume
         - name: postgres-creds
           secret:
@@ -107,18 +79,14 @@ spec:
         - name: postgres-creds
           mountPath: /postgres-creds
           readOnly: true
-
     worker:
-
       autoscaling:
         enabled: true
         minReplicas: 2
-
       resources:
         requests:
           cpu: 100m
         limits:
           memory: 1024Mi
-
       volumes: *postgresCredsVolume
       volumeMounts: *postgresCredsVolumeMounts

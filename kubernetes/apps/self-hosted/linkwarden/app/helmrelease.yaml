@@ -4,25 +4,17 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: linkwarden
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: linkwarden
-
   interval: 1h
-
   values:
-
     controllers:
-
       linkwarden:
         type: statefulset
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         initContainers:
           playwright-install:
             image:
@@ -33,23 +25,19 @@ spec:
               - /data/node_modules/playwright/cli.js
               - install
               - chromium-headless-shell
-
         containers:
           app:
             image:
               repository: ghcr.io/linkwarden/linkwarden
               tag: v2.13.5@sha256:1588811d7b7d249d387782bb94c7eb189082b82b542ac1667d2ac3d7e7f70ce6
-
             env:
               TZ: America/New_York
               NODE_ENV: production
-
-              STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
+              STORAGE_FOLDER: "config"  # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
               HOME: /data/config
               PDF_MAX_BUFFER: 100
               MONOLITH_MAX_BUFFER: 100
               SCREENSHOT_MAX_BUFFER: 100
-
               NEXTAUTH_URL: https://bookmarks.dmfrey.com/api/v1/auth
               NEXT_PUBLIC_AUTHENTIK_ENABLED: true
               NEXT_PUBLIC_DISABLE_REGISTRATION: true
@@ -63,18 +51,14 @@ spec:
                   secretKeyRef:
                     name: linkwarden-cnpg-app
                     key: uri
-
               NEXT_PUBLIC_OLLAMA_ENDPOINT_URL: http://ollama.internal:11434
               OLLAMA_MODEL: llama3.2
-
               NEXT_PUBLIC_EMAIL_PROVIDER: true
               EMAIL_FROM: bookmarks@dmfrey.com
               EMAIL_SERVER: smtp://smtp-relay.kube-system.svc.cluster.local:2525
-
             envFrom:
               - secretRef:
                   name: linkwarden-secret
-
             probes:
               liveness: &probes
                 enabled: true
@@ -87,14 +71,12 @@ spec:
                   periodSeconds: 30
                   failureThreshold: 5
               readiness: *probes
-
             resources:
               requests:
-                cpu: 100m
+                cpu: 25m
                 memory: 1Gi
               limits:
                 memory: 2Gi
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -102,13 +84,11 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-
     service:
       app:
         ports:
           http:
             port: 3000
-
     route:
       app:
         annotations:
@@ -128,25 +108,22 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data/config
-
       next-cache:
         type: emptyDir
         medium: Memory
         sizeLimit: 512Mi
         globalMounts:
           - path: /data/apps/web/.next/cache
-
       tmp:
         type: emptyDir
 
-      # cache:
-      #   type: emptyDir
-      #   medium: Memory
-      #   globalMounts:
-      #     - path: /data/config/.cache
+# cache:
+#   type: emptyDir
+#   medium: Memory
+#   globalMounts:
+#     - path: /data/config/.cache
