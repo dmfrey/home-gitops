@@ -9,7 +9,7 @@ You are assisting with the `homelab-k8s-001` Kubernetes homelab cluster (Talos L
 ## Environment
 
 - `KUBECONFIG=./kubeconfig` must be set (already configured in this repo's environment)
-- Apps live under `kubernetes/homelab-k8s-001/apps/<namespace>/`
+- Apps live under `kubernetes/apps/<namespace>/`
 - Use `just kube <cmd>` for common operations (see CLAUDE.md for full list)
 
 ## Common Operations

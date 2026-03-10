@@ -3,7 +3,7 @@ set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 bootstrap_dir := justfile_dir() + '/bootstrap'
-kubernetes_dir := justfile_dir() + '/kubernetes/homelab-k8s-001'
+kubernetes_dir := justfile_dir() + '/kubernetes'
 controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 nodes := `talosctl config info -o yaml | yq -e '.nodes | join (" ")'`
 

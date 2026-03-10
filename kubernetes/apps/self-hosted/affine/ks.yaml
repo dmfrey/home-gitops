@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: affine-db
+spec:
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: datastore
+  # healthChecks:
+  #   - apiVersion: postgresql.cnpg.io/v1
+  #     kind: Cluster
+  #     name: affine-cnpg
+  interval: 1h
+  path: "./kubernetes/apps/self-hosted/affine/affine-db"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: self-hosted
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: affine-kv
+spec:
+  dependsOn:
+    - name: dragonfly-operator
+      namespace: datastore
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  healthChecks:
+    - apiVersion: dragonflydb.io/v1alpha1
+      kind: Dragonfly
+      name: affine-dragonflydb
+      namespace: self-hosted
+  interval: 1h
+  path: "./kubernetes/apps/self-hosted/affine/affine-kv"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: self-hosted
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: affine-indexer
+spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 1h
+  path: "./kubernetes/apps/self-hosted/affine/affine-indexer"
+  postBuild:
+    substitute:
+      APP: affine-indexer
+      CONTROLLER: StatefulSet
+      VOLSYNC_CAPACITY: 2Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: self-hosted
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: affine
+spec:
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: affine-db
+    - name: affine-kv
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 1h
+  path: "./kubernetes/apps/self-hosted/affine/app"
+  postBuild:
+    substitute:
+      APP: affine
+      VOLSYNC_CAPACITY: 10Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: self-hosted
+  timeout: 5m
+  wait: true

@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: piper
+spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 1h
+  path: "./kubernetes/apps/home/wyoming-services/piper"
+  postBuild:
+    substitute:
+      APP: piper
+      CONTROLLER: StatefulSet
+      VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: home
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: openwakeword
+spec:
+  interval: 1h
+  path: "./kubernetes/apps/home/wyoming-services/openwakeword"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: home
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: whisper
+spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 1h
+  path: "./kubernetes/apps/home/wyoming-services/whisper"
+  postBuild:
+    substitute:
+      APP: whisper
+      CONTROLLER: StatefulSet
+      VOLSYNC_CLAIM: whisper-data
+      VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: home
+  timeout: 5m
+  wait: false

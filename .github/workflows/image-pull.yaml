@@ -54,7 +54,7 @@ jobs:
           args: >-
             get cluster
             --all-namespaces
-            --path /github/workspace/kubernetes/homelab-k8s-001/flux/cluster
+            --path /github/workspace/kubernetes/flux/cluster
             --enable-images
             --only-images
             --output json

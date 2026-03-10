@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sonarr
+spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 1h
+  path: "./kubernetes/apps/media/sonarr/app"
+  postBuild:
+    substitute:
+      APP: sonarr
+      CONTROLLER: StatefulSet
+      VOLSYNC_CLAIM: sonarr-config
+      VOLSYNC_CAPACITY: 1Gi
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: media
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sonarr-provision
+spec:
+  dependsOn:
+    - name: sonarr
+    - name: tofu-controller
+      namespace: flux-system
+  interval: 1h
+  path: "./kubernetes/apps/media/sonarr/provision"
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: media
+  timeout: 5m
+  wait: true

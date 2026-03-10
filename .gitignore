@@ -83,10 +83,10 @@ talosconfig
 
 /tmp/
 
-kubernetes/homelab-k8s-001/apps/home/home-assistant/app/automations/*
-kubernetes/homelab-k8s-001/apps/home/home-assistant/app/configuration/*
-kubernetes/homelab-k8s-001/apps/home/home-assistant/app/dashboards/*
-kubernetes/homelab-k8s-001/apps/home/home-assistant/app/details/*
+kubernetes/apps/home/home-assistant/app/automations/*
+kubernetes/apps/home/home-assistant/app/configuration/*
+kubernetes/apps/home/home-assistant/app/dashboards/*
+kubernetes/apps/home/home-assistant/app/details/*
 
 .claude/settings.local.json
 .claude/todos.json

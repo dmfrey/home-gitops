@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pinepods-db
+spec:
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: datastore
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pinepods-cnpg
+  interval: 1h
+  path: "./kubernetes/apps/media/pinepods/pinepods-db"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: media
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pinepods-kv
+spec:
+  dependsOn:
+    - name: dragonfly-operator
+      namespace: datastore
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  healthChecks:
+    - apiVersion: dragonflydb.io/v1alpha1
+      kind: Dragonfly
+      name: pinepods-dragonflydb
+      namespace: media
+  interval: 1h
+  path: "./kubernetes/apps/media/pinepods/pinepods-kv"
+  postBuild:
+    substitute:
+      DB: pinepods-kv
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: media
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pinepods
+spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/volsync
+  dependsOn:
+    - name: pinepods-db
+    - name: pinepods-kv
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
+  interval: 1h
+  path: "./kubernetes/apps/media/pinepods/app"
+  postBuild:
+    substitute:
+      APP: pinepods
+      CONTROLLER: StatefulSet
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: media
+  wait: true

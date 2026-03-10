@@ -4,7 +4,7 @@ set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 mod bootstrap "bootstrap"
-mod kube "kubernetes/homelab-k8s-001"
+mod kube "kubernetes"
 mod talos "talos"
 
 [private]
