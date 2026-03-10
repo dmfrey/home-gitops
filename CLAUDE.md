@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a GitOps mono-repository for a Kubernetes homelab cluster (`homelab-k8s-001`) running on 3x GEEKOM Mini IT13 nodes with Talos Linux. The cluster is managed by Flux CD, with Renovate handling automated dependency updates.
+This is a GitOps mono-repository for a Kubernetes homelab cluster running on 3x GEEKOM Mini IT13 nodes with Talos Linux. The cluster is managed by Flux CD, with Renovate handling automated dependency updates.
 
 Key tools: `just`, `talosctl`, `kubectl`, `flux`, `helmfile`, `kustomize`, `kubeconform`, `flux-local`, `sops`, `minijinja-cli` (for `.j2` templates), `op` (1Password CLI).
 
@@ -80,7 +80,7 @@ talos/
 ├── machineconfig.yaml.j2   # Base Talos machine config (Jinja2 template)
 ├── schematic.yaml.j2       # Talos image schematic template
 ├── nodes/                  # Per-node overrides (e.g., 192.168.30.10.yaml.j2)
-└── homelab-k8s-001/        # Talos cluster config directory
+└── clusterconfig/          # Rendered Talos configs (gitignored)
 
 infrastructure/terraform/
 ├── security/authentik/     # Authentik SSO configuration

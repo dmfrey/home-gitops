@@ -1,10 +1,10 @@
 ---
 name: kubernetes
-description: Kubernetes operations for the homelab-k8s-001 cluster. Use when the user asks to check pod status, view logs, troubleshoot apps, inspect resources, manage HelmReleases/Kustomizations, or perform any kubectl/flux operations against the cluster.
+description: Kubernetes operations for the homelab cluster. Use when the user asks to check pod status, view logs, troubleshoot apps, inspect resources, manage HelmReleases/Kustomizations, or perform any kubectl/flux operations against the cluster.
 argument-hint: [namespace] [resource] [command]
 ---
 
-You are assisting with the `homelab-k8s-001` Kubernetes homelab cluster (Talos Linux, Flux CD, 3-node GEEKOM Mini IT13). The cluster uses GitOps via this repository.
+You are assisting with a Kubernetes homelab cluster (Talos Linux, Flux CD, 3-node GEEKOM Mini IT13). The cluster uses GitOps via this repository.
 
 ## Environment
 
