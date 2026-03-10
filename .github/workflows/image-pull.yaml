@@ -105,10 +105,15 @@ jobs:
       fail-fast: false
     steps:
       - name: Install talosctl
-        run: curl -fsSL https://talos.dev/install | sh
+        run: |
+          curl -fsSL -o /usr/local/bin/talosctl \
+            https://github.com/siderolabs/talos/releases/download/v1.12.4/talosctl-linux-amd64
+          chmod +x /usr/local/bin/talosctl
 
       - name: Pull Image
-        run: talosctl --nodes $NODE image pull ${{ matrix.image }}
+        env:
+          MATRIX_IMAGE: ${{ matrix.image }}
+        run: talosctl --nodes $NODE image pull "$MATRIX_IMAGE"
 
   success:
     if: ${{ !cancelled() }}
