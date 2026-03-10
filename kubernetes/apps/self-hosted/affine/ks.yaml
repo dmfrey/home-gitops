@@ -60,8 +60,6 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 1h
   path: "./kubernetes/apps/self-hosted/affine/affine-indexer"
   postBuild:
@@ -90,8 +88,6 @@ spec:
     - name: affine-kv
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 1h
   path: "./kubernetes/apps/self-hosted/affine/app"
   postBuild:

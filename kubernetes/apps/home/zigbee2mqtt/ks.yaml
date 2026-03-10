@@ -29,8 +29,6 @@ spec:
     - name: mosquitto
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 1h
   path: "./kubernetes/apps/home/zigbee2mqtt/app"
   postBuild:
@@ -62,8 +60,6 @@ spec:
     - name: mosquitto
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 1h
   path: "./kubernetes/apps/home/zigbee2mqtt/app-02"
   postBuild:

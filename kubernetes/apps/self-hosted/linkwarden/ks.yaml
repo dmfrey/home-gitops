@@ -36,8 +36,6 @@ spec:
     - name: linkwarden-db
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 1h
   path: "./kubernetes/apps/self-hosted/linkwarden/app"
   postBuild:
