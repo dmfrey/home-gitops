@@ -6,22 +6,17 @@ metadata:
   name: pinepods-cnpg
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-
 spec:
-
   instances: 1
   enablePDB: false
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
-
   managed:
     services:
       disabledDefaultServices:
         - ro
-
   backup:
     volumeSnapshot:
       className: csi-ceph-blockpool
-
   bootstrap:
     # initdb:
     #   dataChecksums: true
@@ -34,7 +29,6 @@ spec:
       database: pinepods
       owner: pinepods
       source: source
-
   externalClusters:
     - name: source
       plugin:
@@ -42,37 +36,30 @@ spec:
         parameters:
           barmanObjectName: pinepods
           serverName: pinepods-cnpg
-
   # To be removed in a future release
   monitoring:
     enablePodMonitor: false
-
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: pinepods
-
   postgresql:
     parameters:
       max_connections: "600"
-      shared_buffers: 256MB # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
-
-  primaryUpdateStrategy: unsupervised # let k8s handle upgrades
-  primaryUpdateMethod: restart # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
-
+      shared_buffers: 256MB  # amount of RAM to use for data caching, https://postgresqlco.nf/doc/en/param/shared_buffers/
+  primaryUpdateStrategy: unsupervised  # let k8s handle upgrades
+  primaryUpdateMethod: restart  # prefer downtime of image download from registry instead of switching primary instance (promote a standby instance to primary) when current primary pod is updated
   resources:
     requests:
       cpu: 250m
-      memory: 1024Mi
+      memory: 512Mi
     limits:
       cpu: 1000m
-      memory: 2048Mi
-
+      memory: 1024Mi
   storage:
     storageClass: ceph-block
     size: 25Gi
-
   walStorage:
     storageClass: ceph-block
     size: 25Gi
