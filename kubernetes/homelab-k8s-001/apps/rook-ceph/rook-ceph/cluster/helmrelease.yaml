@@ -44,6 +44,9 @@ spec:
           osd_class_update_on_start: "false" # quote
           osd_memory_target: "4294967296" # 4Gi
 
+        mgr:
+          mgr/crash/warn_recent_interval: "7200" # 2 hours (default is 1209600 = 2 weeks)
+
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
 

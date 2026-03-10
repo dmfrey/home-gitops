@@ -31,7 +31,7 @@ spec:
 
             env:
               TZ: America/New_York
-              # NODE_ENV: production
+              NODE_ENV: production
 
               STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
               HOME: /data/config
@@ -64,20 +64,33 @@ spec:
               - secretRef:
                   name: linkwarden-secret
 
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+
             resources:
               requests:
-                cpu: 10m
-                memory: 2Gi
+                cpu: 100m
+                memory: 1Gi
               limits:
-                memory: 4Gi
+                memory: 2Gi
 
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
-    #     fsGroup: 1000
-    #     fsGroupChangePolicy: OnRootMismatch
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
@@ -114,6 +127,7 @@ spec:
       next-cache:
         type: emptyDir
         medium: Memory
+        sizeLimit: 512Mi
         globalMounts:
           - path: /data/.next/cache
 
