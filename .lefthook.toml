@@ -1,14 +1,9 @@
+[pre-commit.commands.yamlfmt]
+glob = "*.{yaml,yml}"
+run = "yamlfmt {staged_files}"
+stage_fixed = true
 
-[pre-commit]
-
-  [[pre-commit.commands]]
-  name = "yamlfmt"
-  glob = "*.{yaml,yml}"
-  run = "yamlfmt {staged_files}"
-  stage_fixed = true
-
-  [[pre-commit.commands]]
-  name = "just-fmt"
-  glob = "*.just"
-  run = "just --fmt --unstable -f {staged_files}"
-  stage_fixed = true
+[pre-commit.commands.just-fmt]
+glob = "*.just"
+run = "just --fmt --unstable -f {staged_files}"
+stage_fixed = true
