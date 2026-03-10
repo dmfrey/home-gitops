@@ -14,7 +14,7 @@ spec:
   #     name: affine-cnpg
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-db"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -40,7 +40,7 @@ spec:
       namespace: self-hosted
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/self-hosted/affine/affine-kv"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -69,7 +69,7 @@ spec:
       APP: affine-indexer
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 2Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -98,7 +98,7 @@ spec:
     substitute:
       APP: affine
       VOLSYNC_CAPACITY: 10Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

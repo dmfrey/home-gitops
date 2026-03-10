@@ -25,7 +25,7 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CAPACITY: 20Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

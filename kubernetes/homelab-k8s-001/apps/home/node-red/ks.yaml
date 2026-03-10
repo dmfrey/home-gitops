@@ -21,7 +21,7 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: node-red
       VOLSYNC_CAPACITY: 5Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

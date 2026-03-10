@@ -24,7 +24,7 @@ spec:
       - kind: Secret
         name: cluster-secrets
         optional: false
-  prune: true
+  prune: false
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

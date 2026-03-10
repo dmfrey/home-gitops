@@ -18,7 +18,7 @@ spec:
       APP: qbittorrent
       VOLSYNC_CLAIM: qbittorrent
       VOLSYNC_CAPACITY: 2Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

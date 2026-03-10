@@ -20,7 +20,7 @@ spec:
       APP: piper
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 5Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -37,7 +37,7 @@ metadata:
 spec:
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/home/wyoming-services/openwakeword"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -68,7 +68,7 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CLAIM: whisper-data
       VOLSYNC_CAPACITY: 5Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

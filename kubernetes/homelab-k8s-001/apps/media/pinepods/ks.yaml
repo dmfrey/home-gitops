@@ -16,7 +16,7 @@ spec:
       name: pinepods-cnpg
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/media/pinepods/pinepods-db"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -46,7 +46,7 @@ spec:
   postBuild:
     substitute:
       DB: pinepods-kv
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -77,7 +77,7 @@ spec:
     substitute:
       APP: pinepods
       CONTROLLER: StatefulSet
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

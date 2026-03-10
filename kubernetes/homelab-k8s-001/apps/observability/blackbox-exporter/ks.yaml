@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/blackbox-exporter/lan
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -26,7 +26,7 @@ spec:
       namespace: kube-system
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/blackbox-exporter/vpn
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

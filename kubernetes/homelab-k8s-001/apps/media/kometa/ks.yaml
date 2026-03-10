@@ -23,7 +23,7 @@ spec:
       APP: kometa
       VOLSYNC_CLAIM: pmm-config
       VOLSYNC_CAPACITY: 5Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

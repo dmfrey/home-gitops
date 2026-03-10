@@ -9,7 +9,7 @@ spec:
   #   - name: grafana-common
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/grafana/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -29,7 +29,7 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps/observability/grafana/instance
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

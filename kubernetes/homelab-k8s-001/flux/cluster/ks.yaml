@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/flux/repositories
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -28,7 +28,7 @@ spec:
 
   interval: 1h
   path: ./kubernetes/homelab-k8s-001/apps
-  prune: true # false # let's not make happy accidents
+  prune: false # false # let's not make happy accidents
   sourceRef:
     kind: GitRepository
     name: flux-system

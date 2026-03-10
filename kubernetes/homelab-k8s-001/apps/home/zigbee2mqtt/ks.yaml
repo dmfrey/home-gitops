@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1h
   path: "./kubernetes/homelab-k8s-001/apps/home/zigbee2mqtt/common"
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -40,7 +40,7 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -73,7 +73,7 @@ spec:
       VOLSYNC_CLAIM: data-zigbee2mqtt-02
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
