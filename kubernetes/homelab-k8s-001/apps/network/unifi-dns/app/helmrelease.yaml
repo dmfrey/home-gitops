@@ -77,8 +77,8 @@ spec:
       - gateway-httproute
       - service
 
-    txtOwnerId: homelab-k8s-001
-    txtPrefix: homelab-k8s-001.
+    txtOwnerId: main
+    txtPrefix: k8s.main.
     domainFilters:
       - dmfrey.com
 

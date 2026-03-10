@@ -61,8 +61,8 @@ spec:
       - crd
       - gateway-httproute
 
-    txtOwnerId: main
-    txtPrefix: k8s.001-
+    txtOwnerId: default
+    txtPrefix: k8s.
 
     domainFilters:
       - dmfrey.com
