@@ -35,7 +35,7 @@ spec:
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags
-    - --lua_flags=allow-undeclared-keys
+    - --lua-flags=allow-undeclared-keys
     - --s3_endpoint=minio.internal:9000
     - --s3_use_https=false
 
