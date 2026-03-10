@@ -14,3 +14,5 @@ _.file = [
 "aqua:helm/helm" = "4.1.1"
 "uv" = "latest"
 "pipx:flux-local" = "latest"
+"go:github.com/google/yamlfmt/cmd/yamlfmt" = "latest"
+"aqua:evilmartians/lefthook" = "latest"

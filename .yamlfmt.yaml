@@ -1,0 +1,9 @@
+---
+formatter:
+  type: basic
+  indent: 2
+  include_document_start: true
+  drop_merge_tag: true
+  pad_line_comments: 2
+  trim_trailing_whitespace: true
+  eof_newline: true
