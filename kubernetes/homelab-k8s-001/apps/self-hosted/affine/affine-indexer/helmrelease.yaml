@@ -32,13 +32,25 @@ spec:
             env:
               TZ: America/New_York
 
-            # envFrom:
-            #   - secretRef:
-            #       name: affine-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9308
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
 
-            # resources:
-            #   limits:
-            #     memory: 2Gi
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
 
     service:
       app:

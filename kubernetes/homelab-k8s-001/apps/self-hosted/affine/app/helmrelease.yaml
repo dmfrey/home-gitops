@@ -28,14 +28,16 @@ spec:
           migration:
             image:
               repository: ghcr.io/toeverything/affine
-              tag: 0.26.4   # 0.26.0@sha256:1e49d4ca17a06475940c24f78e44896b01174c7b15e022f79f157b99bb629145
+              tag: 0.26.4@sha256:638893c8f62bb7fd0b3028863096f2b057e3c7ca2ac5163574c333698a331f33
 
             command: ["sh", "-c", "node ./scripts/self-host-predeploy.js"]
 
             env:
               TZ: America/New_York
               NODE_ENV: production
-              AFFINE_INDEXER_ENABLED: false
+              AFFINE_INDEXER_ENABLED: true
+              AFFINE_INDEXER_SEARCH_PROVIDER: manticoresearch
+              AFFINE_INDEXER_SEARCH_ENDPOINT: http://affine-indexer.self-hosted.svc.cluster.local:9308
               AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/.well-known/openid-configuration"
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /root/.affine/config
@@ -51,7 +53,6 @@ spec:
               REDIS_SERVER_HOST: affine-dragonflydb.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
               UPLOAD_LOCATION: /root/.affine/storage
-              selfHosted: true
 
         containers:
           app:
@@ -62,7 +63,9 @@ spec:
             env:
               TZ: America/New_York
               NODE_ENV: production
-              AFFINE_INDEXER_ENABLED: false
+              AFFINE_INDEXER_ENABLED: true
+              AFFINE_INDEXER_SEARCH_PROVIDER: manticoresearch
+              AFFINE_INDEXER_SEARCH_ENDPOINT: http://affine-indexer.self-hosted.svc.cluster.local:9308
               AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/.well-known/openid-configuration"
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /root/.affine/config
@@ -78,13 +81,28 @@ spec:
               REDIS_SERVER_HOST: affine-dragonflydb.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
               UPLOAD_LOCATION: /root/.affine/storage
-              selfHosted: true
 
             envFrom:
               - secretRef:
                   name: affine-secret
 
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3010
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+
             resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
               limits:
                 memory: 2Gi
 
