@@ -15,21 +15,6 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   fix-permissions:
-        #     image:
-        #       repository: busybox
-        #       tag: stable
-
-        #     command: ["sh", "-c", "cp -R /data/.cache/* /cache/"]
-
-        #     securityContext:
-        #       runAsNonRoot: false
-        #       readOnlyRootFilesystem: true
-        #       allowPrivilegeEscalation: true
-        #       runAsUser: 0
-        #       runAsGroup: 0
-        #       capabilities: { add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"], drop: ["ALL"] }
         containers:
           app:
             image:
@@ -37,15 +22,29 @@ spec:
               tag: 2.7.10@sha256:ddb29c49c8c889ea12b177720bf7a5a174a23377ed8f4619263ed135002d7f6e
             env:
               TZ: America/New_York
-              LOG_LEVEL: debug
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
+              LOG_LEVEL: info
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8095
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             resources:
               requests:
-                memory: 256Mi
+                cpu: 10m
+                memory: 384Mi
               limits:
                 memory: 1024Mi
             securityContext:
@@ -71,10 +70,6 @@ spec:
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
-        # type: LoadBalancer
-        # annotations:
-        # lbipam.cilium.io/ips: 192.168.29.245 #, ::ffff:192.168.30.245
-        # externalTrafficPolicy: Local
         ports:
           http:
             port: &port 8095
@@ -84,16 +79,16 @@ spec:
             port: 1780
           sxm-proxy:
             port: 8100
-          # snapserver-player:
-          #   port: 1704
-          # snapserver-control:
-          #   port: 1705
-          # squeeze-cli:
-          #   port: 9090
-          # squeeze-rpc:
-          #   port: 9000
-          # squeeze-slimproto:
-          #   port: 3483
+            # snapserver-player:
+            #   port: 1704
+            # snapserver-control:
+            #   port: 1705
+            # squeeze-cli:
+            #   port: 9090
+            # squeeze-rpc:
+            #   port: 9000
+            # squeeze-slimproto:
+            #   port: 3483
     route:
       app:
         hostnames:
