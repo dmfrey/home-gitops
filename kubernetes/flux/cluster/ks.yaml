@@ -26,6 +26,8 @@ spec:
   decryption:
     provider: sops
 
+  deletionPolicy: WaitForTermination
+
   interval: 1h
   path: ./kubernetes/apps
   prune: true # false # let's not make happy accidents
