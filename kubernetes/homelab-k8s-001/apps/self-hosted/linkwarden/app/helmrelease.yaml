@@ -140,7 +140,7 @@ spec:
         medium: Memory
         sizeLimit: 512Mi
         globalMounts:
-          - path: /data/.next/cache
+          - path: /data/apps/web/.next/cache
 
       tmp:
         type: emptyDir
