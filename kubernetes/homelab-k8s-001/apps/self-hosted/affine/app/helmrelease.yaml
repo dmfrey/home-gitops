@@ -38,7 +38,7 @@ spec:
               AFFINE_INDEXER_ENABLED: true
               AFFINE_INDEXER_SEARCH_PROVIDER: manticoresearch
               AFFINE_INDEXER_SEARCH_ENDPOINT: http://affine-indexer.self-hosted.svc.cluster.local:9308
-              AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/.well-known/openid-configuration"
+              AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/"
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /root/.affine/config
               DATABASE_URL:
@@ -67,7 +67,7 @@ spec:
               AFFINE_INDEXER_ENABLED: true
               AFFINE_INDEXER_SEARCH_PROVIDER: manticoresearch
               AFFINE_INDEXER_SEARCH_ENDPOINT: http://affine-indexer.self-hosted.svc.cluster.local:9308
-              AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/.well-known/openid-configuration"
+              AFFINE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/affine/"
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
               CONFIG_LOCATION: /root/.affine/config
               DATABASE_URL:
