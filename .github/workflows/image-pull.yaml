@@ -1,19 +1,15 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Image Pull
-
 on:
   pull_request:
     branches:
       - main
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
-
 permissions:
   contents: read
-
 jobs:
   filter:
     name: Image Pull - Filter
@@ -23,10 +19,9 @@ jobs:
     steps:
       - name: Get Changed Files
         id: changed-files
-        uses: bjw-s-labs/action-changed-files@015416e33c709af88f84a4496f4030c1f0ef212e # v0.5.0
+        uses: bjw-s-labs/action-changed-files@015416e33c709af88f84a4496f4030c1f0ef212e  # v0.5.0
         with:
           patterns: kubernetes/**/*
-
   extract:
     if: ${{ needs.filter.outputs.changed-files != '[]' }}
     needs: filter
@@ -43,23 +38,15 @@ jobs:
       pull: ${{ steps.extract.outputs.pull }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           persist-credentials: false
           ref: ${{ matrix.branch == 'default' && github.event.repository.default_branch || '' }}
-
       - name: Gather Images
         uses: docker://ghcr.io/allenporter/flux-local:v8.1.0
         with:
           args: >-
-            get cluster
-            --all-namespaces
-            --path /github/workspace/kubernetes/flux/cluster
-            --enable-images
-            --only-images
-            --output json
-            --output-file images.json
-
+            get cluster --all-namespaces --path /github/workspace/kubernetes/flux/cluster --enable-images --only-images --output json --output-file images.json
       - name: Extract Images
         id: extract
         run: |
@@ -69,7 +56,6 @@ jobs:
           echo '```json' >> $GITHUB_STEP_SUMMARY
           jq '.' images.json >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-
   diff:
     if: ${{ needs.extract.outputs.default != needs.extract.outputs.pull }}
     needs: extract
@@ -92,7 +78,6 @@ jobs:
           echo '```json' >> $GITHUB_STEP_SUMMARY
           echo $images | jq >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-
   pull:
     if: ${{ needs.diff.outputs.images != '[]' }}
     needs: diff
@@ -105,16 +90,17 @@ jobs:
       fail-fast: false
     steps:
       - name: Install talosctl
+        env:
+          # renovate: datasource=github-releases depName=siderolabs/talos
+          TALOS_VERSION: v1.12.5
         run: |
           curl -fsSL -o /usr/local/bin/talosctl \
-            https://github.com/siderolabs/talos/releases/download/v1.12.4/talosctl-linux-amd64
+            "https://github.com/siderolabs/talos/releases/download/${TALOS_VERSION}/talosctl-linux-amd64"
           chmod +x /usr/local/bin/talosctl
-
       - name: Pull Image
         env:
           MATRIX_IMAGE: ${{ matrix.image }}
         run: talosctl --nodes $NODE image pull "$MATRIX_IMAGE"
-
   success:
     if: ${{ !cancelled() }}
     needs: pull
@@ -124,7 +110,6 @@ jobs:
       - name: Any jobs failed?
         if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
-
       - name: All jobs passed or skipped?
         if: ${{ !(contains(needs.*.result, 'failure')) }}
         run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
