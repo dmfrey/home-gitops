@@ -80,13 +80,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
       redirect_uri  = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso"
       launch_url    = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/"
-    },
+    }
+  }
+
+  proxy_applications = {
     excalidraw = {
-      client_id     = var.EXCALIDRAW_CLIENT_ID
-      client_secret = var.EXCALIDRAW_CLIENT_SECRET
       group         = "home"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/excalidraw.png"
-      redirect_uri  = "https://excalidraw.${var.CLUSTER_DOMAIN}/oauth2/callback"
+      external_host = "https://excalidraw.${var.CLUSTER_DOMAIN}"
       launch_url    = "https://excalidraw.${var.CLUSTER_DOMAIN}/"
     }
   }
@@ -124,4 +125,35 @@ resource "authentik_application" "application" {
   meta_icon          = each.value.icon_url
   meta_launch_url    = each.value.launch_url
   policy_engine_mode = "all"
+}
+
+resource "authentik_provider_proxy" "proxy" {
+  for_each              = local.proxy_applications
+  name                  = each.key
+  external_host         = each.value.external_host
+  authorization_flow    = authentik_flow.provider-authorization-implicit-consent.uuid
+  authentication_flow   = authentik_flow.authentication.uuid
+  invalidation_flow     = data.authentik_flow.default-provider-invalidation-flow.id
+  mode                  = "forward_single"
+  access_token_validity = "hours=4"
+}
+
+resource "authentik_application" "proxy_application" {
+  for_each           = local.proxy_applications
+  name               = title(each.key)
+  slug               = each.key
+  protocol_provider  = authentik_provider_proxy.proxy[each.key].id
+  group              = authentik_group.default[each.value.group].name
+  open_in_new_tab    = true
+  meta_icon          = each.value.icon_url
+  meta_launch_url    = each.value.launch_url
+  policy_engine_mode = "all"
+}
+
+resource "authentik_policy_binding" "proxy_application_policy_binding" {
+  for_each = local.proxy_applications
+
+  target = authentik_application.proxy_application[each.key].uuid
+  group  = authentik_group.default[each.value.group].id
+  order  = 0
 }

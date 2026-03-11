@@ -3,21 +3,24 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: excalidraw-oidc
+  name: excalidraw
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       name: excalidraw-app
-  oidc:
-    provider:
-      issuer: https://auth.dmfrey.com/application/o/excalidraw/
-    clientID: excalidraw
-    clientSecret:
-      name: excalidraw-secret
-      key: AUTHENTIK_CLIENT_SECRET
-    redirectURL: "https://excalidraw.dmfrey.com/oauth2/callback"
-    scopes:
-      - openid
-      - profile
-      - email
+  extAuth:
+    http:
+      backendRefs:
+        - name: authentik-server
+          namespace: security
+          port: 80
+      headersToBackend:
+        - cookie
+        - authorization
+      headersToUpstream:
+        - x-authentik-username
+        - x-authentik-groups
+        - x-authentik-email
+        - x-authentik-name
+        - x-authentik-uid
