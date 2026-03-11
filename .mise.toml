@@ -17,3 +17,4 @@ _.file = [
 "go:github.com/google/yamlfmt/cmd/yamlfmt" = "latest"
 "aqua:evilmartians/lefthook" = "latest"
 go = "latest"
+yamlfmt = "latest"

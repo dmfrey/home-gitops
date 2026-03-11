@@ -12,9 +12,11 @@ spec:
   extAuth:
     http:
       backendRefs:
-        - name: ak-outpost-authentik-embedded-outpost
+        - name: ak-outpost-authentik-embedded-outpost.security.svc.cluster.local
           namespace: security
           port: 9000
       headersToBackend:
         - cookie
+        - X-authentik-username
+        - X-authentik-email
       path: /outpost.goauthentik.io/auth/envoy
