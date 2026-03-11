@@ -53,3 +53,14 @@ resource "authentik_service_connection_kubernetes" "local" {
   name  = "local"
   local = true
 }
+
+resource "authentik_outpost" "embedded" {
+  name               = "authentik Embedded Outpost"
+  type               = "proxy"
+  service_connection = authentik_service_connection_kubernetes.local.id
+  protocol_providers = [for k, v in authentik_provider_proxy.proxy : v.id]
+  config = jsonencode({
+    authentik_host          = "https://auth.${var.CLUSTER_DOMAIN}"
+    authentik_host_insecure = false
+  })
+}

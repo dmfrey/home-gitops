@@ -318,6 +318,12 @@ import {
   id = "83c19dd6-c14b-43d9-af67-13c00ca10751"
 }
 
+## Outpost
+import {
+  to = authentik_outpost.embedded
+  id = "8d29fcf4-adfd-4f58-9938-e71db7874211"
+}
+
 ## Token
 import {
   to = authentik_token.homepage
