@@ -16,3 +16,4 @@ _.file = [
 "pipx:flux-local" = "latest"
 "go:github.com/google/yamlfmt/cmd/yamlfmt" = "latest"
 "aqua:evilmartians/lefthook" = "latest"
+go = "latest"
