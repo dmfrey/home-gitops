@@ -9,6 +9,21 @@ spec:
   from:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
+      namespace: ai
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: download
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: home
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: media
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: observability
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
       namespace: self-hosted
   to:
     - group: ""
