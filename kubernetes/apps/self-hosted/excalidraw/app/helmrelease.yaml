@@ -4,29 +4,21 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: excalidraw
-
 spec:
-
   chartRef:
     kind: OCIRepository
     name: excalidraw
-
   interval: 1h
-
   values:
-
     controllers:
-
       excalidraw:
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
               repository: excalidraw/excalidraw
               tag: latest
-
             env:
               # NOTE: VITE_APP_WS_SERVER_URL is a Vite build-time variable.
               # The official excalidraw/excalidraw image may not support runtime
@@ -35,7 +27,6 @@ spec:
               # runtime env var injection, or proxying /socket.io/ to the room
               # server internally via nginx.
               VITE_APP_WS_SERVER_URL: https://excalidraw-room.dmfrey.com
-
             probes:
               liveness: &probes
                 enabled: true
@@ -48,27 +39,22 @@ spec:
                   periodSeconds: 30
                   failureThreshold: 5
               readiness: *probes
-
             resources:
               requests:
                 cpu: 10m
                 memory: 64Mi
               limits:
                 memory: 256Mi
-
       excalidraw-room:
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
               repository: excalidraw/excalidraw-room
               tag: latest
-
             env:
               REDIS_URI: redis://excalidraw-dragonflydb.self-hosted.svc.cluster.local:6379
-
             probes:
               liveness: &room-probes
                 enabled: true
@@ -81,14 +67,12 @@ spec:
                   periodSeconds: 30
                   failureThreshold: 5
               readiness: *room-probes
-
             resources:
               requests:
                 cpu: 10m
                 memory: 64Mi
               limits:
                 memory: 256Mi
-
     service:
       app:
         controller: excalidraw
@@ -100,10 +84,12 @@ spec:
         ports:
           http:
             port: 80
-
     route:
       app:
         annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+            url: "http://excalidraw-app.self-hosted.svc.cluster.local"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Tools
           gethomepage.dev/name: Excalidraw
