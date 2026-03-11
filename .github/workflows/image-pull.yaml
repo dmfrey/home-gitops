@@ -94,9 +94,11 @@ jobs:
           # renovate: datasource=github-releases depName=siderolabs/talos
           TALOS_VERSION: v1.12.5
         run: |
-          curl -fsSL -o /usr/local/bin/talosctl \
+          mkdir -p ~/.local/bin
+          curl -fsSL -o ~/.local/bin/talosctl \
             "https://github.com/siderolabs/talos/releases/download/${TALOS_VERSION}/talosctl-linux-amd64"
-          chmod +x /usr/local/bin/talosctl
+          chmod +x ~/.local/bin/talosctl
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Pull Image
         env:
           MATRIX_IMAGE: ${{ matrix.image }}
