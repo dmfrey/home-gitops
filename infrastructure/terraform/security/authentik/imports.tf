@@ -337,11 +337,6 @@ import {
 }
 
 import {
-  to = authentik_provider_oauth2.oauth2["blinko"]
-  id = "3"
-}
-
-import {
   to = authentik_provider_oauth2.oauth2["gatus"]
   id = "5"
 }
@@ -385,11 +380,6 @@ import {
 import {
   to = authentik_application.application["affine"]
   id = "affine"
-}
-
-import {
-  to = authentik_application.application["blinko"]
-  id = "blinko"
 }
 
 import {
@@ -442,11 +432,6 @@ import {
 import {
   to = authentik_policy_binding.application_policy_binding["affine"]
   id = "10b136e7-1474-4ae6-99fe-587978b078bd"
-}
-
-import {
-  to = authentik_policy_binding.application_policy_binding["blinko"]
-  id = "f3ddb8e7-2bf0-4515-b7f0-242f7f68eeba"
 }
 
 import {

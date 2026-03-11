@@ -34,11 +34,6 @@ variable "GRAFANA_CLIENT_SECRET" {
   type      = string
   sensitive = true
 }
-variable "BLINKO_CLIENT_ID" { type = string }
-variable "BLINKO_CLIENT_SECRET" {
-  type      = string
-  sensitive = true
-}
 variable "JELLYFIN_CLIENT_ID" { type = string }
 variable "JELLYFIN_CLIENT_SECRET" {
   type      = string

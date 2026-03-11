@@ -25,14 +25,6 @@ locals {
       redirect_uri  = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
       launch_url    = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
     },
-    blinko = {
-      client_id     = var.BLINKO_CLIENT_ID
-      client_secret = var.BLINKO_CLIENT_SECRET
-      group         = "home"
-      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/blinko.png"
-      redirect_uri  = "https://notes.${var.CLUSTER_DOMAIN}/api/auth/callback/blinko"
-      launch_url    = "https://notes.${var.CLUSTER_DOMAIN}/"
-    },
     jellyfin = {
       client_id     = var.JELLYFIN_CLIENT_ID
       client_secret = var.JELLYFIN_CLIENT_SECRET
