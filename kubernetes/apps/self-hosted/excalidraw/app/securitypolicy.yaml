@@ -15,6 +15,4 @@ spec:
         - name: authentik-server
           namespace: security
           port: 80
-      headersToBackend:
-        - cookie
-        - authorization
+      path: /outpost.goauthentik.io/auth/nginx
