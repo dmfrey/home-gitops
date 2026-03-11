@@ -35,11 +35,6 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/apps/self-hosted/excalidraw/app"
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: excalidraw-secret
-        optional: false
   prune: true
   sourceRef:
     kind: GitRepository

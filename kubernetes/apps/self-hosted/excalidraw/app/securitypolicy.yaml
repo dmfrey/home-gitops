@@ -12,7 +12,7 @@ spec:
   oidc:
     provider:
       issuer: https://auth.dmfrey.com/application/o/excalidraw/
-    clientID: "${AUTHENTIK_CLIENT_ID}"
+    clientID: excalidraw
     clientSecret:
       name: excalidraw-secret
       key: AUTHENTIK_CLIENT_SECRET
