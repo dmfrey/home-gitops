@@ -12,7 +12,9 @@ spec:
   extAuth:
     http:
       backendRefs:
-        - name: authentik-server
+        - name: ak-outpost-authentik-embedded-outpost
           namespace: security
-          port: 80
-      path: /outpost.goauthentik.io/auth/nginx
+          port: 9000
+      headersToBackend:
+        - cookie
+      path: /outpost.goauthentik.io/auth/envoy

@@ -10,22 +10,40 @@ spec:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
       namespace: ai
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: ai
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
+      namespace: download
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
       namespace: download
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
       namespace: home
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: home
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
+      namespace: media
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
       namespace: media
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
       namespace: observability
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: observability
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
+      namespace: self-hosted
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
       namespace: self-hosted
   to:
     - group: ""
       kind: Service
-      name: authentik-server
+      name: ak-outpost-authentik-embedded-outpost
