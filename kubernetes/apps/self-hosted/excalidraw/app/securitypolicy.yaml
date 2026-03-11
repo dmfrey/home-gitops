@@ -10,13 +10,20 @@ spec:
       kind: HTTPRoute
       name: excalidraw-app
   extAuth:
+    headersToExtAuth:
+      - Authorization
+      - X-Api-Key
+      - cookie
+    recomputeRoute: true
     http:
       backendRefs:
         - name: ak-outpost-authentik-embedded-outpost.security.svc.cluster.local
           namespace: security
           port: 9000
       headersToBackend:
-        - cookie
-        - X-authentik-username
-        - X-authentik-email
+        # - cookie
+        - Authorization
+        # - X-Api-Key
+        # - X-authentik-username
+        # - X-authentik-email
       path: /outpost.goauthentik.io/auth/envoy
