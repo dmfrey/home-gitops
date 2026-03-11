@@ -1,0 +1,130 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: excalidraw
+
+spec:
+
+  chartRef:
+    kind: OCIRepository
+    name: excalidraw
+
+  interval: 1h
+
+  values:
+
+    controllers:
+
+      excalidraw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: excalidraw/excalidraw
+              tag: latest
+
+            env:
+              # NOTE: VITE_APP_WS_SERVER_URL is a Vite build-time variable.
+              # The official excalidraw/excalidraw image may not support runtime
+              # injection of this value. If real-time collaboration does not work
+              # after deployment, consider using a community image that supports
+              # runtime env var injection, or proxying /socket.io/ to the room
+              # server internally via nginx.
+              VITE_APP_WS_SERVER_URL: https://excalidraw-room.dmfrey.com
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 80
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+      excalidraw-room:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: excalidraw/excalidraw-room
+              tag: latest
+
+            env:
+              REDIS_URI: redis://excalidraw-dragonflydb.self-hosted.svc.cluster.local:6379
+
+            probes:
+              liveness: &room-probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 80
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *room-probes
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+    service:
+      app:
+        controller: excalidraw
+        ports:
+          http:
+            port: 80
+      room:
+        controller: excalidraw-room
+        ports:
+          http:
+            port: 80
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Tools
+          gethomepage.dev/name: Excalidraw
+          gethomepage.dev/icon: excalidraw.png
+          gethomepage.dev/description: Virtual collaborative whiteboard.
+        hostnames:
+          - excalidraw.dmfrey.com
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 80
+      room:
+        hostnames:
+          - excalidraw-room.dmfrey.com
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: room
+                port: 80

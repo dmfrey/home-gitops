@@ -80,6 +80,14 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
       redirect_uri  = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso"
       launch_url    = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/"
+    },
+    excalidraw = {
+      client_id     = var.EXCALIDRAW_CLIENT_ID
+      client_secret = var.EXCALIDRAW_CLIENT_SECRET
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/excalidraw.png"
+      redirect_uri  = "https://excalidraw.${var.CLUSTER_DOMAIN}/oauth2/callback"
+      launch_url    = "https://excalidraw.${var.CLUSTER_DOMAIN}/"
     }
   }
 }

@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_securitypolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: excalidraw-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: excalidraw-app
+  oidc:
+    provider:
+      issuer: https://auth.dmfrey.com/application/o/excalidraw/
+    clientID: "${AUTHENTIK_CLIENT_ID}"
+    clientSecret:
+      name: excalidraw-secret
+      key: AUTHENTIK_CLIENT_SECRET
+    redirectURL: "https://excalidraw.dmfrey.com/oauth2/callback"
+    scopes:
+      - openid
+      - profile
+      - email

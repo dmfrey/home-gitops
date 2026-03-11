@@ -10,6 +10,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./affine/ks.yaml
+  - ./excalidraw/ks.yaml
   - ./home-projects/ks.yaml
   - ./homepage/ks.yaml
   - ./linkwarden/ks.yaml
