@@ -88,7 +88,7 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/data
-      tmpFs:
+      tmpfs:
         type: emptyDir
         globalMounts:
           - path: /app/logs
