@@ -25,7 +25,7 @@ spec:
               PORT: "8000"
               LOG_LEVEL: INFO
               LOG_TO_FILE: "false"
-              HA_URL: http://home-assistant.home.svc.cluster.local:8123
+              HA_URL: http://home-assistant-app.home.svc.cluster.local:8123
             envFrom:
               - secretRef:
                   name: bambuddy-secret
