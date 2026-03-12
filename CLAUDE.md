@@ -88,8 +88,7 @@ infrastructure/terraform/
 
 bootstrap/
 ├── helmfile.d/             # Bootstrap Helm releases (cilium, coredns, spegel, flux, etc.)
-├── resources.yaml.j2       # Bootstrap Kubernetes resources (Jinja2)
-└── 1password-resources.yaml.j2
+└── resources.yaml.j2       # Bootstrap Kubernetes resources (Jinja2)
 ```
 
 ### Flux Application Pattern
