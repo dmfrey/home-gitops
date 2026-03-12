@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: bambuddy-rules
+spec:
+  groups:
+    - name: bambuddy.rules
+      rules:
+        - alert: BambuPrinterDisconnected
+          expr: |
+            bambuddy_printer_connected == 0
+          for: 5m
+          annotations:
+            summary: >-
+              Bambu printer {{ $labels.printer_name }} ({{ $labels.serial }}) has been disconnected for 5 minutes
+          labels:
+            severity: warning
+        - alert: BambuPrintFailed
+          expr: |
+            bambuddy_printer_state == 5
+          for: 1m
+          annotations:
+            summary: >-
+              Bambu printer {{ $labels.printer_name }} ({{ $labels.serial }}) has a failed print
+          labels:
+            severity: warning
+        - alert: BambuBedTempTooHigh
+          expr: |
+            bambuddy_bed_temp_celsius > 120
+          for: 5m
+          annotations:
+            summary: >-
+              Bambu printer {{ $labels.printer_name }} bed temperature is {{ $value }}°C, above expected maximum
+          labels:
+            severity: critical
+        - alert: BambuNozzleTempTooHigh
+          expr: |
+            bambuddy_nozzle_temp_celsius > 300
+          for: 5m
+          annotations:
+            summary: >-
+              Bambu printer {{ $labels.printer_name }} nozzle {{ $labels.nozzle }} temperature is {{ $value }}°C, above expected maximum
+          labels:
+            severity: critical
+        - alert: BambuChamberTempTooHigh
+          expr: |
+            bambuddy_chamber_temp_celsius > 60
+          for: 5m
+          annotations:
+            summary: >-
+              Bambu printer {{ $labels.printer_name }} chamber temperature is {{ $value }}°C, above expected maximum
+          labels:
+            severity: warning
+        - alert: BambuWifiSignalWeak
+          expr: |
+            bambuddy_wifi_signal_dbm < -80
+          for: 10m
+          annotations:
+            summary: >-
+              Bambu printer {{ $labels.printer_name }} WiFi signal is {{ $value }} dBm, connection may be unstable
+          labels:
+            severity: warning
