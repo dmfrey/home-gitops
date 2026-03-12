@@ -100,6 +100,19 @@ spec:
           - name: envoy-external
             namespace: network
         rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /assets/
+            filters:
+              - type: ResponseHeaderModifier
+                responseHeaderModifier:
+                  set:
+                    - name: Cache-Control
+                      value: no-store
+            backendRefs:
+              - identifier: app
+                port: 80
           - backendRefs:
               - identifier: app
                 port: 80
