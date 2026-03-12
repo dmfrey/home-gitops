@@ -6,14 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a GitOps mono-repository for a Kubernetes homelab cluster running on 3x GEEKOM Mini IT13 nodes with Talos Linux. The cluster is managed by Flux CD, with Renovate handling automated dependency updates.
 
-Key tools: `just`, `talosctl`, `kubectl`, `flux`, `helmfile`, `kustomize`, `kubeconform`, `flux-local`, `sops`, `minijinja-cli` (for `.j2` templates), `op` (1Password CLI).
+Key tools: `just`, `talosctl`, `kubectl`, `flux`, `helmfile`, `kustomize`, `kubeconform`, `flux-local`, `minijinja-cli` (for `.j2` templates), `op` (1Password CLI).
 
 The root justfile is `.justfile` (hidden), which declares three modules: `bootstrap`, `kube` (`kubernetes`), and `talos`. The internal `just template <file>` recipe renders Jinja2 templates via `minijinja-cli | op inject` (secrets injected from 1Password at render time).
 
 The following environment variables are expected to be set when working with this repo:
 - `KUBECONFIG=./kubeconfig`
 - `TALOSCONFIG=./talosconfig`
-- `SOPS_AGE_KEY_FILE=./age.key`
 - `MINIJINJA_CONFIG_FILE=./.minijinja.toml`
 
 ## Common Commands
@@ -111,13 +110,13 @@ apps/<namespace>/
         └── ...                  # pvc.yaml, configmap.yaml, etc.
 ```
 
-**Kustomization dependency chain**: `ks.yaml` declares `dependsOn` for ordering. HelmReleases use `bjw-s/app-template` charts pulled via OCIRepository. The cluster-apps Kustomization injects default SOPS decryption, `deletionPolicy: WaitForTermination`, and HelmRelease retry/remediation patches to all child Kustomizations.
+**Kustomization dependency chain**: `ks.yaml` declares `dependsOn` for ordering. HelmReleases use `bjw-s/app-template` charts pulled via OCIRepository. The cluster-apps Kustomization injects `deletionPolicy: WaitForTermination` and HelmRelease retry/remediation patches to all child Kustomizations.
 
 ### Secrets Management
 
 - **Kubernetes secrets**: `ExternalSecret` resources pull from 1Password via `ClusterSecretStore: onepassword`. Data keys use `op://` vault paths in template values.
 - **Talos machine configs**: Reference 1Password directly with `op://kubernetes/talos/...` syntax in `.j2` templates.
-- **Git-encrypted secrets**: SOPS with age encryption (`age.key`). Encrypted files should not be manually decrypted in the working directory.
+- **Bootstrap secrets**: `bootstrap/resources.yaml.j2` rendered via `minijinja-cli | op inject` at bootstrap time; no SOPS/age encryption used.
 - **Cluster-wide substitution**: `postBuild.substituteFrom` in `ks.yaml` pulls from `cluster-secrets` Secret for variables like `${IPV6_IOT_PREFIX}`.
 
 ### Storage

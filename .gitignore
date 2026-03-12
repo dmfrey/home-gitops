@@ -14,8 +14,7 @@ Thumbs.db
 bin
 *.iso
 
-# Sops
-*.agekey
+# Keys / certs
 .decrypted~*
 *.pub
 *.key
