@@ -1,9 +1,10 @@
 # Editors
-.vscode/
 
 # Folders
 ignore/
 testing/
+scratch/
+bak/
 
 # Trash
 .DS_Store
@@ -43,7 +44,6 @@ bin
 
 # Other files
 kubeconfig
-kubeconfig_bak
 talosconfig
 
 # Talos clusterconfigs
@@ -55,11 +55,7 @@ archive/kubernetes/talos
 *.snap
 setup/cluster/*cluster.yml
 
-scratch/*
-
 Untitled-1.sh
-
-bak/*
 
 *.key
 .decrypted~*
@@ -68,22 +64,17 @@ bak/*
 
 Brewfile.lock.json
 
-Thumbs.db
-.DS_Store
-
 /.private/
 /.task/
 /.venv/
 *.crt
 *.key
-.DS_Store
 kubeconfig
 onepassword.env
 talosconfig
 
 /tmp/
 
-kubernetes/apps/home/home-assistant/app/automations/*
 kubernetes/apps/home/home-assistant/app/configuration/*
 kubernetes/apps/home/home-assistant/app/dashboards/*
 kubernetes/apps/home/home-assistant/app/details/*
