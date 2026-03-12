@@ -22,20 +22,14 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
-
-  decryption:
-    provider: sops
-
   deletionPolicy: WaitForTermination
-
   interval: 1h
   path: ./kubernetes/apps
-  prune: true # false # let's not make happy accidents
+  prune: true  # false # let's not make happy accidents
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-
   patches:
     - # Add Kustomization defaults for all child Kustomizations
       patch: |-
@@ -44,8 +38,6 @@ spec:
         metadata:
           name: _
         spec:
-          decryption:
-            provider: sops
           deletionPolicy: WaitForTermination
           patches:
             - patch: |-
@@ -71,7 +63,6 @@ spec:
               target:
                 group: helm.toolkit.fluxcd.io
                 kind: HelmRelease
-
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
