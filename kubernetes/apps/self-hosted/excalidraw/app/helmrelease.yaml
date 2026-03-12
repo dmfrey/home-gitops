@@ -87,7 +87,7 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
+            conditions: ["[STATUS] < 400"]
             url: "http://excalidraw-app.self-hosted.svc.cluster.local"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Tools
