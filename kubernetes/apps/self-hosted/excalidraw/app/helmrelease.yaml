@@ -19,14 +19,13 @@ spec:
             image:
               repository: excalidraw/excalidraw
               tag: latest
-            env:
-              # NOTE: VITE_APP_WS_SERVER_URL is a Vite build-time variable.
-              # The official excalidraw/excalidraw image may not support runtime
-              # injection of this value. If real-time collaboration does not work
-              # after deployment, consider using a community image that supports
-              # runtime env var injection, or proxying /socket.io/ to the room
-              # server internally via nginx.
-              VITE_APP_WS_SERVER_URL: https://excalidraw-room.dmfrey.com
+            command:
+              - /bin/sh
+              - -c
+              - |
+                find /usr/share/nginx/html/assets -type f -name "*.js" \
+                  -exec sed -i 's|https://oss-collab\.excalidraw\.com|https://excalidraw-room.dmfrey.com|g' {} +
+                exec nginx -g 'daemon off;'
             probes:
               liveness: &probes
                 enabled: true
