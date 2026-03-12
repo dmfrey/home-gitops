@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bambuddy
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: bambuddy
+  interval: 1h
+  values:
+    controllers:
+      bambuddy:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/maziggy/bambuddy
+              tag: v0.2.1.1
+            env:
+              TZ: America/New_York
+              PORT: "8000"
+              LOG_LEVEL: INFO
+              LOG_TO_FILE: "false"
+              HA_URL: http://home-assistant.home.svc.cluster.local:8123
+            envFrom:
+              - secretRef:
+                  name: bambuddy-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot-vlan",
+            "namespace": "kube-system",
+            "ips": ["192.168.50.6/24"],
+            "mac": "a6:41:7a:c3:2b:e8"
+          }]
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: &port 8000
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] < 400"]
+            url: "https://bambuddy.dmfrey.com"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Tools
+          gethomepage.dev/name: BambuBuddy
+          gethomepage.dev/icon: bambuddy.png
+          gethomepage.dev/description: "Bambu Labs 3D Printer Monitor"
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/data
+      tmpFs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/logs
+            subPath: logs
+          - path: /tmp
+            subPath: tmp
