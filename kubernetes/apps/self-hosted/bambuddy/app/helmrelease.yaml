@@ -67,6 +67,11 @@ spec:
         ports:
           http:
             port: &port 8000
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+            path: /api/v1/metrics
     route:
       app:
         annotations:
