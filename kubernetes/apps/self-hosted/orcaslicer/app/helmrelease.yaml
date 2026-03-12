@@ -45,9 +45,6 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 8Gi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
     defaultPodOptions:
       resourceClaims:
         - name: gpu
