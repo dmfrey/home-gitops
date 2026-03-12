@@ -116,6 +116,21 @@ spec:
           - backendRefs:
               - identifier: app
                 port: 80
+      outpost:
+        hostnames:
+          - excalidraw.dmfrey.com
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /outpost.goauthentik.io
+            backendRefs:
+              - name: ak-outpost-authentik-embedded-outpost
+                namespace: security
+                port: 9000
       room:
         hostnames:
           - excalidraw-room.dmfrey.com
