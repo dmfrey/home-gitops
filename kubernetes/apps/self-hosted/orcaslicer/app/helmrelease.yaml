@@ -48,21 +48,10 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                drop: ["ALL"]
     defaultPodOptions:
       resourceClaims:
         - name: gpu
           resourceClaimTemplateName: orcaslicer
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 911
-        runAsGroup: 911
-        fsGroup: 911
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 109]
-        seccompProfile:
-          type: RuntimeDefault
     service:
       app:
         ports:
@@ -81,10 +70,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
