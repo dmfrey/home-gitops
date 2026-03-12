@@ -14,3 +14,4 @@ resources:
   - ./homepage/ks.yaml
   - ./linkwarden/ks.yaml
   - ./omni-tools/ks.yaml
+  - ./orcaslicer/ks.yaml
