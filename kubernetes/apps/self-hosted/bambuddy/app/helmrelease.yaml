@@ -36,7 +36,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: 8000
+                    port: &port 8000
                   initialDelaySeconds: 10
                   periodSeconds: 30
                   failureThreshold: 5
@@ -48,14 +48,14 @@ spec:
               limits:
                 memory: 512Mi
     defaultPodOptions:
-      # annotations:
-      #   k8s.v1.cni.cncf.io/networks: |
-      #     [{
-      #       "name": "iot-vlan",
-      #       "namespace": "kube-system",
-      #       "ips": ["192.168.50.6/24"],
-      #       "mac": "a6:41:7a:c3:2b:e8"
-      #     }]
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot-vlan",
+            "namespace": "kube-system",
+            "ips": ["192.168.50.6/24", "${IPV6_IOT_PREFIX}:4::1/64"],
+            "mac": "a6:41:7a:c3:2b:e8"
+          }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -66,7 +66,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 8000
+            port: *port
     serviceMonitor:
       app:
         endpoints:
