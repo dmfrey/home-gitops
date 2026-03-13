@@ -10,4 +10,3 @@
 *.yml linguist-detectable linguist-language=YAML
 *.yaml linguist-detectable linguist-language=YAML
 *.yaml.j2 linguist-detectable linguist-language=YAML
-*.sops.* diff=sopsdiffer
