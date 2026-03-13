@@ -25,5 +25,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: self-hosted
-  timeout: 5m
   wait: true
