@@ -15,6 +15,23 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          iptables:
+            image:
+              repository: ghcr.io/home-operations/iptables
+              tag: latest
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+              capabilities:
+                add:
+                  - "NET_ADMIN"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                iptables -t nat -A PREROUTING -p tcp --dport 990 -j REDIRECT --to-port 9990
+                iptables -t nat -A OUTPUT -o lo -p tcp --dport 990 -j REDIRECT --to-port 9990
         containers:
           app:
             image:
@@ -26,6 +43,7 @@ spec:
               LOG_LEVEL: INFO
               LOG_TO_FILE: "false"
               HA_URL: http://home-assistant-app.home.svc.cluster.local:8123
+              VIRTUAL_PRINTER_PASV_ADDRESS: "192.168.50.6"
             envFrom:
               - secretRef:
                   name: bambuddy-secret
