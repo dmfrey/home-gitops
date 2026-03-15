@@ -18,7 +18,7 @@ spec:
         initContainers:
           iptables:
             image:
-              repository: ghcr.io/home-operations/iptables
+              repository: ghcr.io/nicolaka/netshoot
               tag: latest
             securityContext:
               runAsNonRoot: false
