@@ -1,0 +1,2764 @@
+---
+- id: notification_tier3_oven_status
+  alias: 'Alert: Oven Preheated or Cooking Done'
+  description: Notifies when the oven finishes preheating or a cooking cycle ends.
+  mode: parallel
+  triggers:
+    - trigger: state
+      entity_id: sensor.srav935451p_current_state
+      from: Preheating
+      id: preheat_complete
+    - trigger: state
+      entity_id: sensor.srav935451p_current_state
+      to: 'Off'
+      from:
+        - Baking
+        - Convection Bake
+        - Broiling
+        - Timed Cook
+      id: cooking_complete
+  actions:
+    - action: script.send_notification
+      data:
+        title: Oven Update
+        message: "{% if trigger.id == 'preheat_complete' %}\n  The oven has finished preheating to {{ states('sensor.srav935451p_display_temperature') }}°F.\n{% else %}\n  The oven has finished its cooking cycle.\n{% endif %}"
+        tier: 3
+- id: notification_tier3_appliances_finished
+  alias: 'Alert: Laundry or Dishwasher Cycle Done'
+  description: Notifies anyone home when the washer, dryer, or dishwasher finishes a cycle.
+  mode: parallel
+  triggers:
+    - trigger: state
+      entity_id:
+        - binary_sensor.d828c9343e5b_dishwasher_is_clean
+        - binary_sensor.rm833274c_laundry_end_of_cycle
+        - binary_sensor.rm171996g_laundry_end_of_cycle
+      to: 'on'
+      for: 00:01:00
+  actions:
+    - variables:
+        mapping:
+          d828c9343e5b_dishwasher_is_clean: Dishwasher
+          rm833274c_laundry_end_of_cycle: Dryer
+          rm171996g_laundry_end_of_cycle: Washer
+        device: '{{ mapping[trigger.entity_id.split(''.'')[-1]] | default(''Appliance'') }}'
+    - action: script.send_notification
+      data:
+        title: '{{ device }} Complete'
+        message: The {{ device }} cycle has finished.
+        tier: 3
+- id: notification_tier2_security_sweep
+  alias: 'Alert: Windows Open or Appliances On When Leaving'
+  description: Warns parents when transitioning to Night or Away with windows still open or the oven or cooktop still on.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: input_select.home_mode
+      to:
+        - Night
+        - Away
+  actions:
+    - variables:
+        open_windows: '{{ label_entities(''window_sensor'') | expand | selectattr(''state'', ''eq'', ''on'') | map(attribute=''name'') | list }}'
+        oven_on: '{{ not is_state(''sensor.srav935451p_current_state'', ''Off'') }}'
+        cooktop_on: '{{ is_state(''binary_sensor.srav935451p_cooktop_status'', ''on'') }}'
+    - if: '{{ open_windows | count > 0 or oven_on or cooktop_on }}'
+      then:
+        - action: script.send_notification
+          data:
+            title: '⚠️ Security Warning: House Shutdown'
+            message: '{% set ns = namespace(msgs=[]) %} {% if open_windows | count > 0 %}{% set ns.msgs = ns.msgs + ["Open windows: " ~ open_windows | join('', '')] %}{% endif %} {% if oven_on %}{% set ns.msgs = ns.msgs + ["The Oven is still ON"] %}{% endif %} {% if cooktop_on %}{% set ns.msgs = ns.msgs + ["The Cooktop is still ON"] %}{% endif %} {{ ns.msgs | join(''\n'') }}'
+            tier: 2
+- id: routine_basement_workout_start
+  alias: Turn On Lights for Morning Workout
+  description: Turns on basement lights in Morning ambient settings when ambient mode goes to Morning and Daniel is home.
+  triggers:
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+      to: Morning
+  conditions:
+    - condition: zone
+      entity_id: person.daniel_frey
+      zone: zone.home
+  actions:
+    - target:
+        area_id: basement
+      data:
+        transition: 5
+        brightness_pct: 100
+        color_temp_kelvin: 2237
+      action: light.turn_on
+  mode: single
+- id: routine_basement_workout_complete
+  alias: Turn Off Lights After Morning Workout
+  description: Turns off basement lights at 8:30 AM when Daniel is home.
+  triggers:
+    - at: 08:30:00
+      trigger: time
+  conditions:
+    - condition: zone
+      entity_id: person.daniel_frey
+      zone: zone.home
+  actions:
+    - target:
+        area_id: basement
+      data: {}
+      action: light.turn_off
+  mode: single
+- id: switch_lights_basement
+  alias: Basement Light Switch — Toggle or Dim
+  description: Single press toggles basement lights at full brightness; double press dims them for a relaxed scene.
+  mode: single
+  triggers:
+    - trigger: device
+      domain: mqtt
+      device_id: 3a88666b670f8e46cdaef002f4d63c2d
+      type: action
+      subtype: single
+      id: basement_switch_single
+    - trigger: device
+      domain: mqtt
+      device_id: 3a88666b670f8e46cdaef002f4d63c2d
+      type: action
+      subtype: double
+      id: basement_switch_double
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - basement_switch_single
+          sequence:
+            - action: light.toggle
+              target:
+                area_id: basement
+              data:
+                transition: 2
+                color_temp_kelvin: 2700
+                brightness_pct: 100
+        - conditions:
+            - condition: trigger
+              id:
+                - basement_switch_double
+          sequence:
+            - action: light.turn_on
+              target:
+                area_id: basement
+              data:
+                transition: 2
+                color_temp_kelvin: 2237
+                brightness_pct: 60
+- id: routine_bathroom_wake_up
+  alias: Wake Up Bathroom Lights on School Days
+  description: Gently fades bathroom lights on when Morning ambient mode starts on school days, skipping holidays and snow days. Only runs when Molly is home. Temporary — remove after June graduation.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+      to: Morning
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.school_day
+      state: 'on'
+    - condition: not
+      conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: binary_sensor.holiday
+              state: 'on'
+            - condition: state
+              entity_id: binary_sensor.snow_day
+              state: 'on'
+  actions:
+    - action: light.turn_on
+      data:
+        transition: 300
+        color_temp_kelvin: 2700
+        brightness_pct: 30
+      target:
+        area_id:
+          - bathroom
+- id: cube_office_dan_office_cube
+  alias: Dan's Office Cube — Toggle Lights
+  description: Toggles office lights on any side flip of Dan's Zigbee cube.
+  trigger_variables:
+    action_flip90: flip90
+    action_rotate_right: rotate_right
+    action_rotate_left: rotate_left
+    action_shake: shake
+    action_slide: slide
+    action_tap: tap
+    action_throw: throw
+  triggers:
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_slide }}'
+      value_template: '{{ value_json.action }}'
+      id: slide
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_tap }}'
+      value_template: '{{ value_json.action }}'
+      id: tap
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_rotate_right }}'
+      value_template: '{{ value_json.action }}'
+      id: rotate_right
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_rotate_left }}'
+      value_template: '{{ value_json.action }}'
+      id: rotate_left
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_shake }}'
+      value_template: '{{ value_json.action }}'
+      id: shake
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_throw }}'
+      value_template: '{{ value_json.action }}'
+      id: throw
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_flip90 }}'
+      value_template: '{{ value_json.action }}'
+      id: flip90
+  actions:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '1'
+            - condition: trigger
+              id: flip90
+          sequence:
+            - action: light.toggle
+              target:
+                area_id: office
+              data: {}
+        - conditions:
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '2'
+            - condition: trigger
+              id: flip90
+          sequence:
+            - action: light.toggle
+              target:
+                area_id: office
+              data: {}
+        - conditions:
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '3'
+            - condition: trigger
+              id: flip90
+          sequence:
+            - action: light.toggle
+              target:
+                area_id: office
+              data: {}
+        - conditions:
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '4'
+            - condition: trigger
+              id: flip90
+          sequence:
+            - action: light.toggle
+              target:
+                area_id: office
+              data: {}
+        - conditions:
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '5'
+            - condition: trigger
+              id: flip90
+          sequence:
+            - action: light.toggle
+              target:
+                area_id: office
+              data: {}
+        - conditions:
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '6'
+            - condition: trigger
+              id: flip90
+          sequence:
+            - action: light.toggle
+              target:
+                area_id: office
+              data: {}
+- id: notify_family_room_time_to_water_sully
+  alias: 'Alert: Sully Needs Watering'
+  description: Notifies when Sully's soil moisture drops below 4%.
+  triggers:
+    - trigger: numeric_state
+      entity_id: plant.sully
+      attribute: moisture
+      below: 4
+  conditions: []
+  actions:
+    - action: script.send_notification
+      data:
+        title: Sully needs water
+        message: The moisture level in Sully's pot has gone below 4%. It's time to water.
+        tier: 3
+        extra_data:
+          tag: plants
+  mode: single
+- id: routine_house_goodnight
+  alias: House Night Shutdown — Lights & Switches Off
+  description: Turns off all non-essential lights and switches throughout the house when Home Mode transitions to Night.
+  triggers:
+    - trigger: state
+      entity_id: input_select.home_mode
+      to: Night
+  conditions: []
+  actions:
+    - target:
+        area_id:
+          - basement
+          - bathroom
+          - camdyn_s_room
+          - den
+          - dining_room
+          - family_room
+          - foyer
+          - garden
+          - hallway
+          - living_room
+          - kitchen
+          - master_closet
+          - office
+          - side_yard
+          - workshop
+        entity_id:
+          - light.molly_s_room_desk_light_1
+          - light.molly_s_room_light_1
+          - light.light.molly_s_room_nightstand_light
+          - light.molly_s_room_fan_lights
+      data: {}
+      action: light.turn_off
+    - target:
+        area_id:
+          - bathroom
+          - camdyn_s_room
+          - front_yard
+          - hallway
+          - living_room
+          - master_bathroom
+          - molly_s_room
+          - workshop
+      data: {}
+      action: switch.turn_off
+  mode: single
+- id: notify_mail_box_mailbox_opened
+  alias: 'Alert: Mail Has Arrived'
+  description: Notifies when the mailbox sensor detects the door has been opened, with a quick-reply action to confirm it was checked.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.mailbox_guard_motion
+      to: 'on'
+  conditions: []
+  actions:
+    - action: script.send_notification
+      data:
+        tier: 3
+        title: Mailbox Opened!
+        message: The mailbox was opened.
+        extra_data:
+          url: /lovelace/home
+          tag: mailbox
+          image: /media/local/notify/mailbox.jpg
+          actions:
+            - action: received
+              title: I checked the mailbox
+    - action: input_number.set_value
+      data:
+        entity_id: input_number.mailbox_guard_count
+        value: '{{ (states.input_number.mailbox_guard_count.state | int) + 1 }}'
+    - action: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.mailbox_guard_motion
+- id: notify_mail_box_low_battery
+  alias: 'Alert: Mailbox Sensor Battery Low'
+  description: Notifies when the mailbox guard reports a low battery condition.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.mailbox_guard_low_battery
+      to: 'on'
+  conditions: []
+  actions:
+    - action: script.send_notification
+      data:
+        tier: 3
+        title: Maintenance Warning
+        message: Mailbox Guard Low Battery!
+    - action: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.mailbox_guard_low_battery
+- id: motion_sensor_master_bathroom_ambient
+  alias: Master Bathroom Lights — Motion Controlled
+  description: Full brightness during the day; dim warm light at night. Turns off 3 minutes after clearing.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id:
+        - binary_sensor.master_bathroom_sensor_occupancy_2
+      to: 'on'
+      id: master_bathroom_sensor_detected
+    - trigger: state
+      entity_id:
+        - binary_sensor.master_bathroom_sensor_occupancy_2
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+      id: master_bathroom_sensor_area_cleared
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - master_bathroom_sensor_area_cleared
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.master_bathroom_lightstrip
+              data:
+                transition: 2
+        - conditions:
+            - condition: trigger
+              id:
+                - master_bathroom_sensor_detected
+            - condition: state
+              entity_id: schedule.daytime
+              state: 'on'
+          sequence:
+            - action: light.turn_on
+              target:
+                area_id: master_bathroom
+              data:
+                transition: 2
+                color_temp_kelvin: 2700
+                brightness_pct: 100
+        - conditions:
+            - condition: trigger
+              id:
+                - master_bathroom_sensor_detected
+            - condition: state
+              entity_id: schedule.daytime
+              state: 'off'
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.master_bathroom_lightstrip
+              data:
+                transition: 2
+                brightness_pct: 20
+                color_temp_kelvin: 2237
+- id: routine_master_bedroom_wake_up
+  alias: Turn Off Bedroom Devices After Getting Up
+  description: Turns off diffuser and fan when all home parents have been out of bed for 3+ minutes during Home mode.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id:
+        - binary_sensor.we_are_out_of_bed
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+  conditions:
+    - condition: state
+      entity_id: input_select.home_mode
+      state: Home
+  actions:
+    - action: humidifier.turn_off
+      target:
+        entity_id: humidifier.master_bedroom_diffuser
+      data: {}
+    - action: fan.turn_off
+      target:
+        entity_id: fan.master_bedroom_tower_fan
+      data: {}
+- id: routine_master_bedroom_goodnight
+  alias: Good Night — Bedroom Lights Off, Fan On
+  description: Turns off master bedroom lights and starts the tower fan at 33% when Good Night is triggered.
+  triggers:
+    - entity_id:
+        - input_boolean.good_night
+      to: 'on'
+      trigger: state
+  conditions: []
+  actions:
+    - target:
+        area_id:
+          - master_bedroom
+      action: light.turn_off
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.daniel_frey
+          state: home
+        - condition: state
+          entity_id: person.stephanie_frey
+          state: home
+    - data:
+        percentage: 33
+      target:
+        entity_id: fan.master_bedroom_tower_fan
+      metadata: {}
+      action: fan.turn_on
+  mode: single
+- id: routine_master_bedroom_goodnight_dan_home
+  alias: Good Night — Start Diffuser (Dan Home)
+  description: Activates the bedroom diffuser scene when Good Night is triggered and Daniel is home.
+  triggers:
+    - entity_id:
+        - input_boolean.good_night
+      to: 'on'
+      trigger: state
+  conditions:
+    - condition: state
+      entity_id: person.daniel_frey
+      state: home
+  actions:
+    - target:
+        entity_id: scene.turn_on_diffuser
+      metadata: {}
+      action: scene.turn_on
+      data: {}
+  mode: single
+- id: automation_master_bedroom_entertainment_lights
+  alias: Bedroom Surround Lights — Switch Control
+  description: Double-tap up turns on surround lights at 75%; single tap down turns them off.
+  mode: single
+  triggers:
+    - domain: mqtt
+      device_id: a2ac8391f7b7364918d3155b0d74381e
+      type: action
+      subtype: up_double
+      trigger: device
+      id: up_double
+    - domain: mqtt
+      device_id: a2ac8391f7b7364918d3155b0d74381e
+      type: action
+      subtype: down_single
+      trigger: device
+      id: down_single
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - up_double
+          sequence:
+            - action: light.turn_on
+              metadata: {}
+              data:
+                transition: 4
+                color_temp_kelvin: 2700
+                brightness_pct: 75
+              target:
+                entity_id:
+                  - light.master_bedroom_surround_light_1
+                  - light.master_bedroom_surround_light_2
+        - conditions:
+            - condition: trigger
+              id:
+                - down_single
+          sequence:
+            - action: light.turn_off
+              metadata: {}
+              data:
+                transition: 2
+              target:
+                entity_id:
+                  - light.master_bedroom_surround_light_1
+                  - light.master_bedroom_surround_light_2
+- id: motion_sensor_master_closet_automation
+  alias: Master Closet Lights — Motion Controlled
+  description: Turns closet lights on when motion is detected; turns off 3 minutes after clearing. Respects manual override.
+  triggers:
+    - entity_id:
+        - binary_sensor.master_closet_matter_sensor_occupancy
+      to:
+        - 'on'
+      id: master_closet_sensor_motion_detected
+      trigger: state
+    - entity_id:
+        - binary_sensor.master_closet_matter_sensor_occupancy
+      to:
+        - 'off'
+      id: master_closet_sensor_area_cleared
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+      trigger: state
+  conditions:
+    - condition: state
+      entity_id: input_boolean.master_closet_sensor_override
+      state:
+        - 'off'
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - master_closet_sensor_motion_detected
+          sequence:
+            - metadata: {}
+              data:
+                transition: 2
+                color_temp_kelvin: 2700
+                brightness_pct: 100
+              target:
+                area_id: master_closet
+              action: light.turn_on
+        - conditions:
+            - condition: trigger
+              id:
+                - master_closet_sensor_area_cleared
+          sequence:
+            - metadata: {}
+              data:
+                transition: 2
+              target:
+                area_id: master_closet
+              action: light.turn_off
+  mode: single
+- id: routine_molly_room_wake_up
+  alias: Wake Up Molly's Lights on School Days
+  description: Gradually turns on Molly's room lights at 5:25 AM on school days, skipping holidays and snow days.
+  mode: queued
+  max: 10
+  triggers:
+    - trigger: time
+      at: 05:25:00
+  conditions:
+    - condition: zone
+      entity_id: person.molly_frey
+      zone: zone.home
+    - condition: state
+      entity_id: binary_sensor.school_day
+      state: 'on'
+    - condition: not
+      conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: binary_sensor.holiday
+              state: 'on'
+            - condition: state
+              entity_id: binary_sensor.snow_day
+              state: 'on'
+  actions:
+    - action: light.turn_on
+      target:
+        area_id: molly_s_room
+      data:
+        transition: 300
+        color_temp_kelvin: 2700
+        brightness_pct: 100
+- id: routine_office_workday
+  alias: Work Day — Lights On & TTS Reminders
+  description: Turns on office lights at workday start and announces reminders throughout the day via TTS.
+  triggers:
+    - at: 08:10:00
+      id: workday_start
+      trigger: time
+    - at: '10:00:00'
+      id: workday_mid_morning
+      trigger: time
+    - at: '13:00:00'
+      id: workday_lunch
+      trigger: time
+    - at: '14:00:00'
+      id: workday_after_lunch
+      trigger: time
+    - at: '15:30:00'
+      id: workday_mid_afternoon
+      trigger: time
+    - at: '16:45:00'
+      id: workday_evening
+      trigger: time
+  conditions:
+    - condition: zone
+      entity_id: person.daniel_frey
+      zone: zone.home
+    - condition: state
+      entity_id: binary_sensor.work_day
+      state: 'on'
+    - condition: not
+      conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: binary_sensor.work_holiday
+              state: 'on'
+            - condition: state
+              entity_id: binary_sensor.work_travel
+              state: 'on'
+  actions:
+    - action: media_player.volume_set
+      metadata: {}
+      target:
+        entity_id: media_player.pixel_tablet_2
+      data:
+        volume_level: 0.3
+    - delay:
+        milliseconds: 500
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - workday_start
+          sequence:
+            - metadata: {}
+              data:
+                transition: 1
+                color_temp_kelvin: 2700
+                brightness_pct: 100
+              target:
+                area_id: office
+              action: light.turn_on
+            - condition: state
+              entity_id: binary_sensor.office_sensor_occupancy
+              state: 'on'
+            - metadata: {}
+              data:
+                cache: true
+                media_player_entity_id: media_player.pixel_tablet_2
+                message: It's time to start your work day. Have a great day!
+              target:
+                entity_id:
+                  - tts.piper
+              action: tts.speak
+        - conditions:
+            - condition: trigger
+              id:
+                - workday_mid_morning
+          sequence:
+            - condition: state
+              entity_id: binary_sensor.office_sensor_occupancy
+              state: 'on'
+            - metadata: {}
+              data:
+                cache: true
+                media_player_entity_id: media_player.pixel_tablet_2
+                message: It's time to stand up and stretch. Let's take a break for 10 minutes.
+              target:
+                entity_id:
+                  - tts.piper
+              action: tts.speak
+        - conditions:
+            - condition: trigger
+              id:
+                - workday_lunch
+          sequence:
+            - condition: state
+              entity_id: binary_sensor.office_sensor_occupancy
+              state: 'on'
+            - metadata: {}
+              data:
+                cache: true
+                media_player_entity_id: media_player.pixel_tablet_2
+                message: It's time for lunch! Remember to wash your hands!
+              target:
+                entity_id:
+                  - tts.piper
+              action: tts.speak
+        - conditions:
+            - condition: trigger
+              id:
+                - workday_after_lunch
+          sequence:
+            - condition: state
+              entity_id: binary_sensor.office_sensor_occupancy
+              state: 'on'
+            - metadata: {}
+              data:
+                cache: true
+                media_player_entity_id: media_player.pixel_tablet_2
+                message: Hope you're having a good day! Want to go for a walk?
+              target:
+                entity_id:
+                  - tts.piper
+              action: tts.speak
+        - conditions:
+            - condition: trigger
+              id:
+                - workday_mid_afternoon
+          sequence:
+            - condition: state
+              entity_id: binary_sensor.office_sensor_occupancy
+              state: 'on'
+            - metadata: {}
+              data:
+                cache: true
+                media_player_entity_id: media_player.pixel_tablet_2
+                message: Let's go grab a glass of water. And why don't you go wash your hands?
+              target:
+                entity_id:
+                  - tts.piper
+              action: tts.speak
+        - conditions:
+            - condition: trigger
+              id:
+                - workday_evening
+          sequence:
+            - condition: state
+              entity_id: binary_sensor.office_sensor_occupancy
+              state: 'on'
+            - metadata: {}
+              data:
+                cache: true
+                media_player_entity_id: media_player.pixel_tablet_2
+                message: Time to start wrapping up your work day and plan for dinner!
+              target:
+                entity_id:
+                  - tts.piper
+              action: tts.speak
+  mode: single
+- id: routine_office_close_the_office
+  alias: Turn Off Office Lights at End of Day
+  description: Turns off office lights at 6 PM daily.
+  mode: single
+  triggers:
+    - trigger: time
+      at: '18:00:00'
+  conditions: []
+  actions:
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        area_id: office
+- id: notify_people_the_girls_are_on_the_move
+  alias: 'Alert: Girls Arrived or Left a Zone'
+  description: Notifies parents when Camdyn or Molly arrives at or leaves any tracked zone.
+  mode: queued
+  max: 10
+  triggers:
+    - trigger: state
+      entity_id:
+        - person.camdyn_frey
+        - person.molly_frey
+  conditions:
+    - condition: template
+      value_template: '{{ trigger.from_state.state != trigger.to_state.state }}'
+  actions:
+    - action: notify.parent_devices
+      data:
+        title: '{{ trigger.to_state.attributes.friendly_name }} is on the Move'
+        message: "{% if trigger.to_state.state == 'not_home' %}\n  {{ trigger.to_state.attributes.friendly_name }} has left {{ trigger.from_state.state }}.\n{% else %}\n  {{ trigger.to_state.attributes.friendly_name }} arrived at {{ trigger.to_state.state }}.\n{% endif %}"
+        data:
+          tag: location
+- id: notification_tier1_thermal_failure
+  alias: 'Critical Alert: Fridge or Freezer Problem'
+  description: High-priority alert to parents if the refrigerator or freezer door is left open for 15 minutes or internal temperature exceeds safe limits.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: sensor.lm320332_door_status
+      to:
+        - Fridge Open
+        - Freezer Open
+      for: 00:15:00
+      id: door_open_long
+    - trigger: numeric_state
+      entity_id: water_heater.lm320332_fridge
+      attribute: current_temperature
+      above: 45
+      id: fridge_warm
+    - trigger: numeric_state
+      entity_id: water_heater.lm320332_freezer
+      attribute: current_temperature
+      above: 15
+      id: freezer_warm
+  actions:
+    - action: persistent_notification.create
+      data:
+        title: "🚨 CRITICAL: Refrigerator Alert"
+        message: "{% if trigger.id == 'door_open_long' %}\n  The refrigerator door has been left open for 15 minutes!\n{% else %}\n  The internal temperature is too high: {{ trigger.to_state.attributes.current_temperature }}°F\n{% endif %}"
+        notification_id: fridge_thermal
+    - action: notify.parent_devices
+      data:
+        title: "🚨 Refrigerator Alert"
+        message: Check the fridge/freezer immediately! ({{ trigger.to_state.attributes.friendly_name }})
+        data:
+          ttl: 0
+          priority: high
+          channel: alarm_stream_max
+          tag: fridge-failure
+- id: notification_tier1_smoke_co
+  alias: 'Critical Alert: Smoke or Carbon Monoxide Detected'
+  description: Immediate high-priority alert to parents when any Nest Protect detects smoke or CO.
+  mode: parallel
+  triggers:
+    - trigger: state
+      entity_id:
+        - binary_sensor.office_office_protect_smoke
+        - binary_sensor.office_office_protect_carbon_monoxide
+        - binary_sensor.molly_s_room_nest_molly_s_room_protect_smoke
+        - binary_sensor.molly_s_room_nest_molly_s_room_protect_carbon_monoxide
+        - binary_sensor.hallway_nest_hallway_protect_smoke
+        - binary_sensor.hallway_nest_hallway_protect_carbon_monoxide
+        - binary_sensor.foyer_nest_foyer_protect_smoke
+        - binary_sensor.foyer_nest_foyer_protect_carbon_monoxide
+        - binary_sensor.camdyn_s_room_nest_camdyn_s_room_protect_smoke
+        - binary_sensor.camdyn_s_room_nest_camdyn_s_room_protect_carbon_monoxide
+        - binary_sensor.basement_nest_basement_protect_smoke
+        - binary_sensor.basement_nest_basement_protect_carbon_monoxide
+        - binary_sensor.barn_nest_barn_protect_smoke
+        - binary_sensor.barn_nest_barn_protect_carbon_monoxide
+        - binary_sensor.master_bedroom_master_bedroom_protect_smoke
+        - binary_sensor.master_bedroom_master_bedroom_protect_carbon_monoxide
+      to: 'on'
+  actions:
+    - variables:
+        type: '{{ ''CO'' if ''carbon_monoxide'' in trigger.entity_id else ''Smoke'' }}'
+        area: '{{ area_name(trigger.entity_id) }}'
+    - action: persistent_notification.create
+      data:
+        title: Heads Up! {{ type }} Detected
+        message: There's {{ type }} detected in the {{ area }}. Please check.
+        notification_id: smoke_co_{{ trigger.entity_id.split('.')[-1] }}
+    - action: notify.parent_devices
+      data:
+        title: Heads Up! {{ type }} Detected
+        message: There's {{ type }} detected in the {{ area }}. Please check.
+        data:
+          ttl: 0
+          priority: high
+          channel: alarm_stream_max
+          tag: smoke-co-emergency
+- id: notification_tier1_water_leaks
+  alias: 'Critical Alert: Water Leak Detected'
+  description: Sends a critical alert when any water leak sensor activates, repeating every 2 minutes until the leak clears.
+  mode: parallel
+  triggers:
+    - trigger: state
+      entity_id:
+        - binary_sensor.basement_water_leak_sensor_water_leak
+        - binary_sensor.kitchen_sink_water_leak_sensor_water_leak
+        - binary_sensor.bathroom_sink_water_leak_sensor_water_leak
+        - binary_sensor.bathroom_toilet_water_leak_sensor_water_leak
+        - binary_sensor.master_bathroom_sink_water_leak_sensor_water_leak
+        - binary_sensor.master_bathroom_toilet_water_leak_sensor_water_leak
+        - binary_sensor.powder_room_toilet_water_leak_sensor_water_leak
+        - binary_sensor.powder_room_sink_water_leak_sensor_water_leak
+        - binary_sensor.laundry_room_washer_water_leak_sensor_water_leak
+      to: 'on'
+  actions:
+    - variables:
+        area: '{{ area_name(trigger.entity_id) }}'
+    - repeat:
+        while:
+          - condition: template
+            value_template: '{{ states(trigger.entity_id) == ''on'' }}'
+        sequence:
+          - action: script.send_notification
+            data:
+              title: "🚨 Water Leak: {{ area }}"
+              message: A leak was detected by {{ trigger.to_state.attributes.friendly_name }}. Immediate action required!
+              tier: 1
+              extra_data:
+                tag: water-leak
+          - delay: 00:02:00
+- id: notification_tier4_system_health
+  alias: Critical Sensors Offline (Persistent Notification)
+  description: Creates a persistent notification at 10 AM if any critical sensors (leak, smoke, window, appliance) are unavailable.
+  triggers:
+    - trigger: time
+      at: '10:00:00'
+  actions:
+    - variables:
+        offline_entities: '{% set critical_labels = [''leak_sensor'', ''smoke_detector'', ''window_sensor'', ''appliance''] %} {% set all_critical = critical_labels | map(''label_entities'') | sum(start=[]) %} {{ all_critical | expand | selectattr(''state'', ''in'', [''unavailable'', ''unknown'']) | map(attribute=''name'') | list }}'
+    - if: '{{ offline_entities | count > 0 }}'
+      then:
+        - action: persistent_notification.create
+          data:
+            title: "🔧 System Health: Offline Sensors"
+            message: 'The following critical sensors are offline: {{ offline_entities | join('', '') }}'
+            notification_id: offline_sensors_check
+- id: sump_pump_offline_critical
+  alias: 'Critical Alert: Sump Pump Offline'
+  description: High-priority alert to parents if the sump pump goes offline for more than 2 minutes, throttled to once per 30 minutes.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id:
+        - switch.basement_sump_pump
+      to: unavailable
+      for:
+        minutes: 2
+  conditions:
+    - condition: template
+      value_template: '{% set last = this.attributes.last_triggered | default(as_datetime(0))%} {{ (now() - last).total_seconds() > (30 * 60) }}'
+    - condition: state
+      entity_id: binary_sensor.zigbee2mqtt_bridge_connection_state
+      state: 'on'
+  actions:
+    - action: notify.parent_devices
+      metadata: {}
+      data:
+        title: 'CRITICAL: Sump Pump Offline'
+        message: The Sump Pump is offline. Check the GFI Outlet!
+        data:
+          ttl: 0
+          priority: high
+          channel: alarm_stream_max
+          tag: sump-pump-offline
+- id: notify_utility_sump_pump_running
+  alias: 'Alert: Sump Pump Running'
+  description: Notifies parents when the sump pump activates, throttled to once per 30 minutes.
+  triggers:
+    - trigger: numeric_state
+      entity_id:
+        - sensor.basement_sump_pump_power
+      above: 2
+  conditions:
+    - condition: template
+      value_template: '{% set last = this.attributes.last_triggered | default(as_datetime(0)) %} {{ (now() - last).total_seconds() > (30 * 60) }}'
+  actions:
+    - action: script.send_notification
+      data:
+        tier: 2
+        title: Sump Pump Running
+        message: The Sump Pump is running
+        extra_data:
+          tag: utility
+    - action: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.sump_pump_triggered
+  mode: single
+- id: notify_utility_sump_pump_stopped
+  alias: 'Alert: Sump Pump Finished'
+  description: Notifies parents when the sump pump stops after a triggered run.
+  triggers:
+    - trigger: numeric_state
+      entity_id:
+        - sensor.basement_sump_pump_power
+      below: 1
+      for:
+        minutes: 1
+  conditions:
+    - condition: state
+      entity_id: input_boolean.sump_pump_triggered
+      state: 'on'
+  actions:
+    - action: script.send_notification
+      data:
+        tier: 2
+        title: Sump Pump Finished
+        message: The Sump Pump has finished running
+        extra_data:
+          tag: utility
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.sump_pump_triggered
+  mode: single
+- id: notify_house_window_open
+  alias: 'Alert: Basement Window Open When Leaving'
+  description: Notifies parents when a basement window is still open as both parents leave home.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: group.parents
+      to: not_home
+  conditions:
+    - condition: state
+      entity_id:
+        - binary_sensor.basement_window_sensor_1_contact
+        - binary_sensor.basement_window_sensor_2_contact
+      match: any
+      state: 'on'
+  actions:
+    - variables:
+        open_windows: "{{ expand(['binary_sensor.basement_window_sensor_1_contact', 'binary_sensor.basement_window_sensor_2_contact'])\n   | selectattr('state', 'eq', 'on') | map(attribute='name') | list }}"
+    - action: script.send_notification
+      data:
+        title: A Window is Open!
+        message: '{{ open_windows | join('' and '') }} {{ ''is'' if open_windows | count == 1 else ''are'' }} open.'
+        tier: 2
+- id: automation_workshop_turn_lights_on_off_door_lock
+  alias: Workshop Lights Follow Door Lock
+  description: Turns workshop lights on when the smart lock is unlocked and off when it locks.
+  triggers:
+    - trigger: state
+      entity_id:
+        - lock.workshop_smart_lock
+      to:
+        - unlocked
+      id: workshop_opened
+    - trigger: state
+      entity_id:
+        - lock.workshop_smart_lock
+      to:
+        - locked
+      id: workshop_closed
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - workshop_opened
+          sequence:
+            - action: light.turn_on
+              metadata: {}
+              data:
+                transition: 2
+                brightness_pct: 100
+              target:
+                area_id: workshop
+        - conditions:
+            - condition: trigger
+              id:
+                - workshop_closed
+          sequence:
+            - action: light.turn_off
+              metadata: {}
+              data:
+                transition: 2
+              target:
+                area_id: workshop
+  mode: single
+- id: motion_sensor_bathroom_ambient
+  alias: Bathroom Lights — Motion Controlled
+  description: Full brightness during the day; dim warm light at night. Turns off 5 minutes after clearing.
+  triggers:
+    - entity_id:
+        - binary_sensor.bathroom_presense_sensor_presence
+      to: 'on'
+      id: bathroom_sensor_detected
+      trigger: state
+    - entity_id:
+        - binary_sensor.bathroom_presense_sensor_presence
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+      id: bathroom_sensor_area_cleared
+      trigger: state
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - bathroom_sensor_area_cleared
+          sequence:
+            - data:
+                transition: 2
+              action: light.turn_off
+              target:
+                area_id: bathroom
+        - conditions:
+            - condition: trigger
+              id:
+                - bathroom_sensor_detected
+            - condition: state
+              entity_id: schedule.daytime
+              state: 'on'
+          sequence:
+            - data:
+                transition: 2
+                color_temp_kelvin: 2700
+                brightness_pct: 100
+              action: light.turn_on
+              target:
+                entity_id:
+                  - light.bathroom_lightstrip
+                  - light.bathroom_light_1
+                  - light.bathroom_light_2
+        - conditions:
+            - condition: trigger
+              id:
+                - bathroom_sensor_detected
+            - condition: state
+              entity_id: schedule.daytime
+              state: 'off'
+          sequence:
+            - data:
+                transition: 2
+                brightness_pct: 20
+                color_temp_kelvin: 2237
+              action: light.turn_on
+              target:
+                entity_id: light.bathroom_lightstrip
+  mode: single
+- id: bathroom_disco_shower
+  alias: Disco Shower — Fun Light Effects
+  description: Starts color cycling light effects in the bathroom shower when Disco Shower mode is enabled; restores normal lights when disabled.
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_boolean.disco_shower
+      to: 'on'
+      id: disco_shower_on
+    - trigger: state
+      entity_id:
+        - input_boolean.disco_shower
+      to: 'off'
+      id: disco_shower_off
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - disco_shower_on
+          sequence:
+            - action: light.turn_on
+              metadata: {}
+              data:
+                color_temp_kelvin: 2700
+                transition: 2
+                brightness_pct: 100
+              target:
+                area_id: bathroom
+            - variables:
+                disco_colors:
+                  - hs_color:
+                      - 330
+                      - 100
+                    brightness_pct: 100
+                  - hs_color:
+                      - 280
+                      - 100
+                    brightness_pct: 80
+                  - hs_color:
+                      - 200
+                      - 100
+                    brightness_pct: 100
+                  - hs_color:
+                      - 0
+                      - 100
+                    brightness_pct: 90
+                  - hs_color:
+                      - 185
+                      - 100
+                    brightness_pct: 100
+                  - hs_color:
+                      - 260
+                      - 100
+                    brightness_pct: 100
+                  - hs_color:
+                      - 25
+                      - 100
+                    brightness_pct: 80
+                  - hs_color:
+                      - 150
+                      - 100
+                    brightness_pct: 90
+            - repeat:
+                while: '{{ is_state(''input_boolean.disco_shower'', ''on'') }}'
+                sequence:
+                  - repeat:
+                      for_each: '{{ disco_colors }}'
+                      sequence:
+                        - action: light.turn_on
+                          data:
+                            hs_color: '{{ repeat.item.hs_color }}'
+                            brightness_pct: '{{ repeat.item.brightness_pct }}'
+                            transition: 0.3
+                          target:
+                            entity_id:
+                              - light.bathroom_lightstrip
+                              - light.bathroom_shower_light
+                        - delay: '00:00:00.5'
+        - conditions:
+            - condition: trigger
+              id:
+                - disco_shower_off
+          sequence:
+            - action: light.turn_off
+              metadata: {}
+              data: {}
+              target:
+                entity_id:
+                  - light.bathroom_lightstrip
+                  - light.bathroom_shower_light
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 3
+                milliseconds: 0
+            - action: light.turn_on
+              metadata: {}
+              data:
+                transition: 4
+                color_temp_kelvin: 2700
+                brightness_pct: 80
+              target:
+                area_id: bathroom
+  mode: restart
+- id: routine_automation_stephanie_is_away
+  alias: Turn Off Flatiron Plug When Stephanie Leaves
+  description: Turns off the master bathroom plug (flatiron) whenever Stephanie leaves home.
+  triggers:
+    - trigger: zone
+      entity_id: person.stephanie_frey
+      zone: zone.home
+      event: leave
+  conditions: []
+  actions:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.master_bathroom_plug_2
+  mode: single
+- id: analyze_garden_activity
+  alias: 'AI Analysis: Garden Motion Activity'
+  description: Uses LLM Vision to analyze and summarize garden camera snapshots when motion is detected.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      camera_entities:
+        - camera.garden_garden_camera
+      motion_sensors:
+        - binary_sensor.garden_sensor_occupancy
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: true
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/garden
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe any movement in this home security camera footage. Identify people (note if they are a recognized family member or an unknown person), animals, or vehicles. Include direction of movement and any notable behavior. Be concise - 2 sentences maximum. If nothing significant is present, respond with ''No significant activity.'''
+- id: analyze_driveway_activity
+  alias: 'AI Analysis: Driveway Motion Activity'
+  description: Uses LLM Vision to analyze and summarize driveway camera snapshots when motion is detected.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      camera_entities:
+        - camera.driveway_driveway_camera
+      motion_sensors:
+        - binary_sensor.driveway_camera_motion
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: true
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/driveway
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe any movement in this home security camera footage. Identify people (note if they are a recognized family member or an unknown person), animals, or vehicles. Include direction of movement and any notable behavior. Be concise - 2 sentences maximum. If nothing significant is present, respond with ''No significant activity.'''
+- id: analyze_front_yard_activity
+  alias: 'AI Analysis: Front Yard Motion Activity'
+  description: Uses LLM Vision to analyze and summarize front yard camera snapshots when motion is detected.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      camera_entities:
+        - camera.front_yard_front_yard_camera
+      motion_sensors:
+        - binary_sensor.front_yard_camera_motion
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: true
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/front-yard
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe any movement in this home security camera footage. Identify people (note if they are a recognized family member or an unknown person), animals, or vehicles. Include direction of movement and any notable behavior. Be concise - 2 sentences maximum. If nothing significant is present, respond with ''No significant activity.'''
+- id: analyze_fire_pit_activity
+  alias: 'AI Analysis: Fire Pit Motion Activity'
+  description: Uses LLM Vision to analyze and summarize fire pit camera snapshots when motion is detected.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      camera_entities:
+        - camera.fire_pit_fire_pit_camera
+      motion_sensors:
+        - binary_sensor.back_yard_sensor_occupancy
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: true
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/fire-pit
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe any movement in this home security camera footage. Identify people (note if they are a recognized family member or an unknown person), animals, or vehicles. Include direction of movement and any notable behavior. Be concise - 2 sentences maximum. If nothing significant is present, respond with ''No significant activity.'''
+- id: analyze_front_door_motion
+  alias: 'AI Analysis: Front Door Motion Activity'
+  description: Uses LLM Vision to analyze front door doorbell snapshots when motion is detected.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 5
+        seconds: 0
+      camera_entities:
+        - camera.front_porch_front_door_doorbell
+      motion_sensors:
+        - binary_sensor.front_door_doorbell_motion
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: true
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/front-door
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe who is at the door in this home security footage. Identify if the person is a recognized family member, delivery driver, or unknown visitor. Note any packages or items visible. Be concise - 2 sentences maximum. If no one is present, respond with ''No significant activity.'''
+- id: analyze_front_door_chime
+  alias: 'AI Analysis: Front Door Doorbell Pressed'
+  description: Uses LLM Vision to capture and analyze who rang the front door doorbell.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 1
+        seconds: 0
+      camera_entities:
+        - camera.front_porch_front_door_doorbell
+      motion_sensors:
+        - binary_sensor.front_door_doorbell_chime
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: false
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/front-door
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe who is at the door in this home security footage. Identify if the person is a recognized family member, delivery driver, or unknown visitor. Note any packages or items visible. Be concise - 2 sentences maximum. If no one is present, respond with ''No significant activity.'''
+- id: analyze_back_door_motion
+  alias: 'AI Analysis: Back Door Motion Activity'
+  description: Uses LLM Vision to analyze back door doorbell snapshots when motion is detected.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 5
+        seconds: 0
+      camera_entities:
+        - camera.laundry_room_back_door_doorbell
+      motion_sensors:
+        - binary_sensor.back_door_doorbell_motion
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: true
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/back-door
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe who is at the door in this home security footage. Identify if the person is a recognized family member, delivery driver, or unknown visitor. Note any packages or items visible. Be concise - 2 sentences maximum. If no one is present, respond with ''No significant activity.'''
+- id: analyze_back_door_chime
+  alias: 'AI Analysis: Back Door Doorbell Pressed'
+  description: Uses LLM Vision to capture and analyze who rang the back door doorbell.
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      cooldown:
+        hours: 0
+        minutes: 1
+        seconds: 0
+      camera_entities:
+        - camera.laundry_room_back_door_doorbell
+      motion_sensors:
+        - binary_sensor.back_door_doorbell_chime
+      provider: 01KJQYJJE4DN0PQ7ZVBA0XAJCZ
+      notify_device:
+        - e5860c03f9d2bb0dfb84b3241bb7e4cf
+      important: false
+      notification_time: at {{ now().strftime("%-I:%M %p") }}
+      model: gemini-2.5-flash
+      file_path: /config/www/llmvision/snapshots_blueprint/{{ camera_file_path }}/{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      tap_navigate: /dashboard-cameras/back-door
+      trigger_state: streaming
+      use_memory: true
+      duration: 10
+      max_frames: 8
+      message: 'Describe who is at the door in this home security footage. Identify if the person is a recognized family member, delivery driver, or unknown visitor. Note any packages or items visible. Be concise - 2 sentences maximum. If no one is present, respond with ''No significant activity.'''
+- id: motion_sensor_laundry_room_automation
+  alias: Laundry Room Light — Motion Controlled
+  description: Turns laundry room light on with occupancy; turns off 3 minutes after clearing.
+  triggers:
+    - entity_id:
+        - binary_sensor.laundry_room_presence_switch_occupancy
+      to:
+        - 'on'
+      id: motion_detected
+      trigger: state
+    - entity_id:
+        - binary_sensor.laundry_room_presence_switch_occupancy
+      to:
+        - 'off'
+      id: area_cleared
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+      trigger: state
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - motion_detected
+          sequence:
+            - metadata: {}
+              data: {}
+              target:
+                entity_id: light.laundry_room_presence_switch
+              action: light.turn_on
+        - conditions:
+            - condition: trigger
+              id:
+                - area_cleared
+          sequence:
+            - metadata: {}
+              data:
+                transition: 2
+              action: light.turn_off
+              target:
+                entity_id: light.laundry_room_presence_switch
+  mode: single
+- id: routine_garage_lock_the_santa_fe
+  alias: Lock Santa Fe at Good Night
+  description: Locks the Santa Fe automatically when Good Night is triggered if the car is home and unlocked.
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_boolean.good_night
+      to:
+        - 'on'
+  conditions:
+    - condition: and
+      conditions:
+        - type: is_off
+          condition: device
+          device_id: 6ea05519abe4f7562f73a0f94850e6ee
+          entity_id: d1280470f0428b4912fc8e3cfe1d5efe
+          domain: binary_sensor
+        - condition: device
+          device_id: 6ea05519abe4f7562f73a0f94850e6ee
+          domain: device_tracker
+          entity_id: 9fef7ef31e25a809f57d16c9202f8afe
+          type: is_home
+        - condition: device
+          device_id: 6ea05519abe4f7562f73a0f94850e6ee
+          domain: lock
+          entity_id: 495692f3fb2ceb04122f31c79fbc11d3
+          type: is_unlocked
+  actions:
+    - device_id: 6ea05519abe4f7562f73a0f94850e6ee
+      domain: lock
+      entity_id: 495692f3fb2ceb04122f31c79fbc11d3
+      type: lock
+  mode: single
+- alias: Kitchen Adaptive Lighting — Manual Override Pause
+  id: adaptive_lighting_manual_override_manager
+  description: Pauses kitchen adaptive lighting for 1 hour when brightness is changed manually by more than 5%.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: light.auto_bright_lights
+  conditions:
+    - condition: template
+      value_template: '{{ trigger.to_state.context.user_id is not none or trigger.to_state.context.parent_id is none }}'
+    - condition: template
+      value_template: '{{ trigger.from_state.state not in [''unknown'', ''unavailable''] }}'
+    - condition: template
+      value_template: '{{ (as_timestamp(now()) - as_timestamp(states(''sensor.uptime''))) > 60 }}'
+    - condition: template
+      value_template: '{% set old_b = trigger.from_state.attributes.brightness | int(0) %} {% set new_b = trigger.to_state.attributes.brightness | int(0) %} {{ (old_b - new_b) | abs > 13 }}'
+  actions:
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.adaptive_lighting_override
+    - delay:
+        hours: 1
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.adaptive_lighting_override
+- alias: Kitchen Lights On — Occupancy Triggered
+  id: kitchen_turn_on_with_occupancy
+  description: Turns on kitchen lux-adaptive lights when the kitchen sensor detects occupancy during daytime.
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.kitchen_sensor_occupancy
+      to: 'on'
+  conditions:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: input_select.home_mode
+          state:
+            - Home
+            - Night
+        - condition: and
+          conditions:
+            - condition: state
+              entity_id: input_select.home_mode
+              state: Vacation
+            - condition: state
+              entity_id: input_boolean.house_sitter
+              state: 'on'
+    - condition: template
+      value_template: '{{ expand(label_entities(''auto_bright'')) | selectattr(''domain'',''eq'',''light'') | selectattr(''state'',''eq'',''on'') | list | count == 0 }}'
+    - condition: state
+      entity_id: sun.sun
+      state: above_horizon
+    - condition: template
+      value_template: '{{ (state_attr(''sun.sun'', ''next_setting'') | as_timestamp - now() | as_timestamp) / 60 > 45 }}'
+  actions:
+    - action: light.turn_on
+      target:
+        label_id: auto_bright
+      data:
+        brightness_pct: '{{ states(''sensor.kitchen_auto_bright_level'') | int }}'
+        color_temp_kelvin: '{{ states(''sensor.kitchen_auto_color_temp'') | int }}'
+- alias: Kitchen Lights — Adjust to Lux Level
+  id: kitchen_adjust_adaptive_lighting
+  description: Continuously adjusts kitchen brightness and color temperature based on outdoor light levels while lights are on.
+  triggers:
+    - trigger: state
+      entity_id: sensor.kitchen_sensor_illuminance
+  conditions:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: input_select.home_mode
+          state:
+            - Home
+            - Night
+        - condition: and
+          conditions:
+            - condition: state
+              entity_id: input_select.home_mode
+              state: Vacation
+            - condition: state
+              entity_id: input_boolean.house_sitter
+              state: 'on'
+    - condition: state
+      entity_id: input_boolean.adaptive_lighting_override
+      state: 'off'
+    - condition: template
+      value_template: '{{ expand(label_entities(''auto_bright'')) | selectattr(''domain'',''eq'',''light'') | selectattr(''state'',''eq'',''on'') | list | count > 0 }}'
+    - condition: state
+      entity_id: sun.sun
+      state: above_horizon
+    - condition: template
+      value_template: '{{ (state_attr(''sun.sun'', ''next_setting'') | as_timestamp - now() | as_timestamp) / 60 > 45 }}'
+  actions:
+    - action: light.turn_on
+      target:
+        label_id: auto_bright
+      data:
+        brightness_pct: '{{ states(''sensor.kitchen_auto_bright_level'') | int }}'
+        color_temp_kelvin: '{{ states(''sensor.kitchen_auto_color_temp'') | int }}'
+- id: apply_game_time
+  alias: Game Time — Start Dynamic Light Scene
+  description: Activates team-colored dynamic lighting for the active sports team (Eagles, Flyers, Phillies, Penn State) when game time is on.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_boolean.game_time_eagles
+        - input_boolean.game_time_flyers
+        - input_boolean.game_time_penn_st
+        - input_boolean.game_time_phillies
+      to: 'on'
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+  conditions:
+    - condition: state
+      entity_id: input_boolean.game_time
+      state: 'on'
+  actions:
+    - variables:
+        team_slug: '{% set id = trigger.entity_id | default("") %}{%- if ''phillies'' in id %}phillies{%- elif ''eagles'' in id %}eagles{%- elif ''flyers'' in id %}flyers{%- elif ''penn_st'' in id %}penn_st{%- elif is_state(''input_boolean.game_time_phillies'', ''on'') %}phillies{%- elif is_state(''input_boolean.game_time_eagles'', ''on'') %}eagles{%- elif is_state(''input_boolean.game_time_flyers'', ''on'') %}flyers{%- elif is_state(''input_boolean.game_time_penn_st'', ''on'') %}penn_st{%- else %}unknown{%- endif %}'
+        preset_id_map:
+          eagles: 36246dc7-718b-44c5-a131-ece43202e25a
+          flyers: b7873f7c-fad4-486d-8770-c95f7117f489
+          penn_st: 3e158682-cafe-47d8-8702-edc117c1fd2d
+          phillies: 9fbce023-52f2-447c-953f-c72d5a173d8c
+        selected_preset_id: '{{ preset_id_map[team_slug] | default(none) }}'
+    - if: '{{ selected_preset_id is not none }}'
+      then:
+        - action: scene_presets.start_dynamic_scene
+          data:
+            preset_id: '{{ selected_preset_id }}'
+            targets:
+              label_id: game_time
+            transition: 45
+            interval: 60
+            brightness: 255
+- id: ambient_light_mode_manager
+  alias: Ambient Mode — Schedule Manager
+  description: Transitions ambient light mode through Morning, Off (daytime), Sunset, Relax, and Off (night) based on time and sun events.
+  mode: restart
+  triggers:
+    - trigger: time
+      at: 00:00:00
+      id: 'off'
+    - trigger: time
+      at: 05:31:00
+      id: morning
+    - trigger: sun
+      event: sunrise
+      offset: 00:20:00
+      id: daytime
+    - trigger: sun
+      event: sunset
+      offset: -00:45:00
+      id: sunset
+    - trigger: time
+      at: '20:15:00'
+      id: relax
+    - trigger: state
+      entity_id: input_select.home_mode
+  actions:
+    - choose:
+        - conditions: '{{ is_state(''input_select.home_mode'', ''Night'') }}'
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.ambient_light_mode
+              data:
+                option: 'Off'
+        - conditions:
+            - condition: time
+              after: 05:30:00
+            - condition: sun
+              before: sunrise
+              before_offset: 00:20:00
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.ambient_light_mode
+              data:
+                option: Morning
+        - conditions:
+            - condition: sun
+              after: sunset
+              after_offset: -00:45:00
+            - condition: time
+              before: '20:15:00'
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.ambient_light_mode
+              data:
+                option: Sunset
+        - conditions:
+            - condition: time
+              after: '20:15:00'
+            - condition: time
+              before: '23:59:59'
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.ambient_light_mode
+              data:
+                option: Relax
+      default:
+        - action: input_select.select_option
+          target:
+            entity_id: input_select.ambient_light_mode
+          data:
+            option: 'Off'
+- id: apply_ambient_inside
+  alias: Inside Ambient Lights — Apply Mode
+  description: Applies the current ambient mode to interior lights. Morning limits to first floor only; Off turns everything off; Sunset and Relax apply warm settings to all rooms.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+  conditions:
+    - condition: state
+      entity_id: input_boolean.panic_mode
+      state: 'off'
+  actions:
+    - variables:
+        curr_ambient_state: '{{ states(''input_select.ambient_light_mode'') }}'
+        mode_properties:
+          Morning:
+            transition: 5
+            brightness_pct: 60
+            color_temp_kelvin: 2237
+          Sunset:
+            transition: 5
+            brightness_pct: 100
+            color_temp_kelvin: 2700
+          Relax:
+            transition: 5
+            brightness_pct: 60
+            color_temp_kelvin: 2237
+        props: '{{ mode_properties[curr_ambient_state] if curr_ambient_state in mode_properties else none }}'
+        all_inside_lights: "{% set lights = label_entities('ambient') | select('in', label_entities('inside')) | reject('in', label_entities('bedroom')) | list %} {% if is_state('input_boolean.holiday_time', 'on') %}\n  {% set lights = lights | reject('in', label_entities('holiday')) | list %}\n{% endif %} {{ lights }}"
+        morning_lights: '{% set first_floor = floor_areas(''first_floor'') | map(''area_entities'') | sum(start=[]) | list -%} {{ all_inside_lights | select(''in'', first_floor) | list }}'
+        second_floor_lights: '{{ all_inside_lights | reject(''in'', morning_lights) | list }}'
+    - choose:
+        - conditions: '{{ curr_ambient_state == ''Off'' }}'
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: '{{ all_inside_lights }}'
+        - conditions: '{{ curr_ambient_state == ''Morning'' }}'
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: '{{ morning_lights }}'
+              data:
+                transition: '{{ props.transition }}'
+                brightness_pct: '{{ props.brightness_pct }}'
+                color_temp_kelvin: '{{ props.color_temp_kelvin }}'
+            - action: light.turn_off
+              target:
+                entity_id: '{{ second_floor_lights }}'
+        - conditions: '{{ props is not none }}'
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: '{{ all_inside_lights }}'
+              data:
+                transition: '{{ props.transition }}'
+                brightness_pct: '{{ props.brightness_pct }}'
+                color_temp_kelvin: '{{ props.color_temp_kelvin }}'
+- id: apply_ambient_outside
+  alias: Outside Ambient Lights — Apply Mode
+  description: Applies the current ambient mode to exterior lights, excluding game time, holiday, and security-only lights as needed.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+    - trigger: state
+      entity_id: input_select.home_mode
+  conditions:
+    - condition: state
+      entity_id: input_boolean.panic_mode
+      state: 'off'
+  actions:
+    - variables:
+        curr_ambient_mode: '{{ states(''input_select.ambient_light_mode'') }}'
+        mode_properties:
+          Morning:
+            transition: 5
+            brightness_pct: 60
+            color_temp_kelvin: 2237
+          Sunset:
+            transition: 5
+            brightness_pct: 100
+            color_temp_kelvin: 2700
+          Relax:
+            transition: 5
+            brightness_pct: 60
+            color_temp_kelvin: 2237
+        props: '{{ mode_properties[curr_ambient_mode] if curr_ambient_mode in mode_properties else none }}'
+        target_lights: "{% set lights = label_entities('ambient') | select('in', label_entities('outside')) | list %} {% set exclude = [] %} {% if is_state('input_select.home_mode', 'Night') %}\n  {% set exclude = exclude + (label_entities('security_ambient') | select('in', lights) | list) %}\n{% endif %} {% if is_state('input_boolean.game_time', 'on') %}\n  {% set exclude = exclude + label_entities('game_time') %}\n{% elif is_state('input_boolean.holiday_time', 'on') %}\n  {% set exclude = exclude + label_entities('holiday') %}\n{% endif %} {{ lights | reject('in', exclude) | list }}"
+    - choose:
+        - conditions: '{{ props is none }}'
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: '{{ target_lights }}'
+        - conditions: '{{ props is not none }}'
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: '{{ target_lights }}'
+              data:
+                transition: '{{ props.transition }}'
+                brightness_pct: '{{ props.brightness_pct }}'
+                color_temp_kelvin: '{{ props.color_temp_kelvin }}'
+            - delay: '00:00:05'
+            - action: light.turn_on
+              target:
+                entity_id: '{{ target_lights }}'
+              data:
+                transition: '{{ props.transition }}'
+                brightness_pct: '{{ props.brightness_pct }}'
+                color_temp_kelvin: '{{ props.color_temp_kelvin }}'
+- id: security_ambient_lighting_manager
+  alias: Security Ambient Lights — Night Watch
+  description: Keeps security-labeled outdoor lights on at 40% during Night mode when ambient is Off; turns them off otherwise.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: input_select.home_mode
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+  actions:
+    - variables:
+        is_night: '{{ is_state(''input_select.home_mode'', ''Night'') }}'
+        is_ambient_off: '{{ is_state(''input_select.ambient_light_mode'', ''Off'') }}'
+        target_lights: '{{ label_entities(''security_ambient'') }}'
+    - choose:
+        - conditions: '{{ is_night and is_ambient_off }}'
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: '{{ target_lights }}'
+              data:
+                brightness_pct: 40
+                color_temp_kelvin: 2237
+                transition: 5
+        - conditions: '{{ is_night and not is_ambient_off }}'
+          sequence: []
+        - conditions: '{{ not is_night and is_ambient_off }}'
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: '{{ target_lights }}'
+- id: routine_camdyn_room_ambient
+  alias: Camdyn's Lights — Presence-Aware Ambient
+  description: Adjusts Camdyn's bedroom lights to the current ambient mode when she's home; turns them off when she's away.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: person.camdyn_frey
+      from: 'not_home'
+      to: 'home'
+      id: presence
+    - trigger: state
+      entity_id: person.camdyn_frey
+      to: 'not_home'
+      id: away
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+      id: mode
+  actions:
+    - variables:
+        is_home: '{{ is_state(''person.camdyn_frey'', ''home'') }}'
+        current_mode: '{{ states(''input_select.ambient_light_mode'') }}'
+        room_lights: '{{ label_entities(''bedroom'') | select(''in'', area_entities(''camdyn_s_room'')) | list }}'
+        is_on: '{{ expand(room_lights) | selectattr(''state'', ''eq'', ''on'') | list | count > 0 }}'
+        mode_properties:
+          Sunset:
+            brightness_pct: 100
+            color_temp_kelvin: 2700
+          Relax:
+            brightness_pct: 60
+            color_temp_kelvin: 2237
+        props: '{{ mode_properties[current_mode] if current_mode in mode_properties else none }}'
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ is_home and props is not none and (trigger.id == ''presence'' or is_on) }}'
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: '{{ room_lights }}'
+              data:
+                brightness_pct: '{{ props.brightness_pct }}'
+                color_temp_kelvin: '{{ props.color_temp_kelvin }}'
+                transition: 5
+        - conditions:
+            - condition: template
+              value_template: '{{ not is_home }}'
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: '{{ room_lights }}'
+- id: routine_molly_room_ambient
+  alias: Molly's Lights — Presence-Aware Ambient
+  description: Adjusts Molly's bedroom lights to the current ambient mode when she's home; turns them off when she's away.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: person.molly_frey
+      from: 'not_home'
+      to: 'home'
+      id: presence
+    - trigger: state
+      entity_id: person.molly_frey
+      to: 'not_home'
+      id: away
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+      id: mode
+  actions:
+    - variables:
+        is_home: '{{ is_state(''person.molly_frey'', ''home'') }}'
+        current_mode: '{{ states(''input_select.ambient_light_mode'') }}'
+        room_lights: '{{ label_entities(''bedroom'') | select(''in'', area_entities(''molly_s_room'')) | list }}'
+        is_on: '{{ expand(room_lights) | selectattr(''state'', ''eq'', ''on'') | list | count > 0 }}'
+        mode_properties:
+          Sunset:
+            brightness_pct: 100
+            color_temp_kelvin: 2700
+          Relax:
+            brightness_pct: 60
+            color_temp_kelvin: 2237
+        props: '{{ mode_properties[current_mode] if current_mode in mode_properties else none }}'
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ is_home and props is not none and (trigger.id == ''presence'' or is_on) }}'
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: '{{ room_lights }}'
+              data:
+                brightness_pct: '{{ props.brightness_pct }}'
+                color_temp_kelvin: '{{ props.color_temp_kelvin }}'
+                transition: 5
+        - conditions:
+            - condition: template
+              value_template: '{{ not is_home }}'
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: '{{ room_lights }}'
+- id: game_time_manager
+  alias: Game Time — Calendar-Driven Toggle
+  description: Turns on game-specific flags and the global game_time boolean when a sports calendar event starts; clears them and restores ambient lighting when the game ends.
+  triggers:
+    - entity_id:
+        - calendar.penn_state_nittany_lions_football
+        - calendar.philadelphia_eagles
+        - calendar.philadelphia_flyers
+        - calendar.philadelphia_phillies
+      to: 'on'
+      id: game_started
+      trigger: state
+    - entity_id:
+        - calendar.penn_state_nittany_lions_football
+        - calendar.philadelphia_eagles
+        - calendar.philadelphia_flyers
+        - calendar.philadelphia_phillies
+      to: 'off'
+      id: game_ended
+      trigger: state
+    - trigger: state
+      entity_id: input_select.home_mode
+      to: Away
+      id: home_away
+    - trigger: state
+      entity_id: input_select.home_mode
+      to: Home
+      id: home_return
+  conditions: []
+  actions:
+    - variables:
+        team_slug: '{% set id = trigger.entity_id %}{% if ''penn_state'' in id %}penn_st{%- elif ''eagles'' in id %}eagles{%- elif ''flyers'' in id %}flyers{%- elif ''phillies'' in id %}phillies{%- else %}unknown{%- endif %}'
+        specific_boolean_entity_id: input_boolean.game_time_{{ team_slug }}
+        preset_id_map:
+          eagles: 36246dc7-718b-44c5-a131-ece43202e25a
+          flyers: b7873f7c-fad4-486d-8770-c95f7117f489
+          penn_st: 3e158682-cafe-47d8-8702-edc117c1fd2d
+          phillies: 9fbce023-52f2-447c-953f-c72d5a173d8c
+        preset_id_to_stop: '{{ preset_id_map[team_slug] }}'
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: game_started
+          sequence:
+            - target:
+                entity_id: '{{ specific_boolean_entity_id }}'
+              action: input_boolean.turn_on
+            - target:
+                entity_id: input_boolean.game_time
+              action: input_boolean.turn_on
+        - conditions:
+            - condition: trigger
+              id: game_ended
+          sequence:
+            - target:
+                entity_id: '{{ specific_boolean_entity_id }}'
+              action: input_boolean.turn_off
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ not is_state('input_boolean.game_time_phillies', 'on')\n   and not is_state('input_boolean.game_time_eagles', 'on')\n   and not is_state('input_boolean.game_time_flyers', 'on')\n   and not is_state('input_boolean.game_time_penn_st', 'on') }}\n"
+                  sequence:
+                    - target:
+                        entity_id: input_boolean.game_time
+                      action: input_boolean.turn_off
+                    - action: scene_presets.stop_all_dynamic_scenes
+                      data: {}
+                    - delay: 00:00:01
+                    - target:
+                        entity_id:
+                          - automation.apply_ambient_outside
+                      action: automation.trigger
+              default:
+                - target:
+                    entity_id: automation.apply_game_time_settings
+                  action: automation.trigger
+        - conditions:
+            - condition: trigger
+              id: home_away
+            - condition: state
+              entity_id: input_boolean.game_time
+              state: 'on'
+          sequence:
+            - target:
+                entity_id: input_boolean.game_time
+              action: input_boolean.turn_off
+            - action: scene_presets.stop_all_dynamic_scenes
+              data: {}
+            - delay: 00:00:01
+            - target:
+                entity_id:
+                  - automation.apply_ambient_outside
+              action: automation.trigger
+        - conditions:
+            - condition: trigger
+              id: home_return
+            - condition: template
+              value_template: "{{ is_state('input_boolean.game_time_phillies', 'on')\n   or is_state('input_boolean.game_time_eagles', 'on')\n   or is_state('input_boolean.game_time_flyers', 'on')\n   or is_state('input_boolean.game_time_penn_st', 'on') }}\n"
+          sequence:
+            - target:
+                entity_id: input_boolean.game_time
+              action: input_boolean.turn_on
+            - target:
+                entity_id: automation.apply_game_time_settings
+              action: automation.trigger
+  mode: single
+- id: holiday_time_manager
+  alias: Holiday Lights — Calendar-Driven Toggle
+  description: Activates holiday lighting flags based on the lights calendar; clears them and restores ambient when the event ends.
+  triggers:
+    - entity_id: calendar.lights_calendar
+      event: start
+      offset: 0:0:0
+      id: event_start
+      trigger: calendar
+    - entity_id: calendar.lights_calendar
+      event: end
+      offset: 0:0:0
+      id: event_end
+      trigger: calendar
+    - entity_id: calendar.holidays_in_united_states
+      event: start
+      offset: 0:0:0
+      id: event_start
+      trigger: calendar
+    - entity_id: calendar.holidays_in_united_states
+      event: end
+      offset: 0:0:0
+      id: event_end
+      trigger: calendar
+  conditions:
+    - condition: template
+      value_template: >-
+        {{ trigger.calendar_event.summary in ['Christmas Lights', 'Fall Lights', "St. Patrick's Day", "Valentine's Day", 'Halloween', 'Memorial Day', 'Independence Day', 'Independence Day (substitute)'] }}
+  actions:
+    - variables:
+        summary_slug_map:
+          Christmas Lights: christmas_lights
+          Fall Lights: fall_lights
+          "St. Patrick's Day": st_patrick_s_day
+          "Valentine's Day": valentine_s_day
+          Halloween: halloween
+          Memorial Day: america
+          Independence Day: america
+          Independence Day (substitute): america
+        holiday_summary_slug: '{{ summary_slug_map[trigger.calendar_event.summary] | default(''unknown'') }}'
+        specific_boolean_entity_id: 'input_boolean.holiday_time_{{ holiday_summary_slug }}'
+        holiday_preset_id_map:
+          christmas_lights: bb45dfdd-2ac8-4327-b6be-6fc809bd541f
+          fall_lights: a2fc579f-71e5-47a1-af9d-43e8edd91c6e
+          st_patrick_s_day: fa2f3a7f-7648-42f1-88b7-38692f3fcb60
+          valentine_s_day: a65a2815-52fb-4748-8e02-b607f96f70ea
+          halloween: 074338f3-f7f3-4402-9f30-46ac70e5a0e6
+          america: 9fbce023-52f2-447c-953f-c72d5a173d8c
+        preset_id_to_stop: '{{ holiday_preset_id_map[holiday_summary_slug] if holiday_summary_slug in holiday_preset_id_map else none }}'
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: event_start
+          sequence:
+            - target:
+                entity_id: '{{ specific_boolean_entity_id }}'
+              action: input_boolean.turn_on
+            - target:
+                entity_id: input_boolean.holiday_time
+              action: input_boolean.turn_on
+        - conditions:
+            - condition: trigger
+              id: event_end
+          sequence:
+            - target:
+                entity_id: '{{ specific_boolean_entity_id }}'
+              action: input_boolean.turn_off
+            - target:
+                entity_id: input_boolean.holiday_time
+              action: input_boolean.turn_off
+            - action: scene_presets.stop_all_dynamic_scenes
+              data: {}
+            - delay: 00:00:01
+            - target:
+                entity_id:
+                  - automation.apply_ambient_inside
+                  - automation.apply_ambient_outside
+              action: automation.trigger
+  mode: single
+- id: apply_holiday_time
+  alias: Holiday Lights — Start Dynamic Scene
+  description: Activates the holiday dynamic light scene for holiday-labeled lights when holiday time is on. Also restarts the scene at 8 AM and on family arrival after the Good Night shutdown.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id:
+        - input_boolean.holiday_time_christmas
+        - input_boolean.holiday_time_fall
+        - input_boolean.holiday_time_st_patrick_s_day
+        - input_boolean.holiday_time_valentine_s_day
+        - input_boolean.holiday_time_halloween
+        - input_boolean.holiday_time_america
+      to: 'on'
+    - trigger: time
+      at: 08:00:00
+    - trigger: state
+      entity_id: binary_sensor.family_home
+      to: 'on'
+  conditions:
+    - condition: template
+      value_template: '{{ is_state(''input_boolean.holiday_time'', ''on'') }}'
+  actions:
+    - variables:
+        holiday_slug: '{% if is_state(''input_boolean.holiday_time_christmas'', ''on'') %} christmas_lights {% elif is_state(''input_boolean.holiday_time_fall'', ''on'') %} fall_lights {% elif is_state(''input_boolean.holiday_time_st_patrick_s_day'', ''on'') %} st_patrick_s_day {% elif is_state(''input_boolean.holiday_time_valentine_s_day'', ''on'') %} valentine_s_day {% elif is_state(''input_boolean.holiday_time_halloween'', ''on'') %} halloween {% elif is_state(''input_boolean.holiday_time_america'', ''on'') %} america {% else %} unknown {% endif %}'
+        start_preset_id_map:
+          christmas_lights: bb45dfdd-2ac8-4327-b6be-6fc809bd541f
+          fall_lights: a2fc579f-71e5-47a1-af9d-43e8edd91c6e
+          st_patrick_s_day: fa2f3a7f-7648-42f1-88b7-38692f3fcb60
+          valentine_s_day: a65a2815-52fb-4748-8e02-b607f96f70ea
+          halloween: 074338f3-f7f3-4402-9f30-46ac70e5a0e6
+          america: 9fbce023-52f2-447c-953f-c72d5a173d8c
+        selected_preset_id: '{{ start_preset_id_map[holiday_slug | trim] | default(none) }}'
+    - if: '{{ selected_preset_id is not none }}'
+      then:
+        - action: scene_presets.start_dynamic_scene
+          data:
+            preset_id: '{{ selected_preset_id }}'
+            targets:
+              label_id: holiday
+            transition: 45
+            interval: 60
+            brightness: 255
+- id: create_holiday_calendar_events
+  alias: Holiday Calendar — Create Annual Light Season Entries
+  description: On January 1st, creates Fall Lights and Christmas Lights calendar entries based on Thanksgiving for the current year.
+  triggers:
+    - trigger: time
+      at: '00:01:00'
+  conditions:
+    - condition: template
+      value_template: '{{ now().month == 1 and now().day == 1 }}'
+  actions:
+    - variables:
+        nov1: '{{ strptime(now().year | string ~ ''-11-01'', ''%Y-%m-%d'') }}'
+        thanksgiving: '{{ nov1 + timedelta(days=(3 - nov1.weekday()) % 7 + 21) }}'
+        black_friday: '{{ thanksgiving + timedelta(days=1) }}'
+        next_jan1: '{{ strptime((now().year + 1) | string ~ ''-01-01'', ''%Y-%m-%d'') }}'
+        christmas_end: '{{ next_jan1 + timedelta(days=(7 - next_jan1.weekday()) % 7 + 14) }}'
+    - action: calendar.create_event
+      target:
+        entity_id: calendar.lights_calendar
+      data:
+        summary: Fall Lights
+        start_date: '{{ now().year | string ~ ''-11-01'' }}'
+        end_date: '{{ black_friday.strftime(''%Y-%m-%d'') }}'
+    - action: calendar.create_event
+      target:
+        entity_id: calendar.lights_calendar
+      data:
+        summary: Christmas Lights
+        start_date: '{{ black_friday.strftime(''%Y-%m-%d'') }}'
+        end_date: '{{ christmas_end.strftime(''%Y-%m-%d'') }}'
+  mode: single
+- id: home_mode_manager
+  alias: Home Mode — Presence & Schedule Manager
+  description: Transitions Home Mode between Home, Away, and Night based on presence, time, and the Good Night signal.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: group.family
+      to: home
+      id: presence_home
+    - trigger: state
+      entity_id: group.family
+      to: not_home
+      id: presence_away
+    - trigger: time
+      at: 00:00:00
+      id: time_night
+    - trigger: time
+      at: 05:30:00
+      id: time_home
+    - trigger: state
+      entity_id: input_boolean.good_night
+      to: 'on'
+      id: good_night_on
+  conditions:
+    - condition: or
+      conditions:
+        - condition: template
+          value_template: '{{ not is_state(''input_select.home_mode'', ''Vacation'') }}'
+        - condition: trigger
+          id: good_night_on
+  actions:
+    - choose:
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: trigger
+                  id: good_night_on
+                - condition: and
+                  conditions:
+                    - condition: trigger
+                      id: time_night
+                    - condition: state
+                      entity_id: group.family
+                      state: home
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.home_mode
+              data:
+                option: Night
+            - action: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.good_night
+        - conditions:
+            - condition: trigger
+              id: time_home
+            - condition: state
+              entity_id: group.family
+              state: home
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.home_mode
+              data:
+                option: Home
+        - conditions:
+            - condition: trigger
+              id: presence_home
+            - condition: not
+              conditions:
+                - condition: state
+                  entity_id: input_select.home_mode
+                  state: Night
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.home_mode
+              data:
+                option: Home
+        - conditions:
+            - condition: trigger
+              id: presence_away
+          sequence:
+            - action: input_select.select_option
+              target:
+                entity_id: input_select.home_mode
+              data:
+                option: Away
+            - action: persistent_notification.create
+              data:
+                title: House Empty
+                message: Everyone has left the house.
+                notification_id: house_empty_reset
+- id: security_lock_doors_on_mode_change
+  alias: Lock All Doors — Away or Night
+  description: Locks all exterior doors when Home Mode transitions to Away or Night. The workshop lights are handled separately by the workshop lock automation.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: input_select.home_mode
+      to:
+        - Away
+        - Night
+  actions:
+    - action: lock.lock
+      target:
+        entity_id:
+          - lock.front_porch_lock
+          - lock.laundry_room
+          - lock.workshop_smart_lock
+- id: security_area_aware_motion_brighten
+  alias: Outdoor Motion — Brighten Security Lights
+  description: Brightens outdoor security lights in the triggered area to 60% when motion is detected at night. Returns lights to normal 10 minutes after clearing.
+  mode: parallel
+  max: 10
+  triggers:
+    - trigger: state
+      entity_id:
+        - binary_sensor.garden_sensor_occupancy
+        - binary_sensor.back_yard_sensor_occupancy
+        - binary_sensor.side_yard_sensor_occupancy
+        - binary_sensor.front_yard_sensor_occupancy
+      to: 'on'
+  conditions:
+    - condition: state
+      entity_id: input_boolean.panic_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_select.home_mode
+      state: Night
+  actions:
+    - variables:
+        trigger_area: '{{ area_id(trigger.entity_id) }}'
+        target_entities: '{{ label_entities(''security_motion'') | select(''in'', area_entities(trigger_area)) | list }}'
+    - if:
+        - condition: template
+          value_template: '{{ target_entities | count > 0 }}'
+      then:
+        - action: light.turn_on
+          target:
+            entity_id: '{{ target_entities }}'
+          data:
+            brightness_pct: 60
+        - wait_template: '{{ is_state(trigger.entity_id, ''off'') }}'
+        - delay: 00:10:00
+        - condition: template
+          value_template: "{{ is_state(trigger.entity_id, 'off') and\n   (as_timestamp(now()) - as_timestamp(states[trigger.entity_id].last_changed)) >= 600 }}"
+        - repeat:
+            for_each: '{{ target_entities }}'
+            sequence:
+              - action: light.turn_on
+                target:
+                  entity_id: '{{ repeat.item }}'
+                data:
+                  brightness_pct: '{{ 40 if ''security_ambient'' in labels(repeat.item) else 0 }}'
+- id: panic_mode_manager
+  alias: Panic Mode — Emergency Lighting & Alerts
+  description: Activates full-brightness emergency lighting and critical alerts on panic. Physical triple-tap toggles it; mobile action or toggle clears it.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.panic_mode
+      id: panic_toggle
+    - trigger: template
+      value_template: "{{ states.binary_sensor\n   | selectattr('entity_id', 'search', 'protect_(smoke|carbon_monoxide|heat)')\n   | selectattr('state', 'eq', 'on')\n   | list | count > 0 }}"
+      id: life_safety_alert
+    - trigger: mqtt
+      topic: zigbee2mqtt/+/action
+      payload: up_triple
+      id: physical_panic
+    - trigger: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: PANIC_ALL_CLEAR
+      id: mobile_all_clear
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: physical_panic
+          sequence:
+            - action: input_boolean.toggle
+              target:
+                entity_id: input_boolean.panic_mode
+        - conditions:
+            - condition: trigger
+              id: mobile_all_clear
+          sequence:
+            - action: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.panic_mode
+    - choose:
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: input_boolean.panic_mode
+                  state: 'on'
+                - condition: trigger
+                  id: life_safety_alert
+          sequence:
+            - action: light.turn_on
+              target:
+                label_id:
+                  - ambient
+                  - security_ambient
+                  - auto_bright
+              data:
+                brightness_pct: 100
+                color_temp_kelvin: 4000
+                transition: 1
+            - choose:
+                - conditions:
+                    - condition: trigger
+                      id: life_safety_alert
+                  sequence:
+                    - action: lock.unlock
+                      target:
+                        entity_id:
+                          - lock.front_porch_lock
+                          - lock.laundry_room
+                - conditions:
+                    - condition: or
+                      conditions:
+                        - condition: trigger
+                          id: panic_toggle
+                        - condition: trigger
+                          id: physical_panic
+                  sequence:
+                    - action: lock.lock
+                      target:
+                        entity_id:
+                          - lock.front_porch_lock
+                          - lock.laundry_room
+            - action: script.send_notification
+              data:
+                tier: 1
+                title: "🚨 EMERGENCY: Panic Mode Active"
+                message: Emergency lighting triggered! Manual panic or life-safety alert detected.
+                extra_data:
+                  actions:
+                    - action: PANIC_ALL_CLEAR
+                      title: ✅ All Clear
+                      destructive: true
+        - conditions:
+            - condition: state
+              entity_id: input_boolean.panic_mode
+              state: 'off'
+          sequence:
+            - action: persistent_notification.dismiss
+              data:
+                notification_id: panic_mode_alert
+            - delay: 00:00:01
+            - action: automation.trigger
+              target:
+                entity_id:
+                  - automation.apply_ambient_outside
+- id: weather_early_sunset_lux
+  alias: Dark Clouds — Trigger Early Sunset Mode
+  description: Switches ambient mode to Sunset if outdoor lux drops below 100 for 10+ minutes during the day, or immediately if lux is already low when daytime starts.
+  triggers:
+    - trigger: template
+      value_template: "{% set entities = [\n  'sensor.garden_sensor_illuminance',\n  'sensor.back_yard_sensor_illuminance',\n  'sensor.side_yard_sensor_illuminance',\n  'sensor.front_yard_sensor_illuminance'\n] %} {% set sensors = states | selectattr('entity_id', 'in', entities) | map(attribute='state') | map('float', -1) | select('>=', 0) | list %} {{ (sensors | sum / sensors | count) < 100 if sensors | count > 0 else false }}"
+      for: 00:10:00
+      id: lux_drop
+    - trigger: state
+      entity_id: input_select.ambient_light_mode
+      to: 'Off'
+      id: daytime_transition
+  conditions:
+    - condition: state
+      entity_id: sun.sun
+      state: above_horizon
+    - condition: state
+      entity_id: input_select.ambient_light_mode
+      state: 'Off'
+    - condition: state
+      entity_id: input_select.home_mode
+      state: Home
+    - condition: time
+      after: '08:00:00'
+    - condition: state
+      entity_id: binary_sensor.we_are_out_of_bed
+      state: 'on'
+      for: '00:10:00'
+    - condition: template
+      value_template: "{% set entities = [\n  'sensor.garden_sensor_illuminance',\n  'sensor.back_yard_sensor_illuminance',\n  'sensor.side_yard_sensor_illuminance',\n  'sensor.front_yard_sensor_illuminance'\n] %} {% set sensors = states | selectattr('entity_id', 'in', entities) | map(attribute='state') | map('float', -1) | select('>=', 0) | list %} {{ (sensors | sum / sensors | count) < 100 if sensors | count > 0 else false }}"
+  actions:
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.ambient_light_mode
+      data:
+        option: Sunset
+- id: weather_brightness_recovery
+  alias: Bright Again — Reset Ambient to Off
+  description: Reverts ambient mode to Off when outdoor lux recovers above 250 for 15+ minutes after an early sunset trigger.
+  triggers:
+    - trigger: template
+      value_template: "{% set entities = [\n  'sensor.garden_sensor_illuminance',\n  'sensor.back_yard_sensor_illuminance',\n  'sensor.side_yard_sensor_illuminance',\n  'sensor.front_yard_sensor_illuminance'\n] %} {% set sensors = states | selectattr('entity_id', 'in', entities) | map(attribute='state') | map('float', -1) | select('>=', 0) | list %} {{ (sensors | sum / sensors | count) > 250 if sensors | count > 0 else false }}"
+      for: 00:15:00
+  conditions:
+    - condition: state
+      entity_id: sun.sun
+      state: above_horizon
+    - condition: state
+      entity_id: input_select.ambient_light_mode
+      state: Sunset
+  actions:
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.ambient_light_mode
+      data:
+        option: 'Off'
+- id: system_health_daily_report
+  alias: Morning System Health Report
+  description: Sends a daily summary of low-battery and offline devices to parents at 10 AM when issues are detected.
+  triggers:
+    - trigger: time
+      at: '10:00:00'
+  conditions:
+    - condition: or
+      conditions:
+        - condition: numeric_state
+          entity_id: sensor.low_battery_devices
+          above: 0
+        - condition: numeric_state
+          entity_id: sensor.offline_devices_count
+          above: 0
+  actions:
+    - variables:
+        low_battery_list: "{% set ns = namespace(items=[]) %} {% for s in states.sensor | selectattr('attributes.device_class', 'defined') | selectattr('attributes.device_class', 'eq', 'battery') | list %}\n  {% if s.state | float(100) <= 15 %}\n    {% set ns.items = ns.items + [s.attributes.friendly_name] %}\n  {% endif %}\n{% endfor %} {{ ns.items }}"
+        offline_list: "{% set domains = ['light', 'switch', 'sensor', 'binary_sensor', 'lock'] %} {{ states | selectattr('domain', 'in', domains)\n    | selectattr('state', 'in', ['unavailable', 'unknown'])\n    | map(attribute='attributes.friendly_name')\n    | list }}"
+    - action: script.send_notification
+      data:
+        tier: 3
+        targets: parent_devices
+        title: "🏠 System Health Report"
+        message: "{% set ns = namespace(msg=[]) %} {% if low_battery_list | count > 0 %}\n  {% set ns.msg = ns.msg + [\"Low Battery: \" ~ low_battery_list | join(', ')] %}\n{% endif %} {% if offline_list | count > 0 %}\n  {% set ns.msg = ns.msg + [\"Offline: \" ~ offline_list | join(', ')] %}\n{% endif %} {{ ns.msg | #magic___^_^___line join('\\n\\n') }}"
+- id: molly_room_remote_switch
+  alias: "Molly's Room Remote — Switch Control"
+  description: Maps ZMR4_1 top button to on, bottom to off, middle buttons to brightness up/down for Molly's room lights.
+  triggers:
+    - trigger: state
+      entity_id: event.molly_s_room_remote_switch_action
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.attributes.event_type == '1_single' }}"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: "{{ area_entities('molly_s_room') | select('match', 'light\\.') | select('in', label_entities('bedroom')) | select('in', label_entities('inside')) | list }}"
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.attributes.event_type == '4_single' }}"
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: "{{ area_entities('molly_s_room') | select('match', 'light\\.') | select('in', label_entities('bedroom')) | select('in', label_entities('inside')) | list }}"
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.attributes.event_type == '2_single' }}"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: "{{ area_entities('molly_s_room') | select('match', 'light\\.') | select('in', label_entities('bedroom')) | select('in', label_entities('inside')) | list }}"
+              data:
+                brightness_step_pct: 20
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.attributes.event_type == '3_single' }}"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: "{{ area_entities('molly_s_room') | select('match', 'light\\.') | select('in', label_entities('bedroom')) | select('in', label_entities('inside')) | list }}"
+              data:
+                brightness_step_pct: -20
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.attributes.event_type == '2_hold' }}"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: "{{ area_entities('molly_s_room') | select('match', 'light\\.') | select('in', label_entities('bedroom')) | select('in', label_entities('inside')) | list }}"
+              data:
+                brightness_step_pct: 40
+                transition: 1
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.attributes.event_type == '3_hold' }}"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: "{{ area_entities('molly_s_room') | select('match', 'light\\.') | select('in', label_entities('bedroom')) | select('in', label_entities('inside')) | list }}"
+              data:
+                brightness_step_pct: -40
+                transition: 1
+  mode: single
+
+- id: zigbee2mqtt_resync_on_ha_start
+  alias: Zigbee2MQTT — Resync on Home Assistant Start
+  description: >-
+    Restarts both Zigbee2MQTT instances after Home Assistant starts up to ensure
+    MQTT discovery messages are re-published and all devices are properly registered.
+  triggers:
+    - trigger: homeassistant
+      event: start
+  actions:
+    - delay:
+        seconds: 30
+    - action: mqtt.publish
+      data:
+        topic: zigbee2mqtt/bridge/request/restart
+        payload: '{}'
+    - delay:
+        seconds: 5
+    - action: mqtt.publish
+      data:
+        topic: zigbee2mqtt-02/bridge/request/restart
+        payload: '{}'
+  mode: single

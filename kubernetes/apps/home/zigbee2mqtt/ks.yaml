@@ -27,6 +27,7 @@ spec:
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
+    - name: home-assistant
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
@@ -58,6 +59,7 @@ spec:
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
+    - name: home-assistant
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
