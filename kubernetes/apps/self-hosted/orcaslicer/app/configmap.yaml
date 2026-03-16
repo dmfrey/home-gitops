@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/v1/configmap_v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bambuddy-ca
+data:
+  bbl_ca.crt: |-
+    -----BEGIN CERTIFICATE-----
+    MIIC7jCCAdagAwIBAgIUdEIlQ4XNF0YX7Wyf35uvvXc/0DEwDQYJKoZIhvcNAQEL
+    BQAwHTEbMBkGA1UEAwwSVmlydHVhbCBQcmludGVyIENBMB4XDTI2MDMxMzE4MzAy
+    NFoXDTQ2MDMwODE4MzAyNFowHTEbMBkGA1UEAwwSVmlydHVhbCBQcmludGVyIENB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmk+C9q2jSdZQpZkx7NkQ
+    Ju5lLBqRQpxefv6Ck+Ph0nLjogq6Q8UFOPT2w1v5zKw9zPwWEv74YygitVX0CCv1
+    CNIhbBal1H3wwQYMWCiJtzDax8gi2jaoknDWQU/TbkTmV/ri0xpFLHI/uFWDds0V
+    CBl77k0wq51A5/NOIBVPVl3om5zE01tfOOK+WGynOc+LR09Ai8sq0z31yr0ZcUEV
+    HHda5jiQIWA8kY7XeiVpmFDPCiszFITtsAFcZowC+nwf8GkxYuYkZF5RabIHQscS
+    M3VjA90XFOdrPk4DkTzN5wGokvibgGJ+ID2AG4l4Oh2G+k/qvzjo+8BlHD7LCDi+
+    YwIDAQABoyYwJDASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBhjAN
+    BgkqhkiG9w0BAQsFAAOCAQEAJ3MaE/HVPW8Z7T+mcqhC1n+MS2SDJOiu8VJh+KZW
+    66LF3y0r0ENABWKvUUr9NiJCSeH/++OOYrQB8lZVfACK8izNgVw6Lm9LQRk4q0n6
+    sesTPbq2gG414W27D5bv2biPfZMtloB9Bfi+2X+ep+n0cl0YNqP6zdb2oAD3fzVR
+    urBm+1ZxOaW5rLdIge5yYo42acXNRuU9nIRQq14hGvcVwUjMXgoCaCMG71l2jwZV
+    yBScDm+qumZsno8IQoSWWJNbAvL0o6ofrtEvLJeaaIDqH2u5Do6SeqC0rOYJ2cvr
+    eRqkhF9qWsa/+gYTRI2NSoXlws/nirW6pahqmPv27CYYjw==
+    -----END CERTIFICATE-----

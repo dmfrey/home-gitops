@@ -14,6 +14,17 @@ spec:
       orcaslicer:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          cert-inject:
+            image:
+              repository: ghcr.io/linuxserver/orcaslicer
+              tag: 2.3.1
+            command:
+              - /bin/sh
+              - -c
+              - |
+                cp /opt/orcaslicer/resources/cert/printer.cer /certs/printer.cer
+                cat /bambuddy-ca/bbl_ca.crt >> /certs/printer.cer
         containers:
           app:
             image:
@@ -102,3 +113,18 @@ spec:
         sizeLimit: 1Gi
         globalMounts:
           - path: /dev/shm
+      cert:
+        type: emptyDir
+        advancedMounts:
+          orcaslicer:
+            cert-inject:
+              - path: /certs
+            app:
+              - path: /opt/orcaslicer/resources/cert
+      bambuddy-ca:
+        type: configMap
+        name: bambuddy-ca
+        advancedMounts:
+          orcaslicer:
+            cert-inject:
+              - path: /bambuddy-ca
