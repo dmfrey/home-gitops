@@ -26,6 +26,7 @@
   ignorePaths: [
     '**/resources/**',
     '**/nzbget/extension/**',
+    'archive/**',
   ],
   flux: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
