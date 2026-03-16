@@ -74,7 +74,6 @@ spec:
             "ips": ["192.168.50.6/24", "${IPV6_IOT_PREFIX}:4::1/64"],
             "mac": "a6:41:7a:c3:2b:e8"
           }]
-      hostNetwork: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
