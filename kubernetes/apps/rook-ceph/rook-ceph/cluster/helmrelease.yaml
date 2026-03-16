@@ -47,6 +47,9 @@ spec:
         mgr:
           mgr/crash/warn_recent_interval: "7200" # 2 hours (default is 1209600 = 2 weeks)
 
+        osd:
+          bluestore_slow_ops_warn_lifetime: "7200" # 2 hours (default is 86400 = 24 hours)
+
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
 
@@ -100,7 +103,7 @@ spec:
         config:
           osdsPerDevice: "1"
           bluestore_block_db_size: "214748364800" # 200Gi
-        # devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
+          # devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
 
     cephBlockPools:
       - name: ceph-blockpool
