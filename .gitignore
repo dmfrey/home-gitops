@@ -78,5 +78,7 @@ kubernetes/apps/home/home-assistant/app/configuration/*
 kubernetes/apps/home/home-assistant/app/dashboards/*
 kubernetes/apps/home/home-assistant/app/details/*
 
+kubernetes/apps/self-hosted/affine/docs/*
+
 .claude/settings.local.json
 .claude/todos.json

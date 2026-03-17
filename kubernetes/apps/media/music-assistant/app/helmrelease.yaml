@@ -103,10 +103,6 @@ spec:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data
-      cache:
-        existingClaim: music-assistant-cache
-        globalMounts:
-          - path: /cache
       media:
         type: nfs
         server: nas.internal
