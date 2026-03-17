@@ -2762,3 +2762,165 @@
         topic: zigbee2mqtt-02/bridge/request/restart
         payload: '{}'
   mode: single
+
+- id: cube_office_dan_music_control
+  alias: Dan's Office Cube — Music Control
+  description: >-
+    Controls Music Assistant on the Pixel Tablet via cube gestures.
+    Rotate for volume, tap for play/pause, flip180 for next track,
+    slide to stop, shake with face up to play genre radio.
+  trigger_variables:
+    action_rotate_right: rotate_right
+    action_rotate_left: rotate_left
+    action_tap: tap
+    action_flip180: flip180
+    action_slide: slide
+    action_shake: shake
+  triggers:
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_rotate_right }}'
+      value_template: '{{ value_json.action }}'
+      id: rotate_right
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_rotate_left }}'
+      value_template: '{{ value_json.action }}'
+      id: rotate_left
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_tap }}'
+      value_template: '{{ value_json.action }}'
+      id: tap
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_flip180 }}'
+      value_template: '{{ value_json.action }}'
+      id: flip180
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_slide }}'
+      value_template: '{{ value_json.action }}'
+      id: slide
+    - trigger: mqtt
+      topic: zigbee2mqtt/Dan's Office Cube
+      payload: '{{ action_shake }}'
+      value_template: '{{ value_json.action }}'
+      id: shake
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: rotate_right
+          sequence:
+            - action: media_player.volume_up
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+        - conditions:
+            - condition: trigger
+              id: rotate_left
+          sequence:
+            - action: media_player.volume_down
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+        - conditions:
+            - condition: trigger
+              id: tap
+          sequence:
+            - action: media_player.media_play_pause
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+        - conditions:
+            - condition: trigger
+              id: flip180
+          sequence:
+            - action: media_player.media_next_track
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+        - conditions:
+            - condition: trigger
+              id: slide
+          sequence:
+            - action: media_player.media_stop
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+        - conditions:
+            - condition: trigger
+              id: shake
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '1'
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+              data:
+                media_id: Classic Rock
+                radio_mode: true
+        - conditions:
+            - condition: trigger
+              id: shake
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '2'
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+              data:
+                media_id: Jazz
+                radio_mode: true
+        - conditions:
+            - condition: trigger
+              id: shake
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '3'
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+              data:
+                media_id: Soul
+                radio_mode: true
+        - conditions:
+            - condition: trigger
+              id: shake
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '4'
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+              data:
+                media_id: Metal
+                radio_mode: true
+        - conditions:
+            - condition: trigger
+              id: shake
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '5'
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+              data:
+                media_id: Ambient
+                radio_mode: true
+        - conditions:
+            - condition: trigger
+              id: shake
+            - condition: state
+              entity_id: sensor.dan_s_office_cube_side
+              state: '6'
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.music_assistant_pixel_tablet
+              data:
+                media_id: Music
+                radio_mode: true
+                enqueue: replace
+  mode: single
