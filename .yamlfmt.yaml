@@ -1,5 +1,7 @@
 ---
 doublestar: true
+exclude:
+  - kubernetes/apps/home/home-assistant/app/configuration/*.yaml
 formatter:
   type: basic
   disable_alias_key_correction: true
