@@ -718,7 +718,7 @@
     - action: media_player.volume_set
       metadata: {}
       target:
-        entity_id: media_player.pixel_tablet_2
+        entity_id: media_player.pixel_tablet
       data:
         volume_level: 0.3
     - delay:
@@ -743,7 +743,7 @@
             - metadata: {}
               data:
                 cache: true
-                media_player_entity_id: media_player.pixel_tablet_2
+                media_player_entity_id: media_player.pixel_tablet
                 message: It's time to start your work day. Have a great day!
               target:
                 entity_id:
@@ -760,7 +760,7 @@
             - metadata: {}
               data:
                 cache: true
-                media_player_entity_id: media_player.pixel_tablet_2
+                media_player_entity_id: media_player.pixel_tablet
                 message: It's time to stand up and stretch. Let's take a break for 10 minutes.
               target:
                 entity_id:
@@ -777,7 +777,7 @@
             - metadata: {}
               data:
                 cache: true
-                media_player_entity_id: media_player.pixel_tablet_2
+                media_player_entity_id: media_player.pixel_tablet
                 message: It's time for lunch! Remember to wash your hands!
               target:
                 entity_id:
@@ -794,7 +794,7 @@
             - metadata: {}
               data:
                 cache: true
-                media_player_entity_id: media_player.pixel_tablet_2
+                media_player_entity_id: media_player.pixel_tablet
                 message: Hope you're having a good day! Want to go for a walk?
               target:
                 entity_id:
@@ -811,7 +811,7 @@
             - metadata: {}
               data:
                 cache: true
-                media_player_entity_id: media_player.pixel_tablet_2
+                media_player_entity_id: media_player.pixel_tablet
                 message: Let's go grab a glass of water. And why don't you go wash your hands?
               target:
                 entity_id:
@@ -828,7 +828,7 @@
             - metadata: {}
               data:
                 cache: true
-                media_player_entity_id: media_player.pixel_tablet_2
+                media_player_entity_id: media_player.pixel_tablet
                 message: Time to start wrapping up your work day and plan for dinner!
               target:
                 entity_id:
