@@ -2676,7 +2676,7 @@
         tier: 3
         targets: parent_devices
         title: "🏠 System Health Report"
-        message: "{% set ns = namespace(msg=[]) %} {% if low_battery_list | count > 0 %}\n  {% set ns.msg = ns.msg + [\"Low Battery: \" ~ low_battery_list | join(', ')] %}\n{% endif %} {% if offline_list | count > 0 %}\n  {% set ns.msg = ns.msg + [\"Offline: \" ~ offline_list | join(', ')] %}\n{% endif %} {{ ns.msg | #magic___^_^___line join('\\n\\n') }}"
+        message: "{% set ns = namespace(msg=[]) %} {% if low_battery_list | count > 0 %}\n  {% set ns.msg = ns.msg + [\"Low Battery: \" ~ low_battery_list | join(', ')] %}\n{% endif %} {% if offline_list | count > 0 %}\n  {% set ns.msg = ns.msg + [\"Offline: \" ~ offline_list | join(', ')] %}\n{% endif %} {{ ns.msg | join('\\n\\n') }}"
 - id: molly_room_remote_switch
   alias: "Molly's Room Remote — Switch Control"
   description: Maps ZMR4_1 top button to on, bottom to off, middle buttons to brightness up/down for Molly's room lights.
