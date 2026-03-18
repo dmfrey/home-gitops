@@ -99,7 +99,7 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
+            conditions: ["[STATUS] < 400"]
             url: "https://rss.dmfrey.com"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
