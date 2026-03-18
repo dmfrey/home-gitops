@@ -30,7 +30,10 @@ spec:
               repository: ghcr.io/toeverything/affine
               tag: 0.26.4@sha256:638893c8f62bb7fd0b3028863096f2b057e3c7ca2ac5163574c333698a331f33
 
-            command: ["sh", "-c", "node ./scripts/self-host-predeploy.js"]
+            command:
+              - "sh"
+              - "-c"
+              - "node ./scripts/self-host-predeploy.js"
 
             env:
               TZ: America/New_York
@@ -125,6 +128,8 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
+          - name: envoy-external
+            namespace: network
           - name: envoy-internal
             namespace: network
 
