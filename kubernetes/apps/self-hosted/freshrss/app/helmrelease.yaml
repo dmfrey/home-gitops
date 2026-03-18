@@ -55,7 +55,7 @@ spec:
               OIDC_ENABLED: "1"
               OIDC_PROVIDER_METADATA_URL: "https://auth.dmfrey.com/application/o/freshrss/.well-known/openid-configuration"
               OIDC_REMOTE_USER_CLAIM: preferred_username
-              OIDC_X_FORWARDED_HEADERS: "HTTP_X_FORWARDED_HOST HTTP_X_FORWARDED_PORT HTTP_X_FORWARDED_PROTO"
+              OIDC_X_FORWARDED_HEADERS: "X-Forwarded-Host X-Forwarded-Port X-Forwarded-Proto"
             envFrom:
               - secretRef:
                   name: freshrss-secret
