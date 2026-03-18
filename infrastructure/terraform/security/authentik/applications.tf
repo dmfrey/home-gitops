@@ -14,7 +14,7 @@ locals {
       client_secret = var.FRESHRSS_CLIENT_SECRET
       group         = "home"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/freshrss.png"
-      redirect_uri  = "https://rss.${var.CLUSTER_DOMAIN}/i/"
+      redirect_uri  = "https://rss.${var.CLUSTER_DOMAIN}/i/oidc/"
       launch_url    = "https://rss.${var.CLUSTER_DOMAIN}/"
     },
     gatus = {
