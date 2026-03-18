@@ -60,17 +60,24 @@ spec:
               - secretRef:
                   name: freshrss-secret
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /i/
+                  tcpSocket:
                     port: 80
                   initialDelaySeconds: 10
                   periodSeconds: 30
                   failureThreshold: 5
-              readiness: *probes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 80
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
             resources:
               requests:
                 cpu: 25m
@@ -100,7 +107,6 @@ spec:
           gethomepage.dev/icon: freshrss.svg
           gethomepage.dev/description: RSS Feed Aggregator
         hostnames:
-          - "{{ .Release.Name }}.dmfrey.com"
           - rss.dmfrey.com
         parentRefs:
           - name: envoy-external
