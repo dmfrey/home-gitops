@@ -17,7 +17,6 @@ spec:
     substitute:
       APP: node-red
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: node-red
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:

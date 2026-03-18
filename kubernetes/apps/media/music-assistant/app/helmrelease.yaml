@@ -100,7 +100,7 @@ spec:
             sectionName: https
     persistence:
       data:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /data
       media:

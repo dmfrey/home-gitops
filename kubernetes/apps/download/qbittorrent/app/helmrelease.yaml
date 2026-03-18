@@ -19,7 +19,9 @@ spec:
             image:
               repository: alpine
               tag: "3.23"
-            command: ["/bin/sh", "-c"]
+            command:
+              - "/bin/sh"
+              - "-c"
             args:
               - |
                 set -e
@@ -124,7 +126,7 @@ spec:
             addr = "http://localhost:80"
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
         identifier: config

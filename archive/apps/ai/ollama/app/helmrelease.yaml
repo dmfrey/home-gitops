@@ -34,7 +34,7 @@ spec:
   values:
 
     controllers:
-      *app :
+      *app:
         type: statefulset
         replicas: 1 # 3
 
@@ -42,7 +42,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          *app:
             image:
               # repository: docker.io/ollama/ollama
               # tag: 0.7.0
@@ -103,7 +103,7 @@ spec:
           resourceClaimTemplateName: ollama
 
     service:
-      *app :
+      *app:
         controller: *app
         type: LoadBalancer
         annotations:
@@ -114,8 +114,9 @@ spec:
             port: &port 11434
 
     route:
-      *app :
-        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+      *app:
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
           - name: envoy-internal
             namespace: network

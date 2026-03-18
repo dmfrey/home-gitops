@@ -30,7 +30,7 @@ spec:
               OLLAMA_BASE_URL: http://ollama.internal:11434
               # WEBUI_AUTH_TRUSTED_EMAIL_HEADER: X-authentik-email
               AUDIO_OPENAI_API_BASE_URL: https://piper.dmfrey.com/v1
-              AUDIO_OPENAI_API_KEY: sk-111111111111  # fake key needed to make ui happy
+              AUDIO_OPENAI_API_KEY: sk-111111111111 # fake key needed to make ui happy
               RAG_EMBEDDING_ENGINE: ollama
               # OAUTH
               ENABLE_OAUTH_SIGNUP: true
@@ -85,7 +85,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
       tmp:
         enabled: true
         type: emptyDir

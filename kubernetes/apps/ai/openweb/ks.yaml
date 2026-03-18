@@ -73,7 +73,6 @@ spec:
     substitute:
       APP: openweb
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: openweb
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   retryInterval: 2m

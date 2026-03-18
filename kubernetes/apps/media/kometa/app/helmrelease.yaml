@@ -58,7 +58,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: pmm-config
+        existingClaim: "{{ .Release.Name }}"
 
       config-playlists:
         type: configMap
