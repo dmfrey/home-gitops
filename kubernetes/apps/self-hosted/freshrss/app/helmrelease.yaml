@@ -102,7 +102,7 @@ spec:
             conditions: ["[STATUS] == 200"]
             url: "https://rss.dmfrey.com/api/"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
+          gethomepage.dev/group: Tools
           gethomepage.dev/name: FreshRSS
           gethomepage.dev/icon: freshrss.svg
           gethomepage.dev/description: RSS Feed Aggregator
