@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: docker.io/freshrss/freshrss
-              tag: 1.24.3
+              tag: 1.28.1
             env:
               TZ: America/New_York
               CRON_MIN: "1,31"
