@@ -1,0 +1,115 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: freshrss
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: freshrss
+  interval: 1h
+  values:
+    controllers:
+      freshrss:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/freshrss/freshrss
+              tag: 1.24.3
+            env:
+              TZ: America/New_York
+              CRON_MIN: "1,31"
+              FRESHRSS_ENV: production
+              # Database (individual keys from CNPG app secret)
+              DB_TYPE: pgsql
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: freshrss-cnpg-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: freshrss-cnpg-app
+                    key: port
+              DB_BASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: freshrss-cnpg-app
+                    key: dbname
+              DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: freshrss-cnpg-app
+                    key: username
+              DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: freshrss-cnpg-app
+                    key: password
+              # OIDC via mod_auth_openidc
+              OIDC_ENABLED: "1"
+              OIDC_PROVIDER_METADATA_URL: "https://auth.dmfrey.com/application/o/freshrss/.well-known/openid-configuration"
+              OIDC_REMOTE_USER_CLAIM: preferred_username
+              OIDC_X_FORWARDED_HEADERS: "HTTP_X_FORWARDED_HOST HTTP_X_FORWARDED_PORT HTTP_X_FORWARDED_PROTO"
+            envFrom:
+              - secretRef:
+                  name: freshrss-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /i/
+                    port: 80
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 25m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+    service:
+      app:
+        ports:
+          http:
+            port: 80
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+            url: "https://rss.dmfrey.com"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: FreshRSS
+          gethomepage.dev/icon: freshrss.svg
+          gethomepage.dev/description: RSS Feed Aggregator
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+          - rss.dmfrey.com
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/www/FreshRSS/data
+            subPath: data
+          - path: /var/www/FreshRSS/extensions
+            subPath: extensions

@@ -9,6 +9,14 @@ locals {
       redirect_uri  = "https://affine.${var.CLUSTER_DOMAIN}/oauth/callback"
       launch_url    = "https://affine.${var.CLUSTER_DOMAIN}/"
     },
+    freshrss = {
+      client_id     = var.FRESHRSS_CLIENT_ID
+      client_secret = var.FRESHRSS_CLIENT_SECRET
+      group         = "home"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/freshrss.png"
+      redirect_uri  = "https://rss.${var.CLUSTER_DOMAIN}/i/"
+      launch_url    = "https://rss.${var.CLUSTER_DOMAIN}/"
+    },
     gatus = {
       client_id     = var.GATUS_CLIENT_ID
       client_secret = var.GATUS_CLIENT_SECRET

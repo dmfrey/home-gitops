@@ -11,6 +11,7 @@ resources:
   - ./affine/ks.yaml
   - ./bambuddy/ks.yaml
   - ./excalidraw/ks.yaml
+  - ./freshrss/ks.yaml
   - ./home-projects/ks.yaml
   - ./homepage/ks.yaml
   - ./linkwarden/ks.yaml

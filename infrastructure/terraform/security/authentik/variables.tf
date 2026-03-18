@@ -24,6 +24,11 @@ variable "AFFINE_CLIENT_SECRET" {
   type      = string
   sensitive = true
 }
+variable "FRESHRSS_CLIENT_ID" { type = string }
+variable "FRESHRSS_CLIENT_SECRET" {
+  type      = string
+  sensitive = true
+}
 variable "GATUS_CLIENT_ID" { type = string }
 variable "GATUS_CLIENT_SECRET" {
   type      = string
