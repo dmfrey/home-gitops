@@ -99,8 +99,8 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 401"]
-            url: "https://rss.dmfrey.com"
+            conditions: ["[STATUS] == 200"]
+            url: "https://rss.dmfrey.com/api/"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
           gethomepage.dev/name: FreshRSS
