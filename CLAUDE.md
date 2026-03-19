@@ -51,12 +51,6 @@ just talos gen-schematic-id               # Generate Talos schematic ID
 just talos download-image <version> <schematic>  # Download Talos ISO
 ```
 
-### Manifest Validation
-
-```sh
-flux-local build ks --namespace <ns> --path kubernetes/flux/cluster <ks>  # Build a local Kustomization
-```
-
 ### Bootstrap (initial cluster setup only)
 
 ```sh
