@@ -7,15 +7,6 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
 
-patches:
-  - patch: |-
-      - op: replace
-        path: /spec/kopia/sourceIdentity/sourceName
-        value: overseerr
-    target:
-      kind: ReplicationDestination
-      name: seerr-bootstrap
-
 configMapGenerator:
   - name: seerr-config-template
     files:
