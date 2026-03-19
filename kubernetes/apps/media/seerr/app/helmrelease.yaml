@@ -74,11 +74,11 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
           gethomepage.dev/name: Seerr
-          gethomepage.dev/icon: overseerr.png
+          gethomepage.dev/icon: seerr.png
           gethomepage.dev/description: Media Request Management
-          gethomepage.dev/widget.type: overseerr
+          gethomepage.dev/widget.type: seerr
           gethomepage.dev/widget.url: http://seerr.media.svc.cluster.local:5055
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SEERR_TOKEN}}` }}"
         hostnames:
           - request.dmfrey.com
         parentRefs:
