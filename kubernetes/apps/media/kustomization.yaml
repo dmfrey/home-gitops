@@ -15,7 +15,7 @@ resources:
   - ./jellyplex-watched/ks.yaml
   - ./lidarr/ks.yaml
   - ./music-assistant/ks.yaml
-  - ./overseerr/ks.yaml
+  - ./seerr/ks.yaml
   - ./pinepods/ks.yaml
   - ./plex/ks.yaml
   - ./kometa/ks.yaml
