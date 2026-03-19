@@ -18,8 +18,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/sct/overseerr
-              tag: 1.35.0
+              repository: ghcr.io/seerr-team/seerr
+              tag: v3.1.0
             env:
               LOG_LEVEL: "info"
               PORT: &port 5055
@@ -73,7 +73,7 @@ spec:
             url: "https://request.dmfrey.com"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Video
-          gethomepage.dev/name: Overseerr
+          gethomepage.dev/name: Seerr
           gethomepage.dev/icon: overseerr.png
           gethomepage.dev/description: Media Request Management
           gethomepage.dev/widget.type: overseerr

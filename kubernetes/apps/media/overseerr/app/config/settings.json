@@ -4,7 +4,7 @@
  "vapidPublic": "${OVERSEERR_VAPID_PUBLIC}",
  "main": {
   "apiKey": "${OVERSEERR_API_KEY}",
-  "applicationTitle": "Overseerr",
+  "applicationTitle": "Seerr",
   "applicationUrl": "https://request.dmfrey.com",
   "csrfProtection": false,
   "cacheImages": true,
