@@ -15,7 +15,6 @@ spec:
     substitute:
       APP: prowlarr
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 1Gi
   prune: true
   sourceRef:
