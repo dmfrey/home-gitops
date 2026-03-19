@@ -17,7 +17,6 @@ spec:
       APP: mosquitto
       APP_UID: "0"
       APP_GID: "0"
-      VOLSYNC_CLAIM: mosquitto-data
   prune: true
   retryInterval: 2m
   sourceRef:
