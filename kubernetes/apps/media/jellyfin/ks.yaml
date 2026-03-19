@@ -21,7 +21,6 @@ spec:
       APP_UID: "1000"
       APP_GID: "1000"
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CAPACITY: 20Gi
   prune: true
   sourceRef:

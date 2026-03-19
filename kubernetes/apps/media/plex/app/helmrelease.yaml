@@ -81,7 +81,7 @@ spec:
         type: LoadBalancer
         annotations:
           # external-dns.alpha.kubernetes.io/hostname: &host plex.dmfrey.com
-          lbipam.cilium.io/ips: 192.168.29.227  #, ::ffff:192.168.30.227
+          lbipam.cilium.io/ips: 192.168.29.227 #, ::ffff:192.168.30.227
         externalTrafficPolicy: Local
         ports:
           http:
@@ -147,7 +147,7 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
       # Separate PVC for cache to avoid backing up cache files
       cache:
         existingClaim: plex-cache

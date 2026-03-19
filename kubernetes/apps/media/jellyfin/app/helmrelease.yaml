@@ -66,7 +66,9 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 109]
+        supplementalGroups:
+          - 44
+          - 109
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
@@ -94,7 +96,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
       # Separate PVC for cache to avoid backing up cache files
