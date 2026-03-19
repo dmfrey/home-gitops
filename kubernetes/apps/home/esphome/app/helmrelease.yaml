@@ -74,9 +74,9 @@ spec:
         ports:
           http:
             port: &port 6052
-          #   primary: true
-          # api:
-          #   port: 6053
+            #   primary: true
+            # api:
+            #   port: 6053
 
     route:
       app:
@@ -93,14 +93,14 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-        # rules:
-        #   - backendRefs:
-        #       - name: "{{ .Release.Name }}"
-        #         port: *port
+            # rules:
+            #   - backendRefs:
+            #       - name: "{{ .Release.Name }}"
+            #         port: *port
 
     persistence:
       config:
-        existingClaim: "${VOLSYNC_CLAIM}"
+        existingClaim: "{{ .Release.Name }}"
 
       secrets:
         type: secret
@@ -112,4 +112,4 @@ spec:
       cache:
         type: emptyDir
         # globalMounts:
-          # - path: /config/.esphome
+        # - path: /config/.esphome

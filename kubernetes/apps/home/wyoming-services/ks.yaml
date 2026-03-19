@@ -62,7 +62,6 @@ spec:
     substitute:
       APP: whisper
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: whisper-data
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
