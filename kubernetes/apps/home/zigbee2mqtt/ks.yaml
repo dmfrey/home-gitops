@@ -36,7 +36,6 @@ spec:
     substitute:
       APP: zigbee2mqtt
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: data-zigbee2mqtt-0
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
   prune: true
@@ -68,7 +67,6 @@ spec:
     substitute:
       APP: zigbee2mqtt-02
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: data-zigbee2mqtt-02
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
   prune: true

@@ -16,7 +16,7 @@ spec:
   values:
 
     controllers:
-      *app :
+      *app:
         type: statefulset
 
         annotations:
@@ -24,7 +24,7 @@ spec:
 
         containers:
 
-          *app :
+          *app:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 2.9.1@sha256:574b2bd0dcbb59fae6edbbb81a35b5563291d3825da0225f0078aa5575dac37f
@@ -86,8 +86,10 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
-                drop: ["ALL"]
-                add: ["NET_BIND_SERVICE"]
+                drop:
+                  - "ALL"
+                add:
+                  - "NET_BIND_SERVICE"
 
     defaultPodOptions:
       terminationGracePeriodSeconds: 10
@@ -97,18 +99,19 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+        seccompProfile: {type: RuntimeDefault}
 
     service:
-      *app :
+      *app:
         controller: *app
         ports:
           http:
             port: *port
 
     route:
-      *app :
-        hostnames: ["zigbee2mqtt-02.dmfrey.com"]
+      *app:
+        hostnames:
+          - "zigbee2mqtt-02.dmfrey.com"
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
@@ -126,4 +129,4 @@ spec:
 
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
