@@ -15,7 +15,7 @@ spec:
   path: "./kubernetes/apps/media/seerr/app"
   postBuild:
     substitute:
-      APP: overseerr
+      APP: seerr
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CACHE_CAPACITY: 5Gi

@@ -1,9 +1,9 @@
 {
- "clientId": "${OVERSEERR_CLIENT_ID}",
- "vapidPrivate": "${OVERSEERR_VAPID_PRIVATE}",
- "vapidPublic": "${OVERSEERR_VAPID_PUBLIC}",
+ "clientId": "${SEERR_CLIENT_ID}",
+ "vapidPrivate": "${SEERR_VAPID_PRIVATE}",
+ "vapidPublic": "${SEERR_VAPID_PUBLIC}",
  "main": {
-  "apiKey": "${OVERSEERR_API_KEY}",
+  "apiKey": "${SEERR_API_KEY}",
   "applicationTitle": "Seerr",
   "applicationUrl": "https://request.dmfrey.com",
   "csrfProtection": false,
@@ -174,8 +174,8 @@
     "enabled": true,
     "types": 2954,
     "options": {
-     "accessToken": "${OVERSEERR_PUSHOVER_ACCESS_KEY}",
-     "userToken": "${OVERSEERR_PUSHOVER_USER_KEY}"
+     "accessToken": "${SEERR_PUSHOVER_ACCESS_KEY}",
+     "userToken": "${SEERR_PUSHOVER_USER_KEY}"
     }
    },
    "webhook": {

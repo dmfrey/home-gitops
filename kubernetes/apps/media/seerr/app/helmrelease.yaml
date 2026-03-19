@@ -3,15 +3,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: seerr
 spec:
   chartRef:
     kind: OCIRepository
-    name: overseerr
+    name: seerr
   interval: 1h
   values:
     controllers:
-      overseerr:
+      seerr:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
@@ -77,7 +77,7 @@ spec:
           gethomepage.dev/icon: overseerr.png
           gethomepage.dev/description: Media Request Management
           gethomepage.dev/widget.type: overseerr
-          gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local:5055
+          gethomepage.dev/widget.url: http://seerr.media.svc.cluster.local:5055
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
         hostnames:
           - request.dmfrey.com
