@@ -25,11 +25,7 @@ spec:
 
   values:
 
-    alertmanagerAddress: http://kube-prometheus-stack-alertmanager:9093
-
-    image:
-      registry: quay.io
-      tag: 0.19.0
+    alertmanagerAddress: http://alertmanager-operated.observability.svc.cluster.local:9093
 
     networkPolicy:
       enabled: false
