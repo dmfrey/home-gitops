@@ -1,24 +1,11 @@
-# This file is maintained automatically by "terraform init".
+# This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
-provider "registry.terraform.io/devopsarr/prowlarr" {
+provider "registry.opentofu.org/devopsarr/prowlarr" {
   version     = "3.2.1"
   constraints = "3.2.1"
   hashes = [
-    "h1:/TLpIFdZadtRk0sAnc+jDklH7sOulCAyV7WhTD39gwU=",
-    "h1:6/6WQ9xqMdiLYQKApxPiVjdJ5WJEu/gjuQgD2XfGwso=",
-    "h1:8Inn1daQIYp/OYgrw8wmXwwREdcDuyHnTooECf7fK0E=",
-    "h1:C+l2EcI4YPo6SovgMQt7Ghyq5EHkGnr4TaSqb7CxBeg=",
-    "h1:MbCVMcmB3g1qPTGqA583cQlbM5ko9kCt6chkZTstWtM=",
-    "h1:T6KCTZrSORS3E1Fm4uXxziJJRakus5uJJiG1+o8JYI0=",
-    "h1:XTW3cgubLkW0IyrXdZATqqeBdNdZlcR8z8ZqMkS7O9g=",
-    "h1:YnXv54Kb9aPnbdo+jgO3PSuGWLG5SaNvYQ6L0MtLTyA=",
     "h1:ZmLa3u0adVuGx2SrddGCyVnKFxUWwgiNO+OQcny+DKk=",
-    "h1:a8gqcBrud6CWBvOjE/5yHlSLy1FwD7mFNDTjUOnJvas=",
-    "h1:kAH9Z3trr75vE+gd+oPhHxwGdzPWD/3i2IwU+dRGbpk=",
-    "h1:miRNNcIfO5C5ZrVabCYy/BTPi5cx5C5htNavESTE9jQ=",
-    "h1:tM7MtXkm2tPiG7mWV6wcVkQaqdo0Yeu/8BCpL2MCqek=",
-    "h1:xKtSZTClqW4dvxnRk5KmwmvwG88tuIpWkY6wB4Z24W4=",
     "zh:0d37e70e3104e69ed38f22675ef893df445fc1988da99a928bd576e181db5fb6",
     "zh:0d776682ef78ef01b5542e69138e55d3b53b67fa3faaa3db5a4319799944d39a",
     "zh:1ff54720bb754c5b24e577eb22d8756edee779e7c764188e6f53f5a6432931c6",
