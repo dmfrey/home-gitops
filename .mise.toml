@@ -3,6 +3,7 @@ KUBECONFIG = "{{config_root}}/kubeconfig"
 MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 TALOSCONFIG = "{{config_root}}/talosconfig"
 JUST_UNSTABLE = "1"
+JUST_JUSTFILE = "{{config_root}}/.justfile"
 LEFTHOOK_OUTPUT = "false"
 
 _.file = [
