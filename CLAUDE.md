@@ -66,8 +66,7 @@ kubernetes/
 ├── apps/          # Application namespaces (one dir per namespace)
 ├── components/    # Reusable Kustomize components (volsync, cnpg, alerts, etc.)
 └── flux/
-    ├── cluster/   # Flux entrypoint (ks.yaml bootstraps repositories + cluster-apps)
-    └── repositories/  # Helm/OCI repository sources
+    └── cluster/   # Flux entrypoint (ks.yaml bootstraps cluster-apps)
 
 talos/
 ├── machineconfig.yaml.j2   # Base Talos machine config (Jinja2 template)
@@ -116,7 +115,7 @@ apps/<namespace>/
 
 - **Rook-Ceph**: Distributed block storage on NVMe SSDs across all 3 nodes. Most stateful apps use `existingClaim: ${VOLSYNC_CLAIM}` backed by Ceph.
 - **OpenEBS**: Local storage on M.2 SATA SSDs (in Wi-Fi slot).
-- **VolSync**: PVC backup/restore to local Restic repository and Cloudflare R2. Apps using VolSync include `components/volsync` in their `ks.yaml` and set `VOLSYNC_CLAIM`, `VOLSYNC_CAPACITY`, `VOLSYNC_CACHE_CAPACITY` substitution variables.
+- **VolSync**: PVC backup/restore via Kopia to a local repository. Apps using VolSync include `components/volsync` in their `ks.yaml` and set `APP`, `VOLSYNC_CAPACITY`, `VOLSYNC_CACHE_CAPACITY` substitution variables.
 - **NFS**: `nas.internal` (QNAP TS-462) for media files and backups.
 
 ### Networking
