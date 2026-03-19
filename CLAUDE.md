@@ -142,7 +142,7 @@ Machine configs are rendered from Jinja2 templates using `minijinja-cli`. The `I
 
 ### Schema Validation
 
-YAML files use inline schema comments pointing to `https://kubernetes-schemas.dmfrey.com/` for IDE validation. `kubeconform` uses the same schema server for CI validation. Secrets, ReplicationSource, and ReplicationDestination kinds are skipped during validation.
+YAML files use inline schema comments pointing to `https://kubernetes-schemas.dmfrey.com/` for IDE validation. Secrets, ReplicationSource, and ReplicationDestination kinds are skipped during validation.
 
 ### CI/CD
 
