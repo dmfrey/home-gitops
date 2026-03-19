@@ -86,7 +86,7 @@ spec:
             namespace: network
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/config
       tmpfs:

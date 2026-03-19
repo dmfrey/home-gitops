@@ -17,7 +17,6 @@ spec:
     substitute:
       APP: overseerr
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: overseerr-config
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CACHE_CAPACITY: 5Gi
   prune: true

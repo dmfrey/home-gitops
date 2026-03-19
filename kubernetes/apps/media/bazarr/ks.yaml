@@ -44,7 +44,6 @@ spec:
     substitute:
       APP: bazarr
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: bazarr-config
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:

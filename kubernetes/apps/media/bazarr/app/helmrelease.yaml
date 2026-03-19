@@ -150,8 +150,8 @@ spec:
         ports:
           http:
             port: *port
-          # metrics:
-          #   port: *metricsPort
+            # metrics:
+            #   port: *metricsPort
 
     route:
       app:
@@ -181,7 +181,7 @@ spec:
       #     - path: /config/cache
 
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
 
       # log:
       #   type: emptyDir
@@ -209,13 +209,12 @@ spec:
         path: /plexbackups/backups/bazarr
         globalMounts:
           - path: /config/backup
-
-    # serviceMonitor:
-    #   metrics:
-    #     serviceName: bazarr
-    #     endpoints:
-    #       - port: metrics
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 10m
-    #         scrapeTimeout: 10s
+            # serviceMonitor:
+            #   metrics:
+            #     serviceName: bazarr
+            #     endpoints:
+            #       - port: metrics
+            #         scheme: http
+            #         path: /metrics
+            #         interval: 10m
+            #         scrapeTimeout: 10s

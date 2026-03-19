@@ -84,7 +84,8 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
@@ -99,7 +100,7 @@ spec:
             namespace: network
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
       media:
         type: nfs
         server: nas.internal
