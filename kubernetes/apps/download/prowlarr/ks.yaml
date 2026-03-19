@@ -9,6 +9,8 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
+    - name: rook-ceph
+      namespace: rook-ceph
   interval: 1h
   path: "./kubernetes/apps/download/prowlarr/app"
   postBuild:
