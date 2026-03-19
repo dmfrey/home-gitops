@@ -30,6 +30,7 @@ just kube sync-oci                         # Force-sync all OCIRepositories
 just kube snapshot                         # Trigger VolSync snapshots on all PVCs
 just kube prune-pods                       # Delete Failed/Pending/Succeeded pods
 just kube volsync <suspend|resume>         # Suspend or resume VolSync
+just kube cnpg <suspend|resume>            # Suspend or resume CNPG Databases (enter or leave Maintenance Mode)
 just kube keda <suspend|resume>            # Suspend or resume KEDA ScaledObjects
 just kube node-shell <node>               # Open a debug shell on a node
 just kube browse-pvc <namespace> <claim>  # Browse a PVC
@@ -53,7 +54,6 @@ just talos download-image <version> <schematic>  # Download Talos ISO
 ### Manifest Validation
 
 ```sh
-bash scripts/kubeconform.sh kubernetes   # Validate all manifests with kubeconform
 flux-local build ks --namespace <ns> --path kubernetes/flux/cluster <ks>  # Build a local Kustomization
 ```
 
