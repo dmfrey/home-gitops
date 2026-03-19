@@ -92,7 +92,7 @@ jobs:
       - name: Install talosctl
         env:
           # renovate: datasource=github-releases depName=siderolabs/talos
-          TALOS_VERSION: v1.12.5
+          TALOS_VERSION: v1.12.6
         run: |
           mkdir -p ~/.local/bin
           curl -fsSL -o ~/.local/bin/talosctl \
