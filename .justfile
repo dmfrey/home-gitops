@@ -18,7 +18,13 @@ doctor:
     for tool in just kubectl flux talosctl helm kustomize minijinja-cli op gum flux-local; do
         command -v "$tool" &>/dev/null || missing+=("$tool")
     done
-    [[ ${#missing[@]} -eq 0 ]] && echo "All tools present" || { echo "Missing: ${missing[*]}"; exit 1; }
+    if [[ ${#missing[@]} -eq 0 ]]; then
+        echo "All tools present"
+    else
+        echo "Missing: ${missing[*]}"
+        echo "Hint: run 'mise install' for mise-managed tools (e.g. flux-local)"
+        exit 1
+    fi
 
 [private]
 log lvl msg *args:
