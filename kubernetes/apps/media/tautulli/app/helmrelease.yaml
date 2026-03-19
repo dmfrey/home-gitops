@@ -71,7 +71,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: tautulli-config
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
 
