@@ -4,8 +4,8 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 
 bootstrap_dir := justfile_dir() + '/bootstrap'
 kubernetes_dir := justfile_dir() + '/kubernetes'
-controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
-nodes := `talosctl config info -o yaml | yq -e '.nodes | join (" ")'`
+controller := `talosctl config info -o yaml 2>/dev/null | yq -e '.endpoints[0]' 2>/dev/null || true`
+nodes := `talosctl config info -o yaml 2>/dev/null | yq -e '.nodes | join (" ")' 2>/dev/null || true`
 
 [private]
 default: talos kube (kubeconfig "node") wait namespaces resources crds apps kubeconfig
