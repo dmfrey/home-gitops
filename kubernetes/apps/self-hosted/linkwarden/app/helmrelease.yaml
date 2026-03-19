@@ -33,7 +33,7 @@ spec:
             env:
               TZ: America/New_York
               NODE_ENV: production
-              STORAGE_FOLDER: "config"  # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
+              STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
               HOME: /data/config
               PDF_MAX_BUFFER: 100
               MONOLITH_MAX_BUFFER: 100
@@ -110,7 +110,7 @@ spec:
             namespace: network
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /data/config
       next-cache:
@@ -121,9 +121,8 @@ spec:
           - path: /data/apps/web/.next/cache
       tmp:
         type: emptyDir
-
-# cache:
-#   type: emptyDir
-#   medium: Memory
-#   globalMounts:
-#     - path: /data/config/.cache
+        # cache:
+        #   type: emptyDir
+        #   medium: Memory
+        #   globalMounts:
+        #     - path: /data/config/.cache
