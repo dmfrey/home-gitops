@@ -75,32 +75,6 @@ resource "prowlarr_indexer" "torrent_btetree" {
   }
 }
 
-resource "prowlarr_indexer" "torrent_eztv" {
-  enable          = true
-  name            = "EZTV"
-  implementation  = "Cardigann"
-  config_contract = "CardigannSettings"
-  app_profile_id  = 1
-  protocol        = "torrent"
-  priority        = 25
-  tags            = [prowlarr_tag.cross_seed.id]
-
-  fields = [
-    {
-      name: "definitionFile"
-      text_value: "eztv"
-    },
-    {
-      name: "baseSettings.limitsUnit"
-      number_value: "0"
-    }
-  ]
-
-  lifecycle {
-    ignore_changes = all
-  }
-}
-
 resource "prowlarr_indexer" "torrent_knaben" {
   enable          = true
   name            = "Knaben"

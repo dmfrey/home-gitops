@@ -19,11 +19,6 @@ import {
 }
 
 import {
-  to = prowlarr_indexer.torrent_eztv
-  id = "14"
-}
-
-import {
   to = prowlarr_indexer.torrent_knaben
   id = "15"
 }
