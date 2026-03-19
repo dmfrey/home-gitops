@@ -43,7 +43,6 @@ spec:
   postBuild:
     substitute:
       APP: home-assistant
-      VOLSYNC_CLAIM: home-assistant-config-1
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
     substituteFrom:
