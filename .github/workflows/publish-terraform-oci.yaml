@@ -28,7 +28,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@42435f26fd0824180d7a31f0dd75afd37eb2e18f # master
 
       - name: Setup Tools
         run: |
@@ -72,7 +72,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@42435f26fd0824180d7a31f0dd75afd37eb2e18f # master
 
       - name: Setup Tools
         run: |
@@ -99,6 +99,6 @@ jobs:
             --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
 
       - name: Tag OCI
-        run: |
+        run: |-
           flux tag artifact "oci://ghcr.io/${REPO_OWNER_LC}/terraform/$(basename ${{ matrix.project }}):$(git rev-parse --short HEAD)" \
             --tag main
