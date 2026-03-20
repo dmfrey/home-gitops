@@ -65,7 +65,7 @@ spec:
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.111.0
+              tag: 4.112.0
             args:
               - "/config"
               - --auth
