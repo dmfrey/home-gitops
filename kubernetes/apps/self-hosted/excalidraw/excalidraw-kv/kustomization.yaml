@@ -6,3 +6,6 @@ resources:
   - ./dragonfly-cluster.yaml
   - ./dragonfly-podmonitor.yaml
   - ./externalsecret.yaml
+
+components:
+  - ../../../../components/dragonflydb
