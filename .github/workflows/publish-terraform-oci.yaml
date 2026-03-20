@@ -27,12 +27,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@42435f26fd0824180d7a31f0dd75afd37eb2e18f # master
-
       - name: Setup Tools
-        run: |
-          brew install jo
+        run: sudo apt-get install -y jo
 
       - name: Get changed files
         id: changed-files
@@ -71,12 +67,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@42435f26fd0824180d7a31f0dd75afd37eb2e18f # master
-
       - name: Setup Tools
+        env:
+          # renovate: datasource=github-releases depName=fluxcd/flux2
+          FLUX_VERSION: v2.8.3
         run: |
-          brew install fluxcd/tap/flux
+          curl -sL "https://github.com/fluxcd/flux2/releases/download/${FLUX_VERSION}/flux_${FLUX_VERSION#v}_linux_amd64.tar.gz" \
+            | sudo tar xz -C /usr/local/bin flux
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4
