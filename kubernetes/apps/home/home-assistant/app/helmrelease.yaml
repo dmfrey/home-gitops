@@ -82,6 +82,7 @@ spec:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-secret"
                     key: CODE_SERVER_ADDON_HASS_TOKEN
+              GIT_SSH_COMMAND: "ssh -i /config/.ssh/deploy_key -o StrictHostKeyChecking=no"
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
@@ -183,3 +184,15 @@ spec:
             app:
               - path: /config/backups
                 readOnly: false
+      deploy-key:
+        type: secret
+        name: "{{ .Release.Name }}-secret"
+        items:
+          - key: HASS_DEPLOY_KEY
+            path: deploy_key
+        defaultMode: 0600
+        advancedMounts:
+          home-assistant:
+            codeserver:
+              - path: /config/.ssh
+                readOnly: true
