@@ -5,10 +5,9 @@ metadata:
   name: hass-config-runner
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: hass-config-runner
-  namespace: home
 rules:
   - apiGroups: [""]
     resources: ["pods"]
@@ -24,7 +23,7 @@ metadata:
   namespace: home
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
+  kind: ClusterRole
   name: hass-config-runner
 subjects:
   - kind: ServiceAccount
