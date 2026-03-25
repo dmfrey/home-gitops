@@ -20,6 +20,8 @@ spec:
             image:
               repository: dxflrs/garage
               tag: v2.2.0
+            command:
+              - /garage
             args:
               - --config
               - /etc/garage/garage.toml
