@@ -92,6 +92,7 @@ spec:
       secrets:
         type: secret
         name: garage-secret
+        defaultMode: 0600
         globalMounts:
           - path: /etc/garage/secrets
             readOnly: true
