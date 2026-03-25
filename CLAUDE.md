@@ -15,6 +15,19 @@ The following environment variables are expected to be set when working with thi
 - `TALOSCONFIG=./talosconfig`
 - `MINIJINJA_CONFIG_FILE=./.minijinja.toml`
 
+## Tech Stack
+- Kubernetes
+- helm
+- kustomize
+- Talos Linux (https://www.talos.dev/)
+- talosctl (https://docs.siderolabs.com/talos/v1.12/reference/cli)
+- fluxcd (https://fluxcd.io/)
+- git
+- GitHub
+- GitHub Actions
+- Jinja2
+- 1Password
+
 ## Common Commands
 
 ### Kubernetes Operations (`just kube <cmd>`)
@@ -102,6 +115,8 @@ apps/<namespace>/
         └── ...                  # pvc.yaml, configmap.yaml, etc.
 ```
 
+Always try to push changes to git to allow fluxcd to affect the state of the server. Only attempt to interact with the cluster directly to make changes if fluxcd does not resolve the changes. Accessing logs with kubectl or forcing a terraform to proceed is fine. Occasionally, you might need to reconcile a flux helmrelease or kustomization, but it shouldn't be the norm.
+
 **Kustomization dependency chain**: `ks.yaml` declares `dependsOn` for ordering. HelmReleases use `bjw-s/app-template` charts pulled via OCIRepository. The cluster-apps Kustomization injects `deletionPolicy: WaitForTermination` and HelmRelease retry/remediation patches to all child Kustomizations.
 
 ### Secrets Management
@@ -146,3 +161,27 @@ YAML files use inline schema comments pointing to `https://kubernetes-schemas.dm
 ### CI/CD
 
 GitHub Actions runs `flux-local` validation on PRs touching `kubernetes/**`. Renovate monitors the entire repository for dependency updates and auto-creates PRs.
+
+## Home Assistant
+Home Assistant is setup as fluxcd HelmRelease and maintains local configuration for configuration, automations and dashboards. These 3 items are never checked into git since I have to manually update them on the home assistant server.
+
+### Configuration
+location: /kubernetes/apps/home/home-assistant/app/configuration/
+          |- groups/people.yaml
+          |- themes/
+          |- configuration.yaml
+          |- automations.yaml
+          |- notify.yaml
+          |- scripts.yaml
+
+### Automations
+location: /kubernetes/apps/home/home-assistant/app/configuration/automations.yaml
+
+### Dashboards
+location: /kubernetes/apps/home/home-assistant/app/dashboards/
+
+### Details
+Useful developer tools templates and results for diagnosing issues in home assistant.
+
+location: /kubernetes/apps/home/home-assistant/app/dashboards/
+          |- developer_tools_templates.yaml
