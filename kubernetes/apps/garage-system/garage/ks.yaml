@@ -10,11 +10,11 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  # healthChecks:
-  #   - apiVersion: helm.toolkit.fluxcd.io/v2
-  #     kind: HelmRelease
-  #     name: garage
-  #     namespace: garage-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: garage
+      namespace: garage-system
   interval: 1h
   path: "./kubernetes/apps/garage-system/garage/app"
   postBuild:
