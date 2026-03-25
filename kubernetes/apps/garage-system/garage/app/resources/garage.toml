@@ -2,11 +2,9 @@ metadata_dir = "/mnt/metadata"
 data_dir = "/mnt/data"
 db_engine = "lmdb"
 
-replication_factor = 1
-consistency_mode = "consistent"
+replication_mode = "1"
 
-[rpc]
-bind_addr = "[::]:3901"
+rpc_bind_addr = "[::]:3901"
 rpc_secret_file = "/etc/garage/secrets/RPC_SECRET"
 
 [s3_api]
