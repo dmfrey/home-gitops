@@ -21,7 +21,7 @@ spec:
               repository: dxflrs/garage
               tag: v2.2.0
             args:
-              - -c
+              - --config
               - /etc/garage/garage.toml
               - server
             probes:
