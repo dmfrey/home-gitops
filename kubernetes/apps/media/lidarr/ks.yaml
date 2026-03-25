@@ -14,6 +14,7 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: lidarr-cnpg
+      namespace: media
   interval: 1h
   path: "./kubernetes/apps/media/lidarr/lidarr-db"
   prune: true
@@ -41,6 +42,7 @@ spec:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
       name: lidarr
+      namespace: media
   interval: 1h
   path: "./kubernetes/apps/media/lidarr/app"
   postBuild:

@@ -12,6 +12,7 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: openweb-cnpg
+      namespace: ai
   interval: 1h
   path: "./kubernetes/apps/ai/openweb/openweb-db"
   prune: true
@@ -37,6 +38,7 @@ spec:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: openweb-dragonflydb
+      namespace: ai
   interval: 1h
   path: "./kubernetes/apps/ai/openweb/openweb-kv"
   prune: true

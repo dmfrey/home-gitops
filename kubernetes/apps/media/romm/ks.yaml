@@ -14,6 +14,7 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: romm-cnpg
+      namespace: media
   interval: 1h
   path: "./kubernetes/apps/media/romm/romm-db"
   prune: true
@@ -39,6 +40,7 @@ spec:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: romm-dragonflydb
+      namespace: media
   interval: 1h
   path: "./kubernetes/apps/media/romm/romm-kv"
   prune: true

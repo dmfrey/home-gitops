@@ -12,6 +12,7 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: affine-cnpg
+      namespace: self-hosted
   interval: 1h
   path: "./kubernetes/apps/self-hosted/affine/affine-db"
   prune: true
@@ -37,6 +38,7 @@ spec:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: affine-dragonflydb
+      namespace: self-hosted
   interval: 1h
   path: "./kubernetes/apps/self-hosted/affine/affine-kv"
   prune: true
