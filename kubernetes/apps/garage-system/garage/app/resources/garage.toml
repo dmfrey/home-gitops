@@ -13,9 +13,6 @@ rpc_secret_file = "/etc/garage/secrets/RPC_SECRET"
 s3_region = "us-east-1"
 api_bind_addr = "[::]:3900"
 
-[s3_web]
-bind_addr = "[::]:3902"
-
 [admin]
 api_bind_addr = "[::]:3903"
 admin_token_file = "/etc/garage/secrets/ADMIN_TOKEN"

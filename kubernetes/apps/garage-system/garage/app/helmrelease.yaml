@@ -73,8 +73,6 @@ spec:
             port: 3900
           rpc:
             port: 3901
-          web:
-            port: 3902
           admin:
             port: 3903
     serviceMonitor:
