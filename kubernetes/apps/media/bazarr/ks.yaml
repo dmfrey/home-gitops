@@ -22,8 +22,7 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: media
-  timeout: 5m
-  wait: true
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -51,5 +50,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: media
-  timeout: 5m
   wait: false

@@ -12,7 +12,6 @@ spec:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: excalidraw-dragonflydb
-      namespace: self-hosted
   interval: 1h
   path: "./kubernetes/apps/self-hosted/excalidraw/excalidraw-kv"
   prune: true

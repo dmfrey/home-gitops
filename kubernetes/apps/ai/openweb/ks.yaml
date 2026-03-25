@@ -12,18 +12,15 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: openweb-cnpg
-      namespace: ai
   interval: 1h
   path: "./kubernetes/apps/ai/openweb/openweb-db"
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: ai
-  timeout: 5m
-  wait: true
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -40,17 +37,14 @@ spec:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: openweb-dragonflydb
-      namespace: ai
   interval: 1h
   path: "./kubernetes/apps/ai/openweb/openweb-kv"
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: ai
-  timeout: 5m
   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -75,11 +69,9 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 2Gi
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: ai
-  timeout: 5m
   wait: true

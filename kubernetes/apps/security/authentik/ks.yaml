@@ -14,7 +14,6 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: authentik-cnpg
-      namespace: security
   interval: 1h
   path: "./kubernetes/apps/security/authentik/authentik-db"
   prune: true
@@ -23,7 +22,6 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: security
-  timeout: 5m
   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -41,7 +39,6 @@ spec:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       name: authentik-dragonflydb
-      namespace: security
   interval: 1h
   path: "./kubernetes/apps/security/authentik/authentik-kv"
   prune: true
@@ -50,7 +47,6 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: security
-  timeout: 5m
   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -66,6 +62,10 @@ spec:
       namespace: kube-system
     - name: grafana
       namespace: observability
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: authentik
   interval: 1h
   path: "./kubernetes/apps/security/authentik/app"
   postBuild:
@@ -77,7 +77,6 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: security
-  timeout: 5m
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -100,6 +99,5 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: security
-  timeout: 5m
   wait: true
 

@@ -18,13 +18,16 @@ spec:
       APP: prowlarr
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 1Gi
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: prowlarr
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: download
-  timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -39,11 +42,9 @@ spec:
   interval: 1h
   path: "./kubernetes/apps/download/prowlarr/provision"
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: download
-  timeout: 5m
   wait: true

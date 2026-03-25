@@ -8,10 +8,10 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: datastore
-  # healthChecks:
-  #   - apiVersion: postgresql.cnpg.io/v1
-  #     kind: Cluster
-  #     name: linkwarden-cnpg
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: linkwarden-cnpg
   interval: 1h
   path: "./kubernetes/apps/self-hosted/linkwarden/linkwarden-db"
   prune: true
@@ -20,8 +20,7 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: self-hosted
-  timeout: 5m
-  wait: true
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -50,5 +49,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: self-hosted
-  timeout: 5m
   wait: true

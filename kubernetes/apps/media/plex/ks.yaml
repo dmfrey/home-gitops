@@ -21,6 +21,10 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 35Gi
       VOLSYNC_CACHE_CAPACITY: 20Gi
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: plex
   prune: true
   sourceRef:
     kind: GitRepository

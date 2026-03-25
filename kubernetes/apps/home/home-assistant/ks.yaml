@@ -41,7 +41,6 @@ spec:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       name: home-assistant-cnpg
-      namespace: home
   interval: 1h
   path: "./kubernetes/apps/home/home-assistant/home-assistant-db"
   prune: true
@@ -84,5 +83,4 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: home
-  timeout: 5m
   wait: false
