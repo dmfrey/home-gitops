@@ -21,13 +21,10 @@ spec:
               repository: dxflrs/garage
               tag: v2.2.0
             env:
-              GARAGE_ALLOW_WORLD_READABLE_SECRETS: "true"
-            command:
-              - /garage
-            args:
-              - --config
-              - /etc/garage/garage.toml
-              - server
+              TZ: America/New_York
+            envFrom:
+              - secretRef:
+                  name: garage
             probes:
               liveness: &probes
                 enabled: true
@@ -67,17 +64,13 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: garage
         ports:
           s3:
-            port: 3900
-          s3-http:
-            port: 80
-            targetPort: 3900
-          rpc:
-            port: 3901
+            port: &port 3900
           admin:
             port: 3903
     serviceMonitor:
@@ -86,30 +79,56 @@ spec:
           - port: admin
             path: /metrics
             interval: 30s
+    route:
+      app:
+        hostnames:
+          - s3.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: garage
+                port: *port
+    configMap:
+      config:
+        data:
+          configuration.toml: |
+            metadata_dir = "/meta"
+            data_dir = "/data"
+            db_engine = "lmdb"
+            metadata_auto_snapshot_interval = "6h"
+
+            replication_factor = 1
+            compression_level = 2
+
+            rpc_bind_addr = "[::]:3901"
+            rpc_public_addr = "127.0.0.1:3901"
+
+            [s3_api]
+            s3_region = "us-east-1"
+            api_bind_addr = "[::]:3900"
+            root_domain = ".s3.dmfrey.com"
+
+            [admin]
+            api_bind_addr = "[::]:3903"
     persistence:
       config:
+        enabled: true
         type: configMap
-        name: garage-config
+        name: garage
         globalMounts:
-          - path: /etc/garage/garage.toml
+          - path: /etc/garage.toml
             subPath: garage.toml
             readOnly: true
-      secrets:
-        type: secret
-        name: garage-secret
-        defaultMode: 0600
-        globalMounts:
-          - path: /etc/garage/secrets
-            readOnly: true
-      metadata:
-        existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /mnt/metadata
       data:
         type: nfs
         server: nas.internal
         path: /garage
         globalMounts:
-          - path: /mnt/data
+          - path: /data
+      meta:
+        existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir
