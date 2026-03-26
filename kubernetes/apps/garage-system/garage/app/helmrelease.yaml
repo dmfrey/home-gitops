@@ -121,7 +121,7 @@ spec:
         name: garage
         globalMounts:
           - path: /etc/garage.toml
-            subPath: garage.toml
+            subPath: configuration.toml
             readOnly: true
       data:
         type: nfs
