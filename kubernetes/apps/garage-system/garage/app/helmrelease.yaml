@@ -73,6 +73,9 @@ spec:
         ports:
           s3:
             port: 3900
+          s3-http:
+            port: 80
+            targetPort: 3900
           rpc:
             port: 3901
           admin:
