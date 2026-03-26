@@ -36,8 +36,7 @@ spec:
     - --cluster_mode=emulated
     - --lock_on_hashtags
     - --default_lua_flags=allow-undeclared-keys
-    - --s3_endpoint=garage.garage-system
-    - --s3_use_https=false
+    - --s3_endpoint=s3.dmfrey.com
 
   snapshot:
     cron: 0 0 * * *
