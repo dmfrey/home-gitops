@@ -21,33 +21,26 @@ spec:
               repository: dxflrs/garage
               tag: v2.2.0
             env:
-              RUST_LOG: garage=debug
+              RUST_LOG: "garage=debug"
               TZ: America/New_York
             envFrom:
               - secretRef:
                   name: garage-secret
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &admin-port 3903
-                  initialDelaySeconds: 15
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *admin-port
-                  failureThreshold: 30
-                  periodSeconds: 10
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /health
+            #         port: 3903
+            #       initialDelaySeconds: 15
+            #       periodSeconds: 30
+            #       timeoutSeconds: 5
+            #       failureThreshold: 3
+            #   readiness: *probes
+            #   startup:
+            #     enabled: false
             resources:
               requests:
                 cpu: 50m
