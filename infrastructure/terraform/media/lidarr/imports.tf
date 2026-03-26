@@ -14,7 +14,7 @@ import {
 }
 
 import {
-  to = lidarr_metadata_provider_config.settings
+  to = lidarr_metadata_config.settings
   id = "1"
 }
 
