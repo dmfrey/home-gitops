@@ -91,7 +91,7 @@ spec:
           - backendRefs:
               - name: garage
                 port: *port
-    configMap:
+    configMaps:
       config:
         data:
           configuration.toml: |
