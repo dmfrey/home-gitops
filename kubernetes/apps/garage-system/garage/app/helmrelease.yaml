@@ -68,6 +68,9 @@ spec:
           s3-http:
             port: 80
             targetPort: 3900
+          s3-https:
+            port: 443
+            targetPort: 3900
           admin:
             port: 3903
     serviceMonitor:
