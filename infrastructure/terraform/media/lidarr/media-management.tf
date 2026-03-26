@@ -1,3 +1,10 @@
+resource "lidarr_metadata_provider_config" "settings" {
+  metadata_source  = ""
+  write_audio_tags = "allFiles"
+  scrub_audio_tags = true
+  embed_cover_art  = true
+}
+
 resource "lidarr_media_management" "settings" {
   unmonitor_previous_tracks                   = true
   hardlinks_copy                              = true

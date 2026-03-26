@@ -14,6 +14,11 @@ import {
 }
 
 import {
+  to = lidarr_metadata_provider_config.settings
+  id = "1"
+}
+
+import {
   to = lidarr_media_management.settings
   id = "1"
 }
