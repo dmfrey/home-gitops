@@ -35,8 +35,7 @@ spec:
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags
-    - --s3_endpoint=garage.garage-system
-    - --s3_use_https=false
+    - --s3_endpoint=s3.dmfrey.com
 
   snapshot:
     cron: 0 0 * * *
