@@ -73,6 +73,9 @@ spec:
           - port: admin
             path: /metrics
             interval: 30s
+            bearerTokenSecret:
+              name: garage-secret
+              key: GARAGE_METRICS_TOKEN
     route:
       app:
         hostnames:
