@@ -11,7 +11,7 @@ spec:
   configuration:
 
     destinationPath: s3://cnpg/
-    endpointURL: http://minio.internal:9000
+    endpointURL: http://garage.garage-system.svc.cluster.local:3900
 
     s3Credentials:
       accessKeyId:
