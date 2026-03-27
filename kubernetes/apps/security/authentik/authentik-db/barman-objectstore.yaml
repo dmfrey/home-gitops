@@ -25,4 +25,4 @@ spec:
       compression: gzip
       maxParallel: 8
 
-  retentionPolicy: 30d
+  retentionPolicy: 7d
