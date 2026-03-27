@@ -1,8 +1,7 @@
 [env]
-KUBECONFIG = "{{config_root}}/kubeconfig"
-MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
-TALOSCONFIG = "{{config_root}}/talosconfig"
-JUST_UNSTABLE = "1"
+KUBECONFIG = "{{config_root | canonicalize}}/kubeconfig"
+MINIJINJA_CONFIG_FILE = "{{config_root | canonicalize}}/.minijinja.toml"
+TALOSCONFIG = "{{config_root | canonicalize}}/talosconfig"
 LEFTHOOK_OUTPUT = "false"
 
 _.file = [
