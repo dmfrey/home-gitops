@@ -12,4 +12,4 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  url: https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json
+  url: https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main-v1/script/telemetry/grafana-garage-dashboard-prometheus.json
