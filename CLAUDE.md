@@ -8,7 +8,7 @@ This is a GitOps mono-repository for a Kubernetes homelab cluster running on 3x 
 
 Key tools: `just`, `talosctl`, `kubectl`, `flux`, `helmfile`, `kustomize`, `kubeconform`, `flux-local`, `minijinja-cli` (for `.j2` templates), `op` (1Password CLI).
 
-The root justfile is `.justfile` (hidden), which declares three modules: `bootstrap`, `kube` (`kubernetes`), and `talos`. The internal `just template <file>` recipe renders Jinja2 templates via `minijinja-cli | op inject` (secrets injected from 1Password at render time).
+The root justfile is `justfile`, which declares three modules: `bootstrap`, `kube` (`kubernetes`), and `talos`. The internal `just template <file>` recipe renders Jinja2 templates via `minijinja-cli | op inject` (secrets injected from 1Password at render time).
 
 The following environment variables are expected to be set when working with this repo:
 - `KUBECONFIG=./kubeconfig`
@@ -130,6 +130,7 @@ Always try to push changes to git to allow fluxcd to affect the state of the ser
 
 - **Rook-Ceph**: Distributed block storage on NVMe SSDs across all 3 nodes. Most stateful apps use `existingClaim: ${VOLSYNC_CLAIM}` backed by Ceph.
 - **OpenEBS**: Local storage on M.2 SATA SSDs (in Wi-Fi slot).
+- **Garage**: S3-compatible object storage running in-cluster (`garage-system` namespace). Object data is stored on NFS (`nas.internal:/garage`), metadata on a Ceph PVC. Used for database backups including CNPG WAL archiving and DragonflyDB snapshots.
 - **VolSync**: PVC backup/restore via Kopia to a local repository. Apps using VolSync include `components/volsync` in their `ks.yaml` and set `APP`, `VOLSYNC_CAPACITY`, `VOLSYNC_CACHE_CAPACITY` substitution variables.
 - **NFS**: `nas.internal` (QNAP TS-462) for media files and backups.
 
