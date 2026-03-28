@@ -11,5 +11,5 @@ spec:
       grafana.internal/instance: grafana
   datasources:
     - datasourceName: prometheus
-      inputName: DS_DS_PROMETHEUS
+      inputName: DS_PROMETHEUS
   url: https://git.deuxfleurs.fr/Deuxfleurs/garage/raw/branch/main/script/telemetry/grafana-garage-dashboard-prometheus.json
