@@ -15,15 +15,9 @@ spec:
 
   install:
     disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
-    remediation:
-      retries: 3
 
   upgrade:
-    cleanupOnFail: true
     disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
-    remediation:
-      strategy: rollback
-      retries: 3
 
   values:
 
