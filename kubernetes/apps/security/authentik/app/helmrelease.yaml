@@ -68,7 +68,7 @@ spec:
           enabled: true
       resources:
         requests:
-          cpu: 50m
+          cpu: 200m
         limits:
           memory: 1024Mi
       volumes: &postgresCredsVolume
