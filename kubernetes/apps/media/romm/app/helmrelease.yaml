@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: rommapp/romm
-              tag: 4.7.0
+              tag: 4.8.0
             env:
               TZ: America/New_York
               ENABLE_SCHEDULED_RESCAN: "true"
