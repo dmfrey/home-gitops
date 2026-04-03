@@ -20,28 +20,9 @@ spec:
       disable_login_form: "false"
       oauth_auto_login: "false"
       oauth_allow_insecure_email_lookup: "true"
-      signout_redirect_url: https://auth.dmfrey.com/application/o/grafana/end-session/
 
     auth.anonymous:
       enabled: "true"
-
-    # auth.generic_oauth:
-    #   enabled: "true"
-    #   name: Authentik
-    #   icon: signin
-    #   scopes: openid profile email
-    #   auth_url: https://auth.dmfrey.com/application/o/authorize/
-    #   token_url: https://auth.dmfrey.com/application/o/token/
-    #   api_url: https://auth.dmfrey.com/application/o/userinfo/
-    #   # Optionally map user groups to Grafana roles
-    #   role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
-
-    # database:
-    #   type: postgres
-    #   host: $__file{/etc/secrets/db/host}:$__file{/etc/secrets/db/port}
-    #   name: $__file{/etc/secrets/db/dbname}
-    #   user: $__file{/etc/secrets/db/username}
-    #   password: $__file{/etc/secrets/db/password}
 
     log:
       mode: console
@@ -54,9 +35,6 @@ spec:
 
     plugins:
       plugin_admin_enabled: "false"
-
-    security:
-      angular_support_enabled: "true"
 
     server:
       enable_gzip: "true"
@@ -84,7 +62,7 @@ spec:
 
               envFrom:
                 - secretRef:
-                    name: grafana-ouath-secret
+                    name: grafana-oauth-secret
 
               securityContext:
                 allowPrivilegeEscalation: false

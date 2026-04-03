@@ -82,3 +82,4 @@ kubernetes/apps/self-hosted/affine/docs/*
 
 .claude/settings.local.json
 .claude/todos.json
+.mcp.json
