@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: loki
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: loki
+  interval: 1h
+  values:
+    deploymentMode: SingleBinary
+
+    loki:
+      auth_enabled: false
+
+      storage:
+        type: s3
+        s3:
+          endpoint: http://garage.garage-system.svc.cluster.local:3900
+          region: us-east-1
+          bucketnames: loki
+          accessKeyId: ${S3_ACCESS_KEY}
+          secretAccessKey: ${S3_SECRET_KEY}
+          s3ForcePathStyle: true
+          insecure: true
+        bucketNames:
+          chunks: loki
+          ruler: loki
+          admin: loki
+
+      schemaConfig:
+        configs:
+          - from: "2024-04-01"
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+
+      limits_config:
+        retention_period: 14d
+
+      compactor:
+        retention_enabled: true
+
+    singleBinary:
+      replicas: 1
+      persistence:
+        storageClass: ceph-block
+        size: 10Gi
+      extraEnv:
+        - name: S3_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: loki-s3-secret
+              key: S3_ACCESS_KEY
+        - name: S3_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: loki-s3-secret
+              key: S3_SECRET_KEY
+
+    chunksCache:
+      enabled: false
+
+    resultsCache:
+      enabled: false
+
+    lokiCanary:
+      enabled: false
+
+    test:
+      enabled: false
+
+    gateway:
+      enabled: true
+      replicas: 1
+
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
+
+    monitoring:
+      serviceMonitor:
+        enabled: true
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
