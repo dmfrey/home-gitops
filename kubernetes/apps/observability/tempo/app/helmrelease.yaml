@@ -23,18 +23,17 @@ spec:
       metricsGenerator:
         enabled: true
         remoteWriteUrl: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write
-
-    extraEnv:
-      - name: AWS_ACCESS_KEY_ID
-        valueFrom:
-          secretKeyRef:
-            name: tempo-s3-secret
-            key: S3_ACCESS_KEY
-      - name: AWS_SECRET_ACCESS_KEY
-        valueFrom:
-          secretKeyRef:
-            name: tempo-s3-secret
-            key: S3_SECRET_KEY
+      extraEnv:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: tempo-s3-secret
+              key: S3_ACCESS_KEY
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tempo-s3-secret
+              key: S3_SECRET_KEY
 
     persistence:
       enabled: true
