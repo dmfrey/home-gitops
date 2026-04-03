@@ -42,6 +42,7 @@ spec:
 
       limits_config:
         retention_period: 14d
+        volume_enabled: true
 
       compactor:
         retention_enabled: true
