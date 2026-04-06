@@ -40,6 +40,7 @@ spec:
               SELKIES_MANUAL_WIDTH: "1920"
               SELKIES_MANUAL_HEIGHT: "1080"
               MAX_RESOLUTION: 1920x1080
+              SELKIES_ENCODER: vp8enc
             probes:
               liveness: &probes
                 enabled: true
