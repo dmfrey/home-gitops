@@ -13,5 +13,11 @@
       matchPackageNames: ["/factory\\.talos\\.dev/"],
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
+    {
+      description: "Block OrcaSlicer 2.3.2 — linuxserver ls7 build missing libmspack0",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/linuxserver/orcaslicer"],
+      allowedVersions: "!/^2\\.3\\.2/",
+    },
   ],
 }
