@@ -1,0 +1,155 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: spring-notes
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: spring-notes
+  interval: 1h
+  values:
+    controllers:
+
+      backend:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: spring-notes-cnpg-app
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dmfrey/spring-notes
+              tag: latest
+            env:
+              TZ: America/New_York
+              # CNPG auto-creates spring-notes-cnpg-app with host/port/dbname/username/password.
+              # Kubernetes env var substitution assembles the JDBC URL at runtime.
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-cnpg-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-cnpg-app
+                    key: port
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-cnpg-app
+                    key: dbname
+              SPRING_DATASOURCE_URL: "jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)"
+              SPRING_DATASOURCE_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-cnpg-app
+                    key: username
+              SPRING_DATASOURCE_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-cnpg-app
+                    key: password
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/liveness
+                    port: 8080
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/readiness
+                    port: 8080
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+      frontend:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dmfrey/spring-notes-frontend
+              tag: latest
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: false
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+    service:
+      backend:
+        controller: backend
+        ports:
+          http:
+            port: 8080
+      frontend:
+        controller: frontend
+        ports:
+          http:
+            port: 80
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Tools
+          gethomepage.dev/name: Spring Notes
+          gethomepage.dev/icon: spring.png
+          gethomepage.dev/description: Spring Boot + React Demo
+        hostnames:
+          - spring-notes.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          # /api/* → strip /api prefix → Spring Boot backend (port 8080)
+          # Backend endpoints are at /notes, not /api/notes — no context path configured.
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /api
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - identifier: backend
+                port: 8080
+          # /* → React frontend (nginx, port 80)
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - identifier: frontend
+                port: 80
+
+    serviceMonitor:
+      backend:
+        endpoints:
+          - port: http
+            path: /actuator/prometheus
+            honorLabels: true

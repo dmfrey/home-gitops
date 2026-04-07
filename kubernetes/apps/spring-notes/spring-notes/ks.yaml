@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: spring-notes-db
+spec:
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: datastore
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: spring-notes-cnpg
+      namespace: spring-notes
+  interval: 1h
+  path: ./kubernetes/apps/spring-notes/spring-notes/spring-notes-db
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: spring-notes
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: spring-notes
+spec:
+  dependsOn:
+    - name: spring-notes-db
+  interval: 1h
+  path: ./kubernetes/apps/spring-notes/spring-notes/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: spring-notes
+  wait: false

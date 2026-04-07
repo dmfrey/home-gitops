@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: spring-notes-cnpg
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  instances: 1
+  enablePDB: false
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.7
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+
+  backup:
+    volumeSnapshot:
+      className: csi-ceph-blockpool
+
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: spring-notes
+      owner: spring-notes
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+
+  monitoring:
+    enablePodMonitor: false
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: spring-notes
+
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 128MB
+
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: restart
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  storage:
+    storageClass: ceph-block
+    size: 5Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi
