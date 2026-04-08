@@ -149,7 +149,7 @@ spec:
 
     serviceMonitor:
       backend:
-        identifier: backend
+        serviceName: spring-notes-backend
         endpoints:
           - port: http
             path: /actuator/prometheus
