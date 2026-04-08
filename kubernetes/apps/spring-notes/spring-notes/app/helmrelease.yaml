@@ -23,6 +23,7 @@ spec:
               tag: 52996691c929532c09b09a8f3c9491a6d4c2b8c8
             env:
               TZ: America/New_York
+              DEPLOYMENT_ENVIRONMENT: homelab
               # CNPG auto-creates spring-notes-cnpg-app with host/port/dbname/username/password.
               # Kubernetes env var substitution assembles the JDBC URL at runtime.
               DB_HOST:
@@ -51,16 +52,7 @@ spec:
                   secretKeyRef:
                     name: spring-notes-cnpg-app
                     key: password
-              LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC: INFO
-              LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: DEBUG
               LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
-              MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_SERVICE_NAME: spring-notes
-              MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_DEPLOYMENT_ENVIRONMENT: homelab
-              MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT: http://alloy.observability.svc.cluster.local:4318/v1/traces
-              MANAGEMENT_OTLP_METRICS_EXPORT_URL: http://alloy.observability.svc.cluster.local:4318/v1/metrics
-              MANAGEMENT_OTLP_METRICS_EXPORT_STEP: 1m
-              # MANAGEMENT_OTLP_TRACING_ENDPOINT: http://alloy.observability.svc.cluster.local:4318/v1/traces
-              MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
             probes:
               liveness:
                 enabled: true
