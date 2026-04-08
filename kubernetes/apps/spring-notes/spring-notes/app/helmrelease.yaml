@@ -51,7 +51,9 @@ spec:
                   secretKeyRef:
                     name: spring-notes-cnpg-app
                     key: password
-              LOGGING.STRUCTURED.FORMAT.CONSOLE: ecs
+              LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC: INFO
+              LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: INFO
+              LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
               MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_SERVICE_NAME: spring-notes
               MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_DEPLOYMENT_ENVIRONMENT: homelab
               MANAGEMENT_OTLP_METRICS_EXPORT_URL: http://alloy.observability.svc.cluster.local:4318/v1/metrics
