@@ -51,10 +51,11 @@ spec:
                   secretKeyRef:
                     name: spring-notes-cnpg-app
                     key: password
-              MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES: "service.name=spring-notes,deployment.environment=homelab"
-              MANAGEMENT_OLTP_METRICS_EXPORT_URL: "http://otel-collector.observability.svc.cluster.local:4318/v1/metrics"
+              MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_SERVICE_NAME: "spring-notes"
+              MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_DEPLOYMENT_ENVIRONMENT: "homelab"
+              MANAGEMENT_OLTP_METRICS_EXPORT_URL: "http://alloy.observability.svc.cluster.local:4318/v1/metrics"
               MANAGEMENT_OLTP_METRICS_EXPORT_STEP: "1m"
-              MANAGEMENT_OLTP_TRACING_EXPORT_URL: "http://otel-collector.observability.svc.cluster.local:4318/v1/traces"
+              MANAGEMENT_OLTP_TRACING_EXPORT_URL: "http://alloy.observability.svc.cluster.local:4318/v1/traces"
             probes:
               liveness:
                 enabled: true
