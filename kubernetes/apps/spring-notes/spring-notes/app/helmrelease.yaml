@@ -156,10 +156,3 @@ spec:
               - identifier: frontend
                 port: 80
 
-    serviceMonitor:
-      backend:
-        serviceName: spring-notes-backend
-        endpoints:
-          - port: http
-            path: /actuator/prometheus
-            honorLabels: true
