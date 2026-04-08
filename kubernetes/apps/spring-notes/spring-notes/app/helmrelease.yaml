@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes
-              tag: latest
+              tag: 374681ce71a03fbf29b4bbf48e4cd83b6614fe38@sha256:62d66e0995312f710817dcf4553e7537c13c99c17975c2bbfc5121cc55c475a6
             env:
               TZ: America/New_York
               # CNPG auto-creates spring-notes-cnpg-app with host/port/dbname/username/password.
@@ -84,7 +84,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes-frontend
-              tag: latest
+              tag: 8c502a30b78fa80a51c05c6bd77c32c371e9ba26@sha256:ba719fc9b33a731b014f29fe161732b814eb6e8dca5785cecd9125c662d0137c
             probes:
               liveness: &probes
                 enabled: true
