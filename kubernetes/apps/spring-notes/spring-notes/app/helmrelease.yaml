@@ -149,6 +149,7 @@ spec:
 
     serviceMonitor:
       backend:
+        identifier: backend
         endpoints:
           - port: http
             path: /actuator/prometheus
