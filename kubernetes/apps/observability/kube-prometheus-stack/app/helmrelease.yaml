@@ -82,8 +82,7 @@ spec:
 
       prometheusSpec:
 
-        enableFeatures:
-          - remote-write-receiver
+        enableRemoteWriteReceiver: true
 
         externalUrl: https://prometheus.dmfrey.com
 
