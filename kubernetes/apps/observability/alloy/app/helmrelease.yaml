@@ -81,7 +81,7 @@ spec:
             }
           }
 
-          // Receive OTLP traces from applications
+          // Receive OTLP traces and metrics from applications
           otelcol.receiver.otlp "default" {
             grpc {
               endpoint = "0.0.0.0:4317"
@@ -90,7 +90,8 @@ spec:
               endpoint = "0.0.0.0:4318"
             }
             output {
-              traces = [otelcol.processor.batch.default.input]
+              traces  = [otelcol.processor.batch.default.input]
+              metrics = [otelcol.exporter.prometheus.otlp.input]
             }
           }
 
@@ -108,6 +109,18 @@ spec:
               tls {
                 insecure = true
               }
+            }
+          }
+
+          // Convert OTLP metrics to Prometheus format
+          otelcol.exporter.prometheus "otlp" {
+            forward_to = [prometheus.remote_write.default.receiver]
+          }
+
+          // Forward metrics to Prometheus via remote write
+          prometheus.remote_write "default" {
+            endpoint {
+              url = "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
             }
           }
 

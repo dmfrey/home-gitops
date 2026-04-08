@@ -82,6 +82,8 @@ spec:
 
       prometheusSpec:
 
+        enableRemoteWriteReceiver: true
+
         externalUrl: https://prometheus.dmfrey.com
 
         podMonitorSelectorNilUsesHelmValues: false
