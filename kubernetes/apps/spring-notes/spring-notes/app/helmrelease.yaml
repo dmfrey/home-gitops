@@ -56,9 +56,10 @@ spec:
               LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
               MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_SERVICE_NAME: spring-notes
               MANAGEMENT_OPENTELEMETRY_RESOURCE_ATTRIBUTES_DEPLOYMENT_ENVIRONMENT: homelab
+              MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT: http://alloy.observability.svc.cluster.local:4318/v1/traces
               MANAGEMENT_OTLP_METRICS_EXPORT_URL: http://alloy.observability.svc.cluster.local:4318/v1/metrics
               MANAGEMENT_OTLP_METRICS_EXPORT_STEP: 1m
-              MANAGEMENT_OTLP_TRACING_ENDPOINT: http://alloy.observability.svc.cluster.local:4318/v1/traces
+              # MANAGEMENT_OTLP_TRACING_ENDPOINT: http://alloy.observability.svc.cluster.local:4318/v1/traces
               MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
             probes:
               liveness:
