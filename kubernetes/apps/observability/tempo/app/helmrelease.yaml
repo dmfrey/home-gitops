@@ -23,7 +23,7 @@ spec:
       metricsGenerator:
         enabled: true
         remoteWriteUrl: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write
-      extraConfig:
+      structuredConfig:
         metrics_generator:
           processor:
             service_graphs:
