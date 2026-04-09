@@ -11,6 +11,7 @@ spec:
   datasource:
     type: prometheus
     name: prometheus
+    uid: prometheus
     access: proxy
     isDefault: true
     url: http://prometheus-operated.observability.svc.cluster.local:9090
@@ -44,16 +45,14 @@ spec:
   datasource:
     type: loki
     name: loki
+    uid: loki
     access: proxy
     url: http://loki-gateway.observability.svc.cluster.local:80
     jsonData:
       derivedFields:
         - name: TraceID
+          matcherType: regex
           matcherRegex: '"traceId"\s*:\s*"([a-f0-9]+)"'
-          datasourceUid: tempo
-          urlDisplayLabel: View Trace
-        - name: TraceID-text
-          matcherRegex: 'traceId=([a-f0-9]+)'
           datasourceUid: tempo
           urlDisplayLabel: View Trace
 ---
@@ -77,6 +76,9 @@ spec:
         datasourceUid: loki
         filterByTraceID: true
         filterBySpanID: true
+        tags:
+          - key: service.name
+            value: app
       tracesToMetrics:
         datasourceUid: prometheus
       nodeGraph:
