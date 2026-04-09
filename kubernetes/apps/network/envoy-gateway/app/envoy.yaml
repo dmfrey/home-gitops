@@ -29,6 +29,14 @@ spec:
       prometheus:
         compression:
           type: Gzip
+    tracing:
+      samplingRate: 100
+      provider:
+        type: OpenTelemetry
+        backendRefs:
+          - name: alloy
+            namespace: observability
+            port: 4317
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/gateway.networking.k8s.io/gatewayclass_v1.json
 apiVersion: gateway.networking.k8s.io/v1
