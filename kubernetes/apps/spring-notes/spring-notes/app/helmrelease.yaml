@@ -86,7 +86,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes-frontend
-              tag: 8c502a30b78fa80a51c05c6bd77c32c371e9ba26@sha256:ba719fc9b33a731b014f29fe161732b814eb6e8dca5785cecd9125c662d0137c
+              tag: c292ade55957a742075ab7ac2aac17347cfa8f7a
             probes:
               liveness: &probes
                 enabled: true
