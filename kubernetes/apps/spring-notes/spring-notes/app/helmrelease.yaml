@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes
-              tag: e4e78f56038ca67a0154efbc97b99bfa81d581de
+              tag: 2c4125a8de89d228c11c0df3a78c4fe4217361d8
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
