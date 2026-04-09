@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes
-              tag: cda7898edafc9c7eeb437da2e189051909549d4d
+              tag: 1a58006005e8cede4cbf44245dde7beb12ad094a
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -86,7 +86,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes-frontend
-              tag: c292ade55957a742075ab7ac2aac17347cfa8f7a
+              tag: ed75390067749e00f4fc08a02e6c2de3736457dd
             probes:
               liveness: &probes
                 enabled: true
