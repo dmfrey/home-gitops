@@ -21,13 +21,25 @@ spec:
       className: csi-ceph-blockpool
 
   bootstrap:
-    initdb:
-      dataChecksums: true
+    # initdb:
+    #   dataChecksums: true
+    #   database: spring-notes
+    #   owner: spring-notes
+    #   encoding: "UTF8"
+    #   localeCollate: en_US.utf8
+    #   localeCType: en_US.utf8
+    recovery:
       database: spring-notes
       owner: spring-notes
-      encoding: "UTF8"
-      localeCollate: en_US.utf8
-      localeCType: en_US.utf8
+      source: source
+
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: spring-notes
+          serverName: spring-notes-cnpg
 
   monitoring:
     enablePodMonitor: false
