@@ -46,6 +46,22 @@ spec:
                   secretKeyRef:
                     name: dependency-track-secret
                     key: ALPINE_NVD_API_KEY
+              ALPINE_GITHUB_ADVISORIES_ENABLED: "true"
+              ALPINE_GITHUB_ADVISORIES_ACCESS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: GITHUB_ADVISORIES_PAT
+              OSSINDEX_API_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: OSSINDEX_API_USERNAME
+              OSSINDEX_API_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: OSSINDEX_API_TOKEN
               ALPINE_OIDC_ENABLED: "true"
               ALPINE_OIDC_ISSUER: https://auth.dmfrey.com/application/o/dependency-track/
               ALPINE_OIDC_CLIENT_ID:
