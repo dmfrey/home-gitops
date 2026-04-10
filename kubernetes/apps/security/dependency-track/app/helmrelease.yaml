@@ -75,7 +75,7 @@ spec:
                 cpu: 200m
                 memory: 2Gi
               limits:
-                memory: 4Gi
+                memory: 6Gi
       frontend:
         containers:
           app:
