@@ -15,7 +15,7 @@ spec:
       backend:
         annotations:
           reloader.stakater.com/auto: "true"
-          secret.reloader.stakater.com/reload: spring-notes-cnpg-app
+          secret.reloader.stakater.com/reload: spring-notes-cnpg-app,spring-notes-secret
         containers:
           app:
             image:
@@ -53,6 +53,12 @@ spec:
                     name: spring-notes-cnpg-app
                     key: password
               LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
+              SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/spring-notes/
+              SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-secret
+                    key: AUTHENTIK_CLIENT_ID
             probes:
               liveness:
                 enabled: true
