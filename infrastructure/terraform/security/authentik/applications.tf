@@ -84,9 +84,10 @@ locals {
     spring-notes = {
       client_id     = var.SPRING_NOTES_CLIENT_ID
       client_secret = var.SPRING_NOTES_CLIENT_SECRET
+      client_type   = "public"
       group         = "developers"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
-      redirect_uri  = "https://spring-notes.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso"
+      redirect_uri  = "https://spring-notes.${var.CLUSTER_DOMAIN}/"
       launch_url    = "https://spring-notes.${var.CLUSTER_DOMAIN}/"
     },
     dependency-track = {
