@@ -20,6 +20,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes
+              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes
               tag: a9755f8ce8ad245b7d2efb8dc99edb5079e36d6a
             env:
               TZ: America/New_York
@@ -132,6 +133,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes-frontend
+              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes-frontend
               tag: ed75390067749e00f4fc08a02e6c2de3736457dd
             probes:
               liveness: &probes
