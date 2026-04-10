@@ -69,6 +69,16 @@ variable "SPRING_DEV_CLIENT_SECRET" {
   type      = string
   sensitive = true
 }
+variable "SPRING_NOTES_CLIENT_ID" { type = string }
+variable "SPRING_NOTES_CLIENT_SECRET" {
+  type      = string
+  sensitive = true
+}
+variable "DEPENDENCY_TRACK_CLIENT_ID" { type = string }
+variable "DEPENDENCY_TRACK_CLIENT_SECRET" {
+  type      = string
+  sensitive = true
+}
 
 # User credentials
 variable "USERS_DMFREY_NAME" { type = string }

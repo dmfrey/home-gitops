@@ -80,6 +80,22 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
       redirect_uri  = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso"
       launch_url    = "https://spring-dev-gateway.${var.CLUSTER_DOMAIN}/"
+    },
+    spring-notes = {
+      client_id     = var.SPRING_NOTES_CLIENT_ID
+      client_secret = var.SPRING_NOTES_CLIENT_SECRET
+      group         = "developers"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
+      redirect_uri  = "https://spring-notes.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso"
+      launch_url    = "https://spring-notes.${var.CLUSTER_DOMAIN}/"
+    },
+    dependency-track = {
+      client_id     = var.DEPENDENCY_TRACK_CLIENT_ID
+      client_secret = var.DEPENDENCY_TRACK_CLIENT_SECRET
+      group         = "infrastructure"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/dependency-track.png"
+      redirect_uri  = "https://dtrack.${var.CLUSTER_DOMAIN}/"
+      launch_url    = "https://dtrack.${var.CLUSTER_DOMAIN}/"
     }
   }
 
