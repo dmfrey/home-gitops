@@ -41,6 +41,16 @@ spec:
                   secretKeyRef:
                     name: dependency-track-secret
                     key: ALPINE_SECRET_KEY
+              ALPINE_OIDC_ENABLED: "true"
+              ALPINE_OIDC_ISSUER: https://auth.dmfrey.com/application/o/dependency-track/
+              ALPINE_OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: ALPINE_OIDC_CLIENT_ID
+              ALPINE_OIDC_USERNAME_CLAIM: preferred_username
+              ALPINE_OIDC_TEAMS_CLAIM: groups
+              ALPINE_OIDC_USER_PROVISIONING: "true"
               ALPINE_APPLICATION_BASE_URL: https://dtrack.dmfrey.com
               ALPINE_EMAIL_SMTP_ENABLED: "true"
               ALPINE_EMAIL_SMTP_FROM_ADDRESS: noreply@homelab5767.cc
