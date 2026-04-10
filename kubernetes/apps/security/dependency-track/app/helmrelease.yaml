@@ -103,6 +103,15 @@ spec:
               pullPolicy: IfNotPresent
             env:
               API_BASE_URL: https://dtrack-api.dmfrey.com
+              OIDC_ISSUER: https://auth.dmfrey.com/application/o/dependency-track/
+              OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: ALPINE_OIDC_CLIENT_ID
+              OIDC_SCOPE: openid profile email
+              OIDC_FLOW: authorization_code
+              OIDC_LOGIN_BUTTON_TEXT: Login with Authentik
             probes:
               liveness:
                 enabled: true
