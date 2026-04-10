@@ -7,6 +7,10 @@ data "authentik_property_mapping_provider_scope" "oauth2" {
   ]
 }
 
+data "authentik_property_mapping_provider_scope" "groups" {
+  managed = "goauthentik.io/providers/oauth2/scope-groups"
+}
+
 resource "authentik_property_mapping_provider_scope" "email_verified" {
   name       = "Email Verified Scope"
   scope_name = "email"

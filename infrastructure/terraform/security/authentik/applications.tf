@@ -120,6 +120,7 @@ resource "authentik_provider_oauth2" "oauth2" {
   property_mappings = concat(
     data.authentik_property_mapping_provider_scope.oauth2.ids,
     [authentik_property_mapping_provider_scope.email_verified.id],
+    [data.authentik_property_mapping_provider_scope.groups.id],
   )
   access_token_validity = "hours=4"
   signing_key           = data.authentik_certificate_key_pair.generated.id
