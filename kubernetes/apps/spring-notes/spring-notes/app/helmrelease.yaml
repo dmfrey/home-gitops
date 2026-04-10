@@ -108,9 +108,7 @@ spec:
                 curl -sf -X POST \
                   http://dependency-track-api.security.svc.cluster.local:8080/api/v1/bom \
                   -H "X-API-Key: ${DEPENDENCY_TRACK_API_KEY}" \
-                  -F "projectName=spring-notes" \
-                  -F "projectVersion=snapshot" \
-                  -F "autoCreate=true" \
+                  -F "project=66ca30fd-78af-4ffd-8a55-5cc5109d2d26" \
                   -F "bom=@/tmp/sbom.json"
             resources:
               requests:
