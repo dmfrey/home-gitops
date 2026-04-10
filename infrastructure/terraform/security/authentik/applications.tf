@@ -92,6 +92,7 @@ locals {
     dependency-track = {
       client_id     = var.DEPENDENCY_TRACK_CLIENT_ID
       client_secret = var.DEPENDENCY_TRACK_CLIENT_SECRET
+      client_type   = "public"
       group         = "infrastructure"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/dependency-track.png"
       redirect_uri  = "https://dtrack.${var.CLUSTER_DOMAIN}/static/oidc-callback.html"
@@ -114,6 +115,7 @@ resource "authentik_provider_oauth2" "oauth2" {
   name                  = each.key
   client_id             = each.value.client_id
   client_secret         = each.value.client_secret
+  client_type           = try(each.value.client_type, "confidential")
   authorization_flow    = authentik_flow.provider-authorization-implicit-consent.uuid
   authentication_flow   = authentik_flow.authentication.uuid
   invalidation_flow     = data.authentik_flow.default-provider-invalidation-flow.id
