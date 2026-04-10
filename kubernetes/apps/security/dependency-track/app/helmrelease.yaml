@@ -41,6 +41,11 @@ spec:
                   secretKeyRef:
                     name: dependency-track-secret
                     key: ALPINE_SECRET_KEY
+              ALPINE_NVD_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: ALPINE_NVD_API_KEY
               ALPINE_OIDC_ENABLED: "true"
               ALPINE_OIDC_ISSUER: https://auth.dmfrey.com/application/o/dependency-track/
               ALPINE_OIDC_CLIENT_ID:
