@@ -45,9 +45,11 @@ resource "authentik_policy_expression" "user-settings-authorization" {
 
 resource "authentik_property_mapping_provider_scope" "groups" {
   name        = "Group Membership"
-  scope_name  = "groups"
+  scope_name  = "profile"
   description = "See Which Groups you belong to"
   expression  = <<EOF
-return [group.name for group in user.ak_groups.all()]
+return {
+  "groups": [group.name for group in user.ak_groups.all()],
+}
 EOF
 }
