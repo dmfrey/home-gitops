@@ -159,7 +159,7 @@ spec:
     persistence:
       frontend-config:
         type: configMap
-        name: spring-notes-frontend-config
+        name: spring-notes
         advancedMounts:
           frontend:
             app:
