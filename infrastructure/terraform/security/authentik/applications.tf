@@ -94,7 +94,7 @@ locals {
       client_secret = var.DEPENDENCY_TRACK_CLIENT_SECRET
       group         = "infrastructure"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/dependency-track.png"
-      redirect_uri  = "https://dtrack.${var.CLUSTER_DOMAIN}/"
+      redirect_uri  = "https://dtrack.${var.CLUSTER_DOMAIN}/static/oidc-callback.html"
       launch_url    = "https://dtrack.${var.CLUSTER_DOMAIN}/"
     }
   }
