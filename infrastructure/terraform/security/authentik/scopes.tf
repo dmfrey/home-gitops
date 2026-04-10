@@ -7,8 +7,14 @@ data "authentik_property_mapping_provider_scope" "oauth2" {
   ]
 }
 
-data "authentik_property_mapping_provider_scope" "groups" {
-  managed = "goauthentik.io/providers/oauth2/scope-groups"
+resource "authentik_property_mapping_provider_scope" "groups" {
+  name       = "OAuth2 Groups Claim"
+  scope_name = "profile"
+  expression = <<-EOT
+    return {
+      "groups": [group.name for group in user.ak_groups.all()],
+    }
+  EOT
 }
 
 resource "authentik_property_mapping_provider_scope" "email_verified" {
