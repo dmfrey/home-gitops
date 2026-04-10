@@ -145,7 +145,27 @@ spec:
               limits:
                 memory: 128Mi
 
+    configMaps:
+      frontend-config:
+        data:
+          config.json: |
+            {
+              "OIDC_ISSUER": "https://auth.dmfrey.com/application/o/spring-notes/",
+              "OIDC_CLIENT_ID": "spring-notes",
+              "OIDC_SCOPE": "openid profile email",
+              "API_BASE_URL": "/api"
+            }
+
     persistence:
+      frontend-config:
+        type: configMap
+        name: spring-notes-frontend-config
+        advancedMounts:
+          frontend:
+            app:
+              - path: /usr/share/nginx/html/config.json
+                subPath: config.json
+                readOnly: true
       tmp:
         type: emptyDir
         advancedMounts:
