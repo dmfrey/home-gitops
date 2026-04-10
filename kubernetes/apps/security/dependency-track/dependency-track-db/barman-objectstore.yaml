@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: dependency-track
+  annotations:
+    secret.reloader.stakater.com/reload: dependency-track-cnpg-s3-secret
+
+spec:
+  configuration:
+
+    destinationPath: s3://cnpg/
+    endpointURL: http://garage.garage-system.svc.cluster.local:3900
+
+    s3Credentials:
+      accessKeyId:
+        name: dependency-track-cnpg-s3-secret
+        key: AWS_SECRET_ACCESS_KEY_ID
+      secretAccessKey:
+        name: dependency-track-cnpg-s3-secret
+        key: AWS_SECRET_ACCESS_KEY
+
+    wal:
+      compression: gzip
+      maxParallel: 8
+
+  retentionPolicy: 7d

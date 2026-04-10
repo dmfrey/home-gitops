@@ -1,0 +1,149 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dependency-track
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: dependency-track
+  interval: 1h
+  values:
+    controllers:
+      api:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: dependencytrack/apiserver
+              tag: 4.12.2
+              pullPolicy: IfNotPresent
+            env:
+              TZ: America/New_York
+              ALPINE_DATABASE_MODE: external
+              ALPINE_DATABASE_URL: jdbc:postgresql://dependency-track-cnpg-rw.security.svc.cluster.local:5432/dependency-track
+              ALPINE_DATABASE_DRIVER: org.postgresql.Driver
+              ALPINE_DATABASE_DRIVER_PATH: /extlib
+              ALPINE_DATABASE_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-cnpg-app
+                    key: username
+              ALPINE_DATABASE_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-cnpg-app
+                    key: password
+              ALPINE_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: ALPINE_SECRET_KEY
+              ALPINE_ADMIN_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: dependency-track-secret
+                    key: ALPINE_ADMIN_PASSWORD
+            probes:
+              liveness: &apiProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: 8080
+                  initialDelaySeconds: 60
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *apiProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: 8080
+                  initialDelaySeconds: 60
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 20
+            resources:
+              requests:
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                memory: 4Gi
+      frontend:
+        containers:
+          app:
+            image:
+              repository: dependencytrack/frontend
+              tag: 4.12.2
+              pullPolicy: IfNotPresent
+            env:
+              API_BASE_URL: https://dtrack-api.dmfrey.com
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: &apiPort 8080
+      frontend:
+        controller: frontend
+        ports:
+          http:
+            port: &frontendPort 8080
+    route:
+      api:
+        hostnames:
+          - dtrack-api.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: dependency-track-api
+                port: *apiPort
+      frontend:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: dependency-track.png
+          gethomepage.dev/name: Dependency-Track
+          gethomepage.dev/group: Security
+          gethomepage.dev/app: dependency-track
+          gethomepage.dev/description: Software Supply Chain Security
+        hostnames:
+          - dtrack.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: dependency-track-frontend
+                port: *frontendPort
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          api:
+            app:
+              - path: /data

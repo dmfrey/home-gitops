@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: dependency-track-cnpg
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+
+spec:
+
+  instances: 1
+  enablePDB: false
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.7
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+
+  backup:
+    volumeSnapshot:
+      className: csi-ceph-blockpool
+
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: dependency-track
+      owner: dependency-track
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: dependency-track
+
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 256MB
+
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: restart
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+
+  storage:
+    storageClass: ceph-block
+    size: 5Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi
