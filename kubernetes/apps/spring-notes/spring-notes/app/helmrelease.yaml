@@ -81,6 +81,48 @@ spec:
               limits:
                 memory: 1Gi
 
+      sbom-submit:
+        type: cronjob
+        cronjob:
+          schedule: "@daily"
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+        containers:
+          app:
+            image:
+              repository: curlimages/curl
+              tag: 8.12.1
+              pullPolicy: IfNotPresent
+            env:
+              DEPENDENCY_TRACK_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-dtrack-secret
+                    key: DEPENDENCY_TRACK_API_KEY
+            command:
+              - /bin/sh
+              - -c
+              - |
+                curl -sf http://spring-notes-backend.spring-notes.svc.cluster.local:8080/actuator/sbom/application -o /tmp/sbom.json &&
+                curl -sf -X POST \
+                  http://dependency-track-api.security.svc.cluster.local:8080/api/v1/bom \
+                  -H "X-API-Key: ${DEPENDENCY_TRACK_API_KEY}" \
+                  -F "projectName=spring-notes" \
+                  -F "projectVersion=snapshot" \
+                  -F "autoCreate=true" \
+                  -F "bom=@/tmp/sbom.json"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 64Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+
       frontend:
         containers:
           app:
@@ -98,6 +140,14 @@ spec:
                 memory: 32Mi
               limits:
                 memory: 128Mi
+
+    persistence:
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          sbom-submit:
+            app:
+              - path: /tmp
 
     service:
       backend:
