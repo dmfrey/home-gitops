@@ -41,11 +41,6 @@ spec:
                   secretKeyRef:
                     name: dependency-track-secret
                     key: ALPINE_SECRET_KEY
-              ALPINE_ADMIN_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: dependency-track-secret
-                    key: ALPINE_ADMIN_PASSWORD
             probes:
               liveness: &apiProbes
                 enabled: true
