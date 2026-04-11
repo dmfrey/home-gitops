@@ -13,7 +13,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: ${CONTROLLER:=Deployment}
-    name: ${APP}
+    name: ${NFS_SCALER_TARGET:=${APP}}
   triggers:
     - type: prometheus
       metadata:

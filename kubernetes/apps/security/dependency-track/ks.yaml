@@ -46,6 +46,7 @@ spec:
   postBuild:
     substitute:
       APP: dependency-track
+      NFS_SCALER_TARGET: dependency-track-api
       VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:
