@@ -83,6 +83,7 @@ spec:
       autoscaling:
         enabled: true
         minReplicas: 2
+        maxReplicas: 10
       resources:
         requests:
           cpu: 100m
