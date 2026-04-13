@@ -101,21 +101,20 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /data
       media:
         type: nfs
         server: nas.internal
         path: /media/music/
         globalMounts:
           - path: /media
-      tmp:
-        type: emptyDir
-        medium: Memory
-        globalMounts:
-          - path: /tmp
       tmpfs:
         type: emptyDir
+        sizeLimit: 2Gi
         globalMounts:
           - path: /.audio
             subPath: .audio
+          - path: /.cache
+            subPath: .cache
+          - path: /tmp
+            subPath: tmp
+
