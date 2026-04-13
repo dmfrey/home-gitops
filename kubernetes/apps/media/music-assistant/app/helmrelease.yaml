@@ -23,6 +23,7 @@ spec:
             env:
               TZ: America/New_York
               LOG_LEVEL: info
+              HOME: /data
             probes:
               liveness: &probes
                 enabled: true
@@ -33,8 +34,8 @@ spec:
                     port: 8095
                   initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
+                  timeoutSeconds: 3
+                  failureThreshold: 5
               readiness: *probes
               startup:
                 enabled: true
