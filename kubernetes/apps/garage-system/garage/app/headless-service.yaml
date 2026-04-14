@@ -1,0 +1,18 @@
+---
+# Headless service for Garage S3 — resolves directly to pod IP, bypassing ClusterIP DNAT.
+# Used by DragonflyDB instances: ClusterIP routing fails for same-node pod-to-pod traffic
+# (Cilium same-node DNAT issue), but direct pod IP connections work fine.
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-direct
+  namespace: garage-system
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: garage
+  ports:
+    - name: s3
+      port: 3900
+      protocol: TCP
+      targetPort: 3900
