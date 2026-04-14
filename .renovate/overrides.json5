@@ -19,5 +19,11 @@
       matchPackageNames: ["ghcr.io/linuxserver/orcaslicer"],
       allowedVersions: "!/^2\\.3\\.2/",
     },
+    {
+      description: "Block DragonflyDB v1.38.0 — S3 snapshot connections block health check threads causing CrashLoopBackOff with Garage S3",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/dragonflydb/dragonfly"],
+      allowedVersions: "!/^v1\\.38\\.0/",
+    },
   ],
 }
