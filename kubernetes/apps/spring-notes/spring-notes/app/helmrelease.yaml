@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes
-              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes
+              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes versioning=loose
               tag: b9056cdceeb61d89f08a26248107a35d9f0000de
             env:
               TZ: America/New_York
@@ -133,7 +133,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes-frontend
-              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes-frontend
+              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes-frontend versioning=loose
               tag: c1a21eebdcd29df0eca4378506f7663da4ad67c4
             probes:
               liveness: &probes
