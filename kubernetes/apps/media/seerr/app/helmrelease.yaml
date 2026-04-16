@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/seerr-team/seerr
-              tag: v3.1.1
+              tag: v3.2.0
             env:
               LOG_LEVEL: "info"
               PORT: &port 5055
