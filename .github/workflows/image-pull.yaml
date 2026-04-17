@@ -89,20 +89,16 @@ jobs:
       max-parallel: 4
       fail-fast: false
     steps:
-      - name: Install talosctl
+      - name: Pull Image
         env:
           # renovate: datasource=github-releases depName=siderolabs/talos
           TALOS_VERSION: v1.12.6
-        run: |
-          mkdir -p ~/.local/bin
-          curl -fsSL -o ~/.local/bin/talosctl \
-            "https://github.com/siderolabs/talos/releases/download/${TALOS_VERSION}/talosctl-linux-amd64"
-          chmod +x ~/.local/bin/talosctl
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Pull Image
-        env:
           MATRIX_IMAGE: ${{ matrix.image }}
-        run: talosctl --nodes $NODE image pull "$MATRIX_IMAGE"
+        run: |
+          curl -fsSL -o /tmp/talosctl \
+            "https://github.com/siderolabs/talos/releases/download/${TALOS_VERSION}/talosctl-linux-amd64"
+          chmod +x /tmp/talosctl
+          /tmp/talosctl --nodes $NODE image pull "$MATRIX_IMAGE"
   success:
     if: ${{ !cancelled() }}
     needs: pull
