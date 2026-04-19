@@ -83,6 +83,12 @@ spec:
           requireMsgr2: true
 
       resources:
+        mgr:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
         osd:
           requests:
             cpu: 1000m
