@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: v0.8.12-ollama
+              tag: v0.9.1-ollama
             env:
               TZ: America/New_York
               ENABLE_OPENAI_API: False
