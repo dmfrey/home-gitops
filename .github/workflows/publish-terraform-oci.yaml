@@ -70,7 +70,7 @@ jobs:
       - name: Setup Tools
         env:
           # renovate: datasource=github-releases depName=fluxcd/flux2
-          FLUX_VERSION: v2.8.5
+          FLUX_VERSION: v2.8.6
         run: |
           curl -sL "https://github.com/fluxcd/flux2/releases/download/${FLUX_VERSION}/flux_${FLUX_VERSION#v}_linux_amd64.tar.gz" \
             | sudo tar xz -C /usr/local/bin flux
