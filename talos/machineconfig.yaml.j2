@@ -185,7 +185,7 @@ cluster:
     extraArgs:
       enable-aggregator-routing: "true"
       # ResourceHealthStatus removed until intel-gpu-resource-driver implements v1alpha1.DRAResourceHealth
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true,UserNamespacesSupport=true
+      feature-gates: HPAScaleToZero=true,ImageVolume=true,MutatingAdmissionPolicy=true,UserNamespacesSupport=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
 
     image: registry.k8s.io/kube-apiserver:v1.35.4
