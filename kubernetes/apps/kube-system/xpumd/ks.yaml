@@ -5,7 +5,6 @@ kind: Kustomization
 metadata:
   name: xpumd
 spec:
-  suspend: true  # xpumd chart 2.0.0-rc.0 has invalid label bug; re-enable when stable release ships
   interval: 1h
   path: ./kubernetes/apps/kube-system/xpumd/app
   prune: true

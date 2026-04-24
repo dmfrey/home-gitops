@@ -5,7 +5,6 @@ kind: HelmRelease
 metadata:
   name: xpumd
 spec:
-  suspend: true  # xpumd chart 2.0.0-rc.0 has invalid label bug; re-enable when stable release ships
   chartRef:
     kind: OCIRepository
     name: xpumd
@@ -20,3 +19,7 @@ spec:
     grafana:
       dashboards: true
       namespace: observability
+  postRenderers:
+    - kustomize:
+        commonLabels:
+          app.kubernetes.io/version: 2.0.0-rc.0

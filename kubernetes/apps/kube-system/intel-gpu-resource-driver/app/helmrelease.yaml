@@ -12,8 +12,7 @@ spec:
   values:
     kubeletPlugin:
       healthMonitoring:
-        enabled: false
-      privileged: true
+        enabled: true
     cdi:
       staticPath: /var/cdi/static
       dynamicPath: /var/cdi/dynamic
