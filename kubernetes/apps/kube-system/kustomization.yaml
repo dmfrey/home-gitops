@@ -16,6 +16,7 @@ resources:
   - ./descheduler/ks.yaml
   - ./generic-device-plugin/ks.yaml
   - ./intel-gpu-resource-driver/ks.yaml
+  - ./xpumd/ks.yaml
   - ./metrics-server/ks.yaml
   - ./multus/ks.yaml
   - ./node-feature-discovery/ks.yaml
