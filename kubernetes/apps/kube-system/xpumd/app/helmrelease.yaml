@@ -10,6 +10,8 @@ spec:
     name: xpumd
   interval: 1h
   values:
+    image:
+      tag: v2.0.0-rc.0
     gpuAccess: dra
     nodeSelector:
       node.kubernetes.io/gpu: "true"
