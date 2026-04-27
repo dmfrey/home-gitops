@@ -92,7 +92,7 @@ jobs:
       - name: Pull Image
         env:
           # renovate: datasource=github-releases depName=siderolabs/talos
-          TALOS_VERSION: v1.12.7
+          TALOS_VERSION: v1.13.0
           MATRIX_IMAGE: ${{ matrix.image }}
         run: |
           curl -fsSL -o /tmp/talosctl \
