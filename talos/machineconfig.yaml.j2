@@ -63,10 +63,6 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
-      featureGates:
-        ImageVolume: true
-        # ResourceHealthStatus: true  # re-enable when intel-gpu-resource-driver implements v1alpha1.DRAResourceHealth (currently causes kubelet spam on k8s-2)
-        UserNamespacesSupport: true
       imageMaximumGCAge: 24h
       imageGCHighThresholdPercent: 65
       imageGCLowThresholdPercent: 50
@@ -184,9 +180,6 @@ cluster:
 
     extraArgs:
       enable-aggregator-routing: "true"
-      # ResourceHealthStatus removed until intel-gpu-resource-driver implements v1alpha1.DRAResourceHealth
-      feature-gates: HPAScaleToZero=true,ImageVolume=true,MutatingAdmissionPolicy=true,UserNamespacesSupport=true
-      runtime-config: admissionregistration.k8s.io/v1beta1=true
 
     image: registry.k8s.io/kube-apiserver:v1.36.0
 
