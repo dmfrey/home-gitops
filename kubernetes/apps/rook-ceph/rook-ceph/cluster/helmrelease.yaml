@@ -41,6 +41,7 @@ spec:
           bluestore_cache_size_ssd: "4294967296" # 4Gi
 
           device_failure_prediction_mode: local # requires mgr module
+          mon_warn_on_slow_ping_ratio: "0.75"    # warn only when OSD ping >75% of grace (15s); default 0.5 (10s) too sensitive on shared NVMe+etcd nodes
           osd_class_update_on_start: "false" # quote
           osd_memory_target: "4294967296" # 4Gi
 
@@ -49,8 +50,7 @@ spec:
 
         osd:
           bluestore_slow_ops_warn_lifetime: "7200" # 2 hours (default is 86400 = 24 hours)
-          osd_ping_warn_ratio: "0.75"              # warn only when ping >75% of grace (15s); default 0.5 (10s) too sensitive on shared NVMe+etcd nodes
-          osd_scrub_begin_hour: "1"               # restrict scrubs to 01:00-07:00 UTC — prevents deep scrub I/O from spiking etcd WAL fsync during day
+          osd_scrub_begin_hour: "1"                # restrict scrubs to 01:00-07:00 UTC — prevents deep scrub I/O from spiking etcd WAL fsync during day
           osd_scrub_end_hour: "7"
 
       cleanupPolicy:
