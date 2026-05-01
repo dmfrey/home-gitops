@@ -49,6 +49,9 @@ spec:
 
         osd:
           bluestore_slow_ops_warn_lifetime: "7200" # 2 hours (default is 86400 = 24 hours)
+          osd_ping_warn_ratio: "0.75"              # warn only when ping >75% of grace (15s); default 0.5 (10s) too sensitive on shared NVMe+etcd nodes
+          osd_scrub_begin_hour: "1"               # restrict scrubs to 01:00-07:00 UTC — prevents deep scrub I/O from spiking etcd WAL fsync during day
+          osd_scrub_end_hour: "7"
 
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
