@@ -29,7 +29,7 @@ spec:
         resources:
           requests:
             storage: 10Gi
-        storageClassName: ceph-block
+        storageClassName: openebs-hostpath
     controllerServiceAccount:
       name: actions-runner-controller
       namespace: actions-runner-system
