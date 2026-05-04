@@ -19,6 +19,8 @@ spec:
       netPath: /etc/cni/net.d
 
     multus:
+      pod:
+        automountServiceAccountToken: true  # multus needs API server access for NAD CRDs; common v5 defaults this to false
       resources:
         requests:
           cpu: 10m
