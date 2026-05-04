@@ -17,6 +17,9 @@ spec:
     global:
       createDefaultServiceAccount: false
 
+    defaultPodOptions:
+      automountServiceAccountToken: true
+
     cni:
       binPath: /opt/cni/bin
       netPath: /etc/cni/net.d
