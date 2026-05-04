@@ -12,3 +12,13 @@ groups:
         annotations:
           app: "{{ $labels.app }}"
           summary: "{{ $labels.app }} is unable to reach MQTT"
+      - alert: ZigbeeAdapterDisconnected
+        expr: |
+          sum(count_over_time({app="zigbee2mqtt-02"} |~ "ECONNRESET|Adapter disconnected"[5m])) > 0
+        for: 0m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} lost TCP connection to SLZB-06M adapter (ECONNRESET)"
