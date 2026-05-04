@@ -20,7 +20,7 @@ spec:
       release: kube-prometheus-stack
     grafana:
       dashboards: true
-      namespace: observability
+      namespace: kube-system
   postRenderers:
     - kustomize:
         patches:
