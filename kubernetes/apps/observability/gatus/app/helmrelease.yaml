@@ -10,6 +10,8 @@ spec:
     name: gatus
   interval: 1h
   values:
+    global:
+      createDefaultServiceAccount: false
     controllers:
       gatus:
         type: statefulset
@@ -76,6 +78,7 @@ spec:
               accessMode: ReadWriteOnce
               size: 5Gi
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

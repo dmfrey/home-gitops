@@ -15,6 +15,9 @@ spec:
 
   values:
 
+    global:
+      createDefaultServiceAccount: false
+
     controllers:
       dragonfly-operator:
         strategy: RollingUpdate
@@ -68,6 +71,7 @@ spec:
               capabilities: {drop: ["ALL"]}
 
     defaultPodOptions:
+      automountServiceAccountToken: true
       labels:
         control-plane: controller-manager
 

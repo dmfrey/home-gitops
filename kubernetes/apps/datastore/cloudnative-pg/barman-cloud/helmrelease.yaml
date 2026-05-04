@@ -15,6 +15,9 @@ spec:
 
   values:
 
+    global:
+      createDefaultServiceAccount: false
+
     controllers:
 
       barman-cloud:
@@ -75,6 +78,7 @@ spec:
           name: *app
 
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
