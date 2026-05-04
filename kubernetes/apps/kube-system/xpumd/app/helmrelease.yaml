@@ -16,7 +16,7 @@ spec:
     nodeSelector:
       node.kubernetes.io/gpu: "true"
     prometheus:
-      monitor: true
+      monitor: false
       release: kube-prometheus-stack
     grafana:
       dashboards: true
