@@ -16,7 +16,7 @@ spec:
     nodeSelector:
       node.kubernetes.io/gpu: "true"
     prometheus:
-      monitor: false
+      monitor: true
       release: kube-prometheus-stack
     grafana:
       dashboards: true
@@ -30,3 +30,42 @@ spec:
                 value: 2.0.0-rc.0
             target:
               labelSelector: "app.kubernetes.io/instance=xpumd"
+          - patch: |-
+              apiVersion: v1
+              kind: ConfigMap
+              metadata:
+                name: xpumd-config
+              data:
+                config.yaml: |-
+                  exporters:
+                    intelxpuinfo:
+                      endpoint: /run/xpumd/intelxpuinfo.sock
+                    prometheus:
+                      endpoint: 0.0.0.0:8080
+                  extensions: {}
+                  processors:
+                    intelxpustatus: {}
+                  receivers:
+                    intelxpu:
+                      collection_interval: 5s
+                      initial_delay: 1s
+                      log_level: info
+                      metrics: {}
+                      sampling_interval: 1s
+                      timeout: 0
+                  service:
+                    pipelines:
+                      metrics:
+                        exporters:
+                        - intelxpuinfo
+                        - prometheus
+                        processors:
+                        - intelxpustatus
+                        receivers:
+                        - intelxpu
+                    telemetry:
+                      logs:
+                        level: info
+            target:
+              kind: ConfigMap
+              name: xpumd-config
