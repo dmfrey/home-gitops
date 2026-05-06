@@ -1,0 +1,15 @@
+---
+groups:
+  - name: kernel
+    rules:
+      - alert: NodeFilesystemEmergencyReadOnly
+        expr: |
+          count_over_time({job="kernel"} |~ "EXT4-fs.*Remounting filesystem read-only"[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          node: "{{ $labels.node }}"
+          summary: "Node {{ $labels.node }} has a filesystem remounted read-only"
+          description: "A Ceph RBD PVC on {{ $labels.node }} entered emergency_ro state due to I/O errors. Cordon the node and delete affected pods to remount on a healthy node."

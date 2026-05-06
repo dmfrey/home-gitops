@@ -11,6 +11,15 @@ spec:
   interval: 1h
   values:
     alloy:
+      securityContext:
+        capabilities:
+          add:
+            - SYSLOG
+      mounts:
+        extra:
+          - name: kmsg
+            mountPath: /dev/kmsg
+            readOnly: true
       extraPorts:
         - name: otlp-grpc
           port: 4317
@@ -124,8 +133,34 @@ spec:
             }
           }
 
+          // Collect kernel logs from /dev/kmsg for emergency_ro and other critical events
+          loki.source.file "kernel" {
+            targets = [{
+              __path__ = "/dev/kmsg",
+              job      = "kernel",
+              node     = env("HOSTNAME"),
+            }]
+            forward_to = [loki.process.kernel.receiver]
+          }
+
+          loki.process "kernel" {
+            // Strip kmsg prefix format: "<pri>,<seq>,<timestamp>,<flags>;<message>"
+            stage.regex {
+              expression = `^(?:\d+,\d+,\d+,-?[^;]*;)?(?P<message>.*)$`
+            }
+            stage.output {
+              source = "message"
+            }
+            forward_to = [loki.write.default.receiver]
+          }
+
     controller:
       type: daemonset
+      volumes:
+        extra:
+          - name: kmsg
+            hostPath:
+              path: /dev/kmsg
 
     serviceMonitor:
       enabled: true
