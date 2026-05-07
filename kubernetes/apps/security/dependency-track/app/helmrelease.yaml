@@ -116,7 +116,7 @@ spec:
           app:
             image:
               repository: dependencytrack/frontend
-              tag: 4.14.1
+              tag: 4.14.2
               pullPolicy: IfNotPresent
             env:
               API_BASE_URL: https://dtrack-api.dmfrey.com
