@@ -42,6 +42,14 @@ spec:
     cron: 0 0 * * *
     dir: "s3://dragonflydb/romm"
 
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: garage
+          topologyKey: kubernetes.io/hostname
+
   resources:
     requests:
       cpu: 100m
