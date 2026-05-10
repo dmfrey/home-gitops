@@ -82,4 +82,5 @@ kubernetes/apps/self-hosted/affine/docs/*
 
 .claude/settings.local.json
 .claude/todos.json
+.claude/scheduled_tasks.lock
 .mcp.json
