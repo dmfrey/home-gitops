@@ -20,12 +20,6 @@
       allowedVersions: "!/^2\\.3\\.2/",
     },
     {
-      description: "Block DragonflyDB v1.38.x — S3 snapshot connections block health check threads causing CrashLoopBackOff with Garage S3; unresolved upstream",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/dragonflydb/dragonfly"],
-      allowedVersions: "!/^v1\\.38\\./",
-    },
-    {
       description: "Block multus chart 1.3.x — bjw-s common v5 defaults automountServiceAccountToken=false; chart doesn't expose override; breaks multus API server access",
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/bjw-s-labs/helm/multus"],
