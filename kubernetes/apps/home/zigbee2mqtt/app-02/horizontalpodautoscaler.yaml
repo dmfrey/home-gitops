@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/autoscaling/horizontalpodautoscaler_v2.json
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: zigbee2mqtt-02
+spec:
+  minReplicas: 0
+  maxReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: zigbee2mqtt-02
+  metrics:
+    - type: External
+      external:
+        metric:
+          name: probe_success
+          selector:
+            matchLabels:
+              instance: "zigbee-2.internal"
+        target:
+          type: Value
+          value: "1"
+  behavior:
+    scaleDown:
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 15
+      selectPolicy: Max
+      stabilizationWindowSeconds: 0
+    scaleUp:
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 15
+      selectPolicy: Max
+      stabilizationWindowSeconds: 0
