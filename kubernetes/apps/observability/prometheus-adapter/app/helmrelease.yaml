@@ -22,9 +22,3 @@ spec:
           name:
             as: probe_success
           metricsQuery: max_over_time(<<.Series>>{<<.LabelMatchers>>}[1m])
-        - seriesQuery: '{__name__="probe_success",instance="nas.internal:2049"}'
-          resources:
-            namespaced: false
-          name:
-            as: nfs_probe_success
-          metricsQuery: max_over_time(probe_success{instance="nas.internal:2049"}[1m])

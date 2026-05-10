@@ -15,7 +15,10 @@ spec:
     - type: External
       external:
         metric:
-          name: nfs_probe_success
+          name: probe_success
+          selector:
+            matchLabels:
+              job: nfs_probe
         target:
           type: Value
           value: "1"

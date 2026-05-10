@@ -20,8 +20,6 @@ spec:
         - k8s-2.internal
         - nas.internal
         - ollama.internal
-        - zigbee-1.internal
-        - zigbee-2.internal
 
   metricRelabelings:
     - targetLabel: service
@@ -32,8 +30,10 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: lan-tcp
+  name: lan-nfs
 spec:
+
+  jobName: nfs_probe
 
   module: tcp_connect
 
@@ -44,6 +44,54 @@ spec:
     staticConfig:
       static:
         - nas.internal:2049
+
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: lan-zigbee-1
+spec:
+
+  jobName: zigbee_1_probe
+
+  module: icmp
+
+  prober:
+    url: blackbox-exporter-lan.observability.svc.cluster.local:9115
+
+  targets:
+    staticConfig:
+      static:
+        - zigbee-1.internal
+
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: lan-zigbee-2
+spec:
+
+  jobName: zigbee_2_probe
+
+  module: icmp
+
+  prober:
+    url: blackbox-exporter-lan.observability.svc.cluster.local:9115
+
+  targets:
+    staticConfig:
+      static:
+        - zigbee-2.internal
 
   metricRelabelings:
     - targetLabel: service
