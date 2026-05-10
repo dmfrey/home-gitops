@@ -8,9 +8,6 @@ _.file = [
   "{{config_root}}/onepassword.env"
 ]
 
-[hooks]
-enter = "just doctor"
-
 [tools]
 "just" = "latest"
 "uv" = "latest"
