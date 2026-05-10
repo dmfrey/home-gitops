@@ -15,10 +15,7 @@ spec:
     - type: External
       external:
         metric:
-          name: probe_success
-          selector:
-            matchLabels:
-              instance: "nas.internal:2049"
+          name: nfs_probe_success
         target:
           type: Value
           value: "1"
