@@ -54,10 +54,10 @@ machine:
     image: factory.talos.dev/installer/cfd2afa428fa5a48f71d9c0583c2fd870ce72d610861bc6f051bc55abf6c65b2:v1.13.1
     wipe: false
 
-  time:
-    servers:
-      - 192.168.30.1      # UDM-SE gateway on homelab VLAN — prefer local over internet
-      - time.cloudflare.com
+#  time:
+#    servers:
+#      - 192.168.30.1      # UDM-SE gateway on homelab VLAN — prefer local over internet
+#      - time.cloudflare.com
 
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
@@ -113,9 +113,9 @@ machine:
     # intel_pstate level. Per-core path: /sys/devices/system/cpu/cpuX/cpufreq/energy_performance_preference
     # Current default is "balance_performance" which is appropriate for mini PC thermals.
 
-  network:
-    nameservers:
-      - 192.168.30.1    # UDM-SE — primary, local/private DNS; routes to Cloudflare 1.1.1.1 upstream
+#  network:
+#    nameservers:
+#      - 192.168.30.1    # UDM-SE — primary, local/private DNS; routes to Cloudflare 1.1.1.1 upstream
 
   token: op://kubernetes/talos/MACHINE_TOKEN
 
