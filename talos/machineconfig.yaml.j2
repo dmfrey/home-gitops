@@ -115,8 +115,7 @@ machine:
 
   network:
     nameservers:
-      - 192.168.30.1    # UDM-SE — primary, local/private DNS
-      - 1.1.1.1         # Cloudflare — fallback for TCP reconnect windows and boot-time gaps
+      - 192.168.30.1    # UDM-SE — primary, local/private DNS; routes to Cloudflare 1.1.1.1 upstream
 
   token: op://kubernetes/talos/MACHINE_TOKEN
 
