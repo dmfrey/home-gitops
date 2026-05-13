@@ -15,6 +15,6 @@ locals {
 }
 
 provider "authentik" {
-  url   = "https://auth.${var.CLUSTER_DOMAIN}"
+  url   = "http://authentik-server.security.svc.cluster.local"
   token = var.AUTHENTIK_TOKEN
 }
