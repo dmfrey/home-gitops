@@ -42,16 +42,6 @@ spec:
     cron: 0 0 * * *
     dir: "s3://dragonflydb/authentik"
 
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: NotIn
-                values:
-                  - k8s-1
-
   resources:
     requests:
       cpu: 100m
