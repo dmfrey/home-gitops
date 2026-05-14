@@ -9,8 +9,7 @@ metadata:
 
 spec:
 
-  replicas: 2
-  enableReplicationReadinessGate: true
+  replicas: 1
 
   image: ghcr.io/dragonflydb/dragonfly:v1.38.1@sha256:baf70ba7ad182a992b988497cfa31a488978c8fab7712079784c2401f447e402
 
@@ -52,12 +51,6 @@ spec:
                 operator: NotIn
                 values:
                   - k8s-1
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: garage
-          topologyKey: kubernetes.io/hostname
 
   resources:
     requests:
