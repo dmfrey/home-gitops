@@ -117,6 +117,10 @@ spec:
               - identifier: app
                 port: 80
       outpost:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            path: /outpost.goauthentik.io/ping
+            conditions: ["[STATUS] == 204"]
         hostnames:
           - excalidraw.dmfrey.com
         parentRefs:
