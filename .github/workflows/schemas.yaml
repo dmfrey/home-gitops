@@ -12,6 +12,10 @@ on:
     paths:
       - .github/workflows/schemas.yaml
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 env:
   UV_SYSTEM_PYTHON: "1"
 

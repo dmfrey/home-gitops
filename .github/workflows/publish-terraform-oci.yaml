@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: "Terraform: Build OCI artifacts"
 
 on: # yamllint disable-line rule:truthy
@@ -8,6 +9,10 @@ on: # yamllint disable-line rule:truthy
       - main
     paths:
       - infrastructure/terraform/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -47,7 +52,7 @@ jobs:
         id: set-matrix
         run: |
           if [[ "${{ steps.changed-files.outputs.all_changed_files }}" == "[]" ]]; then
-            echo "matrix={\"project\":$(find terraform -type f -name .terraform.lock.hcl | xargs dirname | jo -a)}" >> "${GITHUB_OUTPUT}"
+            echo "matrix={\"project\":$(find infrastructure/terraform -type f -name .terraform.lock.hcl | xargs dirname | jo -a)}" >> "${GITHUB_OUTPUT}"
           else
             echo "matrix={\"project\":${{ steps.changed-files.outputs.all_changed_files }}}" >> "${GITHUB_OUTPUT}"
           fi

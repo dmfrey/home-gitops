@@ -12,6 +12,10 @@ on:
   schedule:
     - cron: "0 0 * * *" # Every day at midnight
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
