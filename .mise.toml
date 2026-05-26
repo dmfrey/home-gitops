@@ -12,3 +12,5 @@ _.file = [
 "just" = "latest"
 "uv" = "latest"
 "pipx:flux-local" = "latest"
+"aqua:google/yamlfmt" = "latest"
+"aqua:yannh/kubeconform" = "latest"
