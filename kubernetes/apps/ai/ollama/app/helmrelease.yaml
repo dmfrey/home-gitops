@@ -55,8 +55,6 @@ spec:
               ZES_ENABLE_SYSMAN: 1
 
             resources:
-              claims:
-                - name: gpu
               requests:
                 cpu: 200m
                 memory: 4Gi
@@ -77,11 +75,6 @@ spec:
                         operator: In
                         values:
                           - "{{ .Release.Name }}"
-
-    defaultPodOptions:
-      resourceClaims:
-        - name: gpu
-          resourceClaimTemplateName: ollama
 
     service:
       app:
