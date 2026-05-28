@@ -20,7 +20,6 @@ spec:
     substitute:
       APP: ollama
       CONTROLLER: StatefulSet
-      VOLSYNC_CLAIM: ollama-config
       VOLSYNC_CAPACITY: 1Gi
   sourceRef:
     kind: GitRepository

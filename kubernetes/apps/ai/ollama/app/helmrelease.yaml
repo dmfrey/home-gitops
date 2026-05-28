@@ -104,7 +104,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /root/.ollama
 
