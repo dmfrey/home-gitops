@@ -30,8 +30,8 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/ollama/ollama
-              tag: latest
+              repository: docker.io/uberchuckie/ollama-intel-gpu
+              tag: stable
 
             env:
               TZ: America/New_York
@@ -39,6 +39,7 @@ spec:
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: /models
               ZES_ENABLE_SYSMAN: 1
+              DRINODE: /dev/dri/renderD128
 
             resources:
               claims:
