@@ -30,7 +30,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/tyzbit/ollama-intel-gpu
+              repository: docker.io/ollama/ollama
               tag: latest
 
             env:
@@ -41,16 +41,18 @@ spec:
               ZES_ENABLE_SYSMAN: 1
 
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: 200m
                 memory: 4Gi
               limits:
                 memory: 24Gi
 
-            securityContext:
-              privileged: true
-
         pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: ollama
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -93,10 +95,6 @@ spec:
         path: /models
         globalMounts:
           - path: /models
-
-      dri:
-        type: hostPath
-        hostPath: /dev/dri
 
       tmp:
         enabled: true
