@@ -9,4 +9,5 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./ollama/ks.yaml
   - ./openweb/ks.yaml
