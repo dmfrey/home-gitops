@@ -41,6 +41,8 @@ spec:
               OLLAMA_KEEP_ALIVE: "-1"
               ZES_ENABLE_SYSMAN: 1
               DRINODE: /dev/dri/renderD128
+              GGML_SYCL_DISABLE_OPT: "0"
+              GGML_SYCL_DISABLE_GRAPH: "0"
 
             resources:
               claims:
