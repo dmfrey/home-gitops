@@ -38,6 +38,7 @@ spec:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: /models
+              OLLAMA_KEEP_ALIVE: "-1"
               ZES_ENABLE_SYSMAN: 1
               DRINODE: /dev/dri/renderD128
 
