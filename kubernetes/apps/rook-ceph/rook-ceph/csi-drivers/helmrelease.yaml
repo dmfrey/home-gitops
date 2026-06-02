@@ -59,6 +59,10 @@ spec:
             snapshotter:
               requests: {cpu: 100m, memory: 128Mi}
               limits: {memory: 256Mi}
+            omapGenerator: {}
+            logRotator: {}
+            liveness: {}
+            addons: {}
         nodePlugin:
           resources:
             plugin:
@@ -67,6 +71,9 @@ spec:
             registrar:
               requests: {cpu: 50m, memory: 128Mi}
               limits: {memory: 256Mi}
+            logRotator: {}
+            liveness: {}
+            addons: {}
 
       rbd:
         enabled: true
@@ -90,6 +97,9 @@ spec:
             snapshotter:
               requests: {cpu: 100m, memory: 128Mi}
               limits: {memory: 256Mi}
+            logRotator: {}
+            liveness: {}
+            addons: {}
         nodePlugin:
           resources:
             plugin:
@@ -98,6 +108,9 @@ spec:
             registrar:
               requests: {cpu: 50m, memory: 128Mi}
               limits: {memory: 256Mi}
+            logRotator: {}
+            liveness: {}
+            addons: {}
 
       nfs:
         enabled: false
