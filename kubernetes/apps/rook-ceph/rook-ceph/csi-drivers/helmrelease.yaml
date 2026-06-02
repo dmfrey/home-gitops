@@ -79,6 +79,7 @@ spec:
       rbd:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com
+        snapshotPolicy: volumeGroupSnapshot
         controllerPlugin:
           resources:
             attacher:
