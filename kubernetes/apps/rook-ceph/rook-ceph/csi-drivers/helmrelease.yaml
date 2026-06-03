@@ -7,13 +7,9 @@ metadata:
 
 spec:
 
-  chart:
-    spec:
-      chart: ceph-csi-drivers
-      version: 1.0.1
-      sourceRef:
-        kind: HelmRepository
-        name: ceph-csi-operator
+  chartRef:
+    kind: OCIRepository
+    name: ceph-csi-drivers
 
   interval: 1h
 
