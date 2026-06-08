@@ -20,10 +20,6 @@ releases:
     namespace: observability
     chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
     version: 5.23.0
-  - name: keda
-    namespace: observability
-    chart: oci://ghcr.io/home-operations/charts-mirror/keda
-    version: 2.20.0
   - name: kube-prometheus-stack
     namespace: observability
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
