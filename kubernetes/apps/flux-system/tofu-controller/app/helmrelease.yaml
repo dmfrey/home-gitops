@@ -28,7 +28,7 @@ spec:
     runner:
       image:
         repository: ghcr.io/flux-iac/tf-runner
-        tag: v0.16.3
+        tag: v0.16.4
       serviceAccount:
         create: true
         allowedNamespaces:
