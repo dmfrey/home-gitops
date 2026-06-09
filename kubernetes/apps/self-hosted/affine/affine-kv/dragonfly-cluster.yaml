@@ -49,6 +49,7 @@ spec:
         - labelSelector:
             matchLabels:
               app.kubernetes.io/name: garage
+          namespaceSelector: {}
           topologyKey: kubernetes.io/hostname
 
   resources:
