@@ -17,94 +17,72 @@ spec:
         containers:
           app:
             image:
-              repository: dependencytrack/apiserver
-              tag: 4.14.2
+              repository: ghcr.io/dependencytrack/apiserver
+              tag: 5.0.0
               pullPolicy: IfNotPresent
             env:
-              TZ: America/New_York
-              ALPINE_DATABASE_MODE: external
-              ALPINE_DATABASE_URL: jdbc:postgresql://dependency-track-cnpg-rw.security.svc.cluster.local:5432/dependency-track
-              ALPINE_DATABASE_DRIVER: org.postgresql.Driver
-              ALPINE_DATABASE_DRIVER_PATH: /extlib
-              ALPINE_DATABASE_USERNAME:
+              # v5 requires UTC, see https://dependencytrack.github.io/docs/next/guides/administration/migrating-from-v4/
+              TZ: Etc/UTC
+              DT_DATASOURCE_URL: jdbc:postgresql://dependency-track-v5-cnpg-rw.security.svc.cluster.local:5432/dependency-track
+              DT_DATASOURCE_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: dependency-track-cnpg-app
+                    name: dependency-track-v5-cnpg-app
                     key: username
-              ALPINE_DATABASE_PASSWORD:
+              DT_DATASOURCE_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: dependency-track-cnpg-app
+                    name: dependency-track-v5-cnpg-app
                     key: password
-              ALPINE_SECRET_KEY:
+              DT_SECRET_MANAGEMENT_PROVIDER: database
+              DT_SECRET_MANAGEMENT_DATABASE_KEK:
                 valueFrom:
                   secretKeyRef:
                     name: dependency-track-secret
-                    key: ALPINE_SECRET_KEY
-              ALPINE_NVD_API_KEY:
+                    key: DT_SECRET_MANAGEMENT_DATABASE_KEK
+              DT_OIDC_ENABLED: "true"
+              DT_OIDC_ISSUER: https://auth.dmfrey.com/application/o/dependency-track/
+              DT_OIDC_CLIENT_ID:
                 valueFrom:
                   secretKeyRef:
                     name: dependency-track-secret
-                    key: ALPINE_NVD_API_KEY
-              ALPINE_GITHUB_ADVISORIES_ENABLED: "true"
-              ALPINE_GITHUB_ADVISORIES_ACCESS_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: dependency-track-secret
-                    key: GITHUB_ADVISORIES_PAT
-              OSSINDEX_API_USERNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: dependency-track-secret
-                    key: OSSINDEX_API_USERNAME
-              OSSINDEX_API_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: dependency-track-secret
-                    key: OSSINDEX_API_TOKEN
-              ALPINE_OIDC_ENABLED: "true"
-              ALPINE_OIDC_ISSUER: https://auth.dmfrey.com/application/o/dependency-track/
-              ALPINE_OIDC_CLIENT_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: dependency-track-secret
-                    key: ALPINE_OIDC_CLIENT_ID
-              ALPINE_OIDC_USERNAME_CLAIM: preferred_username
-              ALPINE_OIDC_TEAMS_CLAIM: groups
-              ALPINE_OIDC_TEAM_SYNCHRONIZATION: "true"
-              ALPINE_OIDC_USER_PROVISIONING: "true"
-              ALPINE_APPLICATION_BASE_URL: https://dtrack.dmfrey.com
-              ALPINE_EMAIL_SMTP_ENABLED: "true"
-              ALPINE_EMAIL_SMTP_FROM_ADDRESS: noreply@homelab5767.cc
-              ALPINE_EMAIL_SMTP_FROM_NAME: Dependency-Track
-              ALPINE_EMAIL_SMTP_HOST: smtp-relay.kube-system.svc.cluster.local
-              ALPINE_EMAIL_SMTP_PORT: "25"
-              ALPINE_EMAIL_SMTP_SSLTLS: "false"
-              ALPINE_EMAIL_SMTP_TRUSTCERT: "false"
+                    key: DT_OIDC_CLIENT_ID
+              DT_OIDC_USERNAME_CLAIM: preferred_username
+              DT_OIDC_TEAMS_CLAIM: groups
+              DT_OIDC_TEAM_SYNCHRONIZATION: "true"
+              DT_OIDC_USER_PROVISIONING: "true"
             probes:
-              liveness: &apiProbes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/version
-                    port: 8080
-                  initialDelaySeconds: 60
+                    path: /health/live
+                    port: 9000
                   periodSeconds: 15
                   timeoutSeconds: 5
                   failureThreshold: 5
-              readiness: *apiProbes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/ready
+                    port: 9000
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/version
-                    port: 8080
-                  initialDelaySeconds: 60
+                    path: /health/started
+                    port: 9000
+                  initialDelaySeconds: 30
                   periodSeconds: 15
                   timeoutSeconds: 5
-                  failureThreshold: 20
+                  failureThreshold: 40
             resources:
               requests:
                 cpu: 200m
@@ -115,8 +93,8 @@ spec:
         containers:
           app:
             image:
-              repository: dependencytrack/frontend
-              tag: 4.14.2
+              repository: ghcr.io/dependencytrack/frontend
+              tag: 5.0.0
               pullPolicy: IfNotPresent
             env:
               API_BASE_URL: https://dtrack-api.dmfrey.com
@@ -125,9 +103,8 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: dependency-track-secret
-                    key: ALPINE_OIDC_CLIENT_ID
+                    key: DT_OIDC_CLIENT_ID
               OIDC_SCOPE: openid profile email
-              OIDC_FLOW: authorization_code
               OIDC_LOGIN_BUTTON_TEXT: Login with Authentik
             probes:
               liveness:
