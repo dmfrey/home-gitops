@@ -47,6 +47,8 @@ spec:
                   secretKeyRef:
                     name: dependency-track-secret
                     key: DT_OIDC_CLIENT_ID
+              # SMTP relay is an in-cluster address, blocked by default SSRF guard
+              DT_NOTIFICATION_PUBLISHER_EMAIL_ALLOW_LOCAL_CONNECTIONS: "true"
               DT_OIDC_USERNAME_CLAIM: preferred_username
               DT_OIDC_TEAMS_CLAIM: groups
               DT_OIDC_TEAM_SYNCHRONIZATION: "true"
