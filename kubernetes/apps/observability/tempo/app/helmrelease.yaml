@@ -27,12 +27,16 @@ spec:
           service_graphs:
             histogram_buckets: [0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
           span_metrics: {}
+          # Required for TraceQL metrics queries (Grafana Traces Drilldown).
+          local_blocks:
+            flush_to_storage: true
+            filter_server_spans: false
       # The monolithic tempo chart renders `tempo.overrides` into the config's
       # overrides block (structuredConfig is a tempo-distributed key and is ignored).
       overrides:
         defaults:
           metrics_generator:
-            processors: [service-graphs, span-metrics]
+            processors: [service-graphs, span-metrics, local-blocks]
       extraEnv:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
