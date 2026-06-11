@@ -28,11 +28,13 @@ spec:
               # The JVM (Micrometer) dashboard (grafana.com/4701) filters on
               # `application` and `instance` labels. Micrometer common tags add
               # `application`; Alloy maps service.instance.id -> `instance`.
-              POD_NAME:
+              # Name must sort before OTEL_RESOURCE_ATTRIBUTES: the chart renders
+              # env alphabetically and $(VAR) only expands if VAR is defined earlier.
+              APP_POD_NAME:
                 valueFrom:
                   fieldRef:
                     fieldPath: metadata.name
-              OTEL_RESOURCE_ATTRIBUTES: service.instance.id=$(POD_NAME)
+              OTEL_RESOURCE_ATTRIBUTES: service.instance.id=$(APP_POD_NAME)
               MANAGEMENT_METRICS_TAGS_APPLICATION: spring-notes
               # CNPG auto-creates spring-notes-cnpg-app with host/port/dbname/username/password.
               # Kubernetes env var substitution assembles the JDBC URL at runtime.
