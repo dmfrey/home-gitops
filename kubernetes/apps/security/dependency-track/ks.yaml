@@ -15,6 +15,10 @@ spec:
       kind: Cluster
       name: dependency-track-cnpg
       namespace: security
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: dependency-track-v5-cnpg
+      namespace: security
   interval: 1h
   path: "./kubernetes/apps/security/dependency-track/dependency-track-db"
   prune: true

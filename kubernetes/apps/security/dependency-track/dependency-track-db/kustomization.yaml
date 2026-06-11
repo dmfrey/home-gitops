@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./barman-objectstore.yaml
   - ./cnpg-cluster.yaml
+  - ./cnpg-v5-cluster.yaml
   - ./externalsecret.yaml

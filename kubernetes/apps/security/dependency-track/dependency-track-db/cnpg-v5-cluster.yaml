@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: dependency-track-v5-cnpg
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+
+spec:
+
+  instances: 1
+  enablePDB: false
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.7
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+
+  backup:
+    volumeSnapshot:
+      className: csi-ceph-blockpool
+
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: dependency-track
+      owner: dependency-track
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: dependency-track
+
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 256MB
+      # NOTE: migration-window tuning per the v4→v5 migration guide.
+      # Revert maintenance_work_mem/max_wal_size/max_locks_per_transaction
+      # to defaults after the v4-migrator run completes.
+      max_locks_per_transaction: "256"
+      maintenance_work_mem: 512MB
+      max_wal_size: 4GB
+
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: restart
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+
+  storage:
+    storageClass: ceph-block
+    size: 10Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 10Gi
