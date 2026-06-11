@@ -21,7 +21,7 @@ spec:
             image:
               repository: ghcr.io/dmfrey/spring-notes
               # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes versioning=loose
-              tag: b9056cdceeb61d89f08a26248107a35d9f0000de
+              tag: 2d8b1f568324d0027de498264224ffb3b0a90a53
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
