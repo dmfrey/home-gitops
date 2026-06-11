@@ -36,6 +36,9 @@ spec:
                     fieldPath: metadata.name
               OTEL_RESOURCE_ATTRIBUTES: service.instance.id=$(APP_POD_NAME)
               MANAGEMENT_METRICS_TAGS_APPLICATION: spring-notes
+              # Micrometer OTLP defaults to milliseconds; the JVM dashboard and
+              # Prometheus conventions expect *_seconds_* metric names.
+              MANAGEMENT_OTLP_METRICS_EXPORT_BASETIMEUNIT: seconds
               # CNPG auto-creates spring-notes-cnpg-app with host/port/dbname/username/password.
               # Kubernetes env var substitution assembles the JDBC URL at runtime.
               DB_HOST:
