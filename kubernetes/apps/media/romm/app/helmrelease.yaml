@@ -35,6 +35,9 @@ spec:
               ENABLE_SCHEDULED_UPDATE_LAUNCHBOX_METADATA: true
               PLAYMATCH_API_ENABLED: true
               ROMM_PORT: &port 8080
+              # Save sync (4.9.0+) defaults to /var/lib/romm/sync, which is on
+              # the read-only root fs. Point it at the VolSync-backed Ceph PVC.
+              SYNC_BASE_PATH: /romm/sync
               ROMM_DB_DRIVER: postgresql
               DB_HOST:
                 valueFrom:
