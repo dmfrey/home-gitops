@@ -403,7 +403,7 @@ spec:
             "dedupStrategy": "none"
           },
           "targets": [
-            {"expr": "{service_name=\"$application\", pod=\"$instance\"} | json | line_format \"{{.log_level}} {{.message}}\"", "refId": "A"}
+            {"expr": "{service_name=\"$application\", pod=\"$instance\"}", "refId": "A"}
           ]
         }
       ]
