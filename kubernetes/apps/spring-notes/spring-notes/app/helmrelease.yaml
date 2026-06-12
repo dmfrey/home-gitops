@@ -45,7 +45,8 @@ spec:
               SPRING_APPLICATION_JSON: >-
                 {"management.metrics.distribution.percentiles-histogram":
                  {"http.server.requests": true, "hikaricp.connections": true,
-                  "jdbc": true, "spring.security": true}}
+                  "jdbc": true, "spring.security": true,
+                  "notes.load": true, "notes.create": true, "notes.delete": true}}
               # CNPG auto-creates spring-notes-cnpg-app with host/port/dbname/username/password.
               # Kubernetes env var substitution assembles the JDBC URL at runtime.
               DB_HOST:

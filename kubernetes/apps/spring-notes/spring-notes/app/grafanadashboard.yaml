@@ -9,7 +9,7 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  json: |
+  json: |-
     {
       "uid": "spring-notes",
       "title": "Spring Notes",
@@ -312,10 +312,57 @@ spec:
           ]
         },
         {
+          "id": 92,
+          "type": "row",
+          "title": "Use Cases",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 44},
+          "collapsed": false,
+          "panels": []
+        },
+        {
+          "id": 52,
+          "type": "timeseries",
+          "title": "Use Case Throughput",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 45},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum(rate(notes_load_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "load", "refId": "A"},
+            {"expr": "sum(rate(notes_create_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "create", "refId": "B"},
+            {"expr": "sum(rate(notes_delete_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "delete", "refId": "C"}
+          ]
+        },
+        {
+          "id": 53,
+          "type": "timeseries",
+          "title": "Use Case Latency p95",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 45},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(notes_load_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "load p95", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(notes_create_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "create p95", "refId": "B"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(notes_delete_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "delete p95", "refId": "C"}
+          ]
+        },
+        {
+          "id": 54,
+          "type": "timeseries",
+          "title": "Use Case Errors",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 45},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum(rate(notes_load_seconds_count{application=\"$application\", instance=~\"$instance\", error!=\"none\"}[$__rate_interval])) or vector(0)", "legendFormat": "load errors", "refId": "A"},
+            {"expr": "sum(rate(notes_create_seconds_count{application=\"$application\", instance=~\"$instance\", error!=\"none\"}[$__rate_interval])) or vector(0)", "legendFormat": "create errors", "refId": "B"},
+            {"expr": "sum(rate(notes_delete_seconds_count{application=\"$application\", instance=~\"$instance\", error!=\"none\"}[$__rate_interval])) or vector(0)", "legendFormat": "delete errors", "refId": "C"}
+          ]
+        },
+        {
           "id": 90,
           "type": "row",
           "title": "Traces",
-          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 44},
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 53},
           "collapsed": false,
           "panels": []
         },
@@ -324,7 +371,7 @@ spec:
           "type": "timeseries",
           "title": "Span Rate (server spans)",
           "description": "From Tempo metrics-generator span metrics",
-          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 45},
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 54},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
           "targets": [
@@ -336,7 +383,7 @@ spec:
           "type": "timeseries",
           "title": "Span Latency p95 (server spans)",
           "description": "From Tempo metrics-generator span metrics",
-          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 45},
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 54},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
           "targets": [
@@ -348,7 +395,7 @@ spec:
           "type": "timeseries",
           "title": "Error Spans",
           "description": "Spans with status_code=ERROR across all span kinds",
-          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 45},
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 54},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
           "targets": [
@@ -359,7 +406,7 @@ spec:
           "id": 63,
           "type": "traces",
           "title": "Recent Traces (excluding actuator)",
-          "gridPos": {"h": 9, "w": 24, "x": 0, "y": 53},
+          "gridPos": {"h": 9, "w": 24, "x": 0, "y": 62},
           "datasource": {"type": "tempo", "uid": "tempo"},
           "targets": [
             {
@@ -376,7 +423,7 @@ spec:
           "id": 91,
           "type": "row",
           "title": "Logs",
-          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 62},
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 71},
           "collapsed": false,
           "panels": []
         },
@@ -384,7 +431,7 @@ spec:
           "id": 70,
           "type": "timeseries",
           "title": "Log Volume by Level",
-          "gridPos": {"h": 10, "w": 8, "x": 0, "y": 63},
+          "gridPos": {"h": 10, "w": 8, "x": 0, "y": 72},
           "datasource": {"type": "loki", "uid": "loki"},
           "fieldConfig": {"defaults": {"unit": "none", "custom": {"drawStyle": "bars", "fillOpacity": 50}}, "overrides": []},
           "targets": [
@@ -395,7 +442,7 @@ spec:
           "id": 71,
           "type": "logs",
           "title": "Application Logs",
-          "gridPos": {"h": 10, "w": 16, "x": 8, "y": 63},
+          "gridPos": {"h": 10, "w": 16, "x": 8, "y": 72},
           "datasource": {"type": "loki", "uid": "loki"},
           "options": {
             "showTime": true,
