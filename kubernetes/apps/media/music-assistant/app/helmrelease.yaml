@@ -47,7 +47,9 @@ spec:
                 cpu: 10m
                 memory: 512Mi
               limits:
-                memory: 2048Mi
+                # Steady state is ~500Mi, but nightly provider sync spikes
+                # past 2Gi (OOMKilled 2026-06-12).
+                memory: 4096Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
