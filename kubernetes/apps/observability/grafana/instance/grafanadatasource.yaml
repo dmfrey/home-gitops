@@ -54,6 +54,9 @@ spec:
           matcherType: regex
           matcherRegex: '"traceId"\s*:\s*"([a-f0-9]+)"'
           datasourceUid: tempo
+          # For internal links, url is the Tempo query; without it the link
+          # has no target and does not navigate.
+          url: "${__value.raw}"
           urlDisplayLabel: View Trace
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
@@ -76,6 +79,10 @@ spec:
         datasourceUid: loki
         filterByTraceID: true
         filterBySpanID: true
+        # Default search window is the exact span duration; widen it so
+        # short spans still find their surrounding log lines.
+        spanStartTimeShift: "-5m"
+        spanEndTimeShift: "5m"
         tags:
           - key: service.name
             value: app

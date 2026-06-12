@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: spring-notes-rules
+spec:
+  groups:
+    - name: spring-notes.rules
+      rules:
+        - alert: SpringNotesMetricsAbsent
+          expr: |
+            absent(process_uptime_seconds{application="spring-notes"})
+          for: 10m
+          annotations:
+            summary: >-
+              Spring Notes metrics have not been received for 10 minutes; the app or the OTLP pipeline (Alloy -> Prometheus) may be down
+          labels:
+            severity: warning
+        - alert: SpringNotesHighErrorRate
+          expr: |
+            sum(rate(http_server_requests_seconds_count{application="spring-notes", status=~"5.."}[5m]))
+              /
+            sum(rate(http_server_requests_seconds_count{application="spring-notes"}[5m])) > 0.05
+          for: 5m
+          annotations:
+            summary: >-
+              Spring Notes is returning {{ $value | humanizePercentage }} HTTP 5xx responses over the last 5 minutes
+          labels:
+            severity: critical
+        - alert: SpringNotesHighLatency
+          expr: |
+            histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{application="spring-notes"}[5m]))) > 1
+          for: 10m
+          annotations:
+            summary: >-
+              Spring Notes p95 HTTP latency is {{ $value | humanizeDuration }} over the last 10 minutes
+          labels:
+            severity: warning
+        - alert: SpringNotesHikariPendingConnections
+          expr: |
+            max(hikaricp_connections_pending{application="spring-notes"}) > 0
+          for: 5m
+          annotations:
+            summary: >-
+              Spring Notes has threads waiting on a database connection for 5 minutes; the Hikari pool may be exhausted or the database unreachable
+          labels:
+            severity: critical
+        - alert: SpringNotesHeapUsageHigh
+          expr: |
+            sum(jvm_memory_used_bytes{application="spring-notes", area="heap"})
+              /
+            sum(jvm_memory_max_bytes{application="spring-notes", area="heap"}) > 0.9
+          for: 10m
+          annotations:
+            summary: >-
+              Spring Notes heap usage is {{ $value | humanizePercentage }} of max for 10 minutes
+          labels:
+            severity: warning
+        - alert: SpringNotesLogErrors
+          expr: |
+            sum(rate(logback_events_total{application="spring-notes", level="error"}[5m])) > 0.1
+          for: 5m
+          annotations:
+            summary: >-
+              Spring Notes is logging errors at {{ $value | humanize }}/s for 5 minutes
+          labels:
+            severity: warning
