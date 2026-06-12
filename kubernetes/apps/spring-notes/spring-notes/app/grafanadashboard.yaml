@@ -36,7 +36,9 @@ spec:
             "datasource": {"type": "prometheus", "uid": "prometheus"},
             "query": "label_values(jvm_info{application=\"$application\"}, instance)",
             "refresh": 2,
-            "current": {}
+            "includeAll": true,
+            "allValue": "spring-notes-backend-.*",
+            "current": {"text": "All", "value": "$__all"}
           }
         ]
       },
@@ -49,7 +51,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "s", "decimals": 1}, "overrides": []},
           "targets": [
-            {"expr": "process_uptime_seconds{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+            {"expr": "process_uptime_seconds{application=\"$application\", instance=~\"$instance\"}", "instant": true, "refId": "A"}
           ]
         },
         {
@@ -70,7 +72,7 @@ spec:
             "overrides": []
           },
           "targets": [
-            {"expr": "process_cpu_usage{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+            {"expr": "process_cpu_usage{application=\"$application\", instance=~\"$instance\"}", "instant": true, "refId": "A"}
           ]
         },
         {
@@ -93,7 +95,7 @@ spec:
             "overrides": []
           },
           "targets": [
-            {"expr": "sum(jvm_memory_used_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"}) * 100 / sum(jvm_memory_max_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "instant": true, "refId": "A"}
+            {"expr": "sum(jvm_memory_used_bytes{application=\"$application\", instance=~\"$instance\", area=\"heap\"}) * 100 / sum(jvm_memory_max_bytes{application=\"$application\", instance=~\"$instance\", area=\"heap\"})", "instant": true, "refId": "A"}
           ]
         },
         {
@@ -104,7 +106,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
           "targets": [
-            {"expr": "jvm_threads_live{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+            {"expr": "jvm_threads_live{application=\"$application\", instance=~\"$instance\"}", "instant": true, "refId": "A"}
           ]
         },
         {
@@ -115,7 +117,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
           "targets": [
-            {"expr": "hikaricp_connections_active{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+            {"expr": "hikaricp_connections_active{application=\"$application\", instance=~\"$instance\"}", "instant": true, "refId": "A"}
           ]
         },
         {
@@ -136,7 +138,7 @@ spec:
             "overrides": []
           },
           "targets": [
-            {"expr": "sum(increase(logback_events_total{application=\"$application\", instance=\"$instance\", level=\"error\"}[5m])) or vector(0)", "instant": true, "refId": "A"}
+            {"expr": "sum(increase(logback_events_total{application=\"$application\", instance=~\"$instance\", level=\"error\"}[5m])) or vector(0)", "instant": true, "refId": "A"}
           ]
         },
         {
@@ -147,7 +149,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
           "targets": [
-            {"expr": "sum by (uri) (rate(http_server_requests_seconds_count{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "{{uri}}", "refId": "A"}
+            {"expr": "sum by (uri) (rate(http_server_requests_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "{{uri}}", "refId": "A"}
           ]
         },
         {
@@ -158,9 +160,9 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
           "targets": [
-            {"expr": "histogram_quantile(0.50, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
-            {"expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"},
-            {"expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p99", "refId": "C"}
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"},
+            {"expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p99", "refId": "C"}
           ]
         },
         {
@@ -171,7 +173,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
           "targets": [
-            {"expr": "sum by (status, uri) (rate(http_server_requests_seconds_count{application=\"$application\", instance=\"$instance\", status!~\"2..\"}[$__rate_interval]))", "legendFormat": "{{status}} {{uri}}", "refId": "A"}
+            {"expr": "sum by (status, uri) (rate(http_server_requests_seconds_count{application=\"$application\", instance=~\"$instance\", status!~\"2..\"}[$__rate_interval]))", "legendFormat": "{{status}} {{uri}}", "refId": "A"}
           ]
         },
         {
@@ -182,10 +184,10 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
           "targets": [
-            {"expr": "hikaricp_connections_active{application=\"$application\", instance=\"$instance\"}", "legendFormat": "active", "refId": "A"},
-            {"expr": "hikaricp_connections_idle{application=\"$application\", instance=\"$instance\"}", "legendFormat": "idle", "refId": "B"},
-            {"expr": "hikaricp_connections_pending{application=\"$application\", instance=\"$instance\"}", "legendFormat": "pending", "refId": "C"},
-            {"expr": "hikaricp_connections_max{application=\"$application\", instance=\"$instance\"}", "legendFormat": "max", "refId": "D"}
+            {"expr": "hikaricp_connections_active{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "active", "refId": "A"},
+            {"expr": "hikaricp_connections_idle{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "idle", "refId": "B"},
+            {"expr": "hikaricp_connections_pending{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "pending", "refId": "C"},
+            {"expr": "hikaricp_connections_max{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "max", "refId": "D"}
           ]
         },
         {
@@ -196,8 +198,8 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
           "targets": [
-            {"expr": "histogram_quantile(0.95, sum by (le) (rate(hikaricp_connections_acquire_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "acquire p95", "refId": "A"},
-            {"expr": "histogram_quantile(0.95, sum by (le) (rate(jdbc_query_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "query p95", "refId": "B"}
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(hikaricp_connections_acquire_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "acquire p95", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(jdbc_query_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "query p95", "refId": "B"}
           ]
         },
         {
@@ -208,10 +210,10 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
           "targets": [
-            {"expr": "sum(rate(jdbc_query_seconds_count{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "queries", "refId": "A"},
-            {"expr": "sum(rate(jdbc_connection_commit_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "commits", "refId": "B"},
-            {"expr": "sum(rate(jdbc_connection_rollback_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "rollbacks", "refId": "C"},
-            {"expr": "sum(rate(hikaricp_connections_timeout_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "pool timeouts", "refId": "D"}
+            {"expr": "sum(rate(jdbc_query_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "queries", "refId": "A"},
+            {"expr": "sum(rate(jdbc_connection_commit_total{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "commits", "refId": "B"},
+            {"expr": "sum(rate(jdbc_connection_rollback_total{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "rollbacks", "refId": "C"},
+            {"expr": "sum(rate(hikaricp_connections_timeout_total{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "pool timeouts", "refId": "D"}
           ]
         },
         {
@@ -222,9 +224,9 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
           "targets": [
-            {"expr": "sum(jvm_memory_used_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "legendFormat": "used", "refId": "A"},
-            {"expr": "sum(jvm_memory_committed_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "legendFormat": "committed", "refId": "B"},
-            {"expr": "sum(jvm_memory_max_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "legendFormat": "max", "refId": "C"}
+            {"expr": "sum(jvm_memory_used_bytes{application=\"$application\", instance=~\"$instance\", area=\"heap\"})", "legendFormat": "used", "refId": "A"},
+            {"expr": "sum(jvm_memory_committed_bytes{application=\"$application\", instance=~\"$instance\", area=\"heap\"})", "legendFormat": "committed", "refId": "B"},
+            {"expr": "sum(jvm_memory_max_bytes{application=\"$application\", instance=~\"$instance\", area=\"heap\"})", "legendFormat": "max", "refId": "C"}
           ]
         },
         {
@@ -235,7 +237,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
           "targets": [
-            {"expr": "jvm_memory_used_bytes{application=\"$application\", instance=\"$instance\"}", "legendFormat": "{{id}} ({{area}})", "refId": "A"}
+            {"expr": "jvm_memory_used_bytes{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "{{id}} ({{area}})", "refId": "A"}
           ]
         },
         {
@@ -246,10 +248,10 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
           "targets": [
-            {"expr": "jvm_threads_live{application=\"$application\", instance=\"$instance\"}", "legendFormat": "live", "refId": "A"},
-            {"expr": "jvm_threads_daemon{application=\"$application\", instance=\"$instance\"}", "legendFormat": "daemon", "refId": "B"},
-            {"expr": "jvm_threads_peak{application=\"$application\", instance=\"$instance\"}", "legendFormat": "peak", "refId": "C"},
-            {"expr": "jvm_threads_states{application=\"$application\", instance=\"$instance\"}", "legendFormat": "{{state}}", "refId": "D"}
+            {"expr": "jvm_threads_live{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "live", "refId": "A"},
+            {"expr": "jvm_threads_daemon{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "daemon", "refId": "B"},
+            {"expr": "jvm_threads_peak{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "peak", "refId": "C"},
+            {"expr": "jvm_threads_states{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "{{state}}", "refId": "D"}
           ]
         },
         {
@@ -260,7 +262,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
           "targets": [
-            {"expr": "jvm_classes_loaded{application=\"$application\", instance=\"$instance\"}", "legendFormat": "loaded", "refId": "A"}
+            {"expr": "jvm_classes_loaded{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "loaded", "refId": "A"}
           ]
         },
         {
@@ -271,7 +273,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
           "targets": [
-            {"expr": "jvm_gc_overhead{application=\"$application\", instance=\"$instance\"}", "legendFormat": "gc overhead", "refId": "A"}
+            {"expr": "jvm_gc_overhead{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "gc overhead", "refId": "A"}
           ]
         },
         {
@@ -282,8 +284,8 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
           "targets": [
-            {"expr": "process_files_open{application=\"$application\", instance=\"$instance\"}", "legendFormat": "open", "refId": "A"},
-            {"expr": "process_files_max{application=\"$application\", instance=\"$instance\"}", "legendFormat": "max", "refId": "B"}
+            {"expr": "process_files_open{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "open", "refId": "A"},
+            {"expr": "process_files_max{application=\"$application\", instance=~\"$instance\"}", "legendFormat": "max", "refId": "B"}
           ]
         },
         {
@@ -294,8 +296,8 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
           "targets": [
-            {"expr": "histogram_quantile(0.95, sum by (le) (rate(spring_security_authorizations_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "A"},
-            {"expr": "histogram_quantile(0.99, sum by (le) (rate(spring_security_authorizations_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p99", "refId": "B"}
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(spring_security_authorizations_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "A"},
+            {"expr": "histogram_quantile(0.99, sum by (le) (rate(spring_security_authorizations_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p99", "refId": "B"}
           ]
         },
         {
@@ -306,7 +308,7 @@ spec:
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
           "targets": [
-            {"expr": "sum by (level) (rate(logback_events_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "{{level}}", "refId": "A"}
+            {"expr": "sum by (level) (rate(logback_events_total{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "{{level}}", "refId": "A"}
           ]
         },
         {
@@ -386,7 +388,7 @@ spec:
           "datasource": {"type": "loki", "uid": "loki"},
           "fieldConfig": {"defaults": {"unit": "none", "custom": {"drawStyle": "bars", "fillOpacity": 50}}, "overrides": []},
           "targets": [
-            {"expr": "sum by (detected_level) (count_over_time({service_name=\"$application\", pod=\"$instance\"} [$__auto]))", "legendFormat": "{{detected_level}}", "refId": "A"}
+            {"expr": "sum by (detected_level) (count_over_time({service_name=\"$application\", pod=~\"$instance\"} [$__auto]))", "legendFormat": "{{detected_level}}", "refId": "A"}
           ]
         },
         {
@@ -403,7 +405,7 @@ spec:
             "dedupStrategy": "none"
           },
           "targets": [
-            {"expr": "{service_name=\"$application\", pod=\"$instance\"}", "refId": "A"}
+            {"expr": "{service_name=\"$application\", pod=~\"$instance\"}", "refId": "A"}
           ]
         }
       ]
