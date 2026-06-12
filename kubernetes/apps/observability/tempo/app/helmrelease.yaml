@@ -11,6 +11,8 @@ spec:
   interval: 1h
   values:
     tempo:
+      # Trace block retention in Garage S3 (chart default is 24h).
+      retention: 168h
       storage:
         trace:
           backend: s3
