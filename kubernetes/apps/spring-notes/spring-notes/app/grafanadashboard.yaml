@@ -3,13 +3,311 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: spring-boot-jvm
+  name: spring-notes
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  datasources:
-    - datasourceName: prometheus
-      inputName: DS_PROMETHEUS
-  url: https://grafana.com/api/dashboards/4701/revisions/latest/download
+  json: |
+    {
+      "uid": "spring-notes",
+      "title": "Spring Notes",
+      "tags": ["spring-notes", "spring-boot", "native-image"],
+      "schemaVersion": 39,
+      "editable": true,
+      "time": {"from": "now-1h", "to": "now"},
+      "refresh": "30s",
+      "templating": {
+        "list": [
+          {
+            "name": "application",
+            "label": "Application",
+            "type": "query",
+            "datasource": {"type": "prometheus", "uid": "prometheus"},
+            "query": "label_values(jvm_info, application)",
+            "refresh": 2,
+            "current": {"text": "spring-notes", "value": "spring-notes"}
+          },
+          {
+            "name": "instance",
+            "label": "Instance",
+            "type": "query",
+            "datasource": {"type": "prometheus", "uid": "prometheus"},
+            "query": "label_values(jvm_info{application=\"$application\"}, instance)",
+            "refresh": 2,
+            "current": {}
+          }
+        ]
+      },
+      "panels": [
+        {
+          "id": 1,
+          "type": "stat",
+          "title": "Uptime",
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s", "decimals": 1}, "overrides": []},
+          "targets": [
+            {"expr": "process_uptime_seconds{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+          ]
+        },
+        {
+          "id": 2,
+          "type": "stat",
+          "title": "Process CPU",
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit",
+              "thresholds": {"mode": "absolute", "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 0.7},
+                {"color": "red", "value": 0.9}
+              ]}
+            },
+            "overrides": []
+          },
+          "targets": [
+            {"expr": "process_cpu_usage{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+          ]
+        },
+        {
+          "id": 3,
+          "type": "gauge",
+          "title": "Heap Used",
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0,
+              "max": 100,
+              "thresholds": {"mode": "absolute", "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 70},
+                {"color": "red", "value": 90}
+              ]}
+            },
+            "overrides": []
+          },
+          "targets": [
+            {"expr": "sum(jvm_memory_used_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"}) * 100 / sum(jvm_memory_max_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "instant": true, "refId": "A"}
+          ]
+        },
+        {
+          "id": 4,
+          "type": "stat",
+          "title": "Live Threads",
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
+          "targets": [
+            {"expr": "jvm_threads_live{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+          ]
+        },
+        {
+          "id": 5,
+          "type": "stat",
+          "title": "DB Connections Active",
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
+          "targets": [
+            {"expr": "hikaricp_connections_active{application=\"$application\", instance=\"$instance\"}", "instant": true, "refId": "A"}
+          ]
+        },
+        {
+          "id": 6,
+          "type": "stat",
+          "title": "Log Errors (5m)",
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0,
+              "thresholds": {"mode": "absolute", "steps": [
+                {"color": "green", "value": null},
+                {"color": "red", "value": 1}
+              ]}
+            },
+            "overrides": []
+          },
+          "targets": [
+            {"expr": "sum(increase(logback_events_total{application=\"$application\", instance=\"$instance\", level=\"error\"}[5m])) or vector(0)", "instant": true, "refId": "A"}
+          ]
+        },
+        {
+          "id": 10,
+          "type": "timeseries",
+          "title": "HTTP Request Rate",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (uri) (rate(http_server_requests_seconds_count{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "{{uri}}", "refId": "A"}
+          ]
+        },
+        {
+          "id": 11,
+          "type": "timeseries",
+          "title": "HTTP Latency",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"},
+            {"expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p99", "refId": "C"}
+          ]
+        },
+        {
+          "id": 12,
+          "type": "timeseries",
+          "title": "HTTP Non-2xx Responses",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 4},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (status, uri) (rate(http_server_requests_seconds_count{application=\"$application\", instance=\"$instance\", status!~\"2..\"}[$__rate_interval]))", "legendFormat": "{{status}} {{uri}}", "refId": "A"}
+          ]
+        },
+        {
+          "id": 20,
+          "type": "timeseries",
+          "title": "HikariCP Connections",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 12},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
+          "targets": [
+            {"expr": "hikaricp_connections_active{application=\"$application\", instance=\"$instance\"}", "legendFormat": "active", "refId": "A"},
+            {"expr": "hikaricp_connections_idle{application=\"$application\", instance=\"$instance\"}", "legendFormat": "idle", "refId": "B"},
+            {"expr": "hikaricp_connections_pending{application=\"$application\", instance=\"$instance\"}", "legendFormat": "pending", "refId": "C"},
+            {"expr": "hikaricp_connections_max{application=\"$application\", instance=\"$instance\"}", "legendFormat": "max", "refId": "D"}
+          ]
+        },
+        {
+          "id": 21,
+          "type": "timeseries",
+          "title": "DB Latency (p95)",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 12},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(hikaricp_connections_acquire_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "acquire p95", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(jdbc_query_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "query p95", "refId": "B"}
+          ]
+        },
+        {
+          "id": 22,
+          "type": "timeseries",
+          "title": "JDBC Activity",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 12},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum(rate(jdbc_query_seconds_count{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "queries", "refId": "A"},
+            {"expr": "sum(rate(jdbc_connection_commit_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "commits", "refId": "B"},
+            {"expr": "sum(rate(jdbc_connection_rollback_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "rollbacks", "refId": "C"},
+            {"expr": "sum(rate(hikaricp_connections_timeout_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "pool timeouts", "refId": "D"}
+          ]
+        },
+        {
+          "id": 30,
+          "type": "timeseries",
+          "title": "JVM Memory (Heap)",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 20},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
+          "targets": [
+            {"expr": "sum(jvm_memory_used_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "legendFormat": "used", "refId": "A"},
+            {"expr": "sum(jvm_memory_committed_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "legendFormat": "committed", "refId": "B"},
+            {"expr": "sum(jvm_memory_max_bytes{application=\"$application\", instance=\"$instance\", area=\"heap\"})", "legendFormat": "max", "refId": "C"}
+          ]
+        },
+        {
+          "id": 31,
+          "type": "timeseries",
+          "title": "JVM Memory Pools",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 20},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
+          "targets": [
+            {"expr": "jvm_memory_used_bytes{application=\"$application\", instance=\"$instance\"}", "legendFormat": "{{id}} ({{area}})", "refId": "A"}
+          ]
+        },
+        {
+          "id": 32,
+          "type": "timeseries",
+          "title": "Threads",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 20},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
+          "targets": [
+            {"expr": "jvm_threads_live{application=\"$application\", instance=\"$instance\"}", "legendFormat": "live", "refId": "A"},
+            {"expr": "jvm_threads_daemon{application=\"$application\", instance=\"$instance\"}", "legendFormat": "daemon", "refId": "B"},
+            {"expr": "jvm_threads_peak{application=\"$application\", instance=\"$instance\"}", "legendFormat": "peak", "refId": "C"},
+            {"expr": "jvm_threads_states{application=\"$application\", instance=\"$instance\"}", "legendFormat": "{{state}}", "refId": "D"}
+          ]
+        },
+        {
+          "id": 40,
+          "type": "timeseries",
+          "title": "Classes Loaded",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 28},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
+          "targets": [
+            {"expr": "jvm_classes_loaded{application=\"$application\", instance=\"$instance\"}", "legendFormat": "loaded", "refId": "A"}
+          ]
+        },
+        {
+          "id": 41,
+          "type": "timeseries",
+          "title": "GC Overhead",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 28},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+          "targets": [
+            {"expr": "jvm_gc_overhead{application=\"$application\", instance=\"$instance\"}", "legendFormat": "gc overhead", "refId": "A"}
+          ]
+        },
+        {
+          "id": 42,
+          "type": "timeseries",
+          "title": "File Descriptors",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 28},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
+          "targets": [
+            {"expr": "process_files_open{application=\"$application\", instance=\"$instance\"}", "legendFormat": "open", "refId": "A"},
+            {"expr": "process_files_max{application=\"$application\", instance=\"$instance\"}", "legendFormat": "max", "refId": "B"}
+          ]
+        },
+        {
+          "id": 50,
+          "type": "timeseries",
+          "title": "Spring Security Authorization Latency",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 36},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(spring_security_authorizations_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "A"},
+            {"expr": "histogram_quantile(0.99, sum by (le) (rate(spring_security_authorizations_seconds_bucket{application=\"$application\", instance=\"$instance\"}[$__rate_interval])))", "legendFormat": "p99", "refId": "B"}
+          ]
+        },
+        {
+          "id": 51,
+          "type": "timeseries",
+          "title": "Log Events by Level",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 36},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (level) (rate(logback_events_total{application=\"$application\", instance=\"$instance\"}[$__rate_interval]))", "legendFormat": "{{level}}", "refId": "A"}
+          ]
+        }
+      ]
+    }
