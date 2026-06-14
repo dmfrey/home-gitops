@@ -15,6 +15,36 @@ The following environment variables are expected to be set when working with thi
 - `TALOSCONFIG=./talosconfig`
 - `MINIJINJA_CONFIG_FILE=./.minijinja.toml`
 
+## Preferred Tooling (use these FIRST — they save tool calls and tokens)
+
+### Observability queries — use Grafana MCP, not port-forwards
+Never use `kubectl port-forward` + Python to query Prometheus or Loki. Use the MCP tools directly:
+- **Metrics**: `mcp__grafana__query_prometheus` / `mcp__grafana__query_prometheus_histogram`
+- **Logs**: `mcp__grafana__query_loki_logs` / `mcp__grafana__list_loki_label_values`
+- **Dashboards**: `mcp__grafana__search_dashboards` / `mcp__grafana__get_dashboard_by_uid`
+- **Alerts**: `mcp__grafana__alerting_manage_rules`
+
+### Flux operations — use flux-operator MCP, not CLI
+Prefer MCP tools over `flux` CLI for reconcile and status checks:
+- `mcp__flux-operator-mcp__reconcile_flux_helmrelease` / `reconcile_flux_kustomization`
+- `mcp__flux-operator-mcp__get_kubernetes_resources` for status checks
+- `mcp__flux-operator-mcp__suspend_flux_reconciliation` / `resume_flux_reconciliation`
+
+### PR reviews — use the flux-pr-reviewer subagent
+For Renovate PRs, spawn the `flux-pr-reviewer` agent (defined in `.claude/agents/flux-pr-reviewer.md`). For batches, spawn in parallel — one agent per PR. Do not do inline risk assessment in the main context.
+
+### Home Assistant — use Home Assistant MCP
+For HA automations, states, services, and config: use `mcp__home-assistant__*` tools directly instead of reading config files or using kubectl exec.
+
+### Post-merge reconcile ordering
+After pushing a change, always reconcile in this order to avoid stale manifest issues:
+```sh
+flux reconcile source git flux-system -n flux-system
+flux reconcile kustomization <name> -n <namespace>   # applies updated HR manifest
+flux reconcile helmrelease <name> -n <namespace>     # then upgrades with new values
+```
+Reconciling the HelmRelease before the Kustomization re-applies old values from the previous manifest.
+
 ## Tech Stack
 - Kubernetes
 - helm
