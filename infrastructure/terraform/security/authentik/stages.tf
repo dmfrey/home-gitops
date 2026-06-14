@@ -18,14 +18,14 @@ resource "authentik_stage_authenticator_webauthn" "webauthn-setup" {
   name                     = "webauthn-setup"
   user_verification        = "preferred"
   resident_key_requirement = "preferred"
-  configuration_flow       = authentik_flow.webauthn-setup.uuid
+  configure_flow           = authentik_flow.webauthn-setup.uuid
 }
 
 ## TOTP authenticator setup stage
 resource "authentik_stage_authenticator_totp" "totp-setup" {
-  name               = "totp-setup"
-  digits             = 6
-  configuration_flow = authentik_flow.totp-setup.uuid
+  name           = "totp-setup"
+  digits         = "6"
+  configure_flow = authentik_flow.totp-setup.uuid
 }
 
 resource "authentik_stage_password" "authentication-password" {
