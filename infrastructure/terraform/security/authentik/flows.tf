@@ -147,6 +147,22 @@ resource "authentik_flow_stage_binding" "user-settings-flow-binding-100" {
   order  = 100
 }
 
+## TOTP authenticator setup flow
+resource "authentik_flow" "totp-setup" {
+  name               = "totp-setup-flow"
+  title              = "Set up authenticator app"
+  slug               = "totp-setup-flow"
+  policy_engine_mode = "any"
+  denied_action      = "message_continue"
+  designation        = "stage_configuration"
+}
+
+resource "authentik_flow_stage_binding" "totp-setup-flow-binding-00" {
+  target = authentik_flow.totp-setup.uuid
+  stage  = authentik_stage_authenticator_totp.totp-setup.id
+  order  = 0
+}
+
 ## WebAuthn / Passkey setup flow
 # Dedicated stage_configuration flow for passkey enrollment — accessible
 # from the user's self-service settings page via the webauthn-setup stage.

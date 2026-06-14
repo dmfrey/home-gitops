@@ -70,9 +70,12 @@ resource "authentik_user" "Steph" {
   name     = var.USERS_SDFREY_NAME
   email    = var.USERS_SDFREY_EMAIL
   password = var.USERS_SDFREY_PASSWORD
-  groups = concat(
-    values(authentik_group.default)[*].id
-  )
+  groups = [
+    authentik_group.default["users"].id,
+    authentik_group.default["home"].id,
+    authentik_group.default["media"].id,
+    authentik_group.default["games"].id,
+  ]
 }
 
 resource "authentik_user" "Camdyn" {
@@ -80,9 +83,12 @@ resource "authentik_user" "Camdyn" {
   name     = var.USERS_CGFREY_NAME
   email    = var.USERS_CGFREY_EMAIL
   password = var.USERS_CGFREY_PASSWORD
-  groups = concat(
-    values(authentik_group.default)[*].id
-  )
+  groups = [
+    authentik_group.default["users"].id,
+    authentik_group.default["home"].id,
+    authentik_group.default["media"].id,
+    authentik_group.default["games"].id,
+  ]
 }
 
 resource "authentik_user" "Molly" {
@@ -90,9 +96,12 @@ resource "authentik_user" "Molly" {
   name     = var.USERS_MKFREY_NAME
   email    = var.USERS_MKFREY_EMAIL
   password = var.USERS_MKFREY_PASSWORD
-  groups = concat(
-    values(authentik_group.default)[*].id
-  )
+  groups = [
+    authentik_group.default["users"].id,
+    authentik_group.default["home"].id,
+    authentik_group.default["media"].id,
+    authentik_group.default["games"].id,
+  ]
 }
 
 resource "authentik_user" "Tony" {
@@ -100,7 +109,10 @@ resource "authentik_user" "Tony" {
   name     = var.USERS_ADFREY_NAME
   email    = var.USERS_ADFREY_EMAIL
   password = var.USERS_ADFREY_PASSWORD
-  groups = concat(
-    values(authentik_group.default)[*].id
-  )
+  groups = [
+    authentik_group.default["users"].id,
+    authentik_group.default["home"].id,
+    authentik_group.default["media"].id,
+    authentik_group.default["games"].id,
+  ]
 }
