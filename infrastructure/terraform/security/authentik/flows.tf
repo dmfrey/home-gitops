@@ -147,6 +147,24 @@ resource "authentik_flow_stage_binding" "user-settings-flow-binding-100" {
   order  = 100
 }
 
+## WebAuthn / Passkey setup flow
+# Dedicated stage_configuration flow for passkey enrollment — accessible
+# from the user's self-service settings page via the webauthn-setup stage.
+resource "authentik_flow" "webauthn-setup" {
+  name               = "webauthn-setup-flow"
+  title              = "Set up a passkey"
+  slug               = "webauthn-setup-flow"
+  policy_engine_mode = "any"
+  denied_action      = "message_continue"
+  designation        = "stage_configuration"
+}
+
+resource "authentik_flow_stage_binding" "webauthn-setup-flow-binding-00" {
+  target = authentik_flow.webauthn-setup.uuid
+  stage  = authentik_stage_authenticator_webauthn.webauthn-setup.id
+  order  = 0
+}
+
 ## Authorization flow
 resource "authentik_flow" "provider-authorization-implicit-consent" {
   name               = "Authorize Application"
