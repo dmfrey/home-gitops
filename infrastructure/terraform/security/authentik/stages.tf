@@ -17,7 +17,7 @@ resource "authentik_stage_identification" "authentication-identification" {
 resource "authentik_stage_authenticator_webauthn" "webauthn-setup" {
   name                     = "webauthn-setup"
   friendly_name            = "Passkey or Security Key"
-  user_verification        = "preferred"
+  user_verification        = "discouraged"
   resident_key_requirement = "preferred"
   configure_flow           = authentik_flow.webauthn-setup.uuid
 }
