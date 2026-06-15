@@ -38,7 +38,7 @@ locals {
       client_secret          = var.JELLYFIN_CLIENT_SECRET
       group                  = "media"
       icon_url               = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/jellyfin.png"
-      redirect_uri           = "https://jellyfin\\.${var.CLUSTER_DOMAIN}/sso/OID/.*"
+      redirect_uri           = "https?://jellyfin\\.${var.CLUSTER_DOMAIN}/sso/OID/.*"
       redirect_uri_mode      = "regex"
       launch_url             = "https://jellyfin.${var.CLUSTER_DOMAIN}/sso/OID/start/authentik"
     },
