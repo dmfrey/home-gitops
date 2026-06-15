@@ -16,6 +16,7 @@ resource "authentik_stage_identification" "authentication-identification" {
 ## WebAuthn / Passkey setup stage
 resource "authentik_stage_authenticator_webauthn" "webauthn-setup" {
   name                     = "webauthn-setup"
+  friendly_name            = "Passkey or Security Key"
   user_verification        = "preferred"
   resident_key_requirement = "preferred"
   configure_flow           = authentik_flow.webauthn-setup.uuid
@@ -23,8 +24,9 @@ resource "authentik_stage_authenticator_webauthn" "webauthn-setup" {
 
 ## TOTP authenticator setup stage
 resource "authentik_stage_authenticator_totp" "totp-setup" {
-  name           = "totp-setup"
-  digits         = "6"
+  name          = "totp-setup"
+  friendly_name = "Authenticator App"
+  digits        = "6"
   configure_flow = authentik_flow.totp-setup.uuid
 }
 
