@@ -34,12 +34,13 @@ locals {
       launch_url    = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
     },
     jellyfin = {
-      client_id     = var.JELLYFIN_CLIENT_ID
-      client_secret = var.JELLYFIN_CLIENT_SECRET
-      group         = "media"
-      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/jellyfin.png"
-      redirect_uri  = "https://jellyfin.${var.CLUSTER_DOMAIN}/sso/OID/redirect/authentik"
-      launch_url    = "https://jellyfin.${var.CLUSTER_DOMAIN}/sso/OID/start/authentik"
+      client_id              = var.JELLYFIN_CLIENT_ID
+      client_secret          = var.JELLYFIN_CLIENT_SECRET
+      group                  = "media"
+      icon_url               = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/jellyfin.png"
+      redirect_uri           = "https://jellyfin\\.${var.CLUSTER_DOMAIN}/sso/OID/.*"
+      redirect_uri_mode      = "regex"
+      launch_url             = "https://jellyfin.${var.CLUSTER_DOMAIN}/sso/OID/start/authentik"
     },
     linkwarden = {
       client_id     = var.LINKWARDEN_CLIENT_ID
@@ -129,7 +130,7 @@ resource "authentik_provider_oauth2" "oauth2" {
   signing_key           = data.authentik_certificate_key_pair.generated.id
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
+      matching_mode = try(each.value.redirect_uri_mode, "strict"),
       url           = each.value.redirect_uri,
     }
   ]
