@@ -61,6 +61,13 @@ spec:
       autoscaling:
         enabled: true
         minReplicas: 2
+      env:
+        - name: AUTHENTIK_WEB__WORKERS
+          value: "2"
+        - name: AUTHENTIK_WEB__WORKER_MAX_REQUESTS
+          value: "500"
+        - name: AUTHENTIK_WEB__WORKER_MAX_REQUESTS_JITTER
+          value: "50"
       lifecycle:
         preStop:
           exec:
