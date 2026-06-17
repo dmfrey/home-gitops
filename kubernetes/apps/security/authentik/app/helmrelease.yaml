@@ -62,12 +62,10 @@ spec:
         enabled: true
         minReplicas: 2
       env:
-        - name: AUTHENTIK_WEB__WORKERS
-          value: "2"
-        - name: AUTHENTIK_WEB__WORKER_MAX_REQUESTS
-          value: "500"
-        - name: AUTHENTIK_WEB__WORKER_MAX_REQUESTS_JITTER
-          value: "50"
+        - name: AUTHENTIK_WEB__MAX_REQUESTS
+          value: "100"
+        - name: AUTHENTIK_WEB__MAX_REQUESTS_JITTER
+          value: "10"
       lifecycle:
         preStop:
           exec:
