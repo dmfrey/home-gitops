@@ -106,7 +106,7 @@ spec:
           - name: "k8s-0"
             devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
           - name: "k8s-1"
-            devicePathFilter: /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_*
+            devicePathFilter: /dev/disk/by-id/nvme-WD_BLACK_SN850X_2000GB_*
           - name: "k8s-2"
             devicePathFilter: /dev/disk/by-id/nvme-WD_BLACK_SN850X_2000GB_*
         config:
