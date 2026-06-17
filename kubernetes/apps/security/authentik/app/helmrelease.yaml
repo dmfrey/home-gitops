@@ -74,7 +74,7 @@ spec:
         requests:
           cpu: 200m
         limits:
-          memory: 2Gi
+          memory: 3Gi
       volumes: &postgresCredsVolume
         - name: postgres-creds
           secret:
