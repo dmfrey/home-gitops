@@ -9,6 +9,7 @@ spec:
     kind: OCIRepository
     name: sonarqube
   interval: 1h
+  timeout: 30m
   values:
     controllers:
       sonarqube:
@@ -77,10 +78,10 @@ spec:
                   httpGet:
                     path: /api/system/status
                     port: 9000
-                  initialDelaySeconds: 30
-                  periodSeconds: 10
+                  initialDelaySeconds: 60
+                  periodSeconds: 15
                   timeoutSeconds: 5
-                  failureThreshold: 30
+                  failureThreshold: 120
             resources:
               requests:
                 cpu: 500m
