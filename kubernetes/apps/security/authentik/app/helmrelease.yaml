@@ -61,6 +61,7 @@ spec:
       autoscaling:
         enabled: true
         minReplicas: 2
+        maxReplicas: 3
       env:
         - name: AUTHENTIK_WEB__MAX_REQUESTS
           value: "100"
@@ -79,7 +80,7 @@ spec:
         requests:
           cpu: 200m
         limits:
-          memory: 3Gi
+          memory: 4Gi
       volumes: &postgresCredsVolume
         - name: postgres-creds
           secret:
