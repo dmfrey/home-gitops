@@ -96,7 +96,7 @@ spec:
           gethomepage.dev/app: sonarqube
           gethomepage.dev/description: Code Quality & Security
         hostnames:
-          - sonar.dmfrey.com
+          - sonarqube.dmfrey.com
         parentRefs:
           - name: envoy-internal
             namespace: network
