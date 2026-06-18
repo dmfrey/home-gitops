@@ -156,7 +156,7 @@ spec:
             image:
               repository: ghcr.io/dmfrey/spring-notes-frontend
               # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes-frontend versioning=loose
-              tag: d4a461fc989032f08a7e8a05ead49918b26c32d1
+              tag: 0ea68a90cdd060fc3bb6b8175feb6d0adbed2d74
             probes:
               liveness: &probes
                 enabled: true
