@@ -11,3 +11,4 @@ resources:
   - ./namespace.yaml
   - ./authentik/ks.yaml
   - ./dependency-track/ks.yaml
+  - ./sonarqube/ks.yaml

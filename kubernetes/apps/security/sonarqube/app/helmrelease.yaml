@@ -1,0 +1,131 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sonarqube
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: sonarqube
+  interval: 1h
+  values:
+    controllers:
+      sonarqube:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/library/sonarqube
+              tag: lts-community
+              pullPolicy: IfNotPresent
+            env:
+              SONAR_JDBC_URL: jdbc:postgresql://sonarqube-cnpg-rw.security.svc.cluster.local:5432/sonarqube
+              SONAR_JDBC_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarqube-cnpg-app
+                    key: username
+              SONAR_JDBC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarqube-cnpg-app
+                    key: password
+              SONAR_WEB_CONTEXT: /
+              SONAR_TELEMETRY_ENABLE: "false"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/system/status
+                    port: 9000
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/system/status
+                    port: 9000
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/system/status
+                    port: 9000
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+            resources:
+              requests:
+                cpu: 500m
+                memory: 2Gi
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+    service:
+      app:
+        controller: sonarqube
+        ports:
+          http:
+            port: &port 9000
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: sonarqube.png
+          gethomepage.dev/name: SonarQube
+          gethomepage.dev/group: Security
+          gethomepage.dev/app: sonarqube
+          gethomepage.dev/description: Code Quality & Security
+        hostnames:
+          - sonar.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: sonarqube
+                port: *port
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          sonarqube:
+            app:
+              - path: /opt/sonarqube/data
+      logs:
+        type: emptyDir
+        advancedMounts:
+          sonarqube:
+            app:
+              - path: /opt/sonarqube/logs
+      extensions:
+        type: emptyDir
+        advancedMounts:
+          sonarqube:
+            app:
+              - path: /opt/sonarqube/extensions
+      temp:
+        type: emptyDir
+        advancedMounts:
+          sonarqube:
+            app:
+              - path: /opt/sonarqube/temp

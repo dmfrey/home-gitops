@@ -86,6 +86,7 @@ machine:
     vm.dirty_ratio: "10"
     vm.swappiness: "0"                         # No swap on Talos; explicit for Kubernetes best practice
     vm.min_free_kbytes: "1048576"              # Reserve 1GB free — prevents OOM during Rook-Ceph I/O bursts on 64GB nodes
+    vm.max_map_count: "524288"                 # Required for Elasticsearch (SonarQube)
 
     # --- Network Performance Tuning (2.5GbE) ---
     net.core.default_qdisc: fq
