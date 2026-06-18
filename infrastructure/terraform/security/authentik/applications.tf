@@ -178,3 +178,36 @@ resource "authentik_policy_binding" "proxy_application_policy_binding" {
   group  = authentik_group.default[each.value.group].id
   order  = 0
 }
+
+# SAML provider for SonarQube (no client_id/secret — cert-based)
+resource "authentik_provider_saml" "sonarqube" {
+  name                = "sonarqube"
+  authorization_flow  = authentik_flow.provider-authorization-implicit-consent.uuid
+  authentication_flow = authentik_flow.authentication.uuid
+  invalidation_flow   = data.authentik_flow.default-provider-invalidation-flow.id
+
+  acs_url   = "https://sonarqube.${var.CLUSTER_DOMAIN}/oauth2/callback/saml"
+  issuer    = "https://auth.${var.CLUSTER_DOMAIN}"
+  audience  = "sonarqube"
+  sp_binding = "post"
+
+  signing_kp = data.authentik_certificate_key_pair.generated.id
+
+  property_mappings = [
+    data.authentik_property_mapping_provider_saml.username.id,
+    data.authentik_property_mapping_provider_saml.name.id,
+    data.authentik_property_mapping_provider_saml.email.id,
+    data.authentik_property_mapping_provider_saml.groups.id,
+  ]
+}
+
+resource "authentik_application" "sonarqube" {
+  name               = "SonarQube"
+  slug               = "sonarqube"
+  protocol_provider  = authentik_provider_saml.sonarqube.id
+  group              = authentik_group.default["infrastructure"].name
+  open_in_new_tab    = true
+  meta_icon          = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/sonarqube.png"
+  meta_launch_url    = "https://sonarqube.${var.CLUSTER_DOMAIN}/"
+  policy_engine_mode = "all"
+}

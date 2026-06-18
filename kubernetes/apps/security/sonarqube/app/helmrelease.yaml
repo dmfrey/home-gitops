@@ -34,6 +34,21 @@ spec:
                     key: password
               SONAR_WEB_CONTEXT: /
               SONAR_TELEMETRY_ENABLE: "false"
+              # SAML / Authentik SSO
+              SONAR_AUTH_SAML_ENABLED: "true"
+              SONAR_AUTH_SAML_APPLICATIONID: sonarqube
+              SONAR_AUTH_SAML_PROVIDERNAME: Authentik
+              SONAR_AUTH_SAML_PROVIDERID: https://auth.dmfrey.com
+              SONAR_AUTH_SAML_LOGINURL: https://auth.dmfrey.com/application/saml/sonarqube/sso/binding/redirect/
+              SONAR_AUTH_SAML_CERTIFICATE:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarqube-secret
+                    key: SONAR_AUTH_SAML_CERTIFICATE
+              SONAR_AUTH_SAML_USER_LOGIN: http://schemas.goauthentik.io/2021/02/saml/username
+              SONAR_AUTH_SAML_USER_NAME: http://schemas.microsoft.com/ws/2008/06/identity/claims/windowsaccountname
+              SONAR_AUTH_SAML_USER_EMAIL: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+              SONAR_AUTH_SAML_GROUP_NAME: http://schemas.xmlsoap.org/claims/Group
             probes:
               liveness:
                 enabled: true
