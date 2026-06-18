@@ -49,7 +49,7 @@ resource "authentik_property_mapping_provider_scope" "groups" {
   description = "See Which Groups you belong to"
   expression  = <<EOF
 return {
-  "groups": [group.name for group in user.ak_groups.all()],
+  "groups": [group.name for group in user.groups.all()],
 }
 EOF
 }
