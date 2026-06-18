@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: docker.io/library/sonarqube
-              tag: lts-community
+              tag: 26.6.0.123539-community
               pullPolicy: IfNotPresent
             env:
               SONAR_JDBC_URL: jdbc:postgresql://sonarqube-cnpg-rw.security.svc.cluster.local:5432/sonarqube
