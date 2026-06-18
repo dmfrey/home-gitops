@@ -10,6 +10,16 @@ spec:
     name: sonarqube
   interval: 1h
   timeout: 30m
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: sonarqube
+            patch: |
+              - op: replace
+                path: /spec/progressDeadlineSeconds
+                value: 2400
   values:
     controllers:
       sonarqube:
