@@ -186,9 +186,8 @@ resource "authentik_provider_saml" "sonarqube" {
   authentication_flow = authentik_flow.authentication.uuid
   invalidation_flow   = data.authentik_flow.default-provider-invalidation-flow.id
 
-  acs_url   = "https://sonarqube.${var.CLUSTER_DOMAIN}/oauth2/callback/saml"
-  issuer    = "https://auth.${var.CLUSTER_DOMAIN}"
-  audience  = "sonarqube"
+  acs_url    = "https://sonarqube.${var.CLUSTER_DOMAIN}/oauth2/callback/saml"
+  audience   = "sonarqube"
   sp_binding = "post"
 
   signing_kp = data.authentik_certificate_key_pair.generated.id
