@@ -44,6 +44,7 @@ spec:
                     name: sonarqube-cnpg-app
                     key: password
               SONAR_WEB_CONTEXT: /
+              SONAR_CORE_SERVERBASEURL: https://sonarqube.dmfrey.com
               SONAR_TELEMETRY_ENABLE: "false"
               # SAML / Authentik SSO
               SONAR_AUTH_SAML_ENABLED: "true"
