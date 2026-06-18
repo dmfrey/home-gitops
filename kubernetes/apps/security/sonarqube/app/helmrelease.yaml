@@ -41,7 +41,7 @@ spec:
               SONAR_AUTH_SAML_PROVIDERNAME: Authentik
               SONAR_AUTH_SAML_PROVIDERID: https://auth.dmfrey.com
               SONAR_AUTH_SAML_LOGINURL: https://auth.dmfrey.com/application/saml/sonarqube/sso/binding/redirect/
-              SONAR_AUTH_SAML_CERTIFICATE:
+              SONAR_AUTH_SAML_CERTIFICATE_SECURED:
                 valueFrom:
                   secretKeyRef:
                     name: sonarqube-secret
