@@ -20,5 +20,15 @@ spec:
       ports:
         - port: 9999
           protocol: TCP
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: gatus
+      ports:
+        - port: 6379
+          protocol: TCP
   policyTypes:
     - Ingress
