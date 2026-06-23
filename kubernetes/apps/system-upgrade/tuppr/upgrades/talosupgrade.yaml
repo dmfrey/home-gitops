@@ -9,7 +9,7 @@ spec:
 
   talos:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-    version: v1.13.4
+    version: v1.13.5
 
   policy:
     rebootMode: powercycle
