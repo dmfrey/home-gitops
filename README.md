@@ -32,6 +32,7 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 [![Pod-Count](https://kromgo.dmfrey.com/badges/cluster_pod_count)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;
 [![CPU-Usage](https://kromgo.dmfrey.com/badges/cluster_cpu_usage)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;
 [![Memory-Usage](https://kromgo.dmfrey.com/badges/cluster_memory_usage)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;
+[![Power-Usage](https://kromgo.dmfrey.com/badges/cluster_power_usage)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;
 [![Alerts](https://kromgo.dmfrey.com/badges/cluster_alert_count)](https://github.com/kashalls/kromgo)
 
 </div>
