@@ -56,7 +56,7 @@ spec:
 
         - title: Power
           id: cluster_power_usage
-          query: avg(upsAdvOutputActivePower)
+          query: unpoller_device_ups_power_output_watts{device_name="UPS Tower"}
           valueExpr: humanizeCommas(math.round(result)) + "w"
           colorExpr: 'colorScale(result, [400.0, 750.0], ["green", "orange", "red"])'
 
