@@ -121,7 +121,7 @@ spec:
           app:
             image:
               repository: curlimages/curl
-              tag: 8.20.0
+              tag: 8.21.0
               pullPolicy: IfNotPresent
             env:
               DEPENDENCY_TRACK_API_KEY:
