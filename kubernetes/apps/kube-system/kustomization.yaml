@@ -15,6 +15,7 @@ resources:
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
   - ./generic-device-plugin/ks.yaml
+  - ./drm-exporter/ks.yaml
   - ./intel-gpu-resource-driver/ks.yaml
   - ./xpumd/ks.yaml
   - ./metrics-server/ks.yaml
