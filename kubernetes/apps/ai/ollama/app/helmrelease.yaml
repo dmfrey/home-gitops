@@ -43,6 +43,7 @@ spec:
               DRINODE: /dev/dri/renderD128
               GGML_SYCL_DISABLE_OPT: "0"
               GGML_SYCL_DISABLE_GRAPH: "0"
+              GGML_SYCL_F16: "1"
 
             resources:
               claims:
