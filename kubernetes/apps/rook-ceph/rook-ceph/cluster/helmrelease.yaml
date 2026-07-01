@@ -43,6 +43,7 @@ spec:
           device_failure_prediction_mode: local # requires mgr module
           mon_warn_on_slow_ping_ratio: "0.5"
           osd_class_update_on_start: "false" # quote
+          osd_client_watch_timeout: "60"
           osd_memory_target: "4294967296" # 4Gi
 
         mgr:
@@ -123,6 +124,7 @@ spec:
           allowVolumeExpansion: true
           volumeBindingMode: Immediate
           mountOptions:
+            - noatime
             - discard
           parameters:
             # compression_mode: aggressive
@@ -135,7 +137,7 @@ spec:
             csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
-            csi.storage.k8s.io/fstype: ext4
+            csi.storage.k8s.io/fstype: xfs
 
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
