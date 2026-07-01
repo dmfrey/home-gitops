@@ -37,7 +37,7 @@ spec:
           "title": "Printer Connected",
           "id": 1,
           "gridPos": { "x": 0, "y": 0, "w": 4, "h": 4 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "mappings": [
@@ -60,7 +60,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_printer_connected",
               "instant": true,
               "legendFormat": "{{ printer_name }}"
@@ -72,7 +72,7 @@ spec:
           "title": "Printer State",
           "id": 2,
           "gridPos": { "x": 4, "y": 0, "w": 5, "h": 4 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "mappings": [
@@ -99,7 +99,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_printer_state",
               "instant": true,
               "legendFormat": "{{ printer_name }}"
@@ -111,7 +111,7 @@ spec:
           "title": "Print Progress",
           "id": 3,
           "gridPos": { "x": 9, "y": 0, "w": 4, "h": 4 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "percent",
@@ -128,7 +128,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_print_progress",
               "instant": true,
               "legendFormat": "{{ printer_name }}"
@@ -140,7 +140,7 @@ spec:
           "title": "Remaining Time",
           "id": 4,
           "gridPos": { "x": 13, "y": 0, "w": 4, "h": 4 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "s",
@@ -155,7 +155,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_print_remaining_seconds",
               "instant": true,
               "legendFormat": "{{ printer_name }}"
@@ -167,7 +167,7 @@ spec:
           "title": "Layer",
           "id": 5,
           "gridPos": { "x": 17, "y": 0, "w": 4, "h": 4 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
@@ -182,13 +182,13 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_print_layer_current",
               "instant": true,
               "legendFormat": "Current"
             },
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_print_layer_total",
               "instant": true,
               "legendFormat": "Total"
@@ -200,7 +200,7 @@ spec:
           "title": "Queue",
           "id": 6,
           "gridPos": { "x": 21, "y": 0, "w": 3, "h": 4 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
@@ -215,13 +215,13 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_queue_pending",
               "instant": true,
               "legendFormat": "Pending"
             },
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_queue_printing",
               "instant": true,
               "legendFormat": "Printing"
@@ -233,7 +233,7 @@ spec:
           "title": "Nozzle Temperature",
           "id": 7,
           "gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "celsius",
@@ -243,12 +243,12 @@ spec:
           "options": { "tooltip": { "mode": "multi" } },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_nozzle_temp_celsius",
               "legendFormat": "{{ printer_name }} nozzle {{ nozzle }} actual"
             },
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_nozzle_target_celsius",
               "legendFormat": "{{ printer_name }} nozzle {{ nozzle }} target"
             }
@@ -259,7 +259,7 @@ spec:
           "title": "Bed & Chamber Temperature",
           "id": 8,
           "gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "celsius",
@@ -269,17 +269,17 @@ spec:
           "options": { "tooltip": { "mode": "multi" } },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_bed_temp_celsius",
               "legendFormat": "{{ printer_name }} bed actual"
             },
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_bed_target_celsius",
               "legendFormat": "{{ printer_name }} bed target"
             },
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_chamber_temp_celsius",
               "legendFormat": "{{ printer_name }} chamber"
             }
@@ -290,7 +290,7 @@ spec:
           "title": "Print Progress",
           "id": 9,
           "gridPos": { "x": 0, "y": 12, "w": 16, "h": 6 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "percent",
@@ -302,7 +302,7 @@ spec:
           "options": { "tooltip": { "mode": "multi" } },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_print_progress",
               "legendFormat": "{{ printer_name }}"
             }
@@ -313,7 +313,7 @@ spec:
           "title": "Progress",
           "id": 10,
           "gridPos": { "x": 16, "y": 12, "w": 8, "h": 6 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "percent",
@@ -328,7 +328,7 @@ spec:
           "options": { "reduceOptions": { "calcs": ["lastNotNull"] } },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_print_progress",
               "instant": true,
               "legendFormat": "{{ printer_name }}"
@@ -340,7 +340,7 @@ spec:
           "title": "Fan Speeds",
           "id": 11,
           "gridPos": { "x": 0, "y": 18, "w": 16, "h": 6 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "percent",
@@ -352,7 +352,7 @@ spec:
           "options": { "tooltip": { "mode": "multi" } },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_fan_speed_percent",
               "legendFormat": "{{ printer_name }} {{ fan }}"
             }
@@ -363,7 +363,7 @@ spec:
           "title": "WiFi Signal",
           "id": 12,
           "gridPos": { "x": 16, "y": 18, "w": 8, "h": 6 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "dBm",
@@ -381,7 +381,7 @@ spec:
           "options": { "tooltip": { "mode": "multi" } },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_wifi_signal_dbm",
               "legendFormat": "{{ printer_name }}"
             }
@@ -392,7 +392,7 @@ spec:
           "title": "Total Prints",
           "id": 13,
           "gridPos": { "x": 0, "y": 24, "w": 8, "h": 6 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
@@ -407,7 +407,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_prints_total",
               "instant": true,
               "legendFormat": "{{ result }}"
@@ -419,7 +419,7 @@ spec:
           "title": "Filament Used",
           "id": 14,
           "gridPos": { "x": 8, "y": 24, "w": 8, "h": 6 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "g",
@@ -434,7 +434,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_filament_used_grams",
               "instant": true,
               "legendFormat": "{{ printer_name }}"
@@ -446,7 +446,7 @@ spec:
           "title": "Total Print Time",
           "id": 15,
           "gridPos": { "x": 16, "y": 24, "w": 8, "h": 6 },
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
           "fieldConfig": {
             "defaults": {
               "unit": "s",
@@ -461,7 +461,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+              "datasource": { "type": "prometheus", "uid": "$${DS_PROMETHEUS}" },
               "expr": "bambuddy_print_time_seconds",
               "instant": true,
               "legendFormat": "{{ printer_name }}"
