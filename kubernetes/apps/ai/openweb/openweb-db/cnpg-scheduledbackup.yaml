@@ -29,7 +29,7 @@ metadata:
 
 spec:
 
-  schedule: "@daily"
+  schedule: "40 0 * * *"
 
   immediate: true
 

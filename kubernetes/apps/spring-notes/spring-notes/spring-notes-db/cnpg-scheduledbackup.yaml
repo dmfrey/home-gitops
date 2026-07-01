@@ -19,7 +19,7 @@ kind: ScheduledBackup
 metadata:
   name: spring-notes-cnpg-backup-volume-snapshot
 spec:
-  schedule: "@daily"
+  schedule: "55 0 * * *"
   immediate: true
   backupOwnerReference: self
   cluster:

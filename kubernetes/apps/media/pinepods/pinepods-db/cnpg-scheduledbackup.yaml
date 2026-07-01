@@ -27,7 +27,7 @@ metadata:
 
 spec:
 
-  schedule: "@daily"
+  schedule: "45 0 * * *"
   immediate: true
   backupOwnerReference: self
 
