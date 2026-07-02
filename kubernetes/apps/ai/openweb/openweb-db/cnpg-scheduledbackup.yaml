@@ -29,7 +29,7 @@ metadata:
 
 spec:
 
-  schedule: "40 0 * * *"
+  schedule: "45 1 * * *"
 
   immediate: true
 

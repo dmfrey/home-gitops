@@ -22,6 +22,7 @@ spec:
         deployCsiAddons: false
         fsGroupPolicy: File
         generateOMapInfo: false
+        grpcTimeout: 90
         controllerPlugin:
           hostNetwork: true
           replicas: 2

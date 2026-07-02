@@ -25,7 +25,7 @@ metadata:
   name: freshrss-cnpg-volume-snapshot
 
 spec:
-  schedule: "20 0 * * *"
+  schedule: "45 0 * * *"
   immediate: true
   backupOwnerReference: self
 
