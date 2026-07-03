@@ -27,7 +27,7 @@ metadata:
 
 spec:
 
-  schedule: "30 0 * * *"
+  schedule: "0 30 0 * * *"
   immediate: true
   backupOwnerReference: self
 
