@@ -85,10 +85,16 @@ spec:
         - name: postgres-creds
           secret:
             secretName: authentik-cnpg-app
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 512Mi
       volumeMounts: &postgresCredsVolumeMounts
         - name: postgres-creds
           mountPath: /postgres-creds
           readOnly: true
+        - name: dshm
+          mountPath: /dev/shm
     worker:
       autoscaling:
         enabled: true
