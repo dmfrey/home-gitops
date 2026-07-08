@@ -14,7 +14,7 @@ spec:
       storageClass: ceph-block
       image:
         repository: ghcr.io/goauthentik/server
-        tag: 2026.5.3
+        tag: 2026.5.4
         pullPolicy: IfNotPresent
       envFrom:
         - secretRef:
