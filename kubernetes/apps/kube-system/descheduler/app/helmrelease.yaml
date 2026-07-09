@@ -37,11 +37,11 @@ spec:
                 thresholds:
                   cpu: 20
                   memory: 25
-                  pods: 45
+                  pods: 60
                 targetThresholds:
                   cpu: 50
                   memory: 50
-                  pods: 50
+                  pods: 75
             - name: RemoveFailedPods
               args:
                 reasons:
