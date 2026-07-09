@@ -103,7 +103,7 @@ spec:
       models:
         type: nfs
         server: nas.internal
-        path: /models-localai
+        path: /models/localai
         globalMounts:
           - path: /models
 
