@@ -1,0 +1,115 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: localai
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: localai
+  interval: 1h
+  values:
+    controllers:
+      localai:
+        type: statefulset
+        replicas: 1
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: docker.io/localai/localai
+              tag: v4.6.2-gpu-intel
+
+            env:
+              TZ: America/New_York
+              MODELS_PATH: /models
+              LOCALAI_DATA_PATH: /data
+              LOCALAI_ADDRESS: 0.0.0.0:8080
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: &port 8080
+                  initialDelaySeconds: 30
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: 200m
+                memory: 4Gi
+              limits:
+                memory: 24Gi
+
+        pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: localai
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - "{{ .Release.Name }}"
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] < 400"]
+            url: "https://localai.dmfrey.com/readyz"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: AI
+          gethomepage.dev/name: LocalAI
+          gethomepage.dev/icon: localai.png
+          gethomepage.dev/description: OpenAI-compatible inference server (Intel GPU)
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /data
+
+      models:
+        type: nfs
+        server: nas.internal
+        path: /models-localai
+        globalMounts:
+          - path: /models
+
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /tmp
