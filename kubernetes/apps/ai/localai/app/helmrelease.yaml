@@ -51,7 +51,7 @@ spec:
                 - name: gpu
               requests:
                 cpu: 200m
-                memory: 4Gi
+                memory: 1Gi
               limits:
                 memory: 24Gi
 
@@ -99,6 +99,7 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /data
+          - path: /backends
 
       models:
         type: nfs
