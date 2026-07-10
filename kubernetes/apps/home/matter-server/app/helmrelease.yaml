@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/matter-js/matterjs-server
-              tag: 1.2.0@sha256:cd1b38ac590b3d91170f32762ab9af5eb31814b18d7c6e89e12dfaaaf0efc391
+              tag: 1.2.2@sha256:9a51306da8fdc42283f5f497873cd2b2647ac3228342be745c676ffce627db80
 
             args:
               - --storage-path=/data
