@@ -43,15 +43,6 @@ spec:
     cron: 0 0 * * *
     dir: "s3://dragonflydb/affine"
 
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: garage
-          namespaceSelector: {}
-          topologyKey: kubernetes.io/hostname
-
   resources:
     requests:
       cpu: 100m
