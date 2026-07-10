@@ -47,7 +47,7 @@ spec:
       editionIds: "GeoLite2-City"
       image:
         repository: ghcr.io/maxmind/geoipupdate
-        tag: v7.1.1
+        tag: v8.0.0
       updateInterval: 8
       resources:
         requests:
