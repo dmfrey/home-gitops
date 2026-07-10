@@ -98,6 +98,9 @@ machine:
     net.ipv4.tcp_mtu_probing: "1"             # Enable MTU probing for Cilium pod networking
     net.ipv4.tcp_rmem: 4096 87380 16777216
     net.ipv4.tcp_wmem: 4096 65536 16777216
+    net.ipv4.neigh.default.gc_thresh1: "4096"  # Default 128 is tight for 100+ pods/node
+    net.ipv4.neigh.default.gc_thresh2: "8192"
+    net.ipv4.neigh.default.gc_thresh3: "16384" # Default 1024, preventive headroom after 109-pod density incident
 
     # --- NFS Client Tuning ---
     sunrpc.tcp_max_slot_table_entries: "128"
