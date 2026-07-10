@@ -17,37 +17,12 @@ spec:
         resourceFieldRef:
           resource: limits.memory
           divisor: 1Mi
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: openweb-dragonflydb-s3-secret
-          key: AWS_ACCESS_KEY_ID
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: openweb-dragonflydb-s3-secret
-          key: AWS_SECRET_ACCESS_KEY
 
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags
-    - --s3_endpoint=garage.garage-system.svc.cluster.local:3900
-    - --s3_use_https=false
-
-  snapshot:
-    cron: 0 0 * * *
-    dir: "s3://dragonflydb/openweb"
-
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: garage
-          namespaceSelector: {}
-          topologyKey: kubernetes.io/hostname
 
   resources:
     requests:
