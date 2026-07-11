@@ -20,6 +20,8 @@ spec:
             image:
               repository: ghcr.io/linkwarden/linkwarden
               tag: v2.15.0@sha256:5f70dc3fce3da22913329507748777a3c7c9201c6db1ec310367c20e2b93712a
+            env:
+              PLAYWRIGHT_BROWSERS_PATH: /data/config/.playwright
             command:
               - node
               - /data/node_modules/playwright/cli.js
@@ -35,6 +37,7 @@ spec:
               NODE_ENV: production
               STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
               HOME: /data/config
+              PLAYWRIGHT_BROWSERS_PATH: /data/config/.playwright
               PDF_MAX_BUFFER: 100
               MONOLITH_MAX_BUFFER: 100
               SCREENSHOT_MAX_BUFFER: 100
