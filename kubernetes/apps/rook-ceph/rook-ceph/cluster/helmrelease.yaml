@@ -75,6 +75,8 @@ spec:
             enabled: true
           - name: rook
             enabled: true
+          - name: restful
+            enabled: false # unused here; long-documented history of leaking active-mgr memory until OOMKilled
 
       network:
         provider: host
