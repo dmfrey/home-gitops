@@ -89,7 +89,7 @@ spec:
             cpu: 500m
             memory: 512Mi
           limits:
-            memory: 2Gi
+            memory: 4Gi # active mgr leaks ~150MB/hr (unresolved, see tracker.ceph.com); bumped from 2Gi to stretch OOM cycle ~14h -> ~28h+
         osd:
           requests:
             cpu: 1000m
