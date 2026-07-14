@@ -13,7 +13,7 @@ spec:
     controllers:
       localai:
         type: statefulset
-        replicas: 1
+        replicas: 0 # paused pending vision-model eval (see project_ollama_glimpse_vision_bug memory); also conflicts with Plex over the shared GPU claim if scaled up
 
         annotations:
           reloader.stakater.com/auto: "true"
