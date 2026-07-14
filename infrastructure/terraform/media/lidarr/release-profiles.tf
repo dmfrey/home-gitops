@@ -20,5 +20,13 @@ resource "lidarr_release_profile" "avoid_variant_editions" {
     "Vinyl",
     "WAVPACK",
     "LP",
+    # These two release groups account for ~28% of all historical
+    # albumImportIncomplete/downloadFailed events in this library (62 of
+    # 225 checked) - almost entirely reissues/remasters/repacks that don't
+    # match any cataloged MusicBrainz tracklist cleanly, even when the
+    # title carries no other edition keyword (e.g. plain "-CD-FLAC-2011-
+    # REETKEVER" with nothing else to filter on).
+    "REETKEVER",
+    "OBZEN",
   ]
 }
