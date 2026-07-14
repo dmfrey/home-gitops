@@ -1,7 +1,6 @@
 resource "lidarr_release_profile" "avoid_variant_editions" {
-  enabled                         = true
-  include_preferred_when_renaming = false
-  indexer_id                      = 0 # all indexers
+  enabled    = true
+  indexer_id = 0 # all indexers
 
   # These release variants (vinyl rips, regional/limited/deluxe editions,
   # box sets) routinely have a different tracklist than the canonical
