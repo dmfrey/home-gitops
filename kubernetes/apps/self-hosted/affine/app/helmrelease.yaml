@@ -28,7 +28,7 @@ spec:
           migration:
             image:
               repository: ghcr.io/toeverything/affine
-              tag: 0.27.0@sha256:51d732d8e347b65ffa353b9878efda4dde86f5d3fd398b670acf0da60dcadcf0
+              tag: 0.27.0@sha256:cc309913620e153f7aaea47cd40d1eff993030cf2b2df8f88270663459db37c9
 
             command:
               - "sh"
@@ -61,7 +61,7 @@ spec:
           app:
             image:
               repository: ghcr.io/toeverything/affine
-              tag: 0.27.0@sha256:51d732d8e347b65ffa353b9878efda4dde86f5d3fd398b670acf0da60dcadcf0
+              tag: 0.27.0@sha256:cc309913620e153f7aaea47cd40d1eff993030cf2b2df8f88270663459db37c9
 
             env:
               TZ: America/New_York
