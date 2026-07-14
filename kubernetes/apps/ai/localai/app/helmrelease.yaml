@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: docker.io/localai/localai
-              tag: v4.6.2-gpu-intel
+              tag: v4.7.0-gpu-intel
 
             env:
               TZ: America/New_York
