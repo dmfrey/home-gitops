@@ -21,3 +21,10 @@ spec:
     web:
       networkPolicy:
         create: false
+      httpRoute:
+        enabled: true
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - flux.dmfrey.com
