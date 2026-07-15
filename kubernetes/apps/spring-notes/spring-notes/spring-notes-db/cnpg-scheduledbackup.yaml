@@ -13,15 +13,3 @@ spec:
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
----
-apiVersion: postgresql.cnpg.io/v1
-kind: ScheduledBackup
-metadata:
-  name: spring-notes-cnpg-backup-volume-snapshot
-spec:
-  schedule: "0 30 2 * * *"
-  immediate: true
-  backupOwnerReference: self
-  cluster:
-    name: spring-notes-cnpg
-  method: volumeSnapshot

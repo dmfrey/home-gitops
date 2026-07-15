@@ -18,20 +18,3 @@ spec:
 
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
----
-# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/scheduledbackup_v1.json
-apiVersion: postgresql.cnpg.io/v1
-kind: ScheduledBackup
-metadata:
-  name: bazarr-cnpg-backup-volume-snapshot
-
-spec:
-
-  schedule: "0 30 0 * * *"
-  immediate: true
-  backupOwnerReference: self
-
-  cluster:
-    name: bazarr-cnpg
-
-  method: volumeSnapshot
