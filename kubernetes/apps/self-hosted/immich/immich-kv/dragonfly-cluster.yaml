@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/dragonflydb.io/dragonfly_v1alpha1.json
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: immich-dragonflydb
+  annotations:
+    secret.reloader.stakater.com/reload: immich-dragonflydb-s3-secret
+
+spec:
+
+  replicas: 1
+
+  image: ghcr.io/dragonflydb/dragonfly:v1.39.0@sha256:0fa01a2b929e704c7a9300d23e7f52002ebd39e90996fb8bb63826aed92fa06f
+
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Mi
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: immich-dragonflydb-s3-secret
+          key: AWS_ACCESS_KEY_ID
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: immich-dragonflydb-s3-secret
+          key: AWS_SECRET_ACCESS_KEY
+
+  args:
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=2
+    - --cluster_mode=emulated
+    - --lock_on_hashtags
+    - --default_lua_flags=allow-undeclared-keys
+    - --s3_endpoint=garage.garage-system.svc.cluster.local:3900
+    - --s3_use_https=false
+
+  snapshot:
+    cron: 0 0 * * *
+    dir: "s3://dragonflydb/immich"
+
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      memory: 512Mi

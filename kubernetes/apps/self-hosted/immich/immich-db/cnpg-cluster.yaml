@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-cnpg
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+
+spec:
+
+  instances: 1
+  enablePDB: false
+  # tensorchord's CNPG-compatible Postgres image with VectorChord pre-installed.
+  # Immich requires VectorChord (pgvector alone is not enough for its indexes).
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17-0.4.3@sha256:acebb38ca309938bc05ce268b019c98aa718cb554dd54e4443654d9d00a0d498
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+
+  backup:
+    volumeSnapshot:
+      className: csi-ceph-blockpool
+
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: immich
+      owner: immich
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS "vector";
+        - CREATE EXTENSION IF NOT EXISTS "vchord" CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: immich
+
+  postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: restart
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+
+  storage:
+    storageClass: ceph-block
+    size: 10Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi

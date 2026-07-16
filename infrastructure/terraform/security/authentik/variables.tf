@@ -79,6 +79,11 @@ variable "DEPENDENCY_TRACK_CLIENT_SECRET" {
   type      = string
   sensitive = true
 }
+variable "IMMICH_CLIENT_ID" { type = string }
+variable "IMMICH_CLIENT_SECRET" {
+  type      = string
+  sensitive = true
+}
 
 # User credentials
 variable "USERS_DMFREY_NAME" { type = string }

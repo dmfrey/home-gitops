@@ -1,0 +1,169 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich
+
+spec:
+
+  chartRef:
+    kind: OCIRepository
+    name: immich
+
+  interval: 1h
+
+  values:
+
+    controllers:
+
+      immich-server:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: immich-cnpg-app,immich-secret
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v3.0.3@sha256:c716dc20f957aafd89fa9d284a2ec63e25c9e2d8d8e87c6197d540a3dce237db
+
+            env:
+              TZ: America/New_York
+              DB_VECTOR_EXTENSION: vectorchord
+              DB_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-cnpg-app
+                    key: uri
+              REDIS_HOSTNAME: immich-dragonflydb.self-hosted.svc.cluster.local
+              REDIS_PORT: 6379
+              IMMICH_CONFIG_FILE: /config/immich-config.json
+              UPLOAD_LOCATION: /usr/src/app/upload
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: &port 2283
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+
+      immich-machine-learning:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v3.0.3@sha256:d76fe88b69282c09a97eac4f82dafa82cfd77bce274bc742591cde974f87dacb
+
+            env:
+              TZ: America/New_York
+
+            probes:
+              liveness: &mlProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &mlPort 3003
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *mlProbes
+
+            # CPU-only: the cluster's one Intel GPU is already contended by
+            # Plex/Jellyfin/Ollama/LocalAI. Face/CLIP indexing runs as
+            # background jobs, not user-facing latency, so CPU is fine here.
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                cpu: 4000m
+                memory: 4Gi
+
+    service:
+      immich-server:
+        controller: immich-server
+        ports:
+          http:
+            port: *port
+      immich-machine-learning:
+        controller: immich-machine-learning
+        ports:
+          http:
+            port: *mlPort
+
+    route:
+      immich-server:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+            url: "https://immich.dmfrey.com/api/server/ping"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/name: Immich
+          gethomepage.dev/icon: immich.png
+          gethomepage.dev/description: Self-hosted photo and video backup
+        hostnames:
+          - "immich.dmfrey.com"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: immich-immich-server
+                port: *port
+
+    persistence:
+      library:
+        enabled: true
+        type: nfs
+        server: nas.internal
+        path: /media/immich
+        advancedMounts:
+          immich-server:
+            app:
+              - path: /usr/src/app/upload
+
+      config:
+        type: secret
+        name: immich-secret
+        advancedMounts:
+          immich-server:
+            app:
+              - path: /config/immich-config.json
+                subPath: immich-config.json
+                readOnly: true
+
+      ml-cache:
+        existingClaim: immich-ml-cache
+        advancedMounts:
+          immich-machine-learning:
+            app:
+              - path: /cache
+
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          immich-server:
+            app:
+              - path: /tmp

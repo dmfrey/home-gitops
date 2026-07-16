@@ -99,6 +99,17 @@ locals {
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/dependency-track.png"
       redirect_uri  = "https://dtrack.${var.CLUSTER_DOMAIN}/static/oidc-callback.html"
       launch_url    = "https://dtrack.${var.CLUSTER_DOMAIN}/"
+    },
+    immich = {
+      client_id     = var.IMMICH_CLIENT_ID
+      client_secret = var.IMMICH_CLIENT_SECRET
+      group         = "media"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/immich.png"
+      # covers web login + user-settings callback; mobile app (app.immich:///oauth-callback)
+      # is not covered here - the shared oauth2 resource only supports one redirect entry.
+      redirect_uri      = "https://immich\\.${var.CLUSTER_DOMAIN}/(auth/login|user-settings)"
+      redirect_uri_mode = "regex"
+      launch_url        = "https://immich.${var.CLUSTER_DOMAIN}/"
     }
   }
 
