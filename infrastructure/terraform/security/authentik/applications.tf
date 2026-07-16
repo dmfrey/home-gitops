@@ -140,6 +140,11 @@ resource "authentik_provider_oauth2" "oauth2" {
   )
   access_token_validity = "hours=4"
   signing_key           = data.authentik_certificate_key_pair.generated.id
+  # Explicit: left unset, this comes back empty from the API on newly-created
+  # providers (confirmed on immich - "grant_types": [] rejected every
+  # authorization_code request with "Invalid grant_type for provider"), even
+  # though older providers created before this had a full default list.
+  grant_types = ["authorization_code", "refresh_token"]
   # apps needing more than one redirect (e.g. web + mobile) set redirect_uris
   # (a list); everything else keeps the single redirect_uri/redirect_uri_mode
   # shorthand, wrapped into a one-element list here.
