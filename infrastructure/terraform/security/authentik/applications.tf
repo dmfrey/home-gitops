@@ -105,11 +105,12 @@ locals {
       client_secret = var.IMMICH_CLIENT_SECRET
       group         = "media"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/immich.png"
-      # covers web login + user-settings callback; mobile app (app.immich:///oauth-callback)
-      # is not covered here - the shared oauth2 resource only supports one redirect entry.
-      redirect_uri      = "https://immich\\.${var.CLUSTER_DOMAIN}/(auth/login|user-settings)"
-      redirect_uri_mode = "regex"
-      launch_url        = "https://immich.${var.CLUSTER_DOMAIN}/"
+      redirect_uris = [
+        { matching_mode = "strict", url = "https://photos.${var.CLUSTER_DOMAIN}/auth/login" },
+        { matching_mode = "strict", url = "https://photos.${var.CLUSTER_DOMAIN}/user-settings" },
+        { matching_mode = "strict", url = "app.immich:///oauth-callback" },
+      ]
+      launch_url = "https://photos.${var.CLUSTER_DOMAIN}/"
     }
   }
 
@@ -139,12 +140,15 @@ resource "authentik_provider_oauth2" "oauth2" {
   )
   access_token_validity = "hours=4"
   signing_key           = data.authentik_certificate_key_pair.generated.id
-  allowed_redirect_uris = [
+  # apps needing more than one redirect (e.g. web + mobile) set redirect_uris
+  # (a list); everything else keeps the single redirect_uri/redirect_uri_mode
+  # shorthand, wrapped into a one-element list here.
+  allowed_redirect_uris = try(each.value.redirect_uris, [
     {
       matching_mode = try(each.value.redirect_uri_mode, "strict"),
       url           = each.value.redirect_uri,
     }
-  ]
+  ])
 }
 
 resource "authentik_application" "application" {

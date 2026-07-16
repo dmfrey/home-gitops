@@ -115,14 +115,14 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
-            url: "https://immich.dmfrey.com/api/server/ping"
+            url: "https://photos.dmfrey.com/api/server/ping"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/name: Immich
           gethomepage.dev/icon: immich.png
           gethomepage.dev/description: Self-hosted photo and video backup
         hostnames:
-          - "immich.dmfrey.com"
+          - "photos.dmfrey.com"
         parentRefs:
           - name: envoy-external
             namespace: network
