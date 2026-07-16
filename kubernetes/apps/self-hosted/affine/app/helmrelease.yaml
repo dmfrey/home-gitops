@@ -13,6 +13,28 @@ spec:
 
   interval: 1h
 
+  # AFFiNE's OIDC discovery fetch has a hardcoded SSRF guard with no allowlist
+  # escape hatch - it rejects any RFC1918 address as "blocked_ip". Since
+  # auth.dmfrey.com resolves internally to envoy-external's private LB IP,
+  # every discovery attempt failed, breaking OAuth login. Pinning this one
+  # hostname to Cloudflare's edge routes it through the public tunnel path
+  # instead, which the guard allows. app-template has no hostAliases
+  # passthrough, hence postRenderers.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: StatefulSet
+              name: affine
+            patch: |
+              - op: add
+                path: /spec/template/spec/hostAliases
+                value:
+                  - ip: "104.21.55.152"
+                    hostnames: ["auth.dmfrey.com"]
+                  - ip: "172.67.149.46"
+                    hostnames: ["auth.dmfrey.com"]
+
   values:
 
     controllers:
