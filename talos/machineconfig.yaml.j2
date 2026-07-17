@@ -58,6 +58,10 @@ machine:
     modules:
       - name: thunderbolt   # Provided by siderolabs/thunderbolt extension, not the base
                             # kernel; needed for USB4/TB4 PCIe tunneling (planned eGPU)
+      - name: nvidia        # eGPU (k8s-2) - harmless to load on nodes without the card
+      - name: nvidia_uvm    # eGPU (k8s-2) - CUDA unified virtual memory
+      - name: nvidia_drm    # eGPU (k8s-2) - DRM/KMS integration
+      - name: nvidia_modeset # eGPU (k8s-2) - required by the driver even headless
 
 #  time:
 #    servers:
