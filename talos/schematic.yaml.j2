@@ -35,8 +35,10 @@ customization:
       - siderolabs/mei                    # Intel Management Engine drivers
       - siderolabs/nfsrahead              # NFS Performance
       - siderolabs/nut-client             # Network UPS Tools
-      - siderolabs/nvidia-container-toolkit-production # eGPU (k8s-2) - exposes NVIDIA GPU to containers
-      - siderolabs/nvidia-open-gpu-kernel-modules-production # eGPU (k8s-2) - RTX 5070 (Blackwell) requires the open kernel modules; proprietary driver unsupported on this generation
+      {% if ENV.EGPU %}
+      - siderolabs/nvidia-container-toolkit-production # eGPU (k8s-2 only) - exposes NVIDIA GPU to containers
+      - siderolabs/nvidia-open-gpu-kernel-modules-production # eGPU (k8s-2 only) - RTX 5070 (Blackwell) requires the open kernel modules; proprietary driver unsupported on this generation
+      {% endif %}
       - siderolabs/nvme-cli               # NVMe command line tools
       - siderolabs/thunderbolt             # USB4/TB4 PCIe tunneling (planned eGPU)
       - siderolabs/util-linux-tools       # Useful Linux tools
