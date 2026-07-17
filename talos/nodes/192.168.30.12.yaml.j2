@@ -3,17 +3,6 @@ machine:
   type: controlplane
   nodeLabels:
     topology.kubernetes.io/zone: dmf-u
-  install:
-    diskSelector:
-      model: Samsung SSD 870
-    image: factory.talos.dev/installer/7d56465fc23be23c5c2f2bcb9f604592ff0b781241406cba8b30e9b1dc4f70b7:v1.13.6 # eGPU variant - see `just talos gen-schematic-id-egpu`
-    wipe: false
-  kernel:
-    modules:
-      - name: nvidia        # eGPU - RTX 5070
-      - name: nvidia_uvm    # eGPU - CUDA unified virtual memory
-      - name: nvidia_drm    # eGPU - DRM/KMS integration
-      - name: nvidia_modeset # eGPU - required by the driver even headless
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
