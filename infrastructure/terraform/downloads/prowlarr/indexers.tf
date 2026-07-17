@@ -98,7 +98,12 @@ resource "prowlarr_indexer" "torrent_knaben" {
 }
 
 resource "prowlarr_indexer" "torrent_limetorrents" {
-  enable          = true
+  # Disabled 2026-07-16: served multiple fake torrents (bare .exe payloads
+  # disguised as current TV episodes, some byte-identical across different
+  # fake titles) that Sonarr's safety check caught before import. Actual
+  # toggle lives in Prowlarr directly (lifecycle.ignore_changes below), this
+  # is just to keep the declared state from being misleading.
+  enable          = false
   name            = "LimeTorrents"
   implementation  = "Cardigann"
   config_contract = "CardigannSettings"
