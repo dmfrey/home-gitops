@@ -23,7 +23,6 @@ customization:
     # --- System Configuration ---
     - net.ifnames=0
     - tsc=reliable                        # i7-13620H has invariant TSC; skip kernel verification overhead
-    - thunderbolt.host_reset=0            # Preserve BIOS PCIe/BAR config on Thunderbolt hotplug (needed for eGPU on k8s-2, inert elsewhere)
 
     # --- Intentionally left disabled ---
     # - elevator=mq-deadline              # Kernel auto-selects per device: none (NVMe), mq-deadline (SATA) — global override would harm NVMe
