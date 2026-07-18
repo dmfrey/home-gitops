@@ -51,7 +51,7 @@ machine:
   install:
     diskSelector:
       model: Samsung SSD 870
-    image: factory.talos.dev/installer/2229ca2d495f7a78a1b53bb854106a24c0376cb3ad583eea009deea0533c6bfb:v1.13.6
+    image: factory.talos.dev/installer/344119da46eab45e4c84667d53249b34f13d0f561fa5281258fda1bcb8235c23:v1.13.6
     wipe: false
 
   kernel:
@@ -132,6 +132,7 @@ machine:
     rules:
       - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
       - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+      - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1" # Auto-authorize Thunderbolt PCIe tunnels (no boltd on Talos); GEEKOM BIOS has no security-level override
 
 cluster:
   ca:
