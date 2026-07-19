@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ollama-gpu
+
+spec:
+
+  chartRef:
+    kind: OCIRepository
+    name: ollama-gpu
+
+  interval: 1h
+
+  valuesFrom:
+    - kind: ConfigMap
+      name: ollama-gpu-values
+
+  values:
+
+    controllers:
+      ollama-gpu:
+        type: statefulset
+        # Scaled to 0 by default - GPU link isn't reliably stable yet. To test:
+        # scale ollama (Intel) to 0 first, then this to 1. Same Service/route as
+        # ollama is reused via the pod.labels override below, so no client
+        # (HA/AFFiNE/Linkwarden) reconfiguration is needed either way.
+        replicas: 0
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: docker.io/ollama/ollama
+              tag: "0.32.1"
+
+            env:
+              TZ: America/New_York
+              OLLAMA_HOST: 0.0.0.0
+              OLLAMA_ORIGINS: "*"
+              OLLAMA_MODELS: /models
+              OLLAMA_KEEP_ALIVE: "-1"
+
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: 200m
+                memory: 4Gi
+              limits:
+                memory: 24Gi
+
+        pod:
+          # Matches the existing `ollama` Service's selector exactly, so that
+          # Service (unchanged, still owned by the ollama app) picks up these
+          # pods as backends once ollama's own replicas are scaled to 0.
+          labels:
+            app.kubernetes.io/controller: ollama
+            app.kubernetes.io/instance: ollama
+            app.kubernetes.io/name: ollama
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: ollama-gpu
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - ollama
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /root/.ollama
+
+      models:
+        type: nfs
+        server: nas.internal
+        path: /models
+        globalMounts:
+          - path: /models
+
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+          - path: /tmp

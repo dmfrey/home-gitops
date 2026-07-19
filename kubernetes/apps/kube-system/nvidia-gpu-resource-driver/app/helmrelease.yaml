@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nvidia-gpu-resource-driver
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: nvidia-gpu-resource-driver
+  interval: 1h
+  values:
+    # Creates the gpu.nvidia.com DeviceClass. Kubelet plugin DaemonSet only
+    # schedules onto nodes with the chart's default NFD-based node affinity
+    # (feature.node.kubernetes.io/pci-*_10de.present) - only k8s-2 (RTX 5070)
+    # matches, no manual node labeling needed.
+    gpuResourcesEnabledOverride: true
+    resources:
+      gpus:
+        enabled: true
+      computeDomains:
+        enabled: false # single card, no NVLink multi-node fabric

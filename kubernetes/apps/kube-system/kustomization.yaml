@@ -21,6 +21,7 @@ resources:
   - ./metrics-server/ks.yaml
   - ./multus/ks.yaml
   - ./node-feature-discovery/ks.yaml
+  - ./nvidia-gpu-resource-driver/ks.yaml
   - ./reloader/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./snapshot-controller/ks.yaml
