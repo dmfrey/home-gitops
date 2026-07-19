@@ -10,6 +10,10 @@ spec:
     name: nvidia-gpu-resource-driver
   interval: 1h
   values:
+    # Talos installs the nvidia-container-toolkit/nvidia-open-gpu-kernel-modules
+    # extensions under /usr/local (bin, lib), not the standard FHS /usr paths
+    # the chart's nvidiaDriverRoot: / default expects.
+    nvidiaDriverRoot: /usr/local
     # Creates the gpu.nvidia.com DeviceClass. Kubelet plugin DaemonSet only
     # schedules onto nodes with the chart's default NFD-based node affinity
     # (feature.node.kubernetes.io/pci-*_10de.present) - only k8s-2 (RTX 5070)
