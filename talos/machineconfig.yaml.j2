@@ -132,8 +132,6 @@ machine:
     rules:
       - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
       - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
-      - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1" # Auto-authorize Thunderbolt PCIe tunnels (no boltd on Talos); GEEKOM BIOS has no security-level override
-      - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{power/control}="on" # Disable runtime autosuspend; suspected cause of dock disconnecting ~4s after connecting
 
 cluster:
   ca:
