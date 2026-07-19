@@ -27,7 +27,7 @@ customization:
     - pcie_ports=native                    # Force kernel-native PCIe hotplug handling instead of firmware/ACPI; suspected cause of "Timeout on hotplug command" errors on AG02 disconnect
     - pcie_aspm=off                        # Disable PCIe Active State Power Management; suspected cause of AG02 link degrading to Gen1 x1 and dropping
     - pcie_port_pm=off                     # Disable PCIe port runtime power management; same AG02 investigation
-    - pci=realloc,hpmmiosize=64M,hpmmioprefsize=8G # Reserve MMIO/prefetchable space on hotplug bridges for a device not present at boot; RTX 5070's large ReBAR window likely doesn't fit the kernel's tiny (2M) default reservation
+    # - pci=realloc,hpmmiosize=64M,hpmmioprefsize=8G # REVERTED 2026-07-19: caused a crash on AG02 reconnect severe enough that sd-boot auto-rolled-back the node to the previous UKI entry. Do not re-add without further investigation.
 
     # --- Intentionally left disabled ---
     # - elevator=mq-deadline              # Kernel auto-selects per device: none (NVMe), mq-deadline (SATA) — global override would harm NVMe
