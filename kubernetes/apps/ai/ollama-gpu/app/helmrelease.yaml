@@ -22,11 +22,8 @@ spec:
     controllers:
       ollama-gpu:
         type: statefulset
-        # Scaled to 0 by default - GPU link isn't reliably stable yet. To test:
-        # scale ollama (Intel) to 0 first, then this to 1. Same Service/route as
-        # ollama is reused via the pod.labels override below, so no client
-        # (HA/AFFiNE/Linkwarden) reconfiguration is needed either way.
-        replicas: 0
+        # Testing 2026-07-20 - ollama (Intel) scaled to 0 alongside this.
+        replicas: 1
 
         annotations:
           reloader.stakater.com/auto: "true"
