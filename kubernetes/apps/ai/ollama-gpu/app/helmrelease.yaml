@@ -51,13 +51,6 @@ spec:
                 memory: 24Gi
 
         pod:
-          # Matches the existing `ollama` Service's selector exactly, so that
-          # Service (unchanged, still owned by the ollama app) picks up these
-          # pods as backends once ollama's own replicas are scaled to 0.
-          labels:
-            app.kubernetes.io/controller: ollama
-            app.kubernetes.io/instance: ollama
-            app.kubernetes.io/name: ollama
           resourceClaims:
             - name: gpu
               resourceClaimTemplateName: ollama-gpu
@@ -70,7 +63,7 @@ spec:
                       - key: app.kubernetes.io/name
                         operator: In
                         values:
-                          - ollama
+                          - "{{ .Release.Name }}"
 
     persistence:
       config:
