@@ -21,6 +21,7 @@ spec:
       APP: ollama
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_STORAGECLASS: ceph-block # explicit override - something resolves the component's default to the stale ceph-block-ext4 otherwise, root cause not found
   sourceRef:
     kind: GitRepository
     name: flux-system
