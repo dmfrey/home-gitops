@@ -11,5 +11,5 @@ resources:
   - ./namespace.yaml
   - ./localai/ks.yaml
   - ./ollama/ks.yaml
-  # - ./ollama-gpu/ks.yaml
+  - ./ollama-gpu/ks.yaml
   - ./openweb/ks.yaml
