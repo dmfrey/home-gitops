@@ -22,7 +22,7 @@ spec:
     controllers:
       ollama:
         type: statefulset
-        replicas: 0 # Swapped for ollama-gpu testing 2026-07-20 - scale back to 1 to revert
+        replicas: 1
 
         annotations:
           reloader.stakater.com/auto: "true"

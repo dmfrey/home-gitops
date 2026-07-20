@@ -22,8 +22,8 @@ spec:
     controllers:
       ollama-gpu:
         type: statefulset
-        # Testing 2026-07-20 - ollama (Intel) scaled to 0 alongside this.
-        replicas: 1
+        # eGPU dock (AOOSTAR AG02) suspected defective, returning for replacement 2026-07-20.
+        replicas: 0
 
         annotations:
           reloader.stakater.com/auto: "true"
