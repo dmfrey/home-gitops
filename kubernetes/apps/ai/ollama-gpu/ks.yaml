@@ -21,7 +21,7 @@ spec:
       APP: ollama-gpu
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 1Gi
-      VOLSYNC_STORAGECLASS: ceph-block # explicit override - something resolves the component's default to the stale ceph-block-ext4 otherwise, root cause not found
+      VOLSYNC_STORAGECLASS: ceph-block-ext4 # keep ext4 for now - XFS on ceph-block suspected of a formatting issue on fresh PVCs, unconfirmed
   sourceRef:
     kind: GitRepository
     name: flux-system
