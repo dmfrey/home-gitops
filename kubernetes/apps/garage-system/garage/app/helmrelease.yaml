@@ -101,6 +101,7 @@ spec:
             data_dir = "/data"
             db_engine = "lmdb"
             metadata_auto_snapshot_interval = "6h"
+            metadata_snapshots_dir = "/data/garage-meta-snapshots"
 
             replication_factor = 1
             compression_level = 2
