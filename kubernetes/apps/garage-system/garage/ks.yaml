@@ -20,7 +20,7 @@ spec:
   postBuild:
     substitute:
       APP: garage
-      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CAPACITY: 20Gi
   prune: true
   sourceRef:
     kind: GitRepository
