@@ -14,6 +14,7 @@ spec:
     podDisruptionBudget:
       enabled: true
       minAvailable: 1
+      maxUnavailable: null
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
