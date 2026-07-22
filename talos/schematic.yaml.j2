@@ -23,10 +23,14 @@ customization:
     # --- System Configuration ---
     - net.ifnames=0
     - tsc=reliable                        # i7-13620H has invariant TSC; skip kernel verification overhead
-    - thunderbolt.host_reset=0            # Preserve BIOS PCIe/BAR sizing on Thunderbolt hotplug; RTX 5070 negotiated PCIe x1 Gen1 instead of x16 Gen5 without this
-    - pcie_ports=native                    # Force kernel-native PCIe hotplug handling instead of firmware/ACPI; suspected cause of "Timeout on hotplug command" errors on AG02 disconnect
-    - pcie_aspm=off                        # Disable PCIe Active State Power Management; suspected cause of AG02 link degrading to Gen1 x1 and dropping
-    - pcie_port_pm=off                     # Disable PCIe port runtime power management; same AG02 investigation
+    # REMOVED 2026-07-22: thunderbolt.host_reset=0, pcie_ports=native, pcie_aspm=off,
+    # pcie_port_pm=off. Added during the RTX 5070/AG02 link-stability investigation but
+    # never conclusively fixed anything - that card's actual problem turned out to be an
+    # unrelated NVIDIA Blackwell GSP-firmware bug (see project_egpu_k8s2 memory). k8s-2
+    # then had 3+ unexplained hard reboots with no eGPU connected while running these
+    # (globally disabling PCIe ASPM/power-management, not just on the Thunderbolt slot);
+    # k8s-0/k8s-1 never had these args and never showed the same instability. Revisit
+    # with real evidence if the RTX 3090 shows genuine link problems.
     # - pci=realloc,hpmmiosize=64M,hpmmioprefsize=8G # REVERTED 2026-07-19: caused a crash on AG02 reconnect severe enough that sd-boot auto-rolled-back the node to the previous UKI entry. Do not re-add without further investigation.
     - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
 
