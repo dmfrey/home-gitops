@@ -25,6 +25,11 @@ data "authentik_group" "grafana_admin" {
   name = "Grafana Admins"
 }
 
+resource "authentik_group" "immich_admin" {
+  name         = "Immich Admins"
+  is_superuser = false
+}
+
 resource "authentik_group" "default" {
   for_each     = local.authentik_groups
   name         = each.value.name
@@ -61,6 +66,7 @@ resource "authentik_user" "Dan" {
   groups = concat(
     [data.authentik_group.admins.id],
     [data.authentik_group.grafana_admin.id],
+    [authentik_group.immich_admin.id],
     values(authentik_group.default)[*].id
   )
 }

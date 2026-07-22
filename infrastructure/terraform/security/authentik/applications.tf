@@ -110,7 +110,8 @@ locals {
         { matching_mode = "strict", url = "https://photos.${var.CLUSTER_DOMAIN}/user-settings" },
         { matching_mode = "strict", url = "app.immich:///oauth-callback" },
       ]
-      launch_url = "https://photos.${var.CLUSTER_DOMAIN}/"
+      launch_url    = "https://photos.${var.CLUSTER_DOMAIN}/"
+      extra_scopes  = [authentik_property_mapping_provider_scope.immich_role.id]
     }
   }
 
@@ -137,6 +138,7 @@ resource "authentik_provider_oauth2" "oauth2" {
     data.authentik_property_mapping_provider_scope.oauth2.ids,
     [authentik_property_mapping_provider_scope.email_verified.id],
     [authentik_property_mapping_provider_scope.groups.id],
+    try(each.value.extra_scopes, []),
   )
   access_token_validity = "hours=4"
   signing_key           = data.authentik_certificate_key_pair.generated.id

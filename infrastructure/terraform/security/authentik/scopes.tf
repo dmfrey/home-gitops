@@ -18,3 +18,14 @@ resource "authentik_property_mapping_provider_scope" "email_verified" {
     }
   EOT
 }
+
+resource "authentik_property_mapping_provider_scope" "immich_role" {
+  name       = "Immich Role Scope"
+  scope_name = "immich_role"
+  description = "Maps Immich Admins group membership to the immich_role claim Immich reads on account creation"
+  expression = <<-EOT
+    return {
+      "immich_role": "admin" if user.groups.filter(name="Immich Admins").exists() else "user",
+    }
+  EOT
+}
