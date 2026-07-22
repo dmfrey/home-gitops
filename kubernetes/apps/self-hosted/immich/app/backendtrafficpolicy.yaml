@@ -10,4 +10,6 @@ spec:
       kind: HTTPRoute
       name: immich
   requestBuffer:
-    limit: 5Gi
+    # Envoy Gateway's hard ceiling is 4294967295 bytes (~4GiB - 1B); 4Gi itself
+    # is one byte over that and gets rejected, so stay comfortably under it.
+    limit: 4000Mi
