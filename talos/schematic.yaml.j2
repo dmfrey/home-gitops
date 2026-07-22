@@ -28,6 +28,7 @@ customization:
     - pcie_aspm=off                        # Disable PCIe Active State Power Management; suspected cause of AG02 link degrading to Gen1 x1 and dropping
     - pcie_port_pm=off                     # Disable PCIe port runtime power management; same AG02 investigation
     # - pci=realloc,hpmmiosize=64M,hpmmioprefsize=8G # REVERTED 2026-07-19: caused a crash on AG02 reconnect severe enough that sd-boot auto-rolled-back the node to the previous UKI entry. Do not re-add without further investigation.
+    - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
 
     # --- Intentionally left disabled ---
     # - elevator=mq-deadline              # Kernel auto-selects per device: none (NVMe), mq-deadline (SATA) — global override would harm NVMe
@@ -42,7 +43,7 @@ customization:
       - siderolabs/nut-client             # Network UPS Tools
       {% if ENV.EGPU %}
       - siderolabs/nvidia-container-toolkit-production # eGPU (k8s-2 only) - exposes NVIDIA GPU to containers
-      - siderolabs/nvidia-open-gpu-kernel-modules-production # eGPU (k8s-2 only) - RTX 5070 (Blackwell) requires the open kernel modules; proprietary driver unsupported on this generation
+      - siderolabs/nvidia-open-gpu-kernel-modules-production # eGPU (k8s-2 only) - RTX 3090 (Ampere); open kernel modules officially support Turing/Ampere/Ada/Blackwell, same extension works across the card swap
       {% endif %}
       - siderolabs/nvme-cli               # NVMe command line tools
       - siderolabs/thunderbolt             # USB4/TB4 PCIe tunneling (planned eGPU)
