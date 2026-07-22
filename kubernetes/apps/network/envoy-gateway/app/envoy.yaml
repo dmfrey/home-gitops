@@ -155,8 +155,12 @@ spec:
     bufferLimit: 4Mi
     maxAcceptPerSocketEvent: 0
   http2:
-    initialStreamWindowSize: 512Ki
-    initialConnectionWindowSize: 8Mi
+    # Raised from 512Ki/8Mi 2026-07-22: large concurrent uploads (Immich/
+    # Google Photos import) were stalling and self-resetting mid-transfer
+    # (http2.remote_reset in Envoy's access log) once several large-file
+    # streams shared the old, low connection-wide window.
+    initialStreamWindowSize: 16Mi
+    initialConnectionWindowSize: 64Mi
     onInvalidMessage: TerminateStream
   http3: {}
   targetSelectors:
