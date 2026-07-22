@@ -9,7 +9,7 @@ metadata:
 
 spec:
 
-  instances: 2
+  instances: 1
   enablePDB: false
   # tensorchord's CNPG-compatible Postgres image with VectorChord pre-installed.
   # Immich requires VectorChord (pgvector alone is not enough for its indexes).
