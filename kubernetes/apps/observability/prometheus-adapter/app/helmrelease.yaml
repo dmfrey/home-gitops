@@ -10,6 +10,20 @@ spec:
     name: prometheus-adapter
   interval: 1h
   values:
+    replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - prometheus-adapter
+            topologyKey: kubernetes.io/hostname
     prometheus:
       url: http://prometheus-operated.observability.svc.cluster.local
       port: 9090
