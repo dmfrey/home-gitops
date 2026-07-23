@@ -6,14 +6,15 @@ machine:
   install:
     diskSelector:
       model: Samsung SSD 870
-    image: factory.talos.dev/installer/ddf18f2131db9f44b9999130d14fc66cf6d32ecabfc0ec0f1b873ee8aea0a937:v1.13.6 # eGPU variant - see `just talos gen-schematic-id-egpu`
+    # TEMPORARY 2026-07-22: running baseline (no nvidia extensions) instead of the eGPU
+    # schematic. With no physical GPU attached, ext-nvidia-persistenced waits forever on
+    # /sys/bus/pci/drivers/nvidia and the node never reaches Talos stage:running (confirmed:
+    # k8s-0/k8s-1 both show stage:running, k8s-2 was stuck at stage:booting for 1h9m+,
+    # retrying startAllServices every ~15s) - a strong candidate for the unexplained reboots.
+    # Switch back to the eGPU schematic (`just talos gen-schematic-id-egpu`) once the RTX
+    # 3090 physically arrives 2026-07-25.
+    image: factory.talos.dev/installer/931ff835d26a210eedb675b15ba07113e811c6e3779766889aafaab7af874f8b:v1.13.6 # baseline - see `just talos gen-schematic-id`
     wipe: false
-  kernel:
-    modules:
-      - name: nvidia        # eGPU - RTX 3090
-      - name: nvidia_uvm    # eGPU - CUDA unified virtual memory
-      - name: nvidia_drm    # eGPU - DRM/KMS integration
-      - name: nvidia_modeset # eGPU - required by the driver even headless
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
