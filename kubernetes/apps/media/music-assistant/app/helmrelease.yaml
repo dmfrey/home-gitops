@@ -98,9 +98,10 @@ spec:
           - "{{ .Release.Name }}.dmfrey.com"
           - music.dmfrey.com
         parentRefs:
+          - name: envoy-external
+            namespace: network
           - name: envoy-internal
             namespace: network
-            sectionName: https
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
