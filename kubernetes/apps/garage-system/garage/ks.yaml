@@ -5,8 +5,11 @@ kind: Kustomization
 metadata:
   name: garage
 spec:
-  components:
-    - ../../../../components/volsync
+  # NOTE: components/volsync was dropped here. It assumed a single existingClaim
+  # PVC named after the release ("garage"), which no longer matches: the meta
+  # volume is now a per-replica StatefulSet volumeClaimTemplate, so Kubernetes
+  # names the 3 PVCs meta-garage-0/1/2 instead. See the PR description for the
+  # open decision on what (if anything) should back up these PVCs going forward.
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -17,10 +20,6 @@ spec:
   #     namespace: garage-system
   interval: 1h
   path: "./kubernetes/apps/garage-system/garage/app"
-  postBuild:
-    substitute:
-      APP: garage
-      VOLSYNC_CAPACITY: 20Gi
   prune: true
   sourceRef:
     kind: GitRepository
