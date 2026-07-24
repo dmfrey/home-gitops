@@ -105,6 +105,8 @@ spec:
             protocol: TCP
     serviceMonitor:
       app:
+        service:
+          identifier: app
         endpoints:
           - port: admin
             path: /metrics
