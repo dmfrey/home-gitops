@@ -40,22 +40,21 @@ customization:
     # - pci=realloc,hpmmiosize=64M,hpmmioprefsize=8G # REVERTED 2026-07-19: caused a crash on AG02 reconnect severe enough that sd-boot auto-rolled-back the node to the previous UKI entry. Do not re-add without further investigation.
     # 2026-07-25: thunderbolt.host_reset=0 alone did not fix the hotplug command 0x1038
     # timeout (still reproduces, ~9-20s after link-up, regardless of dock-before-node vs
-    # hotplug-after-boot sequencing - both tested). Adding pci=realloc,assign-busses next,
-    # stacked on top of host_reset=0, as the next isolated variable - forces the kernel to
-    # renumber/reassign PCI bus numbers instead of trusting the AG02/ASM2464 bridge's
-    # firmware-assigned bus range, which is one plausible trigger for the dock's downstream
-    # hotplug controller command timeout.
-    - pci=realloc,assign-busses
-    # pcie_aspm=off and pcie_port_pm=off were also stacked on 2026-07-25 and then
-    # REVERTED the same day: with both active, the dock never even reached PCIe
-    # hotplug (no pciehp/Card present/Link Up messages at all, across 2 reseat
-    # attempts on both TB4 root ports) - it died earlier, at the Thunderbolt
-    # retimer/tunnel-negotiation stage, ~11-12s after "new retimer found". That's
-    # a regression from thunderbolt.host_reset=0 + pci=realloc,assign-busses alone,
-    # which at least reached full PCIe enumeration before failing later at the
-    # hotplug command. Suspect PCIe port link-power-state management is required
-    # during Thunderbolt tunnel bring-up, and globally disabling it breaks that
-    # negotiation. Do not re-add without further isolation (test one at a time).
+    # hotplug-after-boot sequencing - both tested). Also tried, same day, all REVERTED:
+    #   - pci=realloc,assign-busses (stacked on host_reset=0): inconsistent - one retest
+    #     reached full GPU enumeration + BAR assignment then hit the same hotplug 0x1038
+    #     timeout ~9-20s later; another retest with identical args reached Link Up but
+    #     never enumerated the GPU at all, then disconnected cleanly ~47s in with no
+    #     timeout logged. No consistent improvement over host_reset=0 alone.
+    #   - pcie_aspm=off + pcie_port_pm=off (stacked on the above): regressed further -
+    #     dock never even reached PCIe hotplug (no pciehp/Card present/Link Up at all,
+    #     2 attempts, both TB4 root ports), dying earlier at Thunderbolt retimer/tunnel
+    #     negotiation ~11-12s after "new retimer found". Suspect PCIe port link-power-
+    #     state management is required during Thunderbolt tunnel bring-up.
+    # Getting 3 distinct failure signatures from runs with identical kernel args points
+    # to genuine hardware-level flakiness on the dock's ASM2464 bridge, not something a
+    # single kernel arg reliably fixes. Paused here - back to host_reset=0 only pending
+    # further ideas. Do not re-add without a clear new hypothesis to test in isolation.
     - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
 
     # --- Intentionally left disabled ---

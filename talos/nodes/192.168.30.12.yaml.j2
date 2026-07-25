@@ -12,13 +12,12 @@ machine:
     # schematic.yaml.j2's thunderbolt.host_reset=0 re-add) before also introducing the
     # NVIDIA driver extensions as a second variable. Switch to `just talos
     # gen-schematic-id-egpu` once the dock holds a stable connection.
-    # thunderbolt.host_reset=0 alone did not fix the hotplug command 0x1038 timeout
-    # (confirmed on both hotplug-after-boot and dock-before-node sequencing); testing
-    # pci=realloc,assign-busses stacked on top of it. pcie_aspm=off + pcie_port_pm=off
-    # were also tried and REVERTED same day - regressed the failure to an earlier stage
-    # (dies at Thunderbolt tunnel negotiation, never reaches PCIe hotplug at all). See
-    # schematic.yaml.j2 for detail.
-    image: factory.talos.dev/installer/6a4cb937a30153aafac99f07f7f2a3f8be4534a7c5ac7e12632a86c7b0ec9b24:v1.13.7 # baseline + thunderbolt.host_reset=0 + pci=realloc,assign-busses test - see `just talos gen-schematic-id`
+    # thunderbolt.host_reset=0 alone did not fix the hotplug command 0x1038 timeout, but
+    # pci=realloc,assign-busses, pcie_aspm=off, and pcie_port_pm=off were all tried and
+    # REVERTED same day (2026-07-25) - none improved on it, and the power-management args
+    # actively regressed the failure to an earlier stage. Paused back at host_reset=0
+    # only pending a new hypothesis. See schematic.yaml.j2 for full detail.
+    image: factory.talos.dev/installer/f004cb640e7e5c5cd0ba24a52737bad905b08bdd45451ae29886b5b689170ec2:v1.13.7 # baseline + thunderbolt.host_reset=0 test - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
