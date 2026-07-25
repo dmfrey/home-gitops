@@ -1,0 +1,65 @@
+---
+# Static per-replica NFS PersistentVolumes for Garage's object data. NFS volumes
+# don't get per-ordinal templating the way StatefulSet volumeClaimTemplates give
+# Ceph PVCs (see the "meta" volumeClaimTemplate in helmrelease.yaml) — each of
+# these is pre-bound via claimRef to the specific PVC name that ordinal's
+# volumeClaimTemplate will generate (data-garage-0/1/2), so each pod deterministically
+# gets its own NFS export instead of accidentally sharing one.
+#
+# garage-0 reuses the existing /garage export (already holds all current live
+# data — no migration needed for this volume). garage-1/garage-2 are new, empty
+# exports on a different NFS volume (more free space); Garage's own replication
+# will populate them once the 3-node layout is applied.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: garage-data-0
+spec:
+  capacity:
+    storage: 248Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.internal
+    path: /garage
+  claimRef:
+    name: data-garage-0
+    namespace: garage-system
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: garage-data-1
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.internal
+    path: /garage-1
+  claimRef:
+    name: data-garage-1
+    namespace: garage-system
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: garage-data-2
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.internal
+    path: /garage-2
+  claimRef:
+    name: data-garage-2
+    namespace: garage-system

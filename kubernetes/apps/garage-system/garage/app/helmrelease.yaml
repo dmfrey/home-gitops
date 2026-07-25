@@ -10,11 +10,43 @@ spec:
     name: garage
   interval: 1h
   values:
+    global:
+      createDefaultServiceAccount: false
     controllers:
       garage:
         type: statefulset
+        replicas: 3
         annotations:
           reloader.stakater.com/auto: "true"
+        statefulset:
+          # Governing headless Service for stable per-pod DNS (garage-0.garage-headless...),
+          # used for RPC peer discovery instead of a hardcoded rpc_public_addr.
+          serviceName:
+            identifier: headless
+          volumeClaimTemplates:
+            - name: meta
+              size: 20Gi
+              accessMode: ReadWriteOnce
+              storageClass: ceph-block
+              globalMounts:
+                - path: /meta
+            - name: data
+              # 200Gi request matches the smaller of the 3 static PVs (garage-1/garage-2,
+              # 200Gi each on the multimedia NFS volume with 1.26Ti free) — garage-0's PV
+              # (248Gi, its existing /garage export, 159Gi free today) has more headroom
+              # than this ever requests, which is fine (a PVC only needs request <= PV
+              # capacity, not equal). storageClass: "" means don't dynamically provision;
+              # bind to the pre-created static PV in data-pv.yaml instead, matched by
+              # claimRef per ordinal (data-garage-0/1/2). This whole NFS-static-PV setup
+              # is a stopgap: the QNAP is near capacity, expect to redo this once the
+              # planned Unifi UNAS Pro 4 migration lands.
+              size: 200Gi
+              accessMode: ReadWriteMany
+              storageClass: ""
+              globalMounts:
+                - path: /data
+        serviceAccount:
+          identifier: garage
         containers:
           app:
             image:
@@ -58,6 +90,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -67,13 +100,24 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
+        # Keep the existing Service name so the HTTPRoute backendRef below doesn't break
+        # now that a second (headless) Service is being added.
+        forceRename: garage
         ports:
           s3:
             port: &port 3900
           admin:
             port: 3903
+      headless:
+        clusterIP: None
+        ports:
+          rpc:
+            port: 3901
+            protocol: TCP
     serviceMonitor:
       app:
+        service:
+          identifier: app
         endpoints:
           - port: admin
             path: /metrics
@@ -103,11 +147,22 @@ spec:
             metadata_auto_snapshot_interval = "6h"
             metadata_snapshots_dir = "/data/garage-meta-snapshots"
 
-            replication_factor = 1
+            replication_factor = 3
+            consistency_mode = "consistent"
             compression_level = 2
 
             rpc_bind_addr = "[::]:3901"
-            rpc_public_addr = "127.0.0.1:3901"
+            # No static rpc_public_addr: it can't be pod-specific in a single shared
+            # ConfigMap mounted by all 3 replicas. Instead, filter autodiscovery (via
+            # kubernetes_discovery below) to the cluster's pod CIDR.
+            rpc_public_addr_subnet = "10.42.0.0/16"
+
+            [kubernetes_discovery]
+            namespace = "garage-system"
+            service_name = "garage"
+            # CRD is Flux-managed (see crd.yaml) so garage's ServiceAccount doesn't need
+            # cluster-wide customresourcedefinitions RBAC, only verbs on garagenodes itself.
+            skip_crd = true
 
             [s3_api]
             s3_region = "us-east-1"
@@ -125,13 +180,7 @@ spec:
           - path: /etc/garage.toml
             subPath: configuration.toml
             readOnly: true
-      data:
-        type: nfs
-        server: nas.internal
-        path: /garage
-        globalMounts:
-          - path: /data
-      meta:
-        existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir
+    serviceAccount:
+      garage: {}
