@@ -46,6 +46,12 @@ customization:
     # firmware-assigned bus range, which is one plausible trigger for the dock's downstream
     # hotplug controller command timeout.
     - pci=realloc,assign-busses
+    # Re-adding pcie_aspm=off only (not pcie_ports=native or pcie_port_pm=off) alongside
+    # the above, stacked in the same test round - disables PCIe Active State Power
+    # Management, another plausible trigger for a downstream hotplug controller command
+    # timing out on a bridge chip. Watch for the k8s-2 hard-reboot-with-no-eGPU-attached
+    # regression seen in the 2026-07-22 test before concluding this is safe long-term.
+    - pcie_aspm=off
     - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
 
     # --- Intentionally left disabled ---

@@ -14,8 +14,8 @@ machine:
     # gen-schematic-id-egpu` once the dock holds a stable connection.
     # thunderbolt.host_reset=0 alone did not fix the hotplug command 0x1038 timeout
     # (confirmed on both hotplug-after-boot and dock-before-node sequencing); now also
-    # testing pci=realloc,assign-busses stacked on top of it.
-    image: factory.talos.dev/installer/6a4cb937a30153aafac99f07f7f2a3f8be4534a7c5ac7e12632a86c7b0ec9b24:v1.13.7 # baseline + thunderbolt.host_reset=0 + pci=realloc,assign-busses test - see `just talos gen-schematic-id`
+    # testing pci=realloc,assign-busses and pcie_aspm=off stacked on top of it.
+    image: factory.talos.dev/installer/d06360a3d7d92435f37288c509bbcafda2e275799ac489b216193eb3421be7dc:v1.13.7 # baseline + thunderbolt.host_reset=0 + pci=realloc,assign-busses + pcie_aspm=off test - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
