@@ -23,14 +23,20 @@ customization:
     # --- System Configuration ---
     - net.ifnames=0
     - tsc=reliable                        # i7-13620H has invariant TSC; skip kernel verification overhead
-    # REMOVED 2026-07-22: thunderbolt.host_reset=0, pcie_ports=native, pcie_aspm=off,
-    # pcie_port_pm=off. Added during the RTX 5070/AG02 link-stability investigation but
-    # never conclusively fixed anything - that card's actual problem turned out to be an
-    # unrelated NVIDIA Blackwell GSP-firmware bug (see project_egpu_k8s2 memory). k8s-2
-    # then had 3+ unexplained hard reboots with no eGPU connected while running these
-    # (globally disabling PCIe ASPM/power-management, not just on the Thunderbolt slot);
-    # k8s-0/k8s-1 never had these args and never showed the same instability. Revisit
-    # with real evidence if the RTX 3090 shows genuine link problems.
+    # pcie_ports=native, pcie_aspm=off, pcie_port_pm=off remain REMOVED (2026-07-22):
+    # added during the RTX 5070/AG02 link-stability investigation, never conclusively
+    # fixed anything (that card's actual problem was an unrelated NVIDIA Blackwell
+    # GSP-firmware bug, see project_egpu_k8s2 memory), and k8s-2 had 3+ unexplained
+    # hard reboots with no eGPU connected while running these (globally disabling
+    # PCIe ASPM/power-management, not just the Thunderbolt slot); k8s-0/k8s-1 never
+    # had these args and never showed the same instability.
+    # RE-ADDED 2026-07-25: thunderbolt.host_reset=0 only (not the 3 args above), as
+    # an isolated test. RTX 3090 in the eGPU dock now shows a real, reproducible
+    # link problem independent of authorization/drivers: PCIe hotplug command 0x1038
+    # times out on the dock's own downstream switch port ~12-20s after a clean
+    # connect + full enumeration, on both TB4 root ports, surviving a cable reseat.
+    # This is the "genuine link problems" evidence the above removal called for.
+    - thunderbolt.host_reset=0             # Preserve BIOS PCIe/BAR config on Thunderbolt hotplug reset; testing in isolation against the RTX 3090's hotplug command timeout
     # - pci=realloc,hpmmiosize=64M,hpmmioprefsize=8G # REVERTED 2026-07-19: caused a crash on AG02 reconnect severe enough that sd-boot auto-rolled-back the node to the previous UKI entry. Do not re-add without further investigation.
     - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
 

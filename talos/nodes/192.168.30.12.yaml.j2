@@ -6,14 +6,13 @@ machine:
   install:
     diskSelector:
       model: Samsung SSD 870
-    # TEMPORARY 2026-07-22: running baseline (no nvidia extensions) instead of the eGPU
-    # schematic. With no physical GPU attached, ext-nvidia-persistenced waits forever on
-    # /sys/bus/pci/drivers/nvidia and the node never reaches Talos stage:running (confirmed:
-    # k8s-0/k8s-1 both show stage:running, k8s-2 was stuck at stage:booting for 1h9m+,
-    # retrying startAllServices every ~15s) - a strong candidate for the unexplained reboots.
-    # Switch back to the eGPU schematic (`just talos gen-schematic-id-egpu`) once the RTX
-    # 3090 physically arrives 2026-07-25.
-    image: factory.talos.dev/installer/931ff835d26a210eedb675b15ba07113e811c6e3779766889aafaab7af874f8b:v1.13.7 # baseline - see `just talos gen-schematic-id`
+    # 2026-07-25: RTX 3090 physically arrived and is plugged into the eGPU dock, but
+    # still running the baseline (no nvidia extensions) schematic, not the eGPU one yet -
+    # deliberately testing Thunderbolt link stability in isolation first (see
+    # schematic.yaml.j2's thunderbolt.host_reset=0 re-add) before also introducing the
+    # NVIDIA driver extensions as a second variable. Switch to `just talos
+    # gen-schematic-id-egpu` once the dock holds a stable connection.
+    image: factory.talos.dev/installer/f004cb640e7e5c5cd0ba24a52737bad905b08bdd45451ae29886b5b689170ec2:v1.13.7 # baseline + thunderbolt.host_reset=0 test - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
