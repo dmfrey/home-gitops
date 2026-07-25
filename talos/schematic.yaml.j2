@@ -46,16 +46,16 @@ customization:
     # firmware-assigned bus range, which is one plausible trigger for the dock's downstream
     # hotplug controller command timeout.
     - pci=realloc,assign-busses
-    # Re-adding pcie_aspm=off alongside the above, stacked in the same test round -
-    # disables PCIe Active State Power Management, another plausible trigger for a
-    # downstream hotplug controller command timing out on a bridge chip. Watch for the
-    # k8s-2 hard-reboot-with-no-eGPU-attached regression seen in the 2026-07-22 test
-    # before concluding this is safe long-term.
-    - pcie_aspm=off
-    # Also re-adding pcie_port_pm=off (disables PCIe port runtime power management),
-    # the third of the original 3 removed args. pcie_ports=native remains excluded -
-    # not requested for this round. Same regression caveat as pcie_aspm=off above.
-    - pcie_port_pm=off
+    # pcie_aspm=off and pcie_port_pm=off were also stacked on 2026-07-25 and then
+    # REVERTED the same day: with both active, the dock never even reached PCIe
+    # hotplug (no pciehp/Card present/Link Up messages at all, across 2 reseat
+    # attempts on both TB4 root ports) - it died earlier, at the Thunderbolt
+    # retimer/tunnel-negotiation stage, ~11-12s after "new retimer found". That's
+    # a regression from thunderbolt.host_reset=0 + pci=realloc,assign-busses alone,
+    # which at least reached full PCIe enumeration before failing later at the
+    # hotplug command. Suspect PCIe port link-power-state management is required
+    # during Thunderbolt tunnel bring-up, and globally disabling it breaks that
+    # negotiation. Do not re-add without further isolation (test one at a time).
     - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
 
     # --- Intentionally left disabled ---

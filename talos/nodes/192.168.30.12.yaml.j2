@@ -13,10 +13,12 @@ machine:
     # NVIDIA driver extensions as a second variable. Switch to `just talos
     # gen-schematic-id-egpu` once the dock holds a stable connection.
     # thunderbolt.host_reset=0 alone did not fix the hotplug command 0x1038 timeout
-    # (confirmed on both hotplug-after-boot and dock-before-node sequencing); now also
-    # testing pci=realloc,assign-busses, pcie_aspm=off, and pcie_port_pm=off stacked on
-    # top of it. pcie_ports=native remains excluded.
-    image: factory.talos.dev/installer/4d6d4728caf2ac4db0d9ca85acb8ece573a9f342e05283c96f97448a47552fdb:v1.13.7 # baseline + thunderbolt.host_reset=0 + pci=realloc,assign-busses + pcie_aspm=off + pcie_port_pm=off test - see `just talos gen-schematic-id`
+    # (confirmed on both hotplug-after-boot and dock-before-node sequencing); testing
+    # pci=realloc,assign-busses stacked on top of it. pcie_aspm=off + pcie_port_pm=off
+    # were also tried and REVERTED same day - regressed the failure to an earlier stage
+    # (dies at Thunderbolt tunnel negotiation, never reaches PCIe hotplug at all). See
+    # schematic.yaml.j2 for detail.
+    image: factory.talos.dev/installer/6a4cb937a30153aafac99f07f7f2a3f8be4534a7c5ac7e12632a86c7b0ec9b24:v1.13.7 # baseline + thunderbolt.host_reset=0 + pci=realloc,assign-busses test - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
