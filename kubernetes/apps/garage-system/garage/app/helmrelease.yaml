@@ -30,6 +30,21 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /meta
+            - name: data
+              # 200Gi request matches the smaller of the 3 static PVs (garage-1/garage-2,
+              # 200Gi each on the multimedia NFS volume with 1.26Ti free) — garage-0's PV
+              # (248Gi, its existing /garage export, 159Gi free today) has more headroom
+              # than this ever requests, which is fine (a PVC only needs request <= PV
+              # capacity, not equal). storageClass: "" means don't dynamically provision;
+              # bind to the pre-created static PV in data-pv.yaml instead, matched by
+              # claimRef per ordinal (data-garage-0/1/2). This whole NFS-static-PV setup
+              # is a stopgap: the QNAP is near capacity, expect to redo this once the
+              # planned Unifi UNAS Pro 4 migration lands.
+              size: 200Gi
+              accessMode: ReadWriteMany
+              storageClass: ""
+              globalMounts:
+                - path: /data
         serviceAccount:
           identifier: garage
         containers:
@@ -40,10 +55,6 @@ spec:
             env:
               RUST_LOG: "garage=debug"
               TZ: America/New_York
-              # Used to give each replica's shared-NFS data dir its own subPath (see persistence.data below).
-              POD_NAME:
-                fieldRef:
-                  fieldPath: metadata.name
             envFrom:
               - secretRef:
                   name: garage-secret
@@ -169,15 +180,6 @@ spec:
           - path: /etc/garage.toml
             subPath: configuration.toml
             readOnly: true
-      data:
-        type: nfs
-        server: nas.internal
-        path: /garage
-        globalMounts:
-          # Same NFS export shared by all 3 replicas, but each pod gets its own
-          # subdirectory so they don't write into each other's data blocks.
-          - path: /data
-            subPathExpr: "$(POD_NAME)"
       tmp:
         type: emptyDir
     serviceAccount:
