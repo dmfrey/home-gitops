@@ -9,3 +9,5 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./rbac.yaml
+  - ./replicationsource.yaml
+  - ./volsync-externalsecret.yaml

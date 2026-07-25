@@ -8,8 +8,10 @@ spec:
   # NOTE: components/volsync was dropped here. It assumed a single existingClaim
   # PVC named after the release ("garage"), which no longer matches: the meta
   # volume is now a per-replica StatefulSet volumeClaimTemplate, so Kubernetes
-  # names the 3 PVCs meta-garage-0/1/2 instead. See the PR description for the
-  # open decision on what (if anything) should back up these PVCs going forward.
+  # names the 3 PVCs meta-garage-0/1/2 instead. Only meta-garage-0 is backed up,
+  # via a standalone ReplicationSource in app/ (not the shared component, since
+  # its pvc.yaml/bootstrap-restore pattern assumes a single app-wide PVC that
+  # doesn't apply here) — see app/replicationsource.yaml.
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph

@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: garage
+spec:
+  # Only meta-garage-0 is backed up (belt-and-suspenders insurance), not all 3
+  # per-replica meta PVCs. With replication_factor=3, the normal recovery path
+  # for a corrupted/lost node's metadata is now to evict it from the layout and
+  # let it resync a fresh copy from the other 2 healthy replicas, not restore
+  # from Kopia. Keeping the same ReplicationSource name ("garage") preserves
+  # the existing Kopia source identity/history (garage@garage-system:/data)
+  # from before this migration.
+  sourcePVC: meta-garage-0
+  trigger:
+    schedule: "0 * * * *"
+  kopia:
+    accessModes:
+      - ReadWriteOnce
+    compression: zstd-fastest
+    copyMethod: Snapshot
+    moverAffinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/created-by: volsync
+              topologyKey: kubernetes.io/hostname
+    moverResources:
+      requests:
+        cpu: 100m
+        memory: 2Gi
+      limits:
+        cpu: 500m
+        memory: 8Gi
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    parallelism: 2
+    repository: garage-volsync-secret
+    retain:
+      hourly: 24
+      daily: 7
+    storageClassName: ceph-block-ext4
+    volumeSnapshotClassName: csi-ceph-blockpool
