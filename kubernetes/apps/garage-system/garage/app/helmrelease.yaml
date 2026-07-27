@@ -45,6 +45,23 @@ spec:
               storageClass: ""
               globalMounts:
                 - path: /data
+        pod:
+          # Required, not preferred: RF=3 with one zone per node only provides real
+          # fault tolerance if the 3 replicas actually land on 3 distinct nodes. Without
+          # this, Kubernetes is free to co-locate 2+ replicas on one node, and a single
+          # node hiccup can then drop the cluster below quorum (found 2026-07-27: garage-0
+          # and garage-2 both landed on k8s-0, and a brief blip there caused a barman-cloud
+          # backup's catalog-list step to fail with "Could not reach quorum of 2").
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - "{{ .Release.Name }}"
         serviceAccount:
           identifier: garage
         containers:
