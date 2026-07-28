@@ -13,23 +13,21 @@ machine:
     # worse and were reverted the same day. See schematic.yaml.j2 for full history.
     # 2026-07-28: swapped to a PELADN Link S-3 dock (Intel Barlow Ridge JHL9480 TB5
     # controller, not ASMedia) - RTX 3090 enumerated cleanly and held the link with zero
-    # disconnects, already far more stable than any AG02 attempt. Switching to the eGPU
-    # schematic (NVIDIA driver extensions) now that the link itself is confirmed solid.
-    image: factory.talos.dev/installer/82d9f23333d2b1b96f49b3a0bc2369965dc557bb989aeb1d2360fb54afddf9c2:v1.13.7 # eGPU schematic (thunderbolt.host_reset=0 + nvidia extensions) - see `just talos gen-schematic-id-egpu`
+    # disconnects while running the baseline schematic, far more stable than any AG02
+    # attempt. Tried switching to the eGPU schematic (NVIDIA driver extensions) the same
+    # day and reverted it: `ext-nvidia-persistenced` blocks the entire boot on
+    # /sys/bus/pci/drivers/nvidia existing, which only appears after a *successful*
+    # nvidia.ko load - and nvidia.ko doesn't register-and-wait for a device to show up
+    # later, it actively probes for a GPU at insmod time and hard-fails (ENODEV) if none
+    # is present yet. Forcing it via machine.kernel.modules just produces an infinite
+    # retry loop when the dock isn't linked up yet at that point in boot, and even with
+    # the GPU connected the node repeatedly went from briefly-reachable back to fully
+    # unresponsive. This is a real design mismatch between Talos's NVIDIA extension
+    # (assumes an always-present GPU) and a Thunderbolt-hotplugged one - needs proper
+    # research before trying again, not another live iteration. Back on the baseline
+    # (link-stability-only) schematic for now; the PELADN link itself is proven solid.
+    image: factory.talos.dev/installer/f004cb640e7e5c5cd0ba24a52737bad905b08bdd45451ae29886b5b689170ec2:v1.13.7 # baseline + thunderbolt.host_reset=0 test - see `just talos gen-schematic-id`
     wipe: false
-  kernel:
-    modules:
-      # The RTX 3090 is behind a Thunderbolt-hotplugged dock, so it isn't present on the
-      # PCI bus until well after early boot's udev coldplug/modalias-autoload pass has
-      # already run - the nvidia.ko module's normal autoload trigger never fires, and
-      # ext-nvidia-persistenced hangs forever waiting on /sys/bus/pci/drivers/nvidia to
-      # exist (2026-07-28, first eGPU-schematic boot). Force-loading it here unconditionally
-      # means the PCI core will bind it automatically once the GPU actually appears,
-      # regardless of when the Thunderbolt tunnel comes up.
-      - name: nvidia
-      - name: nvidia_uvm
-      - name: nvidia_modeset
-      - name: nvidia_drm
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
