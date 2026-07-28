@@ -29,6 +29,19 @@ machine:
     # No machine.kernel.modules block this time either.
     image: factory.talos.dev/installer/7d56465fc23be23c5c2f2bcb9f604592ff0b781241406cba8b30e9b1dc4f70b7:v1.13.7 # eGPU schematic, thunderbolt.host_reset=0 + nvidia unsupported-gpu flag both disabled - see `just talos gen-schematic-id-egpu`
     wipe: false
+  kernel:
+    modules:
+      # Third attempt, same day: the official Talos NVIDIA GPU doc recommends exactly
+      # this block (all 4 modules, including nvidia_drm this time). The earlier attempt
+      # with this same config produced an infinite retry loop because the dock wasn't
+      # connected at boot - nvidia.ko probes for a GPU at insmod time and hard-fails if
+      # none is present, it doesn't register-and-wait. Retrying now with the dock already
+      # connected and the link confirmed stable before the reboot, so modprobe should
+      # succeed on the first attempt instead of looping.
+      - name: nvidia
+      - name: nvidia_uvm
+      - name: nvidia_drm
+      - name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
