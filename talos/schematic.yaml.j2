@@ -36,7 +36,11 @@ customization:
     # times out on the dock's own downstream switch port ~12-20s after a clean
     # connect + full enumeration, on both TB4 root ports, surviving a cable reseat.
     # This is the "genuine link problems" evidence the above removal called for.
-    - thunderbolt.host_reset=0             # Preserve BIOS PCIe/BAR config on Thunderbolt hotplug reset; testing in isolation against the RTX 3090's hotplug command timeout
+    # 2026-07-28: commented out for a test with the PELADN Link S-3 (Intel Barlow Ridge
+    # TB5 controller) - the AG02/ASM2464 hotplug timeout this was targeting is specific
+    # to that dock's bridge chip, not present with the Link S-3, so this may not be
+    # needed anymore. Re-enable if the Link S-3 shows the same link problems.
+    # - thunderbolt.host_reset=0             # Preserve BIOS PCIe/BAR config on Thunderbolt hotplug reset; testing in isolation against the RTX 3090's hotplug command timeout
     # - pci=realloc,hpmmiosize=64M,hpmmioprefsize=8G # REVERTED 2026-07-19: caused a crash on AG02 reconnect severe enough that sd-boot auto-rolled-back the node to the previous UKI entry. Do not re-add without further investigation.
     # 2026-07-25: thunderbolt.host_reset=0 alone did not fix the hotplug command 0x1038
     # timeout (still reproduces, ~9-20s after link-up, regardless of dock-before-node vs
@@ -55,7 +59,10 @@ customization:
     # to genuine hardware-level flakiness on the dock's ASM2464 bridge, not something a
     # single kernel arg reliably fixes. Paused here - back to host_reset=0 only pending
     # further ideas. Do not re-add without a clear new hypothesis to test in isolation.
-    - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
+    # 2026-07-28: commented out to test whether the 595.71.05 open-gpu-kernel-modules
+    # build actually still requires this for the RTX 3090 (Ampere) - driver release notes
+    # for recent versions suggest broader consumer-card support may no longer need it.
+    # - nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 # Open kernel modules on consumer GeForce cards (RTX 3090/Ampere) have historically needed this to enable at all; harmless no-op if the driver no longer checks it
 
     # --- Intentionally left disabled ---
     # - elevator=mq-deadline              # Kernel auto-selects per device: none (NVMe), mq-deadline (SATA) — global override would harm NVMe

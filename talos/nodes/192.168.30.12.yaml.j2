@@ -14,19 +14,20 @@ machine:
     # 2026-07-28: swapped to a PELADN Link S-3 dock (Intel Barlow Ridge JHL9480 TB5
     # controller, not ASMedia) - RTX 3090 enumerated cleanly and held the link with zero
     # disconnects while running the baseline schematic, far more stable than any AG02
-    # attempt. Tried switching to the eGPU schematic (NVIDIA driver extensions) the same
-    # day and reverted it: `ext-nvidia-persistenced` blocks the entire boot on
+    # attempt. First eGPU-schematic attempt (NVIDIA driver extensions) was reverted the
+    # same day: `ext-nvidia-persistenced` blocks the entire boot on
     # /sys/bus/pci/drivers/nvidia existing, which only appears after a *successful*
     # nvidia.ko load - and nvidia.ko doesn't register-and-wait for a device to show up
     # later, it actively probes for a GPU at insmod time and hard-fails (ENODEV) if none
-    # is present yet. Forcing it via machine.kernel.modules just produces an infinite
-    # retry loop when the dock isn't linked up yet at that point in boot, and even with
-    # the GPU connected the node repeatedly went from briefly-reachable back to fully
-    # unresponsive. This is a real design mismatch between Talos's NVIDIA extension
-    # (assumes an always-present GPU) and a Thunderbolt-hotplugged one - needs proper
-    # research before trying again, not another live iteration. Back on the baseline
-    # (link-stability-only) schematic for now; the PELADN link itself is proven solid.
-    image: factory.talos.dev/installer/f004cb640e7e5c5cd0ba24a52737bad905b08bdd45451ae29886b5b689170ec2:v1.13.7 # baseline + thunderbolt.host_reset=0 test - see `just talos gen-schematic-id`
+    # is present yet. Forcing it via machine.kernel.modules produced an infinite retry
+    # loop when the dock wasn't linked up yet at that point in boot. The correct fix
+    # (a machine.udev.rules entry triggering modprobe on the PCI hotplug "add" event,
+    # instead of machine.kernel.modules) is still pending - not yet added.
+    # Second attempt, same day: retrying the eGPU schematic with thunderbolt.host_reset=0
+    # and nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 both commented out in
+    # schematic.yaml.j2, to isolate whether either was contributing to the instability.
+    # No machine.kernel.modules block this time either.
+    image: factory.talos.dev/installer/7d56465fc23be23c5c2f2bcb9f604592ff0b781241406cba8b30e9b1dc4f70b7:v1.13.7 # eGPU schematic, thunderbolt.host_reset=0 + nvidia unsupported-gpu flag both disabled - see `just talos gen-schematic-id-egpu`
     wipe: false
 ---
 apiVersion: v1alpha1
