@@ -17,6 +17,16 @@ machine:
     # schematic (NVIDIA driver extensions) now that the link itself is confirmed solid.
     image: factory.talos.dev/installer/82d9f23333d2b1b96f49b3a0bc2369965dc557bb989aeb1d2360fb54afddf9c2:v1.13.7 # eGPU schematic (thunderbolt.host_reset=0 + nvidia extensions) - see `just talos gen-schematic-id-egpu`
     wipe: false
+  kernel:
+    modules:
+      # The RTX 3090 is behind a Thunderbolt-hotplugged dock, so it isn't present on the
+      # PCI bus until well after early boot's udev coldplug/modalias-autoload pass has
+      # already run - the nvidia.ko module's normal autoload trigger never fires, and
+      # ext-nvidia-persistenced hangs forever waiting on /sys/bus/pci/drivers/nvidia to
+      # exist (2026-07-28, first eGPU-schematic boot). Force-loading it here unconditionally
+      # means the PCI core will bind it automatically once the GPU actually appears,
+      # regardless of when the Thunderbolt tunnel comes up.
+      - name: nvidia
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
