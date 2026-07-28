@@ -31,16 +31,19 @@ machine:
     wipe: false
   kernel:
     modules:
-      # Third attempt, same day: the official Talos NVIDIA GPU doc recommends exactly
-      # this block (all 4 modules, including nvidia_drm this time). The earlier attempt
-      # with this same config produced an infinite retry loop because the dock wasn't
-      # connected at boot - nvidia.ko probes for a GPU at insmod time and hard-fails if
-      # none is present, it doesn't register-and-wait. Retrying now with the dock already
-      # connected and the link confirmed stable before the reboot, so modprobe should
-      # succeed on the first attempt instead of looping.
+      # Third attempt, same day: tried the official Talos doc's full 4-module block
+      # (including nvidia_drm) with the dock already connected and the link stable.
+      # All 4 modules loaded successfully (NVRM init, nvidia-modeset, nvidia-drm all
+      # logged clean loads, GPU ID recognized) and ext-nvidia-persistenced/cdi-gen both
+      # came up - but the node then hard-hung shortly after, unresponsive to both the
+      # network and the physical console/keyboard, needing a manual power cycle. This
+      # is the second time this exact pattern happened only when nvidia_drm was
+      # included (the earlier 3-module attempt, without nvidia_drm, loaded cleanly with
+      # no hang). nvidia_drm likely conflicts with i915's active console/framebuffer
+      # ownership on this system. Dropped back to the 3 modules that don't touch DRM/KMS -
+      # not needed for headless container/compute workloads anyway.
       - name: nvidia
       - name: nvidia_uvm
-      - name: nvidia_drm
       - name: nvidia_modeset
 ---
 apiVersion: v1alpha1
