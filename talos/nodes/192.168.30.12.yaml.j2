@@ -27,24 +27,21 @@ machine:
     # and nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 both commented out in
     # schematic.yaml.j2, to isolate whether either was contributing to the instability.
     # No machine.kernel.modules block this time either.
+    # machine.kernel.modules was tried 3 times on 2026-07-28 and removed again each time:
+    #   1. Dock not connected at boot -> infinite ENODEV retry loop (nvidia.ko probes for
+    #      a GPU at insmod time, doesn't register-and-wait for hotplug).
+    #   2. Dock connected, all 4 modules incl. nvidia_drm -> loaded clean, GPU recognized,
+    #      then hard-hung the whole node minutes later (needed a manual power cycle).
+    #      Suspected nvidia_drm vs i915 console/framebuffer conflict.
+    #   3. Dock disconnected again, only 3 modules (no nvidia_drm) -> went NotReady/
+    #      unresponsive again after ~2 minutes anyway, so the retry loop itself is
+    #      apparently enough to destabilize this node, not just a successful nvidia_drm
+    #      load. Not safe to leave running unattended either way.
+    # Removed entirely. Next attempt should use machine.udev.rules to trigger modprobe
+    # only on the actual PCI hotplug "add" event for vendor 0x10de, instead of any form
+    # of boot-time retry - not yet implemented.
     image: factory.talos.dev/installer/7d56465fc23be23c5c2f2bcb9f604592ff0b781241406cba8b30e9b1dc4f70b7:v1.13.7 # eGPU schematic, thunderbolt.host_reset=0 + nvidia unsupported-gpu flag both disabled - see `just talos gen-schematic-id-egpu`
     wipe: false
-  kernel:
-    modules:
-      # Third attempt, same day: tried the official Talos doc's full 4-module block
-      # (including nvidia_drm) with the dock already connected and the link stable.
-      # All 4 modules loaded successfully (NVRM init, nvidia-modeset, nvidia-drm all
-      # logged clean loads, GPU ID recognized) and ext-nvidia-persistenced/cdi-gen both
-      # came up - but the node then hard-hung shortly after, unresponsive to both the
-      # network and the physical console/keyboard, needing a manual power cycle. This
-      # is the second time this exact pattern happened only when nvidia_drm was
-      # included (the earlier 3-module attempt, without nvidia_drm, loaded cleanly with
-      # no hang). nvidia_drm likely conflicts with i915's active console/framebuffer
-      # ownership on this system. Dropped back to the 3 modules that don't touch DRM/KMS -
-      # not needed for headless container/compute workloads anyway.
-      - name: nvidia
-      - name: nvidia_uvm
-      - name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
