@@ -6,18 +6,16 @@ machine:
   install:
     diskSelector:
       model: Samsung SSD 870
-    # 2026-07-25: RTX 3090 physically arrived and is plugged into the eGPU dock, but
-    # still running the baseline (no nvidia extensions) schematic, not the eGPU one yet -
-    # deliberately testing Thunderbolt link stability in isolation first (see
-    # schematic.yaml.j2's thunderbolt.host_reset=0 re-add) before also introducing the
-    # NVIDIA driver extensions as a second variable. Switch to `just talos
-    # gen-schematic-id-egpu` once the dock holds a stable connection.
-    # thunderbolt.host_reset=0 alone did not fix the hotplug command 0x1038 timeout, but
-    # pci=realloc,assign-busses, pcie_aspm=off, and pcie_port_pm=off were all tried and
-    # REVERTED same day (2026-07-25) - none improved on it, and the power-management args
-    # actively regressed the failure to an earlier stage. Paused back at host_reset=0
-    # only pending a new hypothesis. See schematic.yaml.j2 for full detail.
-    image: factory.talos.dev/installer/f004cb640e7e5c5cd0ba24a52737bad905b08bdd45451ae29886b5b689170ec2:v1.13.7 # baseline + thunderbolt.host_reset=0 test - see `just talos gen-schematic-id`
+    # 2026-07-25: RTX 3090 arrived, tested in the AOOSTAR AG02 dock (ASMedia ASM2464
+    # bridge) - never stable, every attempt failed within 9-47s (pciehp hotplug command
+    # 0x1038 timeout or earlier). thunderbolt.host_reset=0 was the only kernel arg that
+    # helped at all; pci=realloc,assign-busses/pcie_aspm=off/pcie_port_pm=off all made it
+    # worse and were reverted the same day. See schematic.yaml.j2 for full history.
+    # 2026-07-28: swapped to a PELADN Link S-3 dock (Intel Barlow Ridge JHL9480 TB5
+    # controller, not ASMedia) - RTX 3090 enumerated cleanly and held the link with zero
+    # disconnects, already far more stable than any AG02 attempt. Switching to the eGPU
+    # schematic (NVIDIA driver extensions) now that the link itself is confirmed solid.
+    image: factory.talos.dev/installer/82d9f23333d2b1b96f49b3a0bc2369965dc557bb989aeb1d2360fb54afddf9c2:v1.13.7 # eGPU schematic (thunderbolt.host_reset=0 + nvidia extensions) - see `just talos gen-schematic-id-egpu`
     wipe: false
 ---
 apiVersion: v1alpha1
