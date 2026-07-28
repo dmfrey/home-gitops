@@ -27,6 +27,9 @@ machine:
       # means the PCI core will bind it automatically once the GPU actually appears,
       # regardless of when the Thunderbolt tunnel comes up.
       - name: nvidia
+      - name: nvidia_uvm
+      - name: nvidia_modeset
+      - name: nvidia_drm
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
