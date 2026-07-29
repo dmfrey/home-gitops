@@ -7,40 +7,32 @@ machine:
     diskSelector:
       model: Samsung SSD 870
     # 2026-07-25: RTX 3090 arrived, tested in the AOOSTAR AG02 dock (ASMedia ASM2464
-    # bridge) - never stable, every attempt failed within 9-47s (pciehp hotplug command
-    # 0x1038 timeout or earlier). thunderbolt.host_reset=0 was the only kernel arg that
-    # helped at all; pci=realloc,assign-busses/pcie_aspm=off/pcie_port_pm=off all made it
-    # worse and were reverted the same day. See schematic.yaml.j2 for full history.
+    # bridge) - never stable, hardware-level flakiness on that dock's bridge chip.
     # 2026-07-28: swapped to a PELADN Link S-3 dock (Intel Barlow Ridge JHL9480 TB5
-    # controller, not ASMedia) - RTX 3090 enumerated cleanly and held the link with zero
-    # disconnects while running the baseline schematic, far more stable than any AG02
-    # attempt. First eGPU-schematic attempt (NVIDIA driver extensions) was reverted the
-    # same day: `ext-nvidia-persistenced` blocks the entire boot on
-    # /sys/bus/pci/drivers/nvidia existing, which only appears after a *successful*
-    # nvidia.ko load - and nvidia.ko doesn't register-and-wait for a device to show up
-    # later, it actively probes for a GPU at insmod time and hard-fails (ENODEV) if none
-    # is present yet. Forcing it via machine.kernel.modules produced an infinite retry
-    # loop when the dock wasn't linked up yet at that point in boot. The correct fix
-    # (a machine.udev.rules entry triggering modprobe on the PCI hotplug "add" event,
-    # instead of machine.kernel.modules) is still pending - not yet added.
-    # Second attempt, same day: retrying the eGPU schematic with thunderbolt.host_reset=0
-    # and nvidia.NVreg_OpenRmEnableUnsupportedGpus=1 both commented out in
-    # schematic.yaml.j2, to isolate whether either was contributing to the instability.
-    # No machine.kernel.modules block this time either.
-    # machine.kernel.modules was tried 3 times on 2026-07-28 and removed again each time:
-    #   1. Dock not connected at boot -> infinite ENODEV retry loop (nvidia.ko probes for
-    #      a GPU at insmod time, doesn't register-and-wait for hotplug).
-    #   2. Dock connected, all 4 modules incl. nvidia_drm -> loaded clean, GPU recognized,
-    #      then hard-hung the whole node minutes later (needed a manual power cycle).
-    #      Suspected nvidia_drm vs i915 console/framebuffer conflict.
-    #   3. Dock disconnected again, only 3 modules (no nvidia_drm) -> went NotReady/
-    #      unresponsive again after ~2 minutes anyway, so the retry loop itself is
-    #      apparently enough to destabilize this node, not just a successful nvidia_drm
-    #      load. Not safe to leave running unattended either way.
-    # Removed entirely. Next attempt should use machine.udev.rules to trigger modprobe
-    # only on the actual PCI hotplug "add" event for vendor 0x10de, instead of any form
-    # of boot-time retry - not yet implemented.
-    image: factory.talos.dev/installer/7d56465fc23be23c5c2f2bcb9f604592ff0b781241406cba8b30e9b1dc4f70b7:v1.13.7 # eGPU schematic, thunderbolt.host_reset=0 + nvidia unsupported-gpu flag both disabled - see `just talos gen-schematic-id-egpu`
+    # controller) - link itself rock solid, zero disconnects. But the eGPU schematic's
+    # NVIDIA extensions (nvidia-open-gpu-kernel-modules-production,
+    # nvidia-container-toolkit-production) are fundamentally incompatible with a
+    # Thunderbolt-hotplugged GPU on this Talos version: `ext-nvidia-persistenced`
+    # blocks boot on /sys/bus/pci/drivers/nvidia existing, which only appears after a
+    # successful nvidia.ko load, and nvidia.ko hard-fails ENODEV instead of
+    # register-and-wait if the GPU isn't present at insmod time. Tried and reverted:
+    # machine.kernel.modules (infinite ENODEV retry loop with dock disconnected;
+    # hard node hang minutes after a successful load when nvidia_drm was included,
+    # suspected i915 conflict; retry loop alone destabilized the node even without
+    # nvidia_drm). Even with machine.kernel.modules removed, simply having the
+    # extensions installed left `ext-nvidia-persistenced`/`ext-nvidia-cdi-gen`
+    # polling indefinitely in the "waiting for services" boot task - confirmed via
+    # dmesg to have caused two more unattended hard resets that same night (21:04 and
+    # 22:15 EDT), both caught by Talos's own hardware watchdog (iTCO_wdt, 5m timeout)
+    # after the runtime hung. Filed as siderolabs/talos discussion #13896; a
+    # maintainer also confirmed the DRA driver is documented to require GPU Operator
+    # underneath (devicePlugin.enabled=false), not standalone as this repo assumed -
+    # see CLAUDE.md. 2026-07-28: reverted to true baseline (schematic has zero NVIDIA
+    # extensions, same as k8s-0/k8s-1) - not safe to run the eGPU schematic unattended
+    # even without machine.kernel.modules. Next attempt needs machine.udev.rules
+    # triggering modprobe only on the actual PCI hotplug "add" event for vendor
+    # 0x10de, and/or GPU Operator installed underneath DRA - neither done yet.
+    image: factory.talos.dev/installer/2229ca2d495f7a78a1b53bb854106a24c0376cb3ad583eea009deea0533c6bfb:v1.13.7 # baseline, no NVIDIA extensions - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
