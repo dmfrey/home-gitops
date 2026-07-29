@@ -32,7 +32,13 @@ machine:
     # even without machine.kernel.modules. Next attempt needs machine.udev.rules
     # triggering modprobe only on the actual PCI hotplug "add" event for vendor
     # 0x10de, and/or GPU Operator installed underneath DRA - neither done yet.
-    image: factory.talos.dev/installer/c48c7cd95afa9ff46bf74268bd4dd7b47f9c0ed3a658162b7916edb0b0c78630:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed - see `just talos gen-schematic-id`
+    # 2026-07-29: confirmed the dock exposes a USB Realtek NIC (driver r8152) -
+    # blacklisted via schematic.yaml.j2, applied to k8s-2 only for now (harmless
+    # on k8s-0/k8s-1 too, just not urgent to reconcile their image today).
+    # Deliberately NOT combined with another NVIDIA extensions/modules attempt -
+    # that failure mode is unrelated to networking and already reproduced twice;
+    # keeping this an isolated, single-variable change.
+    image: factory.talos.dev/installer/46f6e58143bcb9c64c9460947ffb7536357d48c496fe05940bf6c8fca69d61e7:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed, r8152 blacklisted - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
