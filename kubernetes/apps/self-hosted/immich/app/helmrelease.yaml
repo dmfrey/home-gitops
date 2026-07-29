@@ -106,6 +106,17 @@ spec:
             port: *port
       immich-machine-learning:
         controller: immich-machine-learning
+        # 2026-07-29: forceRename so the Service resolves at exactly
+        # "immich-machine-learning" (app-template's default naming would
+        # produce "immich-immich-machine-learning" instead) - Immich's
+        # built-in machine learning URL default is
+        # http://immich-machine-learning:3003, only configurable via the
+        # admin system-settings DB, not an env var, so matching the hostname
+        # infra-side is the only git-trackable fix. Confirmed this mismatch
+        # was causing every face-detection/smart-search ML request to fail
+        # with "fetch failed" (DNS didn't resolve) once face detection was
+        # actually triggered in bulk for the first time.
+        forceRename: immich-machine-learning
         ports:
           http:
             port: *mlPort
