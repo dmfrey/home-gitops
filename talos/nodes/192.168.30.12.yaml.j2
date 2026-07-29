@@ -29,19 +29,19 @@ machine:
     # (nvidia-open-gpu-kernel-modules-production) - hard-locked again (network
     # connectivity lost) on both a warm kexec reboot with the dock pre-connected
     # AND a genuine full cold boot (power off, dock connected, power on), r8152
-    # still blacklisted either way. Confounds addressed made no difference.
-    # Switching to the proprietary driver (nonfree-kmod-nvidia) with the exact
-    # same machine.kernel.modules block, to check whether driver flavor matters
-    # under the cold-boot condition specifically (the earlier proprietary attempt
-    # predated the cold-boot test and used a warm kexec reboot instead).
-    image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.13.7 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
+    # still blacklisted either way. Then retried the proprietary driver
+    # (nonfree-kmod-nvidia) under the same genuine cold-boot condition - also
+    # locked up, needed a hard power cycle. Every variable we could control has
+    # now been tested and ruled out: driver flavor (both), boot method (warm and
+    # cold), dock NIC (removed), GPU Operator (added), link stability (confirmed
+    # solid throughout). The cause is something more fundamental than any of
+    # that - most likely the actual nvidia_drm/i915 interaction on this exact
+    # hardware. Reverted to true baseline (zero NVIDIA extensions, no
+    # machine.kernel.modules) - not safe to leave any eGPU schematic running
+    # unattended on this node given the failure is this consistent and
+    # unrelated to every confound tested so far.
+    image: factory.talos.dev/installer/c48c7cd95afa9ff46bf74268bd4dd7b47f9c0ed3a658162b7916edb0b0c78630:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed, r8152 blacklisted - see `just talos gen-schematic-id`
     wipe: false
-  kernel:
-    modules:
-      - name: nvidia
-      - name: nvidia_uvm
-      - name: nvidia_drm
-      - name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
