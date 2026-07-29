@@ -32,6 +32,12 @@ spec:
       enabled: false
     devicePlugin:
       enabled: false
+    # kube-system/node-feature-discovery already runs standalone in this
+    # cluster - GPU Operator bundles its own NFD subchart by default, which
+    # would run a second, competing NFD controller. Disabled in favor of the
+    # existing instance.
+    nfd:
+      enabled: false
     hostPaths:
       # Talos installs the NVIDIA extensions under /usr/local, not the
       # standard FHS /usr paths - matches nvidiaDriverRoot in the DRA
