@@ -9,36 +9,27 @@ machine:
     # 2026-07-25: RTX 3090 arrived, tested in the AOOSTAR AG02 dock (ASMedia ASM2464
     # bridge) - never stable, hardware-level flakiness on that dock's bridge chip.
     # 2026-07-28: swapped to a PELADN Link S-3 dock (Intel Barlow Ridge JHL9480 TB5
-    # controller) - link itself rock solid, zero disconnects. But the eGPU schematic's
-    # NVIDIA extensions (nvidia-open-gpu-kernel-modules-production,
-    # nvidia-container-toolkit-production) are fundamentally incompatible with a
-    # Thunderbolt-hotplugged GPU on this Talos version: `ext-nvidia-persistenced`
-    # blocks boot on /sys/bus/pci/drivers/nvidia existing, which only appears after a
-    # successful nvidia.ko load, and nvidia.ko hard-fails ENODEV instead of
-    # register-and-wait if the GPU isn't present at insmod time. Tried and reverted:
-    # machine.kernel.modules (infinite ENODEV retry loop with dock disconnected;
-    # hard node hang minutes after a successful load when nvidia_drm was included,
-    # suspected i915 conflict; retry loop alone destabilized the node even without
-    # nvidia_drm). Even with machine.kernel.modules removed, simply having the
-    # extensions installed left `ext-nvidia-persistenced`/`ext-nvidia-cdi-gen`
-    # polling indefinitely in the "waiting for services" boot task - confirmed via
-    # dmesg to have caused two more unattended hard resets that same night (21:04 and
-    # 22:15 EDT), both caught by Talos's own hardware watchdog (iTCO_wdt, 5m timeout)
-    # after the runtime hung. Filed as siderolabs/talos discussion #13896; a
-    # maintainer also confirmed the DRA driver is documented to require GPU Operator
-    # underneath (devicePlugin.enabled=false), not standalone as this repo assumed -
-    # see CLAUDE.md. 2026-07-28: reverted to true baseline (schematic has zero NVIDIA
-    # extensions, same as k8s-0/k8s-1) - not safe to run the eGPU schematic unattended
-    # even without machine.kernel.modules. Next attempt needs machine.udev.rules
-    # triggering modprobe only on the actual PCI hotplug "add" event for vendor
-    # 0x10de, and/or GPU Operator installed underneath DRA - neither done yet.
-    # 2026-07-29: confirmed the dock exposes a USB Realtek NIC (driver r8152) -
-    # blacklisted via schematic.yaml.j2, applied to k8s-2 only for now (harmless
-    # on k8s-0/k8s-1 too, just not urgent to reconcile their image today).
-    # Deliberately NOT combined with another NVIDIA extensions/modules attempt -
-    # that failure mode is unrelated to networking and already reproduced twice;
-    # keeping this an isolated, single-variable change.
-    image: factory.talos.dev/installer/46f6e58143bcb9c64c9460947ffb7536357d48c496fe05940bf6c8fca69d61e7:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed, r8152 blacklisted - see `just talos gen-schematic-id`
+    # controller) - link itself rock solid, zero disconnects. Two eGPU-schematic
+    # attempts that day (open driver, then proprietary driver) both reproduced the
+    # same hang: `ext-nvidia-persistenced` blocks boot on /sys/bus/pci/drivers/nvidia
+    # existing, and machine.kernel.modules either infinite-retries (ENODEV, dock not
+    # yet connected) or the node hard-hangs minutes after a successful load. Reverted
+    # to true baseline both times, caught by Talos's own hardware watchdog (iTCO_wdt,
+    # 5m timeout) when left unattended. Filed as siderolabs/talos discussion #13896.
+    # NOTE: an earlier version of this comment claimed a machine.udev.rules hotplug
+    # trigger was "the correct fix" - that was this session's own unverified
+    # speculation, not anything from Talos documentation, and shouldn't have been
+    # written up as settled guidance. No such requirement appears anywhere in the
+    # official NVIDIA-on-Talos docs.
+    # 2026-07-29: two confounds from the earlier attempts addressed before retrying -
+    # (1) the dock's USB Realtek NIC (driver r8152) is now blacklisted, eliminating a
+    # possible source of boot-time instability unrelated to the GPU itself; (2) GPU
+    # Operator now installed underneath kube-system/nvidia-gpu-resource-driver per
+    # the documented pattern (discussion #13896). Retrying with the OSS driver
+    # (nvidia-open-gpu-kernel-modules-production) and the standard 4-module
+    # machine.kernel.modules block, dock connected and link stable for far longer
+    # than any previous attempt before starting.
+    image: factory.talos.dev/installer/bb425082e749ee4b59e7898a6c7bb5977e044bbe1a88472d40a265f723d9bf8a:v1.13.7 # eGPU schematic (open driver) - see `just talos gen-schematic-id-egpu`
     wipe: false
 ---
 apiVersion: v1alpha1
