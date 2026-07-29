@@ -28,6 +28,10 @@ gen-schematic-id:
 gen-schematic-id-egpu:
     curl -sX POST --data-binary @<(EGPU=true just template "{{ talos_dir }}/schematic.yaml.j2") "https://factory.talos.dev/schematics" | jq -r '.id'
 
+[doc('Generate schematic ID for the eGPU (k8s-2) proprietary-driver variant')]
+gen-schematic-id-egpu-proprietary:
+    curl -sX POST --data-binary @<(EGPU_PROPRIETARY=true just template "{{ talos_dir }}/schematic.yaml.j2") "https://factory.talos.dev/schematics" | jq -r '.id'
+
 [doc('Reboot a node')]
 reboot-node node: health-check
     gum confirm "Reboot node {{ node }}?" --default="No" && \

@@ -25,11 +25,16 @@ machine:
     # (1) the dock's USB Realtek NIC (driver r8152) is now blacklisted, eliminating a
     # possible source of boot-time instability unrelated to the GPU itself; (2) GPU
     # Operator now installed underneath kube-system/nvidia-gpu-resource-driver per
-    # the documented pattern (discussion #13896). Retrying with the OSS driver
-    # (nvidia-open-gpu-kernel-modules-production) and the standard 4-module
-    # machine.kernel.modules block, dock connected and link stable for far longer
-    # than any previous attempt before starting.
-    image: factory.talos.dev/installer/bb425082e749ee4b59e7898a6c7bb5977e044bbe1a88472d40a265f723d9bf8a:v1.13.7 # eGPU schematic (open driver) - see `just talos gen-schematic-id-egpu`
+    # the documented pattern (discussion #13896). Retried with the OSS driver
+    # (nvidia-open-gpu-kernel-modules-production) - hard-locked again (network
+    # connectivity lost) on both a warm kexec reboot with the dock pre-connected
+    # AND a genuine full cold boot (power off, dock connected, power on), r8152
+    # still blacklisted either way. Confounds addressed made no difference.
+    # Switching to the proprietary driver (nonfree-kmod-nvidia) with the exact
+    # same machine.kernel.modules block, to check whether driver flavor matters
+    # under the cold-boot condition specifically (the earlier proprietary attempt
+    # predated the cold-boot test and used a warm kexec reboot instead).
+    image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.13.7 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
     wipe: false
   kernel:
     modules:
