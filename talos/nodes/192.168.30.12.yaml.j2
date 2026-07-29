@@ -35,10 +35,27 @@ machine:
     # TEST (branch test/k8s-2-nvidia-proprietary, prepared 2026-07-29, not yet run):
     # proprietary driver instead of open-gpu-kernel-modules, per
     # https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/hardware-and-drivers/nvidia-gpu-proprietary
-    # Cold-boot test only - power on the node with the dock already connected/powered,
-    # do not hotplug after boot and do not apply-config live. Not yet proven to avoid
-    # the ext-nvidia-persistenced boot-block or the nvidia_drm/i915 hang - only the
-    # driver flavor differs from the already-failed open-kernel-modules attempt.
+    # Not yet proven to avoid the ext-nvidia-persistenced boot-block or the
+    # nvidia_drm/i915 hang - only the driver flavor differs from the already-failed
+    # open-kernel-modules attempt.
+    #
+    # PROCEDURE (checked 2026-07-29 - `talosctl upgrade` has no stage-without-reboot
+    # mode: --reboot-mode is only {default,force,powercycle}, all three install AND
+    # reboot automatically as one atomic step; apply-config --mode staged is confirmed
+    # to no-op on install.image regardless, same as live apply-config. So the dock
+    # MUST already be connected and link-trained BEFORE running upgrade below - there
+    # is no way to install now and pick the reboot moment separately):
+    #   1. Connect + power the dock. Confirm link is up first:
+    #      talosctl -n 192.168.30.12 read /sys/bus/pci/devices/<addr>/uevent
+    #   2. git checkout test/k8s-2-nvidia-proprietary && just talos apply-node 192.168.30.12
+    #   3. talosctl -n 192.168.30.12 upgrade -i "factory.talos.dev/installer/79a65a3a862ac37222e7e398bccedfe406ca343211159869e4650cd8dee020b4:v1.13.7" -m default --timeout=10m
+    #      (installs + reboots in one shot, dock already present for the first boot's
+    #      insmod attempt - this is the step that failed before if the dock was absent)
+    #   4. Only once that boots clean and looks stable, if a true full-power-off
+    #      cold-boot confirmation is still wanted (not just kexec), do it as a
+    #      separate, fully manual second cycle now that the risky image-swap part is
+    #      already done: talosctl -n 192.168.30.12 shutdown, verify dock, power back
+    #      on manually.
     #
     # TO REVERT TO BASELINE (known-good, verified stable 2026-07-28/29):
     #   git checkout main -- talos/nodes/192.168.30.12.yaml.j2 talos/schematic.yaml.j2
