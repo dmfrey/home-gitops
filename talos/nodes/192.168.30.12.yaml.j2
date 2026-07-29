@@ -32,7 +32,7 @@ machine:
     # even without machine.kernel.modules. Next attempt needs machine.udev.rules
     # triggering modprobe only on the actual PCI hotplug "add" event for vendor
     # 0x10de, and/or GPU Operator installed underneath DRA - neither done yet.
-    image: factory.talos.dev/installer/2229ca2d495f7a78a1b53bb854106a24c0376cb3ad583eea009deea0533c6bfb:v1.13.7 # baseline, no NVIDIA extensions - see `just talos gen-schematic-id`
+    image: factory.talos.dev/installer/c48c7cd95afa9ff46bf74268bd4dd7b47f9c0ed3a658162b7916edb0b0c78630:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
