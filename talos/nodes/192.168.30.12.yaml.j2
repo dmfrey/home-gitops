@@ -42,20 +42,30 @@ machine:
     # PROCEDURE (checked 2026-07-29 - `talosctl upgrade` has no stage-without-reboot
     # mode: --reboot-mode is only {default,force,powercycle}, all three install AND
     # reboot automatically as one atomic step; apply-config --mode staged is confirmed
-    # to no-op on install.image regardless, same as live apply-config. So the dock
-    # MUST already be connected and link-trained BEFORE running upgrade below - there
-    # is no way to install now and pick the reboot moment separately):
+    # to no-op on install.image regardless, same as live apply-config. Also: upgrade
+    # only swaps the installed image + reboots, it does NOT push machine.kernel.modules
+    # - that's a separate apply-config step. Doing apply-node (full config, incl.
+    # kernel.modules) BEFORE the upgrade would push kernel.modules live against the
+    # still-baseline image, which has no nvidia module on disk yet - risks the same
+    # retry-loop instability from ENOENT instead of ENODEV. So: upgrade first alone,
+    # confirm stable, THEN apply-node once the extensions are actually installed and
+    # the dock is already present - that's the first moment insmod can succeed):
     #   1. Connect + power the dock. Confirm link is up first:
     #      talosctl -n 192.168.30.12 read /sys/bus/pci/devices/<addr>/uevent
-    #   2. git checkout test/k8s-2-nvidia-proprietary && just talos apply-node 192.168.30.12
+    #   2. git checkout test/k8s-2-nvidia-proprietary
     #   3. talosctl -n 192.168.30.12 upgrade -i "factory.talos.dev/installer/79a65a3a862ac37222e7e398bccedfe406ca343211159869e4650cd8dee020b4:v1.13.7" -m default --timeout=10m
-    #      (installs + reboots in one shot, dock already present for the first boot's
-    #      insmod attempt - this is the step that failed before if the dock was absent)
-    #   4. Only once that boots clean and looks stable, if a true full-power-off
-    #      cold-boot confirmation is still wanted (not just kexec), do it as a
-    #      separate, fully manual second cycle now that the risky image-swap part is
-    #      already done: talosctl -n 192.168.30.12 shutdown, verify dock, power back
-    #      on manually.
+    #      (image swap + reboot only - no kernel.modules yet, so nothing forces insmod.
+    #      ext-nvidia-persistenced will start polling once up, same tolerable-for-hours
+    #      state seen before - confirm the node is Ready and stable before continuing,
+    #      don't leave it on this half-applied state for long unattended)
+    #   4. just talos apply-node 192.168.30.12
+    #      (pushes machine.kernel.modules live - extensions are now installed and the
+    #      dock is already connected, so this is the actual insmod attempt; watch the
+    #      node closely right after this step, it's the one that previously hung)
+    #   5. Only once that's confirmed stable, if a true full-power-off cold-boot
+    #      confirmation is still wanted (not just kexec), do it as a separate, fully
+    #      manual cycle now that the risky part is already done: talosctl -n
+    #      192.168.30.12 shutdown, verify dock, power back on manually.
     #
     # TO REVERT TO BASELINE (known-good, verified stable 2026-07-28/29):
     #   git checkout main -- talos/nodes/192.168.30.12.yaml.j2 talos/schematic.yaml.j2
