@@ -40,7 +40,12 @@ machine:
     # machine.kernel.modules) - not safe to leave any eGPU schematic running
     # unattended on this node given the failure is this consistent and
     # unrelated to every confound tested so far.
-    image: factory.talos.dev/installer/c48c7cd95afa9ff46bf74268bd4dd7b47f9c0ed3a658162b7916edb0b0c78630:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed, r8152 blacklisted - see `just talos gen-schematic-id`
+    # 2026-07-29: previous revert accidentally used a stale schematic ID
+    # (c48c7cd9...) that predates the r8152 blacklist - confirmed via
+    # `talosctl get links` showing enp0s13f0u3u4u4 (the dock's Realtek NIC)
+    # present again after that revert. Corrected to the actual current
+    # baseline ID.
+    image: factory.talos.dev/installer/46f6e58143bcb9c64c9460947ffb7536357d48c496fe05940bf6c8fca69d61e7:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed, r8152 blacklisted - see `just talos gen-schematic-id`
     wipe: false
 ---
 apiVersion: v1alpha1
