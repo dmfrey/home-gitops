@@ -43,12 +43,10 @@ spec:
     dashboards:
       enabled: true
 
-    # 2026-07-29: broadened from "eth+" to also match "bond+" as part of the
-    # net0/bond0 LinkAliasConfig migration (talos/machineconfig.yaml.j2) - once a
-    # node's onboard NIC is wrapped into bond0, eth0 becomes an enslaved member
-    # with no IP of its own, and native routing/BGP need to key off bond0 instead.
-    # Keeping both patterns covers mid-migration nodes still on raw eth0.
-    devices: "eth+ bond+"
+    # 2026-07-29: all 3 nodes migrated to the net0/bond0 LinkAliasConfig
+    # (talos/machineconfig.yaml.j2) - eth0 is now an enslaved bond0 member with no
+    # IP anywhere in the cluster, so native routing/BGP only need to match bond0.
+    devices: bond+
 
     enableIPv4BIGTCP: true
 
