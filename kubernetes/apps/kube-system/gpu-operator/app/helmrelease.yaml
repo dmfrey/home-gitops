@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gpu-operator
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: gpu-operator
+      version: v26.3.3
+      sourceRef:
+        kind: HelmRepository
+        name: nvidia
+        namespace: kube-system
+  values:
+    # 2026-07-29: installed per the documented Talos DRA pattern
+    # (https://docs.siderolabs.com/kubernetes-guides/advanced-guides/dynamic-resource-allocation,
+    # confirmed by a Talos maintainer in siderolabs/talos discussion #13896) -
+    # DRA layers on top of GPU Operator, it isn't a standalone replacement.
+    # driver/toolkit/devicePlugin all disabled: Talos provides the driver and
+    # container toolkit itself via system extensions
+    # (nvidia-open-gpu-kernel-modules-production/nvidia-container-toolkit-production
+    # or the proprietary equivalents), and GPU Operator's own driver-install
+    # DaemonSet approach doesn't work on Talos's immutable OS regardless.
+    # devicePlugin is disabled because kube-system/nvidia-gpu-resource-driver
+    # (the DRA driver) replaces that role.
+    driver:
+      enabled: false
+    toolkit:
+      enabled: false
+    devicePlugin:
+      enabled: false
+    hostPaths:
+      # Talos installs the NVIDIA extensions under /usr/local, not the
+      # standard FHS /usr paths - matches nvidiaDriverRoot in the DRA
+      # driver's own HelmRelease.
+      driverInstallDir: /usr/local

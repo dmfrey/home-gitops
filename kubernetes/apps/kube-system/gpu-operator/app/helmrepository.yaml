@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: nvidia
+spec:
+  interval: 1h
+  # NVIDIA only publishes gpu-operator as a classic Helm repo, not an OCI
+  # artifact (confirmed - no oci://nvcr.io/nvidia/gpu-operator tag resolves).
+  # First HelmRepository-based app in this repo; everything else uses
+  # OCIRepository.
+  url: https://helm.ngc.nvidia.com/nvidia
