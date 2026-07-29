@@ -32,8 +32,26 @@ machine:
     # even without machine.kernel.modules. Next attempt needs machine.udev.rules
     # triggering modprobe only on the actual PCI hotplug "add" event for vendor
     # 0x10de, and/or GPU Operator installed underneath DRA - neither done yet.
-    image: factory.talos.dev/installer/2229ca2d495f7a78a1b53bb854106a24c0376cb3ad583eea009deea0533c6bfb:v1.13.7 # baseline, no NVIDIA extensions - see `just talos gen-schematic-id`
+    # TEST (branch test/k8s-2-nvidia-proprietary, prepared 2026-07-29, not yet run):
+    # proprietary driver instead of open-gpu-kernel-modules, per
+    # https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/hardware-and-drivers/nvidia-gpu-proprietary
+    # Cold-boot test only - power on the node with the dock already connected/powered,
+    # do not hotplug after boot and do not apply-config live. Not yet proven to avoid
+    # the ext-nvidia-persistenced boot-block or the nvidia_drm/i915 hang - only the
+    # driver flavor differs from the already-failed open-kernel-modules attempt.
+    #
+    # TO REVERT TO BASELINE (known-good, verified stable 2026-07-28/29):
+    #   git checkout main -- talos/nodes/192.168.30.12.yaml.j2 talos/schematic.yaml.j2
+    #   (or just discard/don't-merge this branch - main was never touched)
+    #   talosctl -n 192.168.30.12 upgrade -i "factory.talos.dev/installer/2229ca2d495f7a78a1b53bb854106a24c0376cb3ad583eea009deea0533c6bfb:v1.13.7" -m powercycle --timeout=10m
+    image: factory.talos.dev/installer/79a65a3a862ac37222e7e398bccedfe406ca343211159869e4650cd8dee020b4:v1.13.7 # eGPU proprietary-driver schematic - see `just talos gen-schematic-id-egpu-proprietary`
     wipe: false
+  kernel:
+    modules:
+      - name: nvidia
+      - name: nvidia_uvm
+      - name: nvidia_drm
+      - name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
