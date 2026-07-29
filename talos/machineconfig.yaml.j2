@@ -241,33 +241,52 @@ cluster:
   {% endif %}
 
 ---
+# 2026-07-29: replaced raw `eth0` (net.ifnames=0 classic naming, order-dependent at
+# boot) with a driver+MAC-selected LinkAliasConfig + single-link BondConfig, per
+# github.com/onedr0p/home-ops. Motivated by k8s-2's eGPU dock possibly presenting a
+# second NIC (unconfirmed) that could race the onboard igc NIC for the "eth0" name
+# under classic naming - the alias below can only ever match the actual onboard NIC
+# (driver igc, MAC prefix 38:f7:cd: confirmed shared across all 3 nodes' onboard
+# NICs), regardless of what any dock-attached NIC enumerates as or is named. Does
+# NOT disable/blacklist the onboard NIC (unlike onedr0p's module_blacklist=igc,
+# which is specific to their setup using a Thunderbolt NIC as primary on every
+# node) - our onboard igc NIC remains the real, active, primary interface on all
+# 3 nodes exactly as before, just under a stable chosen name instead of "eth0".
 apiVersion: v1alpha1
-kind: LinkConfig
-name: eth0
+kind: LinkAliasConfig
+name: net0
+selector:
+  match: link.driver == "igc" && mac(link.permanent_addr).startsWith("38:f7:cd:")
+
+---
+apiVersion: v1alpha1
+kind: BondConfig
+name: bond0
+links:
+  - net0
+bondMode: active-backup
 mtu: 1500
-up: true
-addresses: []
 
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
-name: eth0
+name: bond0
 clientIdentifier: mac
 
 ---
 apiVersion: v1alpha1
 kind: VLANConfig
-name: eth0.50
+name: bond0.50
 vlanID: 50
-parent: eth0
+parent: bond0
 mtu: 1500
 
 ---
 apiVersion: v1alpha1
 kind: VLANConfig
-name: eth0.90
+name: bond0.90
 vlanID: 90
-parent: eth0
+parent: bond0
 mtu: 1500
 
 ---
