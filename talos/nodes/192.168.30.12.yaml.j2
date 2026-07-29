@@ -31,6 +31,12 @@ machine:
     # than any previous attempt before starting.
     image: factory.talos.dev/installer/bb425082e749ee4b59e7898a6c7bb5977e044bbe1a88472d40a265f723d9bf8a:v1.13.7 # eGPU schematic (open driver) - see `just talos gen-schematic-id-egpu`
     wipe: false
+  kernel:
+    modules:
+      - name: nvidia
+      - name: nvidia_uvm
+      - name: nvidia_drm
+      - name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
