@@ -45,8 +45,24 @@ machine:
     # `talosctl get links` showing enp0s13f0u3u4u4 (the dock's Realtek NIC)
     # present again after that revert. Corrected to the actual current
     # baseline ID.
-    image: factory.talos.dev/installer/46f6e58143bcb9c64c9460947ffb7536357d48c496fe05940bf6c8fca69d61e7:v1.13.7 # baseline, no NVIDIA extensions, net.ifnames=0 removed, r8152 blacklisted - see `just talos gen-schematic-id`
+    # 2026-07-30: node has 2 independent physical Thunderbolt ports (root
+    # ports 0000:00:07.0 "Port #2" and 0000:00:07.3 "Port #1", asymmetric
+    # BIOS-reserved PCIe windows - Port #2 has a larger I/O/prefetch window).
+    # Every previous driver-load hang happened with the dock on Port #2
+    # (bus 0000:04:00.x). Confirmed via live testing that plain PCI
+    # enumeration succeeds cleanly on both ports with no driver loaded, so
+    # this retry is specifically to test whether port choice affects the
+    # actual driver-load hang - dock will be on Port #1 (opposite of every
+    # prior attempt) for this one. r8152 stays blacklisted (unconditional in
+    # schematic.yaml.j2, unaffected by this change).
+    image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.13.7 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
     wipe: false
+  kernel:
+    modules:
+      - name: nvidia
+      - name: nvidia_uvm
+      - name: nvidia_drm
+      - name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
