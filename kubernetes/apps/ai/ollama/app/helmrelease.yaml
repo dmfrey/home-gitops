@@ -22,7 +22,9 @@ spec:
     controllers:
       ollama:
         type: statefulset
-        replicas: 1
+        # 2026-07-30: scaled down in favor of ollama-gpu now that the RTX 3090
+        # eGPU driver-load hang is resolved (NVreg_EnableGpuFirmware=0).
+        replicas: 0
 
         annotations:
           reloader.stakater.com/auto: "true"
