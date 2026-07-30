@@ -71,24 +71,6 @@ spec:
                         values:
                           - "{{ .Release.Name }}"
 
-    service:
-      app:
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.29.241
-        ports:
-          http:
-            port: 11434
-
-    route:
-      app:
-        hostnames:
-          - ollama.dmfrey.com
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-
     persistence:
       config:
         enabled: true
