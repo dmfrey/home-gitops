@@ -22,8 +22,10 @@ spec:
     controllers:
       ollama-gpu:
         type: statefulset
-        # eGPU dock (AOOSTAR AG02) suspected defective, returning for replacement 2026-07-20.
-        replicas: 0
+        # 2026-07-30: eGPU driver-load hang resolved (NVreg_EnableGpuFirmware=0,
+        # see talos/nodes/192.168.30.12.yaml.j2) - RTX 3090 confirmed working via
+        # gpu.nvidia.com ResourceSlice. Scaling up to test end-to-end.
+        replicas: 1
 
         annotations:
           reloader.stakater.com/auto: "true"
