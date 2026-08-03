@@ -5,7 +5,7 @@ metadata:
   name: sabnzbd-config
   namespace: media
 data:
-  sabnzbd.ini: |
+  sabnzbd.ini: |-
     __version__ = 19
     __encoding__ = utf-8
     [misc]

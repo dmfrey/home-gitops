@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -12,23 +13,26 @@ spec:
         app: node-debugger
     spec:
       tolerations:
-      - operator: "Exists"
+        - operator: "Exists"
       containers:
-      - name: debugger
-        image: ubuntu:26.04
-        command: ["/bin/sh", "-c", "apt-get update && apt-get install -y nvme-cli procps && sleep 36000"]
-        securityContext:
-          privileged: true
-        volumeMounts:
-        - name: host-root
-          mountPath: /host
-          readOnly: true
-        - name: dev-mount
-          mountPath: /dev
+        - name: debugger
+          image: ubuntu:26.04
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "apt-get update && apt-get install -y nvme-cli procps && sleep 36000"
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: host-root
+              mountPath: /host
+              readOnly: true
+            - name: dev-mount
+              mountPath: /dev
       volumes:
-      - name: host-root
-        hostPath:
-          path: /
-      - name: dev-mount
-        hostPath:
-          path: /dev
+        - name: host-root
+          hostPath:
+            path: /
+        - name: dev-mount
+          hostPath:
+            path: /dev
