@@ -8,6 +8,8 @@ spec:
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
+    - name: garage
+      namespace: garage-system
   healthChecks:
     - apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly

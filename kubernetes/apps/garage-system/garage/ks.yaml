@@ -15,11 +15,17 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  # healthChecks:
-  #   - apiVersion: helm.toolkit.fluxcd.io/v2
-  #     kind: HelmRelease
-  #     name: garage
-  #     namespace: garage-system
+  # Re-enabled 2026-08-04: was left commented out since 2026-03-26 with no
+  # explanation, surviving the single-node -> 3-node migration. Apps that
+  # depend on garage (e.g. every *-kv Kustomization for a DragonflyDB
+  # instance using it as an S3 snapshot backend) need this to actually gate
+  # on the HelmRelease being Ready, not just applied - a bare dependsOn on
+  # this Kustomization without it only waits for kubectl apply to succeed.
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: garage
+      namespace: garage-system
   interval: 1h
   path: "./kubernetes/apps/garage-system/garage/app"
   prune: true

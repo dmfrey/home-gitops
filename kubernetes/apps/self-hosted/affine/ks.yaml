@@ -32,6 +32,8 @@ spec:
   dependsOn:
     - name: dragonfly-operator
       namespace: datastore
+    - name: garage
+      namespace: garage-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   healthChecks:
