@@ -26,24 +26,25 @@ spec:
   values:
 
     controllers:
-      *app :
+      *app:
 
         containers:
-          *app :
+          *app:
             image:
               repository: iib0011/omni-tools
-              tag: 0.6.0
+              tag: 0.6.0@sha256:ceb5acc317daf387634f7f212cefe4722fd1243ad1cba74203f25254195b6c69
 
     service:
-      *app :
+      *app:
         controller: *app
         ports:
           http:
             port: &port 80
 
     route:
-      *app :
-        hostnames: ["{{ .Release.Name }}.dmfrey.com"]
+      *app:
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Tools

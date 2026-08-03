@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: docker.io/kometateam/kometa
-              tag: v2.4.6
+              tag: v2.4.6@sha256:12753705405a647a703c7a8aec6f862de05831f296858c6791b940500d558a6f
 
             env:
               TZ: America/New_York
@@ -41,7 +41,7 @@ spec:
           config-setup:
             image:
               repository: ghcr.io/dmfrey/bash
-              tag: 5.2.26-alpine3.20
+              tag: 5.2.26-alpine3.20@sha256:7b8f16b5d06b4cd836c81d61990d7d52a08d183e5909dd7accfbc5601471e877
 
             command:
               - "/bin/sh"

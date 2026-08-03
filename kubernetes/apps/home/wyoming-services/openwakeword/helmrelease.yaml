@@ -31,17 +31,17 @@ spec:
 
     controllers:
 
-      *app :
+      *app:
         type: statefulset
 
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          *app:
             image:
               repository: rhasspy/wyoming-openwakeword
-              tag: 2.1.0
+              tag: 2.1.0@sha256:52cb1168731a1849fc28cf339c935fde58746bbabc94226668a40ef6ddf5d42b
 
             args:
               - --preload-model
@@ -55,7 +55,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
 
     defaultPodOptions:
       securityContext:
@@ -66,7 +66,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     service:
-      *app :
+      *app:
         controller: *app
         type: LoadBalancer
         annotations:

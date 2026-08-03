@@ -14,7 +14,7 @@ spec:
       storageClass: ceph-block
       image:
         repository: ghcr.io/goauthentik/server
-        tag: 2026.5.6
+        tag: 2026.5.6@sha256:ed120caf710ccf82ef0026f0bc74e51615bc95ebff228a7a2d6fc60c441c3868
         pullPolicy: IfNotPresent
       envFrom:
         - secretRef:
@@ -47,7 +47,7 @@ spec:
       editionIds: "GeoLite2-City"
       image:
         repository: ghcr.io/maxmind/geoipupdate
-        tag: v8.0.0
+        tag: v8.0.0@sha256:51e70dd6f16cd3e4d845ac02d09940b10772a75b9d741427d235a78570923c1d
       updateInterval: 8
       resources:
         requests:
@@ -70,7 +70,10 @@ spec:
       lifecycle:
         preStop:
           exec:
-            command: ["/bin/sh", "-c", "sleep 10"]
+            command:
+              - "/bin/sh"
+              - "-c"
+              - "sleep 10"
       deploymentAnnotations:
         secret.reloader.stakater.com/reload: authentik-cnpg-app
       metrics:

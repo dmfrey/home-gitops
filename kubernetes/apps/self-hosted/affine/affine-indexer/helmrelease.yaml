@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: manticoresearch/manticore
-              tag: dev-16.0.8-c47134f
+              tag: dev-16.0.8-c47134f@sha256:658ff1fc326c0ba81ea1d16ca6c7b44372164bfc4f11df7fd676138568738fe6
 
             env:
               TZ: America/New_York

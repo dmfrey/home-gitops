@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: ghcr.io/luigi311/jellyplex-watched
-              tag: dev
+              tag: dev@sha256:891fef0e67df9e21f6d8622bcc3422c52f99c0def579d11d67c0d1573ae33cbe
             env:
               TZ: "America/New_York"
               ## Do not mark any shows/movies as played and instead just output to log if they would of been marked.

@@ -33,7 +33,7 @@ spec:
   values:
 
     controllers:
-      *app :
+      *app:
         replicas: 1
         strategy: RollingUpdate
         annotations:
@@ -49,10 +49,10 @@ spec:
               }]
 
         containers:
-          *app :
+          *app:
             image:
               repository: docker.io/library/busybox
-              tag: latest
+              tag: latest@sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616
 
             command:
               - sleep
@@ -68,7 +68,8 @@ spec:
             securityContext:
               privileged: true
               capabilities:
-                drop: ["ALL"]
+                drop:
+                  - "ALL"
 
     defaultPodOptions:
       securityContext:
@@ -77,6 +78,6 @@ spec:
         fsGroup: 0
 
     service:
-      *app :
+      *app:
         enabled: false
         controller: *app

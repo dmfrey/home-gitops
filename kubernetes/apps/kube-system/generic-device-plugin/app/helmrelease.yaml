@@ -38,10 +38,10 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app :
+          *app:
             image:
               repository: squat/generic-device-plugin
-              tag: latest
+              tag: latest@sha256:dc192e164c69b03f156765793a1be62ca437709ae477b27ca7d8f3dcf5021576
 
             args:
               - --log-level
@@ -70,7 +70,7 @@ spec:
               privileged: true
 
     service:
-      *app :
+      *app:
         controller: *app
         ports:
           http:

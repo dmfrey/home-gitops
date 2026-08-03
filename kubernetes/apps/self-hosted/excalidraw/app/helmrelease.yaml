@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: excalidraw/excalidraw
-              tag: latest
+              tag: latest@sha256:f7ee194addd607bf831d2af0f0a34463dd4225e426cf35199ef0b12a803398e9
             command:
               - /bin/sh
               - -c
@@ -51,7 +51,7 @@ spec:
           app:
             image:
               repository: excalidraw/excalidraw-room
-              tag: latest
+              tag: latest@sha256:2fe999f9be4379e3ee282fc45d75d84a691a6383dde33544514cc395287c7a70
             env:
               REDIS_URI: redis://excalidraw-dragonflydb.self-hosted.svc.cluster.local:6379
             probes:
