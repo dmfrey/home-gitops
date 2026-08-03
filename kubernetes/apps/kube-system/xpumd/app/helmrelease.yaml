@@ -11,7 +11,8 @@ spec:
   interval: 1h
   values:
     image:
-      tag: v2.0.0-rc.0
+      repository: ghcr.io/intel/xpumanager/xpumd
+      tag: v2.0.0-rc.0@sha256:8f020012f68888314402c0332a53718ace4ade9913476bbd125af89edb760a8b
     gpuAccess: dra
     nodeSelector:
       node.kubernetes.io/gpu: "true"
