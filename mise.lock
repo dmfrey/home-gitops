@@ -203,7 +203,7 @@ url = "https://github.com/casey/just/releases/download/1.47.1/just-1.47.1-x86_64
 url_api = "https://api.github.com/repos/casey/just/releases/assets/375215343"
 
 [[tools."pipx:flux-local"]]
-version = "8.1.0"
+version = "8.4.0"
 backend = "pipx:flux-local"
 
 [[tools.uv]]
