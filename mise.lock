@@ -250,7 +250,7 @@ url = "https://github.com/casey/just/releases/download/1.57.0/just-1.57.0-x86_64
 url_api = "https://api.github.com/repos/casey/just/releases/assets/481977734"
 
 [[tools."npm:oxfmt"]]
-version = "0.61.0"
+version = "0.62.0"
 backend = "npm:oxfmt"
 
 [[tools."pipx:flux-local"]]
