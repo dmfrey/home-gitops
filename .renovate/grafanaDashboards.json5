@@ -1,37 +1,21 @@
 {
+  // The custom.grafana-dashboards datasource + regex manager are now
+  // provided by github>home-operations/renovate-presets//managers/grafanaDashboards.json5
+  // (which also handles grafana-operator GrafanaDashboard CRs, not just the
+  // raw dashboards/<id>/revisions/<rev>/download URL form). Renovate merges
+  // packageRules across presets, so this rule layers our automerge/label
+  // preference on top of the shared preset's commit-message rule for the
+  // same datasource rather than replacing it.
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  customDatasources: {
-    "grafana-dashboards": {
-      defaultRegistryUrlTemplate: "https://grafana.com/api/dashboards/{{packageName}}",
-      format: "json",
-      transformTemplates: ['{"releases":[{"version": $string(revision)}], "sourceDirectory": name}'],
-    },
-  },
-  customManagers: [
-    {
-      description: "Process Grafana dashboards",
-      customType: "regex",
-      managerFilePatterns: ["/grafanadashboard\\.yaml(?:\\.j2)?$/",],
-      matchStrings: [
-        "dashboards\\/(?<depName>\\d+)\\/revisions\\/(?<currentValue>\\d+)\\/download",
-      ],
-      datasourceTemplate: "custom.grafana-dashboards",
-      versioningTemplate: "regex:^(?<major>\\d+)$",
-      autoReplaceStringTemplate: "dashboards/{{depName}}/revisions/{{newValue}}/download",
-    },
-  ],
   packageRules: [
     {
+      description: "Auto-merge Grafana dashboard major bumps",
       addLabels: ["renovate/grafana-dashboard"],
       automerge: true,
       automergeType: "branch",
-      commitMessageExtra: "({{currentVersion}} ➔ {{newVersion}})",
-      commitMessageTopic: "dashboard {{sourceDirectory}}",
       ignoreTests: true,
       matchDatasources: ["custom.grafana-dashboards"],
       matchUpdateTypes: ["major"],
-      semanticCommitScope: "grafana-dashboards",
-      semanticCommitType: "chore",
     },
   ],
 }

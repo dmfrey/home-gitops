@@ -1,25 +1,22 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    'config:recommended',
-    'docker:enableMajor',
+    // Bundles config:recommended, docker:enableMajor,
+    // helpers:pinGitHubActionDigestsToSemver, :automergeBranch,
+    // :dependencyDashboard, :disableRateLimiting, the dependency dashboard
+    // title, CNPG/OCI/annotated/talosFactory/grafanaDashboards custom
+    // managers, and semantic-commit policy - see
+    // https://github.com/home-operations/renovate-presets
+    'github>home-operations/renovate-presets#4.0.0',
     'docker:pinDigests',
-    'helpers:pinGitHubActionDigests',
     'github>dmfrey/home-gitops//.renovate/autoMerge.json5',
     'github>dmfrey/home-gitops//.renovate/changelogs.json5',
-    'github>dmfrey/home-gitops//.renovate/customManagers.json5',
     'github>dmfrey/home-gitops//.renovate/grafanaDashboards.json5',
     'github>dmfrey/home-gitops//.renovate/groups.json5',
     'github>dmfrey/home-gitops//.renovate/labels.json5',
     'github>dmfrey/home-gitops//.renovate/overrides.json5',
-    'github>dmfrey/home-gitops//.renovate/semanticCommits.json5',
-    ':automergeBranch',
-    ':disableRateLimiting',
-    ':dependencyDashboard',
-    ':semanticCommits',
     ':timezone(America/New_York)',
   ],
-  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   suppressNotifications: [
     'prEditedNotification',
     'prIgnoreNotification',

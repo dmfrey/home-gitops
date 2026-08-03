@@ -1,16 +1,9 @@
 {
+  // 1Password Connect and Cloudflared changelog URLs are now covered by
+  // github>home-operations/renovate-presets//overrides/changelogs.json5.
+  // Spegel isn't in that bundle, so it stays here.
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
-    {
-      description: "Changelog URL for 1Password Connect",
-      matchPackageNames: ["/1password/"],
-      changelogUrl: "https://github.com/1Password/connect/blob/main/CHANGELOG.md",
-    },
-    {
-      description: "Changelog URL for Cloudflared",
-      matchPackageNames: ["/cloudflared/"],
-      changelogUrl: "https://github.com/cloudflare/cloudflared/blob/master/RELEASE_NOTES",
-    },
     {
       description: "Changelog URL for Spegel",
       matchPackageNames: ["/spegel/"],

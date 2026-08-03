@@ -1,18 +1,13 @@
 {
+  // The Helmfile depName override and the factory.talos.dev package
+  // rename are now covered by github>home-operations/renovate-presets
+  // (overrides/helmfile.json5 and managers/talosFactory.json5 respectively -
+  // the latter is a real improvement over the old rename, since it tracks
+  // Talos versions against factory.talos.dev's own version list instead of
+  // proxying through the installer image's docker tags). Both repo-specific
+  // version blocks below aren't covered by anything upstream and stay here.
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
-    {
-      description: "Override Helmfile Dependency Name",
-      matchDatasources: ["docker"],
-      matchManagers: ["helmfile"],
-      overrideDepName: "{{packageName}}",
-    },
-    {
-      description: "Override Talos Installer Package Name",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/factory\\.talos\\.dev/"],
-      overridePackageName: "ghcr.io/siderolabs/installer",
-    },
     {
       description: "Block OrcaSlicer 2.3.2 — linuxserver ls7 build missing libmspack0",
       matchDatasources: ["docker"],
