@@ -8,10 +8,14 @@ _.file = [
   "{{config_root}}/onepassword.env"
 ]
 
+[hooks]
+postinstall = "lefthook install"
+
 [tools]
-"just" = "latest"
-"uv" = "latest"
-"pipx:flux-local" = "latest"
-"aqua:google/yamlfmt" = "latest"
-"aqua:yannh/kubeconform" = "latest"
-"aqua:charmbracelet/gum" = "latest"
+"aqua:evilmartians/lefthook" = "2.1.10"
+"just" = "1.47.1"
+"uv" = "0.10.12"
+"pipx:flux-local" = "8.1.0"
+"aqua:google/yamlfmt" = "0.21.0"
+"aqua:yannh/kubeconform" = "0.7.0"
+"aqua:charmbracelet/gum" = "0.17.0"
