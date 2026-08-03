@@ -20,5 +20,20 @@
       matchPackageNames: ["ghcr.io/bjw-s-labs/helm/multus"],
       allowedVersions: "!/^1\\.3\\./",
     },
+    {
+      // 2026-08-03: the managers/cnpg.json5 custom manager we picked up from
+      // the shared preset started tracking Cluster.spec.imageName, which
+      // proposed a single PR bumping all 13 CNPG-backed databases from PG
+      // 17 to 18 in one shot - a real major-version upgrade (PG data files
+      // aren't binary-compatible across majors; needs a planned per-database
+      // migration via CNPG's online logical-replication upgrade or a
+      // backup/restore, not a routine image swap). Hold at 17.x until
+      // there's an actual upgrade plan; patch/minor within 17.x still flow
+      // through normally.
+      description: "Hold CloudNativePG PostgreSQL image at 17.x pending a planned major-version migration",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      allowedVersions: "<18.0.0",
+    },
   ],
 }

@@ -198,7 +198,8 @@ Always try to push changes to git to allow fluxcd to affect the state of the ser
 Located in `kubernetes/components/`:
 
 - `volsync/` — VolSync ReplicationSource/Destination and PVC resources
-- `cnpg/` — CloudNative PG database cluster
+- `cnpg/` — CloudNative PG database cluster. **`Cluster.spec.imageName` PostgreSQL major-version bumps are held via Renovate** (`.renovate/overrides.json5`, `allowedVersions: "<18.0.0"` on `ghcr.io/cloudnative-pg/postgresql`), same pattern as the existing Rook-Ceph/OrcaSlicer/multus holds. 2026-08-03: adopting the shared `home-operations/renovate-presets` config picked up its `managers/cnpg.json5` custom manager, which — for the first time in this repo — started tracking `imageName` and immediately proposed a single PR bumping all 13 CNPG-backed databases from PG 17 to 18 at once. That's a real major-version upgrade, not a routine image swap: PG data files aren't binary-compatible across majors, so it needs a planned per-database migration (CNPG's online logical-replication upgrade, or a backup/restore) rather than a blind Renovate merge. The PR was closed; patch/minor bumps within 17.x still flow through normally. Lift the hold only once there's an actual per-database upgrade plan.
+    - **Ceph `volumeSnapshot` backups (the secondary layer, independent of the primary `barman-cloud`/Garage backups) have been silently failing across nearly all 13 CNPG clusters since ~2026-07-15** (`lastSuccessfulBackup` stale, recent `lastFailedBackup` entries through 2026-07-27/29) — found 2026-08-03 via a `flux-pr-reviewer` review, not yet root-caused. Primary barman-cloud backups remain healthy and current for all 13 clusters, so this doesn't put data at risk yet, but it does mean only one of the two backup layers is actually working. Worth a dedicated investigation.
 - `alerts/` — Prometheus alerting rules
 - `common/` — Shared configurations
 - `dragonflydb/` — DrangonflyDB instance
