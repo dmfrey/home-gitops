@@ -216,7 +216,7 @@ YAML files use inline schema comments pointing to `https://kubernetes-schemas.dm
 
 ### CI/CD
 
-GitHub Actions runs `flux-local` validation on PRs touching `kubernetes/**`. Renovate monitors the entire repository for dependency updates and auto-creates PRs.
+GitHub Actions runs the `Flate` workflow (`.github/workflows/flate.yaml`) on PRs touching `kubernetes/**` — it diffs/tests rendered `HelmRelease`/`Kustomization` output for changed files. `flux-local` and `kubeconform` are dev-time tools invoked via `just` recipes (`kubernetes/mod.just`), not part of CI. Renovate monitors the entire repository for dependency updates and auto-creates PRs.
 
 ## Home Assistant
 Home Assistant is setup as fluxcd HelmRelease and maintains local configuration for configuration, automations and dashboards. These 3 items are never checked into git since I have to manually update them on the home assistant server.
