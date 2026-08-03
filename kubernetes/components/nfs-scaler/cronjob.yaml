@@ -32,7 +32,7 @@ spec:
             runAsGroup: 1000
           containers:
             - name: unstick
-              image: docker.io/rancher/kubectl:v1.36.2@sha256:06c7a7a9772737494ae1e0c3af90f1b5385630c147e47c1c7cea92f4bed55fbe
+              image: docker.io/alpine/k8s:1.36.2@sha256:44ef4942e171939b9c665a4a84beb80e2dcdb9a24330d4651cfdfd2e9deecc47
               env:
                 - name: HOME
                   value: /tmp
