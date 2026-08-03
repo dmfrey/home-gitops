@@ -3,6 +3,7 @@
   extends: [
     'config:recommended',
     'docker:enableMajor',
+    'docker:pinDigests',
     'helpers:pinGitHubActionDigests',
     'github>dmfrey/home-gitops//.renovate/autoMerge.json5',
     'github>dmfrey/home-gitops//.renovate/changelogs.json5',
