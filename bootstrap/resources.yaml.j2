@@ -5,16 +5,10 @@ metadata:
   name: onepassword-connect-credentials-secret
   namespace: external-secrets
 stringData:
-  # NOTE: OP_CREDENTIALS_JSON is stored base64-encoded in 1Password (the
-  # OP_SESSION env-var convention the old app-template Connect deployment
-  # used). The official ghcr.io/1password/connect chart mounts this key as
-  # a *file* and expects raw decoded JSON, not base64 - `op inject` can't
-  # pipe through a decode step here, so on a from-scratch bootstrap this
-  # value must be base64-decoded before/after this apply, e.g.:
-  #   kubectl -n external-secrets get secret onepassword-connect-credentials-secret \
-  #     -o jsonpath='{.data.1password-credentials\.json}' | base64 -d | base64 -d \
-  #     | kubectl -n external-secrets create secret generic onepassword-connect-credentials-secret \
-  #       --from-file=1password-credentials.json=/dev/stdin --dry-run=client -o yaml | kubectl apply -f -
+  # OP_CREDENTIALS_JSON stores the raw decoded credentials JSON directly
+  # (not base64) - the official ghcr.io/1password/connect chart mounts this
+  # key as a file expecting real JSON. See CLAUDE.md's 1Password Connect
+  # section for why this matters.
   1password-credentials.json: op://kubernetes/1password/OP_CREDENTIALS_JSON
 ---
 apiVersion: v1
