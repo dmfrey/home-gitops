@@ -45,16 +45,20 @@ jobs:
             infrastructure/terraform/**
 
       - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: "${{ steps.changed-files.outputs.all_changed_files }}"
         run: |
-          echo '${{ steps.changed-files.outputs.all_changed_files }}'
+          echo "${ALL_CHANGED_FILES}"
 
       - name: Store changed projects
         id: set-matrix
+        env:
+          ALL_CHANGED_FILES: "${{ steps.changed-files.outputs.all_changed_files }}"
         run: |
-          if [[ "${{ steps.changed-files.outputs.all_changed_files }}" == "[]" ]]; then
+          if [[ "${ALL_CHANGED_FILES}" == "[]" ]]; then
             echo "matrix={\"project\":$(find infrastructure/terraform -type f -name .terraform.lock.hcl | xargs dirname | jo -a)}" >> "${GITHUB_OUTPUT}"
           else
-            echo "matrix={\"project\":${{ steps.changed-files.outputs.all_changed_files }}}" >> "${GITHUB_OUTPUT}"
+            echo "matrix={\"project\":${ALL_CHANGED_FILES}}" >> "${GITHUB_OUTPUT}"
           fi
 
   publish:
@@ -89,18 +93,22 @@ jobs:
 
       - name: Lowercase Owner Name
         env:
-          REPO_OWNER: '${{ github.repository_owner }}'
+          REPO_OWNER: "${{ github.repository_owner }}"
         run: |
           echo "REPO_OWNER_LC=${REPO_OWNER,,}" >>${GITHUB_ENV}
 
       - name: Publish OCI
+        env:
+          MATRIX_PROJECT: "${{ matrix.project }}"
         run: |
-          flux push artifact "oci://ghcr.io/${REPO_OWNER_LC}/terraform/$(basename ${{ matrix.project }}):$(git rev-parse --short HEAD)" \
-            --path="./${{ matrix.project }}" \
+          flux push artifact "oci://ghcr.io/${REPO_OWNER_LC}/terraform/$(basename "${MATRIX_PROJECT}"):$(git rev-parse --short HEAD)" \
+            --path="./${MATRIX_PROJECT}" \
             --source="$(git config --get remote.origin.url)" \
             --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
 
       - name: Tag OCI
+        env:
+          MATRIX_PROJECT: "${{ matrix.project }}"
         run: |-
-          flux tag artifact "oci://ghcr.io/${REPO_OWNER_LC}/terraform/$(basename ${{ matrix.project }}):$(git rev-parse --short HEAD)" \
+          flux tag artifact "oci://ghcr.io/${REPO_OWNER_LC}/terraform/$(basename "${MATRIX_PROJECT}"):$(git rev-parse --short HEAD)" \
             --tag main
