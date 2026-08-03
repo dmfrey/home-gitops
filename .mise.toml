@@ -4,9 +4,7 @@ MINIJINJA_CONFIG_FILE = "{{config_root | canonicalize}}/.minijinja.toml"
 TALOSCONFIG = "{{config_root | canonicalize}}/talosconfig"
 LEFTHOOK_OUTPUT = "false"
 
-_.file = [
-  "{{config_root}}/onepassword.env"
-]
+_.file = ["{{config_root}}/onepassword.env"]
 
 [hooks]
 postinstall = "lefthook install"
@@ -18,6 +16,6 @@ postinstall = "lefthook install"
 "just" = "1.57.0"
 "uv" = "0.12.1"
 "pipx:flux-local" = "8.4.0"
-"aqua:google/yamlfmt" = "0.21.0"
+"npm:oxfmt" = "0.61.0"
 "aqua:yannh/kubeconform" = "0.8.0"
 "aqua:charmbracelet/gum" = "0.17.0"

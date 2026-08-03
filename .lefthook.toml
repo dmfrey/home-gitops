@@ -1,16 +1,9 @@
-[pre-commit]
-parallel = true
-
-[pre-commit.commands.format-just]
-run = """
-for file in {staged_files}; do
-    just --justfile "$file" --fmt --unstable
-done
-"""
-glob = ["*.just", ".justfile"]
-stage_fixed = true
-
-[pre-commit.commands.format-yaml]
-run = "yamlfmt {staged_files}"
-glob = ["*.yaml"]
-stage_fixed = true
+# lefthook's remote sync does a shallow `--branch <ref>` clone, which only
+# works against a real branch/tag - not an arbitrary commit SHA - and there's
+# no tagged release of lefthook.common.toml to pin to instead. Tracking
+# main here, same as oneDr0p/home-ops and the rest of the home-operations
+# community that shares this file.
+[[remotes]]
+git_url = "https://github.com/home-operations/.github"
+ref = "main"
+configs = ["lefthook.common.toml"]
