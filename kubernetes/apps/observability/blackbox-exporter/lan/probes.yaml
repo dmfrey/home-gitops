@@ -6,7 +6,6 @@ metadata:
   name: lan-icmp
 
 spec:
-
   module: icmp
 
   prober:
@@ -19,7 +18,6 @@ spec:
         - k8s-1.internal
         - k8s-2.internal
         - nas.internal
-        - ollama.internal
 
   metricRelabelings:
     - targetLabel: service
@@ -32,7 +30,6 @@ kind: Probe
 metadata:
   name: lan-nfs
 spec:
-
   jobName: nfs_probe
 
   module: tcp_connect
@@ -56,7 +53,6 @@ kind: Probe
 metadata:
   name: lan-zigbee-1
 spec:
-
   jobName: zigbee_1_probe
 
   module: icmp
@@ -80,7 +76,6 @@ kind: Probe
 metadata:
   name: lan-zigbee-2
 spec:
-
   jobName: zigbee_2_probe
 
   module: icmp
