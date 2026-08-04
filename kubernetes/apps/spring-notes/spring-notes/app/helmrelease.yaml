@@ -11,7 +11,6 @@ spec:
   interval: 1h
   values:
     controllers:
-
       backend:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -113,7 +112,14 @@ spec:
       sbom-submit:
         type: cronjob
         cronjob:
-          schedule: "@daily"
+          # Offset 30m past midnight UTC - every CNPG barman-cloud
+          # ScheduledBackup fleet-wide (including dependency-track's own)
+          # fires at the literal @daily (00:00 UTC) instant, and
+          # dependency-track-v5-cnpg is single-instance, so a base backup's
+          # checkpoint briefly contends with its own API. Leave the CNPG
+          # schedules alone (deliberately uniform fleet-wide, see
+          # ebe1ef7e3/720fbbdf4) and move this one instead.
+          schedule: "30 0 * * *"
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
@@ -148,7 +154,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
 
       frontend:
         containers:
@@ -246,4 +252,3 @@ spec:
             backendRefs:
               - identifier: frontend
                 port: 80
-
