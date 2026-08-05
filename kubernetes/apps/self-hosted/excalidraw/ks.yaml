@@ -17,6 +17,9 @@ spec:
       namespace: self-hosted
   interval: 1h
   path: "./kubernetes/apps/self-hosted/excalidraw/excalidraw-kv"
+  postBuild:
+    substitute:
+      APP: excalidraw
   prune: true
   sourceRef:
     kind: GitRepository

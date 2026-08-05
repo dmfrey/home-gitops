@@ -43,6 +43,9 @@ spec:
       namespace: ai
   interval: 1h
   path: "./kubernetes/apps/ai/openweb/openweb-kv"
+  postBuild:
+    substitute:
+      APP: openweb
   prune: true
   sourceRef:
     kind: GitRepository

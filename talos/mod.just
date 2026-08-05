@@ -1,4 +1,4 @@
-set quiet := true
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 talos_dir := justfile_dir() + '/talos'
@@ -34,8 +34,11 @@ gen-schematic-id-egpu-proprietary:
 
 [doc('Reboot a node')]
 reboot-node node: health-check
-    gum confirm "Reboot node {{ node }}?" --default="No" && \
-        talosctl -n {{ node }} reboot -m powercycle || exit 0
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [[ "${FORCE:-}" == "1" ]] || gum confirm "Reboot node {{ node }}?" --default="No"; then
+        talosctl -n "{{ node }}" reboot -m powercycle
+    fi
 
 [doc('Render Talos config for a node')]
 render-config node:
@@ -50,8 +53,11 @@ reset-node node *args: health-check
 
 [doc('Shutdown a node')]
 shutdown-node node *args: health-check
-    gum confirm "Shutdown node {{ node }}?" --default="No" && \
-        talosctl -n "{{ node }}" shutdown --force {{ args }} || exit 0
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [[ "${FORCE:-}" == "1" ]] || gum confirm "Shutdown node {{ node }}?" --default="No"; then
+        talosctl -n "{{ node }}" shutdown --force {{ args }}
+    fi
 
 [doc('Upgrade Kubernetes version on the cluster')]
 upgrade-k8s version: health-check
@@ -89,6 +95,11 @@ health-check:
     for p in "${problems[@]}"; do
         echo "  - $p" >&2
     done
+
+    if [[ "${FORCE:-}" == "1" ]]; then
+        just log warn "FORCE=1 set, skipping confirmation"
+        exit 0
+    fi
     gum confirm "Proceed anyway?" --default="No"
 
 [private]

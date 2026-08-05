@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/batch/cronjob_v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ${APP}-dragonfly-unstick
+spec:
+  # DragonflyDB pods can hang indefinitely on cold power-on if they start the
+  # instant before Garage reaches S3 quorum: the process starts (admin port
+  # 9999 up) but never finishes loading its snapshot or opens the main data
+  # port (6379), and never restarts again on its own - readiness/liveness
+  # probes keep failing but kubelet never intervenes. Found 2026-08-04
+  # (immich-dragonflydb-0, recovering from the planned power outage) - a
+  # third failure mode distinct from the missing-role-label and
+  # corrupted-snapshot-crash-loop cases. This nudges any instance that's
+  # Running-but-not-Ready for more than 3 minutes by deleting it to force a
+  # clean restart, once its dependencies (Garage) are actually available.
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: ${APP}-dragonfly-unstick
+          restartPolicy: Never
+          automountServiceAccountToken: true
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+          containers:
+            - name: unstick
+              image: docker.io/alpine/k8s:1.36.2@sha256:44ef4942e171939b9c665a4a84beb80e2dcdb9a24330d4651cfdfd2e9deecc47
+              env:
+                - name: HOME
+                  value: /tmp
+              command:
+                - sh
+                - -c
+                - |
+                  kubectl get pods -l app=${APP}-dragonflydb -o json \
+                    | jq -r '
+                        .items[]
+                        | select((.status.containerStatuses // [])[0].ready == false)
+                        | select((now - ((.status.startTime // "1970-01-01T00:00:00Z") | fromdateiso8601)) > 180)
+                        | .metadata.name
+                      ' \
+                    | xargs -r -n1 kubectl delete pod --ignore-not-found=true
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 64Mi
+          volumes:
+            - name: tmp
+              emptyDir: {}

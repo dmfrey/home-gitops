@@ -45,6 +45,9 @@ spec:
       namespace: security
   interval: 1h
   path: "./kubernetes/apps/security/authentik/authentik-kv"
+  postBuild:
+    substitute:
+      APP: authentik
   prune: true
   sourceRef:
     kind: GitRepository
