@@ -27,10 +27,35 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: spring-notes-mq
+spec:
+  dependsOn:
+    - name: rabbitmq-cluster-operator
+      namespace: datastore
+  healthChecks:
+    - apiVersion: rabbitmq.com/v1beta1
+      kind: RabbitmqCluster
+      name: spring-notes-rabbitmq
+      namespace: spring-notes
+  interval: 1h
+  path: ./kubernetes/apps/spring-notes/spring-notes/spring-notes-mq
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: spring-notes
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: spring-notes
 spec:
   dependsOn:
     - name: spring-notes-db
+    - name: spring-notes-mq
   interval: 1h
   path: ./kubernetes/apps/spring-notes/spring-notes/app
   prune: true

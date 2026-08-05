@@ -14,7 +14,7 @@ spec:
       backend:
         annotations:
           reloader.stakater.com/auto: "true"
-          secret.reloader.stakater.com/reload: spring-notes-cnpg-app,spring-notes-secret
+          secret.reloader.stakater.com/reload: spring-notes-cnpg-app,spring-notes-secret,spring-notes-rabbitmq-default-user
         containers:
           app:
             image:
@@ -73,6 +73,28 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: spring-notes-cnpg-app
+                    key: password
+              # RabbitMQ Cluster Operator auto-creates spring-notes-rabbitmq-default-user
+              # with host/port/username/password, same shape as CNPG's app secret.
+              SPRING_RABBITMQ_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
+                    key: host
+              SPRING_RABBITMQ_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
+                    key: port
+              SPRING_RABBITMQ_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
+                    key: username
+              SPRING_RABBITMQ_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
                     key: password
               LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/spring-notes/
