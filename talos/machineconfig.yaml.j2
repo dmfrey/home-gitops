@@ -291,6 +291,22 @@ mtu: 1500
 
 ---
 apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  # bond0.50 (IoT VLAN) exists only so Multus can hand pods a macvlan off it -
+  # the host itself has no business routing through it. Without this, the
+  # host picks up a second RA-learned IPv6 default route here alongside the
+  # legitimate one on bond0, and traffic that happens to pick this path gets
+  # "network is unreachable" since the router doesn't forward WAN IPv6 the
+  # same way on this VLAN. Confirmed 2026-08-06, same fix onedr0p/home-ops
+  # uses for their own IoT VLAN. Safe for Multus: macvlan child interfaces
+  # (net.ipv6.conf.<child>.accept_ra=1, set by the tuning CNI plugin in
+  # networkattachment-iot.yaml) keep independent IPv6 config from the parent,
+  # so this doesn't affect pod-level IoT IPv6 connectivity.
+  net/ipv6/conf/bond0.50/disable_ipv6: "1"
+
+---
+apiVersion: v1alpha1
 kind: UserVolumeConfig
 name: local-hostpath
 provisioning:
