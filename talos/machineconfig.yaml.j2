@@ -78,39 +78,6 @@ machine:
     node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: dmf
 
-  sysctls:
-    # --- Filesystem Watchers ---
-    fs.inotify.max_user_instances: "8192"
-    fs.inotify.max_user_watches: "1048576"
-
-    # --- Virtual Memory Tuning ---
-    vm.dirty_background_ratio: "5"
-    vm.dirty_ratio: "10"
-    vm.swappiness: "0"                         # No swap on Talos; explicit for Kubernetes best practice
-    vm.min_free_kbytes: "1048576"              # Reserve 1GB free — prevents OOM during Rook-Ceph I/O bursts on 64GB nodes
-    vm.max_map_count: "524288"                 # Required for Elasticsearch (SonarQube)
-
-    # --- Network Performance Tuning (2.5GbE) ---
-    net.core.default_qdisc: fq
-    net.core.netdev_max_backlog: "5000"        # Default 1000 is tuned for 1GbE
-    net.core.rmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
-    net.core.somaxconn: "4096"
-    net.core.wmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
-    net.ipv4.tcp_congestion_control: bbr
-    net.ipv4.tcp_mtu_probing: "1"             # Enable MTU probing for Cilium pod networking
-    net.ipv4.tcp_rmem: 4096 87380 16777216
-    net.ipv4.tcp_wmem: 4096 65536 16777216
-    net.ipv4.neigh.default.gc_thresh1: "4096"  # Default 128 is tight for 100+ pods/node
-    net.ipv4.neigh.default.gc_thresh2: "8192"
-    net.ipv4.neigh.default.gc_thresh3: "16384" # Default 1024, preventive headroom after 109-pod density incident
-
-    # --- NFS Client Tuning ---
-    sunrpc.tcp_max_slot_table_entries: "128"
-
-    # --- Process & Namespace Limits ---
-    user.max_user_namespaces: "11255"
-    kernel.pid_max: "1048576"              # Default 32768 is too low for large clusters; prevents PID exhaustion
-
   sysfs:
     devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
     kernel.mm.transparent_hugepage.enabled: never    # Eliminate THP compaction latency spikes (etcd, PostgreSQL)
@@ -293,16 +260,51 @@ mtu: 1500
 apiVersion: v1alpha1
 kind: SysctlConfig
 params:
-  # bond0.50 (IoT VLAN) exists only so Multus can hand pods a macvlan off it -
-  # the host itself has no business routing through it. Without this, the
-  # host picks up a second RA-learned IPv6 default route here alongside the
-  # legitimate one on bond0, and traffic that happens to pick this path gets
-  # "network is unreachable" since the router doesn't forward WAN IPv6 the
-  # same way on this VLAN. Confirmed 2026-08-06, same fix onedr0p/home-ops
-  # uses for their own IoT VLAN. Safe for Multus: macvlan child interfaces
+  # --- Filesystem Watchers ---
+  fs.inotify.max_user_instances: "8192"
+  fs.inotify.max_user_watches: "1048576"
+
+  # --- Virtual Memory Tuning ---
+  vm.dirty_background_ratio: "5"
+  vm.dirty_ratio: "10"
+  vm.swappiness: "0"                         # No swap on Talos; explicit for Kubernetes best practice
+  vm.min_free_kbytes: "1048576"              # Reserve 1GB free — prevents OOM during Rook-Ceph I/O bursts on 64GB nodes
+  vm.max_map_count: "524288"                 # Required for Elasticsearch (SonarQube)
+
+  # --- Network Performance Tuning (2.5GbE) ---
+  net.core.default_qdisc: fq
+  net.core.netdev_max_backlog: "5000"        # Default 1000 is tuned for 1GbE
+  net.core.rmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
+  net.core.somaxconn: "4096"
+  net.core.wmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
+  net.ipv4.tcp_congestion_control: bbr
+  net.ipv4.tcp_mtu_probing: "1"             # Enable MTU probing for Cilium pod networking
+  net.ipv4.tcp_rmem: 4096 87380 16777216
+  net.ipv4.tcp_wmem: 4096 65536 16777216
+  net.ipv4.neigh.default.gc_thresh1: "4096"  # Default 128 is tight for 100+ pods/node
+  net.ipv4.neigh.default.gc_thresh2: "8192"
+  net.ipv4.neigh.default.gc_thresh3: "16384" # Default 1024, preventive headroom after 109-pod density incident
+
+  # --- NFS Client Tuning ---
+  sunrpc.tcp_max_slot_table_entries: "128"
+
+  # --- Process & Namespace Limits ---
+  user.max_user_namespaces: "11255"
+  kernel.pid_max: "1048576"              # Default 32768 is too low for large clusters; prevents PID exhaustion
+
+  # --- IoT VLAN ---
+  # bond0.50 exists only so Multus can hand pods a macvlan off it - the host
+  # itself has no business routing through it. Without this, the host picks
+  # up a second RA-learned IPv6 default route here alongside the legitimate
+  # one on bond0, and traffic that happens to pick this path gets "network
+  # is unreachable" since the router doesn't forward WAN IPv6 the same way
+  # on this VLAN. Confirmed 2026-08-06, same fix onedr0p/home-ops uses for
+  # their own IoT VLAN. Safe for Multus: macvlan child interfaces
   # (net.ipv6.conf.<child>.accept_ra=1, set by the tuning CNI plugin in
-  # networkattachment-iot.yaml) keep independent IPv6 config from the parent,
-  # so this doesn't affect pod-level IoT IPv6 connectivity.
+  # networkattachment-iot.yaml) keep independent IPv6 config from the
+  # parent, so this doesn't affect pod-level IoT IPv6 connectivity. Slash
+  # notation (not dotted) because the interface name "bond0.50" already
+  # contains a literal dot.
   net/ipv6/conf/bond0.50/disable_ipv6: "1"
 
 ---
