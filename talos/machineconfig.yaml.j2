@@ -111,23 +111,6 @@ machine:
     user.max_user_namespaces: "11255"
     kernel.pid_max: "1048576"              # Default 32768 is too low for large clusters; prevents PID exhaustion
 
-    # --- IoT VLAN ---
-    # bond0.50 exists only so Multus can hand pods a macvlan off it - the host
-    # itself has no business routing through it. Without this, the host picks
-    # up a second RA-learned IPv6 default route here alongside the legitimate
-    # one on bond0, and traffic that happens to pick this path gets "network
-    # is unreachable" since the router doesn't forward WAN IPv6 the same way
-    # on this VLAN. Confirmed 2026-08-06, same fix onedr0p/home-ops uses for
-    # their own IoT VLAN (they run it as a standalone `kind: SysctlConfig`
-    # document - that's Talos v1.14+ only and isn't a registered document
-    # kind on this cluster's v1.13.7, hence inline here instead). Safe for
-    # Multus: macvlan child interfaces (net.ipv6.conf.<child>.accept_ra=1,
-    # set by the tuning CNI plugin in networkattachment-iot.yaml) keep
-    # independent IPv6 config from the parent, so this doesn't affect
-    # pod-level IoT IPv6 connectivity. Slash notation (not dotted) because
-    # the interface name "bond0.50" already contains a literal dot.
-    net/ipv6/conf/bond0.50/disable_ipv6: "1"
-
   sysfs:
     devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
     kernel.mm.transparent_hugepage.enabled: never    # Eliminate THP compaction latency spikes (etcd, PostgreSQL)
