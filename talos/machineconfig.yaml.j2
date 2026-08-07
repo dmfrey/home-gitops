@@ -64,6 +64,13 @@ machine:
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
+    extraArgs:
+      # net.ipv6.conf.* per-interface sysctls (e.g. accept_ra_rt_info_max_plen,
+      # used by matter-server to learn the Thread OMR route on its macvlan
+      # interface) are classified unsafe by Kubernetes by default and need
+      # this allowlist, or the pod fails admission. Same setting
+      # github.com/aclerici38/home-ops uses.
+      allowed-unsafe-sysctls: net.ipv6.conf.*
     extraConfig:
       imageMaximumGCAge: 24h
       imageGCHighThresholdPercent: 65
