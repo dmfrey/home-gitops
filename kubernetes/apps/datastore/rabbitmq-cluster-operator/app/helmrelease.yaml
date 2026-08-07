@@ -6,12 +6,22 @@ metadata:
   name: rabbitmq-cluster-operator
 
 spec:
-
   interval: 1h
 
   chartRef:
     kind: OCIRepository
     name: rabbitmq-cluster-operator
+
+  values:
+    # Bitnami pulled these tags from the free docker.io/bitnami/* namespace
+    # (Broadcom's ongoing Bitnami Secure Images migration) - bitnamilegacy is
+    # Bitnami's own frozen mirror of the last free images, same tags.
+    clusterOperator:
+      image:
+        repository: bitnamilegacy/rabbitmq-cluster-operator
+    msgTopologyOperator:
+      image:
+        repository: bitnamilegacy/rmq-messaging-topology-operator
 
   install:
     remediation:

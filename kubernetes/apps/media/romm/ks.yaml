@@ -45,6 +45,9 @@ spec:
       namespace: media
   interval: 1h
   path: "./kubernetes/apps/media/romm/romm-kv"
+  postBuild:
+    substitute:
+      APP: romm
   prune: true
   sourceRef:
     kind: GitRepository

@@ -1,4 +1,4 @@
-set quiet := true
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 kubernetes_dir := justfile_dir() + '/kubernetes'
@@ -45,8 +45,11 @@ keda state:
 [doc('Suspend or resume CNPG clusters for node maintenance')]
 cnpg state:
     kubectl get clusters --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" patch cluster "$name" --type merge \
-            -p '{"spec":{"nodeMaintenanceWindow":{"inProgress":{{ if state == "suspend" { "true" } else { "false" } }},"reusePVC":true}}}'; \
+        for i in 1 2 3; do \
+            kubectl -n "$ns" patch cluster "$name" --type merge \
+                -p '{"spec":{"nodeMaintenanceWindow":{"inProgress":{{ if state == "suspend" { "true" } else { "false" } }},"reusePVC":true}}}' \
+                && break || { echo "retry $i/3 for $ns/$name" >&2; sleep 3; }; \
+        done; \
     done
 
 [doc('Suspend or resume VolSync')]

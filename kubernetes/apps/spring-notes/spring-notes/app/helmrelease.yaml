@@ -11,17 +11,16 @@ spec:
   interval: 1h
   values:
     controllers:
-
       backend:
         annotations:
           reloader.stakater.com/auto: "true"
-          secret.reloader.stakater.com/reload: spring-notes-cnpg-app,spring-notes-secret
+          secret.reloader.stakater.com/reload: spring-notes-cnpg-app,spring-notes-secret,spring-notes-rabbitmq-default-user
         containers:
           app:
             image:
               repository: ghcr.io/dmfrey/spring-notes
-              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes versioning=loose
-              tag: 79d557091ad9d1f1638415520e0074762c334a7a
+              # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes versioning=semver
+              tag: v3.1.0
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -75,6 +74,28 @@ spec:
                   secretKeyRef:
                     name: spring-notes-cnpg-app
                     key: password
+              # RabbitMQ Cluster Operator auto-creates spring-notes-rabbitmq-default-user
+              # with host/port/username/password, same shape as CNPG's app secret.
+              SPRING_RABBITMQ_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
+                    key: host
+              SPRING_RABBITMQ_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
+                    key: port
+              SPRING_RABBITMQ_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
+                    key: username
+              SPRING_RABBITMQ_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: spring-notes-rabbitmq-default-user
+                    key: password
               LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/spring-notes/
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES:
@@ -113,7 +134,14 @@ spec:
       sbom-submit:
         type: cronjob
         cronjob:
-          schedule: "@daily"
+          # Offset 30m past midnight UTC - every CNPG barman-cloud
+          # ScheduledBackup fleet-wide (including dependency-track's own)
+          # fires at the literal @daily (00:00 UTC) instant, and
+          # dependency-track-v5-cnpg is single-instance, so a base backup's
+          # checkpoint briefly contends with its own API. Leave the CNPG
+          # schedules alone (deliberately uniform fleet-wide, see
+          # ebe1ef7e3/720fbbdf4) and move this one instead.
+          schedule: "30 0 * * *"
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
@@ -148,7 +176,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
 
       frontend:
         containers:
@@ -246,4 +274,3 @@ spec:
             backendRefs:
               - identifier: frontend
                 port: 80
-

@@ -5,7 +5,6 @@ kind: HelmRelease
 metadata:
   name: matter-server
 spec:
-
   chartRef:
     kind: OCIRepository
     name: matter-server
@@ -13,9 +12,7 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
-
       matter-server:
         type: statefulset
 
@@ -54,12 +51,21 @@ spec:
       hostUsers: false
       securityContext:
         runAsNonRoot: false # Must be run as root user
-        runAsUser: 0        # Must be run as root user
+        runAsUser: 0 # Must be run as root user
         runAsGroup: 0
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 34
+        # Accept RA route-info (Thread OMR prefix) on the iot-vlan macvlan
+        # interface specifically, rather than relying on host-level IPv6.
+        # Same pattern as github.com/aclerici38/home-ops's matter-server -
+        # macvlan children have their own independent net.ipv6.conf
+        # namespace, so this doesn't depend on (or require re-touching) the
+        # host's own bond0.50 IPv6 config.
+        sysctls:
+          - name: net.ipv6.conf.net1.accept_ra_rt_info_max_plen
+            value: "64"
 
     service:
       app:

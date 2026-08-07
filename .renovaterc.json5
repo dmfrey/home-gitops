@@ -1,35 +1,42 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
     // Bundles config:recommended, docker:enableMajor,
     // helpers:pinGitHubActionDigestsToSemver, :automergeBranch,
     // :dependencyDashboard, :disableRateLimiting, the dependency dashboard
-    // title, CNPG/OCI/annotated/talosFactory/grafanaDashboards custom
-    // managers, and semantic-commit policy - see
+    // title, OCI/annotated custom managers, and semantic-commit policy - see
     // https://github.com/home-operations/renovate-presets
-    'github>home-operations/renovate-presets#4.0.0',
-    'docker:pinDigests',
-    'github>dmfrey/home-gitops//.renovate/autoMerge.json5',
-    'github>dmfrey/home-gitops//.renovate/changelogs.json5',
-    'github>dmfrey/home-gitops//.renovate/grafanaDashboards.json5',
-    'github>dmfrey/home-gitops//.renovate/groups.json5',
-    'github>dmfrey/home-gitops//.renovate/labels.json5',
-    'github>dmfrey/home-gitops//.renovate/overrides.json5',
-    ':timezone(America/New_York)',
+    //
+    // 2026-08-07: upstream's v6.0.0 (breaking) moved cnpg/grafanaDashboards/
+    // talosFactory out of default.json's bundle into opt-in apps/*.json5
+    // presets. Nested `//path` extends inside their own default.json are NOT
+    // ref-pinned, so Renovate always resolves them against upstream's
+    // current default branch regardless of the #ref pinned here - when
+    // managers/cnpg.json5 was deleted from HEAD, our pin on #4.0.0 broke
+    // instantly (every run from 2026-08-07T11:37Z on failed in the init
+    // phase with a config-validation preset-not-found error, silently -
+    // GitHub Actions still reported success). Bumped to #6.0.0 to match
+    // upstream's current layout, and the three app presets we rely on are
+    // now listed explicitly since they're opt-in.
+    "github>home-operations/renovate-presets#6.0.0",
+    "github>home-operations/renovate-presets//apps/cnpg.json5",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5",
+    "github>home-operations/renovate-presets//apps/talosFactory.json5",
+    "docker:pinDigests",
+    "github>dmfrey/home-gitops//.renovate/autoMerge.json5",
+    "github>dmfrey/home-gitops//.renovate/changelogs.json5",
+    "github>dmfrey/home-gitops//.renovate/grafanaDashboards.json5",
+    "github>dmfrey/home-gitops//.renovate/groups.json5",
+    "github>dmfrey/home-gitops//.renovate/labels.json5",
+    "github>dmfrey/home-gitops//.renovate/overrides.json5",
+    ":timezone(America/New_York)",
   ],
-  suppressNotifications: [
-    'prEditedNotification',
-    'prIgnoreNotification',
-  ],
-  ignorePaths: [
-    '**/resources/**',
-    '**/nzbget/extension/**',
-    'archive/**',
-  ],
+  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
+  ignorePaths: ["**/resources/**", "**/nzbget/extension/**", "archive/**"],
   flux: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
-  'helm-values': {
+  "helm-values": {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/", "!/talos/"],
   },
   kubernetes: {

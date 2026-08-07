@@ -47,6 +47,7 @@ spec:
   path: "./kubernetes/apps/media/pinepods/pinepods-kv"
   postBuild:
     substitute:
+      APP: pinepods
       DB: pinepods-kv
   prune: true
   sourceRef:

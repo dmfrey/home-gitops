@@ -43,6 +43,9 @@ spec:
       namespace: self-hosted
   interval: 1h
   path: "./kubernetes/apps/self-hosted/affine/affine-kv"
+  postBuild:
+    substitute:
+      APP: affine
   prune: true
   sourceRef:
     kind: GitRepository
