@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: docker.io/library/sonarqube
-              tag: 26.7.0.124771-community@sha256:d4899d380ad9d7b63ebaa751e047f5a4f064f8902cdf7c1a3c3c96f7d71600ed
+              tag: 26.8.0.126808-community@sha256:9dfc19385a3b7647e7585013d8c94ae2322228c6b217a1c641199f07f86b12ab
               pullPolicy: IfNotPresent
             env:
               SONAR_JDBC_URL: jdbc:postgresql://sonarqube-cnpg-rw.security.svc.cluster.local:5432/sonarqube
