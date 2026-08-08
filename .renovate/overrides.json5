@@ -55,27 +55,36 @@
       enabled: false,
     },
     {
-      // The shared preset's "annotated" regex custom manager (matches
-      // `# renovate: datasource=... depName=...` comments) has no
-      // currentDigest capture group or autoReplaceStringTemplate, so it can
-      // update an EXISTING digest but can never write a first-time one -
-      // docker:pinDigests still tries (it applies by matchDatasources, not
-      // by manager), computes a real new digest, then fails to find
-      // anywhere to write it ("Digest is not updated" / foundValue:
-      // undefined), which fails the whole grouped `kubernetes` branch this
-      // dependency sits in. tuppr's KubernetesUpgrade.spec.kubernetes.version
-      // is a bare CRD version field, not an image ref, so it can't be
-      // reshaped into a literal `repo:tag` the built-in manager would
-      // handle instead (unlike the sibling cloudnative-pg/barman-cloud
-      // SIDECAR_IMAGE case, which *was* fixed that way). The real
-      // ghcr.io/siderolabs/kubelet image (talos/machineconfig.yaml.j2)
-      // still gets digest-pinned normally via the built-in kubernetes
-      // manager - this only disables the redundant, broken annotated-comment
-      // attempt on this one CRD field.
-      description: "Don't attempt digest-pinning on tuppr's KubernetesUpgrade version field - the annotated regex manager can't write a first-time digest here",
-      matchFileNames: ["kubernetes/apps/system-upgrade/tuppr/upgrades/kubernetesupgrade.yaml"],
-      matchDatasources: ["docker"],
-      pinDigests: false,
+      // 2026-08-08: confirmed the `pinDigest` update type (Renovate's name
+      // for "add a digest, nothing else about the value changes") is
+      // structurally broken across this repo's dominant dependency shape,
+      // not just the cloudnative-pg/tuppr cases found earlier the same day
+      // (see those fixes' commit messages). Renovate's own extraction for
+      // Flux OCIRepository refs (manager: "flux") and CRD scalar fields
+      // (manager: "regex") is pattern/regex-based under the hood, same
+      // long-standing, still-open, low-priority upstream limitation as
+      // renovatebot/renovate#24942 and #10993 (open since 2025, no fix
+      // planned): these extractors can update an EXISTING digest but can't
+      // write a first-time one onto a bare tag. Every OCIRepository in this
+      // repo hit this identically in the same "pin-dependencies" batch
+      // ("Digest is not updated" / foundValue: undefined for ~60 files, one
+      // grouped branch, confirmed via raw job log) - this rule supersedes
+      // the narrower tuppr-specific pinDigests:false override that
+      // preceded it, now covered by this broader one.
+      //
+      // Ordinary version-bump PRs are a different, working code path -
+      // proven repeatedly the same day this was diagnosed (spring-notes,
+      // rabbitmq, unpoller, ollama, external-secrets all landed a fresh
+      // `tag: vX@sha256:...` correctly as part of a real version change).
+      // Disabling only the standalone backfill-onto-unchanged-version type
+      // keeps that working path fully intact; it just stops Renovate from
+      // repeatedly proposing (and failing) a bulk backfill of the ~144
+      // pre-existing un-pinned images that can never succeed as constructed.
+      // Digests for those will arrive naturally, one at a time, the next
+      // time each dependency's version actually bumps.
+      description: "Don't attempt standalone digest backfills (pinDigest) - structurally broken for this repo's flux/regex-extracted dependencies; digests still land normally as part of real version bumps",
+      matchUpdateTypes: ["pinDigest"],
+      enabled: false,
     },
   ],
 }
