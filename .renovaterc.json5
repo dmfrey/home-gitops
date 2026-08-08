@@ -9,19 +9,29 @@
     //
     // 2026-08-07: upstream's v6.0.0 (breaking) moved cnpg/grafanaDashboards/
     // talosFactory out of default.json's bundle into opt-in apps/*.json5
-    // presets. Nested `//path` extends inside their own default.json are NOT
-    // ref-pinned, so Renovate always resolves them against upstream's
-    // current default branch regardless of the #ref pinned here - when
-    // managers/cnpg.json5 was deleted from HEAD, our pin on #4.0.0 broke
-    // instantly (every run from 2026-08-07T11:37Z on failed in the init
+    // presets. Nested `//path` extends inside their own default.json were
+    // NOT ref-pinned at the time, so Renovate resolved them against
+    // upstream's current default branch regardless of the #ref pinned here
+    // - when managers/cnpg.json5 was deleted from HEAD, our pin on #4.0.0
+    // broke instantly (every run from 2026-08-07T11:37Z failed in the init
     // phase with a config-validation preset-not-found error, silently -
-    // GitHub Actions still reported success). Bumped to #6.0.0 to match
-    // upstream's current layout, and the three app presets we rely on are
-    // now listed explicitly since they're opt-in.
-    "github>home-operations/renovate-presets#6.0.0",
-    "github>home-operations/renovate-presets//apps/cnpg.json5",
-    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5",
-    "github>home-operations/renovate-presets//apps/talosFactory.json5",
+    // GitHub Actions still reported success). Bumping to #6.0.0 only moved
+    // the problem: 2026-08-08, upstream shipped v7.0.0 (breaking) which
+    // deleted config/ entirely (consolidated into default.json), breaking
+    // config/baseConfig.json5 the exact same way within ~15 hours of the
+    // first fix.
+    //
+    // v7.0.0 restructures for the better: the general bundle (default.json)
+    // no longer chains through ANY nested //path extends, so pinning the
+    // top-level entry below is now sufficient on its own - only the opt-in
+    // apps/*.json5 presets still need their own explicit #ref, since they're
+    // separate files we reference directly. Pin every line here, not just
+    // the top-level one, so a future upstream rename/move of any single
+    // referenced file can't silently break the whole run again.
+    "github>home-operations/renovate-presets#7.0.0",
+    "github>home-operations/renovate-presets//apps/cnpg.json5#7.0.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#7.0.0",
+    "github>home-operations/renovate-presets//apps/talosFactory.json5#7.0.0",
     "docker:pinDigests",
     "github>dmfrey/home-gitops//.renovate/autoMerge.json5",
     "github>dmfrey/home-gitops//.renovate/changelogs.json5",
