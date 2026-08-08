@@ -19,3 +19,8 @@ postinstall = "lefthook install"
 "npm:oxfmt" = "0.62.0"
 "aqua:yannh/kubeconform" = "0.8.0"
 "aqua:charmbracelet/gum" = "0.17.0"
+# Mise's own talosctl tool (resolves to aqua:siderolabs/talos, same as the
+# per-node factory images and tuppr's TalosUpgrade CR) so Renovate's Talos
+# Group has a second real member and can actually satisfy
+# minimumGroupSize:2 automatically - matches github.com/onedr0p/home-ops.
+"talos" = "1.13.8"
