@@ -7,20 +7,27 @@ helmDefaults:
   args:
     - --include-crds
     - --no-hooks
+
+bases:
+  - default.yaml
+
+defaultInherit: default
+
 releases:
   - name: cloudflare-dns
     namespace: network
-    chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
-    version: 1.21.1
   - name: envoy-gateway
     namespace: network
-    chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
-    version: v1.8.3
   - name: grafana-operator
     namespace: observability
+    # kubernetes/apps/observability/grafana-operator doesn't exist - the
+    # app's git directory is named `grafana` even though the live
+    # HelmRelease/OCIRepository resources are both named `grafana-operator`
+    # (confirmed matches this release name). Renaming that directory would
+    # touch a path Flux actually reconciles from (plus a dependent
+    # grafana-instance Kustomization), so this one release keeps an
+    # explicit override instead of relying on the templated lookup.
     chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
     version: 5.24.0
   - name: kube-prometheus-stack
     namespace: observability
-    chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
-    version: 88.2.0

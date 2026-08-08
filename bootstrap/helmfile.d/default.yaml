@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/helmfile
+
+# Single source of truth: chart, version, and values are read straight out
+# of each app's own kubernetes/apps/<ns>/<name>/app/{ocirepository,helmrelease}.yaml
+# instead of being duplicated in this helmfile, so bootstrap installs exactly
+# what Flux will later reconcile and Renovate only has one place to update.
+# Same pattern as github.com/onedr0p/home-ops.
+templates:
+  default:
+    chart: '{{ (fromYaml (tpl (readFile "./templates/release.yaml.gotmpl") .)).chart }}'
+    version: '{{ (fromYaml (tpl (readFile "./templates/release.yaml.gotmpl") .)).version }}'
+    values:
+      - ./templates/values.yaml.gotmpl
