@@ -58,10 +58,18 @@
       minimumGroupSize: 2,
     },
     {
+      // No matchDatasources filter: the per-node factory.talos.dev images
+      // (talosFactory.json5 custom manager) resolve via the custom
+      // "custom.talos-factory" datasource with depNameTemplate
+      // "siderolabs/talos", not "docker" - a datasource filter here would
+      // silently exclude them. tuppr's talosupgrade.yaml is annotated with
+      // the matching datasource=custom.talos-factory depName=siderolabs/talos
+      // so it resolves to the same packageName and actually groups, instead
+      // of being the sole (never-triggering) member of its own group - same
+      // pattern as github.com/onedr0p/home-ops.
       description: "Talos Group",
       groupName: "talos",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/installer/"],
+      matchPackageNames: ["siderolabs/talos"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
