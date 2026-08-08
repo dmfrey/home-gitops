@@ -27,10 +27,6 @@ spec:
       namespace: cert-manager
   interval: 1h
   path: ./kubernetes/apps/datastore/cloudnative-pg/barman-cloud
-  postBuild:
-    substitute:
-      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
-      SIDECAR_IMAGE_VERSION: v0.14.0
   prune: true
   sourceRef:
     kind: GitRepository

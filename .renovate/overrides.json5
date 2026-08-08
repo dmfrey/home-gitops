@@ -54,5 +54,28 @@
       matchPackageNames: ["/[$]/"],
       enabled: false,
     },
+    {
+      // The shared preset's "annotated" regex custom manager (matches
+      // `# renovate: datasource=... depName=...` comments) has no
+      // currentDigest capture group or autoReplaceStringTemplate, so it can
+      // update an EXISTING digest but can never write a first-time one -
+      // docker:pinDigests still tries (it applies by matchDatasources, not
+      // by manager), computes a real new digest, then fails to find
+      // anywhere to write it ("Digest is not updated" / foundValue:
+      // undefined), which fails the whole grouped `kubernetes` branch this
+      // dependency sits in. tuppr's KubernetesUpgrade.spec.kubernetes.version
+      // is a bare CRD version field, not an image ref, so it can't be
+      // reshaped into a literal `repo:tag` the built-in manager would
+      // handle instead (unlike the sibling cloudnative-pg/barman-cloud
+      // SIDECAR_IMAGE case, which *was* fixed that way). The real
+      // ghcr.io/siderolabs/kubelet image (talos/machineconfig.yaml.j2)
+      // still gets digest-pinned normally via the built-in kubernetes
+      // manager - this only disables the redundant, broken annotated-comment
+      // attempt on this one CRD field.
+      description: "Don't attempt digest-pinning on tuppr's KubernetesUpgrade version field - the annotated regex manager can't write a first-time digest here",
+      matchFileNames: ["kubernetes/apps/system-upgrade/tuppr/upgrades/kubernetesupgrade.yaml"],
+      matchDatasources: ["docker"],
+      pinDigests: false,
+    },
   ],
 }

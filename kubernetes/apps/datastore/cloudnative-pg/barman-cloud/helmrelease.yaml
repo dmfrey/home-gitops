@@ -6,7 +6,6 @@ metadata:
   name: &app barman-cloud
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: barman-cloud
@@ -14,14 +13,11 @@ spec:
   interval: 1h
 
   values:
-
     global:
       createDefaultServiceAccount: false
 
     controllers:
-
       barman-cloud:
-
         containers:
           app:
             image:
@@ -37,7 +33,7 @@ spec:
               - --server-address=:9090
 
             env:
-              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:${SIDECAR_IMAGE_VERSION}
+              SIDECAR_IMAGE: ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar:v0.14.0
 
             probes:
               liveness:
@@ -103,4 +99,3 @@ spec:
       server:
         type: secret
         name: *serverCert
-
