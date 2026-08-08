@@ -76,7 +76,7 @@ machine:
       imageGCHighThresholdPercent: 65
       imageGCLowThresholdPercent: 50
       serializeImagePulls: false
-    image: ghcr.io/siderolabs/kubelet:v1.36.3
+    image: ghcr.io/siderolabs/kubelet:v1.36.3@sha256:ecc3184de027c8656c697e35aa889f625d525cc86c5e5a83c7ac6486535dd8bc
     nodeIP:
       validSubnets:
         - 192.168.30.0/24
@@ -195,13 +195,13 @@ cluster:
       feature-gates: HPAScaleToZero=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true  # volsync-mover-nfs uses v1beta1 MutatingAdmissionPolicyBinding; remove when volsync updates to v1
 
-    image: registry.k8s.io/kube-apiserver:v1.36.3
+    image: registry.k8s.io/kube-apiserver:v1.36.3@sha256:b4bc06c81fd76f81174e6c19ddacf477acdf1583e7a5846ebbd513493aef6e43
 
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
       feature-gates: HPAScaleToZero=true
-    image: registry.k8s.io/kube-controller-manager:v1.36.3
+    image: registry.k8s.io/kube-controller-manager:v1.36.3@sha256:ed56454bf514916079a227f5765b64524fde52106dfcc52978b28634765b78b8
 
   coreDNS:
     disabled: true
@@ -217,7 +217,7 @@ cluster:
 
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.36.3
+    image: registry.k8s.io/kube-proxy:v1.36.3@sha256:919d710a0e8bf2bd67d347e512e88205cb82a53a48ab6ff380d014406300ad1b
 
   scheduler:
     config:
@@ -239,7 +239,7 @@ cluster:
                     whenUnsatisfiable: ScheduleAnyway
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.36.3
+    image: registry.k8s.io/kube-scheduler:v1.36.3@sha256:128fc07d278d64c4f2cce416ed0a9f37b23a30cdde6f97873d18c9c78e259df4
 
   secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
 
