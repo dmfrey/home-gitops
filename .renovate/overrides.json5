@@ -35,5 +35,24 @@
       matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
       allowedVersions: "<18.0.0",
     },
+    {
+      // home-operations/renovate-presets#7.0.0 added a customManager that
+      // scans every .yaml file for oci://...:... substrings (Flux
+      // OCIRepository/Helm OCI charts) - too broad, it also matches the
+      // dynamic `flux push/tag artifact "oci://ghcr.io/${REPO_OWNER_LC}/
+      // terraform/$(basename "${MATRIX_PROJECT}"):..."` shell commands in
+      // .github/workflows/publish-terraform-oci.yaml, producing a phantom
+      // dependency (literal unexpanded ${...}/$(...) syntax as the
+      // packageName) that can never resolve a docker token. That poisoned
+      // several grouped branch updates (pin-dependencies, flux-operator,
+      // kubernetes, 1password-connect all failed with "Error updating
+      // branch: update failure" in the same run this was diagnosed from).
+      // A real OCI reference can never contain a literal $, so this is a
+      // safe, general exclusion rather than a one-off pin to that file.
+      description: "Ignore phantom docker deps from unexpanded shell variables/command substitution matched by the oci:// URI custom manager",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/[$]/"],
+      enabled: false,
+    },
   ],
 }
