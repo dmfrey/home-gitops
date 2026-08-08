@@ -7,9 +7,7 @@ metadata:
   labels:
     grafana.internal/instance: grafana
 spec:
-
   config:
-
     analytics:
       check_for_updates: "false"
       check_for_plugin_updates: "false"
@@ -67,7 +65,7 @@ spec:
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
-                capabilities: {drop: ["ALL"]}
+                capabilities: { drop: ["ALL"] }
 
           securityContext:
             runAsNonRoot: true

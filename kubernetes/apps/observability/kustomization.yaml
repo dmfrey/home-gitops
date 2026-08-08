@@ -12,7 +12,7 @@ resources:
   - ./alloy/ks.yaml
   - ./blackbox-exporter/ks.yaml
   - ./gatus/ks.yaml
-  - ./grafana/ks.yaml
+  - ./grafana-operator/ks.yaml
   - ./kromgo/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml

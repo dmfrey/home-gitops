@@ -6,7 +6,6 @@ metadata:
   name: grafana-operator
 
 spec:
-
   allowCrossNamespaceImport: true
 
   instanceSelector:
