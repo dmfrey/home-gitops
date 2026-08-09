@@ -59,7 +59,7 @@ spec:
                     command:
                       - sh
                       - -c
-                      - wget -q -O /dev/null "http://opencode:${OPENCODE_SERVER_PASSWORD}@127.0.0.1:4096/"
+                      - wget -q -O /dev/null "http://opencode:$${OPENCODE_SERVER_PASSWORD}@127.0.0.1:4096/"
                   initialDelaySeconds: 15
                   periodSeconds: 30
                   failureThreshold: 5
