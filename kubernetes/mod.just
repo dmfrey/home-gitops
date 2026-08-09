@@ -13,7 +13,9 @@ apply-ks ns ks:
 
 [doc('Browse a PVC')]
 browse-pvc namespace claim:
-    kubectl browse-pvc -n {{ namespace }} -i mirror.gcr.io/alpine:latest {{ claim }}
+    kubectl run -n {{ namespace }} browse-pvc-{{ claim }} -it --rm --restart=Never \
+        --image=mirror.gcr.io/alpine:latest \
+        --overrides='{"spec":{"containers":[{"name":"browse-pvc-{{ claim }}","image":"mirror.gcr.io/alpine:latest","stdin":true,"tty":true,"command":["/bin/sh"],"workingDir":"/mnt","volumeMounts":[{"mountPath":"/mnt","name":"data"}]}],"volumes":[{"name":"data","persistentVolumeClaim":{"claimName":"{{ claim }}"}}]}}'
 
 [doc('Delete local Flux Kustomization')]
 delete-ks ns ks:
@@ -21,8 +23,8 @@ delete-ks ns ks:
 
 [doc('Open a shell on a node')]
 node-shell node:
+    trap 'kubectl delete pod -n default -l app.kubernetes.io/managed-by=kubectl-debug --field-selector spec.nodeName={{ node }} --ignore-not-found --wait=false' EXIT
     kubectl debug node/{{ node }} -n default -it --image="mirror.gcr.io/alpine:latest" --profile sysadmin
-    kubectl delete pod -n default -l app.kubernetes.io/managed-by=kubectl-debug
 
 [doc('Prune pods in Failed, Pending, or Succeeded state')]
 prune-pods:
