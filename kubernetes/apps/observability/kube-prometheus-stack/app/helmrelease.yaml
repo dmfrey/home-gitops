@@ -6,7 +6,6 @@ metadata:
   name: kube-prometheus-stack
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack
@@ -15,12 +14,11 @@ spec:
   interval: 1h
 
   valuesFrom:
-  - kind: ConfigMap
-    name: flux-metrics-configmap
-    valuesKey: flux-metrics.yaml
+    - kind: ConfigMap
+      name: flux-metrics-configmap
+      valuesKey: flux-metrics.yaml
 
   values:
-
     cleanPrometheusOperatorObjectNames: true
 
     defaultRules:
@@ -28,7 +26,6 @@ spec:
         KubeHpaMaxedOut: true
 
     alertmanager:
-
       route:
         main:
           enabled: true
@@ -85,7 +82,6 @@ spec:
               namespace: network
 
       prometheusSpec:
-
         enableRemoteWriteReceiver: true
 
         externalUrl: https://prometheus.dmfrey.com
@@ -102,6 +98,7 @@ spec:
         resources:
           requests:
             cpu: 100m
+            memory: 1000Mi
           limits:
             memory: 2000Mi
 
