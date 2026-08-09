@@ -15,7 +15,12 @@ postinstall = "lefthook install"
 "aqua:zizmorcore/zizmor" = "1.29.0"
 "just" = "1.58.0"
 "uv" = "0.12.3"
-"pipx:flux-local" = "8.4.0"
+# flux-local is deprecated/sunsetted upstream in favor of flate (and
+# konflate) - our own .github/workflows/flate.yaml already uses flate in
+# CI, this pins the same tool for local `just kube apply-ks`/`delete-ks`
+# rendering (kubernetes/mod.just's render-local-ks) instead of running two
+# different Flux renderers.
+"github:home-operations/flate" = "0.5.0"
 "npm:oxfmt" = "0.62.0"
 "aqua:yannh/kubeconform" = "0.8.0"
 "aqua:charmbracelet/gum" = "0.17.0"

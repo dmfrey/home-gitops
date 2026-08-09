@@ -249,6 +249,25 @@ url = "https://github.com/zizmorcore/zizmor/releases/download/v1.29.0/zizmor-x86
 url_api = "https://api.github.com/repos/zizmorcore/zizmor/releases/assets/498263142"
 provenance = "github-attestations"
 
+[[tools."github:home-operations/flate"]]
+version = "0.5.0"
+backend = "github:home-operations/flate"
+
+[tools."github:home-operations/flate"."platforms.linux-arm64"]
+checksum = "sha256:e489371e11c1e76ca9052919f96ee7cf43de8810c54575474c2783f3747bbb60"
+url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470630"
+
+[tools."github:home-operations/flate"."platforms.linux-x64"]
+checksum = "sha256:1dd5b7e8d2cf968386df7921abc74384f04d1b5b2b95dbee9bd54632bd6c311c"
+url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470627"
+
+[tools."github:home-operations/flate"."platforms.macos-arm64"]
+checksum = "sha256:49c33d99ee6894e8217d50e4ff7769d12a95339871a0ef54c00ff927c7e85bd1"
+url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470629"
+
 [[tools.just]]
 version = "1.58.0"
 backend = "aqua:casey/just"
@@ -291,10 +310,6 @@ url_api = "https://api.github.com/repos/casey/just/releases/assets/500511374"
 [[tools."npm:oxfmt"]]
 version = "0.62.0"
 backend = "npm:oxfmt"
-
-[[tools."pipx:flux-local"]]
-version = "8.4.0"
-backend = "pipx:flux-local"
 
 [[tools.talos]]
 version = "1.13.8"

@@ -15,14 +15,14 @@ default:
 doctor:
     #!/usr/bin/env bash
     missing=()
-    for tool in just kubectl flux talosctl helm kustomize minijinja-cli op gum flux-local; do
+    for tool in just kubectl flux talosctl helm kustomize minijinja-cli op gum flate; do
         command -v "$tool" &>/dev/null || missing+=("$tool")
     done
     if [[ ${#missing[@]} -eq 0 ]]; then
         echo "All tools present"
     else
         echo "Missing: ${missing[*]}"
-        echo "Hint: run 'mise install' for mise-managed tools (e.g. flux-local)"
+        echo "Hint: run 'mise install' for mise-managed tools (e.g. flate)"
         exit 1
     fi
 

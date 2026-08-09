@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a GitOps mono-repository for a Kubernetes homelab cluster running on 3x GEEKOM Mini IT13 nodes with Talos Linux. The cluster is managed by Flux CD, with Renovate handling automated dependency updates.
 
-Key tools: `just`, `talosctl`, `kubectl`, `flux`, `helmfile`, `kustomize`, `kubeconform`, `flux-local`, `minijinja-cli` (for `.j2` templates), `op` (1Password CLI).
+Key tools: `just`, `talosctl`, `kubectl`, `flux`, `helmfile`, `kustomize`, `kubeconform`, `flate`, `minijinja-cli` (for `.j2` templates), `op` (1Password CLI).
 
 The root justfile is `justfile`, which declares three modules: `bootstrap`, `kube` (`kubernetes`), and `talos`. The internal `just template <file>` recipe renders Jinja2 templates via `minijinja-cli | op inject` (secrets injected from 1Password at render time).
 
@@ -228,7 +228,7 @@ YAML files use inline schema comments pointing to `https://kubernetes-schemas.dm
 
 ### CI/CD
 
-GitHub Actions runs the `Flate` workflow (`.github/workflows/flate.yaml`) on PRs touching `kubernetes/**` — it diffs/tests rendered `HelmRelease`/`Kustomization` output for changed files. `flux-local` and `kubeconform` are dev-time tools invoked via `just` recipes (`kubernetes/mod.just`), not part of CI. Renovate monitors the entire repository for dependency updates and auto-creates PRs.
+GitHub Actions runs the `Flate` workflow (`.github/workflows/flate.yaml`) on PRs touching `kubernetes/**` — it diffs/tests rendered `HelmRelease`/`Kustomization` output for changed files, using `flate` (`home-operations/flate`, a Go rewrite of the now-deprecated `flux-local`). `flate` is also the tool `kubernetes/mod.just`'s `render-local-ks` (backing `just kube apply-ks`/`delete-ks`) uses locally — same renderer for both CI and local dev, pinned in `.mise.toml`. `kubeconform` is dev-time only, invoked via `just` recipes, not part of CI. Renovate monitors the entire repository for dependency updates and auto-creates PRs.
 
 ## Home Assistant
 
