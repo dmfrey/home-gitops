@@ -15,10 +15,15 @@ releases:
     namespace: kube-system
     hooks:
       - # Wait for Cilium CRDs to be available
-        command: bash
+        command: kubectl
         args:
-          - -c
-          - until kubectl get crd ciliumloadbalancerippools.cilium.io ciliumbgpadvertisements.cilium.io ciliumbgppeerconfigs.cilium.io ciliumbgpclusterconfigs.cilium.io &>/dev/null; do sleep 5; done
+          - wait
+          - --for=create
+          - crd/ciliumbgpadvertisements.cilium.io
+          - crd/ciliumbgpclusterconfigs.cilium.io
+          - crd/ciliumbgppeerconfigs.cilium.io
+          - crd/ciliumloadbalancerippools.cilium.io
+          - --timeout=2m
         events:
           - postsync
         showlogs: true
@@ -53,10 +58,12 @@ releases:
     namespace: external-secrets
     hooks:
       - # Wait for ExternalSecrets CRDs to be available
-        command: bash
+        command: kubectl
         args:
-          - -c
-          - until kubectl get crd clustersecretstores.external-secrets.io &>/dev/null; do sleep 5; done
+          - wait
+          - --for=create
+          - crd/clustersecretstores.external-secrets.io
+          - --timeout=2m
         events:
           - postsync
         showlogs: true
