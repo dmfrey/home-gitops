@@ -1,5 +1,5 @@
-set positional-arguments := true
-set quiet := true
+set positional-arguments
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 bootstrap_dir := justfile_dir() + '/bootstrap'
@@ -8,7 +8,7 @@ controller := `talosctl config info -o yaml 2>/dev/null | yq -e '.endpoints[0]' 
 nodes := `talosctl config info -o yaml 2>/dev/null | yq -e '.nodes | join (" ")' 2>/dev/null || true`
 
 [private]
-default: talos kube (kubeconfig "node") wait namespaces resources crds apps kubeconfig
+default: talos kube (kubeconfig "node") wait api-ready namespaces resources crds apps kubeconfig
 
 [doc('Install Talos')]
 talos:
@@ -52,6 +52,16 @@ wait:
             sleep 5; \
         done \
     fi
+
+[doc('Wait for kube-apiserver to be ready on all nodes')]
+api-ready:
+    just log info "Running stage..." "stage" "$0"
+    for n in {{ nodes }}; do \
+        until [[ "$(curl -ks -o /dev/null -w '%{http_code}' --connect-timeout 2 "https://$n:6443/readyz")" == "200" ]]; do \
+            just log info "Waiting for kube-apiserver. Retrying in 5 seconds..." "stage" "$0" "node" "$n"; \
+            sleep 5; \
+        done; \
+    done
 
 [doc('Apply Kubernetes namespaces')]
 namespaces:
