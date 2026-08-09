@@ -56,10 +56,24 @@ jobs:
           ALL_CHANGED_FILES: "${{ steps.changed-files.outputs.all_changed_files }}"
         run: |
           if [[ "${ALL_CHANGED_FILES}" == "[]" ]]; then
-            echo "matrix={\"project\":$(find infrastructure/terraform -type f -name .terraform.lock.hcl | xargs dirname | jo -a)}" >> "${GITHUB_OUTPUT}"
+            MATRIX="{\"project\":$(find infrastructure/terraform -type f -name .terraform.lock.hcl | xargs dirname | jo -a)}"
           else
-            echo "matrix={\"project\":${ALL_CHANGED_FILES}}" >> "${GITHUB_OUTPUT}"
+            # tj-actions/changed-files' output has been observed coming through
+            # this env var with literal backslash-escaped quotes
+            # (["infrastructure/terraform/security/authentik"] became
+            # [\"infrastructure/terraform/security/authentik\"]), producing
+            # invalid JSON once embedded below - fromJSON() on the matrix then
+            # fails with no visible error: the "publish" job just never runs
+            # and the whole workflow silently reports failure. Strip any such
+            # escaping defensively before use.
+            CLEAN_FILES="$(printf '%s' "${ALL_CHANGED_FILES}" | sed 's/\\"/"/g')"
+            MATRIX="{\"project\":${CLEAN_FILES}}"
           fi
+          if ! jq -e . <<<"${MATRIX}" >/dev/null; then
+            echo "::error::Generated matrix is not valid JSON: ${MATRIX}"
+            exit 1
+          fi
+          echo "matrix=${MATRIX}" >> "${GITHUB_OUTPUT}"
 
   publish:
     runs-on: ubuntu-latest
