@@ -44,13 +44,22 @@ spec:
                   name: opencode-secret
 
             probes:
+              # httpGet can't carry the Basic-auth credentials opencode now
+              # requires on every path (including /) once
+              # OPENCODE_SERVER_PASSWORD is set (unauthenticated / worked on
+              # 1.0.196, no longer does as of 1.18.15) - exec + wget's
+              # userinfo-in-URL auth lets the probe read the password from
+              # its own env (envFrom: opencode-secret) instead of embedding
+              # it in this manifest.
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /
-                    port: &port 4096
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - wget -q -O /dev/null "http://opencode:${OPENCODE_SERVER_PASSWORD}@127.0.0.1:4096/"
                   initialDelaySeconds: 15
                   periodSeconds: 30
                   failureThreshold: 5
@@ -67,7 +76,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 4096
 
     route:
       app:
