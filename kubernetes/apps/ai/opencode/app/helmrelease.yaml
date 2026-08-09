@@ -1,0 +1,125 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opencode
+
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: opencode
+
+  interval: 1h
+
+  values:
+    controllers:
+      opencode:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/anomalyco/opencode
+              tag: 1.0.196@sha256:c2b4d1f55f181c797e78f898872aae8608deab3ecf720e4db6cec79df1564296
+
+            command:
+              - opencode
+            args:
+              - web
+              - --hostname
+              - 0.0.0.0
+              - --port
+              - "4096"
+
+            env:
+              TZ: America/New_York
+              # Points a plain, cross-project config file rather than relying
+              # on $HOME/.config resolution inside the container.
+              OPENCODE_CONFIG: /config/opencode.json
+
+            envFrom:
+              - secretRef:
+                  name: opencode-secret
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 4096
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] < 400"]
+            url: "http://opencode-app.ai.svc.cluster.local"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: AI
+          gethomepage.dev/name: OpenCode
+          gethomepage.dev/icon: opencode.png
+          gethomepage.dev/description: Shared AI coding agent session (local Ollama).
+        hostnames:
+          - opencode.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+      outpost:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            path: /outpost.goauthentik.io/ping
+            conditions: ["[STATUS] == 204"]
+        hostnames:
+          - opencode.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /outpost.goauthentik.io
+            backendRefs:
+              - name: ak-outpost-authentik-embedded-outpost
+                namespace: security
+                port: 9000
+
+    persistence:
+      # Best-effort based on community Docker examples for this image - verify
+      # after first deploy (kubectl exec + check where opencode actually
+      # writes session/history state) and adjust the mount path if wrong.
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /root/.opencode
+
+      config:
+        type: configMap
+        name: opencode-config
+        globalMounts:
+          - path: /config/opencode.json
+            subPath: opencode.json
+            readOnly: true

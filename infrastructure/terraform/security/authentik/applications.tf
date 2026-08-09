@@ -122,6 +122,12 @@ locals {
       external_host = "https://excalidraw.${var.CLUSTER_DOMAIN}"
       launch_url    = "https://excalidraw.${var.CLUSTER_DOMAIN}/"
     }
+    opencode = {
+      group         = "ai"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/opencode.png"
+      external_host = "https://opencode.${var.CLUSTER_DOMAIN}"
+      launch_url    = "https://opencode.${var.CLUSTER_DOMAIN}/"
+    }
   }
 }
 
