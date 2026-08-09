@@ -108,13 +108,18 @@ spec:
                 port: 9000
 
     persistence:
-      # Best-effort based on community Docker examples for this image - verify
-      # after first deploy (kubectl exec + check where opencode actually
-      # writes session/history state) and adjust the mount path if wrong.
+      # Confirmed via kubectl exec into a debug pod running this exact image:
+      # session/history state lives under the XDG data dir, not
+      # /root/.opencode (that was a bad guess from a community Docker
+      # example for an older version). A single PVC can only be mounted at
+      # one path without cross-contaminating content, so this covers the
+      # primary data dir only - /root/.local/state/opencode is left on the
+      # ephemeral container filesystem (observed empty besides being XDG
+      # boilerplate; nothing user-visible was found there).
       data:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /root/.opencode
+          - path: /root/.local/share/opencode
 
       config:
         type: configMap
