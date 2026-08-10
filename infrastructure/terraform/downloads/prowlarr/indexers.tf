@@ -112,6 +112,9 @@ resource "prowlarr_indexer" "torrent_limetorrents" {
   # fake titles) that Sonarr's safety check caught before import. Actual
   # toggle lives in Prowlarr directly (lifecycle.ignore_changes below), this
   # is just to keep the declared state from being misleading.
+  # cross-seed tag removed 2026-08-10: cross-seed selects indexers by tag
+  # regardless of enable state, so it kept querying this disabled indexer
+  # and logging "responded with code 410 when fetching caps" every cycle.
   enable          = false
   name            = "LimeTorrents"
   implementation  = "Cardigann"
@@ -119,7 +122,7 @@ resource "prowlarr_indexer" "torrent_limetorrents" {
   app_profile_id  = 1
   protocol        = "torrent"
   priority        = 25
-  tags            = [prowlarr_tag.cross_seed.id]
+  tags            = []
 
   fields = [
     {
