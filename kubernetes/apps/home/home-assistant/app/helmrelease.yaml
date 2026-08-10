@@ -37,7 +37,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
@@ -62,7 +62,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -84,6 +84,9 @@ spec:
                     name: "{{ .Release.Name }}-secret"
                     key: CODE_SERVER_ADDON_HASS_TOKEN
               GIT_SSH_COMMAND: "ssh -i /config/.ssh/deploy_key -o StrictHostKeyChecking=no"
+              GIT_CONFIG_COUNT: "1"
+              GIT_CONFIG_KEY_0: safe.directory
+              GIT_CONFIG_VALUE_0: "*"
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
