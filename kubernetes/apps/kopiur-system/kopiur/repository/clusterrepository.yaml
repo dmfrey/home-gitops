@@ -6,10 +6,16 @@ metadata:
   name: garage
 spec:
   # Pilot scope: only the wizarr app (media namespace) backs up here for now.
-  # See project_kopiur_pilot memory. Widen this list if the pilot graduates.
+  # kopiur-system must ALSO be listed - the operator's managed Maintenance CR
+  # (maintenance.namespace below) lands there, and the admission webhook
+  # enforces allowedNamespaces against every namespace touching this
+  # ClusterRepository, including its own operator namespace, not just
+  # consumer apps. See project_kopiur_pilot memory. Widen this list if the
+  # pilot graduates.
   allowedNamespaces:
     list:
       - media
+      - kopiur-system
   backend:
     s3:
       auth:
