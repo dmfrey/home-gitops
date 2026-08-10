@@ -4,6 +4,16 @@ import {
 }
 
 import {
+  to = prowlarr_tag.flaresolverr
+  id = "7"
+}
+
+import {
+  to = prowlarr_indexer_proxy_flaresolverr.flaresolverr
+  id = "2"
+}
+
+import {
   to = prowlarr_indexer.usenet_nzbplanet
   id = "1"
 }

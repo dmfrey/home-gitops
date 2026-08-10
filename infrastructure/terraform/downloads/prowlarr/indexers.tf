@@ -2,6 +2,15 @@ resource "prowlarr_tag" "cross_seed" {
   label = "cross-seed"
 }
 
+resource "prowlarr_tag" "flaresolverr" {
+  # Marks which indexers should route through the FlareSolverr indexer
+  # proxy (indexer-proxy.tf) - currently just torrent_uindex and
+  # torrent_btetree, both blocked by Cloudflare's anti-bot protection
+  # without it. See prowlarr_indexer_proxy_flaresolverr.flaresolverr's
+  # comment for the full incident writeup.
+  label = "flaresolverr"
+}
+
 resource "prowlarr_indexer" "usenet_nzbplanet" {
   enable          = true
   redirect        = true
@@ -53,7 +62,7 @@ resource "prowlarr_indexer" "torrent_btetree" {
   app_profile_id  = 1
   protocol        = "torrent"
   priority        = 25
-  tags            = [prowlarr_tag.cross_seed.id]
+  tags            = [prowlarr_tag.cross_seed.id, prowlarr_tag.flaresolverr.id]
 
   fields = [
     {
@@ -239,7 +248,7 @@ resource "prowlarr_indexer" "torrent_uindex" {
   app_profile_id  = 1
   protocol        = "torrent"
   priority        = 25
-  tags            = [prowlarr_tag.cross_seed.id]
+  tags            = [prowlarr_tag.cross_seed.id, prowlarr_tag.flaresolverr.id]
 
   fields = [
     {
