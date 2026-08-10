@@ -30,3 +30,34 @@ resource "lidarr_release_profile" "avoid_variant_editions" {
     "OBZEN",
   ]
 }
+
+resource "lidarr_release_profile" "block_dangerous_extensions" {
+  # Added 2026-08-10, the Lidarr counterpart to
+  # sonarr_release_profile.block_dangerous_extensions and
+  # radarr_custom_format.block_dangerous_extensions (see the Sonarr
+  # resource's comment for the incident this guards against - a fake
+  # 0-byte torrent from Prowlarr's TorrentDownload indexer, disguised as a
+  # real release with the torrent's own advertised name ending in .scr).
+  # Prowlarr's app profiles are shared across all synced apps (only one
+  # profile, "Standard", used by every indexer), so Lidarr pulls from the
+  # exact same indexer pool as Sonarr/Radarr and is exposed to the same
+  # risk. Unlike lidarr_release_profile.avoid_variant_editions above, this
+  # provider's release_profile resource has no `name` argument (the API
+  # doesn't return one either).
+  enabled    = true
+  indexer_id = 0 # all indexers
+
+  ignored = [
+    "\\.scr$",
+    "\\.exe$",
+    "\\.lnk$",
+    "\\.bat$",
+    "\\.cmd$",
+    "\\.vbs$",
+    "\\.msi$",
+    "\\.jar$",
+    "\\.url$",
+    "\\.scf$",
+    "\\.pif$",
+  ]
+}

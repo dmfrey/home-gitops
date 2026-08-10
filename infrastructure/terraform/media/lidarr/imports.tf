@@ -28,4 +28,9 @@ import {
   id = "1"
 }
 
+import {
+  to = lidarr_release_profile.block_dangerous_extensions
+  id = "2"
+}
+
 
