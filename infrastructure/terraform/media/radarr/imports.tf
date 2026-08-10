@@ -28,3 +28,8 @@ import {
   to = radarr_quality_profile.ultra_hd_2160p
   id = "7"
 }
+
+import {
+  to = radarr_custom_format.block_dangerous_extensions
+  id = "55"
+}

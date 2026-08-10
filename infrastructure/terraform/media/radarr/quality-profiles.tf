@@ -10,6 +10,14 @@ resource "radarr_quality_profile" "hd_1080p" {
     name = "English"
   }
 
+  format_items = [
+    {
+      format = radarr_custom_format.block_dangerous_extensions.id
+      name   = radarr_custom_format.block_dangerous_extensions.name
+      score  = -10000
+    }
+  ]
+
   quality_groups = [
     {
       qualities = [{ id = 9, name = "HDTV-1080p" }]
@@ -46,6 +54,14 @@ resource "radarr_quality_profile" "ultra_hd_2160p" {
     id   = 1
     name = "English"
   }
+
+  format_items = [
+    {
+      format = radarr_custom_format.block_dangerous_extensions.id
+      name   = radarr_custom_format.block_dangerous_extensions.name
+      score  = -10000
+    }
+  ]
 
   quality_groups = [
     {
