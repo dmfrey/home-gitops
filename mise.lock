@@ -308,7 +308,7 @@ url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64
 url_api = "https://api.github.com/repos/casey/just/releases/assets/500511374"
 
 [[tools."npm:oxfmt"]]
-version = "0.62.0"
+version = "0.63.0"
 backend = "npm:oxfmt"
 
 [[tools.talos]]
