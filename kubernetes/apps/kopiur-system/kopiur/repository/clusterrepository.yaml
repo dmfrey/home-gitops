@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kopiur.home-operations.com/clusterrepository_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: garage
+spec:
+  # Pilot scope: only the wizarr app (media namespace) backs up here for now.
+  # See project_kopiur_pilot memory. Widen this list if the pilot graduates.
+  allowedNamespaces:
+    list:
+      - media
+  backend:
+    s3:
+      auth:
+        secretRef:
+          name: kopiur-repository-secret
+          namespace: kopiur-system
+      bucket: kopiur
+      endpoint: garage.garage-system.svc.cluster.local:3900
+      region: us-east-1
+      tls:
+        disableTls: true
+  encryption:
+    passwordSecretRef:
+      name: kopiur-repository-secret
+      namespace: kopiur-system
+      key: KOPIA_PASSWORD
+  maintenance:
+    namespace: kopiur-system

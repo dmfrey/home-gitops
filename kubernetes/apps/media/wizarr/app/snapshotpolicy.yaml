@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/kopiur.home-operations.com/snapshotpolicy_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${APP}
+spec:
+  # kopiur pilot (project_kopiur_pilot memory) - backs up the SAME PVC VolSync
+  # already backs up to nas.internal:/Kopia, additively. Deliberately NOT using
+  # the shared components/kopiur/backup component here: its pvc.yaml/restore.yaml
+  # pair creates a PVC named ${APP} with a populator dataSourceRef, which would
+  # collide with wizarr's existing VolSync-owned PVC of the same name. Only the
+  # policy/schedule half is wired up until the pilot graduates to owning the PVC
+  # outright (see garage/app/replicationsource.yaml for the same "standalone
+  # instead of shared component" reasoning applied elsewhere in this repo).
+  compression:
+    compressor: zstd
+  mover:
+    cache:
+      capacity: 1Gi
+      mode: Persistent
+      storageClassName: ceph-block
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+  repository:
+    kind: ClusterRepository
+    name: garage
+  retention:
+    keepLatest: 3
+    keepHourly: 24
+    keepDaily: 7
+    keepWeekly: 4
+  sources:
+    - pvc:
+        name: ${APP}
+  volumeSnapshotClassName: csi-ceph-blockpool
