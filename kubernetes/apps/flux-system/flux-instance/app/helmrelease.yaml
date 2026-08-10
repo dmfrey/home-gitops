@@ -131,3 +131,27 @@ spec:
             target:
               kind: Deployment
               name: kustomize-controller
+          - # Disable IPv6 for source-controller only - GHCR's CDN
+            # (pkg-containers.githubusercontent.com) sometimes hands back an
+            # IPv6 address this cluster's pods have no route to (confirmed
+            # via debug pod: only a link-local address exists, no global
+            # IPv6, Cilium's enable-ipv6 is already false), causing
+            # OCIRepository/HelmChart fetches to fail instantly with
+            # "network is unreachable" until a retry happens to land on
+            # IPv4 instead. Scoped to just this Deployment via a pod-level
+            # sysctl - kubelet's allowed-unsafe-sysctls: net.ipv6.conf.*
+            # already permits this cluster-wide, no Talos/host change
+            # needed. Deliberately NOT a host-level or Cilium-level
+            # change: an earlier host-level bond0.50 test broke
+            # matter-server's Thread/Matter connectivity (see
+            # kubernetes/apps/home/matter-server), and this doesn't touch
+            # that namespace, that pod, or any host interface at all.
+            patch: |-
+              - op: add
+                path: /spec/template/spec/securityContext/sysctls
+                value:
+                  - name: net.ipv6.conf.all.disable_ipv6
+                    value: "1"
+            target:
+              kind: Deployment
+              name: source-controller
