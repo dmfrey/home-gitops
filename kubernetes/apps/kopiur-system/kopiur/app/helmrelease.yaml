@@ -14,6 +14,18 @@ spec:
     # backup path for every existing app. Only wizarr additionally backs up
     # via kopiur's own SnapshotPolicy/SnapshotSchedule CRDs, to evaluate the
     # operator itself before considering a wider migration.
+    # The ClusterRepository's credentials Secret lives in kopiur-system, but
+    # the mover Job for a consumer app (e.g. wizarr) runs in that app's own
+    # namespace (media) and loads it via envFrom, which is namespace-local -
+    # without this the Job fails with MissingCredentialsSecret. This grants
+    # the operator secrets create/patch/delete to project (copy) the
+    # credentials into each consumer namespace; the chart's own values.yaml
+    # documents the trade-off (unscoped Secret write access in namespaces it
+    # manages) - acceptable for a single-tenant homelab, not something to
+    # carry forward blindly into a multi-tenant setup.
+    features:
+      credentialProjection:
+        enabled: true
     monitoring:
       serviceMonitor:
         enabled: true
