@@ -13,6 +13,13 @@ spec:
   # policy/schedule half is wired up until the pilot graduates to owning the PVC
   # outright (see garage/app/replicationsource.yaml for the same "standalone
   # instead of shared component" reasoning applied elsewhere in this repo).
+  # Consumer-side opt-in for credential projection (necessary but not
+  # sufficient alone - the ClusterRepository owner must also set
+  # credentialProjection.allowed: true, which it does). The mover Job runs
+  # in media and loads creds via namespace-local envFrom, but the garage
+  # ClusterRepository's Secret lives in kopiur-system.
+  credentialProjection:
+    enabled: true
   compression:
     compressor: zstd
   mover:

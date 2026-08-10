@@ -16,6 +16,11 @@ spec:
     list:
       - media
       - kopiur-system
+  # Owner-side opt-in for credential projection - necessary but not
+  # sufficient on its own; the consumer (wizarr's SnapshotPolicy) must also
+  # set credentialProjection.enabled: true. Fail-closed by design.
+  credentialProjection:
+    allowed: true
   backend:
     s3:
       auth:
