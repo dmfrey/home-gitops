@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flaresolverr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: flaresolverr
+  interval: 1h
+  values:
+    controllers:
+      flaresolverr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: flaresolverr/flaresolverr
+              tag: v3.5.0@sha256:139dfee1c6f89249c8d665d1333a42e8ec74ec0a86bc6bb1c8461e10d3a66a47
+            env:
+              TZ: America/New_York
+              LOG_LEVEL: info
+              PROMETHEUS_ENABLED: "true"
+              PROMETHEUS_PORT: &metricsPort 8192
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8191
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      annotations:
+        # Routes this pod's egress through the VPN VLAN (WireGuard gateway
+        # at 192.168.90.1) instead of the cluster's normal egress path -
+        # Cloudflare's anti-bot check on some indexer sites (e.g. Uindex,
+        # BT.etree) blocks Prowlarr's plain HTTP requests outright;
+        # FlareSolverr solves the challenge itself with a real headless
+        # browser, but still needs an IP Cloudflare won't blanket-block.
+        # Static IP/MAC follow the same VPN-VLAN pool as qbittorrent (.22),
+        # prowlarr (.23), nzbget (.21) - .24 is the next free address.
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "vpn-vlan",
+            "namespace": "kube-system",
+            "ips": ["192.168.90.24/24"],
+            "mac": "6e:91:4b:82:5a:1f"
+          }]
+      labels:
+        # Matches qbittorrent/prowlarr/nzbget/qui - the VPN-VLAN's own
+        # NetworkAttachmentDefinition already carries explicit routes
+        # covering effectively all non-RFC1918 space via the VPN gateway,
+        # so the pod doesn't need its actual default route replaced.
+        setGateway: "false"
+      securityContext:
+        runAsNonRoot: true
+    service:
+      app:
+        controller: flaresolverr
+        ports:
+          http:
+            port: *port
+          metrics:
+            port: *metricsPort
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: flaresolverr
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 5m
+            scrapeTimeout: 10s

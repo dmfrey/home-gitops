@@ -258,7 +258,17 @@ checksum = "sha256:e489371e11c1e76ca9052919f96ee7cf43de8810c54575474c2783f3747bb
 url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_linux_arm64.tar.gz"
 url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470630"
 
+[tools."github:home-operations/flate"."platforms.linux-arm64-musl"]
+checksum = "sha256:e489371e11c1e76ca9052919f96ee7cf43de8810c54575474c2783f3747bbb60"
+url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470630"
+
 [tools."github:home-operations/flate"."platforms.linux-x64"]
+checksum = "sha256:1dd5b7e8d2cf968386df7921abc74384f04d1b5b2b95dbee9bd54632bd6c311c"
+url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470627"
+
+[tools."github:home-operations/flate"."platforms.linux-x64-musl"]
 checksum = "sha256:1dd5b7e8d2cf968386df7921abc74384f04d1b5b2b95dbee9bd54632bd6c311c"
 url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_linux_amd64.tar.gz"
 url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470627"
@@ -267,6 +277,16 @@ url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/50
 checksum = "sha256:49c33d99ee6894e8217d50e4ff7769d12a95339871a0ef54c00ff927c7e85bd1"
 url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_darwin_arm64.tar.gz"
 url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470629"
+
+[tools."github:home-operations/flate"."platforms.macos-x64"]
+checksum = "sha256:8aa6d179649f0c4514bdf26a2a4f536bf0d745e6906e7fcf2011e7ee8295f2d6"
+url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470631"
+
+[tools."github:home-operations/flate"."platforms.windows-x64"]
+checksum = "sha256:9dcbfc28e27cf236e79146abf084967b180451992dfcd815c357e13ab9b5ce8e"
+url = "https://github.com/home-operations/flate/releases/download/v0.5.0/flate_0.5.0_windows_amd64.zip"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/506470642"
 
 [[tools.just]]
 version = "1.58.0"
