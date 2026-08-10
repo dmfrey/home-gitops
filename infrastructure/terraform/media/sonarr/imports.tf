@@ -27,3 +27,8 @@ import {
   to = sonarr_quality_profile.ultra_hd_2160p
   id = "7"
 }
+
+import {
+  to = sonarr_release_profile.block_dangerous_extensions
+  id = "1"
+}

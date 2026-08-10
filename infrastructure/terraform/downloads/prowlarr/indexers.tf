@@ -193,13 +193,22 @@ resource "prowlarr_indexer" "torrent_thepiratebay" {
 }
 
 resource "prowlarr_indexer" "torrent_torrentdownload" {
+  # Priority lowered to 50 (last resort) 2026-08-10: served two 0-byte fake
+  # torrents in one day, disguised as real releases with the torrent's own
+  # advertised name ending in .scr (a Windows executable extension). Sonarr
+  # correctly refused to import either (no eligible video files), but this
+  # keeps the indexer as fallback-only rather than tied for first choice
+  # with the other torrent indexers. Actual change lives in Prowlarr
+  # directly (lifecycle.ignore_changes below), this is just to keep the
+  # declared state from being misleading - same pattern as
+  # torrent_limetorrents below.
   enable          = true
   name            = "TorrentDownload"
   implementation  = "Cardigann"
   config_contract = "CardigannSettings"
   app_profile_id  = 1
   protocol        = "torrent"
-  priority        = 25
+  priority        = 50
   tags            = [prowlarr_tag.cross_seed.id]
 
   fields = [
