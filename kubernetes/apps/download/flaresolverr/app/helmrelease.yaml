@@ -69,7 +69,14 @@ spec:
         # so the pod doesn't need its actual default route replaced.
         setGateway: "false"
       securityContext:
+        # The image's USER directive is a name ("flaresolverr"), not a
+        # numeric UID - kubelet can't verify runAsNonRoot against a named
+        # user and refuses to start the container at all
+        # (CreateContainerConfigError) unless runAsUser is explicit.
+        # Confirmed via /etc/passwd in the actual image: uid=1000 gid=1000.
         runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
     service:
       app:
         controller: flaresolverr
