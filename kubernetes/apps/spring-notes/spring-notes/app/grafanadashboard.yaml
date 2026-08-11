@@ -596,7 +596,7 @@ spec:
           "id": 111,
           "type": "timeseries",
           "title": "Note Index Listener Errors",
-          "description": "A growing gap here (or a climbing broker queue depth, not yet wired up - RabbitMQ's Prometheus plugin isn't scraped in this cluster) means indexing is falling behind.",
+          "description": "A growing gap here, or a climbing queue depth in the Note Index Queue Depth panel below, means indexing is falling behind.",
           "gridPos": {"h": 8, "w": 8, "x": 16, "y": 107},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
@@ -627,6 +627,19 @@ spec:
           "targets": [
             {"expr": "histogram_quantile(0.50, sum by (le) (rate(chat_conversation_length_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
             {"expr": "histogram_quantile(0.95, sum by (le) (rate(chat_conversation_length_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"}
+          ]
+        },
+        {
+          "id": 114,
+          "type": "timeseries",
+          "title": "Note Index Queue Depth",
+          "description": "Broker-side ready/unacked message count for the chat.note-index queue, via RabbitMQ's Prometheus plugin (/metrics/detailed, queue_coarse_metrics/queue_metrics families). A sustained climb in ready count means NoteIndexEventListener is falling behind the publish rate.",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 123},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none", "decimals": 0}, "overrides": []},
+          "targets": [
+            {"expr": "rabbitmq_detailed_queue_messages_ready{namespace=\"spring-notes\", queue=\"chat.note-index\"}", "legendFormat": "ready", "refId": "A"},
+            {"expr": "rabbitmq_detailed_queue_messages_unacked{namespace=\"spring-notes\", queue=\"chat.note-index\"}", "legendFormat": "unacked", "refId": "B"}
           ]
         }
       ]
