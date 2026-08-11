@@ -12,3 +12,16 @@ spec:
   endpoints:
     - port: prometheus
       interval: 15s
+    - # The default /metrics endpoint above only exposes cluster/vhost-wide
+      # aggregates - no per-queue breakdown (confirmed live: rabbitmq_queue_
+      # messages_ready had no queue label at all). Per-queue metrics like
+      # chat.note-index's depth need this separate /metrics/detailed path
+      # with explicit family params, per the operator's own documented
+      # ServiceMonitor example.
+      port: prometheus
+      path: /metrics/detailed
+      params:
+        family:
+          - queue_coarse_metrics
+          - queue_metrics
+      interval: 15s
