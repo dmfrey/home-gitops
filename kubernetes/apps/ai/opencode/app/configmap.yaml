@@ -7,7 +7,7 @@ data:
   opencode.json: |
     {
       "$schema": "https://opencode.ai/config.json",
-      "model": "ollama/qwen3-coder:latest",
+      "model": "ollama/qwen2.5-coder:7b",
       "provider": {
         "ollama": {
           "npm": "@ai-sdk/openai-compatible",
@@ -16,6 +16,9 @@ data:
             "baseURL": "http://ollama.ai.svc.cluster.local:11434/v1"
           },
           "models": {
+            "qwen2.5-coder:7b": {
+              "name": "Qwen2.5 Coder 7B"
+            },
             "qwen3-coder:latest": {
               "name": "Qwen3 Coder"
             },
