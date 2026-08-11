@@ -148,7 +148,14 @@ spec:
             image:
               repository: ghcr.io/dmfrey/spring-notes-frontend
               # renovate: datasource=docker depName=ghcr.io/dmfrey/spring-notes-frontend versioning=loose
-              tag: c848219117fc2dd547c4c45f4ca2e4cd6829f92d@sha256:fa6a2d3068e2be176f531023323fd8b29a6dcc81131a8b2e275b1ca7e71fd5c0
+              # Manually bumped 2026-08-11 - Renovate doesn't reliably propose
+              # updates for this git-SHA-tagged image (versioning=loose on a
+              # raw commit SHA, not semver), a known gap from earlier this
+              # session. This SHA is main's tip as of the v3.5.0 release-please
+              # merge, which includes the chat feature's ChatPanel.jsx (added
+              # in spring-notes PR #73) - the old pinned SHA predates it, so
+              # the backend's new /chat API had no UI to call it.
+              tag: f4fa85948a601b9813ebb4dbb046ac54baa7738e@sha256:6ddb235930fcbafb7dd2d5b48dd83bd1ba972112335d003fd26e13ec55a24543
             probes:
               liveness: &probes
                 enabled: true
