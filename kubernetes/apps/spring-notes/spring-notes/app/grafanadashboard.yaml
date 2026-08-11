@@ -608,7 +608,7 @@ spec:
           "id": 112,
           "type": "timeseries",
           "title": "Retrieval Empty Rate",
-          "description": "chat.retrieval.empty / /chat requests - a climbing ratio means users are asking about topics their notes don't cover. Ships in the next spring-notes release (PR #75); metric name (chat_retrieval_empty_total) is a best guess pending verification once that release deploys and the metric appears in Prometheus.",
+          "description": "chat.retrieval.empty / /chat requests - a climbing ratio means users are asking about topics their notes don't cover.",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 115},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
@@ -620,13 +620,13 @@ spec:
           "id": 113,
           "type": "timeseries",
           "title": "Conversation Length",
-          "description": "chat.conversation.length - message count in a conversation's memory at request time. Ships in the next spring-notes release (PR #75); metric name (chat_conversation_length_bucket) is a best guess pending verification once that release deploys.",
+          "description": "chat.conversation.length - message count in a conversation's memory at request time. Actual Prometheus name carries a _messages unit segment (Alloy's OTel Collector add_metric_suffixes appends the DistributionSummary's baseUnit), unlike the app's other bare-Counter metrics - confirmed live, not chat_conversation_length_bucket as first guessed.",
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 115},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
           "fieldConfig": {"defaults": {"unit": "none"}, "overrides": []},
           "targets": [
-            {"expr": "histogram_quantile(0.50, sum by (le) (rate(chat_conversation_length_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
-            {"expr": "histogram_quantile(0.95, sum by (le) (rate(chat_conversation_length_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"}
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(chat_conversation_length_messages_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(chat_conversation_length_messages_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"}
           ]
         },
         {
