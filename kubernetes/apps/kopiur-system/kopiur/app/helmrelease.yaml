@@ -31,6 +31,12 @@ spec:
         enabled: true
       prometheusRule:
         enabled: true
+      dashboards:
+        enabled: true
+        grafanaOperator:
+          enabled: true
+          matchLabels:
+            grafana.internal/instance: grafana
     podSecurityContext:
       runAsNonRoot: true
       runAsUser: 1000
