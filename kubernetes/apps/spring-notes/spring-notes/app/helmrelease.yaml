@@ -96,6 +96,17 @@ spec:
                   secretKeyRef:
                     name: spring-notes-rabbitmq-default-user
                     key: password
+              # Spring AI chat-over-notes. No app-side defaults exist for
+              # BASE_URL - unset means the app tries localhost:11434, which
+              # doesn't resolve in-cluster. CHAT_MODEL is freely changeable
+              # later, but EMBEDDING_MODEL is NOT: its dimension (768, for
+              # nomic-embed-text) is baked into the vector_store.embedding
+              # column - changing it needs a new migration + full reindex of
+              # every note, so it's pinned explicitly here rather than
+              # relying on the app's own default ever staying the same.
+              SPRING_AI_OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
+              SPRING_AI_OLLAMA_CHAT_MODEL: qwen2.5:7b-instruct
+              SPRING_AI_OLLAMA_EMBEDDING_MODEL: nomic-embed-text
               LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/spring-notes/
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES:
