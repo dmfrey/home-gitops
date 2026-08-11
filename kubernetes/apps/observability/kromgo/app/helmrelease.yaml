@@ -77,6 +77,47 @@ spec:
           query: alertmanager_alerts{state="active"} - 1 # Ignore Watchdog
           colorExpr: 'colorScale(result, [1.0], ["green", "red"])'
 
+        - title: Spring Notes Uptime
+          id: spring_notes_uptime_days
+          query: process_uptime_seconds{job="spring-notes"}
+          valueExpr: humanizeDurationDays(result)
+          colorExpr: 'colorScale(result, [86400.0, 604800.0], ["orange", "green"])'
+
+        - title: Spring Notes Requests
+          id: spring_notes_request_rate
+          query: round(sum(rate(http_server_requests_seconds_count{job="spring-notes"}[5m])), 0.01)
+          valueExpr: string(result) + "/s"
+          colorExpr: '"green"'
+
+        - title: Spring Notes Error Rate
+          id: spring_notes_error_rate
+          query: round(sum(rate(http_server_requests_seconds_count{job="spring-notes", outcome="SERVER_ERROR"}[15m])) / sum(rate(http_server_requests_seconds_count{job="spring-notes"}[15m])) * 100, 0.01) or vector(0)
+          valueExpr: string(result) + "%"
+          colorExpr: 'colorScale(result, [1.0, 5.0], ["green", "orange", "red"])'
+
+        - title: Spring Notes P95 Latency
+          id: spring_notes_p95_latency
+          query: round(histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job="spring-notes"}[15m])) by (le)) * 1000, 1)
+          valueExpr: string(result) + "ms"
+          colorExpr: 'colorScale(result, [200.0, 750.0], ["green", "orange", "red"])'
+
+        - title: Spring Notes JVM Heap
+          id: spring_notes_jvm_heap
+          query: round(sum(jvm_memory_used_bytes{job="spring-notes", area="heap"}) / sum(jvm_memory_max_bytes{job="spring-notes", area="heap"}) * 100, 0.1)
+          valueExpr: string(result) + "%"
+          colorExpr: 'colorScale(result, [60.0, 85.0], ["green", "orange", "red"])'
+
+        - title: Spring Notes DB Pool
+          id: spring_notes_db_pool
+          query: round(sum(hikaricp_connections_active{job="spring-notes"}) / sum(hikaricp_connections_max{job="spring-notes"}) * 100, 0.1)
+          valueExpr: string(result) + "%"
+          colorExpr: 'colorScale(result, [60.0, 85.0], ["green", "orange", "red"])'
+
+        - title: Spring Notes Restarts
+          id: spring_notes_restarts
+          query: sum(kube_pod_container_status_restarts_total{namespace="spring-notes", container="app"})
+          colorExpr: 'colorScale(result, [1.0, 5.0], ["green", "orange", "red"])'
+
     httpRoute:
       enabled: true
       annotations:
