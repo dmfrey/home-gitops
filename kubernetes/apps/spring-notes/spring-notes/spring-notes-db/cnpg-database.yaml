@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: spring-notes-app
+spec:
+  name: spring-notes
+  owner: spring-notes
+  cluster:
+    name: spring-notes-cnpg
+  extensions:
+    - name: vector

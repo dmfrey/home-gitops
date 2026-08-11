@@ -9,7 +9,14 @@ metadata:
 spec:
   instances: 1
   enablePDB: false
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.10
+  # tensorchord's CNPG-compatible Postgres image with pgvector pre-installed
+  # (also bundles VectorChord's own vchord extension, unused here - only
+  # standard pgvector is needed for Spring AI's PgVectorStore). Confirmed
+  # this tag bundles PostgreSQL 17.10, an exact match for the vanilla
+  # cloudnative-pg/postgresql:17.10 image it replaces, so this is an
+  # in-place operand swap with no data/binary compatibility concerns -
+  # same pattern already proven in self-hosted/immich/immich-db.
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17-1.1.1@sha256:f22538c11c6d0e9ade44d3224f2dccd6bad9b2e60034b2e118804f9ad35f59bf
 
   managed:
     services:
