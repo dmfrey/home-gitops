@@ -142,53 +142,6 @@ spec:
               limits:
                 memory: 1Gi
 
-      sbom-submit:
-        type: cronjob
-        cronjob:
-          # Offset 30m past midnight UTC - every CNPG barman-cloud
-          # ScheduledBackup fleet-wide (including dependency-track's own)
-          # fires at the literal @daily (00:00 UTC) instant, and
-          # dependency-track-v5-cnpg is single-instance, so a base backup's
-          # checkpoint briefly contends with its own API. Leave the CNPG
-          # schedules alone (deliberately uniform fleet-wide, see
-          # ebe1ef7e3/720fbbdf4) and move this one instead.
-          schedule: "30 0 * * *"
-          concurrencyPolicy: Forbid
-          successfulJobsHistory: 1
-          failedJobsHistory: 1
-        containers:
-          app:
-            image:
-              repository: curlimages/curl
-              tag: 8.21.0@sha256:7c12af72ceb38b7432ab85e1a265cff6ae58e06f95539d539b654f2cfa64bb13
-              pullPolicy: IfNotPresent
-            env:
-              DEPENDENCY_TRACK_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: spring-notes-dtrack-secret
-                    key: DEPENDENCY_TRACK_API_KEY
-            command:
-              - /bin/sh
-              - -c
-              - |
-                curl -sf http://spring-notes-backend.spring-notes.svc.cluster.local:8080/actuator/sbom/application -o /tmp/sbom.json &&
-                curl -sf -X POST \
-                  http://dependency-track-api.security.svc.cluster.local:8080/api/v1/bom \
-                  -H "X-API-Key: ${DEPENDENCY_TRACK_API_KEY}" \
-                  -F "project=66ca30fd-78af-4ffd-8a55-5cc5109d2d26" \
-                  -F "bom=@/tmp/sbom.json"
-            resources:
-              requests:
-                cpu: 10m
-                memory: 32Mi
-              limits:
-                memory: 64Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-
       frontend:
         containers:
           app:
@@ -229,12 +182,6 @@ spec:
               - path: /usr/share/nginx/html/config.json
                 subPath: config.json
                 readOnly: true
-      tmp:
-        type: emptyDir
-        advancedMounts:
-          sbom-submit:
-            app:
-              - path: /tmp
 
     service:
       backend:
