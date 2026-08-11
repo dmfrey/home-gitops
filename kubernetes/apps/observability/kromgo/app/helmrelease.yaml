@@ -103,7 +103,11 @@ spec:
 
         - title: Spring Notes JVM Heap
           id: spring_notes_jvm_heap
-          query: round(sum(jvm_memory_used_bytes{job="spring-notes", area="heap"}) / sum(jvm_memory_max_bytes{job="spring-notes", area="heap"}) * 100, 0.1)
+          # jvm_memory_max_bytes is -1 for every heap pool on this app's
+          # GraalVM native image runtime (no fixed generational max the way
+          # a standard HotSpot JVM has), so committed is used as the
+          # denominator instead of max.
+          query: round(sum(jvm_memory_used_bytes{job="spring-notes", area="heap"}) / sum(jvm_memory_committed_bytes{job="spring-notes", area="heap"}) * 100, 0.1)
           valueExpr: string(result) + "%"
           colorExpr: 'colorScale(result, [60.0, 85.0], ["green", "orange", "red"])'
 
