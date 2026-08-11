@@ -454,6 +454,180 @@ spec:
           "targets": [
             {"expr": "{service_name=\"$application\", pod=~\"$instance\"}", "refId": "A"}
           ]
+        },
+        {
+          "id": 93,
+          "type": "row",
+          "title": "Chat",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 82},
+          "collapsed": false,
+          "panels": []
+        },
+        {
+          "id": 100,
+          "type": "timeseries",
+          "title": "Gen AI Call Rate",
+          "description": "Spring AI's Micrometer observations for Ollama chat + embedding calls (gen_ai.client.operation.duration).",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 83},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (gen_ai_operation_name) (rate(gen_ai_client_operation_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "{{gen_ai_operation_name}}", "refId": "A"}
+          ]
+        },
+        {
+          "id": 101,
+          "type": "timeseries",
+          "title": "Gen AI Latency p95",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 83},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.95, sum by (le, gen_ai_operation_name) (rate(gen_ai_client_operation_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "{{gen_ai_operation_name}} p95", "refId": "A"}
+          ]
+        },
+        {
+          "id": 102,
+          "type": "timeseries",
+          "title": "Gen AI Errors",
+          "description": "Only current signal that Ollama is unreachable - /actuator/health doesn't check it.",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 83},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (gen_ai_operation_name, error) (rate(gen_ai_client_operation_seconds_count{application=\"$application\", instance=~\"$instance\", error!=\"none\"}[$__rate_interval])) or vector(0)", "legendFormat": "{{gen_ai_operation_name}} ({{error}})", "refId": "A"}
+          ]
+        },
+        {
+          "id": 103,
+          "type": "timeseries",
+          "title": "Vector Store Operation Rate",
+          "description": "pgvector add/query/delete (db.vector.client.operation.duration).",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 91},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (db_operation_name) (rate(db_vector_client_operation_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "{{db_operation_name}}", "refId": "A"}
+          ]
+        },
+        {
+          "id": 104,
+          "type": "timeseries",
+          "title": "Vector Store Latency p95",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 91},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.95, sum by (le, db_operation_name) (rate(db_vector_client_operation_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "{{db_operation_name}} p95", "refId": "A"}
+          ]
+        },
+        {
+          "id": 105,
+          "type": "timeseries",
+          "title": "Vector Store JDBC Latency p95",
+          "description": "JDBC metrics scoped to the vector_store table only.",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 91},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.95, sum by (le, db_operation_name) (rate(jdbc_query_seconds_bucket{application=\"$application\", instance=~\"$instance\", db_collection_name=~\"(public\\\\.)?vector_store\"}[$__rate_interval])))", "legendFormat": "{{db_operation_name}} p95", "refId": "A"}
+          ]
+        },
+        {
+          "id": 106,
+          "type": "timeseries",
+          "title": "Chat Endpoint Rate",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 99},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+          "targets": [
+            {"expr": "sum(rate(http_server_requests_seconds_count{application=\"$application\", instance=~\"$instance\", uri=\"/chat\"}[$__rate_interval]))", "legendFormat": "requests", "refId": "A"}
+          ]
+        },
+        {
+          "id": 107,
+          "type": "timeseries",
+          "title": "Chat Endpoint Latency",
+          "description": "Reflects full streaming response duration, not time-to-first-token.",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 99},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=~\"$instance\", uri=\"/chat\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=~\"$instance\", uri=\"/chat\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"},
+            {"expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_requests_seconds_bucket{application=\"$application\", instance=~\"$instance\", uri=\"/chat\"}[$__rate_interval])))", "legendFormat": "p99", "refId": "C"}
+          ]
+        },
+        {
+          "id": 108,
+          "type": "timeseries",
+          "title": "Chat Endpoint Errors",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 99},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (status) (rate(http_server_requests_seconds_count{application=\"$application\", instance=~\"$instance\", uri=\"/chat\", status!~\"2..\"}[$__rate_interval])) or vector(0)", "legendFormat": "{{status}}", "refId": "A"}
+          ]
+        },
+        {
+          "id": 109,
+          "type": "timeseries",
+          "title": "Note Index Listener Rate",
+          "description": "spring.rabbitmq.listener timer for NoteIndexEventListener.",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 107},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum(rate(spring_rabbitmq_listener_seconds_count{application=\"$application\", instance=~\"$instance\"}[$__rate_interval]))", "legendFormat": "messages", "refId": "A"}
+          ]
+        },
+        {
+          "id": 110,
+          "type": "timeseries",
+          "title": "Note Index Listener Latency p95",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 107},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(spring_rabbitmq_listener_seconds_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "A"}
+          ]
+        },
+        {
+          "id": 111,
+          "type": "timeseries",
+          "title": "Note Index Listener Errors",
+          "description": "A growing gap here (or a climbing broker queue depth, not yet wired up - RabbitMQ's Prometheus plugin isn't scraped in this cluster) means indexing is falling behind.",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 107},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
+          "targets": [
+            {"expr": "sum by (exception) (rate(spring_rabbitmq_listener_seconds_count{application=\"$application\", instance=~\"$instance\", exception!=\"none\"}[$__rate_interval])) or vector(0)", "legendFormat": "{{exception}}", "refId": "A"}
+          ]
+        },
+        {
+          "id": 112,
+          "type": "timeseries",
+          "title": "Retrieval Empty Rate",
+          "description": "chat.retrieval.empty / /chat requests - a climbing ratio means users are asking about topics their notes don't cover. Ships in the next spring-notes release (PR #75); metric name (chat_retrieval_empty_total) is a best guess pending verification once that release deploys and the metric appears in Prometheus.",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 115},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+          "targets": [
+            {"expr": "sum(rate(chat_retrieval_empty_total{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])) / sum(rate(http_server_requests_seconds_count{application=\"$application\", instance=~\"$instance\", uri=\"/chat\"}[$__rate_interval]))", "legendFormat": "empty retrieval ratio", "refId": "A"}
+          ]
+        },
+        {
+          "id": 113,
+          "type": "timeseries",
+          "title": "Conversation Length",
+          "description": "chat.conversation.length - message count in a conversation's memory at request time. Ships in the next spring-notes release (PR #75); metric name (chat_conversation_length_bucket) is a best guess pending verification once that release deploys.",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 115},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none"}, "overrides": []},
+          "targets": [
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(chat_conversation_length_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(chat_conversation_length_bucket{application=\"$application\", instance=~\"$instance\"}[$__rate_interval])))", "legendFormat": "p95", "refId": "B"}
+          ]
         }
       ]
     }
