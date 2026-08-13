@@ -9,7 +9,7 @@ metadata:
 spec:
   instances: 1
   enablePDB: false
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.10
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.11
   managed:
     services:
       disabledDefaultServices:
