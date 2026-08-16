@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: docker.io/ollama/ollama
-              tag: "0.32.10@sha256:fca3c9ebe39b5ea97fc7ce81fbd875af68500a90f4de37a29f43d5a5ce240023"
+              tag: "0.32.13@sha256:77f1a2a54460f0380f2611e1464233d9b82cb6e58afc8f60abec0061049d2d82"
 
             env:
               TZ: America/New_York
