@@ -35,4 +35,4 @@ postinstall = "lefthook install"
 # since the single-source-of-truth chart/version refactor) with an
 # "unmarshal errors: field ... not found" error rather than anything
 # obviously version-related.
-"aqua:helmfile/helmfile" = "1.7.3"
+"aqua:helmfile/helmfile" = "1.7.4"
