@@ -72,7 +72,7 @@ machine:
     # correctly (RTX 3090, Ampere, cudaComputeCapability 8.6.0, driver
     # 580.173.2). r8152 stays blacklisted (unconditional in
     # schematic.yaml.j2, unaffected by this change).
-    image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.13.8 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
+    image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.13.9 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
     wipe: false
   kernel:
     modules:
