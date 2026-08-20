@@ -96,21 +96,29 @@ spec:
 
       security:
         cephx:
-          # CVE-2025-30156 (cephx AES-CBC auth bypass, fixed Ceph v20.2.4+): rotated all
-          # entities off the legacy insecure `aes` cipher onto `aes256k` (Stage A,
-          # 2026-08-20 - daemon/mon/mgr/osd/mds/admin/rbdMirrorPeer + CSI all confirmed on
-          # generation 2). Stage B: `ceph health detail` showed no more AUTH_INSECURE_*
-          # warnings once CSI plugin pods were restarted to pick up the new key, so the
-          # old `aes` cipher is now disallowed entirely, closing the CVE.
+          # CVE-2025-30156 (cephx AES-CBC auth bypass, fixed Ceph v20.2.4+): rotated
+          # daemon/mon/mgr/osd/mds/admin/rbdMirrorPeer to aes256k (Stage A, 2026-08-20),
+          # all unaffected since they don't go through the kernel RBD/CephFS client.
+          # Stage B (aes256k-only) briefly landed but broke every NEW volume attach
+          # cluster-wide (VolSync jobs, pod reschedules) with `rados: ret=-22, Invalid
+          # argument` - kernel-mapped krbd/kernel-cephfs (what CSI actually uses to mount
+          # RBD/CephFS on nodes) doesn't support aes256k until Linux kernel 7.0+; these
+          # nodes run Talos 6.18.44. Reverted: CSI keys stay on `aes` (bumped to
+          # generation 3 so the k8s Secrets actually get rewritten back to an aes-type
+          # key, since generation 2's Secrets already pointed at the unusable aes256k
+          # key) and `aes` stays in allowedCiphers permanently until Talos ships a
+          # kernel >=7.0. Revisit narrowing to aes256k-only only after confirming the
+          # node kernel version supports it.
           allowedCiphers:
+            - aes
             - aes256k
           daemon:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
           csi:
             keyRotationPolicy: KeyGeneration
-            keyGeneration: 2
-            keyType: aes256k
+            keyGeneration: 3
+            keyType: aes
             keepPriorKeyCountMax: 1
           rbdMirrorPeer:
             keyRotationPolicy: KeyGeneration
