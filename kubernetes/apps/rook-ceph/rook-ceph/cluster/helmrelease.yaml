@@ -96,14 +96,13 @@ spec:
 
       security:
         cephx:
-          # CVE-2025-30156 (cephx AES-CBC auth bypass, fixed Ceph v20.2.4+): rotate all
-          # entities off the legacy insecure `aes` cipher onto `aes256k`. Stage A - keep
-          # `aes` allowed during migration since CSI rotation only affects new PVC mounts
-          # (keepPriorKeyCountMax keeps the old key valid for already-mounted volumes).
-          # Stage B (separate follow-up, once `ceph health detail` shows no more
-          # AUTH_INSECURE_* warnings): narrow allowedCiphers to [aes256k] only.
+          # CVE-2025-30156 (cephx AES-CBC auth bypass, fixed Ceph v20.2.4+): rotated all
+          # entities off the legacy insecure `aes` cipher onto `aes256k` (Stage A,
+          # 2026-08-20 - daemon/mon/mgr/osd/mds/admin/rbdMirrorPeer + CSI all confirmed on
+          # generation 2). Stage B: `ceph health detail` showed no more AUTH_INSECURE_*
+          # warnings once CSI plugin pods were restarted to pick up the new key, so the
+          # old `aes` cipher is now disallowed entirely, closing the CVE.
           allowedCiphers:
-            - aes
             - aes256k
           daemon:
             keyRotationPolicy: KeyGeneration
