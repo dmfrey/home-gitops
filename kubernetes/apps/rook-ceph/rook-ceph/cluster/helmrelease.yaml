@@ -6,7 +6,6 @@ metadata:
   name: rook-ceph-cluster
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster
@@ -14,7 +13,6 @@ spec:
   interval: 1h
 
   values:
-
     monitoring:
       enabled: true
       createPrometheusRules: true
@@ -33,7 +31,6 @@ spec:
             namespace: network
 
     cephClusterSpec:
-
       cephConfig:
         global:
           bdev_async_discard_threads: "1" # quote
@@ -96,6 +93,30 @@ spec:
           limits:
             memory: 8Gi
             cpu: 2000m
+
+      security:
+        cephx:
+          # CVE-2025-30156 (cephx AES-CBC auth bypass, fixed Ceph v20.2.4+): rotate all
+          # entities off the legacy insecure `aes` cipher onto `aes256k`. Stage A - keep
+          # `aes` allowed during migration since CSI rotation only affects new PVC mounts
+          # (keepPriorKeyCountMax keeps the old key valid for already-mounted volumes).
+          # Stage B (separate follow-up, once `ceph health detail` shows no more
+          # AUTH_INSECURE_* warnings): narrow allowedCiphers to [aes256k] only.
+          allowedCiphers:
+            - aes
+            - aes256k
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+          csi:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+            keyType: aes256k
+            keepPriorKeyCountMax: 1
+          rbdMirrorPeer:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+            keyType: aes256k
 
       storage:
         useAllNodes: false
