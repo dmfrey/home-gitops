@@ -28,10 +28,10 @@
     // separate files we reference directly. Pin every line here, not just
     // the top-level one, so a future upstream rename/move of any single
     // referenced file can't silently break the whole run again.
-    "github>home-operations/renovate-presets#7.0.0",
-    "github>home-operations/renovate-presets//apps/cnpg.json5#7.0.0",
-    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#7.0.0",
-    "github>home-operations/renovate-presets//apps/talosFactory.json5#7.0.0",
+    "github>home-operations/renovate-presets#8.0.0",
+    "github>home-operations/renovate-presets//apps/cnpg.json5#8.0.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#8.0.0",
+    "github>home-operations/renovate-presets//apps/talosFactory.json5#8.0.0",
     "docker:pinDigests",
     "github>dmfrey/home-gitops//.renovate/autoMerge.json5",
     "github>dmfrey/home-gitops//.renovate/changelogs.json5",
