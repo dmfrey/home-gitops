@@ -71,7 +71,7 @@ spec:
           - name: pg_autoscaler
             enabled: true
           - name: rook
-            enabled: true
+            enabled: false # rook/rook#18124: Ceph Tentacle v20.2.3+ prometheus module polls node_proxy_fullreport() every ~15s, which Rook's orchestrator backend doesn't implement; crash gets recorded before the module's own try/except can catch it, causing permanent RECENT_MGR_MODULE_CRASH and (once records pile up) the crash module's own dict-iteration EIO failure. No upstream fix yet; documented workaround is disabling this module. Rook operator itself doesn't depend on it (OSD/node management here is GitOps-driven via storage.nodes, not the dashboard's orchestrator UI) - only loses `ceph orch` CLI status and dashboard orchestrator integration.
           - name: restful
             enabled: false # unused here; long-documented history of leaking active-mgr memory until OOMKilled
 
