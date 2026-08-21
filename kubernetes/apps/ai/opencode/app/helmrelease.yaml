@@ -89,6 +89,7 @@ spec:
           gethomepage.dev/name: OpenCode
           gethomepage.dev/icon: opencode.png
           gethomepage.dev/description: Shared AI coding agent session (local Ollama).
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=opencode
         hostnames:
           - opencode.dmfrey.com
         parentRefs:

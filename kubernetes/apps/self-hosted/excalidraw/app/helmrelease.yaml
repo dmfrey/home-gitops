@@ -94,6 +94,7 @@ spec:
           gethomepage.dev/name: Excalidraw
           gethomepage.dev/icon: excalidraw.png
           gethomepage.dev/description: Virtual collaborative whiteboard.
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=excalidraw
         hostnames:
           - excalidraw.dmfrey.com
         parentRefs:

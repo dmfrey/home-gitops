@@ -37,6 +37,7 @@ spec:
             gethomepage.dev/name: Alert Manager
             gethomepage.dev/icon: alertmanager.png
             gethomepage.dev/description: Application & System Alerts
+            gethomepage.dev/pod-selector: app.kubernetes.io/name=alertmanager
           parentRefs:
             - name: envoy-internal
               namespace: network
@@ -77,6 +78,7 @@ spec:
             gethomepage.dev/description: Application & System Metrics
             gethomepage.dev/widget.type: prometheus
             gethomepage.dev/widget.url: http://prometheus-operated.observability.svc.cluster.local:9090
+            gethomepage.dev/pod-selector: app.kubernetes.io/name=prometheus
           parentRefs:
             - name: envoy-internal
               namespace: network

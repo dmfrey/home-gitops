@@ -127,6 +127,7 @@ spec:
           gethomepage.dev/widget.type: homeassistant
           gethomepage.dev/widget.url: https://home.dmfrey.com
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_HASS_TOKEN}}` }}"
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=home-assistant
         hostnames:
           - home.dmfrey.com
         parentRefs:
@@ -145,6 +146,7 @@ spec:
           gethomepage.dev/name: Home Assistant Code Server
           gethomepage.dev/icon: vscode.png
           gethomepage.dev/description: Online Code Editor
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=home-assistant
         parentRefs:
           - name: envoy-internal
             namespace: network
