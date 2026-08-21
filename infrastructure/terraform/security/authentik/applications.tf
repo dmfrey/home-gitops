@@ -112,6 +112,14 @@ locals {
       ]
       launch_url    = "https://photos.${var.CLUSTER_DOMAIN}/"
       extra_scopes  = [authentik_property_mapping_provider_scope.immich_role.id]
+    },
+    homepage = {
+      client_id     = var.HOMEPAGE_CLIENT_ID
+      client_secret = var.HOMEPAGE_CLIENT_SECRET
+      group         = "infrastructure"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/homepage.png"
+      redirect_uri  = "https://homepage.${var.CLUSTER_DOMAIN}/api/auth/callback/homepage-oidc"
+      launch_url    = "https://homepage.${var.CLUSTER_DOMAIN}/"
     }
   }
 

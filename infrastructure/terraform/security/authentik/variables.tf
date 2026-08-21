@@ -84,6 +84,11 @@ variable "IMMICH_CLIENT_SECRET" {
   type      = string
   sensitive = true
 }
+variable "HOMEPAGE_CLIENT_ID" { type = string }
+variable "HOMEPAGE_CLIENT_SECRET" {
+  type      = string
+  sensitive = true
+}
 
 # User credentials
 variable "USERS_DMFREY_NAME" { type = string }

@@ -6,7 +6,6 @@ metadata:
   name: homepage
 
 spec:
-
   interval: 1h
 
   chartRef:
@@ -24,7 +23,6 @@ spec:
       retries: 3
 
   values:
-
     global:
       createDefaultServiceAccount: false
 
@@ -44,6 +42,10 @@ spec:
             env:
               TZ: America/New_York
               HOMEPAGE_ALLOWED_HOSTS: "{{ .Release.Name }}.dmfrey.com"
+              HOMEPAGE_AUTH_ENABLED: "true"
+              HOMEPAGE_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
+              HOMEPAGE_OIDC_ISSUER: "https://auth.dmfrey.com/application/o/homepage/"
+              HOMEPAGE_OIDC_NAME: "Authentik"
 
             envFrom:
               - secretRef:
@@ -78,7 +80,6 @@ spec:
             sectionName: https
 
     persistence:
-
       config-settings:
         type: configMap
         name: homepage-config
