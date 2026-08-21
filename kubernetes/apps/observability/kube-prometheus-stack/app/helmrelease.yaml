@@ -98,9 +98,9 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 1000Mi
+            memory: 1500Mi
           limits:
-            memory: 2000Mi
+            memory: 4000Mi # bumped from 2000Mi 2026-08-21: prometheus was sitting at ~91% of the old limit and failing its own /-/ready and /-/healthy probes (context deadline exceeded), which cascaded into prometheus-adapter's external-metrics API failing cluster-wide and every nfs-scaler HPA getting stuck at 0 replicas (~29 apps). Investigate root cause of the memory growth (cardinality?) separately; this buys headroom in the meantime.
 
         storageSpec:
           volumeClaimTemplate:
