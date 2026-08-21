@@ -10,7 +10,7 @@ _.file = ["{{config_root}}/onepassword.env"]
 postinstall = "lefthook install"
 
 [tools]
-"aqua:evilmartians/lefthook" = "2.1.10"
+"aqua:evilmartians/lefthook" = "2.1.11"
 "aqua:rhysd/actionlint" = "1.7.12"
 "aqua:zizmorcore/zizmor" = "1.29.0"
 "just" = "1.58.0"
