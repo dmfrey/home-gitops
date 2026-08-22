@@ -28,7 +28,7 @@ spec:
       webhook:
         image:
           repository: ghcr.io/home-operations/external-dns-unifi-webhook
-          tag: 0.10.10@sha256:9ff9e2a9ba4ab42026ae3b500524d26e6f8b47e7c84c3162121c15627d8dcb6b # kashalls/external-dns-unifi-webhook moved to home-operations org; v0.9.0 predates fixes for unbounded connection pool (0.10.4) and redundant CNAME-update deletes (0.10.8)
+          tag: 0.10.11@sha256:e8c93980f593c5d6a75870e6eb2c288003f2baa227fcbb5e41ec23ecbfd6cbe9 # kashalls/external-dns-unifi-webhook moved to home-operations org; v0.9.0 predates fixes for unbounded connection pool (0.10.4) and redundant CNAME-update deletes (0.10.8)
 
         env:
           - name: &name UNIFI_HOST
