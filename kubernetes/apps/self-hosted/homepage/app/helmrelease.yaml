@@ -56,7 +56,7 @@ spec:
                 cpu: 15m
                 memory: 256Mi
               limits:
-                memory: 512Mi
+                memory: 1Gi # bumped from 512Mi 2026-08-22: OOMKilled after 12h+ of stable ~220Mi usage - a Next.js recompile/reload burst spiked past the limit within a single 30s scrape interval, invisible to container_memory_working_set_bytes until the kill. Steady-state usage is unaffected; this just gives headroom for that burst.
 
         serviceAccount:
           identifier: homepage
