@@ -11,5 +11,5 @@ spec:
     operation: copy
   ref:
     tag: 5.25.0
-    digest: sha256:1540395bccdade4e002ac95e7b11d74d99a9fad93cba860828cdcabdcd6d8a4e
+    digest: sha256:ae311e8675c11a1d12112eb45676415a797f9dfb7eee91b82f422b53d7c7ab6d
   url: oci://ghcr.io/grafana/helm-charts/grafana-operator
