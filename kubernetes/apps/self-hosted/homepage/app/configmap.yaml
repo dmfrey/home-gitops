@@ -38,6 +38,9 @@ data:
         - hass-config:
             - icon: github.png
               href: 'https://github.com/dmfrey/hass-config'
+        - spring-notes:
+            - icon: github.png
+              href: 'https://github.com/dmfrey/spring-notes'
   docker.yaml: ""
   kubernetes.yaml: |
     mode: cluster
@@ -49,11 +52,15 @@ data:
         - SMLight-SLZB-06-01:
             href: http://zigbee-1.internal
             icon: zigbee.png
-            description: Zigbee Controller
+            description: First Floor Zigbee Controller
         - SMLight-SLZB-06M:
             href: http://zigbee-2.internal
             icon: zigbee.png
             description: Zigbee Controller
+        - SMLight-SLZB-06Mg26U:
+            href: http://otbr.internal
+            icon: thread.png
+            description: OpenThread Border Router
     - Infrastructure:
         - QNAP:
             href: https://nas.internal:7080/cgi-bin/
