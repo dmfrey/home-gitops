@@ -35,9 +35,15 @@ Prefer MCP tools over `flux` CLI for reconcile and status checks:
 - `mcp__flux-operator-mcp__get_kubernetes_resources` for status checks
 - `mcp__flux-operator-mcp__suspend_flux_reconciliation` / `resume_flux_reconciliation`
 
-### PR reviews — use the flux-pr-reviewer subagent
+### PR reviews — use konflate MCP, not a subagent
 
-For Renovate PRs, spawn the `flux-pr-reviewer` agent (defined in `.claude/agents/flux-pr-reviewer.md`). For batches, spawn in parallel — one agent per PR. Do not do inline risk assessment in the main context.
+Deployed 2026-08-25 (`kubernetes/apps/flux-system/konflate/`) specifically to replace the old `flux-pr-reviewer` subagent pattern. konflate continuously renders every open PR's Flux diff (via `flate`) and keeps the analysis current via GitHub webhook — query it directly instead of spawning an agent to clone/render/diff from scratch:
+
+- `list_pull_requests` — see what's open
+- `get_pr_summary` — blast radius, image changes, render failures, and "danger lint" (immutable-field mutations, RBAC changes, privilege escalation, data-loss patterns) for one PR
+- `get_pr_diff` — full rendered YAML diff per resource, if `get_pr_summary` isn't enough detail
+
+MCP endpoint: `https://konflate.dmfrey.com/mcp` (add as a project MCP server, `type: "http"`, in `.mcp.json` if not already present — that file is gitignored/local-only, not committed). It also posts its own PR comment + commit status on every push, so the summary is often already visible on the PR before you even query it. konflate is read-only towards the cluster (it authenticates to GitHub via its own dedicated App, separate from the Renovate `home-gitops-bot` app) — merging PRs is still a manual `gh pr merge` step.
 
 ### Home Assistant — use Home Assistant MCP
 
