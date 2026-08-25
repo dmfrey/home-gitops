@@ -10,6 +10,8 @@ spec:
     name: flux-instance
   interval: 1h
   values:
+    commonAnnotations:
+      fluxcd.controlplane.io/reconcileArtifactEvery: 1h
     instance:
       distribution:
         artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.58.1
@@ -41,7 +43,7 @@ spec:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)
           - # Increase the memory limits
-            patch: |
+            patch: |-
               apiVersion: apps/v1
               kind: Deployment
               metadata:
@@ -58,7 +60,7 @@ spec:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)
           - # Enable in-memory kustomize builds
-            patch: |
+            patch: |-
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --concurrent=20
@@ -72,7 +74,7 @@ spec:
               kind: Deployment
               name: kustomize-controller
           - # Enable Helm repositories caching
-            patch: |
+            patch: |-
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --helm-cache-max-size=10
@@ -94,7 +96,7 @@ spec:
               kind: Deployment
               name: source-controller
           - # Flux near OOM detection for Helm
-            patch: |
+            patch: |-
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --feature-gates=OOMWatch=true
