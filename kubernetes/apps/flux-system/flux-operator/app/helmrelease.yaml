@@ -13,6 +13,21 @@ spec:
   interval: 1h
 
   values:
+    # Disable IPv6 for this pod - GHCR's CDN (pkg-containers.githubusercontent.com)
+    # sometimes hands back an IPv6 address this cluster's pods have no route
+    # to (see the identical fix on source-controller in
+    # kubernetes/apps/flux-system/flux-instance/app/helmrelease.yaml for the
+    # full explanation), causing FluxInstance's own fetch of the
+    # flux-operator-manifests OCI artifact to fail with "network is
+    # unreachable". flux-operator does this fetch independently of
+    # source-controller, so it needed the same fix separately - confirmed via
+    # recurring ArtifactFailed events (2026-08-21 through 2026-08-25) that
+    # this Deployment lacked the sysctl the other one already had.
+    podSecurityContext:
+      sysctls:
+        - name: net.ipv6.conf.all.disable_ipv6
+          value: "1"
+
     serviceMonitor:
       create: true
 
