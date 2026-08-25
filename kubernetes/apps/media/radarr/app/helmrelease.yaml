@@ -6,7 +6,6 @@ metadata:
   name: radarr
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: radarr
@@ -14,9 +13,7 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
-
       radarr:
         type: statefulset
 
@@ -36,6 +33,7 @@ spec:
               RADARR__APPLICATION_URL: https://radarr.dmfrey.com
               RADARR__LOG_LEVEL: info
               RADARR__ANALYTICS_ENABLED: "False"
+              RADARR__AUTHENTICATION_METHOD: External
               RADARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -100,6 +98,21 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+      outpost:
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /outpost.goauthentik.io
+            backendRefs:
+              - name: ak-outpost-authentik-embedded-outpost
+                namespace: security
+                port: 9000
 
     persistence:
       config:

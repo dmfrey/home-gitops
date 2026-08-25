@@ -6,7 +6,6 @@ metadata:
   name: sonarr
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: sonarr
@@ -14,9 +13,7 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
-
       sonarr:
         type: statefulset
 
@@ -36,6 +33,7 @@ spec:
               SONARR__APPLICATION_URL: https://sonarr.dmfrey.com
               SONARR__LOG_LEVEL: info
               SONARR__ANALYTICS_ENABLED: "False"
+              SONARR__AUTHENTICATION_METHOD: External
               SONARR__API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -99,6 +97,21 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+      outpost:
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /outpost.goauthentik.io
+            backendRefs:
+              - name: ak-outpost-authentik-embedded-outpost
+                namespace: security
+                port: 9000
 
     persistence:
       config:
