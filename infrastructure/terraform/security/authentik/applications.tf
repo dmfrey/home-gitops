@@ -136,6 +136,24 @@ locals {
       external_host = "https://opencode.${var.CLUSTER_DOMAIN}"
       launch_url    = "https://opencode.${var.CLUSTER_DOMAIN}/"
     }
+    sonarr = {
+      group         = "media"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/sonarr.png"
+      external_host = "https://sonarr.${var.CLUSTER_DOMAIN}"
+      launch_url    = "https://sonarr.${var.CLUSTER_DOMAIN}/"
+    }
+    radarr = {
+      group         = "media"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/radarr.png"
+      external_host = "https://radarr.${var.CLUSTER_DOMAIN}"
+      launch_url    = "https://radarr.${var.CLUSTER_DOMAIN}/"
+    }
+    lidarr = {
+      group         = "media"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/lidarr.png"
+      external_host = "https://lidarr.${var.CLUSTER_DOMAIN}"
+      launch_url    = "https://lidarr.${var.CLUSTER_DOMAIN}/"
+    }
   }
 }
 
