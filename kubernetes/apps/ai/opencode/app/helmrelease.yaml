@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: ghcr.io/anomalyco/opencode
-              tag: 1.18.22@sha256:647ce639f66ff520e7b149bd86963ac555d820887cce051647b396ea0fd5d7f9
+              tag: 1.18.23@sha256:182959d5ae507fa2b3dcfd6ec247ad625b7f15539977dd0620f43f7e24c78229
 
             command:
               - opencode
