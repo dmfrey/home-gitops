@@ -36,3 +36,13 @@ postinstall = "lefthook install"
 # "unmarshal errors: field ... not found" error rather than anything
 # obviously version-related.
 "aqua:helmfile/helmfile" = "1.7.4"
+# Previously an untracked standalone /usr/local/bin/flux at v2.5.1, which
+# predates source-controller's OCIRepository v1beta2->v1 promotion and
+# failed to reconcile OCIRepository sources ("no matches for
+# source.toolkit.fluxcd.io/v1beta2"). Pinned here to match CI's
+# FLUX_VERSION (.github/workflows/publish-terraform-oci.yaml).
+"flux2" = "2.9.4"
+# Same v1beta2/v1 staleness as flux2 above, on the CLI half of the
+# flux-operator-mcp server (~/.local/bin/flux-operator-mcp was 0.45.1);
+# pinned to keep it tracked and current going forward.
+"flux-operator-mcp" = "0.58.1"

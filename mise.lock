@@ -249,6 +249,112 @@ url = "https://github.com/zizmorcore/zizmor/releases/download/v1.29.0/zizmor-x86
 url_api = "https://api.github.com/repos/zizmorcore/zizmor/releases/assets/498263142"
 provenance = "github-attestations"
 
+[[tools.flux-operator-mcp]]
+version = "0.58.1"
+backend = "aqua:controlplaneio-fluxcd/flux-operator/flux-operator-mcp"
+
+[tools.flux-operator-mcp."platforms.linux-arm64"]
+checksum = "sha256:6161bd9680fd0095e6eac884284688bcd1cc79cc8d6c815e19d00d199859c5d5"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.58.1/flux-operator-mcp_0.58.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/520626604"
+provenance = "github-attestations"
+
+[tools.flux-operator-mcp."platforms.linux-arm64-musl"]
+checksum = "sha256:6161bd9680fd0095e6eac884284688bcd1cc79cc8d6c815e19d00d199859c5d5"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.58.1/flux-operator-mcp_0.58.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/520626604"
+provenance = "github-attestations"
+
+[tools.flux-operator-mcp."platforms.linux-x64"]
+checksum = "sha256:93faae885b22a21e939e59fd0e2f0b8607b923af3ed18500e81f69a460be52de"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.58.1/flux-operator-mcp_0.58.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/520626612"
+provenance = "github-attestations"
+
+[tools.flux-operator-mcp."platforms.linux-x64-musl"]
+checksum = "sha256:93faae885b22a21e939e59fd0e2f0b8607b923af3ed18500e81f69a460be52de"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.58.1/flux-operator-mcp_0.58.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/520626612"
+provenance = "github-attestations"
+
+[tools.flux-operator-mcp."platforms.macos-arm64"]
+checksum = "sha256:76aea024e419f9c4dbe6a9a95b81d2b2932a74ff59aee8aa0df14340f8da8ef4"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.58.1/flux-operator-mcp_0.58.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/520626618"
+provenance = "github-attestations"
+
+[tools.flux-operator-mcp."platforms.macos-x64"]
+checksum = "sha256:74cb46bc4eee0a1c949d72feb6c3e1a015eb753de3fe3d9fe5bc81fdaa0d8a38"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.58.1/flux-operator-mcp_0.58.1_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/520626640"
+provenance = "github-attestations"
+
+[tools.flux-operator-mcp."platforms.windows-x64"]
+checksum = "sha256:712cdfbb7719662def790bd92ed9d26fe83e9199ab2d8b9812723f7f55e36561"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.58.1/flux-operator-mcp_0.58.1_windows_amd64.zip"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/520626665"
+provenance = "github-attestations"
+
+[[tools.flux2]]
+version = "2.9.4"
+backend = "aqua:fluxcd/flux2"
+
+[tools.flux2."platforms.linux-arm64"]
+checksum = "sha256:dcab945f8d8658662fa1db93e150a602ba1f91da367a82e099bd65595fc7c62c"
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/flux_2.9.4_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259828"
+
+[tools.flux2."platforms.linux-arm64".provenance.slsa]
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
+
+[tools.flux2."platforms.linux-arm64-musl"]
+checksum = "sha256:dcab945f8d8658662fa1db93e150a602ba1f91da367a82e099bd65595fc7c62c"
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/flux_2.9.4_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259828"
+
+[tools.flux2."platforms.linux-arm64-musl".provenance.slsa]
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
+
+[tools.flux2."platforms.linux-x64"]
+checksum = "sha256:c2c397a52930f52d2005c01d276116b059d062de379386d58e98115380a766a2"
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/flux_2.9.4_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259827"
+
+[tools.flux2."platforms.linux-x64".provenance.slsa]
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
+
+[tools.flux2."platforms.linux-x64-musl"]
+checksum = "sha256:c2c397a52930f52d2005c01d276116b059d062de379386d58e98115380a766a2"
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/flux_2.9.4_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259827"
+
+[tools.flux2."platforms.linux-x64-musl".provenance.slsa]
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
+
+[tools.flux2."platforms.macos-arm64"]
+checksum = "sha256:5350675411f1c8c20fb7fd827450933e939f7ab82a2cd92f8fa2abe497761911"
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/flux_2.9.4_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259822"
+
+[tools.flux2."platforms.macos-arm64".provenance.slsa]
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
+
+[tools.flux2."platforms.macos-x64"]
+checksum = "sha256:162e11dd0fd44d1d87f3b8308b74e8ef8fedd0a550b8501f0365f329efc476f8"
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/flux_2.9.4_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259836"
+
+[tools.flux2."platforms.macos-x64".provenance.slsa]
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
+
+[tools.flux2."platforms.windows-x64"]
+checksum = "sha256:524a148bdc77d6baa05fb22472e2ecf153f51c198ff299475a7245e4016b06c2"
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/flux_2.9.4_windows_amd64.zip"
+url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259830"
+
+[tools.flux2."platforms.windows-x64".provenance.slsa]
+url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
+
 [[tools."github:home-operations/flate"]]
 version = "0.6.0"
 backend = "github:home-operations/flate"
@@ -382,9 +488,9 @@ version = "0.12.5"
 backend = "aqua:astral-sh/uv"
 
 [tools.uv."platforms.linux-arm64"]
-checksum = "sha256:8767a0e77f2cd45436401b1b42bf7e9ed5a4a91a74a5305d6fe93249d0f6dbc5"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514850993"
+checksum = "sha256:9bf43b4d1a07665bf64d4c4e710930b382321a785e0eb10aac07f46471f86a31"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514850990"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-arm64-musl"]
@@ -394,9 +500,9 @@ url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514850993"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64"]
-checksum = "sha256:a4742988791c9aeae68c78150d6cba762062ad2a47e53738c2779d2b596bfcdb"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514851105"
+checksum = "sha256:68a509da24b06b4223a1c0175fb5eb5bc79342b76cbeff0cfe51ac3f5b17b6b2"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514851093"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-musl"]
