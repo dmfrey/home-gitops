@@ -133,35 +133,3 @@ spec:
             target:
               kind: Deployment
               name: kustomize-controller
-          - 
-            # Disable IPv6 for source-controller and kustomize-controller -
-            # GitHub's CDN (pkg-containers.githubusercontent.com,
-            # raw.githubusercontent.com) sometimes hands back an IPv6
-            # address this cluster's pods have no route to (confirmed via
-            # debug pod: only a link-local address exists, no global IPv6,
-            # Cilium's enable-ipv6 is already false), causing fetches to
-            # fail instantly with "network is unreachable" until a retry
-            # happens to land on IPv4 instead. Originally scoped to just
-            # source-controller (OCIRepository/HelmChart fetches); extended
-            # 2026-08-25 to kustomize-controller after the same error hit
-            # its own independent remote-resource fetch (dragonfly-operator
-            # Kustomization pulling a CRD manifest directly from
-            # raw.githubusercontent.com) - each flux-system component does
-            # its own outbound fetches, so this isn't automatically shared.
-            # Scoped via a pod-level sysctl - kubelet's
-            # allowed-unsafe-sysctls: net.ipv6.conf.* already permits this
-            # cluster-wide, no Talos/host change needed. Deliberately NOT a
-            # host-level or Cilium-level change: an earlier host-level
-            # bond0.50 test broke matter-server's Thread/Matter
-            # connectivity (see kubernetes/apps/home/matter-server), and
-            # this doesn't touch that namespace, that pod, or any host
-            # interface at all.
-            patch: |-
-              - op: add
-                path: /spec/template/spec/securityContext/sysctls
-                value:
-                  - name: net.ipv6.conf.all.disable_ipv6
-                    value: "1"
-            target:
-              kind: Deployment
-              name: (kustomize-controller|source-controller)
