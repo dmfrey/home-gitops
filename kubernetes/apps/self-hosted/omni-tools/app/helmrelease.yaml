@@ -6,7 +6,6 @@ metadata:
   name: &app omni-tools
 
 spec:
-
   interval: 1h
 
   chartRef:
@@ -24,25 +23,23 @@ spec:
       retries: 3
 
   values:
-
     controllers:
-      *app:
-
+      omni-tools:
         containers:
-          *app:
+          omni-tools:
             image:
               repository: iib0011/omni-tools
               tag: 0.6.0@sha256:ceb5acc317daf387634f7f212cefe4722fd1243ad1cba74203f25254195b6c69
 
     service:
-      *app:
+      omni-tools:
         controller: *app
         ports:
           http:
             port: &port 80
 
     route:
-      *app:
+      omni-tools:
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         annotations:

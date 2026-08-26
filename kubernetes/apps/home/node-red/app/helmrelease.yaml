@@ -1,11 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app node-red
 spec:
-
   chartRef:
     kind: OCIRepository
     name: node-red
@@ -13,13 +12,12 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
-      *app:
+      node-red:
         type: statefulset
 
         containers:
-          *app:
+          node-red:
             image:
               repository: nodered/node-red
               tag: 4.1.7-18-minimal@sha256:a1951e845a7e0b617b21bac40ce43a29f977cb099f3151df97b956b26da3f747
@@ -46,14 +44,14 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
 
     service:
-      *app:
+      node-red:
         controller: *app
         ports:
           http:
             port: &port 1880
 
     route:
-      *app:
+      node-red:
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         annotations:

@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app busybox
 
 spec:
-
   interval: 1h
 
   chartRef:
@@ -31,9 +30,8 @@ spec:
     mode: enabled
 
   values:
-
     controllers:
-      *app:
+      busybox:
         replicas: 1
         strategy: RollingUpdate
         annotations:
@@ -49,7 +47,7 @@ spec:
               }]
 
         containers:
-          *app:
+          busybox:
             image:
               repository: docker.io/library/busybox
               tag: latest@sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616
@@ -78,6 +76,6 @@ spec:
         fsGroup: 0
 
     service:
-      *app:
+      busybox:
         enabled: false
         controller: *app

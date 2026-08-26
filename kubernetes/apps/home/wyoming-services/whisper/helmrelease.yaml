@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -21,12 +21,12 @@ spec:
     keepHistory: false
   values:
     controllers:
-      *app:
+      whisper:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          *app:
+          whisper:
             image:
               repository: rhasspy/wyoming-whisper
               tag: 3.1.0@sha256:9501d2659eee83b6eead98d53842193e5fed011eda6c5b1c3ad36f3146b28fed
@@ -45,7 +45,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       terminationGracePeriodSeconds: 10
       securityContext:
@@ -55,7 +55,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      *app:
+      whisper:
         controller: *app
         type: LoadBalancer
         annotations:

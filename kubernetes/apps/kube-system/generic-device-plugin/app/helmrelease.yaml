@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app generic-device-plugin
 
 spec:
-
   interval: 1h
 
   chartRef:
@@ -29,7 +28,6 @@ spec:
     keepHistory: false
 
   values:
-
     controllers:
       generic-device-plugin:
         type: daemonset
@@ -38,7 +36,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          *app:
+          generic-device-plugin:
             image:
               repository: squat/generic-device-plugin
               tag: latest@sha256:dc192e164c69b03f156765793a1be62ca437709ae477b27ca7d8f3dcf5021576
@@ -70,7 +68,7 @@ spec:
               privileged: true
 
     service:
-      *app:
+      generic-device-plugin:
         controller: *app
         ports:
           http:
@@ -86,4 +84,3 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /dev
-
