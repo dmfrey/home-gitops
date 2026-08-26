@@ -5,16 +5,22 @@ kind: ClusterRepository
 metadata:
   name: garage
 spec:
-  # Pilot scope: only the wizarr app (media namespace) backs up here for now.
-  # kopiur-system must ALSO be listed - the operator's managed Maintenance CR
-  # (maintenance.namespace below) lands there, and the admission webhook
-  # enforces allowedNamespaces against every namespace touching this
+  # Phase 2 (2026-08-26, project_kopiur_pilot): widened from wizarr-only
+  # (media) to 3 more apps of varying shapes - plex (media, large PVC),
+  # linkwarden (self-hosted, real CNPG DB), dependency-track (security,
+  # real CNPG DB), mosquitto (home, runs as root - different UID shape
+  # than every other kopiur app so far). kopiur-system must ALSO be
+  # listed - the operator's managed Maintenance CR (maintenance.namespace
+  # below) lands there, and the admission webhook enforces
+  # allowedNamespaces against every namespace touching this
   # ClusterRepository, including its own operator namespace, not just
-  # consumer apps. See project_kopiur_pilot memory. Widen this list if the
-  # pilot graduates.
+  # consumer apps.
   allowedNamespaces:
     list:
       - media
+      - self-hosted
+      - security
+      - home
       - kopiur-system
   # Owner-side opt-in for credential projection - necessary but not
   # sufficient on its own; the consumer (wizarr's SnapshotPolicy) must also

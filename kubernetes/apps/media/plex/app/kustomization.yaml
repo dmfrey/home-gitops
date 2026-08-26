@@ -8,6 +8,8 @@ resources:
   - ./ocirepository.yaml
   - ./pvc.yaml
   - ./resourceclaimtemplate.yaml
+  - ./snapshotpolicy.yaml
+  - ./snapshotschedule.yaml
 
 configMapGenerator:
   - name: plex-loki-rules
