@@ -1,11 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: &app smartctl-exporter
 spec:
-
   interval: 1h
 
   chartRef:
@@ -26,7 +25,6 @@ spec:
     mode: enabled
 
   values:
-
     fullnameOverride: *app
 
     # config:

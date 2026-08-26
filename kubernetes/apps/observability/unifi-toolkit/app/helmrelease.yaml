@@ -1,11 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: unifi-toolkit
 spec:
-
   chartRef:
     kind: OCIRepository
     name: unifi-toolkit
@@ -13,10 +12,8 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
       unifi-toolkit:
-
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -72,7 +69,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
 
     defaultPodOptions:
       securityContext:

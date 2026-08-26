@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -8,7 +8,6 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 
 spec:
-
   instances: 1
   enablePDB: false
   imageName: ghcr.io/cloudnative-pg/postgresql:17.11
@@ -41,7 +40,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: linkwarden
-          serverName: linkwarden-cnpg  # pg-linkwarden
+          serverName: linkwarden-cnpg # pg-linkwarden
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io

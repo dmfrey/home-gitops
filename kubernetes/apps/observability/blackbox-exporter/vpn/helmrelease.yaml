@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: blackbox-exporter-vpn
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: blackbox-exporter-vpn
@@ -14,7 +13,6 @@ spec:
   interval: 1h
 
   values:
-
     fullnameOverride: blackbox-exporter-vpn
 
     strategy:
@@ -32,7 +30,7 @@ spec:
     securityContext:
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
-      capabilities: {add: ["NET_RAW"]}
+      capabilities: { add: ["NET_RAW"] }
 
     config:
       modules:

@@ -1,11 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/infra.contrib.fluxcd.io/terraform_v1alpha2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/infra.contrib.fluxcd.io/terraform_v1alpha2.json
 apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
   name: authentik-provisioner
 spec:
-
   approvePlan: auto
   interval: 15m
   path: "./"

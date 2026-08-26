@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -16,7 +16,7 @@ spec:
     isDefault: true
     url: http://prometheus-operated.observability.svc.cluster.local:9090
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -33,7 +33,7 @@ spec:
       implementation: prometheus
     url: http://alertmanager-operated.observability.svc.cluster.local:9093
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -59,7 +59,7 @@ spec:
           url: "${__value.raw}"
           urlDisplayLabel: View Trace
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:

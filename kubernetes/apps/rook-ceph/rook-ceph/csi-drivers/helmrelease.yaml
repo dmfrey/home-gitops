@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: ceph-csi-drivers
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: ceph-csi-drivers
@@ -14,7 +13,6 @@ spec:
   interval: 1h
 
   values:
-
     operatorConfig:
       driverSpecDefaults:
         cephFsClientType: kernel
@@ -43,20 +41,20 @@ spec:
         controllerPlugin:
           resources:
             attacher:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             plugin:
-              requests: {cpu: 250m, memory: 512Mi}
-              limits: {memory: 1Gi}
+              requests: { cpu: 250m, memory: 512Mi }
+              limits: { memory: 1Gi }
             provisioner:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             resizer:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             snapshotter:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             omapGenerator: {}
             logRotator: {}
             liveness: {}
@@ -64,11 +62,11 @@ spec:
         nodePlugin:
           resources:
             plugin:
-              requests: {cpu: 250m, memory: 512Mi}
-              limits: {memory: 1Gi}
+              requests: { cpu: 250m, memory: 512Mi }
+              limits: { memory: 1Gi }
             registrar:
-              requests: {cpu: 50m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 50m, memory: 128Mi }
+              limits: { memory: 256Mi }
             logRotator: {}
             liveness: {}
             addons: {}
@@ -80,34 +78,34 @@ spec:
         controllerPlugin:
           resources:
             attacher:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             omapGenerator:
-              requests: {cpu: 250m, memory: 512Mi}
-              limits: {memory: 1Gi}
+              requests: { cpu: 250m, memory: 512Mi }
+              limits: { memory: 1Gi }
             plugin:
-              requests: {memory: 512Mi}
-              limits: {memory: 1Gi}
+              requests: { memory: 512Mi }
+              limits: { memory: 1Gi }
             provisioner:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             resizer:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             snapshotter:
-              requests: {cpu: 100m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 100m, memory: 128Mi }
+              limits: { memory: 256Mi }
             logRotator: {}
             liveness: {}
             addons: {}
         nodePlugin:
           resources:
             plugin:
-              requests: {cpu: 250m, memory: 512Mi}
-              limits: {memory: 1Gi}
+              requests: { cpu: 250m, memory: 512Mi }
+              limits: { memory: 1Gi }
             registrar:
-              requests: {cpu: 50m, memory: 128Mi}
-              limits: {memory: 256Mi}
+              requests: { cpu: 50m, memory: 128Mi }
+              limits: { memory: 256Mi }
             logRotator: {}
             liveness: {}
             addons: {}

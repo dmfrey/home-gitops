@@ -1,12 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cloudflare-tunnel
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: cloudflare-tunnel
@@ -14,7 +13,6 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
       cloudflare-tunnel:
         replicas: 2
@@ -98,7 +96,6 @@ spec:
               - service: http_status:404
 
     persistence:
-
       config:
         type: configMap
         identifier: config

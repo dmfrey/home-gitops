@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.dmfrey.com/monitoring.coreos.com/servicemonitor_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/servicemonitor_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -12,7 +12,8 @@ spec:
   endpoints:
     - port: prometheus
       interval: 15s
-    - # The default /metrics endpoint above only exposes cluster/vhost-wide
+    - 
+      # The default /metrics endpoint above only exposes cluster/vhost-wide
       # aggregates - no per-queue breakdown (confirmed live: rabbitmq_queue_
       # messages_ready had no queue label at all). Per-queue metrics like
       # chat.note-index's depth need this separate /metrics/detailed path
