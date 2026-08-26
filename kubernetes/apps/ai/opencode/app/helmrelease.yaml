@@ -72,20 +72,6 @@ spec:
               limits:
                 memory: 512Mi
 
-    # existing PVC data is already group-owned by 1000 but file modes are
-    # 644 (no group-write) - fsGroupChangePolicy must be Always here, not
-    # the usual OnRootMismatch, since the GID already matching would make
-    # Kubernetes skip the recursive permission fix and leave files
-    # unwritable to a non-root uid.
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: Always
-        seccompProfile: { type: RuntimeDefault }
-
     service:
       app:
         ports:
