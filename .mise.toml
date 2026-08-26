@@ -46,3 +46,16 @@ postinstall = "lefthook install"
 # flux-operator-mcp server (~/.local/bin/flux-operator-mcp was 0.45.1);
 # pinned to keep it tracked and current going forward.
 "flux-operator-mcp" = "0.58.1"
+# Compared against onedr0p/home-ops's tool pins 2026-08-26: yq, jq,
+# shellcheck, op, and minijinja-cli were all unpinned/system-installed here.
+# yq specifically was actively wrong - system /usr/bin/yq resolved to the
+# Python kislyuk/yq wrapper, not mikefarah/yq (the Go tool everyone actually
+# means by "yq" for Kubernetes work), which caused a real failure earlier
+# this session (`yq -y` gave an argparse error, not a YAML result).
+# minijinja-cli was genuinely stale (2.9.0 installed vs 2.24.0 available) -
+# same silent-drift risk class as the flux2/flux-operator-mcp fix above.
+"aqua:mikefarah/yq" = "4.53.6"
+"aqua:jqlang/jq" = "1.8.2"
+"aqua:koalaman/shellcheck" = "0.11.0"
+"aqua:1password/cli" = "2.39.0"
+"github:mitsuhiko/minijinja" = "2.24.0"
