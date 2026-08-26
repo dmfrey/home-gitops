@@ -49,6 +49,12 @@ MCP endpoint: `https://konflate.dmfrey.com/mcp` (add as a project MCP server, `t
 
 For HA automations, states, services, and config: use `mcp__home-assistant__*` tools directly instead of reading config files or using kubectl exec.
 
+### Comparing against a reference — onedr0p/home-ops local clone
+
+A maintained local clone of `onedr0p/home-ops` lives at `/home/dmfrey/Development/git/oneDr0p/home-ops` — the well-known gold-standard reference for how a Talos + Flux + Renovate repo like this one should be structured. When asked to check it or compare something against it, always `git pull --ff-only` in that clone first (don't compare against a possibly-stale checkout), then diff the relevant files/directories against this repo's equivalents.
+
+This pattern has already found real, adopted fixes: konflate (PR review tooling, replaced the old `flux-pr-reviewer` subagent), the coredns `template ANY AAAA` plugin (eliminated a whole class of recurring IPv6 alert noise cluster-wide), and rook-ceph's `healthCheck.muteHealthWarning` (unblocked a tuppr Kubernetes upgrade that had been stuck for 6 days). Not every difference is worth adopting — plenty are just schema-URL/naming/hardware-specific noise (different domain, different disk device paths, different mgr module choices with no documented reason to match); focus on differences that reflect a genuine gap or bug here, not wholesale copying.
+
 ### Post-merge reconcile ordering
 
 After pushing a change, always reconcile in this order to avoid stale manifest issues:
