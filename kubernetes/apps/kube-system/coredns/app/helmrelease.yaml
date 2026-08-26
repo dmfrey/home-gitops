@@ -6,7 +6,6 @@ metadata:
   name: coredns
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: coredns
@@ -14,7 +13,6 @@ spec:
   interval: 1h
 
   values:
-
     fullnameOverride: coredns
 
     image:
@@ -23,6 +21,8 @@ spec:
     replicaCount: 2
 
     k8sAppLabelOverride: kube-dns
+
+    priorityClassName: system-cluster-critical
 
     serviceAccount:
       create: true
@@ -38,6 +38,23 @@ spec:
             use_tcp: true
         port: 53
         plugins:
+          # Cluster-wide: answer NODATA for every AAAA query instead of
+          # forwarding upstream. This cluster has no usable IPv6 route
+          # (Cilium's enable-ipv6 is already false), so any AAAA record
+          # CoreDNS hands back just causes clients to waste a first dial
+          # attempt on an unreachable address before falling back to IPv4 -
+          # e.g. flux-system components fetching raw.githubusercontent.com
+          # / pkg-containers.githubusercontent.com (see
+          # project_flux_operator_ipv6_fix_2026-08-25). The per-Deployment
+          # net.ipv6.conf.all.disable_ipv6 sysctls already applied to
+          # source-controller/kustomize-controller only stop the retry from
+          # hanging; this stops the failed first attempt from happening at
+          # all, cluster-wide, for every pod - not just the ones patched so
+          # far. Matches onedr0p/home-ops.
+          - name: template
+            parameters: ANY AAAA
+            configBlock: |-
+              authority "{{ .Zone }} 60 IN SOA ns.dns.cluster.local. hostmaster.cluster.local. (1 60 60 60 60)"
           - name: errors
           - name: health
             configBlock: |-
@@ -51,11 +68,12 @@ spec:
           - name: autopath
             parameters: "@kubernetes"
           - name: forward
-            parameters: . /etc/resolv.conf  #. 192.168.30.1
+            parameters: . /etc/resolv.conf #. 192.168.30.1
           - name: cache
             configBlock: |-
               prefetch 20
               serve_stale
+              servfail 0
           - name: loop
           - name: reload
           - name: loadbalance
