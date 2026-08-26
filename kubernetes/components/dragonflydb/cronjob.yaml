@@ -22,6 +22,16 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
+      # Found 2026-08-26: the Role backing this CronJob was missing the
+      # "watch" verb - `kubectl delete pod` internally watches to confirm
+      # deletion completed, and without that permission it hangs retrying
+      # forever instead of erroring. With no activeDeadlineSeconds and
+      # concurrencyPolicy: Forbid above, one hung run permanently blocked
+      # every future scheduled run for that app (found stuck 5 days across
+      # 4 apps: authentik, affine, immich, pinepods). RBAC is fixed too,
+      # but this caps any future hang so it can't silently kill the whole
+      # mechanism again.
+      activeDeadlineSeconds: 120
       template:
         spec:
           serviceAccountName: ${APP}-dragonfly-unstick
