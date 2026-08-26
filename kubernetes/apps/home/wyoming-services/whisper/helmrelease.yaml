@@ -29,7 +29,7 @@ spec:
           whisper:
             image:
               repository: rhasspy/wyoming-whisper
-              tag: 3.1.0@sha256:9501d2659eee83b6eead98d53842193e5fed011eda6c5b1c3ad36f3146b28fed
+              tag: 3.6.0@sha256:b7da5869ac9caba5f8db1c0dec373fb46a58d31f4aee1855faa7b49b7c0d4b49
             args:
               - --model=small
               - --language=en
