@@ -128,6 +128,22 @@ spec:
               limits:
                 memory: 2Gi
 
+    # data on both PVCs (config, uploads) is already owned by uid/gid 1000
+    # ("node" user baked into the affine image) despite the container
+    # historically running as root by oversight - confirmed via live
+    # `ls -la`, mode 770/775 with setgid, zero risk hardening. AFFiNE also
+    # regenerates its GraphQL schema into /app/src on every boot (not PVC
+    # data, image-baked root-owned path) - a writable emptyDir there
+    # sidesteps that without ever touching the backed-up PVCs.
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
     service:
       app:
         ports:
@@ -178,3 +194,8 @@ spec:
 
       tmp:
         type: emptyDir
+
+      schema-scratch:
+        type: emptyDir
+        globalMounts:
+          - path: /app/src
