@@ -38,6 +38,20 @@ spec:
     keepHourly: 24
     keepDaily: 7
     keepWeekly: 4
+  # Both opt-in; absent means no verification runs at all, which was the
+  # state through 2026-08-26 - the only proof of restorability was the one
+  # manual scratch-restore done by hand on pilot day one (2026-08-10),
+  # never repeated. quick is cheap blob-level sampling; deep actually
+  # restores into a scratch PVC on a slower cadence, automating that same
+  # manual check going forward.
+  verification:
+    quick:
+      schedule:
+        cron: "H H * * *"
+    deep:
+      schedule:
+        cron: "H H * * 0"
+    verifyFilesPercent: 100
   sources:
     - pvc:
         name: ${APP}
