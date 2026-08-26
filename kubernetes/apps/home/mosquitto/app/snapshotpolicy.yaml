@@ -7,11 +7,10 @@ metadata:
 spec:
   # kopiur phase 2 (project_kopiur_pilot) - backs up the SAME PVC VolSync
   # already backs up to nas.internal:/Kopia, additively. VolSync stays the
-  # real backup path. Picked specifically because mosquitto's pod runs as
-  # root (uid=0/gid=0, confirmed live via `kubectl exec ... id`) - every
-  # other kopiur app so far (wizarr, plex, linkwarden, dependency-track)
-  # runs as uid/gid 1000, so this is a deliberately different ownership
-  # shape to prove the mover can read a root-owned PVC.
+  # real backup path. mosquitto originally ran as root (uid=0/gid=0) purely
+  # from a missing securityContext block, not a real requirement - fixed
+  # 2026-08-26 to match every other app's uid/gid 1000 convention, which
+  # also means this mover no longer needs a privileged-mover opt-in.
   credentialProjection:
     enabled: true
   compression:
@@ -22,8 +21,8 @@ spec:
       mode: Persistent
       storageClassName: ceph-block
     securityContext:
-      runAsUser: 0
-      runAsGroup: 0
+      runAsUser: 1000
+      runAsGroup: 1000
   repository:
     kind: ClusterRepository
     name: garage
