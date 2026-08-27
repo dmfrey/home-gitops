@@ -10,13 +10,22 @@ spec:
   # real backup path. Picked as a "real DB" phase-2 candidate (has its own
   # linkwarden-cnpg cluster, backed up separately via barman-cloud/Garage -
   # this SnapshotPolicy only covers linkwarden's own config/upload PVC).
+  #
+  # cache.capacity bumped 2Gi -> 10Gi 2026-08-27: linkwarden's PVC holds
+  # ~7.9Gi of real data (bookmark archives - screenshots/PDFs), already
+  # bigger than the 2Gi cache. verifyFilesPercent: 100 deep-verifies the
+  # whole thing weekly via a full kopia restore, which needs local cache
+  # headroom roughly proportional to dataset size, not a flat small value
+  # - the undersized cache filled up mid-restore ("no space left on
+  # device"), which cascaded into repeated VerificationFailed/job-recreate
+  # loops (KubeJobFailed alert). 10Gi gives real headroom as archives grow.
   credentialProjection:
     enabled: true
   compression:
     compressor: zstd
   mover:
     cache:
-      capacity: 2Gi
+      capacity: 10Gi
       mode: Persistent
       storageClassName: ceph-block
     securityContext:
