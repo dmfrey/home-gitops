@@ -102,5 +102,19 @@
       matchUpdateTypes: ["pinDigest"],
       enabled: false,
     },
+    {
+      // 2026-08-27: PR #4995 bumped kubernetes/upgrades/kubernetesupgrade.yaml
+      // straight to v1.37.0. tuppr picked it up and ran
+      // `talosctl upgrade-k8s --to=v1.37.0`, which failed permanently
+      // ("unsupported upgrade path 1.36->1.37") on the current Talos/talosctl
+      // 1.13.9 before touching any node - cluster stayed on v1.36.4 the
+      // whole time, no partial-upgrade damage. Hold until Talos/talosctl
+      // actually supports the 1.36->1.37 path; re-verify with
+      // `talosctl upgrade-k8s --to=v1.37.0 --dry-run` before lifting this.
+      description: "Hold Kubernetes upgrade target below v1.37.0 until Talos/talosctl supports the 1.36->1.37 upgrade path",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/siderolabs/kubelet"],
+      allowedVersions: "<1.37.0",
+    },
   ],
 }

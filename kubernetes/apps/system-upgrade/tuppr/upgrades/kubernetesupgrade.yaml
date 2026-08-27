@@ -7,8 +7,16 @@ metadata:
 
 spec:
   kubernetes:
+    # v1.37.0 held back 2026-08-27: `talosctl upgrade-k8s --dry-run` on the
+    # current Talos/talosctl 1.13.9 reports "unsupported upgrade path
+    # 1.36->1.37" - tuppr's upgrade Job failed permanently (backoffLimit
+    # exhausted) before touching any node, cluster stayed on v1.36.4 the
+    # whole time. Renovate proposed this ahead of what Talos actually
+    # supports; see the matching hold in .renovate/overrides.json5. Retry
+    # once Talos/talosctl adds 1.37 support (re-run the dry-run above
+    # first to confirm before bumping again).
     # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-    version: v1.37.0
+    version: v1.36.4
 
   healthChecks:
     - apiVersion: volsync.backube/v1alpha1
