@@ -1,13 +1,17 @@
 ---
-machine:
-  type: controlplane
-  nodeLabels:
-    topology.kubernetes.io/zone: dmf-u
-  install:
-    diskSelector:
-      model: Samsung SSD 870
-    image: factory.talos.dev/installer/c48c7cd95afa9ff46bf74268bd4dd7b47f9c0ed3a658162b7916edb0b0c78630:v1.14.0 # baseline, net.ifnames=0 removed - see `just talos gen-schematic-id`
-    wipe: false
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: dmf-u
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/installer/c48c7cd95afa9ff46bf74268bd4dd7b47f9c0ed3a658162b7916edb0b0c78630:v1.13.9 # baseline, net.ifnames=0 removed - see `just talos gen-schematic-id`
+provisioning:
+  diskSelector:
+    match: disk.model == "Samsung SSD 870"
+  wipe: false
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

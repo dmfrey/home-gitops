@@ -103,4 +103,4 @@ machine-controller node:
 
 [private]
 machine-image node:
-    just talos render-config "{{ node }}" | yq -re 'select(.machine) | .machine.install.image'
+    just talos render-config "{{ node }}" | yq -re 'select(.kind == "UnattendedInstallConfig") | .installer.image'
