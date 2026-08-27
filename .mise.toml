@@ -57,5 +57,14 @@ postinstall = "lefthook install"
 "aqua:mikefarah/yq" = "4.53.6"
 "aqua:jqlang/jq" = "1.8.2"
 "aqua:koalaman/shellcheck" = "0.11.0"
-"aqua:1password/cli" = "2.39.0"
+# NOT aqua:1password/cli - aqua's registry entry for that package has no
+# repo_owner/repo_name (1Password CLI isn't distributed via a normal GitHub
+# releases repo), so `mise install` fails outright with "failed to fetch
+# version tags for lockfile". mise's own registry (`mise registry | grep
+# 1password`) tries vfox:mise-plugins/vfox-1password first for all of
+# "1password"/"1password-cli"/"op", falling back to the broken aqua backend
+# only if that fails - but an explicit "aqua:" prefix bypasses that
+# fallback and forces the broken backend directly. Unprefixed name (matching
+# onedr0p/home-ops's own pin) resolves through vfox correctly instead.
+"1password-cli" = "2.39.0"
 "github:mitsuhiko/minijinja" = "2.24.0"
