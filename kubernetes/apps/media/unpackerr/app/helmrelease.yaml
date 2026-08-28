@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: docker.io/golift/unpackerr
-              tag: unstable@sha256:3bd27abc303c6aa279ffbf7de87f123184de95a42e6ade6253a6d72d6c0bbf81
+              tag: unstable@sha256:4e883aef854000f658f2db3d263ae1fc8c0186a422b8344b9246cc7ef144401c
             env:
               TZ: America/New_York
               UN_INTERVAL: "1m"
