@@ -31,6 +31,19 @@ spec:
               repository: iib0011/omni-tools
               tag: 0.6.0@sha256:ceb5acc317daf387634f7f212cefe4722fd1243ad1cba74203f25254195b6c69
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
     service:
       omni-tools:
         controller: *app
@@ -56,3 +69,22 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+
+    persistence:
+      # nginx (the image's actual base) needs these writable at runtime even
+      # for pure static serving - confirmed via a throwaway non-root
+      # fact-finding rig (hardening-test namespace, 2026-08-28).
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /var/cache/nginx
+
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /var/run
