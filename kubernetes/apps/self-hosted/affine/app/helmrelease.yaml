@@ -61,7 +61,8 @@ spec:
               AFFINE_INDEXER_SEARCH_PROVIDER: manticoresearch
               AFFINE_INDEXER_SEARCH_ENDPOINT: http://affine-indexer.self-hosted.svc.cluster.local:9308
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
-              CONFIG_LOCATION: /root/.affine/config
+              HOME: /config
+              CONFIG_LOCATION: /config
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
@@ -73,8 +74,13 @@ spec:
               MAILER_IGNORE_TLS: true
               REDIS_SERVER_HOST: affine-dragonflydb.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
-              UPLOAD_LOCATION: /root/.affine/storage
+              UPLOAD_LOCATION: /data/storage
               selfHosted: true
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
         containers:
           app:
@@ -89,7 +95,8 @@ spec:
               AFFINE_INDEXER_SEARCH_PROVIDER: manticoresearch
               AFFINE_INDEXER_SEARCH_ENDPOINT: http://affine-indexer.self-hosted.svc.cluster.local:9308
               AFFINE_SERVER_EXTERNAL_URL: "https://{{ .Release.Name }}.dmfrey.com"
-              CONFIG_LOCATION: /root/.affine/config
+              HOME: /config
+              CONFIG_LOCATION: /config
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
@@ -101,7 +108,7 @@ spec:
               MAILER_IGNORE_TLS: true
               REDIS_SERVER_HOST: affine-dragonflydb.self-hosted.svc.cluster.local
               REDIS_SERVER_PORT: 6379
-              UPLOAD_LOCATION: /root/.affine/storage
+              UPLOAD_LOCATION: /data/storage
               selfHosted: true
 
             envFrom:
@@ -127,6 +134,19 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 2Gi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
@@ -156,7 +176,7 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /root/.affine/config
+          - path: /config
 
       app-config:
         type: secret
@@ -164,7 +184,7 @@ spec:
         advancedMounts:
           affine:
             app:
-              - path: /root/.affine/config/config.json
+              - path: /config/config.json
                 subPath: config.json
                 readOnly: true
 
@@ -174,7 +194,20 @@ spec:
         server: nas.internal
         path: /media/affine
         globalMounts:
-          - path: /root/.affine/storage
+          - path: /data/storage
 
       tmp:
         type: emptyDir
+        globalMounts:
+          - path: /tmp
+
+      # @nestjs/graphql unconditionally rewrites its generated schema file to
+      # /app/src on every single process start (FileSystemHelper.writeFile has
+      # no existence/mtime check) - confirmed via a throwaway non-root fact-
+      # finding rig (affine-hardening-test namespace, 2026-08-28). Fully
+      # disposable/regenerated from image code each boot, not user data - no
+      # backup needed, emptyDir is correct.
+      app-src:
+        type: emptyDir
+        globalMounts:
+          - path: /app/src
