@@ -119,3 +119,14 @@ spec:
             subPath: data
           - path: /var/www/FreshRSS/extensions
             subPath: extensions
+
+      # SimplePie/feed-parse cache (.spc, cached favicons/page previews) -
+      # fully regenerable from re-fetching feeds, FreshRSS self-prunes it on
+      # a timer (CLEANCACHE_HOURS). Was ~84MB of the ~87MB PVC, all of it
+      # getting backed up by VolSync every cycle for no reason. sizeLimit is
+      # a backstop, not a tuned value - current usage is well under it.
+      cache:
+        type: emptyDir
+        sizeLimit: 512Mi
+        globalMounts:
+          - path: /var/www/FreshRSS/data/cache
