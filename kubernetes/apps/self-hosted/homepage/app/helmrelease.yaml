@@ -58,11 +58,22 @@ spec:
               limits:
                 memory: 1Gi # bumped from 512Mi 2026-08-22: OOMKilled after 12h+ of stable ~220Mi usage - a Next.js recompile/reload burst spiked past the limit within a single 30s scrape interval, invisible to container_memory_working_set_bytes until the kill. Steady-state usage is unaffected; this just gives headroom for that burst.
 
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
         serviceAccount:
           identifier: homepage
 
     defaultPodOptions:
       automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
@@ -80,6 +91,22 @@ spec:
             sectionName: https
 
     persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+
+      # homepage writes its own request/access logs here at runtime,
+      # separate from the ConfigMap-mounted settings files - confirmed via
+      # a throwaway non-root fact-finding rig (hardening-test namespace,
+      # 2026-08-29): ENOENT: no such file or directory, mkdir
+      # '/app/config/logs'. Ephemeral is fine, nothing here needs to
+      # survive a restart.
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config/logs
+
       config-settings:
         type: configMap
         name: homepage-config
