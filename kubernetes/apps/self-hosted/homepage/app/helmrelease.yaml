@@ -33,6 +33,28 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
+        initContainers:
+          # Next.js lazily writes a prerender-cache HTML snapshot into its
+          # own build output (e.g. /app/.next/server/pages/en.html) on the
+          # first request that hits a given locale route - baked-in image
+          # content that's otherwise read-only, same class of issue as
+          # affine's GraphQL schema regen. The image already ships this
+          # owned by uid 1000 (matches our runAsUser), so this is a plain
+          # copy, not a chown fight. Validated via a throwaway fact-finding
+          # rig (hardening-test namespace, 2026-08-29).
+          prepare-next:
+            image:
+              repository: ghcr.io/gethomepage/homepage
+              tag: v2.1.2@sha256:da9dca9ec258c628146bed1445da0853f2b88f0b10bafd97c091de807c363d60
+            command:
+              - /bin/sh
+              - -c
+              - cp -r /app/.next/. /next/
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
         containers:
           app:
             image:
@@ -95,6 +117,19 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
+
+      # Populated by the prepare-next initContainer (copy of the image's
+      # own built .next output). Same volume, different mount path per
+      # container: initContainer writes at /next, app serves from the real
+      # Next.js build dir.
+      next:
+        type: emptyDir
+        advancedMounts:
+          homepage:
+            prepare-next:
+              - path: /next
+            app:
+              - path: /app/.next
 
       # The whole config dir needs to be genuinely writable, not just a
       # /logs subdirectory (2026-08-28 attempt) - homepage lazily
