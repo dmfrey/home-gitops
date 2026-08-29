@@ -23,7 +23,17 @@ spec:
             env:
               TZ: America/New_York
               PUID: 1000
-              GUID: 1000
+              # startup.sh checks $PGID specifically (not GUID, the previous
+              # value here) - that typo meant the `[[ -n "$PUID" && -n
+              # "$PGID" ]]` check always fell through to root/legacy mode,
+              # regardless of PUID being set. Confirmed via the actual
+              # running container's /startup.sh, and PID 1 was genuinely
+              # uid=0 before this fix. This activates the maintainer's own
+              # su-exec drop already shipped in 0.9.0 - no Kubernetes-level
+              # securityContext needed/wanted here, since the script itself
+              # needs to start as root to do its own usermod/chown/su-exec
+              # sequence.
+              PGID: 1000
               # Basic Server Info
               SEARCH_API_URL: "https://search.pinepods.online/api/search"
               PEOPLE_API_URL: "https://people.pinepods.online"
