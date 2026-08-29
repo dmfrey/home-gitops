@@ -30,6 +30,18 @@ spec:
     securityContext:
       runAsUser: 1000
       runAsGroup: 1000
+    # No inheritSecurityContextFrom here: wizarr's own su-exec entrypoint
+    # drops to 1000:1000 internally without ever pinning runAsUser at the
+    # Kubernetes level, so there's nothing for inheritance to see - has to
+    # stay hardcoded. fsGroup is additive/currently a no-op for wizarr
+    # itself (its files already match 1000:1000 by direct ownership), but
+    # closes a real gap for whenever this file's pattern gets copied to
+    # back up an app whose PVC content only matches by group, not owner
+    # (see feedback_securitycontext_hardening_methodology memory - the
+    # freshrss find, 2026-08-29).
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
   repository:
     kind: ClusterRepository
     name: garage
