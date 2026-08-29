@@ -21,6 +21,9 @@ spec:
     securityContext:
       runAsUser: 1000
       runAsGroup: 1000
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
   repository:
     kind: ClusterRepository
     name: garage
