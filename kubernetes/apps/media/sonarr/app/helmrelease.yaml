@@ -94,6 +94,7 @@ spec:
           gethomepage.dev/widget.type: sonarr
           gethomepage.dev/widget.url: http://sonarr.media.svc.cluster.local:8989
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SONARR_TOKEN}}` }}"
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=sonarr
         parentRefs:
           - name: envoy-internal
             namespace: network

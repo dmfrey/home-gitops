@@ -95,6 +95,7 @@ spec:
           gethomepage.dev/widget.type: radarr
           gethomepage.dev/widget.url: http://radarr.media.svc.cluster.local:7878
           gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_RADARR_TOKEN}}` }}"
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=radarr
         parentRefs:
           - name: envoy-internal
             namespace: network
