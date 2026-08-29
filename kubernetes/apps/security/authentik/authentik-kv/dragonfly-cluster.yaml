@@ -41,6 +41,21 @@ spec:
     cron: 0 0 * * *
     dir: "s3://dragonflydb/authentik"
 
+  # /data (dfly's own scratch dir) is baked into the image at build time
+  # already owned by dfly:dfly - no fsGroup rewrite needed. Validated via a
+  # throwaway namespace (hardening-test, torn down after) with a real
+  # Dragonfly CR through the operator, including a functional redis-cli
+  # SET/GET round trip, 2026-08-29.
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop: ["ALL"]
+
   resources:
     requests:
       cpu: 100m
