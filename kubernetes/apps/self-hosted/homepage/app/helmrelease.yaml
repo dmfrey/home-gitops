@@ -96,16 +96,22 @@ spec:
         globalMounts:
           - path: /tmp
 
-      # homepage writes its own request/access logs here at runtime,
-      # separate from the ConfigMap-mounted settings files - confirmed via
-      # a throwaway non-root fact-finding rig (hardening-test namespace,
-      # 2026-08-29): ENOENT: no such file or directory, mkdir
-      # '/app/config/logs'. Ephemeral is fine, nothing here needs to
-      # survive a restart.
-      logs:
+      # The whole config dir needs to be genuinely writable, not just a
+      # /logs subdirectory (2026-08-28 attempt) - homepage lazily
+      # self-bootstraps ANY of its known integration templates
+      # (/app/src/skeleton/*.yaml, e.g. proxmox.yaml) it doesn't have a
+      # file for yet, on the first request that touches them, by copying
+      # the skeleton default into /app/config. Broke widget rendering in
+      # prod 2026-08-29: EROFS crashed every request that needed
+      # proxmox.yaml, which isn't one of the 6 files the ConfigMap
+      # provides. This is a bare emptyDir (root of the whole dir), not
+      # nested inside anything, so the 6 subPath ConfigMap overlays below
+      # still work fine layered on top of it - same non-nesting rule as
+      # the opencode fix.
+      config:
         type: emptyDir
         globalMounts:
-          - path: /app/config/logs
+          - path: /app/config
 
       config-settings:
         type: configMap
