@@ -40,6 +40,19 @@ spec:
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: /models
               OLLAMA_KEEP_ALIVE: "-1"
+              # Non-root has no /etc/passwd entry for uid 1000 by default and
+              # /root itself is 0700 root:root anyway (confirmed unreachable
+              # even though .ollama's own contents already had a permissive
+              # group). Existing id_ed25519 (ollama.com push/pull signing
+              # key) is 0600 owner-only regardless of path, so it'll
+              # regenerate fresh here - this cluster doesn't push models
+              # publicly, harmless.
+              HOME: /home/ollama
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
             resources:
               claims:
@@ -51,6 +64,12 @@ spec:
                 memory: 24Gi
 
         pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
           resourceClaims:
             - name: gpu
               resourceClaimTemplateName: ollama-gpu
@@ -93,7 +112,7 @@ spec:
         enabled: true
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /root/.ollama
+          - path: /home/ollama/.ollama
 
       models:
         type: nfs
