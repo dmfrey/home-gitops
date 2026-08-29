@@ -116,5 +116,26 @@
       matchPackageNames: ["ghcr.io/siderolabs/kubelet"],
       allowedVersions: "<1.37.0",
     },
+    {
+      // 2026-08-28/29: PR #5001 bumped unpackerr's `unstable` digest to
+      // 4e883aef... - that build's /unpackerr binary fails to exec
+      // entirely (exec: "/unpackerr": permission denied, reproduced both
+      // as uid 1000 and as the image's own default user via a throwaway
+      // pod, so it's the binary itself, not a non-root permission issue).
+      // Helm's own remediation auto-rolled the release back after 2 failed
+      // upgrade attempts, so the app stayed up throughout - but Flux kept
+      // re-flagging the Kustomization unhealthy on every reconcile since.
+      // Checked the tag's newest digest as of 2026-08-29 (91382f89...) too
+      // - still broken, so this is an ongoing bad patch in the unstable
+      // channel's build pipeline, not a one-off. No semver here since it's
+      // a floating/digest-only tag, hence enabled:false rather than
+      // allowedVersions. Re-enable once a fresh unstable digest is
+      // confirmed to actually exec (same throwaway-pod check), or consider
+      // switching off the unstable channel entirely.
+      description: "Hold unpackerr's unstable digest - current and newest-checked builds both ship a non-executable binary",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/golift/unpackerr"],
+      enabled: false,
+    },
   ],
 }

@@ -18,7 +18,16 @@ spec:
           app:
             image:
               repository: docker.io/golift/unpackerr
-              tag: unstable@sha256:4e883aef854000f658f2db3d263ae1fc8c0186a422b8344b9246cc7ef144401c
+              # Held below the current unstable digest (Renovate PR #5001,
+              # 2026-08-28) - that build's /unpackerr binary fails to exec
+              # entirely (exec: "/unpackerr": permission denied, reproduced
+              # both as uid 1000 and as the image's own default user - not
+              # a non-root permission issue, the binary itself is broken).
+              # Checked the tag's newest digest as of 2026-08-29 too
+              # (91382f89...) - still broken, so this isn't a one-off, the
+              # unstable channel's build pipeline is bad right now. See
+              # .renovate/overrides.json5 for the version hold.
+              tag: unstable@sha256:3bd27abc303c6aa279ffbf7de87f123184de95a42e6ade6253a6d72d6c0bbf81
             env:
               TZ: America/New_York
               UN_INTERVAL: "1m"
