@@ -14,8 +14,17 @@ spec:
       excalidraw:
         annotations:
           reloader.stakater.com/auto: "true"
-        containers:
-          app:
+
+        initContainers:
+          # The image bakes the default collab-room URL into its built JS
+          # bundle; upstream's own entrypoint patches it in place at boot
+          # with sed -i, which only ever worked as root (those files are
+          # root-owned on the image's own filesystem). Copy them to a
+          # writable emptyDir here instead, so the main container never
+          # needs to write anywhere under its own root filesystem. Validated
+          # via a throwaway fact-finding rig (hardening-test namespace,
+          # 2026-08-29).
+          prepare-assets:
             image:
               repository: excalidraw/excalidraw
               tag: latest@sha256:f7ee194addd607bf831d2af0f0a34463dd4225e426cf35199ef0b12a803398e9
@@ -23,9 +32,24 @@ spec:
               - /bin/sh
               - -c
               - |
-                find /usr/share/nginx/html/assets -type f -name "*.js" \
+                cp -r /usr/share/nginx/html/. /html/
+                find /html/assets -type f -name "*.js" \
                   -exec sed -i 's|https://oss-collab\.excalidraw\.com|https://excalidraw-room.dmfrey.com|g' {} +
-                exec nginx -g 'daemon off;'
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+        containers:
+          app:
+            image:
+              repository: excalidraw/excalidraw
+              tag: latest@sha256:f7ee194addd607bf831d2af0f0a34463dd4225e426cf35199ef0b12a803398e9
+            command:
+              - nginx
+            args:
+              - -g
+              - "daemon off;"
             probes:
               liveness: &probes
                 enabled: true
@@ -44,6 +68,10 @@ spec:
                 memory: 64Mi
               limits:
                 memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
       excalidraw-room:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -72,6 +100,58 @@ spec:
                 memory: 64Mi
               limits:
                 memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    persistence:
+      # Every container in this release needs a writable /tmp under
+      # readOnlyRootFilesystem - harmless no-op for prepare-assets, which
+      # doesn't use it.
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+
+      # nginx (excalidraw's app container only - excalidraw-room is a plain
+      # Node process, doesn't need these) needs these writable at runtime
+      # even for pure static serving.
+      cache:
+        type: emptyDir
+        advancedMounts:
+          excalidraw:
+            app:
+              - path: /var/cache/nginx
+
+      run:
+        type: emptyDir
+        advancedMounts:
+          excalidraw:
+            app:
+              - path: /var/run
+
+      # Populated by the prepare-assets initContainer (copy of the image's
+      # own baked-in html dir, with the collab-room URL rewritten). Same
+      # volume, different mount path per container: initContainer writes at
+      # /html, app serves from the real nginx root.
+      html:
+        type: emptyDir
+        advancedMounts:
+          excalidraw:
+            prepare-assets:
+              - path: /html
+            app:
+              - path: /usr/share/nginx/html
+
     service:
       app:
         controller: excalidraw

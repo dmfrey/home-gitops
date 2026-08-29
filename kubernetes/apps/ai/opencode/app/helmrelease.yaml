@@ -35,6 +35,17 @@ spec:
 
             env:
               TZ: America/New_York
+              # Non-root has no /etc/passwd entry for uid 1000, so $HOME
+              # would otherwise resolve to "/" (unwritable) - point it
+              # somewhere real. XDG_DATA_HOME is a clean top-level mount
+              # rather than nested under $HOME: nesting a second volume
+              # inside the $HOME emptyDir makes kubelet auto-create the
+              # intermediate .local/.local-share dirs as root-owned 0755
+              # (not group-writable), breaking sibling mkdir for
+              # .local/state - confirmed via a throwaway fact-finding rig
+              # (hardening-test namespace, 2026-08-29).
+              HOME: /home/opencode
+              XDG_DATA_HOME: /data
               # Points a plain, cross-project config file rather than relying
               # on $HOME/.config resolution inside the container.
               OPENCODE_CONFIG: /config/opencode.json
@@ -42,6 +53,11 @@ spec:
             envFrom:
               - secretRef:
                   name: opencode-secret
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
             probes:
               # httpGet can't carry the Basic-auth credentials opencode now
@@ -71,6 +87,14 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
@@ -119,17 +143,15 @@ spec:
 
     persistence:
       # Confirmed via kubectl exec into a debug pod running this exact image:
-      # session/history state lives under the XDG data dir, not
-      # /root/.opencode (that was a bad guess from a community Docker
-      # example for an older version). A single PVC can only be mounted at
-      # one path without cross-contaminating content, so this covers the
-      # primary data dir only - /root/.local/state/opencode is left on the
-      # ephemeral container filesystem (observed empty besides being XDG
-      # boilerplate; nothing user-visible was found there).
+      # session/history state lives under the XDG data dir ($XDG_DATA_HOME
+      # or, if unset, $HOME/.local/share), not /root/.opencode (that was a
+      # bad guess from a community Docker example for an older version).
+      # Mounted at a clean top-level path via XDG_DATA_HOME above rather
+      # than nested under /home/opencode - see the env var comment.
       data:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /root/.local/share/opencode
+          - path: /data
 
       config:
         type: configMap
@@ -138,3 +160,16 @@ spec:
           - path: /config/opencode.json
             subPath: opencode.json
             readOnly: true
+
+      # $HOME for everything else opencode/Bun write there directly
+      # (.local/state, .cache, .config defaults) - not nested with any
+      # other volume, so the app's own mkdir calls just work.
+      home:
+        type: emptyDir
+        globalMounts:
+          - path: /home/opencode
+
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
