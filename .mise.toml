@@ -41,7 +41,7 @@ postinstall = "lefthook install"
 # failed to reconcile OCIRepository sources ("no matches for
 # source.toolkit.fluxcd.io/v1beta2"). Pinned here to match CI's
 # FLUX_VERSION (.github/workflows/publish-terraform-oci.yaml).
-"flux2" = "2.9.4"
+"flux2" = "2.9.5"
 # Same v1beta2/v1 staleness as flux2 above, on the CLI half of the
 # flux-operator-mcp server (~/.local/bin/flux-operator-mcp was 0.45.1);
 # pinned to keep it tracked and current going forward.
