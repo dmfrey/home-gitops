@@ -45,7 +45,7 @@ postinstall = "lefthook install"
 # Same v1beta2/v1 staleness as flux2 above, on the CLI half of the
 # flux-operator-mcp server (~/.local/bin/flux-operator-mcp was 0.45.1);
 # pinned to keep it tracked and current going forward.
-"flux-operator-mcp" = "0.58.1"
+"flux-operator-mcp" = "0.59.0"
 # Compared against onedr0p/home-ops's tool pins 2026-08-26: yq, jq,
 # shellcheck, op, and minijinja-cli were all unpinned/system-installed here.
 # yq specifically was actively wrong - system /usr/bin/yq resolved to the
