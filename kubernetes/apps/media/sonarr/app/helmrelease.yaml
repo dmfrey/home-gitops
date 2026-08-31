@@ -48,6 +48,19 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
+                    # kubelet's httpGet probe connects directly to the
+                    # pod's own IP, which becomes the HTTP Host header -
+                    # that's never in Allowed Hosts (can't be, it's
+                    # dynamic) and the app's own HostFiltering middleware
+                    # was rejecting it with 400, crash-looping the pod on
+                    # every restart since Allowed Hosts was set (only
+                    # takes effect on process start, so this was masked
+                    # until the next real restart). "sonarr-0" is
+                    # auto-allowed (Environment.MachineName) and stable
+                    # for a single-replica StatefulSet.
+                    httpHeaders:
+                      - name: Host
+                        value: sonarr-0
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
