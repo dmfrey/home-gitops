@@ -14,7 +14,7 @@ postinstall = "lefthook install"
 "aqua:rhysd/actionlint" = "1.7.12"
 "aqua:zizmorcore/zizmor" = "1.30.0"
 "just" = "1.58.0"
-"uv" = "0.12.8"
+"uv" = "0.12.9"
 # flux-local is deprecated/sunsetted upstream in favor of flate (and
 # konflate) - our own .github/workflows/flate.yaml already uses flate in
 # CI, this pins the same tool for local `just kube apply-ks`/`delete-ks`
