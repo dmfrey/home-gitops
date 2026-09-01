@@ -21,7 +21,7 @@ postinstall = "lefthook install"
 # rendering (kubernetes/mod.just's render-local-ks) instead of running two
 # different Flux renderers.
 "github:home-operations/flate" = "v0.6.2"
-"npm:oxfmt" = "0.65.0"
+"npm:oxfmt" = "0.66.0"
 "aqua:yannh/kubeconform" = "0.8.0"
 "aqua:charmbracelet/gum" = "2.0.0"
 # Mise's own talosctl tool (resolves to aqua:siderolabs/talos, same as the
