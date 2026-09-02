@@ -13,6 +13,40 @@ spec:
     controllers:
       orcaslicer:
         initContainers:
+          # The IoT VLAN's macvlan attachment (net1) uses source-based
+          # routing (sbr CNI plugin, shared by every app on this VLAN) -
+          # only packets ALREADY sourced from net1's IP get routed out
+          # net1; a fresh outbound connection to anything, including
+          # bambuddy's virtual printer at 192.168.50.6, resolves via the
+          # cluster network (eth0) instead, since that's the pod's only
+          # default route. `ip route get` reflects this by showing eth0
+          # as the outbound device for 192.168.50.0/24, even though the
+          # traffic actually reaches its destination fine either way
+          # (Cilium's BGP peering to the UDM routes it through) - but
+          # OrcaSlicer's closed-source Bambu network plugin appears to
+          # do its own same-LAN sanity check against the OS routing
+          # table before ever opening a socket, and silently aborts
+          # when the target doesn't resolve to a directly-attached
+          # interface. Adding an explicit main-table route makes net1
+          # the one the OS actually reports for this subnet, matching
+          # what that check expects. Scoped to this app only - NOT
+          # touching the shared iot-vlan NetworkAttachmentDefinition,
+          # which every other app on this VLAN also depends on.
+          net1-route:
+            image:
+              repository: ghcr.io/nicolaka/netshoot
+              tag: latest
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              capabilities:
+                add:
+                  - "NET_ADMIN"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                ip route add 192.168.50.0/24 dev net1 || true
           cert-inject:
             image:
               repository: ghcr.io/linuxserver/orcaslicer
