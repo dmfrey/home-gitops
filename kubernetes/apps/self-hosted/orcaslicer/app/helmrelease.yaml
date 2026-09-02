@@ -37,8 +37,8 @@ spec:
               repository: ghcr.io/nicolaka/netshoot
               tag: latest
             securityContext:
-              runAsNonRoot: true
-              runAsUser: 1000
+              runAsNonRoot: false
+              runAsUser: 0
               capabilities:
                 add:
                   - "NET_ADMIN"
