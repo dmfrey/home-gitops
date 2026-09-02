@@ -15,23 +15,6 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          iptables:
-            image:
-              repository: ghcr.io/nicolaka/netshoot
-              tag: latest
-            securityContext:
-              runAsNonRoot: false
-              runAsUser: 0
-              capabilities:
-                add:
-                  - "NET_ADMIN"
-            command:
-              - /bin/sh
-              - -c
-              - |
-                iptables -t nat -A PREROUTING -p tcp --dport 990 -j REDIRECT --to-port 9990
-                iptables -t nat -A OUTPUT -o lo -p tcp --dport 990 -j REDIRECT --to-port 9990
         containers:
           app:
             image:
