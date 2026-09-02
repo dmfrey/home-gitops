@@ -6,8 +6,7 @@ metadata:
   name: bambuddy
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: multus-networks
       namespace: kube-system
@@ -20,9 +19,8 @@ spec:
   postBuild:
     substitute:
       APP: bambuddy
-      VOLSYNC_CAPACITY: 5Gi
-      VOLSYNC_CACHE_CAPACITY: 2Gi
       KOPIUR_CACHE_CAPACITY: 2Gi
+      KOPIUR_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets

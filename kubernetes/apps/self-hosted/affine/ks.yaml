@@ -62,8 +62,7 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -75,9 +74,9 @@ spec:
     substitute:
       APP: affine-indexer
       CONTROLLER: StatefulSet
-      VOLSYNC_CAPACITY: 2Gi
       KOPIUR_PUID: "999"
       KOPIUR_PGID: "999"
+      KOPIUR_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -93,8 +92,7 @@ metadata:
   name: affine
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: affine-db
     - name: affine-kv
@@ -107,7 +105,7 @@ spec:
   postBuild:
     substitute:
       APP: affine
-      VOLSYNC_CAPACITY: 10Gi
+      KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository
