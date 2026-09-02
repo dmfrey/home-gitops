@@ -32,8 +32,7 @@ metadata:
   name: sonarqube
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: sonarqube-db
     - name: rook-ceph-cluster
@@ -50,8 +49,8 @@ spec:
   postBuild:
     substitute:
       APP: sonarqube
-      VOLSYNC_CAPACITY: 10Gi
       KOPIUR_CACHE_CAPACITY: 2Gi
+      KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository

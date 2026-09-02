@@ -6,8 +6,7 @@ metadata:
   name: unifi-toolkit
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -18,6 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: unifi-toolkit
+      KOPIUR_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
