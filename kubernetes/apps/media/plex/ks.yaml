@@ -7,20 +7,19 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/media/plex/app"
   postBuild:
     substitute:
       APP: plex
       CONTROLLER: StatefulSet
-      VOLSYNC_CAPACITY: 35Gi
-      VOLSYNC_CACHE_CAPACITY: 20Gi
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease

@@ -7,6 +7,7 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./pvc.yaml
+  - ./pvc-config.yaml
   - ./resourceclaimtemplate.yaml
   - ./snapshotpolicy.yaml
   - ./snapshotschedule.yaml
