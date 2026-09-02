@@ -32,10 +32,13 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: freshrss-db
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/self-hosted/freshrss/app"
   postBuild:
@@ -44,6 +47,8 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CACHE_CAPACITY: 5Gi
+      KOPIUR_PUID: "0"
+      KOPIUR_PGID: "33"
   prune: true
   sourceRef:
     kind: GitRepository
