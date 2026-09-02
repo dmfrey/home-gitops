@@ -6,8 +6,7 @@ metadata:
   name: mosquitto
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -21,6 +20,7 @@ spec:
       APP_UID: "0"
       APP_GID: "0"
       KOPIUR_CACHE_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 5Gi
   prune: true
   retryInterval: 2m
   sourceRef:
