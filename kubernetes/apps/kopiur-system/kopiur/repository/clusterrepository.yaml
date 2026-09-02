@@ -22,6 +22,7 @@ spec:
       - security
       - home
       - kopiur-system
+      - observability
   # Owner-side opt-in for credential projection - necessary but not
   # sufficient on its own; the consumer (wizarr's SnapshotPolicy) must also
   # set credentialProjection.enabled: true. Fail-closed by design.
