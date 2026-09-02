@@ -50,7 +50,7 @@ spec:
           cert-inject:
             image:
               repository: ghcr.io/linuxserver/orcaslicer
-              tag: 2.4.2@sha256:8c2f4b96df77739bb221aa91612b382b921eaa09d70d5eb642cfff81decfe1e1
+              tag: 2.3.1@sha256:4e361058599c6dd5139487c00d1b38af130744cf941303bf322e8720cb7619b1
             command:
               - /bin/sh
               - -c
@@ -61,7 +61,24 @@ spec:
           app:
             image:
               repository: ghcr.io/linuxserver/orcaslicer
-              tag: 2.4.2@sha256:8c2f4b96df77739bb221aa91612b382b921eaa09d70d5eb642cfff81decfe1e1
+              # Pinned to 2.3.1, NOT the latest available (2.4.2) - OrcaSlicer
+              # regressed its Bambu network plugin's handling of non-real
+              # (proxy/virtual) printers starting in 2.3.2: it opens the MQTT
+              # TLS port but abandons the connection before ever sending a
+              # ClientHello, silently failing with code=-1. 2.4.0+ regresses
+              # further and doesn't even attempt the connection. Confirmed
+              # against this exact deployment via packet capture (SYN/ACK/FIN
+              # with zero bytes on 8883, no ClientHello) after the printer's
+              # own bind/detect handshake succeeds cleanly - matches the
+              # widely-reproduced upstream regression documented in
+              # https://github.com/maziggy/bambuddy/issues/1618, confirmed
+              # wontfix on bambuddy's side (a stock MQTT client connects to
+              # the same virtual printer with no issue). 2.3.1 is the last
+              # version confirmed working against Bambuddy's Virtual Printer
+              # feature. Renovate is held off this image (see
+              # .renovate/overrides.json5) until OrcaSlicer fixes the
+              # regression upstream - re-test before lifting the hold.
+              tag: 2.3.1@sha256:4e361058599c6dd5139487c00d1b38af130744cf941303bf322e8720cb7619b1
             env:
               TZ: America/New_York
               PUID: "911"

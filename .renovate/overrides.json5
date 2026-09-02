@@ -9,10 +9,21 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: "Block OrcaSlicer 2.3.2 — linuxserver ls7 build missing libmspack0",
+      // Originally just blocked 2.3.2 (linuxserver ls7 build missing
+      // libmspack0). 2026-09-02: broadened to hold the whole line at 2.3.1 -
+      // OrcaSlicer's Bambu network plugin regressed starting in 2.3.2 (opens
+      // the MQTT TLS port to a virtual/proxy printer but abandons the
+      // connection before ever sending a ClientHello, silently failing with
+      // code=-1) and regresses further in 2.4.0+ (doesn't even attempt the
+      // connection). Confirmed via packet capture against this repo's own
+      // orcaslicer/bambuddy deployment; matches the widely-reproduced,
+      // wontfix-on-bambuddy's-side upstream issue at
+      // https://github.com/maziggy/bambuddy/issues/1618. 2.3.1 is the last
+      // version confirmed working. Re-test before lifting this hold.
+      description: "Hold OrcaSlicer at 2.3.1 - 2.3.2 missing libmspack0, 2.3.2+ regresses Bambu network plugin against virtual/proxy printers (e.g. Bambuddy)",
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/linuxserver/orcaslicer"],
-      allowedVersions: "!/^2\\.3\\.2/",
+      allowedVersions: "<2.3.2",
     },
     {
       description: "Block multus chart 1.3.x — bjw-s common v5 defaults automountServiceAccountToken=false; chart doesn't expose override; breaks multus API server access",
