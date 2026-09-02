@@ -64,8 +64,7 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: romm-db
     - name: romm-kv
@@ -79,7 +78,7 @@ spec:
     substitute:
       APP: romm
       CONTROLLER: StatefulSet
-      VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

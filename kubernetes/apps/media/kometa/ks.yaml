@@ -6,8 +6,7 @@ metadata:
   name: kometa
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: plex
     - name: radarr
@@ -22,7 +21,7 @@ spec:
   postBuild:
     substitute:
       APP: kometa
-      VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

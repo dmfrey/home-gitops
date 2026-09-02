@@ -65,8 +65,7 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: pinepods-db
     - name: pinepods-kv
@@ -80,9 +79,9 @@ spec:
     substitute:
       APP: pinepods
       CONTROLLER: StatefulSet
-      VOLSYNC_CAPACITY: 5Gi
       KOPIUR_PUID: "0"
       KOPIUR_PGID: "0"
+      KOPIUR_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

@@ -6,8 +6,7 @@ metadata:
   name: music-assistant
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -18,7 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: music-assistant
-      VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
