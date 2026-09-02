@@ -15,6 +15,13 @@ spec:
   # allowedNamespaces against every namespace touching this
   # ClusterRepository, including its own operator namespace, not just
   # consumer apps.
+  #
+  # Fleet-wide rollout (2026-09-02): every namespace with at least one app
+  # still on VolSync, listed upfront rather than discovered one rejected
+  # SnapshotPolicy at a time (as happened with unifi-toolkit/observability).
+  # garage-system is deliberately NOT here - the garage app itself is this
+  # repository's own S3 backend, backing it up via kopiur/garage would be
+  # circular.
   allowedNamespaces:
     list:
       - media
@@ -23,6 +30,8 @@ spec:
       - home
       - kopiur-system
       - observability
+      - ai
+      - download
   # Owner-side opt-in for credential projection - necessary but not
   # sufficient on its own; the consumer (wizarr's SnapshotPolicy) must also
   # set credentialProjection.enabled: true. Fail-closed by design.
