@@ -62,8 +62,7 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: openweb-db
     - name: openweb-kv
@@ -77,9 +76,9 @@ spec:
     substitute:
       APP: openweb
       CONTROLLER: StatefulSet
-      VOLSYNC_CAPACITY: 2Gi
       KOPIUR_PUID: "0"
       KOPIUR_PGID: "0"
+      KOPIUR_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
