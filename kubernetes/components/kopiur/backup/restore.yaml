@@ -9,6 +9,24 @@ spec:
   # restore mover Job also runs in the app's own namespace.
   credentialProjection:
     enabled: true
+  # Without an explicit mover identity here, the restore Job runs as
+  # kopiur's own default mover UID (a non-root, non-privileged user with
+  # no CAP_CHOWN) instead of the app's UID/GID - kopia can only restore
+  # each file's originally-captured owner if the process doing the
+  # restore actually has permission to chown to it, so a mismatched
+  # identity here silently restores every file owned by the WRONG user
+  # instead of erroring (confirmed 2026-09-02 on plex: PVC recreated via
+  # this Restore came back entirely owned by 65532:65532 instead of
+  # 1000:1000, unusable by the app until manually chowned). Must match
+  # the SnapshotPolicy's mover identity for the restore to be a faithful
+  # mirror of what was actually backed up.
+  mover:
+    securityContext:
+      runAsUser: ${KOPIUR_PUID:=1000}
+      runAsGroup: ${KOPIUR_PGID:=1000}
+    podSecurityContext:
+      fsGroup: ${KOPIUR_PGID:=1000}
+      fsGroupChangePolicy: OnRootMismatch
   policy:
     onMissingSnapshot: Continue
   source:
