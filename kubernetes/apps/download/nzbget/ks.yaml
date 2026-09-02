@@ -8,11 +8,14 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: multus-networks
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: ./kubernetes/apps/download/nzbget/app
   postBuild:

@@ -24,12 +24,15 @@ metadata:
 spec:
   components:
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
     - name: home-assistant
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/home/zigbee2mqtt/app"
   postBuild:
@@ -38,6 +41,7 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
+      KOPIUR_CACHE_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -55,12 +59,15 @@ metadata:
 spec:
   components:
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: zigbee2mqtt-common
     - name: mosquitto
     - name: home-assistant
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/home/zigbee2mqtt/app-02"
   postBuild:
@@ -69,6 +76,7 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 1Gi
       VOLSYNC_CACHE_CAPACITY: 2Gi
+      KOPIUR_CACHE_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository

@@ -66,11 +66,14 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: pinepods-db
     - name: pinepods-kv
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/media/pinepods/app"
   postBuild:
@@ -78,6 +81,8 @@ spec:
       APP: pinepods
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_PUID: "0"
+      KOPIUR_PGID: "0"
   prune: true
   sourceRef:
     kind: GitRepository

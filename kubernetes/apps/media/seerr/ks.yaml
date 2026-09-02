@@ -8,9 +8,12 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/media/seerr/app"
   postBuild:
@@ -19,6 +22,7 @@ spec:
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_CACHE_CAPACITY: 5Gi
+      KOPIUR_CACHE_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository

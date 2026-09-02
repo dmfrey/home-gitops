@@ -8,11 +8,14 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: home-assistant
     - name: mosquitto
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/home/esphome/app"
   postBuild:
@@ -22,6 +25,8 @@ spec:
       APP_GID: "0"
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_PUID: "2000"
+      KOPIUR_PGID: "2000"
     substituteFrom:
       - kind: Secret
         name: cluster-secrets

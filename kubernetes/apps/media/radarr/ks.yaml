@@ -8,9 +8,12 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/media/radarr/app"
   postBuild:

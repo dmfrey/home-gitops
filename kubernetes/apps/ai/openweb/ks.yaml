@@ -63,11 +63,14 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: openweb-db
     - name: openweb-kv
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   interval: 1h
   path: "./kubernetes/apps/ai/openweb/app"
   postBuild:
@@ -75,6 +78,8 @@ spec:
       APP: openweb
       CONTROLLER: StatefulSet
       VOLSYNC_CAPACITY: 2Gi
+      KOPIUR_PUID: "0"
+      KOPIUR_PGID: "0"
   prune: true
   sourceRef:
     kind: GitRepository
