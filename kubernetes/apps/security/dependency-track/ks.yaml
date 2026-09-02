@@ -33,8 +33,7 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: dependency-track-db
     - name: kopiur-repository
@@ -50,8 +49,8 @@ spec:
     substitute:
       APP: dependency-track
       NFS_SCALER_TARGET: dependency-track-api
-      VOLSYNC_CAPACITY: 10Gi
       KOPIUR_CACHE_CAPACITY: 2Gi
+      KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository
