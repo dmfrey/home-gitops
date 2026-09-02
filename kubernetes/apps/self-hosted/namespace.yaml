@@ -5,3 +5,9 @@ metadata:
   name: _
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
+    # freshrss's SnapshotPolicy mover needs runAsUser: 0 (its PVC is
+    # root:www-data owned, not the usual 1000:1000) - kopiur fail-closes
+    # privileged movers per-namespace by design (a tenant with namespace
+    # access could otherwise reuse the minted kopiur-mover ServiceAccount
+    # at that privilege), this is the documented opt-in.
+    kopiur.home-operations.com/privileged-movers: "true"
