@@ -6,8 +6,7 @@ metadata:
   name: home-assistant-llmvision
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -18,7 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: home-assistant-llmvision
-      VOLSYNC_CAPACITY: 2Gi
+      KOPIUR_CAPACITY: 2Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
@@ -62,8 +61,7 @@ metadata:
   name: home-assistant
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/policy
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: home-assistant-db
     - name: mosquitto
@@ -78,9 +76,8 @@ spec:
   postBuild:
     substitute:
       APP: home-assistant
-      VOLSYNC_CAPACITY: 5Gi
-      VOLSYNC_CACHE_CAPACITY: 2Gi
       KOPIUR_CACHE_CAPACITY: 2Gi
+      KOPIUR_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
