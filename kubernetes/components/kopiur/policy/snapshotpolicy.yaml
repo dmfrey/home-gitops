@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/snapshotpolicy_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${APP}
+spec:
+  # Consumer-side opt-in for credential projection (necessary but not
+  # sufficient alone - the ClusterRepository owner must also set
+  # credentialProjection.allowed: true, which it does). The mover Job runs
+  # in the app's own namespace and loads creds via namespace-local envFrom,
+  # but the garage ClusterRepository's Secret lives in kopiur-system.
+  credentialProjection:
+    enabled: true
+  compression:
+    compressor: zstd
+  mover:
+    cache:
+      capacity: ${KOPIUR_CACHE_CAPACITY:=1Gi}
+      mode: Persistent
+      storageClassName: ${KOPIUR_STORAGECLASS:=ceph-block}
+    securityContext:
+      runAsUser: ${KOPIUR_PUID:=1000}
+      runAsGroup: ${KOPIUR_PGID:=1000}
+    podSecurityContext:
+      fsGroup: ${KOPIUR_PGID:=1000}
+      fsGroupChangePolicy: OnRootMismatch
+  repository:
+    kind: ClusterRepository
+    name: garage
+  retention:
+    keepLatest: 3
+    keepHourly: 24
+    keepDaily: 7
+    keepWeekly: 4
+  # Both opt-in; absent means no verification runs at all. quick is cheap
+  # blob-level sampling; deep actually restores into a scratch PVC on a
+  # slower cadence, proving restorability automatically instead of relying
+  # on one-off manual scratch-restores.
+  verification:
+    quick:
+      schedule:
+        cron: "H H * * *"
+    deep:
+      schedule:
+        cron: "H H * * 0"
+    verifyFilesPercent: 100
+  sources:
+    - pvc:
+        name: ${APP}
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}

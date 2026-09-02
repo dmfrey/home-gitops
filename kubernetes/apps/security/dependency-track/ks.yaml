@@ -34,8 +34,11 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: dependency-track-db
+    - name: kopiur-repository
+      namespace: kopiur-system
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
@@ -48,6 +51,7 @@ spec:
       APP: dependency-track
       NFS_SCALER_TARGET: dependency-track-api
       VOLSYNC_CAPACITY: 10Gi
+      KOPIUR_CACHE_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository

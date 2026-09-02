@@ -5,6 +5,10 @@ kind: Restore
 metadata:
   name: ${APP}
 spec:
+  # Same credential-projection opt-in as the SnapshotPolicy mover - the
+  # restore mover Job also runs in the app's own namespace.
+  credentialProjection:
+    enabled: true
   policy:
     onMissingSnapshot: Continue
   source:

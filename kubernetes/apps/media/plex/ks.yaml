@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
+    - ../../../../components/kopiur/policy
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
@@ -20,6 +21,7 @@ spec:
     substitute:
       APP: plex
       CONTROLLER: StatefulSet
+      KOPIUR_CACHE_CAPACITY: 4Gi
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease

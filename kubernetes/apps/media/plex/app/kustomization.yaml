@@ -9,8 +9,6 @@ resources:
   - ./pvc.yaml
   - ./pvc-config.yaml
   - ./resourceclaimtemplate.yaml
-  - ./snapshotpolicy.yaml
-  - ./snapshotschedule.yaml
 
 configMapGenerator:
   - name: plex-loki-rules
