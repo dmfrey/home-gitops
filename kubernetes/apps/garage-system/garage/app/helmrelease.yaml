@@ -15,7 +15,10 @@ spec:
     controllers:
       garage:
         type: statefulset
-        replicas: 3
+        # Scaled to 0 for the VolSync -> kopiur meta-garage-0 PVC cutover
+        # (2026-09-03) - scale back to 3 once the new dataSourceRef-wired
+        # PVC (pvc.yaml) has restored successfully.
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         statefulset:
