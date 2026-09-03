@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # Name must exactly match what the RabbitmqCluster's StatefulSet
+  # volumeClaimTemplate expects (persistence-<release>-server-0) - a
+  # StatefulSet adopts a pre-existing PVC matching that name instead of
+  # creating a fresh one from its template, which is what lets us wire in
+  # dataSourceRef here at all.
+  name: persistence-spring-notes-rabbitmq-server-0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    apiGroup: kopiur.home-operations.com
+    kind: Restore
+    name: spring-notes-rabbitmq
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-block

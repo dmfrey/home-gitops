@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/restore_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Restore
+metadata:
+  name: spring-notes-rabbitmq
+spec:
+  credentialProjection:
+    enabled: true
+  # Must match snapshotpolicy.yaml's mover identity (999:0, the real
+  # rabbitmq/root ownership - see that file's comment) or every restored
+  # file comes back owned by the wrong uid/gid instead of erroring
+  # (confirmed 2026-09-02 on plex).
+  mover:
+    securityContext:
+      runAsUser: 999
+      runAsGroup: 0
+    podSecurityContext:
+      fsGroup: 0
+      fsGroupChangePolicy: OnRootMismatch
+  policy:
+    onMissingSnapshot: Continue
+  source:
+    fromPolicy:
+      name: spring-notes-rabbitmq
+      offset: 0
+  target:
+    populator: {}
