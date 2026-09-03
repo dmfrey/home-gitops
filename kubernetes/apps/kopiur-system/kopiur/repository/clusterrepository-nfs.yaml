@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/clusterrepository_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: nfs
+spec:
+  # Independent of the "garage" ClusterRepository (which is backed by
+  # Garage's own S3) specifically so garage-system itself can be backed up
+  # here without the circular dependency of Garage backing up to Garage -
+  # see that repository's own comment. Filesystem/NFS backend, mounted
+  # directly (no PVC, no auth needed - matches how VolSync's existing Kopia
+  # mover already reaches this same NFS server). Uses a dedicated
+  # subdirectory (/Kopia/kopiur) of the export VolSync already uses
+  # (nas.internal:/Kopia) rather than a new NFS export, to keep kopiur's
+  # repository data logically separate from VolSync's without needing any
+  # NAS-side changes.
+  allowedNamespaces:
+    list:
+      - garage-system
+      - kopiur-system
+  credentialProjection:
+    allowed: true
+  backend:
+    filesystem:
+      path: /repository
+      volume:
+        nfs:
+          server: nas.internal
+          path: /Kopia/kopiur
+  # Reuses the same encryption password as the "garage" repository - a
+  # shared Kopia encryption key across two independent repository
+  # locations (different backend, different physical storage) isn't a
+  # meaningful security concern, and avoids needing a new 1Password item
+  # just for this.
+  encryption:
+    passwordSecretRef:
+      name: kopiur-repository-secret
+      namespace: kopiur-system
+      key: KOPIA_PASSWORD
+  maintenance:
+    namespace: kopiur-system

@@ -11,4 +11,6 @@ resources:
   - ./ocirepository.yaml
   - ./rbac.yaml
   - ./replicationsource.yaml
+  - ./snapshotpolicy.yaml
+  - ./snapshotschedule.yaml
   - ./volsync-externalsecret.yaml

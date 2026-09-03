@@ -15,6 +15,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
   # Re-enabled 2026-08-04: was left commented out since 2026-03-26 with no
   # explanation, surviving the single-node -> 3-node migration. Apps that
   # depend on garage (e.g. every *-kv Kustomization for a DragonflyDB

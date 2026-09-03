@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/snapshotpolicy_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: garage
+spec:
+  # Only meta-garage-0 is backed up (belt-and-suspenders insurance), not all
+  # 3 per-replica meta PVCs, and not the (much larger, replicated) data-*
+  # PVCs at all - same scope as the VolSync ReplicationSource this replaces.
+  # See replicationsource.yaml's own comment for the full reasoning: with
+  # replication_factor=3, the normal recovery path for a lost/corrupted
+  # node's metadata is to evict it from the layout and let it resync from
+  # the other 2 healthy replicas, not restore from a backup.
+  #
+  # Uses the independent "nfs" ClusterRepository (filesystem/NFS backend),
+  # NOT the "garage" ClusterRepository - backing garage-system up to
+  # Garage's own S3 would be circular.
+  credentialProjection:
+    enabled: true
+  compression:
+    compressor: zstd
+  mover:
+    cache:
+      capacity: 1Gi
+      mode: Persistent
+      storageClassName: ceph-block
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+  repository:
+    kind: ClusterRepository
+    name: nfs
+  retention:
+    keepLatest: 3
+    keepHourly: 24
+    keepDaily: 7
+    keepWeekly: 4
+  verification:
+    quick:
+      schedule:
+        cron: "H H * * *"
+    deep:
+      schedule:
+        cron: "H H * * 0"
+    verifyFilesPercent: 100
+  sources:
+    - pvc:
+        name: meta-garage-0
+  volumeSnapshotClassName: csi-ceph-blockpool
