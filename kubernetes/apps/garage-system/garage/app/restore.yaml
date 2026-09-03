@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/restore_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Restore
+metadata:
+  name: garage
+spec:
+  credentialProjection:
+    enabled: true
+  # Must match snapshotpolicy.yaml's mover identity (1000:1000) or every
+  # restored file comes back owned by the wrong uid/gid instead of
+  # erroring (confirmed 2026-09-02 on plex).
+  mover:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+  policy:
+    onMissingSnapshot: Continue
+  source:
+    fromPolicy:
+      name: garage
+      offset: 0
+  target:
+    populator: {}

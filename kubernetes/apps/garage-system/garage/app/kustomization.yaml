@@ -9,8 +9,8 @@ resources:
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./pvc.yaml
   - ./rbac.yaml
-  - ./replicationsource.yaml
+  - ./restore.yaml
   - ./snapshotpolicy.yaml
   - ./snapshotschedule.yaml
-  - ./volsync-externalsecret.yaml
