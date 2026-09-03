@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: nginx
-              tag: stable-alpine@sha256:02b1b2a0445514891a14aa371845f6085d5d9d10d385b30d6aad606a50a29a05
+              tag: stable-alpine@sha256:dc5069ad14f19660b141b21236140b91656bf89bbc3e2417c70ae650cd66104c
               pullPolicy: IfNotPresent
 
             probes:
