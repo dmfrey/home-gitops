@@ -122,3 +122,16 @@ resource "authentik_user" "Tony" {
     authentik_group.default["games"].id,
   ]
 }
+
+resource "authentik_user" "Jackie" {
+  username = "jlfrey"
+  name     = var.USERS_JLFREY_NAME
+  email    = var.USERS_JLFREY_EMAIL
+  password = var.USERS_JLFREY_PASSWORD
+  groups = [
+    authentik_group.default["users"].id,
+    authentik_group.default["home"].id,
+    authentik_group.default["media"].id,
+    authentik_group.default["games"].id,
+  ]
+}

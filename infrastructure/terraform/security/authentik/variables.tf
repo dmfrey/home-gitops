@@ -121,3 +121,9 @@ variable "USERS_ADFREY_PASSWORD" {
   type      = string
   sensitive = true
 }
+variable "USERS_JLFREY_NAME" { type = string }
+variable "USERS_JLFREY_EMAIL" { type = string }
+variable "USERS_JLFREY_PASSWORD" {
+  type      = string
+  sensitive = true
+}
