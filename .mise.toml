@@ -28,7 +28,7 @@ postinstall = "lefthook install"
 # per-node factory images and tuppr's TalosUpgrade CR) so Renovate's Talos
 # Group has a second real member and can actually satisfy
 # minimumGroupSize:2 automatically - matches github.com/onedr0p/home-ops.
-"talos" = "1.13.9"
+"talos" = "1.14.0"
 # The system helmfile most people have on PATH is often stale (this repo's
 # was 0.171.0, ~2 years old) and silently fails on newer helmfile.yaml
 # syntax like `bases:`/`defaultInherit:` (used by bootstrap/helmfile.d/
