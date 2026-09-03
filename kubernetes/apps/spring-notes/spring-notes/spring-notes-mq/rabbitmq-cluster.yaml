@@ -5,10 +5,7 @@ kind: RabbitmqCluster
 metadata:
   name: spring-notes-rabbitmq
 spec:
-  # Scaled to 0 for the VolSync -> kopiur PVC cutover (2026-09-03) - scale
-  # back to 1 once the new dataSourceRef-wired PVC (pvc.yaml) has restored
-  # successfully.
-  replicas: 0
+  replicas: 1
   # renovate: datasource=docker depName=rabbitmq versioning=loose
   image: rabbitmq:4.3-management@sha256:b1188ba346ab5748add82f46ac58c7df993ee91d762915f8ac6fcadf2e6c07df
   resources:
