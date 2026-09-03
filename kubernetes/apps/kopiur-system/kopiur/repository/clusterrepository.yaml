@@ -32,6 +32,7 @@ spec:
       - observability
       - ai
       - download
+      - spring-notes
   # Owner-side opt-in for credential projection - necessary but not
   # sufficient on its own; the consumer (wizarr's SnapshotPolicy) must also
   # set credentialProjection.enabled: true. Fail-closed by design.

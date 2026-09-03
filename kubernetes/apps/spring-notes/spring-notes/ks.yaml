@@ -32,6 +32,8 @@ spec:
   dependsOn:
     - name: rabbitmq-cluster-operator
       namespace: datastore
+    - name: kopiur-repository
+      namespace: kopiur-system
   healthChecks:
     - apiVersion: rabbitmq.com/v1beta1
       kind: RabbitmqCluster

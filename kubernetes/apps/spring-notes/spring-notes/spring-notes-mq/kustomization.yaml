@@ -6,4 +6,6 @@ resources:
   - ./rabbitmq-cluster.yaml
   - ./replicationsource.yaml
   - ./servicemonitor.yaml
+  - ./snapshotpolicy.yaml
+  - ./snapshotschedule.yaml
   - ./volsync-externalsecret.yaml

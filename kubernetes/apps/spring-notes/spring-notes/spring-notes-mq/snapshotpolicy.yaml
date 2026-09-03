@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/snapshotpolicy_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: spring-notes-rabbitmq
+spec:
+  # RabbitmqCluster's StatefulSet manages its own PVC via volumeClaimTemplates
+  # (persistence-spring-notes-rabbitmq-server-0), so this doesn't fit
+  # components/kopiur/policy's ${APP}-named-PVC assumption - standalone
+  # SnapshotPolicy pointed at the actual PVC name instead, same pattern the
+  # old VolSync ReplicationSource used (see git history).
+  #
+  # Mover identity is 999:0 (uid 999 = the rabbitmq user, gid 0 = root
+  # group), NOT the usual 1000:1000 default - confirmed via live `id`/`ls -la`
+  # inside the running pod, since the rabbitmq-cluster-operator sets its own
+  # pod securityContext (runAsUser: 999, fsGroup: 0) independent of anything
+  # in this repo. Must match on both this policy and the Restore below, or
+  # a restore silently re-owns every file to the wrong uid/gid instead of
+  # erroring (confirmed 2026-09-02 on plex - see components/kopiur/backup's
+  # restore.yaml comment).
+  credentialProjection:
+    enabled: true
+  compression:
+    compressor: zstd
+  mover:
+    cache:
+      capacity: 1Gi
+      mode: Persistent
+      storageClassName: ceph-block
+    securityContext:
+      runAsUser: 999
+      runAsGroup: 0
+    podSecurityContext:
+      fsGroup: 0
+      fsGroupChangePolicy: OnRootMismatch
+  repository:
+    kind: ClusterRepository
+    name: garage
+  retention:
+    keepLatest: 3
+    keepHourly: 24
+    keepDaily: 7
+    keepWeekly: 4
+  verification:
+    quick:
+      schedule:
+        cron: "H H * * *"
+    deep:
+      schedule:
+        cron: "H H * * 0"
+    verifyFilesPercent: 100
+  sources:
+    - pvc:
+        name: persistence-spring-notes-rabbitmq-server-0
+  volumeSnapshotClassName: csi-ceph-blockpool
