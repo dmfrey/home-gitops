@@ -15,8 +15,18 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: kopiur-repository
-      namespace: kopiur-system
+  # kopiur-repository was briefly added here (2026-09-03) so garage's own
+  # SnapshotPolicy could reference the "nfs" ClusterRepository - removed
+  # again the same day: kopiur-repository's healthCheck watches the
+  # "garage" ClusterRepository (S3-backed, used by every other app's
+  # backups), which can't reach Ready while garage's own pods are down -
+  # e.g. during this exact PVC cutover, or any future garage restart.
+  # That's a real self-deadlock, not just a cutover-time inconvenience:
+  # garage's Kustomization would never be able to reconcile again once
+  # scaled down. garage doesn't actually need kopiur-repository's CRs to
+  # be runtime-Ready anyway, only applied (kubectl apply succeeds
+  # instantly regardless of ClusterRepository health), so there's no
+  # correctness reason to keep this dependency.
   # Re-enabled 2026-08-04: was left commented out since 2026-03-26 with no
   # explanation, surviving the single-node -> 3-node migration. Apps that
   # depend on garage (e.g. every *-kv Kustomization for a DragonflyDB
