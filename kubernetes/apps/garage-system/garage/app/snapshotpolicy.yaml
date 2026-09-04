@@ -46,6 +46,14 @@ spec:
     deep:
       schedule:
         cron: "H H * * 0"
+      # Without this, the deep-verify scratch-restore target falls back to a
+      # node-local emptyDir, which isn't guaranteed to have room for a full
+      # restore of meta-garage-0's actual data (~10GB as of 2026-09-03) -
+      # confirmed failing with "no space left on device" on the first-ever
+      # run. Sized with real headroom above that, on the same StorageClass as
+      # everything else.
+      capacity: 20Gi
+      storageClassName: ceph-block
     verifyFilesPercent: 100
   sources:
     - pvc:

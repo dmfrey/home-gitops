@@ -44,6 +44,16 @@ spec:
     deep:
       schedule:
         cron: "H H * * 0"
+      # Without this, the deep-verify scratch-restore target falls back to a
+      # node-local emptyDir, which isn't guaranteed to have room for a full
+      # restore of the app's actual data - confirmed failing with "no space
+      # left on device" on garage-system/garage's PVC (~10GB actual usage).
+      # Default here is deliberately small/generic; any app with real data
+      # anywhere close to this size should override KOPIUR_VERIFY_CAPACITY
+      # explicitly in its own ks.yaml, matching (or exceeding) its
+      # KOPIUR_CAPACITY.
+      capacity: ${KOPIUR_VERIFY_CAPACITY:=5Gi}
+      storageClassName: ${KOPIUR_STORAGECLASS:=ceph-block}
     verifyFilesPercent: 100
   sources:
     - pvc:
