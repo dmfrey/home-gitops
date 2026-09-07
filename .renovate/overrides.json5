@@ -9,6 +9,25 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      // 2026-09-07: v2.4.0 panics on startup whenever [kubernetes_discovery]
+      // is configured (which this repo requires for peer discovery) -
+      // kube_client's Rustls TLS client config init fails with "Could not
+      // automatically determine the process-level CryptoProvider from
+      // Rustls crate features" (aws-lc-rs/ring feature conflict), crashing
+      // every replica immediately on start. Confirmed via an isolated
+      // one-off test pod running v2.4.0 with the real ConfigMap/Secret,
+      // decoupled from the live StatefulSet - full panic + backtrace points
+      // at garage_rpc::system::System::discovery_loop ->
+      // kube_client::Client::try_default -> rustls. Not caused by anything
+      // in this repo's config; looks like an upstream dependency-bump
+      // regression. No existing issue found on git.deuxfleurs.fr as of this
+      // date - worth filing upstream. v2.3.0 confirmed working (no crash).
+      description: "Hold Garage at 2.3.0 - 2.4.0 panics on startup with kubernetes_discovery enabled (missing Rustls CryptoProvider)",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["dxflrs/garage"],
+      allowedVersions: "<2.4.0",
+    },
+    {
       // Originally just blocked 2.3.2 (linuxserver ls7 build missing
       // libmspack0). 2026-09-02: broadened to hold the whole line at 2.3.1 -
       // OrcaSlicer's Bambu network plugin regressed starting in 2.3.2 (opens
