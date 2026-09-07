@@ -34,11 +34,22 @@ spec:
   repository:
     kind: ClusterRepository
     name: nfs
+  # Reduced from the fleet-default retention (keepLatest:3/keepHourly:24/
+  # keepDaily:7/keepWeekly:4) on 2026-09-07 - meta-garage-0 is an LMDB file,
+  # which rewrites/reorganizes pages internally on writes, so consecutive
+  # snapshots dedup poorly against each other (confirmed: 36 retained
+  # snapshots of a ~10GB dataset were consuming ~180GB of genuinely-unique
+  # pack-blob content, not a maintenance/GC bug - full maintenance ran clean
+  # and found nothing reclaimable). This backup is "belt-and-suspenders"
+  # insurance only - the real DR path for a lost/corrupted node's metadata is
+  # evicting it and letting Garage's replication_factor=3 resync from the
+  # other 2 healthy replicas, not restoring from here - so lighter retention
+  # is appropriate. ~13 retained snapshots instead of 36.
   retention:
-    keepLatest: 3
-    keepHourly: 24
-    keepDaily: 7
-    keepWeekly: 4
+    keepLatest: 2
+    keepHourly: 6
+    keepDaily: 3
+    keepWeekly: 2
   verification:
     quick:
       schedule:
