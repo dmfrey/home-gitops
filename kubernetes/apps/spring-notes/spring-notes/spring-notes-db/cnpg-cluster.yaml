@@ -16,7 +16,7 @@ spec:
   # cloudnative-pg/postgresql:17.10 image it replaces, so this is an
   # in-place operand swap with no data/binary compatibility concerns -
   # same pattern already proven in self-hosted/immich/immich-db.
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17-1.1.1@sha256:f22538c11c6d0e9ade44d3224f2dccd6bad9b2e60034b2e118804f9ad35f59bf
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17-1.1.1@sha256:bb7eb8442f76b1e74911f28585019a77022911f8cfa2ddcfb166ea6af85abd09
 
   managed:
     services:
