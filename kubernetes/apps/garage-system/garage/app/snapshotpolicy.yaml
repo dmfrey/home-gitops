@@ -34,22 +34,27 @@ spec:
   repository:
     kind: ClusterRepository
     name: nfs
-  # Reduced from the fleet-default retention (keepLatest:3/keepHourly:24/
-  # keepDaily:7/keepWeekly:4) on 2026-09-07 - meta-garage-0 is an LMDB file,
-  # which rewrites/reorganizes pages internally on writes, so consecutive
-  # snapshots dedup poorly against each other (confirmed: 36 retained
-  # snapshots of a ~10GB dataset were consuming ~180GB of genuinely-unique
-  # pack-blob content, not a maintenance/GC bug - full maintenance ran clean
-  # and found nothing reclaimable). This backup is "belt-and-suspenders"
-  # insurance only - the real DR path for a lost/corrupted node's metadata is
-  # evicting it and letting Garage's replication_factor=3 resync from the
-  # other 2 healthy replicas, not restoring from here - so lighter retention
-  # is appropriate. ~13 retained snapshots instead of 36.
+  # Cadence dropped from hourly to daily (see snapshotschedule.yaml) and
+  # retention further lightened on 2026-09-07 - meta-garage-0 is an LMDB
+  # file, which rewrites/reorganizes pages internally on writes, so
+  # consecutive snapshots dedup poorly against each other regardless of
+  # cadence (confirmed: 36 hourly-cadence snapshots of a ~10GB dataset were
+  # consuming ~180GB of genuinely-unique pack-blob content). This backup is
+  # genuinely tertiary insurance, not the primary defense: meta-garage-0
+  # already has two redundancy layers ahead of it - Ceph's own block-level
+  # replication, and Garage's own replication_factor=3 application-level
+  # resync (the documented recovery path for a lost/corrupted node's
+  # metadata is evicting it and letting it resync from the other 2 healthy
+  # replicas, not restoring from here). This backup exists only for the
+  # failure modes replication can't help with - accidental deletion, a bug
+  # that corrupts logical data, a bad layout change - none of which need
+  # hourly granularity. keepLatest covers an immediate bad-snapshot margin,
+  # keepDaily gives ~2 weeks of day-level recovery points, keepWeekly
+  # extends coarse coverage out to ~1 month.
   retention:
     keepLatest: 2
-    keepHourly: 6
-    keepDaily: 3
-    keepWeekly: 2
+    keepDaily: 14
+    keepWeekly: 4
   verification:
     quick:
       schedule:

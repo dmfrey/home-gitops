@@ -7,5 +7,6 @@ metadata:
 spec:
   policyRef:
     name: garage
+  # Daily, not hourly - see snapshotpolicy.yaml's retention comment for why.
   schedule:
-    cron: H * * * *
+    cron: H H * * *
