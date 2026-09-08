@@ -62,13 +62,34 @@ spec:
                   name: bazarr-secret
 
             probes:
-              liveness: &probes
+              # Bazarr's startup does a DB migration against its CNPG-backed
+              # Postgres plus outbound calls to Sonarr/Radarr/GitHub, and can
+              # run past liveness's tight ~30s (periodSeconds*failureThreshold)
+              # budget under any storage/DB latency spike (e.g. confirmed
+              # 2026-09-08: a Ceph OSD recovery backfill after a node outage
+              # slowed Postgres just enough to push startup past that window,
+              # causing a real restart loop with no actual error in the logs -
+              # kubelet killing an app that was still mid-startup, not hung).
+              # This gates liveness/readiness until first success, giving up
+              # to 5m of startup grace without loosening steady-state checks.
+              startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /health
                     port: &port 6767
+                  initialDelaySeconds: 0
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 60
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
