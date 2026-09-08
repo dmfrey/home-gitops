@@ -81,11 +81,6 @@ health-check:
     done < <(kubectl get backups.postgresql.cnpg.io -A -o json 2>/dev/null \
         | jq -r '.items[] | select(.status.phase as $p | ["running","started","pending"] | index($p) != null) | "\(.metadata.namespace)/\(.metadata.name) (\(.status.phase))"')
 
-    while IFS= read -r line; do
-        [[ -n "$line" ]] && problems+=("VolSync sync in progress: $line")
-    done < <(kubectl get replicationsources.volsync.backube -A -o json 2>/dev/null \
-        | jq -r '.items[] | select((.status.conditions // []) | any(.type == "Synchronizing" and .status == "True")) | "\(.metadata.namespace)/\(.metadata.name)"')
-
     if [[ ${#problems[@]} -eq 0 ]]; then
         just log info "Cluster health checks passed"
         exit 0

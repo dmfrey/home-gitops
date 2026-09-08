@@ -32,12 +32,6 @@ prune-pods:
         kubectl delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true; \
     done
 
-[doc('Snapshot VolSync PVCs')]
-snapshot:
-    kubectl get replicationsources --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
-    done
-
 [doc('Suspend or resume CNPG clusters for node maintenance')]
 cnpg state:
     kubectl get clusters --no-headers -A | while read -r ns name _; do \
@@ -47,12 +41,6 @@ cnpg state:
                 && break || { echo "retry $i/3 for $ns/$name" >&2; sleep 3; }; \
         done; \
     done
-
-[doc('Suspend or resume VolSync')]
-volsync state:
-    flux -n volsync-system {{ state }} kustomization volsync
-    flux -n volsync-system {{ state }} helmrelease volsync
-    kubectl -n volsync-system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
 
 [arg('resource', pattern='hr|ks|gitrepo|ocirepo|es')]
 [doc('Sync a resource (hr|ks|gitrepo|ocirepo|es)')]

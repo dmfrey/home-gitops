@@ -1,6 +1,6 @@
 ---
 name: new-app
-description: Scaffold the full directory structure for a new Flux-managed application in this GitOps repo. Interactively prompts for namespace, app name, and optional components (database, DragonflyDB, VolSync, routing), then generates all required files following established repo patterns.
+description: Scaffold the full directory structure for a new Flux-managed application in this GitOps repo. Interactively prompts for namespace, app name, and optional components (database, DragonflyDB, kopiur-backed PVC, routing), then generates all required files following established repo patterns.
 ---
 
 Scaffold a new Flux application. **Before writing any files**, use `AskUserQuestion` to gather all required inputs in two rounds as described below. Then generate files based on the answers.
@@ -18,7 +18,7 @@ Ask for:
 
 Ask for:
 
-1. **Persistent storage + backup** — does this app need a VolSync-backed PVC? If yes, ask for capacity (default `5Gi`) and cache capacity (default `2Gi`).
+1. **Persistent storage + backup** — does this app need a kopiur-backed PVC? If yes, ask for capacity (default `5Gi`; passed as `KOPIUR_CAPACITY`).
 2. **PostgreSQL database** — does this app need a CNPG database cluster?
 3. **DragonflyDB** — does this app need a DragonflyDB key-value store?
 4. **ExternalSecret** — does this app pull secrets from 1Password? (default yes; ask for the 1Password item name and which keys to expose)
@@ -70,38 +70,43 @@ spec:
 
 ```yaml
 components:
-    - ../../../../components/volsync # if VolSync selected
+    - ../../../../components/kopiur/backup # if persistent storage+backup selected
     - ../../../../components/cnpg # if CNPG selected
     - ../../../../components/dragonflydb # if DragonflyDB selected
 ```
+
+`components/kopiur/backup` transitively pulls in `components/kopiur/policy` — together they create the app's actual PVC (name `${APP}`, populated via a `Restore` volume-populator so a fresh app starts with no bootstrap/cutover step), the `Restore` CR itself, and a `SnapshotPolicy`/`SnapshotSchedule` pair backing it up to the shared S3 `garage` `ClusterRepository`.
 
 **`dependsOn`** — add entries based on selections:
 
 ```yaml
 dependsOn:
-    - name: rook-ceph-cluster # if VolSync selected
+    - name: rook-ceph-cluster # if persistent storage+backup selected
       namespace: rook-ceph
+    - name: kopiur-repository # if persistent storage+backup selected
+      namespace: kopiur-system
     - name: cloudnative-pg # if CNPG selected
       namespace: datastore
     - name: dragonfly-operator # if DragonflyDB selected
       namespace: datastore
 ```
 
-**`postBuild`** — add when VolSync is selected:
+**`postBuild`** — add when persistent storage+backup is selected:
 
 ```yaml
 postBuild:
     substitute:
         APP: <app-name>
-        VOLSYNC_CAPACITY: <capacity>
-        VOLSYNC_CACHE_CAPACITY: <cache-capacity>
+        KOPIUR_CAPACITY: <capacity>
     substituteFrom:
         - kind: Secret
           name: cluster-secrets
           optional: false
 ```
 
-Add `substituteFrom` (without `substitute`) even without VolSync if the app uses cluster-wide variables like `${IPV6_IOT_PREFIX}`.
+The backup component's templates default `KOPIUR_STORAGECLASS` to `ceph-block`, `KOPIUR_ACCESSMODES` to `ReadWriteOnce`, `KOPIUR_CACHE_CAPACITY` to `1Gi`, and the mover identity (`KOPIUR_PUID`/`KOPIUR_PGID`) to `1000` — only override these in `substitute` if the app actually needs something different (e.g. a non-1000 UID/GID, matching the container's real `securityContext`).
+
+Add `substituteFrom` (without `substitute`) even without a kopiur-backed PVC if the app uses cluster-wide variables like `${IPV6_IOT_PREFIX}`.
 
 **Do NOT add** `commonMetadata`, `retryInterval`, or `timeout` — injected cluster-wide.
 
@@ -216,7 +221,7 @@ spec:
                       namespace: network
 ```
 
-**If VolSync selected**, add under `values`:
+**If a kopiur-backed PVC selected**, add under `values` (the backup component creates the PVC itself, named after the app, so `existingClaim` just needs to match):
 
 ```yaml
 persistence:

@@ -1,6 +1,6 @@
 ---
 name: cluster-health
-description: Runs a full health sweep of the homelab cluster — Flux reconciliation state, pod/node health, etcd stability, CNPG databases, VolSync/Kopia backups, and HVAC automation health in Home Assistant — and produces a single status report. Use for routine "how's the cluster doing" checks, not for debugging a specific known issue.
+description: Runs a full health sweep of the homelab cluster — Flux reconciliation state, pod/node health, etcd stability, CNPG databases, kopiur/Kopia backups, and HVAC automation health in Home Assistant — and produces a single status report. Use for routine "how's the cluster doing" checks, not for debugging a specific known issue.
 tools: Bash, Read, mcp__flux-operator-mcp__get_kubernetes_resources, mcp__flux-operator-mcp__get_kubernetes_logs, mcp__flux-operator-mcp__get_kubernetes_metrics, mcp__grafana__query_prometheus, mcp__grafana__query_prometheus_histogram, mcp__grafana__query_loki_logs, mcp__home-assistant__ha_get_state, mcp__home-assistant__ha_get_history, mcp__home-assistant__ha_config_get_automation, mcp__home-assistant__ha_get_automation_traces, mcp__home-assistant__ha_search
 ---
 
@@ -10,8 +10,8 @@ You are running a routine health sweep of a 3-node Talos Linux homelab cluster (
 
 - **GitOps**: Flux CD reconciles ~101 HelmReleases and ~135 Kustomizations, nearly all on `interval: 1h`
 - **Storage**: Rook-Ceph (distributed block, 3x NVMe) for most stateful PVCs; OpenEBS (local, M.2 SATA) for some; Garage (S3-compatible, NFS-backed) for DB backups/WAL archiving
-- **Databases**: CloudNative PG (CNPG) clusters, backed up via barman-cloud plugin to Garage and via VolSync/Kopia snapshots
-- **Backups**: VolSync + Kopia — all ~39 apps share a single Kopia repo (`filesystem:///repository`), maintenance runs via `KopiaMaintenance/daily` every 4 hours (see `kubernetes/apps/volsync-system/volsync/maintenance/kopiamaintenance.yaml`)
+- **Databases**: CloudNative PG (CNPG) clusters, backed up via barman-cloud plugin to Garage
+- **Backups**: kopiur — most apps back up to the S3-backed `garage` `ClusterRepository`; `garage-system/garage` itself (belt-and-suspenders on top of its own RF=3 resync) uses a separate NFS-backed `nfs` `ClusterRepository` to avoid backing Garage up to itself. Each app has a `SnapshotSchedule` (cron trigger) creating `Snapshot` CRs, plus a `Maintenance` CR per repository tracking GC/compaction.
 - **etcd**: known benign hourly WAL fsync latency spike from synchronized 1h reconcile timers (see repo memory `project_etcd_leader_change_investigation` if you need history) — only worth flagging if `etcd_server_leader_changes_seen_total` shows a change in the last check window, not just the baseline spike
 - **HVAC**: two-zone dual automation in Home Assistant (Zone 1 First Floor, Zone 2 Second Floor) via Aqara W200 thermostats, offset-compensated from remote room sensors. Hold mechanism blocks automation writes on manual override. Performance alert automations fire if a zone runs 45+ min without reaching target.
 
@@ -35,9 +35,11 @@ You are running a routine health sweep of a 3-node Talos Linux homelab cluster (
     - Cluster `status.phase` should be `Cluster in healthy state`
     - Check most recent `Backup` resources succeeded (barman-cloud and volumeSnapshot methods)
 
-5. **VolSync/Kopia backups** — via `get_kubernetes_resources`:
-    - `ReplicationSource` resources: check `status.lastSyncTime` is recent (within ~2x their sync interval) and `status.lastSyncSuccessful` (or condition equivalent)
-    - `KopiaMaintenance` status: `status.lastMaintenanceRun` / `status.nextScheduledMaintenance` look sane
+5. **kopiur/Kopia backups** — via `get_kubernetes_resources`:
+    - `SnapshotSchedule` resources: `status.consecutiveFailures` should be 0 across all namespaces
+    - `Snapshot` resources: any recent ones in `phase: Failed`
+    - `ClusterRepository` (`garage`, `nfs`): both should be `Ready`/`Bootstrapped`
+    - `Maintenance` (`garage`, `nfs`): recent `lastRunAt` for both `full`/`quick`, no `MaintenanceFailed` condition
 
 6. **HVAC (Home Assistant)** — via Home Assistant MCP:
     - `automation.hvac_zone_1_first_floor` and `automation.hvac_zone_2_second_floor` — both should be `on`/enabled
@@ -67,8 +69,8 @@ You are running a routine health sweep of a 3-node Talos Linux homelab cluster (
 ## CNPG Databases
 <cluster health, most recent backup status per cluster>
 
-## VolSync / Kopia Backups
-<any ReplicationSource stale or failed, KopiaMaintenance status>
+## kopiur / Kopia Backups
+<any SnapshotSchedule with consecutiveFailures, Failed Snapshots, ClusterRepository/Maintenance status>
 
 ## HVAC (Home Assistant)
 <Zone 1 / Zone 2 automation state, hold status, thermostat action, recent performance alerts>

@@ -43,7 +43,6 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 This is a mono repository for my home infrastructure and Kubernetes cluster. I try to adhere to Infrastructure as Code (IaC) and GitOps practices using tools like [Terraform](https://www.terraform.io/), [Kubernetes](https://kubernetes.io/), [Flux](https://github.com/fluxcd/flux2), [Renovate](https://github.com/renovatebot/renovate), and [GitHub Actions](https://github.com/features/actions).
 
-
 The purpose here is to learn k8s, while practicing Gitops.
 
 ---
@@ -58,7 +57,7 @@ There is a template over at [onedr0p/cluster-template](https://github.com/onedr0
 
 - **Networking & Service Mesh**: [cilium](https://github.com/cilium/cilium) provides eBPF-based networking, while [envoy](https://gateway.envoyproxy.io/) powers service-to-service communication with L7 proxying and traffic management. [cloudflared](https://github.com/cloudflare/cloudflared) secures ingress traffic via Cloudflare, and [external-dns](https://github.com/kubernetes-sigs/external-dns) keeps DNS records in sync automatically.
 - **Security & Secrets**: [cert-manager](https://github.com/cert-manager/cert-manager) automates SSL/TLS certificate management. For secrets, I use [external-secrets](https://github.com/external-secrets/external-secrets) with [1Password Connect](https://github.com/1Password/connect) to inject secrets into Kubernetes, and [sops](https://github.com/getsops/sops) to store and manage encrypted secrets in Git.
-- **Storage & Data Protection**: [rook](https://github.com/rook/rook) provides distributed storage for persistent volumes, with [volsync](https://github.com/backube/volsync) handling backups and restores. [garage](https://garagehq.deuxfleurs.fr/) provides S3-compatible object storage for database backups. [spegel](https://github.com/spegel-org/spegel) improves reliability by running a stateless, cluster-local OCI image mirror.
+- **Storage & Data Protection**: [rook](https://github.com/rook/rook) provides distributed storage for persistent volumes, with [kopiur](https://github.com/home-operations/kopiur) handling PVC backups and restores via Kopia. [garage](https://garagehq.deuxfleurs.fr/) provides S3-compatible object storage for database backups. [spegel](https://github.com/spegel-org/spegel) improves reliability by running a stateless, cluster-local OCI image mirror.
 - **Automation & CI/CD**: [actions-runner-controller](https://github.com/actions/actions-runner-controller) runs self-hosted GitHub Actions runners directly in the cluster for continuous integration workflows. For IaC, I use [tofu-controller](https://github.com/flux-iac/tofu-controller) as additional Flux component used to run OpenTofu from within a Kubernetes cluster.
 
 ### GitOps
@@ -107,14 +106,15 @@ My cluster runs on a variety of energy-efficient hardware.
 
 ### 💻 Compute & Storage
 
-| Device          | Manufacturer | Model             | CPU               | RAM   | Role                              |
-| --------------- | ------------ | ----------------- | ----------------- | ----- | --------------------------------- |
-| `k8s-0`         | GEEKOM       | Mini IT13         | Intel 13th Gen    | 64 GB | Kubernetes Control Plane & Worker |
-| `k8s-1`         | GEEKOM       | Mini IT13         | Intel 13th Gen    | 64 GB | Kubernetes Control Plane & Worker |
-| `k8s-2`         | GEEKOM       | Mini IT13         | Intel 13th Gen    | 64 GB | Kubernetes Control Plane & Worker |
-| `NAS`           | QNAP         | TS-462            | -                 | -     | Network Attached Storage          |
+| Device  | Manufacturer | Model     | CPU            | RAM   | Role                              |
+| ------- | ------------ | --------- | -------------- | ----- | --------------------------------- |
+| `k8s-0` | GEEKOM       | Mini IT13 | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
+| `k8s-1` | GEEKOM       | Mini IT13 | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
+| `k8s-2` | GEEKOM       | Mini IT13 | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
+| `NAS`   | QNAP         | TS-462    | -              | -     | Network Attached Storage          |
 
 > _Each Kubernetes node has the following disk layout:_
+>
 > - **System:** 1x Samsung 870 EVO 1 TB SATA SSD
 > - **Ceph:** 1x Silicon Power US75 2 TB NVMe SSD
 > - **OpenEBS:** 1x KingSpec NT Series 128GB M.2 2242 SATA SSD
@@ -128,14 +128,14 @@ My cluster runs on a variety of energy-efficient hardware.
 
 ### 🌐 Network & Power
 
-| Device                       | Manufacturer | Model                        | Role                         |
-| ---------------------------- | ------------ | ---------------------------- | ---------------------------- |
-| Unifi Cable Internet          | Ubiquiti     | UCI                          | Modem                        |
-| Dream Machine SE             | Ubiquiti     | UDM SE                       | Core Router & Firewall       |
-| Switch Pro Max 24            | Ubiquiti     | USW Pro Max 24               | Core Switch                  |
-| Switch Ultra 8               | Ubiquiti     | USW Ultra 8 Port             | Distribution Switch          |
-| Switch Flex                  | Ubiquiti     | USW Flex                     | Outdoor Switch               |
-| Power Distribution Pro       | Ubiquiti     | UPS PDU Pro                  | Power Distribution           |
-| Rackmount UPS                | Ubiquiti     | UPS 2U                       | Uninterruptible Power Supply |
-| Redundant Power System       | Ubiquiti     | USP RPS                      | Redundant Power Supply       |
-| Cluster UPS                  | Ubiquiti     | UPS Tower                    | Uninterruptible Power Supply |
+| Device                 | Manufacturer | Model            | Role                         |
+| ---------------------- | ------------ | ---------------- | ---------------------------- |
+| Unifi Cable Internet   | Ubiquiti     | UCI              | Modem                        |
+| Dream Machine SE       | Ubiquiti     | UDM SE           | Core Router & Firewall       |
+| Switch Pro Max 24      | Ubiquiti     | USW Pro Max 24   | Core Switch                  |
+| Switch Ultra 8         | Ubiquiti     | USW Ultra 8 Port | Distribution Switch          |
+| Switch Flex            | Ubiquiti     | USW Flex         | Outdoor Switch               |
+| Power Distribution Pro | Ubiquiti     | UPS PDU Pro      | Power Distribution           |
+| Rackmount UPS          | Ubiquiti     | UPS 2U           | Uninterruptible Power Supply |
+| Redundant Power System | Ubiquiti     | USP RPS          | Redundant Power Supply       |
+| Cluster UPS            | Ubiquiti     | UPS Tower        | Uninterruptible Power Supply |
