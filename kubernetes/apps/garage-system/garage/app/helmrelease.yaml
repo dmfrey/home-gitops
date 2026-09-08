@@ -68,8 +68,10 @@ spec:
           app:
             image:
               repository: dxflrs/garage
-              # Held at v2.3.0 - see .renovate/overrides.json5 for why.
-              tag: v2.3.0@sha256:866bd13ed2038ba7e7190e840482bc27234c4afaf77be8cfa439ae088c1e4690
+              # v2.4.0's kubernetes_discovery panic (see .renovate/overrides.json5
+              # history) is fixed in v2.4.1 - confirmed via an isolated test pod
+              # running the real config before lifting the hold.
+              tag: v2.4.1@sha256:9c96caa2612d3411acc5b0e6701fb238dbfba33e533a6d7d3d811a4b12d0d020
             env:
               RUST_LOG: "garage=debug"
               TZ: America/New_York
