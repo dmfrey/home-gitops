@@ -107,6 +107,7 @@ spec:
               limits:
                 memory: 8Gi
     defaultPodOptions:
+      priorityClassName: low
       annotations:
         k8s.v1.cni.cncf.io/networks: |
           [{

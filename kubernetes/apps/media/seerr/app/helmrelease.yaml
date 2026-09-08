@@ -51,6 +51,7 @@ spec:
                 drop:
                   - ALL
     defaultPodOptions:
+      priorityClassName: low
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

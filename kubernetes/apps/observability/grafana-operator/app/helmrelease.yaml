@@ -10,6 +10,8 @@ spec:
     name: grafana-operator
   interval: 1h
   values:
+    priorityClassName: high
+
     dashboard:
       enabled: true
     serviceMonitor:

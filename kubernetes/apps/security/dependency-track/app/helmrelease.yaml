@@ -120,6 +120,7 @@ spec:
               limits:
                 memory: 128Mi
     defaultPodOptions:
+      priorityClassName: low
       securityContext:
         seccompProfile: { type: RuntimeDefault }
     service:

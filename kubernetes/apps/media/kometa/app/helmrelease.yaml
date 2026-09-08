@@ -13,6 +13,9 @@ spec:
     name: kometa
 
   values:
+    defaultPodOptions:
+      priorityClassName: low
+
     controllers:
       kometa:
         type: cronjob

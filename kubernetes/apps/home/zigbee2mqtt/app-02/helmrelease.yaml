@@ -90,6 +90,7 @@ spec:
                   - "NET_BIND_SERVICE"
 
     defaultPodOptions:
+      priorityClassName: high
       terminationGracePeriodSeconds: 10
       securityContext:
         runAsNonRoot: true

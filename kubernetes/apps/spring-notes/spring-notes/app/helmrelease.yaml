@@ -10,6 +10,9 @@ spec:
     name: spring-notes
   interval: 1h
   values:
+    defaultPodOptions:
+      priorityClassName: low
+
     controllers:
       backend:
         annotations:

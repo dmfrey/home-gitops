@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/scheduling-v1-priorityclass.json
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high
+value: 100
+globalDefault: false
+description: >-
+  Apps whose downtime is actually disruptive (SSO, home automation backbone,
+  observability, the S3 backend other apps write to). Below Kubernetes'
+  built-in system-cluster-critical/system-node-critical (used directly by
+  core infra like coredns/cilium/rook-ceph, not this custom tier).
+---
+# yaml-language-server: $schema=https://json.schemastore.org/scheduling-v1-priorityclass.json
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low
+value: -100
+globalDefault: false
+description: >-
+  Apps that are fine to lose temporarily under resource pressure (e.g. a
+  node down for an extended period) - dev/demo tools, media-management
+  helpers, hobby apps. Negative value: explicitly preempted before any
+  default-priority (unset, 0) workload.

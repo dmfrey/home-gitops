@@ -36,6 +36,9 @@ spec:
               limits:
                 memory: 500M
 
+    defaultPodOptions:
+      priorityClassName: low
+
     # defaultPodOptions:
     #   securityContext:
     #     runAsNonRoot: true

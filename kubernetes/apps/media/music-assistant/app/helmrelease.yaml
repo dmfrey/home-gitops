@@ -64,6 +64,7 @@ spec:
                 "mac": "ae:81:6a:d4:48:85"
               }]
     defaultPodOptions:
+      priorityClassName: low
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

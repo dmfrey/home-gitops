@@ -39,6 +39,7 @@ spec:
                 memory: 350Mi
 
     defaultPodOptions:
+      priorityClassName: high
       terminationGracePeriodSeconds: 10
       annotations:
         k8s.v1.cni.cncf.io/networks: |

@@ -11,6 +11,7 @@ spec:
   interval: 1h
   values:
     connect:
+      priorityClassName: system-cluster-critical
       annotations:
         reloader.stakater.com/auto: "true"
       api:

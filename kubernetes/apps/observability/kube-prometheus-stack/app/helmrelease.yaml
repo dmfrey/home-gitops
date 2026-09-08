@@ -43,6 +43,7 @@ spec:
               namespace: network
 
       alertmanagerSpec:
+        priorityClassName: high
         alertmanagerConfiguration:
           name: alertmanager
 
@@ -84,6 +85,7 @@ spec:
               namespace: network
 
       prometheusSpec:
+        priorityClassName: high
         enableRemoteWriteReceiver: true
 
         externalUrl: https://prometheus.dmfrey.com

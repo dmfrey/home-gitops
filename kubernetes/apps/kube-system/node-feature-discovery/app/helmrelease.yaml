@@ -32,6 +32,8 @@ spec:
     mode: enabled
 
   values:
+    priorityClassName: system-cluster-critical
+
     master:
       replicaCount: 1
 

@@ -10,6 +10,8 @@ spec:
     name: kopiur
   interval: 1h
   values:
+    priorityClassName: system-cluster-critical
+
     # Pilot install (see project_kopiur_pilot memory) - VolSync stays the
     # backup path for every existing app. Only wizarr additionally backs up
     # via kopiur's own SnapshotPolicy/SnapshotSchedule CRDs, to evaluate the

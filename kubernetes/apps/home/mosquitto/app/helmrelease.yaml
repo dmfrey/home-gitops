@@ -36,6 +36,7 @@ spec:
               limits:
                 memory: 350Mi
     defaultPodOptions:
+      priorityClassName: high
       terminationGracePeriodSeconds: 15
       securityContext:
         runAsNonRoot: true

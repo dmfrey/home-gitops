@@ -13,6 +13,8 @@ spec:
   interval: 1h
 
   values:
+    priorityClassName: system-cluster-critical
+
     autoDirectNodeRoutes: true
 
     bandwidthManager:
