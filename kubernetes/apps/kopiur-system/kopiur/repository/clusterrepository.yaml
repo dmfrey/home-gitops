@@ -56,6 +56,17 @@ spec:
       key: KOPIA_PASSWORD
   maintenance:
     namespace: kopiur-system
+    # TEMPORARY 2026-09-09 19:29 UTC: forcing an earlier `full` run to
+    # verify the epoch fix below actually compacts (today's only scheduled
+    # full run at 04:05 UTC happened before the epoch fix landed). Revert
+    # to the default schedule (omit this block entirely) once confirmed -
+    # do not leave this override in place.
+    schedule:
+      full:
+        cron: "33 19 * * *"
+        jitter: 0s
+      quick:
+        cron: "0 */6 * * *"
   # 2026-09-09: default 24h epoch gate was blocking index-blob compaction -
   # content-index blobs grew unbounded (6934 -> 8209 overnight) since full
   # maintenance kept reclaiming 0 bytes. Lowered so compaction can keep pace.
