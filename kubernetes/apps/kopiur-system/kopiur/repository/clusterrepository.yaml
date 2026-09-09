@@ -56,20 +56,31 @@ spec:
       key: KOPIA_PASSWORD
   maintenance:
     namespace: kopiur-system
-    # TEMPORARY 2026-09-09 19:29 UTC: forcing an earlier `full` run to
-    # verify the epoch fix below actually compacts (today's only scheduled
-    # full run at 04:05 UTC happened before the epoch fix landed). Revert
-    # to the default schedule (omit this block entirely) once confirmed -
-    # do not leave this override in place.
+    # TEMPORARY 2026-09-09 19:58 UTC: forcing another earlier `full` run to
+    # verify the revised epoch parameters below actually compact - the
+    # first forced run (19:33 UTC, minDuration:6h alone) reclaimed 0 bytes,
+    # because minDuration only gates WHEN an epoch may advance, it doesn't
+    # cause advancement. advanceOnCount/advanceOnSizeMiB do. Revert to the
+    # default schedule (omit this block entirely) once confirmed - do not
+    # leave this override in place.
     schedule:
       full:
-        cron: "33 19 * * *"
+        cron: "2 20 * * *"
         jitter: 0s
       quick:
         cron: "0 */6 * * *"
-  # 2026-09-09: default 24h epoch gate was blocking index-blob compaction -
-  # content-index blobs grew unbounded (6934 -> 8209 overnight) since full
-  # maintenance kept reclaiming 0 bytes. Lowered so compaction can keep pace.
+  # 2026-09-09: default 24h epoch gate (minDuration) was blocking index-blob
+  # compaction - content-index blobs grew unbounded (6934 -> 8209 overnight,
+  # then kept climbing to 4700+) since full maintenance kept reclaiming 0
+  # bytes even after minDuration was lowered to 6h. Root cause: minDuration
+  # is only the gate (minimum epoch age before it MAY advance) - the actual
+  # triggers are advanceOnCount/advanceOnSizeMiB, evaluated per epoch, and
+  # this repo's snapshot activity apparently never accumulates enough
+  # blobs/size within a single epoch to cross the kopia defaults (20 blobs /
+  # 10MiB) regardless of age. Lowered both to match this repo's actual
+  # (homelab-scale, not enterprise) per-epoch accumulation rate.
   parameters:
     epoch:
       minDuration: 6h
+      advanceOnCount: 5
+      advanceOnSizeMiB: 2
