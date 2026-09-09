@@ -19,7 +19,7 @@ spec:
           playwright-install:
             image:
               repository: ghcr.io/linkwarden/linkwarden
-              tag: v2.16.2@sha256:f4dd1790cef8de5b923dd5c0239e8861c3600500e3d234dab655dad0303d3a7f
+              tag: v2.16.3@sha256:0664c28a039bda8ffa6663389e8536b2fc717219e329f85b83faca7efed3b144
             env:
               PLAYWRIGHT_BROWSERS_PATH: /data/config/.playwright
             command:
@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/linkwarden/linkwarden
-              tag: v2.16.2@sha256:f4dd1790cef8de5b923dd5c0239e8861c3600500e3d234dab655dad0303d3a7f
+              tag: v2.16.3@sha256:0664c28a039bda8ffa6663389e8536b2fc717219e329f85b83faca7efed3b144
             env:
               TZ: America/New_York
               NODE_ENV: production
