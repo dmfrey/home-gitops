@@ -56,3 +56,9 @@ spec:
       key: KOPIA_PASSWORD
   maintenance:
     namespace: kopiur-system
+  # 2026-09-09: default 24h epoch gate was blocking index-blob compaction -
+  # content-index blobs grew unbounded (6934 -> 8209 overnight) since full
+  # maintenance kept reclaiming 0 bytes. Lowered so compaction can keep pace.
+  parameters:
+    epoch:
+      minDuration: 6h
