@@ -39,10 +39,18 @@ spec:
       priorityClassName: high
       terminationGracePeriodSeconds: 15
       securityContext:
+        # runAsUser/Group/fsGroup pinned to 1883 (not this repo's usual 1000) -
+        # matches the eclipse-mosquitto image's own built-in "mosquitto" user.
+        # /mosquitto/data|config|log are baked into the image's own filesystem
+        # layer (not on the mounted PVC, which only backs /data for secrets/
+        # init-config staging) and owned 1883:1883 at build time, so fsGroup
+        # never gets a chance to fix them up - running as 1000 caused every
+        # DB-save to fail with "Permission denied" once the pod actually
+        # restarted and re-exercised those paths. Confirmed live 2026-09-09.
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 1883
+        runAsGroup: 1883
+        fsGroup: 1883
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
