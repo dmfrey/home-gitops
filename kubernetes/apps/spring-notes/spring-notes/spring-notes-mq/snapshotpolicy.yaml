@@ -25,9 +25,14 @@ spec:
     compressor: zstd
   mover:
     cache:
-      capacity: 1Gi
+      # Bumped 1Gi -> 5Gi and moved to openebs-hostpath, matching the
+      # shared components/kopiur/policy/snapshotpolicy.yaml fix
+      # (2026-09-09) - this app predates/bypasses that shared component
+      # (standalone PVC-name override), so it needed the same fix applied
+      # by hand.
+      capacity: 5Gi
       mode: Persistent
-      storageClassName: ceph-block
+      storageClassName: openebs-hostpath
     securityContext:
       runAsUser: 999
       runAsGroup: 0
