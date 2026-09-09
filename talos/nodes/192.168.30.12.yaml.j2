@@ -1,4 +1,11 @@
 ---
+# machine.type stays on the old v1alpha1 field (deprecated but functional) -
+# `just talos machine-controller` reads it directly to resolve IS_CONTROLLER
+# for the base template render, and no new 1.14 document kind carries it;
+# KubeNodeConfig only covers labels. Matches onedr0p/home-ops's own pattern.
+machine:
+  type: controlplane
+---
 apiVersion: v1alpha1
 kind: KubeNodeConfig
 labels:
