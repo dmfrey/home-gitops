@@ -56,31 +56,43 @@ spec:
       key: KOPIA_PASSWORD
   maintenance:
     namespace: kopiur-system
-    # TEMPORARY 2026-09-09 19:58 UTC: forcing another earlier `full` run to
-    # verify the revised epoch parameters below actually compact - the
-    # first forced run (19:33 UTC, minDuration:6h alone) reclaimed 0 bytes,
-    # because minDuration only gates WHEN an epoch may advance, it doesn't
-    # cause advancement. advanceOnCount/advanceOnSizeMiB do. Revert to the
-    # default schedule (omit this block entirely) once confirmed - do not
-    # leave this override in place.
-    schedule:
-      full:
-        cron: "2 20 * * *"
-        jitter: 0s
-      quick:
-        cron: "0 */6 * * *"
   # 2026-09-09: default 24h epoch gate (minDuration) was blocking index-blob
   # compaction - content-index blobs grew unbounded (6934 -> 8209 overnight,
-  # then kept climbing to 4700+) since full maintenance kept reclaiming 0
-  # bytes even after minDuration was lowered to 6h. Root cause: minDuration
-  # is only the gate (minimum epoch age before it MAY advance) - the actual
-  # triggers are advanceOnCount/advanceOnSizeMiB, evaluated per epoch, and
-  # this repo's snapshot activity apparently never accumulates enough
-  # blobs/size within a single epoch to cross the kopia defaults (20 blobs /
-  # 10MiB) regardless of age. Lowered both to match this repo's actual
-  # (homelab-scale, not enterprise) per-epoch accumulation rate.
+  # then kept climbing to 4800+ per kopiur's own status, which turned out to
+  # be stale/inaccurate - see below). Root cause: minDuration is only the
+  # gate (minimum epoch age before it MAY advance) - the actual triggers are
+  # advanceOnCount/advanceOnSizeMiB, evaluated per epoch, and this repo's
+  # snapshot activity apparently never accumulates enough blobs/size within
+  # a single epoch to cross the kopia defaults (20 blobs / 10MiB) regardless
+  # of age.
+  #
+  # Confirmed kopiur does NOT actually push advanceOnCount/advanceOnSizeMiB
+  # from this CRD into the repository's own persisted format-blob config
+  # (only minDuration made it through, unclear why) - verified directly via
+  # `kopia repository status` showing the kopia-default 20/10.5MB still
+  # active on the live repo despite this field declaring 5/2 for hours.
+  # Applied out-of-band via `kopia repository set-parameters` instead
+  # (matches the documented workaround in the now-closed kopiur#258) -
+  # kopia enforces a minimum on advanceOnCount higher than 5 ("epoch
+  # advance on count too low"), so used the lowest value it actually
+  # accepted (10) to match what's really live. Left declared here anyway
+  # for GitOps visibility/intent, even though it isn't confirmed to
+  # actually apply - re-verify with `kopia repository status` after any
+  # future kopiur upgrade in case propagation gets fixed upstream.
+  #
+  # Despite advanceOnCount/advanceOnSizeMiB never taking effect, the
+  # minDuration:6h fix ALONE was already working in practice -
+  # `kopia maintenance info` showed real compaction (thousands of index
+  # blobs merged per cycle) and real cleanup (10,728 pack blobs / 3.9GB
+  # deleted by full-delete-blobs; 8,507 superseded index blobs deleted by
+  # delete-superseded-epoch-indexes) starting right after that fix landed -
+  # kopiur's own IndexBlobHealth condition/lastContentReclaimedBytes status
+  # simply never reflected this real activity (a kopiur reporting gap, not
+  # an actual stuck repository). Live blob count via `kopia repository
+  # status` was already down to ~1013 by the time this was diagnosed,
+  # nowhere near the 4800+ kopiur's own condition kept reporting.
   parameters:
     epoch:
       minDuration: 6h
-      advanceOnCount: 5
+      advanceOnCount: 10
       advanceOnSizeMiB: 2
