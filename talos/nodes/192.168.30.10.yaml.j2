@@ -8,8 +8,16 @@ machine:
 ---
 apiVersion: v1alpha1
 kind: KubeNodeConfig
+# KubeNodeConfig manages Node object labels declaratively - it enforces
+# exactly this set, so node-role.kubernetes.io/control-plane must be
+# listed explicitly or Talos strips it (confirmed live 2026-09-09:
+# applying without it removed the label kubeadm had originally set,
+# even though the old machine.nodeLabels field never listed it either -
+# that field only ever added labels, it never took ownership of the
+# full set the way this new controller does). Matches onedr0p's pattern.
 labels:
   topology.kubernetes.io/zone: dmf-u
+  node-role.kubernetes.io/control-plane: ""
 ---
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
