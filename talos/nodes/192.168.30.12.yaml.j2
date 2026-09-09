@@ -1,89 +1,110 @@
 ---
+# machine.type stays on the old v1alpha1 field (deprecated but functional) -
+# `just talos machine-controller` reads it directly to resolve IS_CONTROLLER
+# for the base template render, and no new 1.14 document kind carries it;
+# KubeNodeConfig only covers labels. Matches onedr0p/home-ops's own pattern.
 machine:
   type: controlplane
-  nodeLabels:
-    topology.kubernetes.io/zone: dmf-u
-  install:
-    diskSelector:
-      model: Samsung SSD 870
-    # 2026-07-25: RTX 3090 arrived, tested in the AOOSTAR AG02 dock (ASMedia ASM2464
-    # bridge) - never stable, hardware-level flakiness on that dock's bridge chip.
-    # 2026-07-28: swapped to a PELADN Link S-3 dock (Intel Barlow Ridge JHL9480 TB5
-    # controller) - link itself rock solid, zero disconnects. Two eGPU-schematic
-    # attempts that day (open driver, then proprietary driver) both reproduced the
-    # same hang: `ext-nvidia-persistenced` blocks boot on /sys/bus/pci/drivers/nvidia
-    # existing, and machine.kernel.modules either infinite-retries (ENODEV, dock not
-    # yet connected) or the node hard-hangs minutes after a successful load. Reverted
-    # to true baseline both times, caught by Talos's own hardware watchdog (iTCO_wdt,
-    # 5m timeout) when left unattended. Filed as siderolabs/talos discussion #13896.
-    # NOTE: an earlier version of this comment claimed a machine.udev.rules hotplug
-    # trigger was "the correct fix" - that was this session's own unverified
-    # speculation, not anything from Talos documentation, and shouldn't have been
-    # written up as settled guidance. No such requirement appears anywhere in the
-    # official NVIDIA-on-Talos docs.
-    # 2026-07-29: two confounds from the earlier attempts addressed before retrying -
-    # (1) the dock's USB Realtek NIC (driver r8152) is now blacklisted, eliminating a
-    # possible source of boot-time instability unrelated to the GPU itself; (2) GPU
-    # Operator now installed underneath kube-system/nvidia-gpu-resource-driver per
-    # the documented pattern (discussion #13896). Retried with the OSS driver
-    # (nvidia-open-gpu-kernel-modules-production) - hard-locked again (network
-    # connectivity lost) on both a warm kexec reboot with the dock pre-connected
-    # AND a genuine full cold boot (power off, dock connected, power on), r8152
-    # still blacklisted either way. Then retried the proprietary driver
-    # (nonfree-kmod-nvidia) under the same genuine cold-boot condition - also
-    # locked up, needed a hard power cycle. Every variable we could control has
-    # now been tested and ruled out: driver flavor (both), boot method (warm and
-    # cold), dock NIC (removed), GPU Operator (added), link stability (confirmed
-    # solid throughout). The cause is something more fundamental than any of
-    # that - most likely the actual nvidia_drm/i915 interaction on this exact
-    # hardware. Reverted to true baseline (zero NVIDIA extensions, no
-    # machine.kernel.modules) - not safe to leave any eGPU schematic running
-    # unattended on this node given the failure is this consistent and
-    # unrelated to every confound tested so far.
-    # 2026-07-29: previous revert accidentally used a stale schematic ID
-    # (c48c7cd9...) that predates the r8152 blacklist - confirmed via
-    # `talosctl get links` showing enp0s13f0u3u4u4 (the dock's Realtek NIC)
-    # present again after that revert. Corrected to the actual current
-    # baseline ID.
-    # 2026-07-30: node has 2 independent physical Thunderbolt ports (root
-    # ports 0000:00:07.0 "Port #2" and 0000:00:07.3 "Port #1", asymmetric
-    # BIOS-reserved PCIe windows - Port #2 has a larger I/O/prefetch window).
-    # Every previous driver-load hang happened with the dock on Port #2
-    # (bus 0000:04:00.x). Switched to Port #1 for this attempt - confirmed
-    # via live testing that plain PCI enumeration succeeds cleanly on both
-    # ports with no driver loaded, so port choice alone wasn't expected to
-    # be the fix, but wanted it controlled for regardless.
-    #
-    # RESOLVED 2026-07-30: got a physical console screenshot of the actual
-    # hang for the first time (previously only ever visible via dmesg after
-    # reboot, which loses the exact failure point) - confirmed a genuine
-    # hard lock (keyboard totally unresponsive, not just a frozen frame),
-    # occurring right after `ext-nvidia-cdi-gen` starts successfully (a GPU
-    # probe/query), not during module load or ext-nvidia-persistenced
-    # startup. Driver 580.173.02 on this Ampere card uses GSP (GPU System
-    # Processor) firmware by default - an async RPC channel to a separate
-    # on-GPU microcontroller, a known source of driver hangs when that RPC
-    # deadlocks, and hotplugged/docked GPUs are a much less-tested scenario
-    # for GSP than natively-present ones. Added
-    # machine.kernel.modules[nvidia].parameters:
-    # NVreg_EnableGpuFirmware=0 to force the older non-GSP init path -
-    # `ext-nvidia-cdi-gen` finished successfully for the first time ever,
-    # full boot completed, gpu.nvidia.com ResourceSlice registered
-    # correctly (RTX 3090, Ampere, cudaComputeCapability 8.6.0, driver
-    # 580.173.2). r8152 stays blacklisted (unconditional in
-    # schematic.yaml.j2, unaffected by this change).
-    image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.14.0 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
-    wipe: false
-  kernel:
-    modules:
-      - name: nvidia
-        parameters:
-          # Forces the older non-GSP driver init path - see the install.image
-          # comment above for the full story. This is the fix.
-          - NVreg_EnableGpuFirmware=0
-      - name: nvidia_uvm
-      - name: nvidia_drm
-      - name: nvidia_modeset
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: dmf-u
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  # 2026-07-25: RTX 3090 arrived, tested in the AOOSTAR AG02 dock (ASMedia ASM2464
+  # bridge) - never stable, hardware-level flakiness on that dock's bridge chip.
+  # 2026-07-28: swapped to a PELADN Link S-3 dock (Intel Barlow Ridge JHL9480 TB5
+  # controller) - link itself rock solid, zero disconnects. Two eGPU-schematic
+  # attempts that day (open driver, then proprietary driver) both reproduced the
+  # same hang: `ext-nvidia-persistenced` blocks boot on /sys/bus/pci/drivers/nvidia
+  # existing, and machine.kernel.modules either infinite-retries (ENODEV, dock not
+  # yet connected) or the node hard-hangs minutes after a successful load. Reverted
+  # to true baseline both times, caught by Talos's own hardware watchdog (iTCO_wdt,
+  # 5m timeout) when left unattended. Filed as siderolabs/talos discussion #13896.
+  # NOTE: an earlier version of this comment claimed a machine.udev.rules hotplug
+  # trigger was "the correct fix" - that was this session's own unverified
+  # speculation, not anything from Talos documentation, and shouldn't have been
+  # written up as settled guidance. No such requirement appears anywhere in the
+  # official NVIDIA-on-Talos docs.
+  # 2026-07-29: two confounds from the earlier attempts addressed before retrying -
+  # (1) the dock's USB Realtek NIC (driver r8152) is now blacklisted, eliminating a
+  # possible source of boot-time instability unrelated to the GPU itself; (2) GPU
+  # Operator now installed underneath kube-system/nvidia-gpu-resource-driver per
+  # the documented pattern (discussion #13896). Retried with the OSS driver
+  # (nvidia-open-gpu-kernel-modules-production) - hard-locked again (network
+  # connectivity lost) on both a warm kexec reboot with the dock pre-connected
+  # AND a genuine full cold boot (power off, dock connected, power on), r8152
+  # still blacklisted either way. Then retried the proprietary driver
+  # (nonfree-kmod-nvidia) under the same genuine cold-boot condition - also
+  # locked up, needed a hard power cycle. Every variable we could control has
+  # now been tested and ruled out: driver flavor (both), boot method (warm and
+  # cold), dock NIC (removed), GPU Operator (added), link stability (confirmed
+  # solid throughout). The cause is something more fundamental than any of
+  # that - most likely the actual nvidia_drm/i915 interaction on this exact
+  # hardware. Reverted to true baseline (zero NVIDIA extensions, no
+  # machine.kernel.modules) - not safe to leave any eGPU schematic running
+  # unattended on this node given the failure is this consistent and
+  # unrelated to every confound tested so far.
+  # 2026-07-29: previous revert accidentally used a stale schematic ID
+  # (c48c7cd9...) that predates the r8152 blacklist - confirmed via
+  # `talosctl get links` showing enp0s13f0u3u4u4 (the dock's Realtek NIC)
+  # present again after that revert. Corrected to the actual current
+  # baseline ID.
+  # 2026-07-30: node has 2 independent physical Thunderbolt ports (root
+  # ports 0000:00:07.0 "Port #2" and 0000:00:07.3 "Port #1", asymmetric
+  # BIOS-reserved PCIe windows - Port #2 has a larger I/O/prefetch window).
+  # Every previous driver-load hang happened with the dock on Port #2
+  # (bus 0000:04:00.x). Switched to Port #1 for this attempt - confirmed
+  # via live testing that plain PCI enumeration succeeds cleanly on both
+  # ports with no driver loaded, so port choice alone wasn't expected to
+  # be the fix, but wanted it controlled for regardless.
+  #
+  # RESOLVED 2026-07-30: got a physical console screenshot of the actual
+  # hang for the first time (previously only ever visible via dmesg after
+  # reboot, which loses the exact failure point) - confirmed a genuine
+  # hard lock (keyboard totally unresponsive, not just a frozen frame),
+  # occurring right after `ext-nvidia-cdi-gen` starts successfully (a GPU
+  # probe/query), not during module load or ext-nvidia-persistenced
+  # startup. Driver 580.173.02 on this Ampere card uses GSP (GPU System
+  # Processor) firmware by default - an async RPC channel to a separate
+  # on-GPU microcontroller, a known source of driver hangs when that RPC
+  # deadlocks, and hotplugged/docked GPUs are a much less-tested scenario
+  # for GSP than natively-present ones. Added
+  # machine.kernel.modules[nvidia].parameters:
+  # NVreg_EnableGpuFirmware=0 to force the older non-GSP init path -
+  # `ext-nvidia-cdi-gen` finished successfully for the first time ever,
+  # full boot completed, gpu.nvidia.com ResourceSlice registered
+  # correctly (RTX 3090, Ampere, cudaComputeCapability 8.6.0, driver
+  # 580.173.2). r8152 stays blacklisted (unconditional in
+  # schematic.yaml.j2, unaffected by this change).
+  image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.14.0 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
+provisioning:
+  diskSelector:
+    match: disk.model == "Samsung SSD 870"
+  wipe: false
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia
+parameters:
+  # Forces the older non-GSP driver init path - see the UnattendedInstallConfig
+  # comment above for the full story. This is the fix.
+  - NVreg_EnableGpuFirmware=0
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia_uvm
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia_drm
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvidia_modeset
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

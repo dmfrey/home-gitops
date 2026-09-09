@@ -1,4 +1,31 @@
 ---
+# 2026-08-27: migrated to Talos 1.14's multi-document config kinds ahead of
+# time - see .renovate/overrides.json5 for why the actual Kubernetes 1.37
+# upgrade itself was held back at the time (talosctl 1.13.9 didn't support
+# the 1.36->1.37 path; needed Talos 1.14 stable). Field mapping follows the
+# exact deprecation list in the v1.14.0 release notes, cross-checked against
+# github.com/onedr0p/home-ops's already-completed, live-running migration
+# for anything the release notes didn't spell out precisely (e.g. exact new
+# field names/nesting).
+#
+# 2026-09-09: re-validated against real Talos 1.14.0 stable (this repo's
+# actual OS/talosctl version since Renovate PR #5066 - that bump landed
+# independently of this branch, on the old field format, so the version
+# upgrade and this config migration happened out of order). Found and fixed
+# a real issue in the process: KubeAPIServerCAConfig/KubeAggregatorCAConfig/
+# KubeServiceAccountConfig expect raw PEM text for their cert/key fields,
+# not base64 like the old fields (and our 1Password values) use - confirmed
+# via Talos source (meta.CertificateAndKey.Validate calls pem.Decode
+# directly on the field bytes, no base64-decode step). Rather than solving
+# that conversion, left cluster.ca/clusterName/controlPlane.endpoint/
+# aggregatorCA/serviceAccount on their original v1alpha1 fields (deprecated
+# but still fully functional) to match onedr0p's own live config, which
+# does the same for this exact area. Everything else NOT listed as
+# deprecated in the release notes (machine.ca, machine.token, cluster.token,
+# cluster.etcd, machine.features.{apidCheckExtKeyUsage,diskQuotaSupport,
+# rbac}) is also left in its original v1alpha1 location. Confirmed valid
+# via `talosctl validate --strict` against a real 1.14.0 binary for both a
+# baseline node and the eGPU (k8s-2) node's full config.
 version: v1alpha1
 machine:
 
@@ -11,120 +38,16 @@ machine:
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
-    hostDNS:
-      enabled: true
-      forwardKubeDNSToHost: true # Requires Cilium socketLB features (confirmed active)
-      resolveMemberNames: true
-    kubePrism:
-      enabled: true
-      port: 7445
-    {% if ENV.IS_CONTROLLER %}
-    kubernetesTalosAPIAccess:
-      allowedKubernetesNamespaces:
-        - actions-runner-system
-        - system-upgrade
-      allowedRoles:
-        - os:admin
-      enabled: true
-    {% endif %}
     rbac: true
 
-  files:
-    - op: create
-      path: /etc/cri/conf.d/20-customization.part
-      content: |
-        [plugins."io.containerd.cri.v1.images"]
-          discard_unpacked_layers = false
-        [plugins."io.containerd.cri.v1.runtime"]
-          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
-          device_ownership_from_security_context = true
-    - op: overwrite
-      path: /etc/nfsmount.conf
-      permissions: 0o644
-      content: |
-        [ NFSMount_Global_Options ]
-        nfsvers=4.1
-        hard=True
-        nconnect=16
-        noatime=True
-
-  # install.image is set per-node in talos/nodes/<ip>.yaml.j2 - each node's
-  # image must be resolved explicitly (see `just talos machine-image <node>`)
-
-  kernel:
-    modules:
-      - name: thunderbolt   # Provided by siderolabs/thunderbolt extension, not the base
-                            # kernel; needed for USB4/TB4 PCIe tunneling (planned eGPU)
+  # install.image is set per-node in talos/nodes/<ip>.yaml.j2 via the new
+  # UnattendedInstallConfig document - each node's image must be resolved
+  # explicitly (see `just talos machine-image <node>`)
 
 #  time:
 #    servers:
 #      - 192.168.30.1      # UDM-SE gateway on homelab VLAN — prefer local over internet
 #      - time.cloudflare.com
-
-  kubelet:
-    defaultRuntimeSeccompProfileEnabled: true
-    disableManifestsDirectory: true
-    extraArgs:
-      # net.ipv6.conf.* per-interface sysctls (e.g. accept_ra_rt_info_max_plen,
-      # used by matter-server to learn the Thread OMR route on its macvlan
-      # interface) are classified unsafe by Kubernetes by default and need
-      # this allowlist, or the pod fails admission. Same setting
-      # github.com/aclerici38/home-ops uses.
-      allowed-unsafe-sysctls: net.ipv6.conf.*
-    extraConfig:
-      imageMaximumGCAge: 24h
-      imageGCHighThresholdPercent: 65
-      imageGCLowThresholdPercent: 50
-      serializeImagePulls: false
-    image: ghcr.io/siderolabs/kubelet:v1.37.0@sha256:d87c090ff7d915c308bf71ad2fe7d63a21cbf8e2481066d2c4b41feea2ddc5c9
-    nodeIP:
-      validSubnets:
-        - 192.168.30.0/24
-
-  nodeLabels:
-    node.kubernetes.io/gpu: "true"
-    topology.kubernetes.io/region: dmf
-
-  sysctls:
-    # --- Filesystem Watchers ---
-    fs.inotify.max_user_instances: "8192"
-    fs.inotify.max_user_watches: "1048576"
-
-    # --- Virtual Memory Tuning ---
-    vm.dirty_background_ratio: "5"
-    vm.dirty_ratio: "10"
-    vm.swappiness: "0"                         # No swap on Talos; explicit for Kubernetes best practice
-    vm.min_free_kbytes: "1048576"              # Reserve 1GB free — prevents OOM during Rook-Ceph I/O bursts on 64GB nodes
-    vm.max_map_count: "524288"                 # Required for Elasticsearch (SonarQube)
-
-    # --- Network Performance Tuning (2.5GbE) ---
-    net.core.default_qdisc: fq
-    net.core.netdev_max_backlog: "5000"        # Default 1000 is tuned for 1GbE
-    net.core.rmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
-    net.core.somaxconn: "4096"
-    net.core.wmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
-    net.ipv4.tcp_congestion_control: bbr
-    net.ipv4.tcp_mtu_probing: "1"             # Enable MTU probing for Cilium pod networking
-    net.ipv4.tcp_rmem: 4096 87380 16777216
-    net.ipv4.tcp_wmem: 4096 65536 16777216
-    net.ipv4.neigh.default.gc_thresh1: "4096"  # Default 128 is tight for 100+ pods/node
-    net.ipv4.neigh.default.gc_thresh2: "8192"
-    net.ipv4.neigh.default.gc_thresh3: "16384" # Default 1024, preventive headroom after 109-pod density incident
-
-    # --- NFS Client Tuning ---
-    sunrpc.tcp_max_slot_table_entries: "128"
-
-    # --- Process & Namespace Limits ---
-    user.max_user_namespaces: "11255"
-    kernel.pid_max: "1048576"              # Default 32768 is too low for large clusters; prevents PID exhaustion
-
-  sysfs:
-    devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
-    kernel.mm.transparent_hugepage.enabled: never    # Eliminate THP compaction latency spikes (etcd, PostgreSQL)
-    kernel.mm.transparent_hugepage.defrag: never     # Stop background memory compaction entirely
-    # energy_performance_preference is per-core on i7-13620H — not available at
-    # intel_pstate level. Per-core path: /sys/devices/system/cpu/cpuX/cpufreq/energy_performance_preference
-    # Current default is "balance_performance" which is appropriate for mini PC thermals.
 
 #  network:
 #    nameservers:
@@ -132,12 +55,18 @@ machine:
 
   token: op://kubernetes/talos/MACHINE_TOKEN
 
-  udev:
-    rules:
-      - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
-      - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
-
 cluster:
+  # cluster.ca/clusterName/controlPlane.endpoint deliberately NOT migrated to
+  # KubeAPIServerCAConfig/KubeClusterConfig (the two are mutually exclusive -
+  # confirmed via validate: "kube-apiserver CA is already set in v1alpha1
+  # config (.cluster.ca)" when both are present). The new-kind CA fields
+  # expect raw PEM text, not base64 like this field and our 1Password values
+  # use (confirmed via Talos source: meta.CertificateAndKey.Validate calls
+  # pem.Decode directly on the field bytes, no base64-decode step) - matches
+  # github.com/onedr0p/home-ops's own live-running config, which also leaves
+  # this exact area (ca, clusterName, controlPlane.endpoint, serviceAccount)
+  # on the old deprecated-but-functional fields rather than solving that
+  # conversion. Same reasoning applies to aggregatorCA/serviceAccount below.
   ca:
     crt: op://kubernetes/talos/CLUSTER_CA_CRT
     {% if ENV.IS_CONTROLLER %}
@@ -149,63 +78,9 @@ cluster:
   controlPlane:
     endpoint: https://k8s.internal:6443
 
-  discovery:
-    enabled: true
-    registries:
-      kubernetes:
-        disabled: true
-      service:
-        disabled: false
-
-  id: op://kubernetes/talos/CLUSTER_ID
-
-  network:
-    cni:
-      name: none
-    dnsDomain: cluster.local
-    podSubnets:
-      - 10.42.0.0/16
-    serviceSubnets:
-      - 10.43.0.0/16
-
-  secret: op://kubernetes/talos/CLUSTER_SECRET
-
   token: op://kubernetes/talos/CLUSTER_TOKEN
 
   {% if ENV.IS_CONTROLLER %}
-  aggregatorCA:
-    crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
-    key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
-
-  allowSchedulingOnControlPlanes: true
-
-  apiServer:
-    auditPolicy:
-      apiVersion: audit.k8s.io/v1
-      kind: Policy
-      rules:
-        - level: Metadata
-    certSANs:
-      - k8s.internal
-
-    disablePodSecurityPolicy: true
-
-    extraArgs:
-      enable-aggregator-routing: "true"
-      feature-gates: HPAScaleToZero=true
-      runtime-config: admissionregistration.k8s.io/v1beta1=true  # volsync-mover-nfs uses v1beta1 MutatingAdmissionPolicyBinding; remove when volsync updates to v1
-
-    image: registry.k8s.io/kube-apiserver:v1.37.0@sha256:d1045e5c6d2f016797d22143eba7502e1bb712a4681836a7c35763a9c192dd70
-
-  controllerManager:
-    extraArgs:
-      bind-address: 0.0.0.0
-      feature-gates: HPAScaleToZero=true
-    image: registry.k8s.io/kube-controller-manager:v1.37.0@sha256:997c997924eb8574f63f204a0b0af133aaf33c10df84009c32d34037f4e0e077
-
-  coreDNS:
-    disabled: true
-
   etcd:
     advertisedSubnets:
       - 192.168.30.0/24
@@ -215,37 +90,280 @@ cluster:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
 
-  proxy:
-    disabled: true
-    image: registry.k8s.io/kube-proxy:v1.37.0@sha256:77bf2b08ff8ac1a4a446cffaa85e79e87379c8cb54fcf60f2cb6c62c966829c8
-
-  scheduler:
-    config:
-      apiVersion: kubescheduler.config.k8s.io/v1
-      kind: KubeSchedulerConfiguration
-      profiles:
-        - schedulerName: default-scheduler
-          plugins:
-            score:
-              disabled:
-                - name: ImageLocality
-          pluginConfig:
-            - name: PodTopologySpread
-              args:
-                defaultingType: List
-                defaultConstraints:
-                  - maxSkew: 1
-                    topologyKey: kubernetes.io/hostname
-                    whenUnsatisfiable: ScheduleAnyway
-    extraArgs:
-      bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.37.0@sha256:a27622f132aa09cf2461ba077894a070c0186ec607366d14e805912d4804d11f
-
-  secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+  aggregatorCA:
+    crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
+    key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
 
   serviceAccount:
     key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
+
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  enabled: true
+  forwardKubeDNSToHost: true # Requires Cilium socketLB features (confirmed active)
+  resolveMemberNames: true
+
+---
+apiVersion: v1alpha1
+kind: KubePrismConfig
+port: 7445
+
+{% if ENV.IS_CONTROLLER %}
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedKubernetesNamespaces:
+  - actions-runner-system
+  - system-upgrade
+allowedRoles:
+  - os:admin
+{% endif %}
+
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: containerd
+content: |
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+    device_ownership_from_security_context = true
+
+---
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |
+  [ NFSMount_Global_Options ]
+  nfsvers=4.1
+  hard=True
+  nconnect=16
+  noatime=True
+
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: thunderbolt   # Provided by siderolabs/thunderbolt extension, not the base
+                    # kernel; needed for USB4/TB4 PCIe tunneling (planned eGPU)
+
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+# no `taints:` set here - the old allowSchedulingOnControlPlanes: true is now
+# implicit: Talos 1.14 no longer auto-applies a control-plane NoSchedule
+# taint unless one is explicitly listed in this document's `taints:` field
+# (confirmed via github.com/onedr0p/home-ops's live-running migration, which
+# also omits taints for the same "schedulable control planes" intent).
+nodeIP:
+  validSubnets:
+    - 192.168.30.0/24
+labels:
+  node.kubernetes.io/gpu: "true"
+  topology.kubernetes.io/region: dmf
+
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+# disableManifestsDirectory dropped - not a field on the new KubeletConfig
+# document (confirmed via the v1.14 config reference); the concept appears
+# to have been retired rather than relocated.
+defaultRuntimeSeccompProfileEnabled: true
+extraArgs:
+  # net.ipv6.conf.* per-interface sysctls (e.g. accept_ra_rt_info_max_plen,
+  # used by matter-server to learn the Thread OMR route on its macvlan
+  # interface) are classified unsafe by Kubernetes by default and need
+  # this allowlist, or the pod fails admission. Same setting
+  # github.com/aclerici38/home-ops uses.
+  allowed-unsafe-sysctls: net.ipv6.conf.*
+config:
+  imageMaximumGCAge: 24h
+  imageGCHighThresholdPercent: 65
+  imageGCLowThresholdPercent: 50
+  serializeImagePulls: false
+image: ghcr.io/siderolabs/kubelet:v1.37.0@sha256:d87c090ff7d915c308bf71ad2fe7d63a21cbf8e2481066d2c4b41feea2ddc5c9
+
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  # --- Filesystem Watchers ---
+  fs.inotify.max_user_instances: "8192"
+  fs.inotify.max_user_watches: "1048576"
+
+  # --- Virtual Memory Tuning ---
+  vm.dirty_background_ratio: "5"
+  vm.dirty_ratio: "10"
+  vm.swappiness: "0"                         # No swap on Talos; explicit for Kubernetes best practice
+  vm.min_free_kbytes: "1048576"              # Reserve 1GB free — prevents OOM during Rook-Ceph I/O bursts on 64GB nodes
+  vm.max_map_count: "524288"                 # Required for Elasticsearch (SonarQube)
+
+  # --- Network Performance Tuning (2.5GbE) ---
+  net.core.default_qdisc: fq
+  net.core.netdev_max_backlog: "5000"        # Default 1000 is tuned for 1GbE
+  net.core.rmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
+  net.core.somaxconn: "4096"
+  net.core.wmem_max: "16777216"              # 16MB — improves NFS throughput with nconnect=16
+  net.ipv4.tcp_congestion_control: bbr
+  net.ipv4.tcp_mtu_probing: "1"             # Enable MTU probing for Cilium pod networking
+  net.ipv4.tcp_rmem: 4096 87380 16777216
+  net.ipv4.tcp_wmem: 4096 65536 16777216
+  net.ipv4.neigh.default.gc_thresh1: "4096"  # Default 128 is tight for 100+ pods/node
+  net.ipv4.neigh.default.gc_thresh2: "8192"
+  net.ipv4.neigh.default.gc_thresh3: "16384" # Default 1024, preventive headroom after 109-pod density incident
+
+  # --- NFS Client Tuning ---
+  sunrpc.tcp_max_slot_table_entries: "128"
+
+  # --- Process & Namespace Limits ---
+  user.max_user_namespaces: "11255"
+  kernel.pid_max: "1048576"              # Default 32768 is too low for large clusters; prevents PID exhaustion
+
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.intel_pstate.hwp_dynamic_boost: "1"
+  kernel.mm.transparent_hugepage.enabled: never    # Eliminate THP compaction latency spikes (etcd, PostgreSQL)
+  kernel.mm.transparent_hugepage.defrag: never     # Stop background memory compaction entirely
+  # energy_performance_preference is per-core on i7-13620H — not available at
+  # intel_pstate level. Per-core path: /sys/devices/system/cpu/cpuX/cpufreq/energy_performance_preference
+  # Current default is "balance_performance" which is appropriate for mini PC thermals.
+
+---
+apiVersion: v1alpha1
+kind: UdevRulesConfig
+rules:
+  - KERNEL=="ttyUSB[0-9]", GROUP="20", MODE="0660"
+  - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+
+---
+apiVersion: v1alpha1
+kind: DiscoveryServiceConfig
+name: primary
+endpoint: https://discovery.talos.dev/
+
+---
+apiVersion: v1alpha1
+kind: DiscoveryIdentityConfig
+clusterID: op://kubernetes/talos/CLUSTER_ID
+clusterSecret: op://kubernetes/talos/CLUSTER_SECRET
+
+---
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+dnsDomain: cluster.local
+podSubnets:
+  - 10.42.0.0/16
+serviceSubnets:
+  - 10.43.0.0/16
+
+{% if ENV.IS_CONTROLLER %}
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+certExtraSANs:
+  - k8s.internal
+extraArgs:
+  enable-aggregator-routing: "true"
+  feature-gates: HPAScaleToZero=true
+  runtime-config: admissionregistration.k8s.io/v1beta1=true  # volsync-mover-nfs uses v1beta1 MutatingAdmissionPolicyBinding; remove when volsync updates to v1
+image: registry.k8s.io/kube-apiserver:v1.37.0@sha256:d1045e5c6d2f016797d22143eba7502e1bb712a4681836a7c35763a9c192dd70
+
+---
+apiVersion: v1alpha1
+kind: KubeAuditPolicyConfig
+configuration:
+  apiVersion: audit.k8s.io/v1
+  kind: Policy
+  rules:
+    - level: Metadata
+
+---
+apiVersion: v1alpha1
+kind: KubeAuthenticationConfig
+configuration:
+  anonymous:
+    enabled: true
+    conditions:
+      - path: /livez
+      - path: /readyz
+      - path: /healthz
+  jwt: []
+
+---
+apiVersion: v1alpha1
+kind: KubeAuthorizerConfig
+name: node
+type: Node
+
+---
+apiVersion: v1alpha1
+kind: KubeAuthorizerConfig
+name: rbac
+type: RBAC
+
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+  feature-gates: HPAScaleToZero=true
+image: registry.k8s.io/kube-controller-manager:v1.37.0@sha256:997c997924eb8574f63f204a0b0af133aaf33c10df84009c32d34037f4e0e077
+
+---
+apiVersion: v1alpha1
+kind: KubeCoreDNSConfig
+enabled: false
+
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+image: registry.k8s.io/kube-proxy:v1.37.0@sha256:77bf2b08ff8ac1a4a446cffaa85e79e87379c8cb54fcf60f2cb6c62c966829c8
+
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+config:
+  apiVersion: kubescheduler.config.k8s.io/v1
+  kind: KubeSchedulerConfiguration
+  profiles:
+    - schedulerName: default-scheduler
+      plugins:
+        score:
+          disabled:
+            - name: ImageLocality
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultingType: List
+            defaultConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+extraArgs:
+  bind-address: 0.0.0.0
+image: registry.k8s.io/kube-scheduler:v1.37.0@sha256:a27622f132aa09cf2461ba077894a070c0186ec607366d14e805912d4804d11f
+
+---
+apiVersion: v1alpha1
+kind: KubeEtcdEncryptionConfig
+config:
+  resources:
+    - providers:
+        - secretbox:
+            keys:
+              - name: key2
+                secret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+        - identity: {}
+      resources:
+        - secrets
+{% endif %}
 
 ---
 # 2026-07-29: replaced raw `eth0` (net.ifnames=0 classic naming, order-dependent at
