@@ -1,19 +1,31 @@
 ---
 # 2026-08-27: migrated to Talos 1.14's multi-document config kinds ahead of
 # time - see .renovate/overrides.json5 for why the actual Kubernetes 1.37
-# upgrade itself is held back (talosctl 1.13.9 doesn't support the 1.36->1.37
-# path yet; needs Talos 1.14 stable, currently only at rc.2). This is prep
-# only: rendered and validated offline with a separately-installed
-# talos@1.14.0-rc.2 talosctl (never the pinned .mise.toml default), never
-# applied to any node. Field mapping follows the exact deprecation list in
-# the v1.14.0-rc.2 release notes, cross-checked against
+# upgrade itself was held back at the time (talosctl 1.13.9 didn't support
+# the 1.36->1.37 path; needed Talos 1.14 stable). Field mapping follows the
+# exact deprecation list in the v1.14.0 release notes, cross-checked against
 # github.com/onedr0p/home-ops's already-completed, live-running migration
 # for anything the release notes didn't spell out precisely (e.g. exact new
-# field names/nesting). Everything NOT listed as deprecated in those release
-# notes (machine.ca, machine.token, cluster.ca/token, cluster.etcd,
-# cluster.serviceAccount, machine.features.{apidCheckExtKeyUsage,
-# diskQuotaSupport,rbac}) is left in its original v1alpha1 location -
-# confirmed still valid via `talosctl validate --strict` against 1.14.0-rc.2.
+# field names/nesting).
+#
+# 2026-09-09: re-validated against real Talos 1.14.0 stable (this repo's
+# actual OS/talosctl version since Renovate PR #5066 - that bump landed
+# independently of this branch, on the old field format, so the version
+# upgrade and this config migration happened out of order). Found and fixed
+# a real issue in the process: KubeAPIServerCAConfig/KubeAggregatorCAConfig/
+# KubeServiceAccountConfig expect raw PEM text for their cert/key fields,
+# not base64 like the old fields (and our 1Password values) use - confirmed
+# via Talos source (meta.CertificateAndKey.Validate calls pem.Decode
+# directly on the field bytes, no base64-decode step). Rather than solving
+# that conversion, left cluster.ca/clusterName/controlPlane.endpoint/
+# aggregatorCA/serviceAccount on their original v1alpha1 fields (deprecated
+# but still fully functional) to match onedr0p's own live config, which
+# does the same for this exact area. Everything else NOT listed as
+# deprecated in the release notes (machine.ca, machine.token, cluster.token,
+# cluster.etcd, machine.features.{apidCheckExtKeyUsage,diskQuotaSupport,
+# rbac}) is also left in its original v1alpha1 location. Confirmed valid
+# via `talosctl validate --strict` against a real 1.14.0 binary for both a
+# baseline node and the eGPU (k8s-2) node's full config.
 version: v1alpha1
 machine:
 
@@ -44,9 +56,28 @@ machine:
   token: op://kubernetes/talos/MACHINE_TOKEN
 
 cluster:
-  # cluster.ca moved to the KubeAPIServerCAConfig document below - the two
-  # are mutually exclusive (confirmed via validate: "kube-apiserver CA is
-  # already set in v1alpha1 config (.cluster.ca)" when both are present).
+  # cluster.ca/clusterName/controlPlane.endpoint deliberately NOT migrated to
+  # KubeAPIServerCAConfig/KubeClusterConfig (the two are mutually exclusive -
+  # confirmed via validate: "kube-apiserver CA is already set in v1alpha1
+  # config (.cluster.ca)" when both are present). The new-kind CA fields
+  # expect raw PEM text, not base64 like this field and our 1Password values
+  # use (confirmed via Talos source: meta.CertificateAndKey.Validate calls
+  # pem.Decode directly on the field bytes, no base64-decode step) - matches
+  # github.com/onedr0p/home-ops's own live-running config, which also leaves
+  # this exact area (ca, clusterName, controlPlane.endpoint, serviceAccount)
+  # on the old deprecated-but-functional fields rather than solving that
+  # conversion. Same reasoning applies to aggregatorCA/serviceAccount below.
+  ca:
+    crt: op://kubernetes/talos/CLUSTER_CA_CRT
+    {% if ENV.IS_CONTROLLER %}
+    key: op://kubernetes/talos/CLUSTER_CA_KEY
+    {% endif %}
+
+  clusterName: k8s
+
+  controlPlane:
+    endpoint: https://k8s.internal:6443
+
   token: op://kubernetes/talos/CLUSTER_TOKEN
 
   {% if ENV.IS_CONTROLLER %}
@@ -58,6 +89,13 @@ cluster:
       key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
+
+  aggregatorCA:
+    crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
+    key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
+
+  serviceAccount:
+    key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
 
 ---
@@ -205,12 +243,6 @@ rules:
 
 ---
 apiVersion: v1alpha1
-kind: KubeClusterConfig
-clusterName: k8s
-endpoint: https://k8s.internal:6443
-
----
-apiVersion: v1alpha1
 kind: DiscoveryServiceConfig
 name: primary
 endpoint: https://discovery.talos.dev/
@@ -230,30 +262,7 @@ podSubnets:
 serviceSubnets:
   - 10.43.0.0/16
 
----
-apiVersion: v1alpha1
-kind: KubeAPIServerCAConfig
-issuingCA:
-  cert: op://kubernetes/talos/CLUSTER_CA_CRT
-  {% if ENV.IS_CONTROLLER %}
-  key: op://kubernetes/talos/CLUSTER_CA_KEY
-  {% endif %}
-
 {% if ENV.IS_CONTROLLER %}
----
-apiVersion: v1alpha1
-kind: KubeAggregatorCAConfig
-issuingCA:
-  cert: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
-  key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
-
----
-apiVersion: v1alpha1
-kind: KubeServiceAccountConfig
-issuer:
-  privateKey: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
-  issuerURL: https://k8s.internal:6443
-
 ---
 apiVersion: v1alpha1
 kind: KubeAPIServerConfig
