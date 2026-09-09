@@ -29,7 +29,18 @@ spec:
       # this exact field (they call it ${KOPIUR_CAPACITY:=5Gi} there).
       capacity: ${KOPIUR_CACHE_CAPACITY:=5Gi}
       mode: Persistent
-      storageClassName: ${KOPIUR_STORAGECLASS:=ceph-block}
+      # Hardcoded (not the shared ${KOPIUR_STORAGECLASS} used by the actual
+      # app-data PVC below and the deep-verify scratch target) - this cache
+      # is disposable scratch/log space, not real backup content, so it
+      # doesn't need Ceph's replication/HA. openebs-hostpath is node-local
+      # single-copy storage on each node's dedicated small NVMe/SATA drive
+      # (128GB, sitting at ~2% utilized before this), same tier already
+      # used for actions-runner-controller's ephemeral work volumes.
+      # Matches onedr0p/home-ops's own pattern exactly - they hardcode
+      # this same field to their own dedicated "slow" storage class
+      # (miroir-slow) rather than sharing it with the app-data PVC's
+      # storage class variable.
+      storageClassName: openebs-hostpath
     securityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
       runAsGroup: ${KOPIUR_PGID:=1000}
