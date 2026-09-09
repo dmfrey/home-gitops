@@ -19,7 +19,6 @@ spec:
     substitute:
       APP: seerr
       CONTROLLER: StatefulSet
-      KOPIUR_CACHE_CAPACITY: 5Gi
       KOPIUR_CAPACITY: 2Gi
   prune: true
   sourceRef:

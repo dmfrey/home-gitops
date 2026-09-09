@@ -20,7 +20,6 @@ spec:
     substitute:
       APP: orcaslicer
       KOPIUR_CAPACITY: 10Gi
-      KOPIUR_CACHE_CAPACITY: 2Gi
       KOPIUR_PUID: "911"
       KOPIUR_PGID: "911"
     substituteFrom:

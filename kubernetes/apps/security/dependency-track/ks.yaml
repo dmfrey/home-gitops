@@ -49,7 +49,6 @@ spec:
     substitute:
       APP: dependency-track
       NFS_SCALER_TARGET: dependency-track-api
-      KOPIUR_CACHE_CAPACITY: 2Gi
       KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:

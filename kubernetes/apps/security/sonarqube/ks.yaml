@@ -49,7 +49,6 @@ spec:
   postBuild:
     substitute:
       APP: sonarqube
-      KOPIUR_CACHE_CAPACITY: 2Gi
       KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:

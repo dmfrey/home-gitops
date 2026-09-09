@@ -38,7 +38,6 @@ spec:
     substitute:
       APP: zigbee2mqtt
       CONTROLLER: StatefulSet
-      KOPIUR_CACHE_CAPACITY: 2Gi
       KOPIUR_CAPACITY: 1Gi
   prune: true
   sourceRef:
@@ -71,7 +70,6 @@ spec:
     substitute:
       APP: zigbee2mqtt-02
       CONTROLLER: StatefulSet
-      KOPIUR_CACHE_CAPACITY: 2Gi
       KOPIUR_CAPACITY: 1Gi
   prune: true
   sourceRef:

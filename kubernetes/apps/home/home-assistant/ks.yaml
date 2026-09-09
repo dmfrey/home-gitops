@@ -76,7 +76,6 @@ spec:
   postBuild:
     substitute:
       APP: home-assistant
-      KOPIUR_CACHE_CAPACITY: 2Gi
       KOPIUR_CAPACITY: 5Gi
     substituteFrom:
       - kind: Secret

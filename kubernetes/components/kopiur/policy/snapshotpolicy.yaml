@@ -16,18 +16,18 @@ spec:
     compressor: zstd
   mover:
     cache:
-      # 2026-09-09: default doubled 1Gi -> 2Gi. Every mover Job's own
-      # KOPIA_LOG_DIR (cli-logs/content-logs) lives on this same PVC and
-      # settles at a kopia-imposed steady-state of ~700-850MB regardless of
-      # app or snapshot frequency (its own file-count retention caps growth,
-      # not available space - confirmed via a fleet-wide sweep, filed
-      # upstream as home-operations/kopiur#452, not CRD-tunable). At 1Gi
-      # that left near-zero headroom for the actual content cache and
-      # eventually failed snapshots outright with "no space left on device"
-      # before backup logic even ran. Since the log usage is capped, not
-      # unbounded, doubling the PVC is a durable fix, not just a delay -
-      # steady-state usage should settle under ~50% instead of ~75-89%.
-      capacity: ${KOPIUR_CACHE_CAPACITY:=2Gi}
+      # 2026-09-09: default raised 1Gi -> 5Gi (via an interim 2Gi). Every
+      # mover Job's own KOPIA_LOG_DIR (cli-logs/content-logs) lives on this
+      # same PVC and settles at a kopia-imposed steady-state of ~700-850MB
+      # regardless of app or snapshot frequency (its own file-count
+      # retention caps growth, not available space - confirmed via a
+      # fleet-wide sweep, filed upstream as home-operations/kopiur#452, not
+      # CRD-tunable). At 1Gi that left near-zero headroom for the actual
+      # content cache and eventually failed snapshots outright with "no
+      # space left on device" before backup logic even ran. Matches
+      # github.com/onedr0p/home-ops's own proven-in-production default for
+      # this exact field (they call it ${KOPIUR_CAPACITY:=5Gi} there).
+      capacity: ${KOPIUR_CACHE_CAPACITY:=5Gi}
       mode: Persistent
       storageClassName: ${KOPIUR_STORAGECLASS:=ceph-block}
     securityContext:
