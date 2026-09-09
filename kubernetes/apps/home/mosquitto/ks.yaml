@@ -19,7 +19,6 @@ spec:
       APP: mosquitto
       APP_UID: "0"
       APP_GID: "0"
-      KOPIUR_CACHE_CAPACITY: 1Gi
       KOPIUR_CAPACITY: 5Gi
   prune: true
   retryInterval: 2m

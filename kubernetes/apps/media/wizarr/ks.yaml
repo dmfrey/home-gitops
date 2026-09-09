@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: wizarr
-      KOPIUR_CACHE_CAPACITY: 1Gi
       KOPIUR_CAPACITY: 1Gi
   prune: true
   sourceRef:
