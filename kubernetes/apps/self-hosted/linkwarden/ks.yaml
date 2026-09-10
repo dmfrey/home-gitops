@@ -46,6 +46,7 @@ spec:
       CONTROLLER: StatefulSet
       KOPIUR_CACHE_CAPACITY: 10Gi
       KOPIUR_CAPACITY: 20Gi
+      KOPIUR_VERIFY_CAPACITY: 25Gi
   prune: true
   sourceRef:
     kind: GitRepository

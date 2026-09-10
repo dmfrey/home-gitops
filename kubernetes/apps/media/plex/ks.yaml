@@ -22,6 +22,7 @@ spec:
       APP: plex
       CONTROLLER: StatefulSet
       KOPIUR_CAPACITY: 35Gi
+      KOPIUR_VERIFY_CAPACITY: 40Gi
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
