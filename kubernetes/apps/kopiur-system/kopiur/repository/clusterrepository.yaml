@@ -91,8 +91,24 @@ spec:
   # an actual stuck repository). Live blob count via `kopia repository
   # status` was already down to ~1013 by the time this was diagnosed,
   # nowhere near the 4800+ kopiur's own condition kept reporting.
+  #
+  # 2026-09-10: the advanceOnCount:10/advanceOnSizeMiB:2 workaround above
+  # DID actually apply to the live repo (the prior comment's uncertainty was
+  # wrong) and turned out to be too aggressive for a repo shared across 9
+  # namespaces - NodeDiskIOSaturation fired on rbd18/k8s-0
+  # (garage-system/meta-garage-0, Garage's own metadata LMDB volume) with a
+  # sustained ~90-160 avg queue depth (~5.3k writes/sec) for a full 24h,
+  # correlated exactly to when this repo's epoch settings took effect. Live
+  # `kopia repository status` also showed 3,854 index blobs - climbing back
+  # up, not the ~1013 from the original diagnosis - because compacting on
+  # every 10 objects/2MiB across that many apps' concurrent mover traffic
+  # outpaced cleanup rather than helping it. minDuration:6h alone was
+  # already sufficient (see above); reverted advanceOnCount/advanceOnSizeMiB
+  # to kopia's own defaults via `kopia repository set-parameters
+  # --epoch-advance-on-count=20 --epoch-advance-on-size-mb=10` to stop the
+  # excess compaction churn. Declared value below now matches live state.
   parameters:
     epoch:
       minDuration: 6h
-      advanceOnCount: 10
-      advanceOnSizeMiB: 2
+      advanceOnCount: 20
+      advanceOnSizeMiB: 10
