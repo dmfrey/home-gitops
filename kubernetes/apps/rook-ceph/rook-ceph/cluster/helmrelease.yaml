@@ -109,7 +109,15 @@ spec:
             cpu: 1000m
           limits:
             memory: 8Gi
-            cpu: 2000m
+            # 2026-09-10: bumped 2000m -> 3000m. CPUThrottlingHigh firing
+            # sustained (20-49% throttled periods, osd-1/osd-2 worst) despite
+            # actual usage staying well under the old 2-core limit (~0.9-1.0
+            # cores observed) - classic CFS bandwidth-controller artifact on
+            # bursty I/O (throttling measures quota-period events, not
+            # sustained overload; Ceph itself stayed HEALTH_OK throughout).
+            # All 3 nodes have comfortable CPU limit headroom (33-77%
+            # committed) to absorb this.
+            cpu: 3000m
 
       security:
         cephx:
