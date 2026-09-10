@@ -100,6 +100,9 @@ spec:
           gethomepage.dev/name: Autobrr
           gethomepage.dev/icon: autobrr.png
           gethomepage.dev/description: IRC/RSS Announce Automation
+          gethomepage.dev/widget.type: autobrr
+          gethomepage.dev/widget.url: http://autobrr.download.svc.cluster.local
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_AUTOBRR_TOKEN}}` }}"
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
