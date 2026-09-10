@@ -6,7 +6,6 @@ metadata:
   name: autobrr
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: autobrr
@@ -14,9 +13,7 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
-
       autobrr:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -66,7 +63,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
 
             resources:
               requests:
@@ -97,6 +94,12 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/name: Autobrr
+          gethomepage.dev/icon: autobrr.png
+          gethomepage.dev/description: IRC/RSS Announce Automation
         hostnames:
           - "{{ .Release.Name }}.dmfrey.com"
         parentRefs:
