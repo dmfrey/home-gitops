@@ -63,7 +63,21 @@ kind: Service
 metadata:
   name: kube-api
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: k8s.dmfrey.com
+    # external-dns v0.22.0's "service" source only reads its own
+    # HostnameKey constant (external-dns.kubernetes.io/hostname, no
+    # "alpha.") - it does not derive this from --annotation-prefix and
+    # never recognized the old "alpha." variant this repo used. This is
+    # the ONLY bare Service in the repo relying on annotation-based
+    # discovery (everything else publishes via HTTPRoute's own
+    # spec.hostnames through the gateway-httproute source, unaffected by
+    # this), so k8s.dmfrey.com - k8s.internal's CNAME target, and
+    # cluster.controlPlane.endpoint in talos/machineconfig.yaml.j2 - was
+    # silently never being published. Confirmed via unifi-dns debug
+    # logging ("No endpoints could be generated from
+    # 'service/kube-system/kube-api'" before this fix, "Endpoints
+    # generated from service" after) and live DNS resolution against the
+    # UDM-SE. Not a UDM-SE sync bug, not a Talos migration regression.
+    external-dns.kubernetes.io/hostname: k8s.dmfrey.com
     lbipam.cilium.io/ips: 192.168.29.120
 spec:
   type: LoadBalancer
