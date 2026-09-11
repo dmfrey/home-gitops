@@ -61,6 +61,21 @@ spec:
     # extraArgs:
     #   - --ignore-ingress-tls-spec
 
+    # --publish-internal-services: the "service" source (kube-api's
+    # LoadBalancer Service in kube-system, the only bare Service using the
+    # external-dns hostname annotation - everything else routes through
+    # gateway-httproute) defaults to skipped because its Cilium LB-IPAM IP
+    # (192.168.29.0/24) is a private/internal address and
+    # publishInternalServices defaults to false. Confirmed via debug
+    # logging: zero "Endpoints generated from Service" lines anywhere,
+    # meaning k8s.dmfrey.com (k8s.internal's CNAME target,
+    # cluster.controlPlane.endpoint in talos/machineconfig.yaml.j2) has
+    # likely never actually been auto-published - not a UDM-SE sync bug,
+    # not a migration regression. This chart has no dedicated values field
+    # for the flag, so it's passed straight through.
+    extraArgs:
+      - --publish-internal-services
+
     triggerLoopOnEvent: true
 
     policy: sync
