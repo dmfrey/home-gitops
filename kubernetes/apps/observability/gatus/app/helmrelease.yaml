@@ -79,6 +79,22 @@ spec:
               size: 5Gi
     defaultPodOptions:
       automountServiceAccountToken: true
+      # ndots:1 stops the kubelet-default ndots:5 search-domain walk
+      # (observability.svc.cluster.local, svc.cluster.local, cluster.local,
+      # homelab.frey.home) from being applied to every *.dmfrey.com probe -
+      # gatus-sidecar's own chart docs flag this exact gotcha: any endpoint
+      # using client.dns-resolver still walks the full search list before
+      # trying the absolute name, and that walk consistently broke
+      # resolution for ~10 external-group *.dmfrey.com endpoints (confirmed
+      # via a debug container sharing gatus-0's own network namespace -
+      # every other resolver/process succeeded immediately on the same
+      # query against the same CoreDNS ClusterIP; only the gatus app
+      # process itself failed, deterministically, even on a fresh pod).
+      dnsPolicy: ClusterFirst
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
