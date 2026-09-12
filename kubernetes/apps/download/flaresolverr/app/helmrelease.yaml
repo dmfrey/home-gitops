@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: flaresolverr/flaresolverr
-              tag: v3.5.1@sha256:0ad4f5fa4a87fe922a66171995acc3ac2e20d894fbef60779260b518370a991e
+              tag: v3.5.2@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767
             env:
               TZ: America/New_York
               LOG_LEVEL: info
