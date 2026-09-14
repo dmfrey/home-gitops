@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: chaski
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: chaski
+
+  interval: 1h
+
+  values:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
+
+    envFrom:
+      - secretRef:
+          name: chaski-secret
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        memory: 128Mi
+
+    monitoring:
+      serviceMonitor:
+        enabled: true
+
+    config:
+      logLevel: info
+
+      # Inbound token auth left off - Sonarr/Radarr talk to chaski over the
+      # in-cluster ClusterIP Service only, never exposed via a Route.
+
+      # eventType gate skips the synthetic payload each app's Connect "Test"
+      # button sends (eventType: Test) - only real downloads/upgrades relay.
+      routes:
+        sonarr-download:
+          target: pushover-sonarr
+          whenExpr: 'payload.eventType == "Download"'
+          title: "{{ if .payload.isUpgrade }}Upgraded{{ else }}Downloaded{{ end }}: {{ .payload.series.title }}"
+          message: |-
+            <b>{{ .payload.series.title }}</b> - S{{ .payload.episodes[0].seasonNumber }}E{{ .payload.episodes[0].episodeNumber }}
+            <small>{{ .payload.episodes[0].title }}</small>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: low
+
+        radarr-download:
+          target: pushover-radarr
+          whenExpr: 'payload.eventType == "Download"'
+          title: "{{ if .payload.isUpgrade }}Upgraded{{ else }}Downloaded{{ end }}: {{ .payload.movie.title }}"
+          message: |-
+            <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: low
+
+      targets:
+        pushover-sonarr:
+          apprise:
+            url: 'pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "PUSHOVER_SONARR_API_KEY" }}/'
+        pushover-radarr:
+          apprise:
+            url: 'pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "PUSHOVER_RADARR_API_KEY" }}/'
+
+    service:
+      port: 8080

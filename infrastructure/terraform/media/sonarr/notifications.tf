@@ -25,3 +25,28 @@ resource "sonarr_notification_pushover" "pushover" {
   user_key = var.PUSHOVER_USER_KEY
   api_key  = var.ALERTMANAGER_PUSHOVER_TOKEN
 }
+
+# Routes on-download/on-upgrade events through chaski, which reformats them
+# (title, episode, client) into a richer Pushover message via its own
+# dedicated app token - kept separate from the manual-interaction alert
+# above since this is much higher-volume and wants independent muting.
+resource "sonarr_notification_webhook" "chaski" {
+  name = "chaski"
+
+  on_grab                            = false
+  on_download                        = true
+  on_upgrade                         = true
+  on_rename                          = false
+  on_series_add                      = false
+  on_series_delete                   = false
+  on_episode_file_delete             = false
+  on_episode_file_delete_for_upgrade = false
+  on_health_issue                    = false
+  on_application_update              = false
+  on_manual_interaction_required     = false
+
+  include_health_warnings = false
+
+  url    = "http://chaski.self-hosted.svc.cluster.local:8080/hooks/sonarr-download"
+  method = 1 # POST
+}
