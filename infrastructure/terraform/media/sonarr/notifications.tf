@@ -47,6 +47,6 @@ resource "sonarr_notification_webhook" "chaski" {
 
   include_health_warnings = false
 
-  url    = "http://chaski.self-hosted.svc.cluster.local:8080/hooks/sonarr-download"
+  url    = "http://chaski.media.svc.cluster.local:8080/hooks/sonarr-download"
   method = 1 # POST
 }

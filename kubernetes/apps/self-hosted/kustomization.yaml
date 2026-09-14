@@ -10,7 +10,6 @@ resources:
   - ./namespace.yaml
   - ./affine/ks.yaml
   - ./bambuddy/ks.yaml
-  - ./chaski/ks.yaml
   - ./excalidraw/ks.yaml
   - ./freshrss/ks.yaml
   - ./home-projects/ks.yaml

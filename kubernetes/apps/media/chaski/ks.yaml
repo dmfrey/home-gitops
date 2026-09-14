@@ -6,11 +6,11 @@ metadata:
   name: chaski
 spec:
   interval: 1h
-  path: "./kubernetes/apps/self-hosted/chaski/app"
+  path: "./kubernetes/apps/media/chaski/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: self-hosted
+  targetNamespace: media
   wait: false
