@@ -3,6 +3,16 @@ variable "RADARR_API_KEY" {
   sensitive = true
 }
 
+variable "PUSHOVER_USER_KEY" {
+  type      = string
+  sensitive = true
+}
+
+variable "ALERTMANAGER_PUSHOVER_TOKEN" {
+  type      = string
+  sensitive = true
+}
+
 
 variable "radarr_url" {
   type    = string
