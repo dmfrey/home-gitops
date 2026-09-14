@@ -41,6 +41,14 @@ spec:
                     key: RADARR_API_KEY
 
             probes:
+              # httpGet sends no Host header of its own, so kubelet defaults
+              # it to the pod IP - once Allowed Hosts is configured (General
+              # settings, set live via API since devopsarr/radarr has no
+              # terraform resource for it) that pod-IP Host header gets
+              # rejected with 400, crash-looping the pod on every probe.
+              # Confirmed live 2026-09-14: explicit httpHeaders here is
+              # required, not optional, the moment Allowed Hosts is set to
+              # anything.
               liveness: &probes
                 enabled: true
                 custom: true
@@ -48,6 +56,9 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
+                    httpHeaders:
+                      - name: Host
+                        value: radarr.media.svc.cluster.local
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
