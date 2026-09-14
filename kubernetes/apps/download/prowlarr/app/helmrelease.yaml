@@ -36,6 +36,15 @@ spec:
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
             probes:
+              # kubelet's httpGet probe connects directly to the pod's own
+              # IP, which becomes the HTTP Host header - that's never in
+              # Allowed Hosts (can't be, it's dynamic) and the app's own
+              # HostFiltering middleware rejects it with 400 once Allowed
+              # Hosts is configured, crash-looping the pod on every restart.
+              # "prowlarr-0" is always accepted regardless
+              # (ConfigureHostFilteringOptions auto-allows
+              # Environment.MachineName, the pod's own hostname on a
+              # StatefulSet) - matches sonarr's same fix.
               liveness: &probes
                 enabled: true
                 custom: true
@@ -43,6 +52,9 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
+                    httpHeaders:
+                      - name: Host
+                        value: prowlarr-0
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1

@@ -60,6 +60,15 @@ spec:
                     key: dbname
               LIDARR__POSTGRES__LOGDB: lidarr-log
             probes:
+              # kubelet's httpGet probe connects directly to the pod's own
+              # IP, which becomes the HTTP Host header - that's never in
+              # Allowed Hosts (can't be, it's dynamic) and the app's own
+              # HostFiltering middleware rejects it with 400 once Allowed
+              # Hosts is configured, crash-looping the pod on every restart.
+              # "lidarr-0" is always accepted regardless (Radarr/Sonarr/
+              # Lidarr's ConfigureHostFilteringOptions auto-allows
+              # Environment.MachineName, which is the pod's own hostname on
+              # a StatefulSet) - matches sonarr's same fix.
               liveness: &probes
                 enabled: true
                 custom: true
@@ -67,6 +76,9 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
+                    httpHeaders:
+                      - name: Host
+                        value: lidarr-0
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
