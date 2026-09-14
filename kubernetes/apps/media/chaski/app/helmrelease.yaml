@@ -44,8 +44,8 @@ spec:
           whenExpr: 'payload.eventType == "Download"'
           title: "{{ if .payload.isUpgrade }}Upgraded{{ else }}Downloaded{{ end }}: {{ .payload.series.title }}"
           message: |-
-            <b>{{ .payload.series.title }}</b> - S{{ .payload.episodes[0].seasonNumber }}E{{ .payload.episodes[0].episodeNumber }}
-            <small>{{ .payload.episodes[0].title }}</small>
+            <b>{{ .payload.series.title }}</b> - S{{ (index .payload.episodes 0).seasonNumber }}E{{ (index .payload.episodes 0).episodeNumber }}
+            <small>{{ (index .payload.episodes 0).title }}</small>
             <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
           params:
             format: html
