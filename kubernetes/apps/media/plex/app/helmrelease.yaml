@@ -75,7 +75,7 @@ spec:
       app:
         type: LoadBalancer
         annotations:
-          # external-dns.alpha.kubernetes.io/hostname: &host plex.dmfrey.com
+          # external-dns.kubernetes.io/hostname: &host plex.dmfrey.com
           lbipam.cilium.io/ips: 192.168.29.227 #, ::ffff:192.168.30.227
         externalTrafficPolicy: Local
         ports:
