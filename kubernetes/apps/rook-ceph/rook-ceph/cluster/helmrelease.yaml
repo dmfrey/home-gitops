@@ -109,15 +109,18 @@ spec:
             cpu: 1000m
           limits:
             memory: 8Gi
-            # 2026-09-10: bumped 2000m -> 3000m. CPUThrottlingHigh firing
-            # sustained (20-49% throttled periods, osd-1/osd-2 worst) despite
-            # actual usage staying well under the old 2-core limit (~0.9-1.0
-            # cores observed) - classic CFS bandwidth-controller artifact on
-            # bursty I/O (throttling measures quota-period events, not
-            # sustained overload; Ceph itself stayed HEALTH_OK throughout).
-            # All 3 nodes have comfortable CPU limit headroom (33-77%
-            # committed) to absorb this.
-            cpu: 3000m
+            # No cpu limit (removed 2026-09-14, was bumped 2000m -> 3000m on
+            # 2026-09-10). CPUThrottlingHigh kept firing at similar levels
+            # after that bump too - 6h of data showed usage steady at
+            # ~1.0-1.4 cores (well under the 3-core limit) while throttling
+            # stayed at 22-34% the whole window. Not limit-constrained, it's
+            # the CFS bandwidth-controller quota-period artifact: short
+            # bursts within a 100ms accounting period trip the quota even
+            # though the rolling average is fine. Standard Rook/Ceph
+            # guidance is no CPU limit on OSDs for exactly this reason -
+            # latency-sensitive, bursty workload. Node headroom (48-64%
+            # limits-committed) comfortably absorbs it; request (1000m)
+            # still governs scheduling/QoS.
 
       security:
         cephx:
