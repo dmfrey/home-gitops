@@ -44,20 +44,6 @@ resource "authentik_policy_binding" "application_policy_binding" {
   order  = 0
 }
 
-##Oauth
-resource "authentik_source_plex" "plex" {
-  name                = "Plex"
-  slug                = "plex"
-  client_id           = local.authentik_plex_client_id
-  plex_token          = local.authentik_plex_token
-  authentication_flow  = data.authentik_flow.default-source-authentication.id
-  enrollment_flow      = authentik_flow.enrollment-invitation.uuid
-  allow_friends       = true
-  allowed_servers = [
-    local.authentik_plex_client_id
-  ]
-}
-
 resource "authentik_user" "Dan" {
   username = "dmfrey"
   name     = var.USERS_DMFREY_NAME

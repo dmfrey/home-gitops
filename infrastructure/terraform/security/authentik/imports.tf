@@ -71,12 +71,6 @@ import {
   id = "6bcb1baa-b756-4136-8606-aaf0e1b1b1c7"
 }
 
-## Plex source
-import {
-  to = authentik_source_plex.plex
-  id = "plex"
-}
-
 ## Users
 import {
   to = authentik_user.Dan

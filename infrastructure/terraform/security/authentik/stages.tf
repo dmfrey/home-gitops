@@ -7,7 +7,7 @@ resource "authentik_stage_identification" "authentication-identification" {
   show_matched_user         = false
   password_stage            = authentik_stage_password.authentication-password.id
   recovery_flow             = authentik_flow.recovery.uuid
-  sources                   = [authentik_source_plex.plex.uuid]
+  sources                   = []
   # Enables passkey autofill (conditional UI) on the login form — browser
   # shows available passkeys before the user types anything.
   webauthn_stage            = authentik_stage_authenticator_validate.authentication-mfa-validation.id
