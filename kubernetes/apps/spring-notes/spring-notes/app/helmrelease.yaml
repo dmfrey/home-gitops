@@ -159,7 +159,7 @@ spec:
               # feature (spring-notes PR #97, 2026-09-14) that shipped in the
               # same v4.0.0 release as the backend - frontend and backend
               # should now stay in lockstep via Renovate like every other app.
-              tag: v4.0.0@sha256:79d42aa56088d88745978f3ac3bb008e03b056895b6f7310825d191d898506aa
+              tag: v4.1.0@sha256:76d3d1957df929a90a18b82ffe73927704da4bd1e6ad3f9da66230de67d17cf2
             probes:
               liveness: &probes
                 enabled: true
