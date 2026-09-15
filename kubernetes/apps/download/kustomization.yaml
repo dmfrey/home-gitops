@@ -18,3 +18,4 @@ resources:
   - ./qui/ks.yaml
   - ./slskd/ks.yaml
   - ./soularr/ks.yaml
+  - ./thelounge/ks.yaml
