@@ -21,6 +21,10 @@ spec:
               tag: 0.26.0@sha256:ecd4026d4f8fb504e2cc55323efa2c1f5b56d20d3686b018249cc36b48ea17a6
             env:
               TZ: America/New_York
+              # readOnlyRootFilesystem means .NET can't extract its bundle
+              # to the default location - redirect it into the writable
+              # tmp emptyDir mount below.
+              DOTNET_BUNDLE_EXTRACT_BASE_DIR: /tmp/.net
               SLSKD_APP_DIR: /config
               SLSKD_HTTP_PORT: &port 80
               # Cluster-internal only (envoy-internal route, no external
@@ -167,3 +171,5 @@ spec:
             subPath: downloads/slskd
       tmp:
         type: emptyDir
+        globalMounts:
+          - path: /tmp
