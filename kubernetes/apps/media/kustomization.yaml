@@ -12,6 +12,7 @@ resources:
   - ./namespace.yaml
   - ./bazarr/ks.yaml
   - ./chaski/ks.yaml
+  - ./cleanrr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyplex-watched/ks.yaml
   - ./lidarr/ks.yaml
