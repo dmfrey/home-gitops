@@ -77,8 +77,13 @@ spec:
               - identifier: app
                 port: *port
     persistence:
+      # soularr reads/writes config.ini and soularr.log under /data, not
+      # /config - the app-template default mount path (matching the
+      # persistence key name) is wrong for this app.
       config:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /data
       config-file:
         type: secret
         name: "{{ .Release.Name }}-secret"
