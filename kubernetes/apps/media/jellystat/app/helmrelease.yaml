@@ -64,6 +64,13 @@ spec:
                   timeoutSeconds: 5
                   failureThreshold: 5
               readiness: *probes
+            # No USER directive in the image's Dockerfile at all - it runs
+            # as root and writes a runtime env.js into /app/dist (baked in
+            # as root:root) at startup. runAsNonRoot/runAsUser here broke
+            # that write with EACCES. Can't harden UID for this one.
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 25m
@@ -72,9 +79,6 @@ spec:
                 memory: 1Gi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
