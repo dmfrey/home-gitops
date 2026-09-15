@@ -1,0 +1,169 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: slskd
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: slskd
+  interval: 1h
+  values:
+    controllers:
+      slskd:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/slskd/slskd
+              tag: 0.26.0@sha256:ecd4026d4f8fb504e2cc55323efa2c1f5b56d20d3686b018249cc36b48ea17a6
+            env:
+              TZ: America/New_York
+              SLSKD_APP_DIR: /config
+              SLSKD_HTTP_PORT: &port 80
+              # Cluster-internal only (envoy-internal route, no external
+              # exposure) - matches the rest of the download-client stack's
+              # trust boundary, same as oneDr0p's reference config.
+              SLSKD_NO_AUTH: true
+              SLSKD_NO_HTTPS: true
+              SLSKD_NO_VERSION_CHECK: true
+              # Distinct from qbittorrent's 50413 - needs its own forwarded
+              # port on the VPN gateway (192.168.90.1) for good queue
+              # position/reputation on the Soulseek network, same as
+              # qbittorrent's torrenting port. That forwarding is external
+              # to this repo (VPN provider/gateway side), not GitOps-managed.
+              SLSKD_SLSK_LISTEN_PORT: &soulseekPort 50300
+              SLSKD_SLSK_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: slskd-secret
+                    key: SLSKD_SLSK_USERNAME
+              SLSKD_SLSK_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: slskd-secret
+                    key: SLSKD_SLSK_PASSWORD
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      annotations:
+        # Routes this pod's egress through the VPN VLAN (WireGuard gateway
+        # at 192.168.90.1), same as qbittorrent/nzbget/prowlarr/flaresolverr
+        # - Soulseek peers connect directly (no indexer/tracker in between),
+        # same exposure profile as BitTorrent. Static IP/MAC follow the same
+        # pool: nzbget (.21), qbittorrent (.22), prowlarr (.23),
+        # flaresolverr (.24) - .25 is the next free address.
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "vpn-vlan",
+            "namespace": "kube-system",
+            "ips": ["192.168.90.25/24"],
+            "mac": "5a:1c:83:f6:27:9e"
+          }]
+      labels:
+        setGateway: "false"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/name: slskd
+          gethomepage.dev/icon: slskd.png
+          gethomepage.dev/description: Soulseek Client
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+    configMaps:
+      config:
+        data:
+          slskd.yml: |-
+            directories:
+              downloads: /media/downloads/slskd/complete
+              incomplete: /media/downloads/slskd/incomplete
+            transfers:
+              download:
+                destination:
+                  permissions:
+                    mode: 750
+                retry:
+                  partial: resume
+                  attempts: 3
+                  delay: 5000
+                  max_delay: 60000
+            shares:
+              # Soulseek bans/throttles peers who share nothing ("leechers").
+              # Deliberately a small dedicated folder, not the real music
+              # library at /media/music - populate it by hand with content
+              # you're comfortable exposing to arbitrary network peers.
+              directories:
+                - /media/downloads/slskd/shared
+              filters:
+                - \.ini$
+                - Thumbs.db$
+                - \.DS_Store$
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config/slskd.yml
+            subPath: slskd.yml
+      media:
+        type: nfs
+        server: nas.internal
+        path: /media
+        globalMounts:
+          - path: /media/downloads/slskd
+            subPath: downloads/slskd
+      tmp:
+        type: emptyDir

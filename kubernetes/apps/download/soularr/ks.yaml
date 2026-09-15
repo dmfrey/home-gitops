@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: soularr
+spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/kopiur/backup
+  dependsOn:
+    - name: slskd
+    - name: lidarr
+      namespace: media
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
+  interval: 1h
+  path: ./kubernetes/apps/download/soularr/app
+  postBuild:
+    substitute:
+      APP: soularr
+      KOPIUR_CAPACITY: 1Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: download
+  wait: false
