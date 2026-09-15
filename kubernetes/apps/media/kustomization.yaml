@@ -15,6 +15,7 @@ resources:
   - ./cleanrr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyplex-watched/ks.yaml
+  - ./jellystat/ks.yaml
   - ./lidarr/ks.yaml
   - ./music-assistant/ks.yaml
   - ./seerr/ks.yaml

@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jellystat
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: jellystat
+  interval: 1h
+  values:
+    controllers:
+      jellystat:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/cyfershepard/jellystat
+              tag: 1.1.12@sha256:e61c759ec706da378bc8374e797da1dfd298ab30f804cefd82d192c301a888c7
+            env:
+              TZ: America/New_York
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-cnpg-app
+                    key: user
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-cnpg-app
+                    key: password
+              POSTGRES_IP:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-cnpg-app
+                    key: host
+              POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-cnpg-app
+                    key: port
+              POSTGRES_DB:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-cnpg-app
+                    key: dbname
+              JWT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-secret
+                    key: JWT_SECRET
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /auth/isConfigured
+                    port: &port 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/name: Jellystat
+          gethomepage.dev/icon: jellystat.png
+          gethomepage.dev/description: Jellyfin Statistics
+        hostnames:
+          - "{{ .Release.Name }}.dmfrey.com"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      # Only Jellystat's own manual export/import feature, not the real
+      # data store - that's the CNPG database, already backed up via
+      # barman-cloud (jellystat-db/cnpg-scheduledbackup.yaml). No kopiur
+      # backup needed here.
+      backup-data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+        globalMounts:
+          - path: /app/backend/backup-data
