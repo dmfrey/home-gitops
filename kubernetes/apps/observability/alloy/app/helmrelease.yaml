@@ -11,15 +11,6 @@ spec:
   interval: 1h
   values:
     alloy:
-      securityContext:
-        capabilities:
-          add:
-            - SYSLOG
-      mounts:
-        extra:
-          - name: kmsg
-            mountPath: /dev/kmsg
-            readOnly: true
       extraPorts:
         - name: otlp-grpc
           port: 4317
@@ -28,6 +19,10 @@ spec:
         - name: otlp-http
           port: 4318
           targetPort: 4318
+          protocol: TCP
+        - name: kernel-tcp
+          port: 6514
+          targetPort: 6514
           protocol: TCP
       configMap:
         create: true
@@ -133,34 +128,69 @@ spec:
             }
           }
 
-          // Collect kernel logs from /dev/kmsg for emergency_ro and other critical events
-          loki.source.file "kernel" {
-            targets = [{
-              __path__ = "/dev/kmsg",
-              job      = "kernel",
-              node     = env("HOSTNAME"),
-            }]
-            forward_to = [loki.process.kernel.receiver]
+          // Receive Talos kernel-log JSON lines over raw TCP (KmsgLogConfig
+          // destination, see talos/machineconfig.yaml.j2). Replaces a
+          // loki.source.file tailing /dev/kmsg that never worked - /dev/kmsg
+          // is a character device, and file-tailers can't read those; zero
+          // lines were ever ingested. otelcol.receiver.tcplog has no syslog
+          // PRI-header requirement, matching Talos's plain JSON-lines output.
+          // add_attributes adds net.peer.ip, which is the only way to tell
+          // nodes apart here since the KmsgLogConfig url is identical on
+          // all 3 nodes.
+          otelcol.receiver.tcplog "kernel" {
+            listen_address = "0.0.0.0:6514"
+            add_attributes = true
+            output {
+              logs = [otelcol.processor.transform.kernel.input]
+            }
           }
 
-          loki.process "kernel" {
-            // Strip kmsg prefix format: "<pri>,<seq>,<timestamp>,<flags>;<message>"
-            stage.regex {
-              expression = `^(?:\d+,\d+,\d+,-?[^;]*;)?(?P<message>.*)$`
+          // Map each node's known static IP to its hostname.
+          otelcol.processor.transform "kernel" {
+            error_mode = "ignore"
+
+            log_statements {
+              context = "log"
+              statements = [
+                `set(attributes["node"], "k8s-0") where attributes["net.peer.ip"] == "192.168.30.10"`,
+                `set(attributes["node"], "k8s-1") where attributes["net.peer.ip"] == "192.168.30.11"`,
+                `set(attributes["node"], "k8s-2") where attributes["net.peer.ip"] == "192.168.30.12"`,
+              ]
             }
-            stage.output {
-              source = "message"
+
+            output {
+              logs = [otelcol.processor.attributes.kernel.input]
             }
+          }
+
+          // Tag job="kernel" (matches resources/lokirule.yaml's
+          // NodeFilesystemEmergencyReadOnly alert) and promote job/node to
+          // real Loki labels. loki.attribute.labels as a comma-separated
+          // list is unverified against docs - confirm live once deployed.
+          otelcol.processor.attributes "kernel" {
+            action {
+              key    = "job"
+              value  = "kernel"
+              action = "insert"
+            }
+            action {
+              key    = "loki.attribute.labels"
+              value  = "job,node"
+              action = "insert"
+            }
+
+            output {
+              logs = [otelcol.exporter.loki.kernel.input]
+            }
+          }
+
+          // Bridge OTLP-formatted logs into the existing Loki write pipeline.
+          otelcol.exporter.loki "kernel" {
             forward_to = [loki.write.default.receiver]
           }
 
     controller:
       type: daemonset
-      volumes:
-        extra:
-          - name: kmsg
-            hostPath:
-              path: /dev/kmsg
 
     serviceMonitor:
       enabled: true
