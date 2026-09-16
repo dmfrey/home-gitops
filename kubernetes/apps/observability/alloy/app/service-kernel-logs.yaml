@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/service_v1.json
+# Talos's kernel-log shipper (KmsgLogConfig, talos/machineconfig.yaml.j2) runs
+# as machined on the bare host, not as a pod - it's not managed by kubelet or
+# containerd, so it isn't a process Cilium's socket-LB/kube-proxy-replacement
+# datapath instruments the way pod- and kubelet-originated traffic is. The
+# original plan pointed KmsgLogConfig at Alloy's plain ClusterIP, reasoning
+# from Cilium's k8sServiceHost/k8sServicePort (127.0.0.1:7445) reaching the
+# apiserver transparently - that reasoning was wrong: that's Talos's own
+# KubePrism proxy, a mechanism specific to the apiserver, not evidence of
+# general host-namespace ClusterIP reachability. Confirmed live 2026-09-16:
+# k8s-0 had zero {job="kernel"} entries in Loki despite dmesg showing fresh
+# real kernel-log activity at the same moment. This standalone LoadBalancer
+# Service (same pattern as home/mosquitto's app-template Service) gives
+# Talos a real, node-routable IP to target instead.
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-kernel-logs
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/instance: alloy
+    app.kubernetes.io/name: alloy
+  ports:
+    - name: kernel-tcp
+      port: 6514
+      targetPort: 6514
+      protocol: TCP

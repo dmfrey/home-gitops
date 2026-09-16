@@ -7,6 +7,7 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./referencegrant.yaml
+  - ./service-kernel-logs.yaml
 
 configMapGenerator:
   - name: alloy-loki-rules
