@@ -11,6 +11,13 @@ spec:
   interval: 1h
   values:
     alloy:
+      # otelcol.receiver.tcplog (kernel-log pipeline below) is gated at the
+      # "experimental" stability level - confirmed live 2026-09-16, the
+      # component docs don't flag this but the chart's default
+      # "generally-available" level refuses to load it. Only unlocks
+      # additional components; doesn't affect the already-GA ones in use
+      # here (otelcol.receiver.otlp, loki.source.kubernetes, etc).
+      stabilityLevel: experimental
       extraPorts:
         - name: otlp-grpc
           port: 4317
