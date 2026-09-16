@@ -159,9 +159,9 @@ spec:
             log_statements {
               context = "log"
               statements = [
-                `set(attributes["node"], "k8s-0") where attributes["net.peer.ip"] == "192.168.30.10"`,
-                `set(attributes["node"], "k8s-1") where attributes["net.peer.ip"] == "192.168.30.11"`,
-                `set(attributes["node"], "k8s-2") where attributes["net.peer.ip"] == "192.168.30.12"`,
+                `set(log.attributes["node"], "k8s-0") where log.attributes["net.peer.ip"] == "192.168.30.10"`,
+                `set(log.attributes["node"], "k8s-1") where log.attributes["net.peer.ip"] == "192.168.30.11"`,
+                `set(log.attributes["node"], "k8s-2") where log.attributes["net.peer.ip"] == "192.168.30.12"`,
               ]
             }
 
