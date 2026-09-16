@@ -36,6 +36,22 @@ customization:
     # before the next eGPU dock attempt, so a dock-attached NIC gets its own
     # unique, non-colliding predictable name instead of racing for "eth0".
     - tsc=reliable                        # i7-13620H has invariant TSC; skip kernel verification overhead
+    {% if ENV.EGPU or ENV.EGPU_PROPRIETARY %}
+    # 2026-09-16: testing pcie_aspm=off alone (not stacked with pcie_port_pm=off/
+    # pcie_ports=native this time) against the GSP RPC-deadlock hard-lock, now
+    # reproduced twice via deliberate reboot tests (see CLAUDE.md's k8s-2 eGPU
+    # history). The prior 2026-07-22/07-25 negative results below were entirely
+    # on the AOOSTAR AG02 dock (ASM2464 bridge), later confirmed to have its own
+    # hardware-level link flakiness independent of GPU/drivers - replaced
+    # 2026-07-28 with the PELADN Link S-3 (Intel Barlow Ridge JHL9480), rock
+    # solid since. This exact dock+card+arg combination has never been tested.
+    # Scoped to the eGPU schematic only (not k8s-0/k8s-1) - the prior test found
+    # this caused unrelated host-side hard reboots even with no eGPU connected,
+    # so there's no reason to risk it on nodes that don't need it. Revert by
+    # removing this block and regenerating a fresh schematic ID if it doesn't
+    # help or causes any regression (unrelated reboots, dock link instability).
+    - pcie_aspm=off
+    {% endif %}
     # pcie_ports=native, pcie_aspm=off, pcie_port_pm=off remain REMOVED (2026-07-22):
     # added during the RTX 5070/AG02 link-stability investigation, never conclusively
     # fixed anything (that card's actual problem was an unrelated NVIDIA Blackwell
