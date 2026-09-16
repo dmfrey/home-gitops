@@ -89,13 +89,14 @@ installer:
   # 580.173.2). r8152 stays blacklisted (unconditional in
   # schematic.yaml.j2, unaffected by this change).
   #
-  # 2026-09-16: hard-lock reproduced twice via deliberate reboot tests
-  # (see CLAUDE.md) despite the GSP fix above - schematic ID regenerated
-  # to add pcie_aspm=off (talos/schematic.yaml.j2, EGPU_PROPRIETARY-scoped)
-  # as a further test, now on the PELADN Link S-3 dock (the 2026-07-22/07-25
-  # negative results for this setting were all on the previous AG02 dock).
-  # Revert to the prior image tag above if this doesn't help or regresses.
-  image: factory.talos.dev/installer/2a815d2e6f91f4d8c87cf19bc841450d3d3153ff1fce81b834520a6465955778:v1.14.1 # eGPU schematic (proprietary driver + pcie_aspm=off) - see `just talos gen-schematic-id-egpu-proprietary`
+  # 2026-09-16: hard-lock reproduced twice via deliberate reboot tests (see
+  # CLAUDE.md) despite the GSP fix above. Tried adding pcie_aspm=off
+  # (talos/schematic.yaml.j2, EGPU_PROPRIETARY-scoped) on the theory that the
+  # 2026-07-22/07-25 negative results for this setting were specific to the
+  # old AOOSTAR AG02 dock - same negative result recurred on the current
+  # PELADN Link S-3 dock too (`nvidia: load nvidia failed: no such device`,
+  # GPU never enumerated on the PCIe bus). Reverted back to this ID.
+  image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.14.1 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
 provisioning:
   diskSelector:
     match: disk.model == "Samsung SSD 870"
