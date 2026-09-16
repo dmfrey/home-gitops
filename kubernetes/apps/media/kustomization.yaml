@@ -19,7 +19,6 @@ resources:
   - ./music-assistant/ks.yaml
   - ./seerr/ks.yaml
   - ./pinepods/ks.yaml
-  - ./plex/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml

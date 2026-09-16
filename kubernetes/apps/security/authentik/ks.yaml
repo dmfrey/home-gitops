@@ -95,8 +95,6 @@ metadata:
 spec:
   dependsOn:
     - name: authentik
-    - name: plex
-      namespace: media
     - name: tofu-controller
       namespace: flux-system
   interval: 1h
