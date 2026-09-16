@@ -73,7 +73,17 @@ spec:
               # running the real config before lifting the hold.
               tag: v2.4.1@sha256:9c96caa2612d3411acc5b0e6701fb238dbfba33e533a6d7d3d811a4b12d0d020
             env:
-              RUST_LOG: "garage=debug"
+              # Was garage=debug since 2026-03-26 (commit f22cb0bd2, "set log
+              # level" - no further context, looks like a forgotten debugging
+              # leftover). At debug level Garage logs every single internal
+              # RPC request/response plus full S3 request/response headers
+              # for every operation. garage-0 was OOMKilled 2026-09-16 right
+              # after a burst of Loki writes (triggered by an Alloy pod
+              # restart re-tailing backlogged container logs) - the debug
+              # logging volume under that burst is a plausible amplifier for
+              # a memory spike fast enough to dodge the 60s Prometheus scrape
+              # before hitting the 1Gi limit.
+              RUST_LOG: "garage=info"
               TZ: America/New_York
             envFrom:
               - secretRef:
