@@ -250,15 +250,24 @@ rules:
 # dmesg only lives in each node's own ring buffer and is lost on reboot.
 # Replaces a loki.source.file tailing /dev/kmsg that never worked (character
 # device, file-tailers can't read those - confirmed zero lines ingested over
-# a full week). url is the same for all 3 nodes (Alloy's Service ClusterIP,
-# reachable from Talos's own host processes the same way k8sServiceHost/
-# k8sServicePort already reach the apiserver) - not node-specific, so this
+# a full week). url is the same for all 3 nodes - not node-specific, so this
 # lives once here rather than per-node. Format is fixed json_lines, no
 # alternative.
+#
+# Points at a dedicated LoadBalancer IP (192.168.29.122,
+# kubernetes/apps/observability/alloy/app/service-kernel-logs.yaml), not
+# Alloy's plain ClusterIP. Confirmed live on k8s-0 that the ClusterIP
+# doesn't work: Talos's kmsg shipper runs as machined on the bare host, not
+# a pod, so it isn't a process Cilium's socket-LB/kube-proxy-replacement
+# datapath instruments - dmesg showed real fresh activity but zero
+# {job="kernel"} entries reached Loki. The original reasoning (Cilium's
+# k8sServiceHost/k8sServicePort reaching the apiserver transparently) was
+# wrong - that's Talos's own KubePrism proxy, specific to the apiserver,
+# not general host-namespace ClusterIP reachability.
 apiVersion: v1alpha1
 kind: KmsgLogConfig
 name: loki
-url: tcp://10.43.110.61:6514/
+url: tcp://192.168.29.122:6514/
 
 ---
 apiVersion: v1alpha1
