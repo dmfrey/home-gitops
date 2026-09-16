@@ -242,6 +242,25 @@ rules:
   - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
 
 ---
+# 2026-09-16: forwards kernel/dmesg logs to Alloy (observability namespace),
+# which bridges them into Loki via otelcol.receiver.tcplog on port 6514 -
+# see kubernetes/apps/observability/alloy/app/helmrelease.yaml. Added after
+# k8s-2's Talos 1.14.0->1.14.1 upgrade hard-lock (2026-09-16): there was no
+# way to see what the kernel logged in the seconds before the hang, since
+# dmesg only lives in each node's own ring buffer and is lost on reboot.
+# Replaces a loki.source.file tailing /dev/kmsg that never worked (character
+# device, file-tailers can't read those - confirmed zero lines ingested over
+# a full week). url is the same for all 3 nodes (Alloy's Service ClusterIP,
+# reachable from Talos's own host processes the same way k8sServiceHost/
+# k8sServicePort already reach the apiserver) - not node-specific, so this
+# lives once here rather than per-node. Format is fixed json_lines, no
+# alternative.
+apiVersion: v1alpha1
+kind: KmsgLogConfig
+name: loki
+url: tcp://10.43.110.61:6514/
+
+---
 apiVersion: v1alpha1
 kind: DiscoveryServiceConfig
 name: primary
