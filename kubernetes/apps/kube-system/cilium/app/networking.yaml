@@ -32,6 +32,12 @@ kind: CiliumBGPPeerConfig
 metadata:
   name: l3-bgp-peer-config
 spec:
+  # Faster than Cilium's defaults (90s hold / 30s keepalive) - quicker dead-peer
+  # detection means LoadBalancer traffic reroutes off a hard-locked node's
+  # advertised routes sooner instead of blackholing. Matches oneDr0p/home-ops.
+  timers:
+    holdTimeSeconds: 9
+    keepAliveTimeSeconds: 3
   families:
     - afi: ipv4
       safi: unicast
