@@ -114,7 +114,14 @@ spec:
                 cpu: 100m
                 memory: 256Mi
               limits:
-                memory: 1Gi
+                # Was 1Gi - garage-0 OOMKilled 2026-09-17 retrying large sync
+                # batches (256 items at a time, no effective backoff) against a
+                # peer whose LMDB was corrupted; normal steady-state usage is
+                # ~80-110Mi. 2Gi gives real headroom so a future corruption
+                # event on a peer degrades to elevated memory instead of an
+                # OOM crash-loop. Doesn't fix the corruption itself - see the
+                # Storage section for the planned OpenEBS migration for that.
+                memory: 2Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
