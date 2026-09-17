@@ -9,12 +9,15 @@ spec:
   # PVC named after the release ("garage"), which no longer matches: the meta
   # volume is now a per-replica StatefulSet volumeClaimTemplate, so Kubernetes
   # names the 3 PVCs meta-garage-0/1/2 instead. Only meta-garage-0 is backed up,
-  # via a standalone ReplicationSource in app/ (not the shared component, since
-  # its pvc.yaml/bootstrap-restore pattern assumes a single app-wide PVC that
-  # doesn't apply here) — see app/replicationsource.yaml.
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  # via standalone kopiur CRs in app/ (snapshotpolicy.yaml, snapshotschedule.yaml,
+  # restore.yaml) rather than the shared component, since its pvc.yaml/bootstrap-
+  # restore pattern assumes a single app-wide PVC that doesn't apply here.
+  #
+  # 2026-09-17: dependsOn: rook-ceph-cluster removed. It only existed because
+  # meta lived on ceph-block; meta is now openebs-hostpath (local, not Ceph) -
+  # see CLAUDE.md's Storage section for why. data was already NFS, not Ceph, so
+  # nothing left in this app actually needs rook-ceph-cluster to be Ready first.
+  #
   # kopiur-repository was briefly added here (2026-09-03) so garage's own
   # SnapshotPolicy could reference the "nfs" ClusterRepository - removed
   # again the same day: kopiur-repository's healthCheck watches the
