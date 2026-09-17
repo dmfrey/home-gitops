@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: jellyfin-aaaa-discard
+spec:
+  endpoints:
+    # jellyfin's Gateway (envoy-external) has no local IPv6 LB address (Cilium
+    # is IPv4-only in this cluster, see coredns's AAAA-NODATA plugin comment),
+    # so without this override the UDM forwards AAAA queries upstream and
+    # returns Cloudflare's real public IPv6 - IPv6-preferring local clients
+    # (e.g. Google TV Streamer) then hairpin their whole stream out through
+    # the WAN/tunnel instead of using the already-correct local A record.
+    # RFC 6666 Discard-Only address: connection attempts fail immediately,
+    # so Happy Eyeballs falls back to the local IPv4 path instead of
+    # succeeding-but-hairpinning.
+    - dnsName: jellyfin.dmfrey.com
+      recordType: AAAA
+      targets:
+        - 100::1
