@@ -25,9 +25,20 @@ spec:
             identifier: headless
           volumeClaimTemplates:
             - name: meta
+              # 2026-09-17: moved off ceph-block (network RBD) after two LMDB
+              # corruption incidents (2026-07-23, 2026-09-17 - see CLAUDE.md
+              # Storage section) both traced to RBD network hiccups, which
+              # LMDB is fragile against. Garage already replicates RF=3 at
+              # the application layer, so metadata doesn't need Ceph's
+              # network-storage resilience on top - local per-node storage
+              # is the right tier, matching how onedr0p/home-ops (checked
+              # for a better pattern first) also keeps corruption-sensitive
+              # data off their own network-replicated tier. A node's local
+              # disk failing is just the existing documented single-node
+              # metadata recovery case (resync from the other 2 peers).
               size: 20Gi
               accessMode: ReadWriteOnce
-              storageClass: ceph-block
+              storageClass: openebs-hostpath
               globalMounts:
                 - path: /meta
             - name: data
