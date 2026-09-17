@@ -3,7 +3,7 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: jellyfin-aaaa-discard
+  name: jellyfin-dns-override
 spec:
   endpoints:
     # jellyfin's Gateway (envoy-external) has no local IPv6 LB address (Cilium
@@ -15,6 +15,17 @@ spec:
     # RFC 6666 Discard-Only address: connection attempts fail immediately,
     # so Happy Eyeballs falls back to the local IPv4 path instead of
     # succeeding-but-hairpinning.
+    #
+    # A CNAME can't coexist with another record type at the same name, so
+    # adding the AAAA override here forces external-dns to discard the
+    # gateway-httproute-generated CNAME (jellyfin -> external.dmfrey.com)
+    # entirely - which was the only thing providing the local A answer. The
+    # A record below (envoy-external's static lbipam.cilium.io/ips value)
+    # replaces it directly so local IPv4 resolution keeps working.
+    - dnsName: jellyfin.dmfrey.com
+      recordType: A
+      targets:
+        - 192.168.29.126
     - dnsName: jellyfin.dmfrey.com
       recordType: AAAA
       targets:
