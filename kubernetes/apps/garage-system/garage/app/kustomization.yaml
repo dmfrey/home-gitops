@@ -9,7 +9,6 @@ resources:
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-  - ./pvc.yaml
   - ./rbac.yaml
   - ./restore.yaml
   - ./snapshotpolicy.yaml
