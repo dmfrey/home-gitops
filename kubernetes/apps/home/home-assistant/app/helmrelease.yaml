@@ -181,8 +181,6 @@ spec:
             subPath: tts
           - path: /tmp
             subPath: tmp
-          - path: /tmp/hacs_backup
-            subPath: hacs_backup
       backups:
         enabled: true
         type: nfs
