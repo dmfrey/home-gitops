@@ -79,4 +79,10 @@ spec:
   sources:
     - pvc:
         name: meta-garage-0
-  volumeSnapshotClassName: csi-ceph-blockpool
+  # meta-garage-0 moved from ceph-block to openebs-hostpath (local per-node
+  # storage, no CSI snapshot support) on 2026-09-17 - Snapshot/Clone need a
+  # VolumeSnapshotClass for the source PVC's CSI driver, which doesn't exist
+  # for openebs-hostpath. Direct mounts the live source PVC instead, same
+  # mechanism VolSync uses for local/ephemeral storage without snapshot
+  # support.
+  copyMethod: Direct
