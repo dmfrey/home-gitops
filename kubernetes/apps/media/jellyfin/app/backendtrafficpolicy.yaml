@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: jellyfin
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: jellyfin
+  timeout:
+    http:
+      # envoy-gateway/app/envoy.yaml's cluster-wide BackendTrafficPolicy
+      # tightened connectionIdleTimeout to 4s for pool hygiene - too short
+      # for an idle-but-alive Jellyfin streaming connection (paused
+      # playback, slow segment fetches). Override just this route.
+      connectionIdleTimeout: 1h

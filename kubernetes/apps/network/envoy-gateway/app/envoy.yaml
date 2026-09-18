@@ -137,10 +137,23 @@ spec:
   targetSelectors:
     - group: gateway.networking.k8s.io
       kind: Gateway
-  tcpKeepalive: {}
+  tcpKeepalive:
+    idleTime: 60s
+    interval: 10s
+    probes: 3
   timeout:
     http:
+      # connectionIdleTimeout short so idle pooled connections to backends
+      # get pruned quickly, streamIdleTimeout long so in-flight streams
+      # (e.g. Jellyfin video segments) aren't cut mid-transfer - matches
+      # onedr0p/home-ops's envoy-gateway tuning for the same
+      # envoy-external+cloudflared+streaming-app architecture. Per-route
+      # BackendTrafficPolicy (e.g. jellyfin's) can override
+      # connectionIdleTimeout further where the global 4s default is too
+      # tight for a specific app.
+      connectionIdleTimeout: 4s
       requestTimeout: 0s
+      streamIdleTimeout: 1h
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -166,9 +179,16 @@ spec:
   targetSelectors:
     - group: gateway.networking.k8s.io
       kind: Gateway
-  tcpKeepalive: {}
+  tcpKeepalive:
+    idleTime: 60s
+    interval: 10s
+    probes: 3
   timeout:
     http:
+      # Deliberately above cloudflared's own keep-alive interval, so envoy
+      # doesn't close a connection cloudflared still considers alive -
+      # matches onedr0p/home-ops's envoy-gateway tuning.
+      idleTimeout: 600s
       requestReceivedTimeout: 0s
   tls:
     minVersion: "1.2"
