@@ -7,7 +7,7 @@ metadata:
 spec:
   replicas: 1
   # renovate: datasource=docker depName=rabbitmq versioning=loose
-  image: rabbitmq:4.3-management@sha256:612ebf172397edbd30a5908a4ea27abc43e01e815f0eb9a222811ae338195c55
+  image: rabbitmq:4.3-management@sha256:a7faa436fbb827d5554ef3213de39bb0d858a8e7caf184179db568630b21c683
   resources:
     requests:
       cpu: 100m
