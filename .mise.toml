@@ -68,3 +68,8 @@ postinstall = "lefthook install"
 # onedr0p/home-ops's own pin) resolves through vfox correctly instead.
 "1password-cli" = "2.39.0"
 "github:mitsuhiko/minijinja" = "2.24.0"
+# npm:oxfmt (above) shells out to npm, which needs a node runtime - same
+# silent-version-drift risk class as the other tools pinned in the
+# 2026-08-26 comparison above. onedr0p/home-ops pins the same thing for the
+# same reason.
+"node" = "26.9.0"
