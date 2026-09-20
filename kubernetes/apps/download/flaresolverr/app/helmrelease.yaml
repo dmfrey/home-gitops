@@ -41,7 +41,14 @@ spec:
                 cpu: 50m
                 memory: 256Mi
               limits:
-                memory: 1Gi
+                # Bumped 1Gi -> 2Gi 2026-09-20: launches a real headless
+                # Chromium instance per request/session, memory grows
+                # steadily over days and doesn't fully release between
+                # launches (known FlareSolverr characteristic, not a bug
+                # with a clean upstream fix) - was hitting OOMKilled every
+                # ~4-5 days. Paired with a nightly scheduled restart
+                # (cronjob.yaml) so it recycles before ever getting close.
+                memory: 2Gi
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }

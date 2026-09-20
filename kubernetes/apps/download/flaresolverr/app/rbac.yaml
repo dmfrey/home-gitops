@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flaresolverr-restart
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: flaresolverr-restart
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: flaresolverr-restart
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: flaresolverr-restart
+subjects:
+  - kind: ServiceAccount
+    name: flaresolverr-restart

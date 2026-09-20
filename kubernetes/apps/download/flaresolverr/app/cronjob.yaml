@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/batch/cronjob_v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: flaresolverr-restart
+spec:
+  # FlareSolverr launches a real headless Chromium instance per
+  # request/session; memory grows steadily over days and doesn't fully
+  # release between launches (known characteristic, not a bug with a
+  # clean upstream fix - was hitting OOMKilled every ~4-5 days on the
+  # old 1Gi limit). Recycle nightly, well before it ever gets close to
+  # the (now 2Gi) limit, instead of waiting for the kernel to kill it
+  # mid-request.
+  schedule: "0 8 * * *" # 4am America/New_York
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 120
+      template:
+        spec:
+          serviceAccountName: flaresolverr-restart
+          restartPolicy: Never
+          automountServiceAccountToken: true
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+          containers:
+            - name: restart
+              image: docker.io/alpine/k8s:1.37.0@sha256:b421c2e9419edb98db39b6ab641669f4db7bb2acf354f22450c6b7e7176d1ff4
+              env:
+                - name: HOME
+                  value: /tmp
+              command:
+                - sh
+                - -c
+                - |
+                  kubectl get pods -l app.kubernetes.io/name=flaresolverr -o name \
+                    | xargs -r -n1 kubectl delete --ignore-not-found=true
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 64Mi
+          volumes:
+            - name: tmp
+              emptyDir: {}
