@@ -8,6 +8,22 @@ metadata:
 spec:
   replicas: 1
 
+  # No persistence (this app has no S3 snapshot config below either), so
+  # freely reschedulable - spread the cluster's 7 single-replica Dragonfly
+  # instances (all sharing the app.kubernetes.io/name=dragonfly label) across
+  # nodes instead of letting scheduler history cluster them all together.
+  # namespaceSelector: {} is required for cross-namespace counting - each
+  # instance lives alone in its own app's namespace otherwise.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: dragonfly
+          app.kubernetes.io/part-of: dragonfly
+      namespaceSelector: {}
+
   image: ghcr.io/dragonflydb/dragonfly:v2.0.0@sha256:7426fdb31ddcf7bd9499b4205f36ebaa83b26149ba1609a0d5f8f474b3631233
 
   env:
