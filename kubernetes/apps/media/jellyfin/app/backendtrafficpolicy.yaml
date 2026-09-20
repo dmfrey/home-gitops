@@ -16,3 +16,17 @@ spec:
       # for an idle-but-alive Jellyfin streaming connection (paused
       # playback, slow segment fetches). Override just this route.
       connectionIdleTimeout: 1h
+      # Confirmed live 2026-09-20: leaving requestTimeout unset here does
+      # NOT inherit the global policy's requestTimeout: 0s - Envoy Gateway
+      # per-route BackendTrafficPolicy objects don't field-merge with the
+      # Gateway-level one, an unset field falls back to Envoy's own
+      # built-in default (~15s) for THIS policy object specifically. That
+      # silently capped every Jellyfin request's total duration at ~15s -
+      # invisible for streaming (small HLS segments finish well under
+      # that), but it was hard-killing Android app downloads of large
+      # files mid-transfer (confirmed via envoy access logs: duration
+      # 15006ms, response_flags UT, after 1+ GB already sent). Restate
+      # both fields explicitly so nothing here silently reverts to a
+      # hidden default again.
+      requestTimeout: 0s
+      streamIdleTimeout: 1h
