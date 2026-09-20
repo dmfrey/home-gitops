@@ -14,17 +14,23 @@ spec:
   # reschedulable - spread the cluster's 7 single-replica Dragonfly
   # instances (all sharing the app.kubernetes.io/name=dragonfly label) across
   # nodes instead of letting scheduler history cluster them all together.
-  # namespaceSelector: {} is required for cross-namespace counting - each
-  # instance lives alone in its own app's namespace otherwise.
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/name: dragonfly
-          app.kubernetes.io/part-of: dragonfly
-      namespaceSelector: {}
+  # topologySpreadConstraints was tried first, but this CRD's schema for it
+  # is a hand-trimmed subset that omits namespaceSelector (confirmed via the
+  # CRD's own OpenAPI schema) - useless here since each instance lives alone
+  # in its own app's namespace, so same-namespace-only counting is always
+  # trivially satisfied. affinity.podAntiAffinity's schema is the full
+  # upstream PodAffinityTerm type and does support namespaceSelector.
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: dragonfly
+                app.kubernetes.io/part-of: dragonfly
+            namespaceSelector: {}
+            topologyKey: kubernetes.io/hostname
 
   image: ghcr.io/dragonflydb/dragonfly:v2.0.0@sha256:7426fdb31ddcf7bd9499b4205f36ebaa83b26149ba1609a0d5f8f474b3631233
 
