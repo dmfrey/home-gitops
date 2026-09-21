@@ -47,7 +47,14 @@ spec:
                 cpu: 10m
                 memory: 128Mi
               limits:
-                memory: 512Mi
+                # Bumped 512Mi -> 1Gi 2026-09-20: container_memory_working_set
+                # shows a recurring sawtooth (~30-70Mi baseline climbing to
+                # 400-530Mi within 1-3h, then reset by OOMKill) repeating
+                # every few hours across many days - confirmed via
+                # kubectl get pod restartCount (9 restarts over ~5 days,
+                # every one exitCode 137/OOMKilled). 512Mi was simply too
+                # tight for this workload's normal peak, not a runaway leak.
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
