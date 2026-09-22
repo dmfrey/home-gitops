@@ -17,6 +17,13 @@ spec:
       app.kubernetes.io/name: stigs
       app.kubernetes.io/controller: backend
   ingress:
+    # Selecting this pod for Ingress makes Kubernetes deny all ingress not
+    # explicitly allowed below - this rule restores normal app traffic
+    # (Envoy -> backend:8080) that the 8081-only rule below silently broke.
+    # No `from` = allow from any source, same as an unrestricted pod.
+    - ports:
+        - port: 8080
+          protocol: TCP
     - from:
         - podSelector:
             matchLabels:
