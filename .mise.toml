@@ -72,4 +72,4 @@ postinstall = "lefthook install"
 # silent-version-drift risk class as the other tools pinned in the
 # 2026-08-26 comparison above. onedr0p/home-ops pins the same thing for the
 # same reason.
-"node" = "26.9.0"
+"node" = "26.10.0"
