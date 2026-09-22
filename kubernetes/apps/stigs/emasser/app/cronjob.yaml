@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/batch/cronjob_v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: emasser
+spec:
+  # Placeholder cadence - adjust once the real eMASS sync frequency is known.
+  schedule: "0 6 * * *" # 2am America/New_York
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels:
+            # Matches networkpolicy.yaml's ingress podSelector - this is
+            # what's allowed to reach the stigs backend's actuator (8081).
+            app.kubernetes.io/name: emasser
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+          containers:
+            - name: emasser
+              # Only published image (docker.io/mitre/emasser) - CLI tool run
+              # per-invocation, not a long-running service. eMASSer itself
+              # only talks to the external eMASS API; it has no way to reach
+              # a local app. Reaching the stigs actuator (port 8081) for
+              # real sync data means this container's own command needs to
+              # do that itself - likely a custom image built from
+              # dmfrey/stigs once the actuator endpoint exists, replacing
+              # this placeholder image/command entirely.
+              image: docker.io/mitre/emasser:latest
+              args:
+                - get
+                - help
+              volumeMounts:
+                - name: secrets
+                  mountPath: /data
+                  readOnly: true
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 128Mi
+                limits:
+                  memory: 256Mi
+          volumes:
+            - name: secrets
+              secret:
+                secretName: emasser-secret

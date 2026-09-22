@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: stigs-allow-emasser-actuator
+spec:
+  # Targets the stigs backend's pods (app.kubernetes.io/name: stigs) once
+  # that app is deployed - doesn't exist yet, this just reserves the policy
+  # shape so it's ready the moment it does. Same namespace, so no
+  # namespaceSelector needed (unlike components/dragonflydb's cross-namespace
+  # example this was modeled on).
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: stigs
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: emasser
+      ports:
+        - port: 8081
+          protocol: TCP
+  policyTypes:
+    - Ingress

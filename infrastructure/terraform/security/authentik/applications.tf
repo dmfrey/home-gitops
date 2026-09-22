@@ -91,6 +91,15 @@ locals {
       redirect_uri  = "https://spring-notes.${var.CLUSTER_DOMAIN}/"
       launch_url    = "https://spring-notes.${var.CLUSTER_DOMAIN}/"
     },
+    stigs = {
+      client_id     = var.STIGS_CLIENT_ID
+      client_secret = var.STIGS_CLIENT_SECRET
+      client_type   = "public"
+      group         = "developers"
+      icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
+      redirect_uri  = "https://stigs.${var.CLUSTER_DOMAIN}/"
+      launch_url    = "https://stigs.${var.CLUSTER_DOMAIN}/"
+    },
     dependency-track = {
       client_id     = var.DEPENDENCY_TRACK_CLIENT_ID
       client_secret = var.DEPENDENCY_TRACK_CLIENT_SECRET
