@@ -1,0 +1,1465 @@
+# Platform/Infrastructure-layer STIG attestations for this specific deployment
+# (Talos + Flux Kubernetes homelab cluster). Hand-reviewed subset of real
+# determinations by the cluster operator (the actual owner of these facts);
+# everything else remains the tool's honest NOT_REVIEWED placeholder default
+# rather than a fabricated blanket claim. See stig-attestation-builder's
+# scaffold/validate commands in tools/stig-attestation-builder.
+entries:
+  - rule-id: APSC-DV-000060
+    title: The application must clear temporary storage and cookies when the session is terminated.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000060 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000070
+    title: The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000070 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000080
+    title: The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000080 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000160
+    title: The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000160 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000170
+    title: The application must implement cryptographic mechanisms to protect the integrity of remote access sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000170 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000180
+    title: Applications with SOAP messages requiring integrity must include the following message elements:-Message ID-Service Request-Timestamp-SAML Assertion (optionally included in messages) and all elements of the message must be digitally signed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000180 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000190
+    title: Messages protected with WS_Security must use time stamps with creation and expiration times.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000190 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000200
+    title: Validity periods must be verified on all application messages using WS-Security or SAML assertions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000200 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000210
+    title: The application must ensure each unique asserting party provides unique assertion ID references for each SAML assertion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000210 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000220
+    title: The application must ensure encrypted assertions, or equivalent confidentiality protections are used when assertion data is passed through an intermediary, and confidentiality of the assertion data is required when passing through the intermediary.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000220 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000230
+    title: The application must use the NotOnOrAfter condition when using the SubjectConfirmation element in a SAML assertion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000230 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000240
+    title: The application must use both the NotBefore and NotOnOrAfter elements or OneTimeUse element when using the Conditions element in a SAML assertion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000240 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000250
+    title: The application must ensure if a OneTimeUse element is used in an assertion, there is only one of the same used in the Conditions element portion of an assertion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000250 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000260
+    title: The application must ensure messages are encrypted when the SessionIndex is tied to privacy data.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000260 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000290
+    title: Shared/group account credentials must be terminated when members leave the group.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000290 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000300
+    title: The application must automatically remove or disable temporary user accounts 72 hours after account creation.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000300 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000310
+    title: The application must have a process, feature or function that prevents removal or disabling of emergency accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000310 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000320
+    title: The application must automatically disable accounts after a 35 day period of account inactivity.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000320 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000330
+    title: Unnecessary application accounts must be disabled, or deleted.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000330 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000340
+    title: The application must automatically audit account creation.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000340 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000350
+    title: The application must automatically audit account modification.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000350 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000360
+    title: The application must automatically audit account disabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000360 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000370
+    title: The application must automatically audit account removal actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000370 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000380
+    title: The application must notify System Administrators and Information System Security Officers when accounts are created.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000380 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000390
+    title: The application must notify System Administrators and Information System Security Officers when accounts are modified.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000390 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000400
+    title: The application must notify System Administrators and Information System Security Officers of account disabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000400 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000410
+    title: The application must notify System Administrators and Information System Security Officers of account removal actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000410 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000420
+    title: The application must automatically audit account enabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000420 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000430
+    title: The application must notify System Administrators and Information System Security Officers of account enabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000430 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000460
+    title: The application must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000460 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000470
+    title: The application must enforce organization-defined discretionary access control policies over defined subjects and objects.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000470 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000480
+    title: The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000480 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000490
+    title: The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000490 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000500
+    title: The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000500 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000510
+    title: The application must execute without excessive account permissions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000510 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000520
+    title: The application must audit the execution of privileged functions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000520 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000530
+    title: The application must enforce the limit of three consecutive invalid logon attempts by a user during a 15 minute time period.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000530 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000590
+    title: The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000590 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000600
+    title: For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000600 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000670
+    title: The application must record a time stamp indicating when the event occurred.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000670 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000680
+    title: The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000680 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000690
+    title: The application must provide audit record generation capability for connecting system IP addresses.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000690 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000700
+    title: The application must record the username or user ID of the user associated with the event.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000700 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000710
+    title: The application must generate audit records when successful/unsuccessful attempts to grant privileges occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000710 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000720
+    title: The application must generate audit records when successful/unsuccessful attempts to access security objects occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000720 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000730
+    title: The application must generate audit records when successful/unsuccessful attempts to access security levels occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000730 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000740
+    title: The application must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000740 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000750
+    title: The application must generate audit records when successful/unsuccessful attempts to modify privileges occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000750 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000760
+    title: The application must generate audit records when successful/unsuccessful attempts to modify security objects occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000760 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000770
+    title: The application must generate audit records when successful/unsuccessful attempts to modify security levels occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000770 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000780
+    title: The application must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000780 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000790
+    title: The application must generate audit records when successful/unsuccessful attempts to delete privileges occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000790 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000800
+    title: The application must generate audit records when successful/unsuccessful attempts to delete security levels occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000800 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000830
+    title: The application must generate audit records when successful/unsuccessful logon attempts occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000830 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000850
+    title: The application must generate audit records showing starting and ending time for user access to the system.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000850 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000860
+    title: The application must generate audit records when successful/unsuccessful accesses to objects occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000860 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000880
+    title: The application must generate audit records for all account creations, modifications, disabling, and termination events.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000880 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000910
+    title: The application must initiate session auditing upon startup.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000910 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000950
+    title: The application must log destination IP addresses.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000950 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000980
+    title: The application must produce audit records containing information to establish when (date and time) the events occurred.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000980 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001000
+    title: When using centralized logging; the application must include a unique identifier in order to distinguish itself from other application logs.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001000 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001050
+    title: The application must provide centralized management and configuration of the content to be captured in audit records generated by all application components.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001050 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001070
+    title: The application must off-load audit records onto a different system or media than the system being audited.
+    status: NOT_A_FINDING
+    justification: Loki's object storage backend is Garage (S3-compatible, garage-system namespace) - physically separate storage from the pods generating the audit records, satisfying off-load to a different system/media.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: APSC-DV-001080
+    title: The application must be configured to write application logs to a centralized log repository.
+    status: NOT_A_FINDING
+    justification: Application logs are shipped via an OTLP-based collector (Alloy) to a centralized Loki instance across the cluster - confirmed live via mcp__grafana__query_loki_logs throughout this deployment's own troubleshooting sessions.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: APSC-DV-001140
+    title: The application must provide the capability to filter audit records for events of interest based upon organization-defined criteria.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001140 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001250
+    title: The applications must use internal system clocks to generate time stamps for audit records.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001250 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001260
+    title: The application must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001260 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001270
+    title: The application must record time stamps for audit records that meet a granularity of one second for a minimum degree of precision.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001270 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001280
+    title: The application must protect audit information from any type of unauthorized read access.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001280 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001290
+    title: The application must protect audit information from unauthorized modification.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001290 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001300
+    title: The application must protect audit information from unauthorized deletion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001300 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001310
+    title: The application must protect audit tools from unauthorized access.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001310 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001320
+    title: The application must protect audit tools from unauthorized modification.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001320 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001330
+    title: The application must protect audit tools from unauthorized deletion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001330 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001340
+    title: The application must back up audit records at least every seven days onto a different system or system component than the system or component being audited.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001340 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001350
+    title: The application must use cryptographic mechanisms to protect the integrity of audit information.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001350 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001360
+    title: Application audit tools must be cryptographically hashed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001360 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001370
+    title: The integrity of the audit tools must be validated by checking the files for changes in the cryptographic hash value.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001370 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001390
+    title: The application must prohibit user installation of software without explicit privileged status.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001390 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001410
+    title: The application must enforce access restrictions associated with changes to application configuration.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001410 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001420
+    title: The application must audit who makes configuration changes to the application.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001420 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001440
+    title: The applications must limit privileges to change the software resident within software libraries.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001440 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001490
+    title: The application must employ a deny-all, permit-by-exception (whitelist) policy to allow the execution of authorized software programs.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001490 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001500
+    title: The application must be configured to disable non-essential capabilities.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001500 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001510
+    title: The application must be configured to use only functions, ports, and protocols permitted to it in the PPSM CAL.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001510 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001520
+    title: The application must require users to reauthenticate when organization-defined circumstances or situations require reauthentication.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001520 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001530
+    title: The application must require devices to reauthenticate when organization-defined circumstances or situations requiring reauthentication.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001530 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001540
+    title: The application must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001540 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001550
+    title: The application must use multifactor (Alt. Token) authentication for network access to privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001550 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001580
+    title: The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001580 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001590
+    title: The application must use multifactor (Alt. Token) authentication for local access to privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001590 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001600
+    title: The application must use multifactor (e.g., CAC, Alt. Token) authentication for local access to non-privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001600 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001610
+    title: The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001610 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001620
+    title: The application must implement replay-resistant authentication mechanisms for network access to privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001620 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001630
+    title: The application must implement replay-resistant authentication mechanisms for network access to non-privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001630 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001660
+    title: Service-Oriented Applications handling non-releasable data must authenticate endpoint devices via mutual SSL/TLS.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001660 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001670
+    title: The application must disable device identifiers after 35 days of inactivity unless a cryptographic certificate is used for authentication.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001670 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001680
+    title: The application must enforce a minimum 15-character password length.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001680 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001690
+    title: The application must enforce password complexity by requiring that at least one upper-case character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001690 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001700
+    title: The application must enforce password complexity by requiring that at least one lower-case character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001700 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001710
+    title: The application must enforce password complexity by requiring that at least one numeric character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001710 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001720
+    title: The application must enforce password complexity by requiring that at least one special character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001720 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001730
+    title: The application must require the change of at least 8 of the total number of characters when passwords are changed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001730 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001740
+    title: The application must only store cryptographic representations of passwords.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001740 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001750
+    title: The application must transmit only cryptographically-protected passwords.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001750 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001760
+    title: The application must enforce 24 hours/1 day as the minimum password lifetime.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001760 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001770
+    title: The application must enforce a 60-day maximum password lifetime restriction.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001770 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001780
+    title: The application must prohibit password reuse for a minimum of five generations.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001780 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001790
+    title: The application must allow the use of a temporary password for system logons with an immediate change to a permanent password.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001790 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001795
+    title: The application password must not be changeable by users other than the administrator or the user with which the password is associated.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001795 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001840
+    title: The application, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001840 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001850
+    title: The application must not display passwords/PINs as clear text.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001850 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001870
+    title: The application must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users).
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001870 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001880
+    title: The application must accept Personal Identity Verification (PIV) credentials from other federal agencies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001880 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001890
+    title: The application must electronically verify Personal Identity Verification (PIV) credentials from other federal agencies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001890 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001900
+    title: The application must accept FICAM-approved third-party credentials.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001900 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001910
+    title: The application must conform to FICAM-issued profiles.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001910 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002000
+    title: The application must terminate all network connections associated with a communications session at the end of the session.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002000 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002150
+    title: The application user interface must be either physically or logically separated from data storage and management interfaces.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002150 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002230
+    title: The application must not expose session IDs.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002230 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002240
+    title: The application must destroy the session ID value and/or cookie on logoff or browser close.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002240 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002250
+    title: Applications must use system-generated session identifiers that protect against session fixation.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002250 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002260
+    title: Applications must validate session identifiers.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002260 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002270
+    title: Applications must not use URL embedded session IDs.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002270 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002280
+    title: The application must not re-use or recycle session IDs.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002280 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002300
+    title: The application must only allow the use of DoD-approved certificate authorities for verification of the establishment of protected sessions.
+    status: OPEN
+    justification: cert-manager issues this cluster's certificates from a non-DoD certificate authority - this is a personal homelab, not an accredited DoD PKI environment. Genuine open finding, not remediated.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: APSC-DV-002310
+    title: The application must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002310 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002320
+    title: In the event of a system failure, applications must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002320 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002360
+    title: The application must isolate security functions from non-security functions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002360 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002370
+    title: The application must maintain a separate execution domain for each executing process.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002370 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002380
+    title: Applications must prevent unauthorized and unintended information transfer via shared system resources.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002380 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002400
+    title: The application must restrict the ability to launch Denial of Service (DoS) attacks against itself or other information systems.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002400 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002410
+    title: The web service design must include redundancy mechanisms when used with high-availability systems.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002410 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002440
+    title: The application must protect the confidentiality and integrity of transmitted information.
+    status: OPEN
+    justification: TLS is in place end-to-end (Envoy Gateway, cert-manager) but uses standard JVM/Envoy crypto providers, not a FIPS 140-2/3 validated cryptographic module as DoD-approved encryption requires. Genuine open finding.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: APSC-DV-002450
+    title: The application must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002450 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002460
+    title: The application must maintain the confidentiality and integrity of information during preparation for transmission.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002460 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002470
+    title: The application must maintain the confidentiality and integrity of information during reception.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002470 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002500
+    title: The application must protect from Cross-Site Request Forgery (CSRF) vulnerabilities.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002500 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002570
+    title: The application must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002570 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002580
+    title: The application must reveal error messages only to the ISSO, ISSM, or SA.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002580 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002610
+    title: The application must remove organization-defined software components after updated versions have been installed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002610 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002630
+    title: Security-relevant software updates and patches must be kept up to date.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002630 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002760
+    title: The application performing organization-defined security functions must verify correct operation of security functions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002760 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002770
+    title: "The application must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days."
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002770 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002870
+    title: Unsigned Category 1A mobile code must not be used in the application in accordance with DoD policy.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002870 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002890
+    title: Application web servers must be on a separate network segment from the application and database servers if it is a tiered application operating in the DoD DMZ.
+    status: NOT_A_FINDING
+    justification: Frontend (nginx), backend (Spring Boot), and database (CloudNativePG) run as separate pods with Cilium-enforced pod-level network segmentation; the backend's actuator/management port (8081) is further isolated from the frontend and all other cluster traffic by a dedicated NetworkPolicy (stigs-allow-emasser-actuator) that only permits the emasser job's pod on that port.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: APSC-DV-002960
+    title: The designer must ensure the application does not store configuration and control files in the same directory as user data.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002960 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002970
+    title: The ISSO must ensure if a DoD STIG or NSA guide is not available, a third-party product will be configured by following available guidance.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002970 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002980
+    title: New IP addresses, data services, and associated ports used by the application must be submitted to the appropriate approving authority for the organization, which in turn will be submitted through the DoD Ports, Protocols, and Services Management (DoD PPSM)
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002980 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002990
+    title: The application must be registered with the DoD Ports and Protocols Database.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002990 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003040
+    title: The application must not be hosted on a general purpose machine if the application is designated as critical or high availability by the ISSO.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003040 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003060
+    title: Recovery procedures and technical system features must exist so recovery is performed in a secure and verifiable manner. The ISSO will document circumstances inhibiting a trusted recovery.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003060 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003070
+    title: Data backup must be performed at required intervals in accordance with DoD policy.
+    status: NOT_A_FINDING
+    justification: "CNPG ScheduledBackup (schedule: '@daily', method: plugin/barman-cloud) targets Garage S3 for this app's own stigs-cnpg database cluster - deployed as part of this same session's work (kubernetes/apps/stigs/stigs/stigs-db/cnpg-scheduledbackup.yaml)."
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: APSC-DV-003100
+    title: The application must use encryption to implement key exchange and authenticate endpoints prior to establishing a communication channel for key exchange.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003100 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003110
+    title: The application must not contain embedded authentication data.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003110 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003120
+    title: The application must have the capability to mark sensitive/classified output when required.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003120 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003160
+    title: Test procedures must be created and at least annually executed to ensure system initialization, shutdown, and aborts are configured to verify the system remains in a secure state.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003160 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003270
+    title: Unnecessary built-in application accounts must be disabled.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003270 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003280
+    title: Default passwords must be changed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003280 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003285
+    title: An Application Configuration Guide must be created and included with the application.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003285 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003300
+    title: The designer must ensure uncategorized or emerging mobile code is not used in applications.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003300 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003330
+    title: The system must alert an administrator when low resource conditions are encountered.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003330 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000014-CTR-000035
+    title: The container platform must use TLS 1.2 or greater for secure container image transport from trusted sources.
+    status: NOT_A_FINDING
+    justification: Container images are pulled from ghcr.io, which is HTTPS-only by the OCI/Docker Registry v2 protocol - TLS 1.2+ is not optional for that transport.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: SRG-APP-000014-CTR-000040
+    title: The container platform must use TLS 1.2 or greater for secure communication.
+    status: NOT_A_FINDING
+    justification: Envoy Gateway (envoy-internal) terminates TLS for this app's route (stigs.dmfrey.com) using a cert-manager-issued certificate - confirmed live via Envoy access logs during this deployment's own testing.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: SRG-APP-000023-CTR-000055
+    title: The container platform must use a centralized user management solution to support account management functions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000023-CTR-000055 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000024-CTR-000060
+    title: The container platform must automatically remove or disable temporary user accounts after 72 hours.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000024-CTR-000060 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000025-CTR-000065
+    title: The container platform must automatically disable accounts after a 35-day period of account inactivity.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000025-CTR-000065 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000026-CTR-000070
+    title: The container platform must automatically audit account creation.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000026-CTR-000070 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000027-CTR-000075
+    title: The container platform must automatically audit account modification.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000027-CTR-000075 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000028-CTR-000080
+    title: The container platform must automatically audit account-disabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000028-CTR-000080 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000029-CTR-000085
+    title: The container platform must automatically audit account removal actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000029-CTR-000085 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000033-CTR-000090
+    title: Least privilege access and need to know must be required to access the container platform registry.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000033-CTR-000090 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000033-CTR-000095
+    title: Least privilege access and need to know must be required to access the container platform runtime.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000033-CTR-000095 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000033-CTR-000100
+    title: Least privilege access and need to know must be required to access the container platform keystore.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000033-CTR-000100 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000038-CTR-000105
+    title: The container platform must enforce approved authorizations for controlling the flow of information within the container platform based on organization-defined information flow control policies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000038-CTR-000105 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000039-CTR-000110
+    title: The container platform must enforce approved authorizations for controlling the flow of information between interconnected systems and services based on organization-defined information flow control policies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000039-CTR-000110 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000065-CTR-000115
+    title: The container platform must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000065-CTR-000115 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000089-CTR-000150
+    title: The container platform must generate audit records for all DoD-defined auditable events within all components in the platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000089-CTR-000150 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000090-CTR-000155
+    title: The container platform must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000090-CTR-000155 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000091-CTR-000160
+    title: The container platform must generate audit records when successful/unsuccessful attempts to access privileges occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000091-CTR-000160 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000092-CTR-000165
+    title: The container platform must initiate session auditing upon startup.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000092-CTR-000165 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000095-CTR-000170
+    title: All audit records must identify what type of event has occurred within the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000095-CTR-000170 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000096-CTR-000175
+    title: The container platform audit records must have a date and time association with all events.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000096-CTR-000175 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000097-CTR-000180
+    title: All audit records must identify where in the container platform the event occurred.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000097-CTR-000180 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000098-CTR-000185
+    title: All audit records must identify the source of the event within the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000098-CTR-000185 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000099-CTR-000190
+    title: All audit records must generate the event results within the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000099-CTR-000190 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000100-CTR-000195
+    title: All audit records must identify any users associated with the event within the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000100-CTR-000195 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000100-CTR-000200
+    title: All audit records must identify any containers associated with the event within the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000100-CTR-000200 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000101-CTR-000205
+    title: The container platform must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000101-CTR-000205 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000118-CTR-000240
+    title: The container platform must protect audit information from any type of unauthorized read access.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000118-CTR-000240 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000119-CTR-000245
+    title: The container platform must protect audit information from unauthorized modification.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000119-CTR-000245 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000120-CTR-000250
+    title: The container platform must protect audit information from unauthorized deletion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000120-CTR-000250 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000121-CTR-000255
+    title: The container platform must protect audit tools from unauthorized access.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000121-CTR-000255 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000122-CTR-000260
+    title: The container platform must protect audit tools from unauthorized modification.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000122-CTR-000260 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000123-CTR-000265
+    title: The container platform must protect audit tools from unauthorized deletion.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000123-CTR-000265 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000126-CTR-000275
+    title: The container platform must use FIPS validated cryptographic mechanisms to protect the integrity of log information.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000126-CTR-000275 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000131-CTR-000280
+    title: The container platform must be built from verified packages.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000131-CTR-000280 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000131-CTR-000285
+    title: The container platform must verify container images.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000131-CTR-000285 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000133-CTR-000290
+    title: The container platform must limit privileges to the container platform registry.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000133-CTR-000290 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000133-CTR-000300
+    title: The container platform must limit privileges to the container platform keystore.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000133-CTR-000300 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000141-CTR-000320
+    title: The container platform registry must contain only container images for those capabilities being offered by the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000141-CTR-000320 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000142-CTR-000325
+    title: The container platform runtime must enforce ports, protocols, and services that adhere to the PPSM CAL.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000142-CTR-000325 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000142-CTR-000330
+    title: The container platform runtime must enforce the use of ports that are non-privileged.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000142-CTR-000330 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000148-CTR-000335
+    title: The container platform must uniquely identify and authenticate users.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000148-CTR-000335 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000148-CTR-000340
+    title: The container platform application program interface (API) must uniquely identify and authenticate users.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000148-CTR-000340 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000148-CTR-000345
+    title: The container platform must uniquely identify and authenticate processes acting on behalf of the users.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000148-CTR-000345 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000148-CTR-000350
+    title: The container platform application program interface (API) must uniquely identify and authenticate processes acting on behalf of the users.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000148-CTR-000350 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000149-CTR-000355
+    title: The container platform must use multifactor authentication for network access to privileged accounts.
+    status: OPEN
+    justification: Cluster admin (kubectl) access currently authenticates via kubeconfig client certificates only - no multifactor step is enforced for privileged network access to the platform. Genuine open finding, not remediated.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: SRG-APP-000150-CTR-000360
+    title: The container platform must use multifactor authentication for network access to non-privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000150-CTR-000360 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000151-CTR-000365
+    title: The container platform must use multifactor authentication for local access to privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000151-CTR-000365 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000152-CTR-000370
+    title: The container platform must use multifactor authentication for local access to non-privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000152-CTR-000370 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000153-CTR-000375
+    title: The container platform must ensure users are authenticated with an individual authenticator prior to using a group authenticator.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000153-CTR-000375 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000156-CTR-000380
+    title: The container platform must use FIPS-validated SHA-1 or higher hash function to provide replay-resistant authentication mechanisms for network access to privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000156-CTR-000380 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000157-CTR-000385
+    title: The container platform must implement replay-resistant authentication mechanisms for network access to non-privileged accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000157-CTR-000385 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000158-CTR-000390
+    title: The container platform must uniquely identify all network-connected nodes before establishing any connection.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000158-CTR-000390 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000163-CTR-000395
+    title: The container platform must disable identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000163-CTR-000395 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000164-CTR-000400
+    title: The container platform must enforce a minimum 15-character password length.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000164-CTR-000400 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000165-CTR-000405
+    title: The container platform must prohibit password reuse for a minimum of 10 generations.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000165-CTR-000405 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000166-CTR-000410
+    title: The container platform must enforce password complexity by requiring that at least one uppercase character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000166-CTR-000410 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000167-CTR-000415
+    title: The container platform must enforce password complexity by requiring that at least one lowercase character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000167-CTR-000415 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000168-CTR-000420
+    title: The container platform must enforce password complexity by requiring that at least one numeric character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000168-CTR-000420 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000169-CTR-000425
+    title: The container platform must enforce password complexity by requiring that at least one special character be used.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000169-CTR-000425 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000170-CTR-000430
+    title: The container platform must require the change of at least 15 of the total number of characters when passwords are changed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000170-CTR-000430 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000171-CTR-000435
+    title: For container platform using password authentication, the application must store only cryptographic representations of passwords.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000171-CTR-000435 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000173-CTR-000445
+    title: The container platform must enforce 24 hours (one day) as the minimum password lifetime.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000173-CTR-000445 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000174-CTR-000450
+    title: The container platform must enforce a 60-day maximum password lifetime restriction.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000174-CTR-000450 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000178-CTR-000470
+    title: The container platform must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000178-CTR-000470 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000219-CTR-000550
+    title: The container platform must protect authenticity of communications sessions with the use of FIPS-validated 140-2 or 140-3 security requirements for cryptographic modules.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000219-CTR-000550 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000225-CTR-000570
+    title: The container platform runtime must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000225-CTR-000570 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000226-CTR-000575
+    title: The container platform must preserve any information necessary to determine the cause of the disruption or failure.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000226-CTR-000575 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000266-CTR-000625
+    title: The container platform must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000266-CTR-000625 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000290-CTR-000670
+    title: The container platform must use cryptographic mechanisms to protect the integrity of audit tools.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000290-CTR-000670 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000297-CTR-000705
+    title: Access to the container platform must display an explicit logout message to user indicating the reliable termination of authenticated communication sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000297-CTR-000705 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000318-CTR-000740
+    title: The container platform must enforce organization-defined circumstances and/or usage conditions for organization-defined accounts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000318-CTR-000740 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000319-CTR-000745
+    title: The container platform must automatically audit account-enabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000319-CTR-000745 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000320-CTR-000750
+    title: The container platform must notify system administrator and ISSO of account enabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000320-CTR-000750 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000343-CTR-000780
+    title: The container platform must audit the execution of privileged functions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000343-CTR-000780 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000345-CTR-000785
+    title: The container platform must automatically lock an account until the locked account is released by an administrator when three unsuccessful login attempts in 15 minutes are exceeded.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000345-CTR-000785 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000359-CTR-000810
+    title: The container platform must provide an immediate warning to the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of repository maximum audit record storage capacity.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000359-CTR-000810 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000360-CTR-000815
+    title: The container platform must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000360-CTR-000815 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000374-CTR-000865
+    title: All audit records must use UTC or GMT time stamps.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000374-CTR-000865 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000375-CTR-000870
+    title: The container platform must record time stamps for audit records that meet a granularity of one second for a minimum degree of precision.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000375-CTR-000870 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000378-CTR-000885
+    title: The container platform runtime must prohibit the instantiation of container images without explicit privileged status.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000378-CTR-000885 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000378-CTR-000890
+    title: The container platform registry must prohibit installation or modification of container images without explicit privileged status.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000378-CTR-000890 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000380-CTR-000900
+    title: The container platform must enforce access restrictions for container platform configuration changes.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000380-CTR-000900 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000381-CTR-000905
+    title: The container platform must enforce access restrictions and support auditing of the enforcement actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000381-CTR-000905 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000383-CTR-000910
+    title: All non-essential, unnecessary, and unsecure DoD ports, protocols, and services must be disabled in the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000383-CTR-000910 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000384-CTR-000915
+    title: The container platform must prevent component execution in accordance with organization-defined policies regarding software program usage and restrictions, and/or rules authorizing the terms and conditions of software program usage.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000384-CTR-000915 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000386-CTR-000920
+    title: The container platform registry must employ a deny-all, permit-by-exception (whitelist) policy to allow only authorized container images in the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000386-CTR-000920 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000389-CTR-000925
+    title: The container platform must require users to reauthenticate when organization-defined circumstances or situations require reauthentication.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000389-CTR-000925 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000390-CTR-000930
+    title: The container platform must require devices to reauthenticate when organization-defined circumstances or situations requiring reauthentication.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000390-CTR-000930 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000397-CTR-000955
+    title: The container platform must allow the use of a temporary password for system logons with an immediate change to a permanent password.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000397-CTR-000955 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000401-CTR-000965
+    title: The container platform, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000401-CTR-000965 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000414-CTR-001010
+    title: Vulnerability scanning applications must implement privileged access authorization to all container platform components, containers, and container images for selected organization-defined vulnerability scanning activities.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000414-CTR-001010 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000441-CTR-001090
+    title: The container platform must maintain the confidentiality and integrity of information during preparation for transmission.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000441-CTR-001090 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000442-CTR-001095
+    title: The container platform must maintain the confidentiality and integrity of information during reception.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000442-CTR-001095 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000447-CTR-001100
+    title: The container platform must behave in a predictable and documented manner that reflects organizational and system objectives when invalid inputs are received.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000447-CTR-001100 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000454-CTR-001110
+    title: The container platform must remove old components after updated versions have been installed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000454-CTR-001110 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000454-CTR-001115
+    title: The container platform registry must remove old container images after updating versions have been made available.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000454-CTR-001115 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000456-CTR-001125
+    title: "The container platform registry must contain the latest images with most recent updates and execute within the container platform runtime as authorized by IAVM, CTOs, DTMs, and STIGs. "
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000456-CTR-001125 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000456-CTR-001130
+    title: The container platform runtime must have updates installed within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs).
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000456-CTR-001130 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000474-CTR-001180
+    title: The container platform must provide system notifications to the system administrator and operational staff when anomalies in the operation of the organization-defined security functions are discovered.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000474-CTR-001180 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000492-CTR-001220
+    title: The container platform must generate audit records when successful/unsuccessful attempts to access security objects occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000492-CTR-001220 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000493-CTR-001225
+    title: The container platform must generate audit records when successful/unsuccessful attempts to access security levels occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000493-CTR-001225 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000494-CTR-001230
+    title: The container platform must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000494-CTR-001230 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000495-CTR-001235
+    title: The container platform must generate audit records when successful/unsuccessful attempts to modify privileges occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000495-CTR-001235 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000496-CTR-001240
+    title: The container platform must generate audit records when successful/unsuccessful attempts to modify security objects occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000496-CTR-001240 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000497-CTR-001245
+    title: The container platform must generate audit records when successful/unsuccessful attempts to modify security levels occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000497-CTR-001245 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000498-CTR-001250
+    title: The container platform must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000498-CTR-001250 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000499-CTR-001255
+    title: The container platform must generate audit records when successful/unsuccessful attempts to delete privileges occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000499-CTR-001255 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000500-CTR-001260
+    title: The container platform must generate audit records when successful/unsuccessful attempts to delete security levels occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000500-CTR-001260 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000501-CTR-001265
+    title: The container platform must generate audit records when successful/unsuccessful attempts to delete security objects occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000501-CTR-001265 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000502-CTR-001270
+    title: The container platform must generate audit records when successful/unsuccessful attempts to delete categories of information (e.g., classification levels) occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000502-CTR-001270 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000503-CTR-001275
+    title: The container platform must generate audit records when successful/unsuccessful logon attempts occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000503-CTR-001275 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000504-CTR-001280
+    title: The container platform must generate audit record for privileged activities.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000504-CTR-001280 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000505-CTR-001285
+    title: The container platform audit records must record user access start and end times.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000505-CTR-001285 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000506-CTR-001290
+    title: The container platform must generate audit records when concurrent logons from different workstations and systems occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000506-CTR-001290 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000507-CTR-001295
+    title: The container platform runtime must generate audit records when successful/unsuccessful attempts to access objects occur.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000507-CTR-001295 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000508-CTR-001300
+    title: Direct access to the container platform must generate audit records.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000508-CTR-001300 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000509-CTR-001305
+    title: The container platform must generate audit records for all account creations, modifications, disabling, and termination events.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000509-CTR-001305 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000510-CTR-001310
+    title: The container runtime must generate audit records for all container execution, shutdown, restart events, and program initiations.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000510-CTR-001310 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000516-CTR-000790
+    title: The container platform must provide the configuration for organization-identified individuals or roles to change the auditing to be performed on all components, based on all selectable event criteria within organization-defined time thresholds.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000516-CTR-000790 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000516-CTR-001325
+    title: Container platform components must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including SRGs, STIGs, NSA configuration guides, CTOs, and DTMs.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000516-CTR-001325 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000516-CTR-001330
+    title: The container platform must be able to store and instantiate industry standard container images.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000516-CTR-001330 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000516-CTR-001335
+    title: The container platform must continuously scan components, containers, and images for vulnerabilities.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000516-CTR-001335 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000560-CTR-001340
+    title: The container platform must prohibit communication using TLS versions 1.0 and 1.1, and SSL 2.0 and 3.0.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000560-CTR-001340 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000605-CTR-001380
+    title: The container platform must validate certificates used for Transport Layer Security (TLS) functions by performing an RFC 5280-compliant certification path validation.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000605-CTR-001380 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000645-CTR-001410
+    title: The container platform must prohibit or restrict the use of protocols that transmit unencrypted authentication information or use flawed cryptographic algorithms for transmission.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000645-CTR-001410 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"

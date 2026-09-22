@@ -1,0 +1,20 @@
+# Mounted at /config/overrides/application-override.yaml, imported via
+# SPRING_CONFIG_IMPORT (see helmrelease.yaml). This is the same mechanism
+# app/server/src/main/resources/stig-ato.yaml already uses for the bundled
+# classpath templates - here it's overridden for a real deployment.
+#
+# additional-locations is a full list replacement, not a merge: the
+# container/database entries below are restated unchanged (staying
+# classpath:-backed, not owned by this override) alongside the infra/platform
+# entries repointed at the mounted ConfigMap files.
+compliance:
+  attestation:
+    additional-locations:
+      - file:/config/attestations/infrastructure-attestations.yaml
+      - file:/config/attestations/platform-attestations.yaml
+      - classpath:container-attestations.yaml
+      - classpath:database-attestations.yaml
+  risk-acceptance:
+    additional-locations:
+      - file:/config/attestations/infrastructure-risk-acceptances.yaml
+      - file:/config/attestations/platform-risk-acceptances.yaml

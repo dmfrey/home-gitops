@@ -76,6 +76,11 @@ spec:
                   secretKeyRef:
                     name: stigs-cnpg-app
                     key: password
+              # Real Platform/Infrastructure-layer attestation content for this
+              # specific deployment, overriding the bundled unreviewed classpath
+              # templates - see attestations/application-override.yaml and the
+              # persistence entries below.
+              SPRING_CONFIG_IMPORT: "optional:file:/config/overrides/application-override.yaml"
             probes:
               # Confirmed empirically (per the app's own deployment notes):
               # /actuator/health returns 404 on 8080, 200 on 8081 - actuator
@@ -125,6 +130,26 @@ spec:
                 memory: 32Mi
               limits:
                 memory: 128Mi
+
+    persistence:
+      # Real, hand-reviewed Platform/Infrastructure attestation + risk-acceptance
+      # files for this deployment (kubernetes/apps/stigs/stigs/app/attestations/),
+      # generated via tools:stig-attestation-builder and mounted as directories -
+      # backend-only, the frontend nginx container has no use for these.
+      stigs-attestations:
+        type: configMap
+        name: stigs-attestations
+        advancedMounts:
+          backend:
+            app:
+              - path: /config/attestations
+      stigs-config-override:
+        type: configMap
+        name: stigs-config-override
+        advancedMounts:
+          backend:
+            app:
+              - path: /config/overrides
 
     service:
       backend:

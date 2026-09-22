@@ -1,0 +1,8 @@
+# Platform-layer STIG risk acceptances for this deployment. No formal
+# WAIVED/EXCEPTION determinations exist yet for this environment - this file
+# exists (rather than being omitted) because compliance.risk-acceptance's
+# additional-locations entries are required to resolve to a real, parseable
+# file (a missing one throws IllegalStateException and fails app startup).
+# Add real entries here only once an actual Authorizing Official approves one -
+# see lib/stig-attestation/RUNBOOK.md's schema and required fields.
+entries: []

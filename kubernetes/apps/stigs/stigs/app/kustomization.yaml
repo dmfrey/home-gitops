@@ -6,3 +6,19 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+
+configMapGenerator:
+  - name: stigs-attestations
+    files:
+      - attestations/infrastructure-attestations.yaml
+      - attestations/platform-attestations.yaml
+      - attestations/infrastructure-risk-acceptances.yaml
+      - attestations/platform-risk-acceptances.yaml
+  - name: stigs-config-override
+    files:
+      - attestations/application-override.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

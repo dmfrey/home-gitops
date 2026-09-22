@@ -1,0 +1,163 @@
+# Platform/Infrastructure-layer STIG attestations for this specific deployment
+# (Talos + Flux Kubernetes homelab cluster). Hand-reviewed subset of real
+# determinations by the cluster operator (the actual owner of these facts);
+# everything else remains the tool's honest NOT_REVIEWED placeholder default
+# rather than a fabricated blanket claim. See stig-attestation-builder's
+# scaffold/validate commands in tools/stig-attestation-builder.
+entries:
+  - rule-id: APSC-DV-000090
+    title: Applications requiring user access authentication must provide a logoff capability for user initiated communication session.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000090 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-000100
+    title: The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-000100 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001560
+    title: The application must accept Personal Identity Verification (PIV) credentials.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001560 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001570
+    title: The application must electronically verify Personal Identity Verification (PIV) credentials.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001570 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001860
+    title: The application must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001860 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001930
+    title: Applications used for non-local maintenance sessions must audit non-local maintenance and diagnostic sessions for organization-defined auditable events.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001930 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001940
+    title: Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the integrity of non-local maintenance and diagnostic communications.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001940 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001950
+    title: Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the confidentiality of non-local maintenance and diagnostic communications.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001950 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001960
+    title: Applications used for non-local maintenance sessions must verify remote disconnection at the termination of non-local maintenance and diagnostic sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001960 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001970
+    title: The application must employ strong authenticators in the establishment of non-local maintenance and diagnostic sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001970 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-001980
+    title: The application must terminate all sessions and network connections when non-local maintenance is completed.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-001980 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-002010
+    title: The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-002010 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: APSC-DV-003350
+    title: Connections between the DoD enclave and the Internet or other public or commercial wide area networks must require a DMZ.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for APSC-DV-003350 in Application Security and Development STIG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000109-CTR-000215
+    title: The container platform must take appropriate action upon an audit failure.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000109-CTR-000215 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000111-CTR-000220
+    title: The container platform components must provide the ability to send audit logs to a central enterprise repository for review and analysis.
+    status: NOT_A_FINDING
+    justification: "Same centralized-logging fact as APSC-DV-001080, infrastructure-layer framing: Alloy -> Loki is a cluster-wide, always-on collection pipeline, not opt-in per app."
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: SRG-APP-000116-CTR-000235
+    title: The container platform must use internal system clocks to generate audit record time stamps.
+    status: NOT_A_FINDING
+    justification: Talos Linux nodes run NTP-synchronized system clocks (standard Talos default) - audit record timestamps are generated from synchronized internal clocks, not free-running per-node time.
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: SRG-APP-000181-CTR-000485
+    title: The container platform must provide an audit reduction capability that supports on-demand reporting requirements.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000181-CTR-000485 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000185-CTR-000490
+    title: The container platform must employ strong authenticators in the establishment of non-local maintenance and diagnostic sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000185-CTR-000490 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000291-CTR-000675
+    title: The container platform must notify system administrators and ISSO when accounts are created.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000291-CTR-000675 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000292-CTR-000680
+    title: The container platform must notify system administrators and ISSO when accounts are modified.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000292-CTR-000680 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000293-CTR-000685
+    title: The container platform must notify system administrators and ISSO for account disabling actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000293-CTR-000685 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000294-CTR-000690
+    title: The container platform must notify system administrators and ISSO for account removal actions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000294-CTR-000690 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000357-CTR-000800
+    title: The container platform must allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000357-CTR-000800 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000358-CTR-000805
+    title: Audit records must be stored at a secondary location.
+    status: NOT_A_FINDING
+    justification: "Same Garage S3 fact as APSC-DV-001070, infrastructure-layer framing: audit record storage (Loki/Garage) is a distinct system from the application/platform being audited."
+    valid-until: "2027-09-22"
+    attested-by: dmfrey
+    attested-at: "2026-09-22"
+  - rule-id: SRG-APP-000391-CTR-000935
+    title: The container platform must be configured to use multi-factor authentication for user authentication.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000391-CTR-000935 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000402-CTR-000970
+    title: The container platform must accept Personal Identity Verification (PIV) credentials from other federal agencies.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000402-CTR-000970 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000409-CTR-000990
+    title: The container platform must audit non-local maintenance and diagnostic sessions' organization-defined audit events associated with non-local maintenance.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000409-CTR-000990 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000411-CTR-000995
+    title: Container platform applications and Application Program Interfaces (API) used for nonlocal maintenance sessions must use FIPS-validated keyed-hash message authentication code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000411-CTR-000995 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000412-CTR-001000
+    title: The container platform must configure web management tools and Application Program Interfaces (API) with FIPS-validated Advanced Encryption Standard (AES) cipher block algorithm to protect the confidentiality of maintenance and diagnostic communications for nonlocal maintenance sessions.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000412-CTR-001000 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
+  - rule-id: SRG-APP-000429-CTR-001060
+    title: The container platform keystore must implement encryption to prevent unauthorized disclosure of information at rest within the container platform.
+    status: NOT_REVIEWED
+    justification: "TODO: review and attest. See the check content and fix text for SRG-APP-000429-CTR-001060 in Container Platform SRG and replace this placeholder with the owning team's real determination."
+    valid-until: "1970-01-01"
