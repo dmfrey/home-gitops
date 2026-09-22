@@ -94,10 +94,18 @@ locals {
     stigs = {
       client_id     = var.STIGS_CLIENT_ID
       client_secret = var.STIGS_CLIENT_SECRET
-      client_type   = "public"
+      # client_type omitted -> defaults to "confidential". stigs does
+      # server-side OAuth2 login (BFF pattern, real client secret used by
+      # the backend) - not frontend PKCE like spring-notes, which is why
+      # this was wrongly "public" before (copied without knowing stigs'
+      # actual auth architecture).
       group         = "developers"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
-      redirect_uri  = "https://stigs.${var.CLUSTER_DOMAIN}/"
+      # Spring Security's default OAuth2-login callback path
+      # (/login/oauth2/code/{registrationId}, registrationId=oidc) - not the
+      # frontend root. Same-origin reverse proxy routes /login/** here to
+      # the backend.
+      redirect_uri  = "https://stigs.${var.CLUSTER_DOMAIN}/login/oauth2/code/oidc"
       launch_url    = "https://stigs.${var.CLUSTER_DOMAIN}/"
     },
     dependency-track = {

@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: stigs-app
+spec:
+  name: stigs
+  owner: stigs
+  cluster:
+    name: stigs-cnpg
