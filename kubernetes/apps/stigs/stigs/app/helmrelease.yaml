@@ -81,10 +81,21 @@ spec:
               # templates - see attestations/application-override.yaml and the
               # persistence entries below.
               SPRING_CONFIG_IMPORT: "optional:file:/config/overrides/application-override.yaml"
+              # Required as of app commit fd95f5d: management.server.port:8081
+              # used to be hardcoded in the app's shared application.yaml, but
+              # was removed from there since it shouldn't be on-by-default on
+              # every platform (e.g. Cloud Foundry has no equivalent trust
+              # boundary). It's now opt-in per this env var, picked up via
+              # Spring's relaxed binding - lib:stig-management (Kubernetes
+              # image only) needs it explicitly set or the actuator split
+              # below never activates.
+              MANAGEMENT_SERVER_PORT: "8081"
             probes:
-              # Confirmed empirically (per the app's own deployment notes):
               # /actuator/health returns 404 on 8080, 200 on 8081 - actuator
               # is fully moved off the main port, not duplicated onto it.
+              # MANAGEMENT_SERVER_PORT above is what actually activates this
+              # split; without it these probes get connection-refused and
+              # the pod crash-loops on failed health checks.
               liveness:
                 enabled: true
                 custom: true
