@@ -102,10 +102,17 @@ locals {
       group         = "developers"
       icon_url      = "https://raw.githubusercontent.com/dmfrey/home-gitops/main/docs/src/assets/icons/spring-boot.png"
       # Spring Security's default OAuth2-login callback path
-      # (/login/oauth2/code/{registrationId}, registrationId=oidc) - not the
-      # frontend root. Same-origin reverse proxy routes /login/** here to
-      # the backend.
-      redirect_uri  = "https://stigs.${var.CLUSTER_DOMAIN}/login/oauth2/code/oidc"
+      # (/login/oauth2/code/{registrationId}) - not the frontend root.
+      # Same-origin reverse proxy routes /login/** here to the backend.
+      # registrationId is being renamed oidc -> sso in a new image build.
+      # Both stay registered until the new image is confirmed live -
+      # replacing outright would break login for pods still on the old
+      # image the moment this applies, since Authentik would reject their
+      # .../code/oidc callback as soon as that URI is deregistered.
+      redirect_uris = [
+        { matching_mode = "strict", url = "https://stigs.${var.CLUSTER_DOMAIN}/login/oauth2/code/oidc" }, # remove once the sso-renamed image is confirmed live
+        { matching_mode = "strict", url = "https://stigs.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso" },
+      ]
       launch_url    = "https://stigs.${var.CLUSTER_DOMAIN}/"
     },
     dependency-track = {
