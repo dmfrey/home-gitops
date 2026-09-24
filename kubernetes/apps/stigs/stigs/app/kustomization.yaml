@@ -14,9 +14,23 @@ configMapGenerator:
       - attestations/platform-attestations.yaml
       - attestations/infrastructure-risk-acceptances.yaml
       - attestations/platform-risk-acceptances.yaml
+    options:
+      labels:
+        spring.cloud.kubernetes.config: "true"
+      annotations:
+        # Must match the backend's actual Kubernetes Service name
+        # (confirmed live via `kubectl get svc -n stigs`: stigs-backend),
+        # not the release/app name - this is what the watcher resolves
+        # against when deciding which app to POST /actuator/refresh to.
+        spring.cloud.kubernetes.configmap.apps: "stigs-backend"
   - name: stigs-config-override
     files:
       - attestations/application-override.yaml
+    options:
+      labels:
+        spring.cloud.kubernetes.config: "true"
+      annotations:
+        spring.cloud.kubernetes.configmap.apps: "stigs-backend"
 
 generatorOptions:
   disableNameSuffixHash: true

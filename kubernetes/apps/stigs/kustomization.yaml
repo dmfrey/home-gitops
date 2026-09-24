@@ -10,3 +10,4 @@ resources:
   - ./namespace.yaml
   - ./emasser/ks.yaml
   - ./stigs/ks.yaml
+  - ./watcher/ks.yaml

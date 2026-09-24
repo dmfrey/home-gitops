@@ -28,6 +28,15 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: emasser
+        # Also allows the configuration-watcher (kubernetes/apps/stigs/
+        # watcher/) to reach the actuator to POST /actuator/refresh -
+        # lives in this same file/policy rather than a separate one since
+        # both are "who else may reach port 8081" rules for the same
+        # target pod. Without this, the watcher's refresh calls would be
+        # silently dropped even with its RBAC/ConfigMap wiring correct.
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: watcher
       ports:
         - port: 8081
           protocol: TCP

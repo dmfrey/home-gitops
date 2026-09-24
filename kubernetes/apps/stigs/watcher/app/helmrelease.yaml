@@ -1,0 +1,130 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: watcher
+
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: watcher
+
+  interval: 1h
+
+  values:
+    controllers:
+      watcher:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              # 5.0.3 is listed in some docs text but was never actually
+              # published to Docker Hub - verified directly against the
+              # registry API. 3.3.0 is a separate process talking to the
+              # stig backend over plain HTTP (actuator/refresh), so the
+              # Spring Boot version gap vs. the app itself doesn't matter.
+              repository: docker.io/springcloud/spring-cloud-kubernetes-configuration-watcher
+              tag: 3.3.0@sha256:61ed103e84c18108ae30b9048350012969f2e81ad6439266835d066b262b7ea8
+
+            env:
+              TZ: America/New_York
+              # stig-server's actuator lives on 8081, not this watcher's
+              # own 8080 default.
+              SPRING_CLOUD_KUBERNETES_CONFIGURATION_WATCHER_ACTUATORPORT: "8081"
+              # Refresh path stays the default (/actuator/refresh) - no
+              # override needed.
+              # Scope RBAC/watching to just this namespace, not cluster-wide.
+              SPRING_CLOUD_KUBERNETES_RELOAD_NAMESPACES_0: stigs
+              # Explicit, matches the default - worth setting so it's not
+              # silently relying on a default that could change: in-place
+              # @RefreshScope bean recreation via a POST to
+              # actuator/refresh, not a pod restart ("shutdown" strategy).
+              SPRING_CLOUD_KUBERNETES_CONFIGURATION_WATCHER_REFRESH_STRATEGY: refresh
+
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/liveness
+                    port: &port 8888
+                  initialDelaySeconds: 20
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/readiness
+                    port: *port
+                  initialDelaySeconds: 20
+                  periodSeconds: 10
+                  failureThreshold: 3
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - "ALL"
+
+    defaultPodOptions:
+      priorityClassName: low
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    # Outbound-only (Kubernetes API to watch ConfigMaps/Secrets, and the
+    # stig backend's actuator port to POST /actuator/refresh) - no inbound
+    # Service/Route needed beyond the liveness/readiness probes above,
+    # which hit the container port directly.
+
+    # Own ServiceAccount + Role, deliberately NOT shared with the stig
+    # backend's own pod - keeps the Kubernetes API access this needs
+    # isolated to just this watcher, not the main app (see
+    # kubernetes/apps/stigs/stigs/app/helmrelease.yaml's image comment for
+    # why that separation matters - the app itself had this exact class of
+    # RBAC/ServiceAccount-token problem removed entirely on 2026-09-24).
+    rbac:
+      roles:
+        watcher:
+          type: Role
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - configmaps
+                - secrets
+                - pods
+                - services
+                - endpoints
+              verbs:
+                - get
+                - list
+                - watch
+      bindings:
+        watcher:
+          type: RoleBinding
+          roleRef:
+            identifier: watcher
+          subjects:
+            - identifier: watcher
+
+    serviceAccount:
+      watcher: {}
