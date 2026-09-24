@@ -39,7 +39,7 @@ spec:
               # (37a516f) removes the Kubernetes client dependency entirely
               # per the app owner - no discovery client, no RBAC/
               # ServiceAccount token needed on this app's own pod.
-              tag: latest@sha256:135844adbfd2d4d0b21beffd3d8bc44edba1b66d83dbd9f4005903633c65bad4
+              tag: latest@sha256:b4e9a382a665109529c80ad3d6713832150abd1ccbc40ca360aeefc331896404
             env:
               TZ: America/New_York
               APP_POD_NAME:
