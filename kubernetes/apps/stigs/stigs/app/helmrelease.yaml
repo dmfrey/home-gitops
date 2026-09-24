@@ -23,10 +23,12 @@ spec:
             image:
               repository: ghcr.io/dmfrey/stig-server
               # No semver releases yet, only `latest` + sha-<short-sha> tags
-              # (brand new app) - move to a pinned tag/digest once the repo
-              # cuts real releases and the GHCR package is public (Renovate
-              # can't track a private package without read:packages access).
-              tag: latest
+              # (brand new app). Pinned to latest's resolved digest as of
+              # 2026-09-24 for reproducibility - move to a real semver tag
+              # once the repo cuts actual releases. GHCR package is public
+              # now, so Renovate can track this going forward without a
+              # pull secret.
+              tag: latest@sha256:068941121c73d98da632978ab1d4471ea9c3754195a15db84490b3bc2217c62c
             env:
               TZ: America/New_York
               APP_POD_NAME:
