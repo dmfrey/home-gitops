@@ -141,8 +141,14 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/stig-web
-              # Same tagging caveat as the backend - see comment above.
-              tag: latest
+              # Pinned to latest's resolved digest as of 2026-09-24
+              # (sha-e889749 - has the oidc->sso registration rename baked
+              # into its JS bundle, confirmed by the app owner). Left
+              # unpinned before this, the pod just never re-pulled since
+              # its first deploy 2 days ago (stayed on sha-18093ec, a build
+              # that predates the rename entirely) - confirmed live via
+              # imageID, not a browser-cache issue as it first looked.
+              tag: latest@sha256:adaf7ad97026dd93183988b0d475b735b6637942f58e67c8e6e8a302dc365b21
             probes:
               liveness: &probes
                 enabled: true
