@@ -23,12 +23,17 @@ spec:
             image:
               repository: ghcr.io/dmfrey/stig-server
               # No semver releases yet, only `latest` + sha-<short-sha> tags
-              # (brand new app). Pinned to latest's resolved digest as of
-              # 2026-09-24 for reproducibility - move to a real semver tag
-              # once the repo cuts actual releases. GHCR package is public
-              # now, so Renovate can track this going forward without a
-              # pull secret.
-              tag: latest@sha256:068941121c73d98da632978ab1d4471ea9c3754195a15db84490b3bc2217c62c
+              # (brand new app). Pinned to sha-fd95f5d specifically -
+              # confirmed working (this is the MANAGEMENT_SERVER_PORT fix
+              # build). DO NOT advance to latest's current digest
+              # (068941121c73...) without a fix first: that build crash-loops
+              # on startup with NamespaceResolutionFailedException /
+              # "unresolved namespace" from Spring Cloud Kubernetes' service
+              # discovery auto-configuration (new in that build - confirmed
+              # live 2026-09-24, reverted after ~1min of downtime). Needs
+              # either an app-side fix or SPRING_CLOUD_KUBERNETES_CLIENT_NAMESPACE
+              # wired to the downward API before retrying.
+              tag: sha-fd95f5d@sha256:74907b8ec3526b800d6814cf7fffe9a681bfc881f7805c5ca76a94e10af2b1c2
             env:
               TZ: America/New_York
               APP_POD_NAME:
