@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: zwave-js-ui-common
+spec:
+  interval: 1h
+  path: "./kubernetes/apps/home/zwave-js-ui/common"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: home
+  timeout: 5m
+  wait: false
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: zwave-js-ui
+spec:
+  components:
+    - ../../../../components/kopiur/backup
+  dependsOn:
+    - name: zwave-js-ui-common
+    - name: home-assistant
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: kopiur-repository
+      namespace: kopiur-system
+  interval: 1h
+  path: "./kubernetes/apps/home/zwave-js-ui/app"
+  postBuild:
+    substitute:
+      APP: zwave-js-ui
+      CONTROLLER: StatefulSet
+      KOPIUR_CAPACITY: 1Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: home
+  timeout: 5m
+  wait: false

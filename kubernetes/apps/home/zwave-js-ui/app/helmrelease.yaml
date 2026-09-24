@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zwave-js-ui
+
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: zwave-js-ui
+
+  interval: 1h
+
+  values:
+    controllers:
+      zwave-js-ui:
+        type: statefulset
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              # docker.io is the canonical/actively-maintained registry for
+              # this image - the ghcr.io mirror lags several major versions
+              # behind (confirmed 8.6.0 on ghcr.io vs 11.24.1 on docker.io
+              # at the time this was added).
+              repository: docker.io/zwavejs/zwave-js-ui
+              tag: 11.24.1@sha256:00abebce88205b47c3b611e983bbc692753170e3603c691bc5765f82265cafa4
+
+            env:
+              TZ: "America/New_York"
+              # SLZB-MRW10 multiradio PoE adapter, Z-Wave radio exposed as
+              # network serial (same ser2net-style TCP bridge SMLIGHT
+              # already uses for Zigbee on zigbee-1/2.internal). Setting
+              # this also auto-enables Z-Wave. Device isn't physically
+              # connected/DNS'd yet - zwave.internal to be added in the
+              # UDM SE once it's racked; until then this app will sit
+              # scaled to 0 via the HPA below (same pattern zigbee2mqtt
+              # uses to avoid crash-looping against an unreachable radio).
+              ZWAVE_PORT: tcp://zwave.internal:6638
+              PORT: &port 8091
+
+            envFrom:
+              - secretRef:
+                  name: zwave-js-ui-secret
+
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 350Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false # writes to /usr/src/app at runtime
+              capabilities:
+                drop:
+                  - "ALL"
+
+    defaultPodOptions:
+      priorityClassName: high
+      terminationGracePeriodSeconds: 10
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+          # Built-in Z-Wave JS server (websocket) that Home Assistant's
+          # native Z-Wave integration connects to directly - same
+          # connect-to-a-server model as matter-server, not MQTT-based like
+          # zigbee2mqtt. ClusterIP-only, no Route: only HA needs this, via
+          # zwave-js-ui.home.svc.cluster.local:3000.
+          #
+          # MANUAL STEP after first deploy: enabling this server mode is a
+          # one-time toggle in the web UI (Settings -> Z-Wave -> "Enable
+          # ZwaveJS server") persisted into store/settings.json, not
+          # currently env-var-controllable upstream.
+          zwave-server:
+            port: 3000
+
+    route:
+      app:
+        hostnames:
+          - "zwave.dmfrey.com"
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Z-Wave
+          gethomepage.dev/icon: zwave-js-ui.png
+          gethomepage.dev/description: Z-Wave JS UI + Server
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /usr/src/app/store
