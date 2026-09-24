@@ -23,43 +23,29 @@ spec:
             image:
               repository: ghcr.io/dmfrey/stig-server
               # No semver releases yet, only `latest` + sha-<short-sha> tags
-              # (brand new app). Pinned to sha-fd95f5d - confirmed working.
+              # (brand new app). Pinned to latest's resolved digest as of
+              # 2026-09-24 (commit 37a516f) for reproducibility - move to a
+              # real semver tag once the repo cuts actual releases.
               #
-              # DO NOT advance to latest's current digest (068941121c73...)
-              # again without a second fix: SPRING_CLOUD_KUBERNETES_CLIENT_NAMESPACE
-              # below fixes the fatal NamespaceResolutionFailedException
-              # startup crash, but that build also needs real Kubernetes API
-              # access for its discovery informers (watching Service/Endpoints)
-              # - confirmed live 2026-09-24, pod no longer crash-loops but
-              # spams ConnectException: Connection refused to localhost:8080
-              # every ~1s forever, because automountServiceAccountToken:
-              # false (this chart's default) means there's no ServiceAccount
-              # token for the K8s client to authenticate with. Needs either
-              # (a) spring.cloud.kubernetes.discovery.enabled=false if this
-              # app doesn't actually use service discovery, or (b) a real
-              # ServiceAccount token + RBAC (list/watch Services, Endpoints)
-              # - app-side call, not something to guess at from the infra
-              # side after two outages today already.
-              tag: sha-fd95f5d@sha256:74907b8ec3526b800d6814cf7fffe9a681bfc881f7805c5ca76a94e10af2b1c2
+              # History: the two builds before this one (fd95f5d, then a
+              # follow-up adding SPRING_CLOUD_KUBERNETES_CLIENT_NAMESPACE)
+              # each caused a real live outage - first a fatal
+              # NamespaceResolutionFailedException startup crash, then a
+              # non-fatal but continuous ConnectException: Connection
+              # refused log-spam loop from Spring Cloud Kubernetes' service-
+              # discovery informers, since this chart's
+              # automountServiceAccountToken: false means the pod has no
+              # token to authenticate to the real API with. This build
+              # (37a516f) removes the Kubernetes client dependency entirely
+              # per the app owner - no discovery client, no RBAC/
+              # ServiceAccount token needed on this app's own pod.
+              tag: latest@sha256:135844adbfd2d4d0b21beffd3d8bc44edba1b66d83dbd9f4005903633c65bad4
             env:
               TZ: America/New_York
               APP_POD_NAME:
                 valueFrom:
                   fieldRef:
                     fieldPath: metadata.name
-              # Required as of this build: it added Spring Cloud Kubernetes
-              # service-discovery auto-configuration, which needs its own
-              # namespace and can't resolve it from a mounted service
-              # account token (this chart doesn't give the pod one). Without
-              # this the pod crash-loops on startup with
-              # NamespaceResolutionFailedException ("unresolved namespace") -
-              # confirmed live 2026-09-24, ~1min of downtime before finding
-              # this fix. Confirmed against Spring Cloud Kubernetes 5.0.2's
-              # own source as the correct/only fix for this chart's setup.
-              SPRING_CLOUD_KUBERNETES_CLIENT_NAMESPACE:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: metadata.namespace
               OTEL_RESOURCE_ATTRIBUTES: service.instance.id=$(APP_POD_NAME)
               MANAGEMENT_METRICS_TAGS_APPLICATION: stigs
               LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
