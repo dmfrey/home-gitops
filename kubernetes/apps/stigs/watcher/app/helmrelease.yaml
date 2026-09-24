@@ -31,6 +31,16 @@ spec:
 
             env:
               TZ: America/New_York
+              # This watcher's whole job needs its own namespace resolved,
+              # same root cause and same fix as the main app hit earlier
+              # today - app-template defaults automountServiceAccountToken
+              # to false regardless of whether a custom ServiceAccount is
+              # declared (see defaultPodOptions below), so the token-file
+              # namespace lookup path fails without this.
+              SPRING_CLOUD_KUBERNETES_CLIENT_NAMESPACE:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
               # stig-server's actuator lives on 8081, not this watcher's
               # own 8080 default.
               SPRING_CLOUD_KUBERNETES_CONFIGURATION_WATCHER_ACTUATORPORT: "8081"
@@ -82,6 +92,14 @@ spec:
 
     defaultPodOptions:
       priorityClassName: low
+      # app-template defaults this to false regardless of whether a custom
+      # ServiceAccount is declared - this watcher genuinely needs its token
+      # to authenticate real Kubernetes API calls (list/watch ConfigMaps/
+      # Secrets), unlike the main stig-server app which deliberately
+      # doesn't (see that app's own image comment - this exact gap caused
+      # two outages there earlier today before its K8s client dependency
+      # was removed entirely).
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
