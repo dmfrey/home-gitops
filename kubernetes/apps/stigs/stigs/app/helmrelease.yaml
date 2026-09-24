@@ -23,10 +23,24 @@ spec:
             image:
               repository: ghcr.io/dmfrey/stig-server
               # No semver releases yet, only `latest` + sha-<short-sha> tags
-              # (brand new app). Pinned to latest's resolved digest as of
-              # 2026-09-24 for reproducibility - move to a real semver tag
-              # once the repo cuts actual releases.
-              tag: latest@sha256:068941121c73d98da632978ab1d4471ea9c3754195a15db84490b3bc2217c62c
+              # (brand new app). Pinned to sha-fd95f5d - confirmed working.
+              #
+              # DO NOT advance to latest's current digest (068941121c73...)
+              # again without a second fix: SPRING_CLOUD_KUBERNETES_CLIENT_NAMESPACE
+              # below fixes the fatal NamespaceResolutionFailedException
+              # startup crash, but that build also needs real Kubernetes API
+              # access for its discovery informers (watching Service/Endpoints)
+              # - confirmed live 2026-09-24, pod no longer crash-loops but
+              # spams ConnectException: Connection refused to localhost:8080
+              # every ~1s forever, because automountServiceAccountToken:
+              # false (this chart's default) means there's no ServiceAccount
+              # token for the K8s client to authenticate with. Needs either
+              # (a) spring.cloud.kubernetes.discovery.enabled=false if this
+              # app doesn't actually use service discovery, or (b) a real
+              # ServiceAccount token + RBAC (list/watch Services, Endpoints)
+              # - app-side call, not something to guess at from the infra
+              # side after two outages today already.
+              tag: sha-fd95f5d@sha256:74907b8ec3526b800d6814cf7fffe9a681bfc881f7805c5ca76a94e10af2b1c2
             env:
               TZ: America/New_York
               APP_POD_NAME:
