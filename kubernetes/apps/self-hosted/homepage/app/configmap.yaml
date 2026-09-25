@@ -61,6 +61,10 @@ data:
             href: http://otbr.internal
             icon: thread.png
             description: OpenThread Border Router
+        - SMLight-SLZB-MRW10:
+            href: http://zwave.internal
+            icon: zwave.png
+            description: Z-Wave Controller
     - Infrastructure:
         - QNAP:
             href: https://nas.internal:7080/cgi-bin/
