@@ -15,6 +15,27 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          fix-data-ownership:
+            # Idempotent insurance against a regression seen 2026-09-16 (and
+            # again 2026-09-24): data/users/favicons/tokens/etc. under the
+            # data/ PVC mount occasionally come up root:root instead of
+            # root:www-data, which the app's own Apache/PHP worker (running
+            # as www-data) then can't write to - fails the app's requirements
+            # self-check every 30m. Confirmed via a live test (restart with
+            # no image/volume change) that a plain pod restart does NOT
+            # reset correct ownership on its own, so this only needs to run
+            # once per actual regression - cheap no-op the rest of the time.
+            # Root cause of the regression itself is still unconfirmed
+            # (image-version transition and/or fresh-volume provisioning are
+            # the two known triggers so far) - this fixes the symptom
+            # unconditionally rather than chasing the exact trigger.
+            image:
+              repository: docker.io/library/busybox
+              tag: latest@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+            command: ["/bin/sh", "-c"]
+            args:
+              - chgrp -R www-data /var/www/FreshRSS/data
         containers:
           app:
             image:
