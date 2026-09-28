@@ -183,9 +183,8 @@ spec:
             subPath: tmp
       backups:
         enabled: true
-        type: nfs
-        server: nas.internal
-        path: /homeassistant
+        type: persistentVolumeClaim
+        existingClaim: home-assistant-backups
         advancedMounts:
           home-assistant:
             app:
