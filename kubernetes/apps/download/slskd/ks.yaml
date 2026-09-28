@@ -9,6 +9,7 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/kopiur/backup
   dependsOn:
+    - name: downloads-staging
     - name: multus-networks
       namespace: kube-system
     - name: rook-ceph-cluster

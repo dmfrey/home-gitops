@@ -1,0 +1,37 @@
+---
+# Shared ephemeral download-client staging area, consumed by nzbget,
+# qbittorrent, slskd, cross-seed, and soularr - not owned by any single app,
+# so it lives here rather than in one app's own directory. No data migration
+# needed for this share (ephemeral by design, re-populated naturally), so
+# this is a straight cutover with no rsync pass. Subpaths below drop the
+# redundant "downloads/" prefix the old QNAP /media root needed, since this
+# share's root already IS that directory.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: downloads-staging
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 500Gi
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/downloads_staging/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-staging
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: downloads-staging
+  storageClassName: ""

@@ -6,7 +6,6 @@ metadata:
   name: cross-seed
 
 spec:
-
   chartRef:
     kind: OCIRepository
     name: cross-seed
@@ -14,16 +13,13 @@ spec:
   interval: 1h
 
   values:
-
     controllers:
-
       cross-seed:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-
           app:
             image:
               repository: ghcr.io/cross-seed/cross-seed
@@ -59,7 +55,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
 
         statefulset:
           volumeClaimTemplates:
@@ -94,9 +90,7 @@ spec:
             subPath: config.js
 
       media:
-        type: nfs
-        server: nas.internal
-        path: /media
+        type: persistentVolumeClaim
+        existingClaim: downloads-staging
         globalMounts:
           - path: /media/downloads
-            subPath: downloads

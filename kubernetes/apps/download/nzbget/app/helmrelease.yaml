@@ -60,7 +60,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -98,12 +98,11 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
       media:
-        type: nfs
-        server: nas.internal
-        path: /media
+        type: persistentVolumeClaim
+        existingClaim: downloads-staging
         globalMounts:
           - path: /media/downloads/nzbget
-            subPath: downloads/nzbget
+            subPath: nzbget
       tools:
         type: emptyDir
         advancedMounts:

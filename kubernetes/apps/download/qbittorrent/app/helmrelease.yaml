@@ -488,12 +488,11 @@ spec:
           - path: /config/.qbt.toml
             subPath: .qbt.toml
       media:
-        type: nfs
-        server: nas.internal
-        path: /media
+        type: persistentVolumeClaim
+        existingClaim: downloads-staging
         globalMounts:
           - path: /media/downloads/qbittorrent
-            subPath: downloads/qbittorrent
+            subPath: qbittorrent
       tools:
         type: emptyDir
         advancedMounts:

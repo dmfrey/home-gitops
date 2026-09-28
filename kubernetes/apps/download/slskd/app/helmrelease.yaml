@@ -163,12 +163,11 @@ spec:
           - path: /config/slskd.yml
             subPath: slskd.yml
       media:
-        type: nfs
-        server: nas.internal
-        path: /media
+        type: persistentVolumeClaim
+        existingClaim: downloads-staging
         globalMounts:
           - path: /media/downloads/slskd
-            subPath: downloads/slskd
+            subPath: slskd
       tmp:
         type: emptyDir
         globalMounts:

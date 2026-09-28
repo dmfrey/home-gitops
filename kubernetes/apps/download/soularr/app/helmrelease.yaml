@@ -101,9 +101,8 @@ spec:
       # this is how soularr verifies a download actually landed before
       # triggering Lidarr's import.
       downloads:
-        type: nfs
-        server: nas.internal
-        path: /media
+        type: persistentVolumeClaim
+        existingClaim: downloads-staging
         globalMounts:
           - path: /downloads
-            subPath: downloads/slskd/complete
+            subPath: slskd/complete

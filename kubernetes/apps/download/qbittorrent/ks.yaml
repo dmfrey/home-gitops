@@ -9,6 +9,7 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/kopiur/backup
   dependsOn:
+    - name: downloads-staging
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

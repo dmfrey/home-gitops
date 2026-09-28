@@ -9,6 +9,7 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/kopiur/backup
   dependsOn:
+    - name: downloads-staging
     - name: slskd
     - name: lidarr
       namespace: media
