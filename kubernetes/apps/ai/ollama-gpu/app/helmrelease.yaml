@@ -115,9 +115,8 @@ spec:
           - path: /home/ollama/.ollama
 
       models:
-        type: nfs
-        server: nas.internal
-        path: /models
+        type: persistentVolumeClaim
+        existingClaim: ollama-gpu-models
         globalMounts:
           - path: /models
 
