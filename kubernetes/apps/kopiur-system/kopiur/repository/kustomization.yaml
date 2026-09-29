@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./clusterrepository.yaml
   - ./clusterrepository-nfs.yaml
+  - ./nfs-pv.yaml

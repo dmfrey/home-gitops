@@ -8,13 +8,19 @@ spec:
   # Independent of the "garage" ClusterRepository (which is backed by
   # Garage's own S3) specifically so garage-system itself can be backed up
   # here without the circular dependency of Garage backing up to Garage -
-  # see that repository's own comment. Filesystem/NFS backend, mounted
-  # directly (no PVC, no auth needed - matches how VolSync's existing Kopia
-  # mover already reaches this same NFS server). Uses a dedicated
-  # subdirectory (/Kopia/kopiur) of the export VolSync already uses
-  # (nas.internal:/Kopia) rather than a new NFS export, to keep kopiur's
-  # repository data logically separate from VolSync's without needing any
-  # NAS-side changes.
+  # see that repository's own comment.
+  #
+  # UNAS Pro migration (2026-09-29): moved off the QNAP's
+  # nas.internal:/Kopia/kopiur onto the dedicated kopia_nfs_repo UNAS
+  # Shared Drive. Switched from an inline NFS volume to a PVC
+  # (nfs-pv.yaml, in this same directory) - the UNAS Pro needs
+  # vers=3+nolock mount options, which an inline v1.NFSVolumeSource can't
+  # carry (no mountOptions field). Migrated with the SnapshotSchedule
+  # suspended first (not a live rsync) and a full `kopia snapshot verify
+  # --verify-files-percent=100` pass confirmed clean on the new location
+  # before this cutover - see project_qnap_to_unas_migration memory for
+  # the full procedure and why (real Kopia repo corruption precedent from
+  # an earlier incident on the separate "garage" S3 repository).
   allowedNamespaces:
     list:
       - garage-system
@@ -25,9 +31,8 @@ spec:
     filesystem:
       path: /repository
       volume:
-        nfs:
-          server: nas.internal
-          path: /Kopia/kopiur
+        pvc:
+          name: kopia-nfs-repo
   # Reuses the same encryption password as the "garage" repository - a
   # shared Kopia encryption key across two independent repository
   # locations (different backend, different physical storage) isn't a
