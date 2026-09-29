@@ -52,14 +52,17 @@ metadata:
   name: garage-data-2
 spec:
   capacity:
-    storage: 200Gi
+    storage: 500Gi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
+  mountOptions:
+    - vers=3
+    - nolock
   nfs:
-    server: nas.internal
-    path: /garage-2
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/garage_data_2/.data
   claimRef:
     name: data-garage-2
     namespace: garage-system
