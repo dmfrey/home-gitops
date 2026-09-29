@@ -150,11 +150,15 @@ spec:
                   max_delay: 60000
             shares:
               # Soulseek bans/throttles peers who share nothing ("leechers").
-              # Deliberately a small dedicated folder, not the real music
-              # library at /media/music - populate it by hand with content
-              # you're comfortable exposing to arbitrary network peers.
+              # 2026-09-29: switched from a small hand-populated folder to
+              # the real music library (user's explicit choice, trading
+              # privacy for better queue priority/reciprocity) - mounted via
+              # media-music-downloads, the same NFS export lidarr's library
+              # sits on. Excludes the downloads/ subfolder (download-client
+              # staging content, not the curated library).
               directories:
-                - /media/downloads/slskd/shared
+                - /media/music-downloads
+                - "!/media/music-downloads/downloads"
               filters:
                 - \.ini$
                 - Thumbs.db$
