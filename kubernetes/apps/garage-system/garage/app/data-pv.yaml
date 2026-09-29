@@ -6,24 +6,29 @@
 # volumeClaimTemplate will generate (data-garage-0/1/2), so each pod deterministically
 # gets its own NFS export instead of accidentally sharing one.
 #
-# garage-0 reuses the existing /garage export (already holds all current live
-# data — no migration needed for this volume). garage-1/garage-2 are new, empty
-# exports on a different NFS volume (more free space); Garage's own replication
-# will populate them once the 3-node layout is applied.
+# UNAS Pro migration (2026-09-29): all 3 now point at dedicated UNAS Shared
+# Drives (garage_data_0/1/2), migrated one at a time via Garage's own
+# node-replacement mechanics (empty volume + resync from the other 2 healthy
+# RF=3 replicas over the internal cluster network), not a manual copy - see
+# project_qnap_to_unas_migration memory for the full procedure, including the
+# data_layout marker-file gotcha in each node's metadata volume.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: garage-data-0
 spec:
   capacity:
-    storage: 248Gi
+    storage: 500Gi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
+  mountOptions:
+    - vers=3
+    - nolock
   nfs:
-    server: nas.internal
-    path: /garage
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/garage_data_0/.data
   claimRef:
     name: data-garage-0
     namespace: garage-system
