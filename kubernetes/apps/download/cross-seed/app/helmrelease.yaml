@@ -104,3 +104,11 @@ spec:
         existingClaim: media-tv-downloads
         globalMounts:
           - path: /media/tv
+
+      # Same cross-filesystem hardlink fix as media-tv above, for the
+      # "music" category (Lidarr's library).
+      media-music:
+        type: persistentVolumeClaim
+        existingClaim: media-music-downloads
+        globalMounts:
+          - path: /media/music

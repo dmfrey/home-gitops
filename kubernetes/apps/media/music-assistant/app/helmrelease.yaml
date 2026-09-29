@@ -107,9 +107,8 @@ spec:
       data:
         existingClaim: "{{ .Release.Name }}"
       media:
-        type: nfs
-        server: nas.internal
-        path: /media/music/
+        type: persistentVolumeClaim
+        existingClaim: media-music
         globalMounts:
           - path: /media
       tmpfs:

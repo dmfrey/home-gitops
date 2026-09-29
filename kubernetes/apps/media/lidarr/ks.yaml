@@ -36,6 +36,7 @@ spec:
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: lidarr-db
+    - name: media-music
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

@@ -76,3 +76,37 @@ spec:
       storage: 4Ti
   volumeName: media-tv-downloads
   storageClassName: ""
+---
+# Same cross-filesystem hardlink fix as media-tv-downloads above, for the
+# media_music share - qbittorrent/nzbget/cross-seed/slskd need their music
+# downloads on the same filesystem as lidarr's library (media-music, in the
+# media namespace) so lidarr can hardlink completed imports.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-music-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_music/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-music-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+  volumeName: media-music-downloads
+  storageClassName: ""

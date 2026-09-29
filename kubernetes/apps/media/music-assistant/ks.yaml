@@ -8,6 +8,7 @@ spec:
   components:
     - ../../../../components/kopiur/backup
   dependsOn:
+    - name: media-music
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

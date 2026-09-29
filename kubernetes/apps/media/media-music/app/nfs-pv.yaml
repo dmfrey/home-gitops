@@ -1,0 +1,43 @@
+---
+# Shared music library, consumed by lidarr and music-assistant - not owned by
+# any single app, so it lives here rather than in one app's own directory.
+# UNAS Pro migration (2026-09-29): same pattern as media-tv - app-template's
+# persistence.type: nfs shorthand has no mountOptions field, and the UNAS
+# Pro only speaks NFSv3 to Linux clients, so this needs an explicit static
+# PV/PVC pair with mountOptions: [vers=3, nolock].
+#
+# A separate PV/PVC pointing at this same NFS path also exists in the
+# download namespace (kubernetes/apps/download/downloads-staging/) so
+# qbittorrent/nzbget/cross-seed/slskd can save/hardlink music downloads
+# directly into this share - PVCs are namespace-scoped, so cross-namespace
+# sharing needs its own PV/PVC pair per namespace, even though both point at
+# the exact same underlying export.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-music
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_music/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-music
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+  volumeName: media-music
+  storageClassName: ""

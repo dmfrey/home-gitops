@@ -99,10 +99,13 @@ spec:
             subPath: config.ini
       # Must match slskd's own `directories.downloads` path physically -
       # this is how soularr verifies a download actually landed before
-      # triggering Lidarr's import.
+      # triggering Lidarr's import. Moved to media-music-downloads
+      # 2026-09-29 to follow slskd's own cross-filesystem hardlink fix
+      # (its complete/downloads dir moved off downloads-staging onto the
+      # same filesystem as lidarr's library).
       downloads:
         type: persistentVolumeClaim
-        existingClaim: downloads-staging
+        existingClaim: media-music-downloads
         globalMounts:
           - path: /downloads
-            subPath: slskd/complete
+            subPath: downloads/slskd/complete

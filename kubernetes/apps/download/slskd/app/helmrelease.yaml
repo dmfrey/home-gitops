@@ -130,7 +130,13 @@ spec:
         data:
           slskd.yml: |-
             directories:
-              downloads: /media/downloads/slskd/complete
+              # Cross-filesystem hardlink fix (2026-09-29): moved off
+              # downloads-staging onto the media-music-downloads PVC, the
+              # same NFS export lidarr's library sits on - completed
+              # downloads need to be on that same filesystem for lidarr's
+              # hardlink import (via soularr) to work. incomplete stays on
+              # downloads-staging - nothing gets hardlinked from there.
+              downloads: /media/music/downloads/slskd/complete
               incomplete: /media/downloads/slskd/incomplete
             transfers:
               download:
@@ -168,6 +174,13 @@ spec:
         globalMounts:
           - path: /media/downloads/slskd
             subPath: slskd
+      # Cross-filesystem hardlink fix (2026-09-29) - see directories.downloads
+      # comment above.
+      media-music:
+        type: persistentVolumeClaim
+        existingClaim: media-music-downloads
+        globalMounts:
+          - path: /media/music
       tmp:
         type: emptyDir
         globalMounts:

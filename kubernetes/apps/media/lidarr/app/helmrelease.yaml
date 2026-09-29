@@ -144,9 +144,10 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
       media:
-        type: nfs
-        server: nas.internal
-        path: /media/
+        type: persistentVolumeClaim
+        existingClaim: media-music
+        globalMounts:
+          - path: /media/music
       backups:
         enabled: true
         type: nfs
