@@ -94,3 +94,13 @@ spec:
         existingClaim: downloads-staging
         globalMounts:
           - path: /media/downloads
+
+      # Cross-filesystem hardlink fix (2026-09-29): cross-seed's linkDir for
+      # the series category must live on the SAME NFS export as sonarr's
+      # library (media-tv), same reasoning as qbittorrent's media-tv mount
+      # above - mounted at the PVC root, no subPath.
+      media-tv:
+        type: persistentVolumeClaim
+        existingClaim: media-tv-downloads
+        globalMounts:
+          - path: /media/tv

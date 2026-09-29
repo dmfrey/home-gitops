@@ -103,6 +103,16 @@ spec:
         globalMounts:
           - path: /media/downloads/nzbget
             subPath: nzbget
+      # Cross-filesystem hardlink fix (2026-09-29): Category2 (Series)'s
+      # DestDir must live on the SAME NFS export as sonarr's library
+      # (media-tv) for Sonarr's completed-download hardlink import to work.
+      # Mounted at the PVC root (no subPath) so nzbget creates its own
+      # downloads/nzbget subfolder itself, as UID 1000.
+      media-tv:
+        type: persistentVolumeClaim
+        existingClaim: media-tv-downloads
+        globalMounts:
+          - path: /media/tv
       tools:
         type: emptyDir
         advancedMounts:

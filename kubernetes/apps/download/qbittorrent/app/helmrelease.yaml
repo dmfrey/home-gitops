@@ -493,6 +493,18 @@ spec:
         globalMounts:
           - path: /media/downloads/qbittorrent
             subPath: qbittorrent
+      # Cross-filesystem hardlink fix (2026-09-29): the "series" category's
+      # save_path must live on the SAME NFS export as sonarr's library
+      # (media-tv) for Sonarr's completed-download hardlink import to work.
+      # Mounted at the PVC root (no subPath) so qbittorrent creates its own
+      # downloads/qbittorrent subfolder itself, as UID 1000 - avoids the
+      # root:root ownership issue Kubernetes' subPath auto-mkdir hit on
+      # downloads-staging.
+      media-tv:
+        type: persistentVolumeClaim
+        existingClaim: media-tv-downloads
+        globalMounts:
+          - path: /media/tv
       tools:
         type: emptyDir
         advancedMounts:

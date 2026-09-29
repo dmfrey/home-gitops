@@ -35,3 +35,44 @@ spec:
       storage: 500Gi
   volumeName: downloads-staging
   storageClassName: ""
+---
+# Cross-filesystem hardlink fix (2026-09-29): radarr/sonarr/lidarr import
+# completed downloads via hardlink, which requires the download client's
+# save location and the *arr app's library to be on the SAME filesystem.
+# Since media_tv is its own separate NFS export (see the naming/squash-mode
+# constraints in the QNAP->UNAS migration plan), qbittorrent/nzbget/
+# cross-seed need their own PV/PVC pointing at this same export so their
+# TV-category downloads land somewhere sonarr can actually hardlink from.
+# A second PV/PVC pointing at this identical NFS path also exists in the
+# media namespace (kubernetes/apps/media/media-tv/) for jellyfin/sonarr/
+# bazarr's own library mount - PVCs are namespace-scoped, so this is two
+# separate Kubernetes objects referencing the one real underlying export.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-tv-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 4Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_tv/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-tv-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4Ti
+  volumeName: media-tv-downloads
+  storageClassName: ""

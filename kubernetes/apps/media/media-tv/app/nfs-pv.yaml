@@ -1,0 +1,47 @@
+---
+# Shared TV library, consumed by jellyfin, sonarr, and bazarr - not owned by
+# any single app, so it lives here rather than in one app's own directory.
+# UNAS Pro migration (2026-09-29): app-template's persistence.type: nfs
+# shorthand maps to a plain Kubernetes v1.NFSVolumeSource, which has no
+# mountOptions field at all - only PersistentVolume.spec.mountOptions
+# supports it. The UNAS Pro only speaks NFSv3 to Linux clients (confirmed
+# via its own web UI) and Talos nodes default to NFSv4.1 (deliberate
+# global /etc/nfsmount.conf tuning for the old QNAP, see
+# talos/machineconfig.yaml.j2), so this mount needs an explicit static
+# PV/PVC pair instead of the usual shorthand.
+#
+# A separate PV/PVC pointing at this same NFS path also exists in the
+# download namespace (kubernetes/apps/download/downloads-staging/) so
+# qbittorrent/nzbget/cross-seed can save/hardlink TV downloads directly
+# into this share - PVCs are namespace-scoped, so cross-namespace sharing
+# needs its own PV/PVC pair per namespace, even though both point at the
+# exact same underlying export.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-tv
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 4Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_tv/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-tv
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4Ti
+  volumeName: media-tv
+  storageClassName: ""
