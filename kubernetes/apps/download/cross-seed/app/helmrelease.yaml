@@ -106,9 +106,11 @@ spec:
           - path: /media/tv
 
       # Same cross-filesystem hardlink fix as media-tv above, for the
-      # "music" category (Lidarr's library).
+      # "music" category (Lidarr's library). Mounted at a different
+      # container path than Lidarr's own /media/music - see qbittorrent's
+      # matching comment for why (DownloadClientRootFolderCheck warning).
       media-music:
         type: persistentVolumeClaim
         existingClaim: media-music-downloads
         globalMounts:
-          - path: /media/music
+          - path: /media/music-downloads

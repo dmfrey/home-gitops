@@ -506,12 +506,20 @@ spec:
         globalMounts:
           - path: /media/tv
       # Same cross-filesystem hardlink fix as media-tv above, for the
-      # "music" category (Lidarr's library).
+      # "music" category (Lidarr's library). Mounted at a DIFFERENT
+      # container path than Lidarr's own /media/music (2026-09-29 fix) -
+      # mounting it at the exact same path as Lidarr's library root
+      # triggered Lidarr's DownloadClientRootFolderCheck warning
+      # ("places downloads in the root folder") since the category's
+      # save_path was then nested inside the scanned library root. Both
+      # still mount the identical full media_music export (no subPath), so
+      # a Lidarr Remote Path Mapping (/media/music-downloads -> /media/music)
+      # translates cleanly, same mechanism as sonarr's tv/tv_shows mapping.
       media-music:
         type: persistentVolumeClaim
         existingClaim: media-music-downloads
         globalMounts:
-          - path: /media/music
+          - path: /media/music-downloads
       tools:
         type: emptyDir
         advancedMounts:

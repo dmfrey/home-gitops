@@ -136,7 +136,7 @@ spec:
               # downloads need to be on that same filesystem for lidarr's
               # hardlink import (via soularr) to work. incomplete stays on
               # downloads-staging - nothing gets hardlinked from there.
-              downloads: /media/music/downloads/slskd/complete
+              downloads: /media/music-downloads/downloads/slskd/complete
               incomplete: /media/downloads/slskd/incomplete
             transfers:
               download:
@@ -175,12 +175,14 @@ spec:
           - path: /media/downloads/slskd
             subPath: slskd
       # Cross-filesystem hardlink fix (2026-09-29) - see directories.downloads
-      # comment above.
+      # comment above. Mounted at a different container path than Lidarr's
+      # own /media/music - see qbittorrent's matching comment for why
+      # (DownloadClientRootFolderCheck warning).
       media-music:
         type: persistentVolumeClaim
         existingClaim: media-music-downloads
         globalMounts:
-          - path: /media/music
+          - path: /media/music-downloads
       tmp:
         type: emptyDir
         globalMounts:
