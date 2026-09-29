@@ -68,6 +68,7 @@ spec:
   dependsOn:
     - name: romm-db
     - name: romm-kv
+    - name: media-games
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

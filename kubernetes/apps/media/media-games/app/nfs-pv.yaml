@@ -1,0 +1,39 @@
+---
+# romm's game library, config, assets, and resources - consolidated from 4
+# separate top-level QNAP exports (/games/config, /games/assets,
+# /games/library, /games/resources) into one UNAS Shared Drive with
+# subfolders. romm's own persistence entries use subPath to scope into
+# each subfolder of this single shared PVC, same pattern already used for
+# downloads-staging. Not part of the qbittorrent/nzbget/cross-seed
+# hardlink pipeline (romm downloads/manages its own library directly), so
+# no category-routing fix needed here - straight cutover like
+# homeassistant/ai_models.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-games
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 500Gi
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_games/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-games
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: media-games
+  storageClassName: ""
