@@ -109,13 +109,13 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
       backups:
-        type: nfs
-        server: nas.internal
-        path: /plexbackups/backups/prowlarr
+        type: persistentVolumeClaim
+        existingClaim: app-backups-prowlarr
         advancedMounts:
           prowlarr:
             app:
               - path: /config/Backups
+                subPath: backups/prowlarr
                 readOnly: false
       tmp:
         type: emptyDir

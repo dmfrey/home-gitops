@@ -1,0 +1,37 @@
+---
+# Shared app-config backup share (renamed from the stale QNAP-era
+# /plexbackups - no longer Plex-specific, just *arr/pinepods app-config
+# backups), consumed by radarr/sonarr/lidarr/bazarr/pinepods here plus
+# prowlarr in the download namespace (separate PV/PVC there, same
+# underlying export - see kubernetes/apps/download/prowlarr/app/nfs-pv.yaml).
+# Secondary safety net on top of each app's own internal backup rotation,
+# not primary data - not part of the hardlink-routing redesign.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-backups
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 200Gi
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/app_backups/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-backups
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi
+  volumeName: app-backups
+  storageClassName: ""

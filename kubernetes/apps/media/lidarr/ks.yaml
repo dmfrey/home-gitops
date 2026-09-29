@@ -37,6 +37,7 @@ spec:
   dependsOn:
     - name: lidarr-db
     - name: media-music
+    - name: app-backups
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

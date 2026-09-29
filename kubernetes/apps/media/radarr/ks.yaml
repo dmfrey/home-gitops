@@ -10,6 +10,7 @@ spec:
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: media-movies
+    - name: app-backups
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

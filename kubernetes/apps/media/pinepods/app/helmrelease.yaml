@@ -140,11 +140,11 @@ spec:
         globalMounts:
           - path: /opt/pinepods/downloads
       backup:
-        type: nfs
-        server: nas.internal
-        path: /plexbackups/backups/pinepods
+        type: persistentVolumeClaim
+        existingClaim: app-backups
         globalMounts:
           - path: /opt/pinepods/backups
+            subPath: backups/pinepods
       tmpfs:
         type: emptyDir
         advancedMounts:

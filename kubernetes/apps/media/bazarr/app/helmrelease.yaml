@@ -234,11 +234,11 @@ spec:
         type: emptyDir
 
       backups:
-        type: nfs
-        server: nas.internal
-        path: /plexbackups/backups/bazarr
+        type: persistentVolumeClaim
+        existingClaim: app-backups
         globalMounts:
           - path: /config/backup
+            subPath: backups/bazarr
             # serviceMonitor:
             #   metrics:
             #     serviceName: bazarr

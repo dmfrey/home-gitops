@@ -69,6 +69,7 @@ spec:
   dependsOn:
     - name: pinepods-db
     - name: pinepods-kv
+    - name: app-backups
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

@@ -138,13 +138,13 @@ spec:
 
       backups:
         enabled: true
-        type: nfs
-        server: nas.internal
-        path: /plexbackups/backups/radarr
+        type: persistentVolumeClaim
+        existingClaim: app-backups
         advancedMounts:
           radarr:
             app:
               - path: /config/Backups
+                subPath: backups/radarr
 
       tmp:
         type: emptyDir

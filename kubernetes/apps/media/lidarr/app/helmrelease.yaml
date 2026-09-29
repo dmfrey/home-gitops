@@ -150,13 +150,13 @@ spec:
           - path: /media/music
       backups:
         enabled: true
-        type: nfs
-        server: nas.internal
-        path: /plexbackups/backups/lidarr
+        type: persistentVolumeClaim
+        existingClaim: app-backups
         advancedMounts:
           lidarr:
             app:
               - path: /config/Backups
+                subPath: backups/lidarr
                 readOnly: false
       tmp:
         type: emptyDir

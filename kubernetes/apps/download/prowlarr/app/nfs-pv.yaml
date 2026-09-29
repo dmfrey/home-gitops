@@ -1,0 +1,35 @@
+---
+# Prowlarr's own config backups, on the same physical app_backups NFS
+# export the media-namespace app-backups PV/PVC uses (see
+# kubernetes/apps/media/app-backups/app/nfs-pv.yaml) - PVCs are
+# namespace-scoped, so this is a separate Kubernetes object pointing at
+# the identical underlying share.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-backups-prowlarr
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 200Gi
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/app_backups/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-backups-prowlarr
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi
+  volumeName: app-backups-prowlarr
+  storageClassName: ""

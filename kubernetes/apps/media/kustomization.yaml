@@ -10,6 +10,7 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./app-backups/ks.yaml
   - ./bazarr/ks.yaml
   - ./chaski/ks.yaml
   - ./cleanrr/ks.yaml

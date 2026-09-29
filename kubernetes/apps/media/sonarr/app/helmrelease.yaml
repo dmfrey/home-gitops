@@ -139,13 +139,13 @@ spec:
 
       backups:
         enabled: true
-        type: nfs
-        server: nas.internal
-        path: /plexbackups/backups/sonarr
+        type: persistentVolumeClaim
+        existingClaim: app-backups
         advancedMounts:
           sonarr:
             app:
               - path: /config/Backups
+                subPath: backups/sonarr
 
       tmp:
         type: emptyDir
