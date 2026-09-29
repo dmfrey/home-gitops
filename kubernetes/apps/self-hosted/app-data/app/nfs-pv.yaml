@@ -1,0 +1,37 @@
+---
+# Shared app-owned blob storage (affine documents, immich photo uploads),
+# consumed by affine and immich - not owned by either app individually, so
+# it lives here rather than in one app's own directory. Consolidated from 2
+# separate QNAP subfolders (/media/affine, /media/immich) into one UNAS
+# Shared Drive with matching subfolders, each app scoped via subPath - same
+# pattern as downloads-staging/app-backups. Last of the 14 shares in the
+# QNAP->UNAS migration.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 500Gi
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/app_data/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: app-data
+  storageClassName: ""

@@ -162,13 +162,13 @@ spec:
     persistence:
       library:
         enabled: true
-        type: nfs
-        server: nas.internal
-        path: /media/immich
+        type: persistentVolumeClaim
+        existingClaim: app-data
         advancedMounts:
           immich-server:
             app:
               - path: /usr/src/app/upload
+                subPath: immich
 
       config:
         type: secret

@@ -190,11 +190,11 @@ spec:
 
       uploads:
         enabled: true
-        type: nfs
-        server: nas.internal
-        path: /media/affine
+        type: persistentVolumeClaim
+        existingClaim: app-data
         globalMounts:
           - path: /data/storage
+            subPath: affine
 
       tmp:
         type: emptyDir

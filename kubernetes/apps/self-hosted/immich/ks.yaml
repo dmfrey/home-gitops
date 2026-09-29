@@ -65,6 +65,7 @@ spec:
   dependsOn:
     - name: immich-db
     - name: immich-kv
+    - name: app-data
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
