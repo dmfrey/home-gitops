@@ -11,6 +11,7 @@ spec:
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
+    - name: media-movies
     - name: media-tv
     - name: rook-ceph-cluster
       namespace: rook-ceph

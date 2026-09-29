@@ -16,6 +16,7 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellystat/ks.yaml
   - ./lidarr/ks.yaml
+  - ./media-movies/ks.yaml
   - ./media-music/ks.yaml
   - ./media-tv/ks.yaml
   - ./music-assistant/ks.yaml

@@ -110,3 +110,43 @@ spec:
       storage: 1Ti
   volumeName: media-music-downloads
   storageClassName: ""
+---
+# Same cross-filesystem hardlink fix as media-tv-downloads/media-music-
+# downloads above, for the media_movies share - qbittorrent/nzbget/
+# cross-seed need their movie downloads on the same filesystem as radarr's
+# library (media-movies, in the media namespace) so radarr can hardlink
+# completed imports. Mounted at /media/movies-downloads (NOT /media/movies)
+# in each download-side app - a different container path than radarr's own
+# library root, learned from the media_music mistake (mounting at the same
+# path as Lidarr's root tripped its DownloadClientRootFolderCheck warning).
+# A Remote Path Mapping in Radarr (/media/movies-downloads -> /media/movies)
+# translates cleanly since both PVs point at the identical full NFS export.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-movies-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 8Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_movies/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-movies-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Ti
+  volumeName: media-movies-downloads
+  storageClassName: ""

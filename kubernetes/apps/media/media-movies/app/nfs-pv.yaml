@@ -1,0 +1,41 @@
+---
+# Shared movie library, consumed by radarr, jellyfin, and bazarr - not owned
+# by any single app, so it lives here rather than in one app's own
+# directory. Same pattern as media-tv/media-music.
+#
+# A separate PV/PVC pointing at this same NFS path also exists in the
+# download namespace (kubernetes/apps/download/downloads-staging/) so
+# qbittorrent/nzbget/cross-seed can save/hardlink movie downloads directly
+# into this share - mounted at a DIFFERENT container path there
+# (/media/movies-downloads, not /media/movies) to avoid nesting the
+# download category inside radarr's own scanned library root (the mistake
+# made and fixed for media_music - see that commit history).
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-movies
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 8Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_movies/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-movies
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Ti
+  volumeName: media-movies
+  storageClassName: ""

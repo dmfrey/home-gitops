@@ -105,16 +105,18 @@ spec:
         globalMounts:
           - path: /cache
             readOnly: false
-      media:
-        type: nfs
-        server: nas.internal
-        path: /media
+      # UNAS Pro migration (2026-09-29): the old whole-QNAP-root NFS mount
+      # is retired now that both shares jellyfin actually uses (movies, tv)
+      # have migrated - jellyfin was never configured against the music or
+      # podcast libraries, so nothing else under the old /media root was
+      # ever needed. Container paths (/media/movies, /media/tv_shows) stay
+      # byte-identical to before, so no change needed on Jellyfin's own
+      # library config side.
+      media-movies:
+        type: persistentVolumeClaim
+        existingClaim: media-movies
         globalMounts:
-          - path: /media
-      # UNAS Pro migration (2026-09-29): tv_shows moved to its own NFS export
-      # (media-tv PVC), so it shadows the stale tv_shows subfolder still
-      # present under the QNAP-backed /media mount above. Movies/music/
-      # podcasts stay on the QNAP mount until their own shares migrate.
+          - path: /media/movies
       media-tv:
         type: persistentVolumeClaim
         existingClaim: media-tv

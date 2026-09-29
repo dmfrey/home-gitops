@@ -36,6 +36,7 @@ spec:
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: bazarr-db
+    - name: media-movies
     - name: media-tv
     - name: rook-ceph-cluster
       namespace: rook-ceph

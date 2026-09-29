@@ -114,3 +114,11 @@ spec:
         existingClaim: media-music-downloads
         globalMounts:
           - path: /media/music-downloads
+
+      # Same cross-filesystem hardlink fix as media-music above, for the
+      # "movie" category (Radarr's library).
+      media-movies:
+        type: persistentVolumeClaim
+        existingClaim: media-movies-downloads
+        globalMounts:
+          - path: /media/movies-downloads
