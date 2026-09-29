@@ -54,7 +54,7 @@ postinstall = "lefthook install"
 # this session (`yq -y` gave an argparse error, not a YAML result).
 # minijinja-cli was genuinely stale (2.9.0 installed vs 2.24.0 available) -
 # same silent-drift risk class as the flux2/flux-operator-mcp fix above.
-"aqua:mikefarah/yq" = "4.53.6"
+"aqua:mikefarah/yq" = "4.54.1"
 "aqua:jqlang/jq" = "1.8.2"
 "aqua:koalaman/shellcheck" = "0.11.0"
 # NOT aqua:1password/cli - aqua's registry entry for that package has no
