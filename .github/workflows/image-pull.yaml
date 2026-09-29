@@ -46,6 +46,9 @@ jobs:
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
           cache: false
+          # See flate.yaml's matching comment - mise 2026.9.16 shipped a
+          # same-day SLSA provenance regression breaking aqua tool installs.
+          minimum_release_age: 3d
           tool_versions: |
             github:home-operations/flate latest
 
@@ -74,6 +77,9 @@ jobs:
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
           cache: false
+          # See flate.yaml's matching comment - mise 2026.9.16 shipped a
+          # same-day SLSA provenance regression breaking aqua tool installs.
+          minimum_release_age: 3d
           tool_versions: |
             talosctl latest
 

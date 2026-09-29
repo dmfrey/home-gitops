@@ -50,6 +50,12 @@ jobs:
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
           cache: false
+          # mise 2026.9.16 shipped a same-day SLSA provenance regression
+          # (hard-errors on aqua tools missing signer_identity/signer_issuer,
+          # e.g. flux2, instead of gracefully skipping as documented) -
+          # broke every PR's Flate CI uniformly. A release-age buffer avoids
+          # this class of day-one breakage without a version pin going stale.
+          minimum_release_age: 3d
           tool_versions: |
             github:home-operations/flate latest
 
