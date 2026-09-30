@@ -67,6 +67,7 @@ spec:
     - name: mosquitto
     - name: multus-networks
       namespace: kube-system
+    - name: reolink-ftp
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

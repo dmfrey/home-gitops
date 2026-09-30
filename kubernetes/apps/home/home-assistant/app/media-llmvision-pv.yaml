@@ -1,0 +1,37 @@
+---
+# Backing volume for HA's /media/llmvision mount - split out of the old
+# whole-root nas.internal:/media QNAP mount (2026-09-30), same treatment
+# jellyfin/sonarr already got. Distinct from the home-assistant-llmvision
+# PVC (ceph-block, mounted at /config/www/llmvision) - that's the LLM
+# Vision integration's own static asset storage; this is the separate
+# /media/llmvision/snapshots_blueprint/... path its automations write to,
+# copied from the QNAP's /media/llmvision (65 files, 16.5MB, exact match).
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: home-assistant-media-llmvision
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 50Gi
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/llmvision/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-assistant-media-llmvision
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: home-assistant-media-llmvision
+  storageClassName: ""

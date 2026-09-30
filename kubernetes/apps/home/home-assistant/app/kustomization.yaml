@@ -6,6 +6,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./media-llmvision-pv.yaml
   - ./nfs-pv.yaml
   - ./ocirepository.yaml
   - ./pvc.yaml

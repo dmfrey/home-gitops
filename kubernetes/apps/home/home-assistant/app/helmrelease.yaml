@@ -170,10 +170,29 @@ spec:
           home-assistant:
             app:
               - path: /config/www/llmvision
-      media:
-        type: nfs
-        server: nas.internal
-        path: /media
+      # Split out of the old whole-root nas.internal:/media QNAP mount
+      # (2026-09-30) - configuration.yaml/automations.yaml both hardcode
+      # /media/llmvision and /media/reolink (HACS blueprints expect them
+      # at exactly that path), so these mount at the same container paths
+      # the whole-root mount used to provide, just backed by their own
+      # UNAS shares now. Confirmed no other /media/* path is referenced
+      # anywhere in config before retiring the catch-all mount.
+      media-llmvision:
+        existingClaim: home-assistant-media-llmvision
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /media/llmvision
+      media-reolink:
+        # Shares the same PVC reolink-ftp itself writes to (both in the
+        # `home` namespace) - HA only reads here (the "cat house" shell_command
+        # lists recent recordings), never writes, so mounted read-only.
+        existingClaim: reolink-ftp
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /media/reolink
+                readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:
