@@ -53,8 +53,13 @@ spec:
         disable: false
 
       csi:
+        # Disabled: matches an open P0 CephFS data-loss bug on Ceph Tentacle
+        # (ceph/ceph-csi#5772) - this cluster runs v20.2.4, squarely the
+        # affected line. No live ceph-filesystem PVCs exist today, but the
+        # StorageClass isn't hidden, so this closes the landmine before it's
+        # ever exercised rather than after.
         readAffinity:
-          enabled: true
+          enabled: false
 
       dashboard:
         enabled: true
