@@ -96,7 +96,7 @@ installer:
   # old AOOSTAR AG02 dock - same negative result recurred on the current
   # PELADN Link S-3 dock too (`nvidia: load nvidia failed: no such device`,
   # GPU never enumerated on the PCIe bus). Reverted back to this ID.
-  image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.14.1 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
+  image: factory.talos.dev/installer/382808c804bdc4c1a33f4064373ec7115c753bc9aced28dedba12390cd78bc9c:v1.14.2 # eGPU schematic (proprietary driver) - see `just talos gen-schematic-id-egpu-proprietary`
 provisioning:
   diskSelector:
     match: disk.model == "Samsung SSD 870"
