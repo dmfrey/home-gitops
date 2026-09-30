@@ -1,0 +1,41 @@
+---
+# Backing volume for the "nfs" ClusterRepository (kubernetes/apps/kopiur-system/kopiur/repository/clusterrepository-nfs.yaml)
+# in THIS namespace. spec.allowedNamespaces lists both garage-system and
+# kopiur-system as consumers, but PersistentVolumeClaims are namespace-scoped,
+# so each consuming namespace needs its own PVC pointing at the same
+# underlying NFS export - same pattern as downloads-staging/app-backups
+# elsewhere in this migration. The kopiur-system/kopiur/repository/nfs-pv.yaml
+# PVC only covers that namespace; this one was missed during the 2026-09-29
+# UNAS migration, leaving kopiur's garage-system-side verify/maintenance Jobs
+# permanently Pending (persistentvolumeclaim "kopia-nfs-repo" not found).
+# PV name must be unique cluster-wide; PVC name matches what kopiur's Jobs
+# expect in this namespace.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kopia-nfs-repo-garage-system
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 200Gi
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/kopia_nfs_repo/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kopia-nfs-repo
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi
+  volumeName: kopia-nfs-repo-garage-system
+  storageClassName: ""
