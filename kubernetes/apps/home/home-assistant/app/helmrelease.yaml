@@ -20,7 +20,7 @@ spec:
           venv-cleanup:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2026.9.4@sha256:68dbac1e259cea28c23031e456d31a27f9429e9b5711500ac21ac7d5bcdcb57f
+              tag: 2026.9.4@sha256:cd5ffc0a3bc873b35f20189ef22ee7ee9e8875fe666928dfee263cd464cc053d
             command:
               - /bin/sh
               - -c
@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2026.9.4@sha256:68dbac1e259cea28c23031e456d31a27f9429e9b5711500ac21ac7d5bcdcb57f
+              tag: 2026.9.4@sha256:cd5ffc0a3bc873b35f20189ef22ee7ee9e8875fe666928dfee263cd464cc053d
             env:
               TZ: America/New_York
               GIT_SSH_COMMAND: "ssh -i /config/.ssh/deploy_key -o StrictHostKeyChecking=no"
