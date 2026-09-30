@@ -15,6 +15,7 @@ resources:
   - ./matter-server/ks.yaml
   - ./node-red/ks.yaml
   - ./mosquitto/ks.yaml
+  - ./reolink-ftp/ks.yaml
   - ./wyoming-services/ks.yaml
   - ./zigbee2mqtt/ks.yaml
   - ./zwave-js-ui/ks.yaml

@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: reolink-ftp
+
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: reolink-ftp
+
+  interval: 1h
+
+  values:
+    controllers:
+      reolink-ftp:
+        type: statefulset
+
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: reolink-ftp-secret
+
+        containers:
+          app:
+            image:
+              repository: delfer/alpine-ftp-server
+              tag: latest@sha256:60bb774d8408d9d4d5c74d05d1c086a34ce192c6c1a142ffac268cac0dbc6fac
+
+            env:
+              TZ: America/New_York
+              # PASV must advertise the pod's own Multus IoT-VLAN IP - the
+              # camera connects directly to it over L2, no Service/NAT in
+              # the path, so there's no other address a client could reach
+              # data connections on.
+              ADDRESS: "192.168.50.10"
+              MIN_PORT: "21100"
+              MAX_PORT: "21110"
+
+            envFrom:
+              - secretRef:
+                  name: reolink-ftp-secret
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &port 21
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *probes
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+            # vsftpd needs to bind port 21 (<1024) and setuid/chown per
+            # connection to switch into the virtual FTP user - not yet
+            # confirmed to work rootless on this image, so left at its own
+            # image default (root) rather than forcing runAsNonRoot and
+            # risking a silent permission failure. Revisit once confirmed
+            # working, same exception already made for esphome/mosquitto.
+            securityContext:
+              allowPrivilegeEscalation: false
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot-vlan",
+            "namespace": "kube-system",
+            "ips": ["192.168.50.10/24", "${IPV6_IOT_PREFIX}:10::1/64"],
+            "mac": "8a:19:4c:72:e5:0f"
+          }]
+
+    persistence:
+      data:
+        existingClaim: reolink-ftp
+        globalMounts:
+          - path: /home/reolink/uploads
