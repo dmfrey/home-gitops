@@ -18,7 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: music-assistant
-      KOPIUR_CAPACITY: 5Gi
+      KOPIUR_CAPACITY: 15Gi
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
