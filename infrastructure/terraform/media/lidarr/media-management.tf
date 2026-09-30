@@ -21,7 +21,7 @@ resource "lidarr_media_management" "settings" {
   extra_file_extensions                       = "info"
   file_date                                   = "none"
   recycle_bin_days                            = 7
-  recycle_bin_path                            = "/media/trash"
+  recycle_bin_path                            = "/media/music/.trash"
   rescan_after_refresh                        = "always"
 }
 

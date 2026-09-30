@@ -16,7 +16,7 @@ resource "radarr_media_management" "settings" {
   extra_file_extensions                       = "srt"
   file_date                                   = "none"
   recycle_bin_cleanup_days                    = 7
-  recycle_bin                                 = "/media/trash"
+  recycle_bin                                 = "/media/movies/.trash"
   rescan_after_refresh                        = "always"
 }
 

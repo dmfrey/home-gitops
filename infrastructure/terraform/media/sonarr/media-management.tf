@@ -15,7 +15,7 @@ resource "sonarr_media_management" "settings" {
   episode_title_required      = "always"
   extra_file_extensions       = "srt"
   file_date                   = "none"
-  recycle_bin_path            = "/media/trash"
+  recycle_bin_path            = "/media/tv_shows/.trash"
   rescan_after_refresh        = "always"
 }
 
