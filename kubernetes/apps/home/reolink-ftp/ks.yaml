@@ -7,6 +7,11 @@ metadata:
 spec:
   interval: 1h
   path: "./kubernetes/apps/home/reolink-ftp/app"
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+        optional: false
   prune: true
   sourceRef:
     kind: GitRepository
