@@ -63,18 +63,23 @@ spec:
             # This is identical to upstream's entrypoint.sh with only
             # --allow-existing added to the uv venv call - drop this override
             # if home-operations/containers fixes it upstream.
+            # NOTE: deliberately $VAR not ${VAR} throughout - Flux's own
+            # postBuild.substitute scans rendered YAML for ${...} patterns in
+            # strict mode and fails the whole Kustomization if it finds one it
+            # doesn't recognize (hit this exact error: "variable substitution
+            # failed: variable not set (strict mode): VENV_FOLDER").
             command:
               - /bin/sh
               - -c
               - |
                 image="$(python3 -c 'from importlib.metadata import version; print(version("homeassistant"))')-$(uname -m)"
-                if [ "$(cat "${VENV_FOLDER}/.image" 2>/dev/null)" != "${image}" ]; then
-                  mkdir -p "${VENV_FOLDER}"
-                  find "${VENV_FOLDER}" -mindepth 1 -delete
-                  uv venv --system-site-packages --allow-existing "${VENV_FOLDER}"
-                  echo "${image}" > "${VENV_FOLDER}/.image"
+                if [ "$(cat "$VENV_FOLDER/.image" 2>/dev/null)" != "$image" ]; then
+                  mkdir -p "$VENV_FOLDER"
+                  find "$VENV_FOLDER" -mindepth 1 -delete
+                  uv venv --system-site-packages --allow-existing "$VENV_FOLDER"
+                  echo "$image" > "$VENV_FOLDER/.image"
                 fi
-                source "${VENV_FOLDER}/bin/activate"
+                source "$VENV_FOLDER/bin/activate"
                 exec python3 -P -m homeassistant --config /config
             env:
               TZ: America/New_York
