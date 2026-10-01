@@ -43,6 +43,39 @@ spec:
             image:
               repository: ghcr.io/home-operations/home-assistant
               tag: 2026.9.4@sha256:cd5ffc0a3bc873b35f20189ef22ee7ee9e8875fe666928dfee263cd464cc053d
+            # Overrides the image's own /entrypoint.sh - confirmed live 2026-09-30
+            # that upstream's `uv venv --system-site-packages "${VENV_FOLDER}"`
+            # call fails every single time with `/config/.venv` as a mounted PVC:
+            # uv now refuses to create a venv at a path that already exists as a
+            # directory (the mount point itself can't be unlinked, only its
+            # contents can - upstream's own comment acknowledges this, but their
+            # script doesn't pass the flag current `uv` needs for it). Confirmed
+            # via manual exec: fails with "A directory already exists at: .venv"
+            # without --allow-existing, no env-var equivalent exists for that
+            # specific flag (only --clear has one, UV_VENV_CLEAR, which hits a
+            # *different* uv error since the mount point isn't a uv-recognized
+            # venv to clear). Net effect since whenever this uv behavior changed
+            # upstream: HA silently never got a working venv, fell back to the
+            # read-only base image site-packages for every custom-integration
+            # pip install, and 6 integrations needing extra packages
+            # (gehomesdk, py-uconnect, hyundai_kia_connect_api, pybase64,
+            # mini-racer, openplantbook-sdk/json-timeseries) failed outright.
+            # This is identical to upstream's entrypoint.sh with only
+            # --allow-existing added to the uv venv call - drop this override
+            # if home-operations/containers fixes it upstream.
+            command:
+              - /bin/sh
+              - -c
+              - |
+                image="$(python3 -c 'from importlib.metadata import version; print(version("homeassistant"))')-$(uname -m)"
+                if [ "$(cat "${VENV_FOLDER}/.image" 2>/dev/null)" != "${image}" ]; then
+                  mkdir -p "${VENV_FOLDER}"
+                  find "${VENV_FOLDER}" -mindepth 1 -delete
+                  uv venv --system-site-packages --allow-existing "${VENV_FOLDER}"
+                  echo "${image}" > "${VENV_FOLDER}/.image"
+                fi
+                source "${VENV_FOLDER}/bin/activate"
+                exec python3 -P -m homeassistant --config /config
             env:
               TZ: America/New_York
               GIT_SSH_COMMAND: "ssh -i /config/.ssh/deploy_key -o StrictHostKeyChecking=no"
