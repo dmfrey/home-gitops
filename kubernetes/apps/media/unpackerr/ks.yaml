@@ -6,8 +6,6 @@ metadata:
   name: unpackerr
 spec:
   dependsOn:
-    - name: downloads-staging
-      namespace: download
     - name: lidarr
     - name: sonarr
     - name: radarr
