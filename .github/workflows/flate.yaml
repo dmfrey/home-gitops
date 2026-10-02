@@ -58,6 +58,15 @@ jobs:
           minimum_release_age: 3d
           tool_versions: |
             github:home-operations/flate latest
+          # tool_versions only ADDS a .tool-versions file - it doesn't
+          # replace .mise.toml, and `mise install` with no args installs
+          # EVERYTHING in that file too (flux2, flux-operator-mcp,
+          # 1password-cli, etc. - the whole local-dev toolset). Any one of
+          # those unrelated tools having a bad aqua/vfox registry entry
+          # (e.g. flux2@2.9.5's missing signer_identity, 2026-10-01/02) was
+          # silently breaking every PR's CI even though Flate never needs
+          # them. install_args scopes `mise install` to just this tool.
+          install_args: "github:home-operations/flate"
 
       - name: Run flate test
         env:

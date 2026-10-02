@@ -51,6 +51,11 @@ jobs:
           minimum_release_age: 3d
           tool_versions: |
             github:home-operations/flate latest
+          # See flate.yaml's matching comment - scopes `mise install` to
+          # just this tool instead of also installing everything else in
+          # .mise.toml (flux2, 1password-cli, etc.), any of which can break
+          # CI with a bad aqua/vfox registry entry we don't even need here.
+          install_args: "github:home-operations/flate"
 
       - name: Extract Images
         id: extract
@@ -82,6 +87,11 @@ jobs:
           minimum_release_age: 3d
           tool_versions: |
             talosctl latest
+          # See flate.yaml's matching comment - scopes `mise install` to
+          # just this tool instead of also installing everything else in
+          # .mise.toml (flux2, 1password-cli, etc.), any of which can break
+          # CI with a bad aqua/vfox registry entry we don't even need here.
+          install_args: "talosctl"
 
       - name: Pull Image
         env:
