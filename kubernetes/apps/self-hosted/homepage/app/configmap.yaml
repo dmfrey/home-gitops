@@ -65,16 +65,6 @@ data:
             href: http://zwave.internal
             icon: zwave.png
             description: Z-Wave Controller
-    - Infrastructure:
-        - QNAP:
-            href: https://nas.internal:7080/cgi-bin/
-            description: QNAP NAS TS-462
-            icon: qnap.png
-            widget:
-              type: qnap
-              url: http://nas.internal:7080
-              username: {{HOMEPAGE_VAR_QNAP_USERNAME}}
-              password: {{HOMEPAGE_VAR_QNAP_PASSWORD}}
     - Network:
         - Cloudflared:
             href: https://dash.cloudflare.com/
