@@ -1,0 +1,98 @@
+---
+# unpackerr runs in the `media` namespace, but qbittorrent's own
+# media-tv-downloads/media-music-downloads/media-movies-downloads PVCs live in
+# `download` (kubernetes/apps/download/downloads-staging/app/nfs-pv.yaml) -
+# PVCs are namespace-scoped, so unpackerr needs its own PVC per share
+# pointing at the same underlying NFS export, same pattern used for the
+# garage-system/kopiur-system split on kopia_nfs_repo. PV names must be
+# unique cluster-wide; PVC names match what qbittorrent itself uses since
+# they're in a different namespace.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-tv-downloads-media-ns
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 4Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_tv/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-tv-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4Ti
+  volumeName: media-tv-downloads-media-ns
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-music-downloads-media-ns
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_music/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-music-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+  volumeName: media-music-downloads-media-ns
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-movies-downloads-media-ns
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 8Ti
+  mountOptions:
+    - vers=3
+    - nolock
+  nfs:
+    server: unas.internal
+    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_movies/.data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-movies-downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Ti
+  volumeName: media-movies-downloads-media-ns
+  storageClassName: ""
