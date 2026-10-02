@@ -107,8 +107,27 @@ spec:
   # to kopia's own defaults via `kopia repository set-parameters
   # --epoch-advance-on-count=20 --epoch-advance-on-size-mb=10` to stop the
   # excess compaction churn. Declared value below now matches live state.
+  #
+  # 2026-10-02: minDuration 6h -> 1h, matching onedr0p/home-ops's own proven
+  # ClusterRepository config (same shape: S3/Garage-style backend, no
+  # advanceOnCount/advanceOnSizeMiB declared, kopia's 20/10MiB defaults left
+  # alone - those stay untouched here too, this only lowers the gate). Root
+  # cause of the whole 09-09/09-10 saga, per kopiur's own fix PR #467
+  # (merged 2026-09-19, in our current 0.10.11 - confirmed via
+  # `lastContentReclaimedBytes` now showing real nonzero values instead of
+  # the old hardcoded 0): "#458 was reported as kopiur drops my epoch
+  # parameters, but it's actually kopia refusing the whole call" - any one
+  # epoch field kopia dislikes silently poisons every field in that same
+  # call. minDuration alone was never one of the disliked fields and was
+  # never implicated in the NodeDiskIOSaturation incident above - only
+  # advanceOnCount/advanceOnSizeMiB were, and those stay at kopia's safe
+  # defaults. Confirmed via `kopia maintenance info` 2026-10-02: the repo
+  # genuinely accumulates ~200+ index blobs/hour between daily full-cycle
+  # resets (2554-2678 observed, threshold 1000) despite backups never
+  # failing - a faster epoch-advance gate should keep the sustained count
+  # lower without touching the risky trigger thresholds.
   parameters:
     epoch:
-      minDuration: 6h
+      minDuration: 1h
       advanceOnCount: 20
       advanceOnSizeMiB: 10
