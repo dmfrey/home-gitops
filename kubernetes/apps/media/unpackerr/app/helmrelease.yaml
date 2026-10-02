@@ -32,14 +32,21 @@ spec:
               TZ: America/New_York
               UN_INTERVAL: "1m"
               UN_WEBSERVER_METRICS: "true"
+              # Paths updated 2026-10-01 - the old /media/downloads/<category>
+              # values were the pre-category-routing-redesign (2026-09-29)
+              # layout and haven't pointed at real content in a while; qbittorrent
+              # moved completed downloads to per-media-type UNAS PVCs that same
+              # day. NZBGet downloads need no entry here - its own
+              # Category.Unpack=yes already extracts them itself; these paths
+              # are qBittorrent-specific, the client with no built-in unpacking.
               UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local:8989
-              UN_SONARR_0_PATHS_0: /media/downloads/series
+              UN_SONARR_0_PATHS_0: /media/tv/downloads/qbittorrent
               # UN_SONARR_0_API_KEY: # set in externalsecret
               UN_RADARR_0_URL: http://radarr.media.svc.cluster.local:7878
-              UN_RADARR_0_PATHS_0: /media/downloads/movies
+              UN_RADARR_0_PATHS_0: /media/movies-downloads/downloads/qbittorrent
               # UN_RADARR_0_API_KEY: # set in externalsecret
               UN_LIDARR_0_URL: http://lidarr.media.svc.cluster.local:8686
-              UN_LIDARR_0_PATHS_0: /media/downloads/music
+              UN_LIDARR_0_PATHS_0: /media/music-downloads/downloads/qbittorrent
               # UN_LIDARR_0_API_KEY: # set in externalsecret
             envFrom:
               - secretRef:
@@ -73,7 +80,24 @@ spec:
           http:
             port: 5656
     persistence:
-      media:
-        type: nfs
-        server: nas.internal
-        path: /media
+      # Split off the old whole-root nas.internal:/media QNAP mount
+      # (2026-10-01) - never migrated when the rest of download/media moved
+      # to per-share UNAS PVCs, and its configured watch paths (above) had
+      # gone stale anyway. Mounts the exact same 3 PVCs qbittorrent itself
+      # uses at the exact same container paths, matching qbittorrent's own
+      # mount-shape comments for why each is structured this way.
+      media-tv:
+        type: persistentVolumeClaim
+        existingClaim: media-tv-downloads
+        globalMounts:
+          - path: /media/tv
+      media-music:
+        type: persistentVolumeClaim
+        existingClaim: media-music-downloads
+        globalMounts:
+          - path: /media/music-downloads
+      media-movies:
+        type: persistentVolumeClaim
+        existingClaim: media-movies-downloads
+        globalMounts:
+          - path: /media/movies-downloads

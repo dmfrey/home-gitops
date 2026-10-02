@@ -17,7 +17,13 @@ spec:
         - k8s-0.internal
         - k8s-1.internal
         - k8s-2.internal
-        - nas.internal
+        # TEMP 2026-10-01: QNAP physically shut down/unplugged, nas.internal
+        # answers nothing right now. UNAS is pending its 10Gb port move
+        # (SFP+ adapter arrives tomorrow), after which nas.internal gets
+        # reused for it and this reverts back. Until then, point at UNAS's
+        # current name directly so the probe (and anything alerting off it)
+        # stops false-firing.
+        - unas.internal
 
   metricRelabelings:
     - targetLabel: service
@@ -40,7 +46,9 @@ spec:
   targets:
     staticConfig:
       static:
-        - nas.internal:2049
+        # TEMP 2026-10-01: see lan-icmp above - revert to nas.internal:2049
+        # once UNAS is on its permanent 10Gb port and the DNS name moves over.
+        - unas.internal:2049
 
   metricRelabelings:
     - targetLabel: service
