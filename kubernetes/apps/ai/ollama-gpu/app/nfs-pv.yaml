@@ -20,7 +20,7 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: unas.internal
+    server: nas.internal
     path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/ai_models/.data
   persistentVolumeReclaimPolicy: Retain
 ---
