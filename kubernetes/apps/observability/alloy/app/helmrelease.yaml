@@ -701,6 +701,136 @@ spec:
             forward_to = [loki.write.default.receiver]
           }
 
+          // Receive Talos service logs (apid, machined, kubelet, etcd, cri, ...) as
+          // JSON lines over raw TCP: a machine.logging destination in
+          // talos/machineconfig.yaml.j2 would point here via the alloy-talos-logs
+          // LoadBalancer. Nothing sends to this port until that destination exists.
+          // Same shape as the kernel pipeline: machined runs on the bare host, so the
+          // sender needs a real LoadBalancer IP, and net.peer.ip is the only way to
+          // tell the nodes apart. No extraPorts entry on purpose (a containerPort
+          // would roll every Alloy pod); the Service targets the numeric port.
+          otelcol.receiver.tcplog "talos" {
+            listen_address = "0.0.0.0:6515"
+            add_attributes = true
+            output {
+              logs = [otelcol.processor.transform.talos.input]
+            }
+          }
+
+          // Unwrap Talos's JSON record (msg, talos-level, talos-service, talos-time),
+          // map the node by source IP, and stamp the canonical schema. Receive time is
+          // used as the event time. The IP map is the allowlist, as for UniFi: the
+          // filter below drops anything that did not map.
+          otelcol.processor.transform "talos" {
+            error_mode = "ignore"
+
+            log_statements {
+              context = "log"
+              statements = [
+                `merge_maps(log.cache, ParseJSON(log.body), "upsert") where IsMatch(log.body, "^[{]")`,
+                `set(log.attributes["process"], log.cache["talos-service"]) where log.cache["talos-service"] != nil`,
+                `set(log.attributes["severity"], log.cache["talos-level"]) where log.cache["talos-level"] != nil`,
+                `set(log.body, log.cache["msg"]) where log.cache["msg"] != nil`,
+                `set(log.time, log.observed_time)`,
+                `set(log.attributes["infra.host"], "k8s-0") where log.attributes["net.peer.ip"] == "192.168.30.10"`,
+                `set(log.attributes["infra.host"], "k8s-1") where log.attributes["net.peer.ip"] == "192.168.30.11"`,
+                `set(log.attributes["infra.host"], "k8s-2") where log.attributes["net.peer.ip"] == "192.168.30.12"`,
+                `set(log.attributes["node"], log.attributes["infra.host"]) where log.attributes["infra.host"] != nil`,
+                `set(log.attributes["foundation"], "homelab-k8s-001")`,
+                `set(log.attributes["infra.layer"], "infra")`,
+                `set(log.attributes["infra.component"], "talos")`,
+              ]
+            }
+
+            output {
+              logs = [otelcol.processor.filter.talos.input]
+            }
+          }
+
+          // Drop (1) records from an unmapped source IP and (2) the successful
+          // read-only RPC access lines that apid and machined log for every call. The
+          // node consoles' dashboards poll these nine RPCs about 11 times a second per
+          // node (~33 lines/s cluster-wide) and the lines carry no information. Fails
+          // safe: errors, any RPC not listed, and every mutating RPC (ApplyConfiguration,
+          // Upgrade, Reboot, Reset, ServiceRestart, ...) are kept as an audit trail.
+          // The pattern is unanchored because the exact msg prefix is Talos's own.
+          // Dropped counts: otelcol_processor_incoming_items_total minus
+          // otelcol_processor_outgoing_items_total for this processor.
+          otelcol.processor.filter "talos" {
+            error_mode = "ignore"
+
+            log_conditions {
+              context = "log"
+              conditions = [
+                `attributes["infra.host"] == nil`,
+                `IsMatch(body, "OK [[]/machine[.]MachineService/(CPUFreqStats|CPUInfo|DiskStats|LoadAvg|Memory|NetworkDeviceStats|Processes|ServiceList|SystemStat)[]]")`,
+              ]
+            }
+
+            output {
+              logs = [otelcol.processor.attributes.talos.input]
+            }
+          }
+
+          // job/infra.layer/foundation/node become Loki labels; the rest goes to
+          // structured metadata in loki.process below.
+          otelcol.processor.attributes "talos" {
+            action {
+              key    = "job"
+              value  = "talos"
+              action = "insert"
+            }
+            action {
+              key    = "loki.attribute.labels"
+              value  = "job,node,infra.layer,foundation"
+              action = "insert"
+            }
+
+            output {
+              logs = [otelcol.exporter.loki.talos.input]
+            }
+          }
+
+          otelcol.exporter.loki "talos" {
+            forward_to = [loki.process.talos.receiver]
+          }
+
+          // Unwrap the exporter's JSON envelope: the stored line is the Talos message
+          // only, and the header fields move to structured metadata.
+          loki.process "talos" {
+            stage.json {
+              expressions = {
+                line_out        = "body",
+                source_ip       = "attributes.\"net.peer.ip\"",
+                infra_host      = "attributes.\"infra.host\"",
+                infra_component = "attributes.\"infra.component\"",
+                process         = "attributes.process",
+                severity        = "attributes.severity",
+              }
+            }
+
+            stage.structured_metadata {
+              values = {
+                source_ip       = "",
+                infra_host      = "",
+                infra_component = "",
+                process         = "",
+                severity        = "",
+              }
+            }
+
+            stage.output {
+              source = "line_out"
+            }
+
+            // Same as the UniFi pipeline: keep streams unsplit.
+            stage.label_drop {
+              values = ["level"]
+            }
+
+            forward_to = [loki.write.default.receiver]
+          }
+
     controller:
       type: daemonset
 
