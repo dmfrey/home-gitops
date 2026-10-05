@@ -365,8 +365,10 @@ spec:
           }
 
           // Map each known device's static IP to a canonical hostname and stamp the
-          // canonical schema. Unmapped sources (APs, the UDM SE until its source IP is
-          // confirmed from samples) are kept but get no infra.host.
+          // canonical schema. The filter below then drops everything that did not map,
+          // so this list is the allowlist: to add a device, add its IP here. The UDM SE
+          // sends from its gateway address on the cluster VLAN (192.168.30.1), not its
+          // LAN address.
           otelcol.processor.transform "unifi" {
             error_mode = "ignore"
 
@@ -385,10 +387,33 @@ spec:
                 `set(log.attributes["infra.host"], "usw-pro-max-24") where log.attributes["net.peer.ip"] == "192.168.86.148"`,
                 `set(log.attributes["infra.host"], "usw-ultra-basement") where log.attributes["net.peer.ip"] == "192.168.86.120"`,
                 `set(log.attributes["infra.host"], "usw-flex-patio") where log.attributes["net.peer.ip"] == "192.168.86.21"`,
+                `set(log.attributes["infra.host"], "usp-pdu-pro") where log.attributes["net.peer.ip"] == "192.168.86.25"`,
+                `set(log.attributes["infra.host"], "usp-rps") where log.attributes["net.peer.ip"] == "192.168.86.31"`,
+                `set(log.attributes["infra.host"], "ups-tower") where log.attributes["net.peer.ip"] == "192.168.86.115"`,
+                `set(log.attributes["infra.host"], "ups-2u") where log.attributes["net.peer.ip"] == "192.168.86.183"`,
+                `set(log.attributes["infra.host"], "udm-se") where log.attributes["net.peer.ip"] == "192.168.30.1"`,
                 `set(log.attributes["foundation"], "homelab-k8s-001")`,
                 `set(log.attributes["infra.layer"], "infra")`,
                 `set(log.attributes["infra.component"], "network")`,
               ]
+            }
+
+            output {
+              logs = [otelcol.processor.filter.unifi.input]
+            }
+          }
+
+          // Allowlist: drop every record whose source IP is not in the map above (the
+          // APs, any other device on the LAN). Dropped counts are visible as the
+          // difference between otelcol_processor_incoming_items_total and
+          // otelcol_processor_outgoing_items_total for this processor. A mapped
+          // device that goes quiet after a change here usually means its source IP moved.
+          otelcol.processor.filter "unifi" {
+            error_mode = "ignore"
+
+            log_conditions {
+              context    = "log"
+              conditions = [`attributes["infra.host"] == nil`]
             }
 
             output {
@@ -419,9 +444,9 @@ spec:
             forward_to = [loki.process.unifi.receiver]
           }
 
-          // Unwrap the exporter's JSON envelope: the stored line is the syslog message
-          // text only (falling back to the whole raw body when the datagram didn't
-          // parse), and the header fields move to structured metadata.
+          // Unwrap the exporter's JSON envelope: the stored line is the message text
+          // only (the raw body when the datagram didn't parse, with the per-source
+          // prefixes stripped below), and the header fields move to structured metadata.
           loki.process "unifi" {
             stage.json {
               expressions = {
@@ -433,6 +458,42 @@ spec:
                 syslog_hostname = "attributes.hostname",
                 severity        = "severity",
               }
+            }
+
+            // Normalize the stored line per source format. Each stage parses line_out;
+            // a named group called line_out replaces it, the other groups become
+            // structured metadata, and a stage that does not match changes nothing, so
+            // an unexpected format degrades to the raw line instead of losing data.
+            // No Go templates here (the chart runs this config through Helm tpl).
+            //
+            // 1. UDM Activity (CEF) arrives without a syslog PRI, so it stays raw:
+            //    "Oct 05 15:06:33 <host> CEF:0|vendor|product|ver|sig|name|sev|ext".
+            //    Strip the local-time timestamp/host prefix and lift the CEF header.
+            stage.regex {
+              source     = "line_out"
+              expression = "(?s)^[A-Za-z]{3} +[0-9]+ [0-9:]{8} (?P<syslog_hostname>\\S+) (?P<line_out>CEF:0\\|[^|]*\\|[^|]*\\|[^|]*\\|(?P<cef_signature>[^|]*)\\|(?P<cef_name>[^|]*)\\|(?P<cef_severity>[^|]*)\\|.*)$"
+            }
+
+            // 2. The CEF extension's UniFi category (Audit, ...).
+            stage.regex {
+              source     = "line_out"
+              expression = "UNIFIcategory=(?P<unifi_category>[A-Za-z]+)"
+            }
+
+            // 3. The Ultra and UPS units send "<PRI>host mac,model-fw: msg" with no
+            //    timestamp, so the syslog parser rejects them. Recover host and device
+            //    tag (the model may contain a space, e.g. "UPS 2U-1.6.4.432").
+            stage.regex {
+              source     = "line_out"
+              expression = "(?s)^<[0-9]+>(?P<syslog_hostname>\\S+) (?P<appname>[0-9a-f]{12},[^:]+): (?P<line_out>.*)$"
+            }
+
+            // 4. Everything else carries "process[pid]: message" buried in the message,
+            //    optionally behind a leading ": " (switches, power gear) or a repeated
+            //    hostname (UDM). Runs last so it also handles the output of step 3.
+            stage.regex {
+              source     = "line_out"
+              expression = "(?s)^(?:: ?|[A-Za-z0-9._-]+ )?(?P<process>[A-Za-z0-9_./-]+)(?:\\[[0-9]+\\])?: (?P<line_out>.*)$"
             }
 
             // source_ip is the datagram's network source. The line no longer carries
@@ -447,6 +508,11 @@ spec:
                 appname         = "",
                 syslog_hostname = "",
                 severity        = "",
+                process         = "",
+                cef_name        = "",
+                cef_severity    = "",
+                cef_signature   = "",
+                unifi_category  = "",
               }
             }
 
