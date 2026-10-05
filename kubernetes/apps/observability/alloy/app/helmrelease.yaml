@@ -31,6 +31,10 @@ spec:
           port: 6514
           targetPort: 6514
           protocol: TCP
+        - name: unifi-syslog
+          port: 5514
+          targetPort: 5514
+          protocol: UDP
       configMap:
         create: true
         content: |-
@@ -334,6 +338,120 @@ spec:
               values = {
                 infra_host = "",
               }
+            }
+
+            forward_to = [loki.write.default.receiver]
+          }
+
+          // Receive UniFi syslog over UDP (UniFi cannot send TCP). The syslog
+          // receiver parses RFC3164 when it can (appname/hostname/message/priority) and
+          // forwards anything unparseable as a raw body with only net.* attributes, so
+          // no datagram is dropped. add_attributes gives net.peer.ip, the only reliable
+          // way to tell devices apart.
+          otelcol.receiver.syslog "unifi" {
+            protocol = "rfc3164"
+
+            udp {
+              listen_address     = "0.0.0.0:5514"
+              add_attributes     = true
+              one_log_per_packet = true
+            }
+
+            output {
+              logs = [otelcol.processor.transform.unifi.input]
+            }
+          }
+
+          // Map each known device's static IP to a canonical hostname and stamp the
+          // canonical schema. Unmapped sources (APs, the UDM SE until its source IP is
+          // confirmed from samples) are kept but get no infra.host.
+          otelcol.processor.transform "unifi" {
+            error_mode = "ignore"
+
+            log_statements {
+              context = "log"
+              statements = [
+                // RFC3164 timestamps have no year or timezone, and unparsed records
+                // carry a zero (1970) timestamp, which Loki would reject as too old.
+                // Always stamp receive time instead.
+                `set(log.time, log.observed_time)`,
+                `set(log.attributes["infra.host"], "usw-pro-max-24") where log.attributes["net.peer.ip"] == "192.168.86.148"`,
+                `set(log.attributes["infra.host"], "usw-ultra-basement") where log.attributes["net.peer.ip"] == "192.168.86.120"`,
+                `set(log.attributes["infra.host"], "usw-flex-patio") where log.attributes["net.peer.ip"] == "192.168.86.21"`,
+                `set(log.attributes["foundation"], "homelab-k8s-001")`,
+                `set(log.attributes["infra.layer"], "infra")`,
+                `set(log.attributes["infra.component"], "network")`,
+              ]
+            }
+
+            output {
+              logs = [otelcol.processor.attributes.unifi.input]
+            }
+          }
+
+          // job/infra.layer/foundation become Loki labels; everything else goes to
+          // structured metadata in loki.process below.
+          otelcol.processor.attributes "unifi" {
+            action {
+              key    = "job"
+              value  = "unifi-syslog"
+              action = "insert"
+            }
+            action {
+              key    = "loki.attribute.labels"
+              value  = "job,infra.layer,foundation"
+              action = "insert"
+            }
+
+            output {
+              logs = [otelcol.exporter.loki.unifi.input]
+            }
+          }
+
+          otelcol.exporter.loki "unifi" {
+            forward_to = [loki.process.unifi.receiver]
+          }
+
+          // Unwrap the exporter's JSON envelope: the stored line is the syslog message
+          // text only (falling back to the whole raw body when the datagram didn't
+          // parse), and the header fields move to structured metadata.
+          loki.process "unifi" {
+            stage.json {
+              expressions = {
+                body            = "body",
+                message         = "attributes.message",
+                infra_host      = "attributes.\"infra.host\"",
+                infra_component = "attributes.\"infra.component\"",
+                appname         = "attributes.appname",
+                syslog_hostname = "attributes.hostname",
+                severity        = "severity",
+              }
+            }
+
+            stage.template {
+              source   = "line_out"
+              template = `{{ if .message }}{{ .message }}{{ else }}{{ .body }}{{ end }}`
+            }
+
+            stage.structured_metadata {
+              values = {
+                infra_host      = "",
+                infra_component = "",
+                appname         = "",
+                syslog_hostname = "",
+                severity        = "",
+              }
+            }
+
+            stage.output {
+              source = "line_out"
+            }
+
+            // otelcol.exporter.loki derives a "level" label from the syslog severity;
+            // severity is already kept as structured metadata, and the schema promotes
+            // only infra_layer/foundation, so drop it to keep streams unsplit.
+            stage.label_drop {
+              values = ["level"]
             }
 
             forward_to = [loki.write.default.receiver]

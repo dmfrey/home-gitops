@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/service_v1.json
+# UniFi gear (UDM SE and switches) can only send syslog over UDP, from outside
+# the cluster, so like alloy-kernel-logs it needs a real node-routable
+# LoadBalancer IP. Kept as a sibling Service (not another port on
+# alloy-kernel-logs) so the kernel-log pipeline - whose IP Talos hard-codes in
+# KmsgLogConfig - is never touched. The IP is pinned because UniFi is
+# configured by hand with it.
+#
+# externalTrafficPolicy Local guarantees the device's source IP reaches Alloy
+# unchanged; the IP-to-hostname map in the otelcol.processor.transform "unifi"
+# stage depends on it. Alloy is a DaemonSet, so every node has a local endpoint.
+# LB port 514 is UniFi's default syslog port; the pod listens on 5514 so it
+# needs no privileged port.
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-unifi-syslog
+  annotations:
+    lbipam.cilium.io/ips: 192.168.29.123
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/instance: alloy
+    app.kubernetes.io/name: alloy
+  ports:
+    - name: unifi-syslog
+      port: 514
+      targetPort: 5514
+      protocol: UDP
