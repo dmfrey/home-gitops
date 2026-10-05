@@ -426,6 +426,7 @@ spec:
             stage.json {
               expressions = {
                 line_out        = "body",
+                source_ip       = "attributes.\"net.peer.ip\"",
                 infra_host      = "attributes.\"infra.host\"",
                 infra_component = "attributes.\"infra.component\"",
                 appname         = "attributes.appname",
@@ -434,8 +435,13 @@ spec:
               }
             }
 
+            // source_ip is the datagram's network source. The line no longer carries
+            // the exporter's JSON envelope (where net.peer.ip used to live), and
+            // unmapped devices have no infra_host, so without this their source IP
+            // would be unrecoverable. Needed to confirm and extend the IP-to-hostname map.
             stage.structured_metadata {
               values = {
+                source_ip       = "",
                 infra_host      = "",
                 infra_component = "",
                 appname         = "",
