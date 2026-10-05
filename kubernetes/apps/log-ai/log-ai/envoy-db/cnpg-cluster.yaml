@@ -1,0 +1,76 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: envoy-cnpg
+spec:
+  instances: 1
+  enablePDB: false
+  # tensorchord's CNPG-compatible Postgres image with pgvector pre-installed
+  # (also bundles VectorChord's own vchord extension, unused here - only
+  # standard pgvector is needed). Same pinned image already used by
+  # spring-notes-db and self-hosted/immich/immich-db; Renovate holds it at
+  # the PG 17.x tag prefix (.renovate/overrides.json5).
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17-1.1.1@sha256:bb7eb8442f76b1e74911f28585019a77022911f8cfa2ddcfb166ea6af85abd09
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+
+  # Class config only: no volumeSnapshot-method ScheduledBackup is defined.
+  # barman/Garage (below) is the sole backup layer, as for every other
+  # cluster in this repo (snapshot backups were removed fleet-wide
+  # 2026-07-15 because CNPG's retentionPolicy doesn't prune them).
+  backup:
+    volumeSnapshot:
+      className: csi-ceph-blockpool
+
+  # Brand-new database, nothing to restore, so initdb rather than the
+  # recovery bootstrap spring-notes uses. Also no
+  # cnpg.io/skipEmptyWalArchiveCheck annotation: that exists on
+  # spring-notes only because it recovers from its own archive. For a new
+  # server name the archive path is empty, and the check guards against an
+  # old archive being overwritten if this cluster is ever recreated.
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: envoy
+      owner: envoy
+      encoding: "UTF8"
+      localeCollate: en_US.utf8
+      localeCType: en_US.utf8
+
+  monitoring:
+    enablePodMonitor: false
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: envoy
+
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 128MB
+
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: restart
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+  storage:
+    storageClass: ceph-block
+    size: 10Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi

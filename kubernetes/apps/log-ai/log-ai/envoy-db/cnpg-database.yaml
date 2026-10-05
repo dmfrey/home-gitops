@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: envoy-app
+spec:
+  name: envoy
+  owner: envoy
+  cluster:
+    name: envoy-cnpg
+  extensions:
+    - name: vector
