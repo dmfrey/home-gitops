@@ -40,6 +40,22 @@ spec:
       configMap:
         create: true
         content: |-
+          // Namespace-to-layer classification, the ONE place these lists live. Used by
+          // the pod relabel rules (infra_layer label) and by the OTLP logs pipeline
+          // (infra.layer attribute), so both classify a namespace identically.
+          // Everything not listed is "app". Edit the lists here (regex alternations).
+          declare "namespace_layers" {
+            export "infra" {
+              value = "rook-ceph|openebs-system|garage-system|network"
+            }
+
+            export "platform" {
+              value = "kube-system|flux-system|cert-manager|datastore|observability|external-secrets|cilium-secrets|kopiur-system|system-upgrade|actions-runner-system"
+            }
+          }
+
+          namespace_layers "default" {}
+
           // Discover Kubernetes pods on this node only. Without the selector
           // every DaemonSet pod tails the whole cluster (3x duplicate entries
           // that Loki silently dedups on ingest). coalesce guards against an
@@ -91,8 +107,8 @@ spec:
               replacement  = "homelab-k8s-001"
             }
 
-            // infra_layer: default "app", then override by namespace.
-            // EDIT THE NAMESPACE LISTS HERE - this is the single place they live.
+            // infra_layer: default "app", then override by namespace. The namespace
+            // lists live in the namespace_layers block at the top of this config.
             rule {
               target_label = "infra_layer"
               replacement  = "app"
@@ -100,14 +116,14 @@ spec:
 
             rule {
               source_labels = ["__meta_kubernetes_namespace"]
-              regex         = "rook-ceph|openebs-system|garage-system|network"
+              regex         = namespace_layers.default.infra
               target_label  = "infra_layer"
               replacement   = "infra"
             }
 
             rule {
               source_labels = ["__meta_kubernetes_namespace"]
-              regex         = "kube-system|flux-system|cert-manager|datastore|observability|external-secrets|cilium-secrets|kopiur-system|system-upgrade|actions-runner-system"
+              regex         = namespace_layers.default.platform
               target_label  = "infra_layer"
               replacement   = "platform"
             }
@@ -216,7 +232,7 @@ spec:
             }
           }
 
-          // Receive OTLP traces and metrics from applications
+          // Receive OTLP traces, metrics and logs from applications
           otelcol.receiver.otlp "default" {
             grpc {
               endpoint = "0.0.0.0:4317"
@@ -227,6 +243,7 @@ spec:
             output {
               traces  = [otelcol.processor.batch.default.input]
               metrics = [otelcol.exporter.prometheus.otlp.input]
+              logs    = [otelcol.processor.k8sattributes.otlp_logs.input]
             }
           }
 
@@ -257,6 +274,160 @@ spec:
             endpoint {
               url = "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
             }
+          }
+
+          // ---- OTLP logs: canonical schema, then Loki ----
+          // Nothing sends OTLP logs yet; this makes the path exist. The sender pod is
+          // found by its connection IP and enriched with namespace, pod, node and the
+          // pod labels the workload.id chain needs. Senders Alloy cannot associate (outside
+          // the cluster, no match) just skip the enrichment and get the fallbacks below.
+          otelcol.processor.k8sattributes "otlp_logs" {
+            extract {
+              metadata = ["k8s.namespace.name", "k8s.pod.name", "k8s.node.name"]
+
+              label {
+                from     = "pod"
+                key      = "cnpg.io/cluster"
+                tag_name = "k8s.pod.label.cnpg_cluster"
+              }
+              label {
+                from     = "pod"
+                key      = "app"
+                tag_name = "k8s.pod.label.app"
+              }
+              label {
+                from     = "pod"
+                key      = "app.kubernetes.io/name"
+                tag_name = "k8s.pod.label.app_name"
+              }
+              label {
+                from     = "pod"
+                key      = "k8s-app"
+                tag_name = "k8s.pod.label.k8s_app"
+              }
+              label {
+                from     = "pod"
+                key      = "component"
+                tag_name = "k8s.pod.label.component"
+              }
+            }
+
+            pod_association {
+              source {
+                from = "connection"
+              }
+            }
+
+            output {
+              logs = [otelcol.processor.transform.otlp_logs.input]
+            }
+          }
+
+          // Stamp the same schema pod and UniFi logs carry. infra.layer uses the shared
+          // namespace_layers lists. workload.id follows the pod chain (cnpg.io/cluster >
+          // app > app.kubernetes.io/name > k8s-app > component), then falls back to the
+          // sender's own service.name. Statements run in order; a later one overrides an
+          // earlier one, so the chain is written lowest priority first.
+          otelcol.processor.transform "otlp_logs" {
+            error_mode = "ignore"
+
+            log_statements {
+              context = "log"
+              statements = [
+                // Apps carry real timestamps; only fall back to receive time if it is zero.
+                `set(log.time, log.observed_time) where log.time_unix_nano == 0`,
+                `set(log.attributes["foundation"], "homelab-k8s-001")`,
+                `set(log.attributes["log_source"], "otlp")`,
+                `set(log.attributes["infra.layer"], "app")`,
+                string.format(`set(log.attributes["infra.layer"], "infra") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.infra),
+                string.format(`set(log.attributes["infra.layer"], "platform") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.platform),
+                `set(log.attributes["namespace"], resource.attributes["k8s.namespace.name"]) where resource.attributes["k8s.namespace.name"] != nil`,
+                `set(log.attributes["infra.host"], resource.attributes["k8s.node.name"]) where resource.attributes["k8s.node.name"] != nil`,
+                `set(log.attributes["workload.app"], resource.attributes["service.name"]) where resource.attributes["service.name"] != nil`,
+                `set(log.attributes["workload.app"], resource.attributes["k8s.pod.label.component"]) where resource.attributes["k8s.pod.label.component"] != nil`,
+                `set(log.attributes["workload.app"], resource.attributes["k8s.pod.label.k8s_app"]) where resource.attributes["k8s.pod.label.k8s_app"] != nil`,
+                `set(log.attributes["workload.app"], resource.attributes["k8s.pod.label.app_name"]) where resource.attributes["k8s.pod.label.app_name"] != nil`,
+                `set(log.attributes["workload.app"], resource.attributes["k8s.pod.label.app"]) where resource.attributes["k8s.pod.label.app"] != nil`,
+                `set(log.attributes["workload.app"], resource.attributes["k8s.pod.label.cnpg_cluster"]) where resource.attributes["k8s.pod.label.cnpg_cluster"] != nil`,
+                `set(log.attributes["workload.id"], Concat([resource.attributes["k8s.namespace.name"], "/", log.attributes["workload.app"]], "")) where resource.attributes["k8s.namespace.name"] != nil and log.attributes["workload.app"] != nil`,
+                `set(log.attributes["workload.id"], log.attributes["workload.app"]) where resource.attributes["k8s.namespace.name"] == nil and log.attributes["workload.app"] != nil`,
+                `delete_key(log.attributes, "workload.app")`,
+              ]
+            }
+
+            output {
+              logs = [otelcol.processor.attributes.otlp_logs.input]
+            }
+          }
+
+          // job/infra.layer/foundation/namespace and the sender's service.name become
+          // Loki labels; everything else goes to structured metadata in loki.process.
+          otelcol.processor.attributes "otlp_logs" {
+            action {
+              key    = "job"
+              value  = "otlp"
+              action = "insert"
+            }
+            action {
+              key    = "loki.attribute.labels"
+              value  = "job,infra.layer,foundation,namespace"
+              action = "insert"
+            }
+            action {
+              key    = "loki.resource.labels"
+              value  = "service.name"
+              action = "insert"
+            }
+
+            output {
+              logs = [otelcol.exporter.loki.otlp.input]
+            }
+          }
+
+          otelcol.exporter.loki "otlp" {
+            forward_to = [loki.process.otlp.receiver]
+          }
+
+          // Unwrap the exporter's JSON envelope: the stored line is the log body only,
+          // and the schema fields plus trace/span IDs (for log-to-trace correlation with
+          // Tempo) move to structured metadata. No Go templates here (Helm tpl).
+          loki.process "otlp" {
+            stage.json {
+              expressions = {
+                line_out     = "body",
+                infra_host   = "attributes.\"infra.host\"",
+                workload_id  = "attributes.\"workload.id\"",
+                log_source   = "attributes.log_source",
+                severity     = "severity",
+                trace_id     = "traceid",
+                span_id      = "spanid",
+                k8s_pod_name = "resources.\"k8s.pod.name\"",
+              }
+            }
+
+            stage.structured_metadata {
+              values = {
+                infra_host   = "",
+                workload_id  = "",
+                log_source   = "",
+                severity     = "",
+                trace_id     = "",
+                span_id      = "",
+                k8s_pod_name = "",
+              }
+            }
+
+            stage.output {
+              source = "line_out"
+            }
+
+            // otelcol.exporter.loki derives a "level" label from severity; severity is
+            // kept as structured metadata, so drop it to keep streams unsplit.
+            stage.label_drop {
+              values = ["level"]
+            }
+
+            forward_to = [loki.write.default.receiver]
           }
 
           // Receive Talos kernel-log JSON lines over raw TCP (KmsgLogConfig
