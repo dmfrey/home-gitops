@@ -75,6 +75,100 @@ spec:
               source_labels = ["__meta_kubernetes_pod_node_name"]
               target_label  = "node"
             }
+
+            // ---- Canonical log schema (foundation / infra.layer / workload.id) ----
+            // foundation and infra_layer become Loki labels (low cardinality,
+            // fully determined by namespace). workload_id is carried as a temp
+            // label only so loki.process can move it to structured metadata.
+            rule {
+              target_label = "foundation"
+              replacement  = "homelab-k8s-001"
+            }
+
+            // infra_layer: default "app", then override by namespace.
+            // EDIT THE NAMESPACE LISTS HERE - this is the single place they live.
+            rule {
+              target_label = "infra_layer"
+              replacement  = "app"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_namespace"]
+              regex         = "rook-ceph|openebs-system|garage-system|network"
+              target_label  = "infra_layer"
+              replacement   = "infra"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_namespace"]
+              regex         = "kube-system|flux-system|cert-manager|datastore|observability|external-secrets|cilium-secrets|kopiur-system|system-upgrade|actions-runner-system"
+              target_label  = "infra_layer"
+              replacement   = "platform"
+            }
+
+            // workload_app, lowest to highest priority (each rule only fires
+            // when its source is non-empty, so later rules override earlier
+            // ones). cnpg.io/cluster and the legacy "app" label sit above
+            // app.kubernetes.io/name because CNPG and DragonflyDB pods all
+            // share one generic app.kubernetes.io/name per kind.
+            rule {
+              source_labels = ["__meta_kubernetes_pod_controller_name"]
+              regex         = "(.+)"
+              target_label  = "workload_app"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_pod_label_component"]
+              regex         = "(.+)"
+              target_label  = "workload_app"
+            }
+
+            // Job pods: strip the trailing run number (e.g. -29853710).
+            rule {
+              source_labels = ["__meta_kubernetes_pod_controller_kind", "__meta_kubernetes_pod_controller_name"]
+              regex         = "Job;(.+)-[0-9]+"
+              target_label  = "workload_app"
+              replacement   = "$1"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_pod_label_k8s_app"]
+              regex         = "(.+)"
+              target_label  = "workload_app"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+              regex         = "(.+)"
+              target_label  = "workload_app"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_pod_label_app"]
+              regex         = "(.+)"
+              target_label  = "workload_app"
+            }
+
+            rule {
+              source_labels = ["__meta_kubernetes_pod_label_cnpg_io_cluster"]
+              regex         = "(.+)"
+              target_label  = "workload_app"
+            }
+
+            // workload_id = <namespace>/<workload_app>; the regex requires both
+            // halves so a missing app never yields a bare "namespace/".
+            rule {
+              source_labels = ["__meta_kubernetes_namespace", "workload_app"]
+              separator     = "/"
+              regex         = "(.+/.+)"
+              target_label  = "workload_id"
+              replacement   = "$1"
+            }
+
+            rule {
+              action = "labeldrop"
+              regex  = "workload_app"
+            }
           }
 
           // Collect logs from Kubernetes pods
@@ -88,6 +182,22 @@ spec:
             // Drop empty log lines
             stage.drop {
               expression = "^\\s*$"
+            }
+
+            // Canonical schema: infra_host (= the pod's node name, already a
+            // short lowercase hostname) and workload_id go in as structured
+            // metadata, not labels. workload_id only exists as a temp label to
+            // get it into this stage (target labels seed the extracted map),
+            // so drop it afterwards to keep it out of the stream labels.
+            stage.structured_metadata {
+              values = {
+                infra_host  = "node",
+                workload_id = "workload_id",
+              }
+            }
+
+            stage.label_drop {
+              values = ["workload_id"]
             }
 
             forward_to = [loki.write.default.receiver]
@@ -170,6 +280,11 @@ spec:
                 `set(log.attributes["node"], "k8s-0") where log.attributes["net.peer.ip"] == "192.168.30.10"`,
                 `set(log.attributes["node"], "k8s-1") where log.attributes["net.peer.ip"] == "192.168.30.11"`,
                 `set(log.attributes["node"], "k8s-2") where log.attributes["net.peer.ip"] == "192.168.30.12"`,
+                // Canonical schema. infra.host is only set when the IP mapped
+                // to a hostname above, so an unmapped IP never leaks as a host.
+                `set(log.attributes["foundation"], "homelab-k8s-001")`,
+                `set(log.attributes["infra.layer"], "infra")`,
+                `set(log.attributes["infra.host"], log.attributes["node"]) where log.attributes["node"] != nil`,
               ]
             }
 
@@ -179,9 +294,9 @@ spec:
           }
 
           // Tag job="kernel" (matches resources/lokirule.yaml's
-          // NodeFilesystemEmergencyReadOnly alert) and promote job/node to
-          // real Loki labels. loki.attribute.labels as a comma-separated
-          // list is unverified against docs - confirm live once deployed.
+          // NodeFilesystemEmergencyReadOnly alert) and promote job/node plus
+          // the canonical infra.layer/foundation to real Loki labels
+          // (infra.layer becomes the infra_layer label).
           otelcol.processor.attributes "kernel" {
             action {
               key    = "job"
@@ -190,7 +305,7 @@ spec:
             }
             action {
               key    = "loki.attribute.labels"
-              value  = "job,node"
+              value  = "job,node,infra.layer,foundation"
               action = "insert"
             }
 
@@ -201,6 +316,26 @@ spec:
 
           // Bridge OTLP-formatted logs into the existing Loki write pipeline.
           otelcol.exporter.loki "kernel" {
+            forward_to = [loki.process.kernel.receiver]
+          }
+
+          // The exporter can only promote labels; every other attribute lands
+          // inside the JSON log line ({"body":..., "attributes":{...}}). Lift
+          // infra.host out into structured metadata so kernel records carry
+          // the same schema as pod records. The line itself is left unchanged.
+          loki.process "kernel" {
+            stage.json {
+              expressions = {
+                infra_host = "attributes.\"infra.host\"",
+              }
+            }
+
+            stage.structured_metadata {
+              values = {
+                infra_host = "",
+              }
+            }
+
             forward_to = [loki.write.default.receiver]
           }
 
