@@ -377,6 +377,11 @@ spec:
                 // carry a zero (1970) timestamp, which Loki would reject as too old.
                 // Always stamp receive time instead.
                 `set(log.time, log.observed_time)`,
+                // Make the body the parsed message text when the datagram parsed (the
+                // raw line otherwise), so loki.process can store it as the line without
+                // a Go template. The chart runs this whole config through Helm tpl,
+                // which would evaluate and mangle any double-brace template written here.
+                `set(log.body, log.attributes["message"]) where log.attributes["message"] != nil`,
                 `set(log.attributes["infra.host"], "usw-pro-max-24") where log.attributes["net.peer.ip"] == "192.168.86.148"`,
                 `set(log.attributes["infra.host"], "usw-ultra-basement") where log.attributes["net.peer.ip"] == "192.168.86.120"`,
                 `set(log.attributes["infra.host"], "usw-flex-patio") where log.attributes["net.peer.ip"] == "192.168.86.21"`,
@@ -420,19 +425,13 @@ spec:
           loki.process "unifi" {
             stage.json {
               expressions = {
-                body            = "body",
-                message         = "attributes.message",
+                line_out        = "body",
                 infra_host      = "attributes.\"infra.host\"",
                 infra_component = "attributes.\"infra.component\"",
                 appname         = "attributes.appname",
                 syslog_hostname = "attributes.hostname",
                 severity        = "severity",
               }
-            }
-
-            stage.template {
-              source   = "line_out"
-              template = `{{ if .message }}{{ .message }}{{ else }}{{ .body }}{{ end }}`
             }
 
             stage.structured_metadata {
