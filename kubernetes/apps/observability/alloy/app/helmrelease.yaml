@@ -34,9 +34,17 @@ spec:
       configMap:
         create: true
         content: |-
-          // Discover Kubernetes pods
+          // Discover Kubernetes pods on this node only. Without the selector
+          // every DaemonSet pod tails the whole cluster (3x duplicate entries
+          // that Loki silently dedups on ingest). coalesce guards against an
+          // empty env var, which would match only unscheduled pods.
           discovery.kubernetes "pods" {
             role = "pod"
+
+            selectors {
+              role  = "pod"
+              field = "spec.nodeName=" + coalesce(sys.env("K8S_NODE_NAME"), sys.env("HOSTNAME"))
+            }
           }
 
           // Relabel discovered pods to extract metadata
