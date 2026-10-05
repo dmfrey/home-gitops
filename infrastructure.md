@@ -39,7 +39,7 @@ On Shelf Above Rack"]
         k8s2["k8s-2
 (GEEKOM Mini IT13)
 On Shelf Above Rack"]
-        QNAP["QNAP TS-462 NAS
+        UNAS["UniFi UNAS Pro 4 NAS
 On Shelf Above Rack"]
     end
 
@@ -70,7 +70,7 @@ On Shelf Above Rack"]
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s0
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s1
     USWPM24 -- "VLAN 30 (Homelab)" --> k8s2
-    USWPM24 -- "10GbE SFP+ / VLAN 30" --> QNAP
+    USWPM24 -- "10GbE / VLAN 30" --> UNAS
 
     USWPM24 -- "Port 8" --> UPS
     USWPM24 -- "Port 9" --> PDU

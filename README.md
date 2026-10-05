@@ -106,12 +106,12 @@ My cluster runs on a variety of energy-efficient hardware.
 
 ### 💻 Compute & Storage
 
-| Device  | Manufacturer | Model     | CPU            | RAM   | Role                              |
-| ------- | ------------ | --------- | -------------- | ----- | --------------------------------- |
-| `k8s-0` | GEEKOM       | Mini IT13 | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
-| `k8s-1` | GEEKOM       | Mini IT13 | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
-| `k8s-2` | GEEKOM       | Mini IT13 | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
-| `NAS`   | QNAP         | TS-462    | -              | -     | Network Attached Storage          |
+| Device  | Manufacturer | Model      | CPU            | RAM   | Role                              |
+| ------- | ------------ | ---------- | -------------- | ----- | --------------------------------- |
+| `k8s-0` | GEEKOM       | Mini IT13  | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
+| `k8s-1` | GEEKOM       | Mini IT13  | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
+| `k8s-2` | GEEKOM       | Mini IT13  | Intel 13th Gen | 64 GB | Kubernetes Control Plane & Worker |
+| `NAS`   | UniFi        | UNAS Pro 4 | -              | -     | Network Attached Storage          |
 
 > _Each Kubernetes node has the following disk layout:_
 >
