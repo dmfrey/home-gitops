@@ -40,6 +40,22 @@ machine:
     diskQuotaSupport: true
     rbac: true
 
+  # 2026-10-06: ships Talos service logs (apid, machined, kubelet, etcd, cri,
+  # udevd, extensions) to Alloy, which bridges them into Loki - see
+  # kubernetes/apps/observability/alloy/app/helmrelease.yaml (otelcol.receiver.tcplog
+  # "talos"). Complements KmsgLogConfig below, which carries kernel logs only.
+  # Same constraints as that one: the sender is machined on the bare host, so
+  # it needs a real LoadBalancer IP (service-talos-logs.yaml, pinned
+  # 192.168.29.124), not a ClusterIP. Talos cannot filter per service; Alloy
+  # drops the read-only dashboard-polling RPC lines (~33 lines/s cluster-wide).
+  # The node is identified by source IP, so no per-node config is needed.
+  # A cluster-wide failure or bootstrap window is not captured (the receiver
+  # lives in the cluster); use `talosctl logs` / `dmesg` on the node for those.
+  logging:
+    destinations:
+      - endpoint: tcp://192.168.29.124:6515/
+        format: json_lines
+
   # install.image is set per-node in talos/nodes/<ip>.yaml.j2 via the new
   # UnattendedInstallConfig document - each node's image must be resolved
   # explicitly (see `just talos machine-image <node>`)
