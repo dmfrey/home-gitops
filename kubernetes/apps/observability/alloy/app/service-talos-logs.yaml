@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/service_v1.json
+# Receiver for Talos service logs (a machine.logging destination in
+# talos/machineconfig.yaml.j2; none is configured yet, so nothing sends here).
+# Like alloy-kernel-logs, the sender is machined on the bare host, which cannot
+# reach ClusterIPs, so it needs a real node-routable LoadBalancer IP. Kept as a
+# sibling Service (not another port on alloy-kernel-logs) so the kernel-log
+# pipeline - whose IP Talos hard-codes in KmsgLogConfig - is never touched. The
+# IP is pinned because Talos will hard-code it. Default traffic policy, matching
+# alloy-kernel-logs, which is the path known to preserve the node's source IP
+# for host-originated traffic (the node map in otelcol.processor.transform
+# "talos" depends on it).
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-talos-logs
+  annotations:
+    lbipam.cilium.io/ips: 192.168.29.124
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/instance: alloy
+    app.kubernetes.io/name: alloy
+  ports:
+    - name: talos-tcp
+      port: 6515
+      targetPort: 6515
+      protocol: TCP

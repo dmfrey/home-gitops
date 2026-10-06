@@ -8,6 +8,7 @@ resources:
   - ./ocirepository.yaml
   - ./referencegrant.yaml
   - ./service-kernel-logs.yaml
+  - ./service-talos-logs.yaml
   - ./service-unifi-syslog.yaml
 
 configMapGenerator:
