@@ -56,6 +56,94 @@ spec:
 
           namespace_layers "default" {}
 
+          // Fan-out to the Envoy log reducer (log-ai/envoy). Every source pipeline
+          // below forwards its already-stamped records here as a SECOND consumer
+          // next to its Loki path, so Loki delivery never depends on Envoy.
+          //
+          // Envoy reads the canonical fields (foundation, infra.layer,
+          // infra.component, infra.host, workload.id) from Resource attributes, but
+          // the pipelines carry them as log-record attributes, so groupbyattrs
+          // regroups the records into one Resource per distinct set (a plain
+          // resource set would mislabel records from different hosts that share a
+          // batch). The only exclusion is the log-ai namespace: Envoy's own logs
+          // (and its database and broker) must not feed back into Envoy. They keep
+          // flowing to Loki as normal.
+          //
+          // Delivery: Envoy answers 429 when its ingest queue is full, which the
+          // exporter retries with backoff. The sending queue is deliberately
+          // in-memory: a persistent queue (otelcol.storage.file) needs a writable
+          // volume, i.e. a pod-template change that rolls every Alloy pod, and
+          // Alloy's tail positions are ephemeral so each roll re-reads retained
+          // container logs, which would also flood Envoy. ~105 lines/s total
+          // (~35/s per pod) means 200 small batches cover an Envoy restart
+          // (Recreate, minutes) comfortably; past max_elapsed_time records are
+          // dropped by design, Loki is unaffected.
+          declare "envoy_export" {
+            argument "endpoint" {
+              optional = false
+            }
+
+            export "input" {
+              value = otelcol.processor.filter.exclude_log_ai.input
+            }
+
+            otelcol.processor.filter "exclude_log_ai" {
+              error_mode = "ignore"
+
+              log_conditions {
+                context    = "log"
+                conditions = [`attributes["namespace"] == "log-ai"`]
+              }
+
+              output {
+                logs = [otelcol.processor.groupbyattrs.resource.input]
+              }
+            }
+
+            otelcol.processor.groupbyattrs "resource" {
+              keys = ["foundation", "infra.layer", "infra.component", "infra.host", "workload.id"]
+
+              output {
+                logs = [otelcol.processor.batch.envoy.input]
+              }
+            }
+
+            otelcol.processor.batch "envoy" {
+              send_batch_size = 1000
+              timeout         = "5s"
+
+              output {
+                logs = [otelcol.exporter.otlphttp.envoy.input]
+              }
+            }
+
+            // Envoy accepts protobuf only (JSON gets a 415) and gunzips the body.
+            otelcol.exporter.otlphttp "envoy" {
+              client {
+                endpoint = argument.endpoint.value
+              }
+
+              encoding = "proto"
+
+              sending_queue {
+                enabled       = true
+                num_consumers = 2
+                queue_size    = 200
+              }
+
+              retry_on_failure {
+                enabled          = true
+                initial_interval = "5s"
+                max_interval     = "30s"
+                max_elapsed_time = "15m"
+              }
+            }
+          }
+
+          envoy_export "default" {
+            endpoint = "http://envoy.log-ai.svc.cluster.local:8080"
+          }
+
           // Discover Kubernetes pods on this node only. Without the selector
           // every DaemonSet pod tails the whole cluster (3x duplicate entries
           // that Loki silently dedups on ingest). coalesce guards against an
@@ -222,7 +310,35 @@ spec:
               values = ["workload_id"]
             }
 
-            forward_to = [loki.write.default.receiver]
+            forward_to = [loki.write.default.receiver, otelcol.receiver.loki.envoy_pods.receiver]
+          }
+
+          // Pod logs for the Envoy fan-out (after the empty-line drop and the
+          // structured-metadata stage above). otelcol.receiver.loki turns Loki
+          // labels and structured metadata into log attributes; rename the schema
+          // ones to the dotted names Envoy reads. namespace is kept for the
+          // log-ai exclusion in envoy_export.
+          otelcol.receiver.loki "envoy_pods" {
+            output {
+              logs = [otelcol.processor.transform.envoy_pods.input]
+            }
+          }
+
+          otelcol.processor.transform "envoy_pods" {
+            error_mode = "ignore"
+
+            log_statements {
+              context = "log"
+              statements = [
+                `set(log.attributes["infra.layer"], log.attributes["infra_layer"]) where log.attributes["infra_layer"] != nil`,
+                `set(log.attributes["infra.host"], log.attributes["infra_host"]) where log.attributes["infra_host"] != nil`,
+                `set(log.attributes["workload.id"], log.attributes["workload_id"]) where log.attributes["workload_id"] != nil`,
+              ]
+            }
+
+            output {
+              logs = [envoy_export.default.input]
+            }
           }
 
           // Write logs to Loki
@@ -380,7 +496,7 @@ spec:
             }
 
             output {
-              logs = [otelcol.exporter.loki.otlp.input]
+              logs = [otelcol.exporter.loki.otlp.input, envoy_export.default.input]
             }
           }
 
@@ -487,7 +603,7 @@ spec:
             }
 
             output {
-              logs = [otelcol.exporter.loki.kernel.input]
+              logs = [otelcol.exporter.loki.kernel.input, envoy_export.default.input]
             }
           }
 
@@ -607,7 +723,7 @@ spec:
             }
 
             output {
-              logs = [otelcol.exporter.loki.unifi.input]
+              logs = [otelcol.exporter.loki.unifi.input, envoy_export.default.input]
             }
           }
 
@@ -801,7 +917,7 @@ spec:
             }
 
             output {
-              logs = [otelcol.exporter.loki.talos.input]
+              logs = [otelcol.exporter.loki.talos.input, envoy_export.default.input]
             }
           }
 
