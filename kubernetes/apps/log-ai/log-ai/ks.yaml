@@ -22,26 +22,49 @@ spec:
     namespace: flux-system
   targetNamespace: log-ai
   wait: false
-# Future app (the reducer, built in a separate repo). Uncomment once its
-# manifests exist under ./kubernetes/apps/log-ai/log-ai/app. Embedding
-# dimension note for that app: it is fixed by the model (768 for
-# nomic-embed-text), the same constraint documented in the spring-notes
-# HelmRelease.
-# ---
-# # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: log-ai
-# spec:
-#   dependsOn:
-#     - name: envoy-db
-#   interval: 1h
-#   path: ./kubernetes/apps/log-ai/log-ai/app
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   targetNamespace: log-ai
-#   wait: false
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-mq
+spec:
+  dependsOn:
+    - name: rabbitmq-cluster-operator
+      namespace: datastore
+  healthChecks:
+    - apiVersion: rabbitmq.com/v1beta1
+      kind: RabbitmqCluster
+      name: envoy-rabbitmq
+      namespace: log-ai
+  interval: 1h
+  path: ./kubernetes/apps/log-ai/log-ai/envoy-mq
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: log-ai
+  wait: false
+---
+# The Envoy log reducer (dmfrey/envoy, built in a separate repo). Embedding
+# dimension note: it is fixed by the model (768 for nomic-embed-text), the same
+# constraint documented in the spring-notes HelmRelease.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: log-ai
+spec:
+  dependsOn:
+    - name: envoy-db
+    - name: envoy-mq
+  interval: 1h
+  path: ./kubernetes/apps/log-ai/log-ai/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: log-ai
+  wait: false
