@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/service_v1.json
+# TEMPORARY (2026-10-06): exposes Alloy's OTLP/HTTP receiver (4318) on a LAN
+# address so the Envoy log reducer, while it is being developed on a laptop
+# that has no kubeconfig for this cluster, can send its metrics and traces
+# (and later logs) to this Alloy. Remove this Service once Envoy runs in the
+# cluster (kubernetes/apps/log-ai) or the laptop gets cluster access.
+#
+# The OTLP receiver has no authentication, so reach is limited to the family
+# VLAN (VLAN 10) with loadBalancerSourceRanges. A UDM firewall rule still has
+# to allow VLAN 10 -> 192.168.29.125:4318. externalTrafficPolicy Local keeps
+# the client's source IP intact for the source-range check; Alloy is a
+# DaemonSet, so every node has a local endpoint. The pod already listens on
+# 4318; no containerPort is declared (it would roll every Alloy pod).
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-otlp
+  annotations:
+    lbipam.cilium.io/ips: 192.168.29.125
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  loadBalancerSourceRanges:
+    - 192.168.10.0/24
+  selector:
+    app.kubernetes.io/instance: alloy
+    app.kubernetes.io/name: alloy
+  ports:
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      protocol: TCP
