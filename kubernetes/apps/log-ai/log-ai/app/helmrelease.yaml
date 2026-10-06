@@ -146,10 +146,20 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy-frontend versioning=semver
               # Same build as the backend (see above).
               tag: 8c59a88d97fbfb481eced5eea6c42d5614b7d9dd@sha256:96bb66241b3c173ca6ddfaefad1745a7c607abedb3f40721ad500e3c1e2ba70d
+            # Explicit port: the frontend has no app-template Service (its
+            # Service is the standalone service-frontend.yaml), and a probe
+            # with custom: false derives its port from the chart's service,
+            # which rendered as port 0 and was rejected by the API server.
             probes:
               liveness: &probes
                 enabled: true
-                custom: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 80
+                  periodSeconds: 10
+                  failureThreshold: 3
               readiness: *probes
             resources:
               requests:
