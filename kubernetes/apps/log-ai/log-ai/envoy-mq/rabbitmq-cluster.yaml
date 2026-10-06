@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/rabbitmq.com/rabbitmqcluster_v1beta1.json
+# Broker for Envoy's anomaly events (the reducer publishes them via Spring
+# AMQP). The queue only carries transient events, so unlike spring-notes-mq
+# there is deliberately no kopiur SnapshotPolicy/Restore here: a lost PVC costs
+# a few undelivered events, not data. Add backup only if that changes.
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: envoy-rabbitmq
+spec:
+  replicas: 1
+  # renovate: datasource=docker depName=rabbitmq versioning=loose
+  image: rabbitmq:4.3-management@sha256:8dd6e3570ddaa2ef82a6c3a8950e79c1f73893adfbdddbc374fc1f1ac8a0f5dd
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  persistence:
+    storageClassName: ceph-block
+    storage: 2Gi

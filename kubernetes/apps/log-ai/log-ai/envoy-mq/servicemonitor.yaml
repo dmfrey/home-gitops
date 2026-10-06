@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: envoy-rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: envoy-rabbitmq
+      app.kubernetes.io/component: rabbitmq
+  endpoints:
+    - port: prometheus
+      interval: 15s
+    - 
+      # The default /metrics endpoint only exposes cluster/vhost-wide
+      # aggregates, no per-queue breakdown. Per-queue depth needs this separate
+      # /metrics/detailed path with explicit family params, per the operator's
+      # documented ServiceMonitor example (same as spring-notes-rabbitmq).
+      port: prometheus
+      path: /metrics/detailed
+      params:
+        family:
+          - queue_coarse_metrics
+          - queue_metrics
+      interval: 15s

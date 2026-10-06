@@ -1,0 +1,151 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: envoy
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: envoy
+  interval: 1h
+  values:
+    defaultPodOptions:
+      # The GHCR package is private.
+      imagePullSecrets:
+        - name: envoy-ghcr-pull
+
+    controllers:
+      envoy:
+        # Envoy keeps its Drain trees in memory and is single-instance by
+        # design: exactly one replica, and Recreate so a rollout never runs
+        # two at once.
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: envoy-cnpg-app,envoy-rabbitmq-default-user
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dmfrey/envoy
+              # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
+              # Placeholder until the first release image exists. Replace with
+              # vX.Y.Z@sha256:... (the repo is private, so Renovate cannot see
+              # its tags without a ghcr host rule; bump by hand until then).
+              tag: PLACEHOLDER-set-on-first-release
+            env:
+              TZ: America/New_York
+              DEPLOYMENT_ENVIRONMENT: homelab
+              # Same pod-instance wiring as spring-notes: Alloy maps
+              # service.instance.id -> `instance`. Name must sort before
+              # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
+              # and $(VAR) only expands if VAR is defined earlier.
+              APP_POD_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+              OTEL_RESOURCE_ATTRIBUTES: service.instance.id=$(APP_POD_NAME)
+              # Micrometer OTLP defaults to milliseconds; Prometheus
+              # conventions expect *_seconds_* metric names.
+              MANAGEMENT_OTLP_METRICS_EXPORT_BASETIMEUNIT: seconds
+              LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
+              # The app defaults its own package to debug. Info here keeps the
+              # per-request lines out of the pipeline, and matters once Alloy
+              # ships logs back into Envoy.
+              LOGGING_LEVEL_COM_BROADCOM_TANZU_ENVOY: info
+              # CNPG auto-creates envoy-cnpg-app with host/port/dbname/username/password.
+              # Kubernetes env var substitution assembles the JDBC URL at runtime.
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-cnpg-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-cnpg-app
+                    key: port
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-cnpg-app
+                    key: dbname
+              SPRING_DATASOURCE_URL: "jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)"
+              SPRING_DATASOURCE_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-cnpg-app
+                    key: username
+              SPRING_DATASOURCE_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-cnpg-app
+                    key: password
+              # RabbitMQ Cluster Operator auto-creates envoy-rabbitmq-default-user
+              # with host/port/username/password, same shape as CNPG's app secret.
+              SPRING_RABBITMQ_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-rabbitmq-default-user
+                    key: host
+              SPRING_RABBITMQ_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-rabbitmq-default-user
+                    key: port
+              SPRING_RABBITMQ_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-rabbitmq-default-user
+                    key: username
+              SPRING_RABBITMQ_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-rabbitmq-default-user
+                    key: password
+            probes:
+              # The first start runs the Liquibase migrations, so give startup
+              # room (up to 150s) before liveness takes over.
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/readiness
+                    port: 8080
+                  periodSeconds: 5
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/liveness
+                    port: 8080
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/readiness
+                    port: 8080
+                  periodSeconds: 10
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+
+    # In-cluster only: no route and no ingress. Alloy reaches it at
+    # http://envoy.log-ai.svc.cluster.local:8080/v1/logs.
+    service:
+      envoy:
+        controller: envoy
+        ports:
+          http:
+            port: 8080
