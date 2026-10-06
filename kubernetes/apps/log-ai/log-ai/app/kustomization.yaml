@@ -7,4 +7,5 @@ resources:
   - ./httproute.yaml
   - ./httproutefilter.yaml
   - ./ocirepository.yaml
+  - ./service-frontend.yaml
   - ./servicemonitor.yaml

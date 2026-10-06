@@ -36,7 +36,7 @@ spec:
             type: PathPrefix
             value: /api
       backendRefs:
-        - name: envoy-backend
+        - name: envoy
           port: 8080
     - matches:
         - path:

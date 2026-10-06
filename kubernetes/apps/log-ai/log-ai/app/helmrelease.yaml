@@ -25,10 +25,11 @@ spec:
             image:
               repository: ghcr.io/dmfrey/envoy
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
-              # Placeholder until the first release image exists. Keep the
-              # backend and frontend on the same release (replace with
-              # vX.Y.Z@sha256:...).
-              tag: PLACEHOLDER-set-on-first-release
+              # Pinned to the commit-SHA tag of the first published build:
+              # release-please has not cut a vX.Y.Z release yet. Keep the backend
+              # and frontend on the same release; move both to the semver tag
+              # (vX.Y.Z@sha256:...) once the first release exists.
+              tag: 8c59a88d97fbfb481eced5eea6c42d5614b7d9dd@sha256:6781c4af670c79365c4f771863e96f158d63f58fa1b3a9f5d94c86e0714ead22
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -143,8 +144,8 @@ spec:
             image:
               repository: ghcr.io/dmfrey/envoy-frontend
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy-frontend versioning=semver
-              # Same release as the backend (see above).
-              tag: PLACEHOLDER-set-on-first-release
+              # Same build as the backend (see above).
+              tag: 8c59a88d97fbfb481eced5eea6c42d5614b7d9dd@sha256:96bb66241b3c173ca6ddfaefad1745a7c607abedb3f40721ad500e3c1e2ba70d
             probes:
               liveness: &probes
                 enabled: true
@@ -157,39 +158,17 @@ spec:
               limits:
                 memory: 128Mi
 
-    # Same mechanism as spring-notes' frontend-config, minus the OIDC settings:
-    # no auth for the MVP. The UI is only reachable through envoy-internal.
-    configMaps:
-      frontend-config:
-        data:
-          config.json: |
-            {
-              "API_BASE_URL": "/api"
-            }
-
-    persistence:
-      frontend-config:
-        type: configMap
-        name: envoy
-        advancedMounts:
-          frontend:
-            app:
-              - path: /usr/share/nginx/html/config.json
-                subPath: config.json
-                readOnly: true
-
     # In-cluster only. The routed paths are defined in httproute.yaml;
     # /v1/logs (ingest) and /actuator are deliberately not reachable through the
-    # gateway. Alloy reaches the ingest endpoint at
-    # http://envoy-backend.log-ai.svc.cluster.local:8080/v1/logs.
+    # gateway. This is the chart's only service, so app-template names it plain
+    # "envoy" - which the frontend image needs: its nginx proxies /api/ to
+    # http://envoy:8080 and resolves that name at startup, so a Service called
+    # exactly "envoy" must exist or nginx refuses to start. Alloy's exporter
+    # (PR B) uses the same name: http://envoy.log-ai.svc.cluster.local:8080.
+    # The frontend's Service is the standalone service-frontend.yaml.
     service:
       backend:
         controller: backend
         ports:
           http:
             port: 8080
-      frontend:
-        controller: frontend
-        ports:
-          http:
-            port: 80
