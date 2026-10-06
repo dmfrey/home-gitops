@@ -103,10 +103,14 @@ spec:
               # to warn; every other Garage INFO message (cluster layout, RPC,
               # block resync, ...) and all warnings/errors still log.
               RUST_LOG: "garage=info,garage_api_common::generic_server=warn"
-              # Garage honors NO_COLOR; without it every line carries ANSI
-              # colour escapes (visible as raw bytes in Loki and in the log
-              # reducer's templates).
-              NO_COLOR: "1"
+              # Every line otherwise carries ANSI colour escapes (raw bytes in
+              # Loki and in the log reducer's templates). Garage v2.4.1 reads
+              # NO_COLOR INVERTED from the usual convention: the value is "colour
+              # enabled" (src/garage/main.rs: with_ansi(NO_COLOR != "0" and != "false",
+              # default true)), so "1" keeps colours on (confirmed live 2026-10-06)
+              # and "false" turns them off. Recheck after Garage upgrades in case
+              # upstream fixes the inversion.
+              NO_COLOR: "false"
               TZ: America/New_York
             envFrom:
               - secretRef:
