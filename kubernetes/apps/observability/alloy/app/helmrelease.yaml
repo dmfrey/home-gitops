@@ -111,7 +111,8 @@ spec:
           // next to its Loki path, so Loki delivery never depends on Envoy.
           //
           // Envoy reads the canonical fields (foundation, infra.layer,
-          // infra.component, infra.host, workload.id) from Resource attributes, but
+          // infra.component, infra.host, workload.id, plus k8s.namespace.name for
+          // sources without a component) from Resource attributes, but
           // the pipelines carry them as log-record attributes, so groupbyattrs
           // regroups the records into one Resource per distinct set (a plain
           // resource set would mislabel records from different hosts that share a
@@ -146,12 +147,33 @@ spec:
               }
 
               output {
+                logs = [otelcol.processor.transform.namespace.input]
+              }
+            }
+
+            // Envoy derives the source of records that have no infra.component (platform
+            // and app pods) from the k8s.namespace.name Resource attribute. Pod records
+            // carry the namespace as a log attribute (the Loki label), so stamp it under
+            // that name for groupbyattrs below to promote. Records from the OTLP logs
+            // path already carry it on their Resource (k8sattributes); kernel, UniFi and
+            // Talos records have no namespace and keep their infra.component.
+            otelcol.processor.transform "namespace" {
+              error_mode = "ignore"
+
+              log_statements {
+                context = "log"
+                statements = [
+                  `set(log.attributes["k8s.namespace.name"], log.attributes["namespace"]) where log.attributes["k8s.namespace.name"] == nil and log.attributes["namespace"] != nil`,
+                ]
+              }
+
+              output {
                 logs = [otelcol.processor.groupbyattrs.resource.input]
               }
             }
 
             otelcol.processor.groupbyattrs "resource" {
-              keys = ["foundation", "infra.layer", "infra.component", "infra.host", "workload.id"]
+              keys = ["foundation", "infra.layer", "infra.component", "infra.host", "workload.id", "k8s.namespace.name"]
 
               output {
                 logs = [otelcol.processor.batch.envoy.input]
