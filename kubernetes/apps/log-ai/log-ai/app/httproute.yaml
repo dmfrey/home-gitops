@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
+# Internal-only UI for the Envoy log reducer. The UI is unauthenticated and its
+# exemplars are real log lines, so this route has exactly one parent, the
+# internal gateway: never envoy-external. (A route on both gateways would also
+# make external-dns publish two CNAME targets for the hostname.)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: envoy
+spec:
+  hostnames:
+    - project-envoy.dmfrey.com
+  parentRefs:
+    # Naming: "envoy-internal" is the Gateway that runs the Envoy *proxy*
+    # (Envoy Gateway). It is unrelated to this app, the Envoy log reducer.
+    - name: envoy-internal
+      namespace: network
+  rules:
+    # Ingest and actuator must only be reachable in-cluster via the Service.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1
+        - path:
+            type: PathPrefix
+            value: /actuator
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.envoyproxy.io
+            kind: HTTPRouteFilter
+            name: envoy-not-found
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: envoy-backend
+          port: 8080
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: envoy-frontend
+          port: 80

@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/servicemonitor_v1.json
+# Scrapes the backend's Micrometer registry. The in-cluster pod does not push
+# the same meters over OTLP (MANAGEMENT_OTLP_METRICS_EXPORT_ENABLED=false in the
+# HelmRelease), so each envoy_reducer_* meter is one series. /actuator is not
+# routed through the gateway; Prometheus reaches it via the Service.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: envoy-backend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/service: envoy-backend
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 30s
