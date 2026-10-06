@@ -94,7 +94,19 @@ spec:
               # logging volume under that burst is a plausible amplifier for
               # a memory spike fast enough to dodge the 60s Prometheus scrape
               # before hitting the 1Gi limit.
-              RUST_LOG: "garage=info"
+              #
+              # 2026-10-06: still ~33% of ALL cluster log lines at info (~46
+              # lines/s): 96% of Garage's output is the one-line-per-request S3
+              # access log from garage_api_common::generic_server (e.g. CNPG's
+              # barman catalog listings, Loki/Tempo object writes), all INFO,
+              # no warnings or errors in a 24h sample. Raise only that target
+              # to warn; every other Garage INFO message (cluster layout, RPC,
+              # block resync, ...) and all warnings/errors still log.
+              RUST_LOG: "garage=info,garage_api_common::generic_server=warn"
+              # Garage honors NO_COLOR; without it every line carries ANSI
+              # colour escapes (visible as raw bytes in Loki and in the log
+              # reducer's templates).
+              NO_COLOR: "1"
               TZ: America/New_York
             envFrom:
               - secretRef:
