@@ -731,7 +731,13 @@ spec:
                 `set(log.attributes["process"], log.cache["talos-service"]) where log.cache["talos-service"] != nil`,
                 `set(log.attributes["severity"], log.cache["talos-level"]) where log.cache["talos-level"] != nil`,
                 `set(log.body, log.cache["msg"]) where log.cache["msg"] != nil`,
+                // Event time is Talos's own timestamp, not receive time: Talos replays
+                // its whole buffered history (about two days, ~8k lines per node) when a
+                // sender connects, and receive time would stamp all of it as "now".
+                // With the original time an identical replayed line is a duplicate
+                // Loki drops. A record without a parseable talos-time keeps receive time.
                 `set(log.time, log.observed_time)`,
+                `set(log.time, Time(log.cache["talos-time"], "%Y-%m-%dT%H:%M:%S.%f%z")) where log.cache["talos-time"] != nil`,
                 `set(log.attributes["infra.host"], "k8s-0") where log.attributes["net.peer.ip"] == "192.168.30.10"`,
                 `set(log.attributes["infra.host"], "k8s-1") where log.attributes["net.peer.ip"] == "192.168.30.11"`,
                 `set(log.attributes["infra.host"], "k8s-2") where log.attributes["net.peer.ip"] == "192.168.30.12"`,
@@ -747,7 +753,8 @@ spec:
             }
           }
 
-          // Drop (1) records from an unmapped source IP and (2) the successful
+          // Drop (1) records from an unmapped source IP, (2) kernel messages (duplicates
+          // of the kernel pipeline) and (3) the successful
           // read-only RPC access lines that apid and machined log for every call. The
           // node consoles' dashboards poll these nine RPCs about 11 times a second per
           // node (~33 lines/s cluster-wide) and the lines carry no information. Fails
@@ -763,6 +770,13 @@ spec:
               context = "log"
               conditions = [
                 `attributes["infra.host"] == nil`,
+                // Already shipped, with more context, by the kernel pipeline (job="kernel").
+                `attributes["process"] == "kernel"`,
+                // Too old for Loki to accept (its out-of-order window is about an hour
+                // behind the newest line in a stream, and a rejected line only produces
+                // push errors): the buffered history a sender replays on connect. Keep
+                // well inside that window; recent lines still arrive with their own time.
+                `Now() - time > Duration("30m")`,
                 `IsMatch(body, "OK [[]/machine[.]MachineService/(CPUFreqStats|CPUInfo|DiskStats|LoadAvg|Memory|NetworkDeviceStats|Processes|ServiceList|SystemStat)[]]")`,
               ]
             }
