@@ -137,12 +137,17 @@ spec:
               # RT's Service, in-cluster (RT's REST 1.0 does not care that the
               # Host header differs from RT_WEB_DOMAIN; verified).
               RT_URL: http://rt-app.observability.svc.cluster.local
-              RT_USER: root
+              # A dedicated RT user (not root) with rights on the Envoy queue.
+              RT_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: rt-secret
+                    key: RT_ENVOY_MCP_USER
               RT_PASS:
                 valueFrom:
                   secretKeyRef:
                     name: rt-secret
-                    key: RT_ROOT_PASSWORD
+                    key: RT_ENVOY_MCP_PASS
             probes:
               startup:
                 enabled: true
