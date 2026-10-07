@@ -366,6 +366,39 @@ spec:
               expression = "^\\s*$"
             }
 
+            // Join multi-line records into one entry for the media apps that emit
+            // them, so Envoy sees one record instead of one template per line
+            // (Bazarr's pretty-printed "GuessIt found: {...}" JSON dumps, and the
+            // *arr apps' exception stack traces). Scoped to these workloads only:
+            // every other pod keeps one entry per line. The block starts at a line
+            // matching firstline; anything else is appended to it. A block is
+            // flushed when the next first line arrives or after max_wait_time, so
+            // the last line of a record can be delayed up to 3s. State is kept per
+            // stream, so pods and containers never mix. The container="app" scope
+            // leaves Bazarr's subcleaner sidecar alone.
+            stage.match {
+              selector = `{namespace="media", container="app", app=~"radarr|sonarr|lidarr"}`
+
+              stage.multiline {
+                // "[Info] Component: message"; the exception line that follows an
+                // [Error] starts with "[v6.4.4.10685]", which does not match.
+                firstline     = `^\[(Trace|Debug|Info|Warn|Error|Fatal)\] `
+                max_wait_time = "3s"
+                max_lines     = 100
+              }
+            }
+
+            stage.match {
+              selector = `{namespace="media", container="app", app="bazarr"}`
+
+              stage.multiline {
+                // "2026-10-07 12:51:08,475 - logger (thread) : LEVEL (file:line) - msg"
+                firstline     = `^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} - `
+                max_wait_time = "3s"
+                max_lines     = 100
+              }
+            }
+
             // infra_component for infra-layer pods, by namespace (the mapping lives in
             // namespace_layers). Done here, not as a relabel rule: a new target label
             // would change loki.source.kubernetes's target label sets and make it
