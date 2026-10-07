@@ -31,9 +31,10 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. 7d5d223: source key rule (infra.component,
-              # else k8s namespace, else <layer>/unknown) and POST /api/admin/reset.
-              tag: 7d5d22329beca3001128639e36b69e7c976bed57@sha256:2ed59b6553a3bfc5820895fc95e181f0762c8f08c64d8e216d73c2afed5ea1ba
+              # first release exists. e7c2a55: phase 3 (AI client, knowledge
+              # ingestion, async template embedding, assist tools), ordered
+              # graceful shutdown, Drain cluster eviction metrics.
+              tag: e7c2a558e771b37d2bed6652213047527164b1c8@sha256:62c4951ac51bd2b98619855adaeb441f703eadebcef15a74083c557b32e6ef7e
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -156,8 +157,9 @@ spec:
               repository: ghcr.io/dmfrey/envoy-frontend
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy-frontend versioning=semver
               # The frontend image is only rebuilt when frontend files change, so it
-              # can lag the backend's commit: 8c59a88 is still its latest build.
-              tag: 8c59a88d97fbfb481eced5eea6c42d5614b7d9dd@sha256:96bb66241b3c173ca6ddfaefad1745a7c607abedb3f40721ad500e3c1e2ba70d
+              # can lag the backend's commit: 4350f59 (knowledge admin UI) is
+              # still its latest build.
+              tag: 4350f590ae0546b4c01650d12fc4ae90e3aa6832@sha256:94021160944dc4820f44aca33da5d9b22df1d73a0114402b98e0818b929d8fa6
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
