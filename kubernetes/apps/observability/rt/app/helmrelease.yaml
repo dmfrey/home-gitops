@@ -55,10 +55,18 @@ spec:
             # standalone rt-server listens on. Links must be https (443, TLS
             # ends at the gateway) while the pod listens on 80, hence the
             # explicit --port (verified: without it rt-server listens on 443).
+            #
+            # --max-workers: rt-server runs Starlet, which forks 10 workers by
+            # default. Each RT worker holds about 250MB (compiled UI), so the
+            # default reaches ~1Gi and got the pod OOMKilled right after the
+            # first logins (2026-10-07). Two workers are plenty for a dev
+            # ticket tracker used by one person and one MCP server.
             args:
               - /opt/rt/sbin/rt-server
               - --port
               - "80"
+              - --max-workers
+              - "2"
             env:
               RT_WEB_DOMAIN: tickets.dmfrey.com
               RT_WEB_PORT: "443"
@@ -104,9 +112,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 384Mi
+                memory: 512Mi
               limits:
-                memory: 1Gi
+                memory: 1536Mi
 
       mcp:
         annotations:
