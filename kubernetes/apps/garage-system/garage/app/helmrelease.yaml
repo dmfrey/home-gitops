@@ -102,7 +102,16 @@ spec:
               # no warnings or errors in a 24h sample. Raise only that target
               # to warn; every other Garage INFO message (cluster layout, RPC,
               # block resync, ...) and all warnings/errors still log.
-              RUST_LOG: "garage=info,garage_api_common::generic_server=warn"
+              #
+              # 2026-10-07: that cut Garage from ~2.8M to ~155k lines/day (~95%).
+              # What remains is mostly garage_block::resync (77%): ~408 blocks per
+              # node are referenced (refcount 1) but exist on no node (leftover
+              # from the earlier Garage data loss), and each is retried about
+              # hourly with three lines (INFO "fetching absent but needed block",
+              # WARN "Could not fetch", ERROR "Missing block"). Drop only the
+              # INFO line of the trio; the WARN and ERROR still log, so the
+              # signal stays until the missing blocks are purged.
+              RUST_LOG: "garage=info,garage_api_common::generic_server=warn,garage_block::resync=warn"
               # Every line otherwise carries ANSI colour escapes (raw bytes in
               # Loki and in the log reducer's templates). Garage v2.4.1 reads
               # NO_COLOR INVERTED from the usual convention: the value is "colour
