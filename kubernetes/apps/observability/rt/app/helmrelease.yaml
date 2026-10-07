@@ -213,8 +213,15 @@ spec:
           # "envoy-internal" is the Gateway that runs the Envoy *proxy*,
           # unrelated to Project Envoy or this ticketing system. RT has its own
           # login, so the UI needs no extra auth.
+          #
+          # https listener only (sectionName): RT's session cookie is Secure, so
+          # a login over plain http never sticks (the browser drops the cookie
+          # and bounces back to the login page). With the route off the http
+          # listener, http://tickets.dmfrey.com falls through to the cluster's
+          # catch-all https-redirect route (301).
           - name: envoy-internal
             namespace: network
+            sectionName: https
         rules:
           - backendRefs:
               - identifier: app
