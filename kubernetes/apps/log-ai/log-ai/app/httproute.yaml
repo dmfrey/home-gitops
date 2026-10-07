@@ -14,8 +14,12 @@ spec:
   parentRefs:
     # Naming: "envoy-internal" is the Gateway that runs the Envoy *proxy*
     # (Envoy Gateway). It is unrelated to this app, the Envoy log reducer.
+    #
+    # https listener only (sectionName), like jellyfin and others: no plain-http
+    # endpoint; http falls through to the cluster's catch-all 301 redirect.
     - name: envoy-internal
       namespace: network
+      sectionName: https
   rules:
     # Ingest and actuator must only be reachable in-cluster via the Service.
     - matches:
