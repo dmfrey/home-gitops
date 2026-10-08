@@ -96,7 +96,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dependencytrack/frontend
-              tag: 5.1.2@sha256:69c36a0f4bfce9984e76ae5d56ed0b3e036e67c7e7505d8b52993d8c72d284de
+              tag: 5.2.0@sha256:7e68cc134284d6206e813212cf2a20c72f438d76f2094c0f05fd5d5e14602dda
               pullPolicy: IfNotPresent
             env:
               API_BASE_URL: https://dtrack-api.dmfrey.com
