@@ -40,6 +40,12 @@ spec:
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: /models
               OLLAMA_KEEP_ALIVE: "-1"
+              # Envoy calls Ollama's OpenAI-compatible /v1 routes, which cannot
+              # set context size per request, so this server default applies to
+              # every model and large tool results were being silently
+              # truncated. Applies to all models (each uses more VRAM for its KV
+              # cache); re-measure with a candidate loaded (home-gitops#5364).
+              OLLAMA_CONTEXT_LENGTH: "32768"
               # Non-root has no /etc/passwd entry for uid 1000 by default and
               # /root itself is 0700 root:root anyway (confirmed unreachable
               # even though .ollama's own contents already had a permissive
