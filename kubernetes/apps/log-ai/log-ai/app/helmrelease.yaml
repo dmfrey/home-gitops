@@ -31,11 +31,15 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. bdf0414: structure-aware templating for
-              # non-converging sources, on top of e7c2a55 (phase 3 AI client,
+              # first release exists. c51145c: one-time dedupe of templates with
+              # duplicate (source_key, template_text) rows, a fix so evicted Drain
+              # clusters are no longer recreated under new ids, a UNIQUE
+              # constraint on (source_key, template_text), and total_count /
+              # exemplars that survive a restart (envoy#26). On top of bdf0414
+              # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: bdf0414b245db5278b00018aa8fe1ae68d35ecff@sha256:758ba1993de2352bd9dfeee8689c3f085250bd53f95e59b47fb64985012c96bf
+              tag: c51145c891f88458d3f2b733dedebfdd7fd3197f@sha256:63148468bba97a50fb292203f5506b2d449c7709fec0e7e2dd8af0df8ee3d541
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
