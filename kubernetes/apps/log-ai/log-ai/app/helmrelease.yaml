@@ -31,7 +31,12 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. 4f2d738: one-time dedupe of templates with
+              # first release exists. a1c2e0d: runtime template-convergence conflicts
+              # merge into the surviving row instead of aborting the whole flush
+              # (envoy#39), each template in a flush batch is isolated, the
+              # shutdown snapshot runs even if the flush throws, the shutdown
+              # order is fixed (envoy#38), and a full admin reset no longer wipes
+              # the knowledge base (envoy#31). Builds on 4f2d738: one-time dedupe of templates with
               # duplicate (source_key, template_text) rows (re-run as 007 because
               # bdf0414 created more after 006 ran), a fix so evicted Drain
               # clusters are no longer recreated under new ids, a UNIQUE index on
@@ -41,7 +46,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: 4f2d7383bd152d67dc216f8d5eddc18ef4b83b75@sha256:d7fe42b480060ea92251f74471374d3a7452fe5cbcfcb23f5fe2ec30668118aa
+              tag: a1c2e0d07da7dd7212b360d4b20f22df0b1c99fd@sha256:da2d2747b55be9d946eb5aa8e544e5362d25e99a114d7a97f1e9f53dca7908bd
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
