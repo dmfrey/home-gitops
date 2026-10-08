@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dependencytrack/apiserver
-              tag: 5.1.2@sha256:967213ebdca3f9ccb5a7ff9d85b7a0c7bfba4ca5a52467a940c072cc3123d14c
+              tag: 5.2.0@sha256:7411c390182e6e42156ccf2ab033aa9120a1f37b7ce59e8c2da0d77ec23c0a5f
               pullPolicy: IfNotPresent
             env:
               # v5 requires UTC, see https://dependencytrack.github.io/docs/next/guides/administration/migrating-from-v4/
