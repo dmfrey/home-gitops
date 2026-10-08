@@ -118,8 +118,12 @@ spec:
               # no-auth signal for a keyless server (unset is not the same).
               SPRING_AI_OPENAI_BASE_URL: http://ollama.ai.svc.cluster.local:11434/v1
               SPRING_AI_OPENAI_API_KEY: ""
-              SPRING_AI_OPENAI_EMBEDDING_OPTIONS_MODEL: nomic-embed-text
-              SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL: qwen2.5:7b-instruct
+              # Non-deprecated names (Spring AI 2.0.1). The older ..._OPTIONS_MODEL
+              # names write a different key than Envoy's own application.yml
+              # default (spring.ai.openai.chat.model: qwen2.5:0.5b), so the
+              # override might not have won. Values unchanged.
+              SPRING_AI_OPENAI_EMBEDDING_MODEL: nomic-embed-text
+              SPRING_AI_OPENAI_CHAT_MODEL: qwen2.5:7b-instruct
             probes:
               # The first start runs the Liquibase migrations, so give startup
               # room (up to 150s) before liveness takes over.
