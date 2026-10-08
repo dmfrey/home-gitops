@@ -31,7 +31,10 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. a1c2e0d: runtime template-convergence conflicts
+              # first release exists. aec2c91: template_counts for a merged-away
+              # template id are redirected to the survivor via template_alias and
+              # the counts save is isolated like the templates save (envoy#41),
+              # on top of a1c2e0d: runtime template-convergence conflicts
               # merge into the surviving row instead of aborting the whole flush
               # (envoy#39), each template in a flush batch is isolated, the
               # shutdown snapshot runs even if the flush throws, the shutdown
@@ -46,7 +49,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: a1c2e0d07da7dd7212b360d4b20f22df0b1c99fd@sha256:da2d2747b55be9d946eb5aa8e544e5362d25e99a114d7a97f1e9f53dca7908bd
+              tag: aec2c91ac66ca4c8ad9735436206cbd19de00608@sha256:80fa12f01e9b639a85f22510d7f77d739a1c6f2dd4f12f91af87abc889f29672
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
