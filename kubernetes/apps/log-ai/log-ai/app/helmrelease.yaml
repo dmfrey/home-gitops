@@ -31,7 +31,10 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. aec2c91: template_counts for a merged-away
+              # first release exists. f7a0d14: a converged-at-runtime loser cluster is
+              # retired from the Drain tree/aggregator right after its merge instead
+              # of being re-merged on every 60s flush (envoy#43/#46), on top of
+              # aec2c91: template_counts for a merged-away
               # template id are redirected to the survivor via template_alias and
               # the counts save is isolated like the templates save (envoy#41),
               # on top of a1c2e0d: runtime template-convergence conflicts
@@ -49,7 +52,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: aec2c91ac66ca4c8ad9735436206cbd19de00608@sha256:80fa12f01e9b639a85f22510d7f77d739a1c6f2dd4f12f91af87abc889f29672
+              tag: f7a0d14990787d0dad8dd908a0cf768ca217b732@sha256:f19bbe98ad93af85c75bc52649d9f25a4ea1d1a66507d63482b51a2bf16c237e
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
