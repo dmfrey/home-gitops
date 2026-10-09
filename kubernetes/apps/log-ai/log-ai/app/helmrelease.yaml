@@ -31,7 +31,10 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. cb7c868: chat over the knowledge base (envoy#13,
+              # first release exists. a45609a: chat title-generation call no longer
+              # trips the search_docs ToolContext requirement, chat prompt v2
+              # (envoy#56); frontend 63b5312: real URLs + list/detail layout
+              # (envoy#47). On top of cb7c868: chat over the knowledge base (envoy#13,
               # new chat_sessions/chat_messages changeset) and the tree.clusters gauge
               # registers once per source (envoy#21), on top of f7a0d14: a converged-at-runtime loser cluster is
               # retired from the Drain tree/aggregator right after its merge instead
@@ -54,7 +57,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: cb7c868445926d5f22d69ed62da31813205926e8@sha256:5c92809596cf9f5d752c5bd758d4f39b70abf39f9e833d86736aac5842ad3cc6
+              tag: a45609a2149b4ea9c5ef56fe10a05a91da02db09@sha256:39a525406ae6d4aad8414e21da0700a2edf358b9239987db5c1fb3d6d7f2387f
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -186,7 +189,7 @@ spec:
               # The frontend image is only rebuilt when frontend files change, so it
               # can lag the backend's commit: 4350f59 (knowledge admin UI) is
               # still its latest build.
-              tag: cb7c868445926d5f22d69ed62da31813205926e8@sha256:28b7d987a1e924ee180ba18a5ae583e43152b5e9d3737e0c6e513a00de370f47
+              tag: 63b53123fc8ca4fa061ba4c1062d07d0a8d43e05@sha256:66abd25da10fc16b9faec303e4cc249f308e09def48c0e33dca672b2004b10d7
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
