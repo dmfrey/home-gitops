@@ -19,6 +19,36 @@ spec:
     monitoring:
       enabled: true
 
+    # Rook 1.21 stops setting default CSI images (the chart renders the
+    # rook-csi-operator-image-set-configmap with empty values and the
+    # ceph-csi-operator then uses its own built-in defaults). Pin the images
+    # that are live today so the Rook upgrade does not also change the CSI
+    # layer: the v1.20 upgrade broke the snapshotter and stalled backups when
+    # both moved at once. Identical to the 1.20.8 chart defaults, so this is a
+    # no-op today. Drop these in a separate PR to move to newer CSI images.
+    csi:
+      cephcsi:
+        repository: quay.io/cephcsi/cephcsi
+        tag: v3.17.1
+      registrar:
+        repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
+        tag: v2.17.0
+      provisioner:
+        repository: registry.k8s.io/sig-storage/csi-provisioner
+        tag: v6.2.0
+      snapshotter:
+        repository: registry.k8s.io/sig-storage/csi-snapshotter
+        tag: v8.5.0
+      attacher:
+        repository: registry.k8s.io/sig-storage/csi-attacher
+        tag: v4.12.0
+      resizer:
+        repository: registry.k8s.io/sig-storage/csi-resizer
+        tag: v2.1.0
+      csiAddons:
+        repository: quay.io/csiaddons/k8s-sidecar
+        tag: v0.14.0
+
     resources:
       requests:
         cpu: 100m # unchangable
