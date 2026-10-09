@@ -31,7 +31,9 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. a700b99: chat search_docs drops the version filter,
+              # first release exists. 0f34a4d: UI refactor - knowledge search, template
+              # detail chart, anomalies inbox, tool-call audit view (envoy#48-51,
+              # new tool_calls table). On top of a700b99: chat search_docs drops the version filter,
               # caps at 8 results and de-duplicates citations per document
               # (envoy#62). On top of ffa0ca8: chat search_docs no longer exposes the
               # doc_type filter (envoy#60). On top of d5c0239: case-insensitive product/version doc
@@ -62,7 +64,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: a700b99e0668377665e7c4493137b1f47a669951@sha256:e1284e7fb8f92d32799e174ea9f804c5486d845a17db635044048878e5f8f835
+              tag: 0f34a4d8f59029cb41366f4b4491b503f5b2cc74@sha256:049dd4df9551cf9cc1d451635cf2c50b2728927769d6de68272c50f65a334fa6
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -194,7 +196,7 @@ spec:
               # The frontend image is only rebuilt when frontend files change, so it
               # can lag the backend's commit: 4350f59 (knowledge admin UI) is
               # still its latest build.
-              tag: 63b53123fc8ca4fa061ba4c1062d07d0a8d43e05@sha256:66abd25da10fc16b9faec303e4cc249f308e09def48c0e33dca672b2004b10d7
+              tag: 0f34a4d8f59029cb41366f4b4491b503f5b2cc74@sha256:426848918081d69788c73ea0417811cac0330202937e63b65027adb5387b3982
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
