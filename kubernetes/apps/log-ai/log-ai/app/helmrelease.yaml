@@ -196,7 +196,7 @@ spec:
               # The frontend image is only rebuilt when frontend files change, so it
               # can lag the backend's commit: 4350f59 (knowledge admin UI) is
               # still its latest build.
-              tag: 0f34a4d8f59029cb41366f4b4491b503f5b2cc74@sha256:426848918081d69788c73ea0417811cac0330202937e63b65027adb5387b3982
+              tag: 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
