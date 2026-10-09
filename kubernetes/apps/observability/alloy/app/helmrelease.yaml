@@ -44,9 +44,59 @@ spec:
           // the pod relabel rules (infra_layer label) and by the OTLP logs pipeline
           // (infra.layer attribute), so both classify a namespace identically.
           // Everything not listed is "app". Edit the lists here (regex alternations).
+          //
+          // infra namespaces are listed once, as the namespace -> infra.component
+          // mapping below: each argument is one component's namespaces (regex
+          // alternation, several allowed), and the infra layer is derived from them,
+          // so an infra namespace cannot exist without a component. Envoy keys its
+          // Drain trees on infra.layer + infra.component. platform and app sources get
+          // no component (Envoy derives theirs from the namespace). The component
+          // names themselves are written where they are stamped (the loki.process
+          // "pods" stage.match blocks and the otlp_logs transform): storage,
+          // object-storage, local-storage, cluster-network. The kernel logs
+          // (kernel), Talos (talos) and UniFi (network) are not namespaces and get
+          // theirs in their own pipelines.
           declare "namespace_layers" {
+            argument "storage" {
+              optional = true
+              default  = "rook-ceph"
+            }
+
+            argument "object_storage" {
+              optional = true
+              default  = "garage-system"
+            }
+
+            argument "local_storage" {
+              optional = true
+              default  = "openebs-system"
+            }
+
+            // Envoy Gateway proxies, cloudflared and external-dns. Deliberately not
+            // "network", which is UniFi's component.
+            argument "cluster_network" {
+              optional = true
+              default  = "network"
+            }
+
+            export "storage" {
+              value = argument.storage.value
+            }
+
+            export "object_storage" {
+              value = argument.object_storage.value
+            }
+
+            export "local_storage" {
+              value = argument.local_storage.value
+            }
+
+            export "cluster_network" {
+              value = argument.cluster_network.value
+            }
+
             export "infra" {
-              value = "rook-ceph|openebs-system|garage-system|network"
+              value = string.join([argument.storage.value, argument.local_storage.value, argument.object_storage.value, argument.cluster_network.value], "|")
             }
 
             export "platform" {
@@ -61,7 +111,8 @@ spec:
           // next to its Loki path, so Loki delivery never depends on Envoy.
           //
           // Envoy reads the canonical fields (foundation, infra.layer,
-          // infra.component, infra.host, workload.id) from Resource attributes, but
+          // infra.component, infra.host, workload.id, plus k8s.namespace.name for
+          // sources without a component) from Resource attributes, but
           // the pipelines carry them as log-record attributes, so groupbyattrs
           // regroups the records into one Resource per distinct set (a plain
           // resource set would mislabel records from different hosts that share a
@@ -96,12 +147,33 @@ spec:
               }
 
               output {
+                logs = [otelcol.processor.transform.namespace.input]
+              }
+            }
+
+            // Envoy derives the source of records that have no infra.component (platform
+            // and app pods) from the k8s.namespace.name Resource attribute. Pod records
+            // carry the namespace as a log attribute (the Loki label), so stamp it under
+            // that name for groupbyattrs below to promote. Records from the OTLP logs
+            // path already carry it on their Resource (k8sattributes); kernel, UniFi and
+            // Talos records have no namespace and keep their infra.component.
+            otelcol.processor.transform "namespace" {
+              error_mode = "ignore"
+
+              log_statements {
+                context = "log"
+                statements = [
+                  `set(log.attributes["k8s.namespace.name"], log.attributes["namespace"]) where log.attributes["k8s.namespace.name"] == nil and log.attributes["namespace"] != nil`,
+                ]
+              }
+
+              output {
                 logs = [otelcol.processor.groupbyattrs.resource.input]
               }
             }
 
             otelcol.processor.groupbyattrs "resource" {
-              keys = ["foundation", "infra.layer", "infra.component", "infra.host", "workload.id"]
+              keys = ["foundation", "infra.layer", "infra.component", "infra.host", "workload.id", "k8s.namespace.name"]
 
               output {
                 logs = [otelcol.processor.batch.envoy.input]
@@ -294,6 +366,80 @@ spec:
               expression = "^\\s*$"
             }
 
+            // Join multi-line records into one entry for the media apps that emit
+            // them, so Envoy sees one record instead of one template per line
+            // (Bazarr's pretty-printed "GuessIt found: {...}" JSON dumps, and the
+            // *arr apps' exception stack traces). Scoped to these workloads only:
+            // every other pod keeps one entry per line. The block starts at a line
+            // matching firstline; anything else is appended to it. A block is
+            // flushed when the next first line arrives or after max_wait_time, so
+            // the last line of a record can be delayed up to 3s. State is kept per
+            // stream, so pods and containers never mix. The container="app" scope
+            // leaves Bazarr's subcleaner sidecar alone.
+            stage.match {
+              selector = `{namespace="media", container="app", app=~"radarr|sonarr|lidarr"}`
+
+              stage.multiline {
+                // "[Info] Component: message"; the exception line that follows an
+                // [Error] starts with "[v6.4.4.10685]", which does not match.
+                firstline     = `^\[(Trace|Debug|Info|Warn|Error|Fatal)\] `
+                max_wait_time = "3s"
+                max_lines     = 100
+              }
+            }
+
+            stage.match {
+              selector = `{namespace="media", container="app", app="bazarr"}`
+
+              stage.multiline {
+                // "2026-10-07 12:51:08,475 - logger (thread) : LEVEL (file:line) - msg"
+                firstline     = `^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} - `
+                max_wait_time = "3s"
+                max_lines     = 100
+              }
+            }
+
+            // infra_component for infra-layer pods, by namespace (the mapping lives in
+            // namespace_layers). Done here, not as a relabel rule: a new target label
+            // would change loki.source.kubernetes's target label sets and make it
+            // re-read retained history. platform and app pods match nothing, so they
+            // get no component.
+            stage.match {
+              selector = string.format(`{namespace=~"%s"}`, namespace_layers.default.storage)
+
+              stage.template {
+                source   = "infra_component"
+                template = "storage"
+              }
+            }
+
+            stage.match {
+              selector = string.format(`{namespace=~"%s"}`, namespace_layers.default.object_storage)
+
+              stage.template {
+                source   = "infra_component"
+                template = "object-storage"
+              }
+            }
+
+            stage.match {
+              selector = string.format(`{namespace=~"%s"}`, namespace_layers.default.local_storage)
+
+              stage.template {
+                source   = "infra_component"
+                template = "local-storage"
+              }
+            }
+
+            stage.match {
+              selector = string.format(`{namespace=~"%s"}`, namespace_layers.default.cluster_network)
+
+              stage.template {
+                source   = "infra_component"
+                template = "cluster-network"
+              }
+            }
+
             // Canonical schema: infra_host (= the pod's node name, already a
             // short lowercase hostname) and workload_id go in as structured
             // metadata, not labels. workload_id only exists as a temp label to
@@ -301,8 +447,9 @@ spec:
             // so drop it afterwards to keep it out of the stream labels.
             stage.structured_metadata {
               values = {
-                infra_host  = "node",
-                workload_id = "workload_id",
+                infra_host      = "node",
+                workload_id     = "workload_id",
+                infra_component = "",
               }
             }
 
@@ -333,6 +480,7 @@ spec:
                 `set(log.attributes["infra.layer"], log.attributes["infra_layer"]) where log.attributes["infra_layer"] != nil`,
                 `set(log.attributes["infra.host"], log.attributes["infra_host"]) where log.attributes["infra_host"] != nil`,
                 `set(log.attributes["workload.id"], log.attributes["workload_id"]) where log.attributes["workload_id"] != nil`,
+                `set(log.attributes["infra.component"], log.attributes["infra_component"]) where log.attributes["infra_component"] != nil`,
               ]
             }
 
@@ -457,6 +605,10 @@ spec:
                 `set(log.attributes["infra.layer"], "app")`,
                 string.format(`set(log.attributes["infra.layer"], "infra") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.infra),
                 string.format(`set(log.attributes["infra.layer"], "platform") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.platform),
+                string.format(`set(log.attributes["infra.component"], "storage") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.storage),
+                string.format(`set(log.attributes["infra.component"], "object-storage") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.object_storage),
+                string.format(`set(log.attributes["infra.component"], "local-storage") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.local_storage),
+                string.format(`set(log.attributes["infra.component"], "cluster-network") where IsMatch(resource.attributes["k8s.namespace.name"], "^(%s)$")`, namespace_layers.default.cluster_network),
                 `set(log.attributes["namespace"], resource.attributes["k8s.namespace.name"]) where resource.attributes["k8s.namespace.name"] != nil`,
                 `set(log.attributes["infra.host"], resource.attributes["k8s.node.name"]) where resource.attributes["k8s.node.name"] != nil`,
                 `set(log.attributes["workload.app"], resource.attributes["service.name"]) where resource.attributes["service.name"] != nil`,
@@ -512,6 +664,7 @@ spec:
               expressions = {
                 line_out     = "body",
                 infra_host   = "attributes.\"infra.host\"",
+                infra_component = "attributes.\"infra.component\"",
                 workload_id  = "attributes.\"workload.id\"",
                 log_source   = "attributes.log_source",
                 severity     = "severity",
@@ -524,6 +677,7 @@ spec:
             stage.structured_metadata {
               values = {
                 infra_host   = "",
+                infra_component = "",
                 workload_id  = "",
                 log_source   = "",
                 severity     = "",
@@ -577,6 +731,7 @@ spec:
                 // to a hostname above, so an unmapped IP never leaks as a host.
                 `set(log.attributes["foundation"], "homelab-k8s-001")`,
                 `set(log.attributes["infra.layer"], "infra")`,
+                `set(log.attributes["infra.component"], "kernel")`,
                 `set(log.attributes["infra.host"], log.attributes["node"]) where log.attributes["node"] != nil`,
               ]
             }
@@ -619,13 +774,15 @@ spec:
           loki.process "kernel" {
             stage.json {
               expressions = {
-                infra_host = "attributes.\"infra.host\"",
+                infra_host      = "attributes.\"infra.host\"",
+                infra_component = "attributes.\"infra.component\"",
               }
             }
 
             stage.structured_metadata {
               values = {
-                infra_host = "",
+                infra_host      = "",
+                infra_component = "",
               }
             }
 

@@ -1,0 +1,233 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# Request Tracker (ticketing for Project Envoy, development only) plus an MCP
+# server that lets Envoy and other MCP clients create and manage tickets.
+#
+# RT image: the community netsandbox/request-tracker (RT 6.0.3, SQLite, the
+# standalone rt-server). bestpractical/rt ships no production image, and this
+# one says it is for development and testing, which is the intended use here.
+# MCP server: crunchtools/mcp-request-tracker, which talks to RT's REST 1.0 API
+# with a username and password, so there is no OAuth or token plumbing. It has
+# no authentication of its own and is deliberately only a ClusterIP Service
+# (no route): reachable from inside the cluster at
+# http://rt-mcp.observability.svc.cluster.local:8013/mcp
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rt
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: rt
+  interval: 1h
+  values:
+    controllers:
+      app:
+        # SQLite on one PVC: exactly one writer.
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: rt-secret
+        initContainers:
+          # The image keeps RT's state (SQLite database, sessions, mason cache)
+          # in /opt/rt/var and declares VOLUME /opt/rt. Docker copies that into
+          # a fresh volume; Kubernetes does not, and mounting an empty PVC over
+          # /opt/rt would hide RT itself. So mount the PVC at /opt/rt/var only
+          # and seed it once from the image (ownership is preserved: mason_data
+          # and session_data belong to www-data).
+          seed:
+            image:
+              repository: ghcr.io/netsandbox/request-tracker
+              # renovate: datasource=docker depName=ghcr.io/netsandbox/request-tracker
+              tag: 6.0@sha256:122614f0b9dc84f1f87d29ffbf50b378f6eeac0988ff630a9ad36df55975d1d8
+            command:
+              - bash
+              - -c
+              - test -f /seed/rt6 || cp -a /opt/rt/var/. /seed/
+        containers:
+          app:
+            image:
+              repository: ghcr.io/netsandbox/request-tracker
+              # renovate: datasource=docker depName=ghcr.io/netsandbox/request-tracker
+              tag: 6.0@sha256:122614f0b9dc84f1f87d29ffbf50b378f6eeac0988ff630a9ad36df55975d1d8
+            # RT_WEB_PORT is both the port used to build links AND the port the
+            # standalone rt-server listens on. Links must be https (443, TLS
+            # ends at the gateway) while the pod listens on 80, hence the
+            # explicit --port (verified: without it rt-server listens on 443).
+            #
+            # --max-workers: rt-server runs Starlet, which forks 10 workers by
+            # default. Each RT worker holds about 250MB (compiled UI), so the
+            # default reaches ~1Gi and got the pod OOMKilled right after the
+            # first logins (2026-10-07). Two workers are plenty for a dev
+            # ticket tracker used by one person and one MCP server.
+            args:
+              - /opt/rt/sbin/rt-server
+              - --port
+              - "80"
+              - --max-workers
+              - "2"
+            env:
+              RT_WEB_DOMAIN: tickets.dmfrey.com
+              RT_WEB_PORT: "443"
+              # The default: mail is written to files, nothing is sent. No SMTP
+              # needed for development.
+              RT_MAIL_COMMAND: testfile
+              RT_ROOT_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: rt-secret
+                    key: RT_ROOT_PASSWORD
+            # Runs as root with a writable root filesystem on purpose: the
+            # image's entrypoint rewrites /opt/rt/etc/RT_SiteConfig.pm and runs
+            # rt-passwd at start.
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /NoAuth/Login.html
+                    port: 80
+                  periodSeconds: 5
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /NoAuth/Login.html
+                    port: 80
+                  periodSeconds: 20
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /NoAuth/Login.html
+                    port: 80
+                  periodSeconds: 10
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1536Mi
+
+      mcp:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: rt-secret
+        containers:
+          app:
+            image:
+              repository: quay.io/crunchtools/mcp-request-tracker
+              # renovate: datasource=docker depName=quay.io/crunchtools/mcp-request-tracker
+              tag: 0.4.0@sha256:246df5db8329436d3a79f6c741fed96fc76c807dfca353b2f805ddfa4d438686
+            args:
+              - --transport
+              - streamable-http
+              - --host
+              - 0.0.0.0
+              - --port
+              - "8013"
+            env:
+              # RT's Service, in-cluster (RT's REST 1.0 does not care that the
+              # Host header differs from RT_WEB_DOMAIN; verified).
+              RT_URL: http://rt-app.observability.svc.cluster.local
+              # A dedicated RT user (not root) with rights on the Envoy queue.
+              RT_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: rt-secret
+                    key: RT_ENVOY_MCP_USER
+              RT_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: rt-secret
+                    key: RT_ENVOY_MCP_PASS
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8013
+                  periodSeconds: 5
+                  failureThreshold: 12
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8013
+                  periodSeconds: 20
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8013
+                  periodSeconds: 10
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 20m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 2Gi
+        storageClass: ceph-block
+        advancedMounts:
+          app:
+            seed:
+              - path: /seed
+            app:
+              - path: /opt/rt/var
+
+    service:
+      app:
+        controller: app
+        ports:
+          http:
+            port: 80
+      mcp:
+        controller: mcp
+        ports:
+          http:
+            port: 8013
+
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+            url: "https://tickets.dmfrey.com/NoAuth/Login.html"
+        hostnames:
+          - tickets.dmfrey.com
+        parentRefs:
+          # Internal only, a single parent (never both gateways). Naming:
+          # "envoy-internal" is the Gateway that runs the Envoy *proxy*,
+          # unrelated to Project Envoy or this ticketing system. RT has its own
+          # login, so the UI needs no extra auth.
+          #
+          # https listener only (sectionName): RT's session cookie is Secure, so
+          # a login over plain http never sticks (the browser drops the cookie
+          # and bounces back to the login page). With the route off the http
+          # listener, http://tickets.dmfrey.com falls through to the cluster's
+          # catch-all https-redirect route (301).
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 80

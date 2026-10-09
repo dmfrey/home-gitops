@@ -10,11 +10,11 @@ _.file = ["{{config_root}}/onepassword.env"]
 postinstall = "lefthook install"
 
 [tools]
-"aqua:evilmartians/lefthook" = "2.1.17"
+"aqua:evilmartians/lefthook" = "2.2.1"
 "aqua:rhysd/actionlint" = "1.7.12"
 "aqua:zizmorcore/zizmor" = "1.30.1"
 "just" = "1.58.0"
-"uv" = "0.12.23"
+"uv" = "0.12.24"
 # flux-local is deprecated/sunsetted upstream in favor of flate (and
 # konflate) - our own .github/workflows/flate.yaml already uses flate in
 # CI, this pins the same tool for local `just kube apply-ks`/`delete-ks`
@@ -72,4 +72,4 @@ postinstall = "lefthook install"
 # silent-version-drift risk class as the other tools pinned in the
 # 2026-08-26 comparison above. onedr0p/home-ops pins the same thing for the
 # same reason.
-"node" = "26.10.0"
+"node" = "26.11.1"

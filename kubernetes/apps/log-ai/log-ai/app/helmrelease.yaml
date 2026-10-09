@@ -20,16 +20,36 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
           secret.reloader.stakater.com/reload: envoy-cnpg-app,envoy-rabbitmq-default-user
+        pod:
+          # Room for the @PreDestroy Drain snapshot on shutdown. Spring Boot's
+          # graceful shutdown phase defaults to 30s, so this stays above it.
+          terminationGracePeriodSeconds: 60
         containers:
           app:
             image:
               repository: ghcr.io/dmfrey/envoy
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
-              # Pinned to the commit-SHA tag of the first published build:
-              # release-please has not cut a vX.Y.Z release yet. Keep the backend
-              # and frontend on the same release; move both to the semver tag
-              # (vX.Y.Z@sha256:...) once the first release exists.
-              tag: 8c59a88d97fbfb481eced5eea6c42d5614b7d9dd@sha256:6781c4af670c79365c4f771863e96f158d63f58fa1b3a9f5d94c86e0714ead22
+              # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
+              # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
+              # first release exists. aec2c91: template_counts for a merged-away
+              # template id are redirected to the survivor via template_alias and
+              # the counts save is isolated like the templates save (envoy#41),
+              # on top of a1c2e0d: runtime template-convergence conflicts
+              # merge into the surviving row instead of aborting the whole flush
+              # (envoy#39), each template in a flush batch is isolated, the
+              # shutdown snapshot runs even if the flush throws, the shutdown
+              # order is fixed (envoy#38), and a full admin reset no longer wipes
+              # the knowledge base (envoy#31). Builds on 4f2d738: one-time dedupe of templates with
+              # duplicate (source_key, template_text) rows (re-run as 007 because
+              # bdf0414 created more after 006 ran), a fix so evicted Drain
+              # clusters are no longer recreated under new ids, a UNIQUE index on
+              # (source_key, md5(template_text)) (a plain index on the raw text
+              # failed on templates over ~2.7 KB, see home-gitops#5380), and
+              # total_count / exemplars that survive a restart. On top of bdf0414
+              # (structure-aware templating) and e7c2a55 (phase 3 AI client,
+              # knowledge ingestion, async embedding, assist tools, ordered
+              # graceful shutdown, Drain eviction metrics).
+              tag: aec2c91ac66ca4c8ad9735436206cbd19de00608@sha256:80fa12f01e9b639a85f22510d7f77d739a1c6f2dd4f12f91af87abc889f29672
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -101,6 +121,20 @@ spec:
                   secretKeyRef:
                     name: envoy-rabbitmq-default-user
                     key: password
+              # Phase 3 AI client: Ollama's OpenAI-compatible endpoint. The API
+              # key is present but explicitly empty: that is Spring AI's
+              # no-auth signal for a keyless server (unset is not the same).
+              SPRING_AI_OPENAI_BASE_URL: http://ollama.ai.svc.cluster.local:11434/v1
+              SPRING_AI_OPENAI_API_KEY: ""
+              # Non-deprecated names (Spring AI 2.0.1). The older ..._OPTIONS_MODEL
+              # names write a different key than Envoy's own application.yml
+              # default (spring.ai.openai.chat.model: qwen2.5:0.5b), so the
+              # override might not have won. Values unchanged.
+              SPRING_AI_OPENAI_EMBEDDING_MODEL: nomic-embed-text
+              # qwen3:8b confirmed by the tool-calling test on dmfrey/envoy#12
+              # (args 18/21 vs 12/21 for qwen2.5:7b-instruct, same tool accuracy,
+              # 3.4 s median latency; thinking arrives in a separate field).
+              SPRING_AI_OPENAI_CHAT_MODEL: qwen3:8b
             probes:
               # The first start runs the Liquibase migrations, so give startup
               # room (up to 150s) before liveness takes over.
@@ -134,9 +168,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 512Mi
-              limits:
                 memory: 1Gi
+              limits:
+                memory: 2Gi
 
       frontend:
         containers:
@@ -144,8 +178,10 @@ spec:
             image:
               repository: ghcr.io/dmfrey/envoy-frontend
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy-frontend versioning=semver
-              # Same build as the backend (see above).
-              tag: 8c59a88d97fbfb481eced5eea6c42d5614b7d9dd@sha256:96bb66241b3c173ca6ddfaefad1745a7c607abedb3f40721ad500e3c1e2ba70d
+              # The frontend image is only rebuilt when frontend files change, so it
+              # can lag the backend's commit: 4350f59 (knowledge admin UI) is
+              # still its latest build.
+              tag: 4350f590ae0546b4c01650d12fc4ae90e3aa6832@sha256:94021160944dc4820f44aca33da5d9b22df1d73a0114402b98e0818b929d8fa6
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
