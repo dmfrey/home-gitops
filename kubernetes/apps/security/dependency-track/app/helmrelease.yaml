@@ -47,8 +47,11 @@ spec:
                   secretKeyRef:
                     name: dependency-track-secret
                     key: DT_OIDC_CLIENT_ID
-              # SMTP relay is an in-cluster address, blocked by default SSRF guard
-              DT_NOTIFICATION_PUBLISHER_EMAIL_ALLOW_LOCAL_CONNECTIONS: "true"
+              # No allow-local-connections flag any more: 5.2.0 removed it and the
+              # API server refuses to start while it is set. The replacement,
+              # dt.outbound.allowed-destinations, defaults to "external,private",
+              # which already covers the in-cluster SMTP relay
+              # (smtp-relay.kube-system.svc.cluster.local:25).
               DT_OIDC_USERNAME_CLAIM: preferred_username
               DT_OIDC_TEAMS_CLAIM: groups
               DT_OIDC_TEAM_SYNCHRONIZATION: "true"
