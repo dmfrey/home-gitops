@@ -43,5 +43,23 @@ spec:
       name: kopiur-repository-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  # Every mover that touches this repository must run as ONE uid. kopia's
+  # filesystem backend writes blobs 0600 / dirs 0700 as the writing uid and
+  # kopiur passes no file-mode flag, so a second uid can never read what the
+  # first wrote - and fsGroup/supplementalGroups can't help, the group bits
+  # are empty. The only backup writer here is garage-system/garage (uid 1000,
+  # see its snapshotpolicy), but maintenance + bootstrap/discovery movers
+  # defaulted to the image uid 65532: each quick/full maintenance run
+  # re-wrote kopia.maintenance.f and fresh index/pack blobs as 65532 0600,
+  # then the next garage backup (1000) hung on them. Recurred 8x
+  # (09-30 .. 10-09), each time cleared by a manual chmod sweep.
+  moverDefaults:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
   maintenance:
     namespace: kopiur-system
+    mover:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
