@@ -31,7 +31,9 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. ffa0ca8: chat search_docs no longer exposes the
+              # first release exists. a700b99: chat search_docs drops the version filter,
+              # caps at 8 results and de-duplicates citations per document
+              # (envoy#62). On top of ffa0ca8: chat search_docs no longer exposes the
               # doc_type filter (envoy#60). On top of d5c0239: case-insensitive product/version doc
               # filters so chat citations resolve, search_docs INFO logging
               # (envoy#56). On top of a45609a: chat title-generation call no longer
@@ -60,7 +62,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: ffa0ca8082ce737dc1453cadc12863b053f71058@sha256:598258124e8d49785c6714fc5e599562c7c5a9a16608fe78a32d475e7a729a70
+              tag: a700b99e0668377665e7c4493137b1f47a669951@sha256:e1284e7fb8f92d32799e174ea9f804c5486d845a17db635044048878e5f8f835
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
