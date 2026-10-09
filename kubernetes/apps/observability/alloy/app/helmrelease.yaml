@@ -33,10 +33,22 @@ spec:
           protocol: TCP
         # The UniFi syslog UDP listener (5514) is deliberately NOT listed here.
         # A containerPort changes the pod template and rolls every Alloy pod,
-        # and Alloy's tail positions live in the container's ephemeral /tmp, so
-        # each restart re-reads and re-sends all retained container logs. The
-        # alloy-unifi-syslog Service targets the numeric port, so it works
-        # without a declared containerPort.
+        # which briefly interrupts the receivers. (Before the storage volume
+        # below existed it also re-read and re-sent all retained container
+        # logs, because the tail positions were lost.) The alloy-unifi-syslog
+        # Service targets the numeric port, so it works without a declared
+        # containerPort.
+      # Keep the storage path (--storage.path=/tmp/alloy) on the node. It holds
+      # the loki.source.kubernetes read positions and the remote_write WAL;
+      # without a volume they live in the container's own filesystem and every
+      # pod replacement lost them, so Alloy re-read and re-sent all retained
+      # container logs (a multi-million-line burst into Loki, and duplicate
+      # records into Envoy). A DaemonSet pod always lands on the same node, so
+      # its replacement finds its predecessor's files and resumes.
+      mounts:
+        extra:
+          - name: storage
+            mountPath: /tmp/alloy
       configMap:
         create: true
         content: |-
@@ -1120,6 +1132,12 @@ spec:
 
     controller:
       type: daemonset
+      volumes:
+        extra:
+          - name: storage
+            hostPath:
+              path: /var/lib/alloy
+              type: DirectoryOrCreate
 
     serviceMonitor:
       enabled: true
