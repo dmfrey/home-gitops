@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dependencytrack/apiserver
-              tag: 5.1.2@sha256:967213ebdca3f9ccb5a7ff9d85b7a0c7bfba4ca5a52467a940c072cc3123d14c
+              tag: 5.2.0@sha256:7411c390182e6e42156ccf2ab033aa9120a1f37b7ce59e8c2da0d77ec23c0a5f
               pullPolicy: IfNotPresent
             env:
               # v5 requires UTC, see https://dependencytrack.github.io/docs/next/guides/administration/migrating-from-v4/
@@ -47,8 +47,11 @@ spec:
                   secretKeyRef:
                     name: dependency-track-secret
                     key: DT_OIDC_CLIENT_ID
-              # SMTP relay is an in-cluster address, blocked by default SSRF guard
-              DT_NOTIFICATION_PUBLISHER_EMAIL_ALLOW_LOCAL_CONNECTIONS: "true"
+              # No allow-local-connections flag any more: 5.2.0 removed it and the
+              # API server refuses to start while it is set. The replacement,
+              # dt.outbound.allowed-destinations, defaults to "external,private",
+              # which already covers the in-cluster SMTP relay
+              # (smtp-relay.kube-system.svc.cluster.local:25).
               DT_OIDC_USERNAME_CLAIM: preferred_username
               DT_OIDC_TEAMS_CLAIM: groups
               DT_OIDC_TEAM_SYNCHRONIZATION: "true"
