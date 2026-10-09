@@ -131,7 +131,10 @@ spec:
               # default (spring.ai.openai.chat.model: qwen2.5:0.5b), so the
               # override might not have won. Values unchanged.
               SPRING_AI_OPENAI_EMBEDDING_MODEL: nomic-embed-text
-              SPRING_AI_OPENAI_CHAT_MODEL: qwen2.5:7b-instruct
+              # qwen3:8b confirmed by the tool-calling test on dmfrey/envoy#12
+              # (args 18/21 vs 12/21 for qwen2.5:7b-instruct, same tool accuracy,
+              # 3.4 s median latency; thinking arrives in a separate field).
+              SPRING_AI_OPENAI_CHAT_MODEL: qwen3:8b
             probes:
               # The first start runs the Liquibase migrations, so give startup
               # room (up to 150s) before liveness takes over.
