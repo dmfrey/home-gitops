@@ -31,7 +31,9 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. a45609a: chat title-generation call no longer
+              # first release exists. d5c0239: case-insensitive product/version doc
+              # filters so chat citations resolve, search_docs INFO logging
+              # (envoy#56). On top of a45609a: chat title-generation call no longer
               # trips the search_docs ToolContext requirement, chat prompt v2
               # (envoy#56); frontend 63b5312: real URLs + list/detail layout
               # (envoy#47). On top of cb7c868: chat over the knowledge base (envoy#13,
@@ -57,7 +59,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: a45609a2149b4ea9c5ef56fe10a05a91da02db09@sha256:39a525406ae6d4aad8414e21da0700a2edf358b9239987db5c1fb3d6d7f2387f
+              tag: d5c023951e3f053c4830fe05992a44aecd978622@sha256:9af8354d9126ae20785d99509934c9f03ae3df33c33b11a854fc170b9f7488fd
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
