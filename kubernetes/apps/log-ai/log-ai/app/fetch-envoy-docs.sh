@@ -41,17 +41,20 @@ if command -v kubectl >/dev/null 2>&1; then
       | sed -E 's/@sha256.*//; s/.*://' || true)"
     [[ -n "$tag" ]] && CNPG_REF="v${tag#v}"
   fi
-  image_tag() {  # image_tag <label selector>: tag of the first matching workload's first container
+  # image_tag <label selector> <image regex>: tag of the first matching workload whose first
+  # container image matches the regex. The regex matters: the Loki chart's gateway Deployment
+  # carries the same app.kubernetes.io/name label but runs nginx.
+  image_tag() {
     kubectl get deploy,statefulset,daemonset -A -l "$1" \
-      -o jsonpath='{.items[0].spec.template.spec.containers[0].image}' 2>/dev/null \
-      | sed -E 's/@sha256.*//; s/.*://' || true
+      -o jsonpath='{range .items[*]}{.spec.template.spec.containers[0].image}{"\n"}{end}' 2>/dev/null \
+      | grep -E "$2" | head -1 | sed -E 's/@sha256.*//; s/.*://' || true
   }
   if [[ -z "$LOKI_REF" ]]; then
-    tag="$(image_tag app.kubernetes.io/name=loki)"
+    tag="$(image_tag app.kubernetes.io/name=loki '/grafana/loki:')"
     [[ -n "$tag" ]] && LOKI_REF="v${tag#v}"
   fi
   if [[ -z "$ALLOY_REF" ]]; then
-    tag="$(image_tag app.kubernetes.io/name=alloy)"
+    tag="$(image_tag app.kubernetes.io/name=alloy '/grafana/alloy:')"
     [[ -n "$tag" ]] && ALLOY_REF="v${tag#v}"
   fi
   if [[ -z "$K8S_VERSION" ]]; then
