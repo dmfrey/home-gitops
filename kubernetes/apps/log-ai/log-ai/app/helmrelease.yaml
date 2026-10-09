@@ -31,7 +31,9 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. f7a0d14: a converged-at-runtime loser cluster is
+              # first release exists. cb7c868: chat over the knowledge base (envoy#13,
+              # new chat_sessions/chat_messages changeset) and the tree.clusters gauge
+              # registers once per source (envoy#21), on top of f7a0d14: a converged-at-runtime loser cluster is
               # retired from the Drain tree/aggregator right after its merge instead
               # of being re-merged on every 60s flush (envoy#43/#46), on top of
               # aec2c91: template_counts for a merged-away
@@ -52,7 +54,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: f7a0d14990787d0dad8dd908a0cf768ca217b732@sha256:f19bbe98ad93af85c75bc52649d9f25a4ea1d1a66507d63482b51a2bf16c237e
+              tag: cb7c868445926d5f22d69ed62da31813205926e8@sha256:5c92809596cf9f5d752c5bd758d4f39b70abf39f9e833d86736aac5842ad3cc6
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
@@ -184,7 +186,7 @@ spec:
               # The frontend image is only rebuilt when frontend files change, so it
               # can lag the backend's commit: 4350f59 (knowledge admin UI) is
               # still its latest build.
-              tag: 4350f590ae0546b4c01650d12fc4ae90e3aa6832@sha256:94021160944dc4820f44aca33da5d9b22df1d73a0114402b98e0818b929d8fa6
+              tag: cb7c868445926d5f22d69ed62da31813205926e8@sha256:28b7d987a1e924ee180ba18a5ae583e43152b5e9d3737e0c6e513a00de370f47
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
