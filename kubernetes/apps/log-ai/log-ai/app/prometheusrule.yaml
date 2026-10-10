@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+# The load test (dmfrey/envoy#11) showed the ingest queue depth, not CPU or
+# memory, is the saturation signal for a single Envoy instance. Capacity is
+# 10,000; a steady 50x replay sat at roughly 3k-5.8k. job="envoy" is what the
+# envoy-backend ServiceMonitor produces.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: envoy-rules
+spec:
+  groups:
+    - name: envoy.rules
+      rules:
+        - alert: EnvoyIngestQueueHigh
+          expr: |
+            max(envoy_reducer_ingest_queue_depth{job="envoy"}) > 5000
+          # The window keeps the short backlog after a pod restart (drains in
+          # a minute or two) from firing.
+          for: 10m
+          annotations:
+            summary: >-
+              Envoy's ingest queue has held {{ $value | humanize }} of 10,000 entries for 10 minutes; one instance is nearing saturation
+          labels:
+            severity: warning
+        - alert: EnvoyIngestRejecting
+          expr: |
+            sum(rate(http_server_requests_seconds_count{job="envoy", status="429"}[5m])) > 0
+          for: 5m
+          annotations:
+            summary: >-
+              Envoy is rejecting log batches with HTTP 429 because its ingest queue is full; Alloy retries from memory and drops logs after about 15 minutes
+          labels:
+            severity: critical
+        - alert: EnvoyMetricsAbsent
+          expr: |
+            absent(envoy_reducer_ingest_queue_depth{job="envoy"})
+          for: 10m
+          annotations:
+            summary: >-
+              Envoy's ingest queue metric has been missing for 10 minutes; the backend is down or the ServiceMonitor scrape is failing
+          labels:
+            severity: warning
