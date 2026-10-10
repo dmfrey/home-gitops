@@ -7,5 +7,6 @@ resources:
   - ./httproute.yaml
   - ./httproutefilter.yaml
   - ./ocirepository.yaml
+  - ./prometheusrule.yaml
   - ./service-frontend.yaml
   - ./servicemonitor.yaml
