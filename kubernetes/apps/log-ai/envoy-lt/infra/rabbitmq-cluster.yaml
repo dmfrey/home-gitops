@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/rabbitmq.com/rabbitmqcluster_v1beta1.json
+# Broker for the scratch Envoy's anomaly events. Same image and sizing as
+# log-ai/envoy-mq; no persistence needs beyond the throwaway PVC.
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: envoy-lt-rabbitmq
+spec:
+  replicas: 1
+  image: rabbitmq:4.3-management@sha256:8dd6e3570ddaa2ef82a6c3a8950e79c1f73893adfbdddbc374fc1f1ac8a0f5dd
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  persistence:
+    storageClassName: ceph-block
+    storage: 1Gi
