@@ -9,6 +9,20 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      // 2026-10-10: Renovate's mise manager maps the "1password-cli" entry in
+      // .mise.toml to the github-tags package 1password/cli, but 1Password's
+      // CLI is not distributed from a public GitHub repo, so every run logged
+      // "Could not resolve to a Repository with the name '1password/cli'" and
+      // put a permanent "Package lookup failures" warning on the dashboard
+      // (#2149). The tool is pinned on purpose to the vfox backend (see the
+      // comment in .mise.toml), so there is nothing for Renovate to update;
+      // bump "1password-cli" by hand.
+      description: "Skip the 1password-cli mise entry: its mapped GitHub repo does not exist",
+      matchManagers: ["mise"],
+      matchPackageNames: ["1password/cli"],
+      enabled: false,
+    },
+    {
       // Originally just blocked 2.3.2 (linuxserver ls7 build missing
       // libmspack0). 2026-09-02: broadened to hold the whole line at 2.3.1 -
       // OrcaSlicer's Bambu network plugin regressed starting in 2.3.2 (opens
