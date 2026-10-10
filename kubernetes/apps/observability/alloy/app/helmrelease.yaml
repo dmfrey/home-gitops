@@ -192,9 +192,14 @@ spec:
               }
             }
 
+            // send_batch_max_size caps the batch: with only send_batch_size a burst
+            // can emit larger batches, and when Envoy's queue fills mid-batch it
+            // answers 429 and the retried batch double-counts the part it already
+            // queued.
             otelcol.processor.batch "envoy" {
-              send_batch_size = 1000
-              timeout         = "5s"
+              send_batch_size     = 1000
+              send_batch_max_size = 1000
+              timeout             = "5s"
 
               output {
                 logs = [otelcol.exporter.otlphttp.envoy.input]
@@ -226,6 +231,40 @@ spec:
 
           envoy_export "default" {
             endpoint = "http://envoy.log-ai.svc.cluster.local:8080"
+          }
+
+          // Secret redaction (Envoy DECISIONS D12): credential-shaped values are
+          // replaced before a record reaches either Loki or Envoy. Authorization
+          // headers first (keeps the scheme, drops the credential), then generic
+          // key=value / key: value / "key":"value" pairs for common secret names.
+          // Only the value is replaced; the key stays so the line still reads. Used
+          // by the OTLP, kernel, UniFi and Talos pipelines; pod logs get the same
+          // patterns as stage.replace in loki.process "pods" (they fan out to both
+          // destinations from there). Keep the two copies in sync.
+          declare "redact_logs" {
+            argument "output" {
+              optional = false
+            }
+
+            export "input" {
+              value = otelcol.processor.transform.redact.input
+            }
+
+            otelcol.processor.transform "redact" {
+              error_mode = "ignore"
+
+              log_statements {
+                context = "log"
+                statements = [
+                  `replace_pattern(log.body, "(?i)(authorization[\"']?\\s*[=:]\\s*[\"']?(?:(?:bearer|basic|token)\\s+)?)([^\\s\"',;&}]+)", "$1[REDACTED]") where IsString(log.body)`,
+                  `replace_pattern(log.body, "(?i)((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|private[_-]?key)[\"']?\\s*[=:]\\s*[\"']?)([^\\s\"',;&}]+)", "$1[REDACTED]") where IsString(log.body)`,
+                ]
+              }
+
+              output {
+                logs = [argument.output.value]
+              }
+            }
           }
 
           // Discover Kubernetes pods on this node only. Without the selector
@@ -409,6 +448,20 @@ spec:
                 max_wait_time = "3s"
                 max_lines     = 100
               }
+            }
+
+            // Secret redaction (Envoy DECISIONS D12), same patterns as redact_logs
+            // above. This stage covers both Loki and the Envoy fan-out, which both
+            // read this block's output. Only the credential value (the capture
+            // group) is replaced.
+            stage.replace {
+              expression = "(?i)authorization[\"']?\\s*[=:]\\s*[\"']?(?:(?:bearer|basic|token)\\s+)?([^\\s\"',;&}]+)"
+              replace    = "[REDACTED]"
+            }
+
+            stage.replace {
+              expression = "(?i)(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|private[_-]?key)[\"']?\\s*[=:]\\s*[\"']?([^\\s\"',;&}]+)"
+              replace    = "[REDACTED]"
             }
 
             // infra_component for infra-layer pods, by namespace (the mapping lives in
@@ -636,8 +689,12 @@ spec:
             }
 
             output {
-              logs = [otelcol.processor.attributes.otlp_logs.input]
+              logs = [redact_logs.otlp_logs.input]
             }
+          }
+
+          redact_logs "otlp_logs" {
+            output = otelcol.processor.attributes.otlp_logs.input
           }
 
           // job/infra.layer/foundation/namespace and the sender's service.name become
@@ -749,8 +806,12 @@ spec:
             }
 
             output {
-              logs = [otelcol.processor.attributes.kernel.input]
+              logs = [redact_logs.kernel.input]
             }
+          }
+
+          redact_logs "kernel" {
+            output = otelcol.processor.attributes.kernel.input
           }
 
           // Tag job="kernel" (matches resources/lokirule.yaml's
@@ -873,8 +934,12 @@ spec:
             }
 
             output {
-              logs = [otelcol.processor.attributes.unifi.input]
+              logs = [redact_logs.unifi.input]
             }
+          }
+
+          redact_logs "unifi" {
+            output = otelcol.processor.attributes.unifi.input
           }
 
           // job/infra.layer/foundation become Loki labels; everything else goes to
@@ -1067,8 +1132,12 @@ spec:
             }
 
             output {
-              logs = [otelcol.processor.attributes.talos.input]
+              logs = [redact_logs.talos.input]
             }
+          }
+
+          redact_logs "talos" {
+            output = otelcol.processor.attributes.talos.input
           }
 
           // job/infra.layer/foundation/node become Loki labels; the rest goes to
