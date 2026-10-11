@@ -81,13 +81,16 @@ spec:
             # Runs as root with a writable root filesystem on purpose: the
             # image's entrypoint rewrites /opt/rt/etc/RT_SiteConfig.pm and runs
             # rt-passwd at start.
+            # Probe a static file: every hit on /NoAuth/Login.html creates RT
+            # session files (several per request), which is what filled the
+            # PVC's inodes on 2026-10-11. Static files create none.
             probes:
               startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /NoAuth/Login.html
+                    path: /static/images/favicon.png
                     port: 80
                   periodSeconds: 5
                   failureThreshold: 30
@@ -96,7 +99,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /NoAuth/Login.html
+                    path: /static/images/favicon.png
                     port: 80
                   periodSeconds: 20
                   failureThreshold: 3
@@ -105,7 +108,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /NoAuth/Login.html
+                    path: /static/images/favicon.png
                     port: 80
                   periodSeconds: 10
                   failureThreshold: 3
@@ -200,7 +203,7 @@ spec:
       # pod restart.
       sessions:
         type: emptyDir
-        sizeLimit: 256Mi
+        sizeLimit: 1Gi
         advancedMounts:
           app:
             app:
