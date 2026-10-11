@@ -192,6 +192,19 @@ spec:
               - path: /seed
             app:
               - path: /opt/rt/var
+      # RT writes one session file per unauthenticated request, probes
+      # included (~9/min). On the 2Gi PVC (131k inodes) that exhausted the
+      # inodes after ~4 days and SQLite could no longer create its journal
+      # ("unable to open database file", 2026-10-11). Sessions are
+      # throwaway, so keep them off the PVC; users sign in again after a
+      # pod restart.
+      sessions:
+        type: emptyDir
+        sizeLimit: 256Mi
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/rt/var/session_data
 
     service:
       app:
