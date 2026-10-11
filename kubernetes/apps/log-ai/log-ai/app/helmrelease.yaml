@@ -9,6 +9,10 @@ spec:
     kind: OCIRepository
     name: envoy
   interval: 1h
+  # Helm's default 5m action timeout rolled the upgrade back while the
+  # templating-009 migration was still running (the backend only turns Ready
+  # after Liquibase finishes). Keep this above the startup probe window.
+  timeout: 20m
   values:
     controllers:
       backend:
