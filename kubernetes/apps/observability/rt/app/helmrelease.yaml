@@ -125,7 +125,7 @@ spec:
             image:
               repository: quay.io/crunchtools/mcp-request-tracker
               # renovate: datasource=docker depName=quay.io/crunchtools/mcp-request-tracker
-              tag: 0.4.0@sha256:246df5db8329436d3a79f6c741fed96fc76c807dfca353b2f805ddfa4d438686
+              tag: 0.5.0@sha256:80557fad742c9f09fbb6125d4f472fb60da14e7f031153fa06c2077984ca44bf
             args:
               - --transport
               - streamable-http
