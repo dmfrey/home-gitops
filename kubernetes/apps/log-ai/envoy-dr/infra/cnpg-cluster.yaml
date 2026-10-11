@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+# Scratch restore of the production envoy-cnpg backup taken just before the
+# failed 7ab256e deploy (Backup envoy-cnpg-pre-7ab256e, barman id
+# 20261011T163200). Same image and sizing as production. Read-only against
+# the production archive: the recovery source is an externalCluster and there
+# is no spec.plugins entry, so this cluster archives no WAL and writes nothing
+# into the production server's path in the bucket.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: envoy-dr-cnpg
+spec:
+  instances: 1
+  enablePDB: false
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17-1.1.1@sha256:bb7eb8442f76b1e74911f28585019a77022911f8cfa2ddcfb166ea6af85abd09
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+
+  bootstrap:
+    recovery:
+      source: origin
+      database: envoy
+      owner: envoy
+      recoveryTarget:
+        backupID: "20261011T163200"
+        targetImmediate: true
+
+  externalClusters:
+    - name: origin
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: envoy
+          serverName: envoy-cnpg
+
+  monitoring:
+    enablePodMonitor: false
+
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 128MB
+
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: restart
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+  storage:
+    storageClass: ceph-block
+    size: 10Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi
