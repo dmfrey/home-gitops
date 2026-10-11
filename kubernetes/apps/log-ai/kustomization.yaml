@@ -8,5 +8,4 @@ components:
   - ../../components/common
 resources:
   - ./namespace.yaml
-  - ./envoy-dr/ks.yaml
   - ./log-ai/ks.yaml
