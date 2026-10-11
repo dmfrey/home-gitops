@@ -35,13 +35,7 @@ spec:
               # renovate: datasource=docker depName=ghcr.io/dmfrey/envoy versioning=semver
               # Pinned to a commit-SHA tag: release-please has not cut a vX.Y.Z
               # release yet. Move to the semver tag (vX.Y.Z@sha256:...) once the
-              # first release exists. 7ab256e: one-time Liquibase migration
-              # (templating-009) deletes leftover rows of merged-away templates and
-              # repoints template_alias/counts/history to the survivor, and the
-              # runtime merge retires the loser row too (envoy#43/#90/#91).
-              # Never 820f989 (#90 without the template_alias FK fix: fails on
-              # startup, and would poison the Liquibase checksum for later images).
-              # On top of 0f34a4d: UI refactor - knowledge search, template
+              # first release exists. 0f34a4d: UI refactor - knowledge search, template
               # detail chart, anomalies inbox, tool-call audit view (envoy#48-51,
               # new tool_calls table). On top of a700b99: chat search_docs drops the version filter,
               # caps at 8 results and de-duplicates citations per document
@@ -74,7 +68,7 @@ spec:
               # (structure-aware templating) and e7c2a55 (phase 3 AI client,
               # knowledge ingestion, async embedding, assist tools, ordered
               # graceful shutdown, Drain eviction metrics).
-              tag: 7ab256ebe87acb9aca6bef426eec5f5827eb0d12@sha256:542ac0f5c08a34f748d8b552d181f1b7557fb4a092fd02153378261021f5e22e
+              tag: 0f34a4d8f59029cb41366f4b4491b503f5b2cc74@sha256:049dd4df9551cf9cc1d451635cf2c50b2728927769d6de68272c50f65a334fa6
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: homelab
