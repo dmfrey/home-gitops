@@ -158,7 +158,10 @@ spec:
               SPRING_AI_OPENAI_CHAT_MODEL: qwen3:8b
             probes:
               # The first start runs the Liquibase migrations, so give startup
-              # room (up to 150s) before liveness takes over.
+              # room (up to 600s) before liveness takes over. 150s was too
+              # short for templating-009 (retires ~20k aliased template rows
+              # in one transaction): the probe killed the pod mid-migration,
+              # which rolled back and retried forever (2026-10-11).
               startup:
                 enabled: true
                 custom: true
@@ -167,7 +170,7 @@ spec:
                     path: /actuator/health/readiness
                     port: 8080
                   periodSeconds: 5
-                  failureThreshold: 30
+                  failureThreshold: 120
               liveness:
                 enabled: true
                 custom: true
