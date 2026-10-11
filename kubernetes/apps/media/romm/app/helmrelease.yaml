@@ -9,6 +9,11 @@ spec:
     kind: OCIRepository
     name: romm
   interval: 1h
+  # RomM 5.4.0's first start rewrites the roms table in batches (upstream says
+  # 15-20 min on a large library and not to restart meanwhile). Helm's 5m
+  # default would roll the upgrade back mid-migration, so keep this above the
+  # startup window below.
+  timeout: 40m
   values:
     controllers:
       romm:
@@ -99,7 +104,10 @@ spec:
               startup:
                 enabled: true
                 spec:
-                  failureThreshold: 30
+                  # 30 min: covers the 5.4.0 migrations (15-20 min upstream);
+                  # liveness only starts once this passes, so a slow migration
+                  # is not killed and restarted.
+                  failureThreshold: 180
                   periodSeconds: 10
             resources:
               requests:
