@@ -223,10 +223,12 @@ spec:
 
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
-            url: "https://tickets.dmfrey.com/NoAuth/Login.html"
+        # No gatus endpoint annotation: this route is on envoy-internal, where
+        # gatus-sidecar's default is a public-DNS leak check (resolver 1.1.1.1,
+        # expects an empty body). The old url/[STATUS] override made it an
+        # endpoint that failed on every check since 2026-10-07 ("lookup udp///
+        # tickets.dmfrey.com/NoAuth/Login.html: unknown port"). Availability is
+        # covered by the auto-discovered rt-app Service TCP check.
         hostnames:
           - tickets.dmfrey.com
         parentRefs:

@@ -126,10 +126,10 @@ spec:
             namespace: network
             sectionName: https
       outpost:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            path: /outpost.goauthentik.io/ping
-            conditions: ["[STATUS] == 204"]
+        # No gatus endpoint annotation: this route is on envoy-internal, where
+        # gatus-sidecar's default is a public-DNS leak check (resolver 1.1.1.1,
+        # expects an empty body). A path / [STATUS] condition turns it into a
+        # hybrid that can never pass (status is always 0).
         hostnames:
           - opencode.dmfrey.com
         parentRefs:
