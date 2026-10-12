@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/servicemonitor_v1.json
+# Scrapes staging's backend. The job label is rewritten to envoy-staging:
+# production's envoy-rules select job="envoy", and EnvoyMetricsAbsent uses
+# absent(), so a second job="envoy" would hide a real production outage.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: envoy-backend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/service: envoy
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 30s
+      relabelings:
+        - action: replace
+          targetLabel: job
+          replacement: envoy-staging

@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/httproutefilter_v1alpha1.json
+# Answers 404 at the gateway for paths that must never reach the backend or the
+# frontend through the UI hostname. Needed because the frontend's nginx has an
+# SPA fallback (try_files ... /index.html), which would otherwise answer
+# /v1/logs and /actuator/* with index.html and a 200.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: envoy-not-found
+spec:
+  directResponse:
+    statusCode: 404
+    contentType: text/plain
+    body:
+      type: Inline
+      inline: not found

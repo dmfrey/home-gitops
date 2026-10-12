@@ -1,0 +1,73 @@
+---
+# Envoy staging (home-gitops#5475): a second, independent Envoy whose database
+# is restored from the production envoy-cnpg backup, so a build can be tried
+# against real data without touching production. It lives in its own namespace
+# so Service/Secret names can't collide with log-ai, and Alloy drops
+# log-ai-staging from the Envoy fan-out (observability/alloy) so its logs never
+# feed production Envoy. No log ingest, no Alloy routing, no alert rules.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-staging-db
+spec:
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: datastore
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: envoy-staging-cnpg
+      namespace: log-ai-staging
+  interval: 1h
+  path: ./kubernetes/apps/log-ai-staging/envoy-staging/db
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: log-ai-staging
+  wait: false
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-staging-mq
+spec:
+  dependsOn:
+    - name: rabbitmq-cluster-operator
+      namespace: datastore
+  healthChecks:
+    - apiVersion: rabbitmq.com/v1beta1
+      kind: RabbitmqCluster
+      name: envoy-staging-rabbitmq
+      namespace: log-ai-staging
+  interval: 1h
+  path: ./kubernetes/apps/log-ai-staging/envoy-staging/mq
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: log-ai-staging
+  wait: false
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-staging
+spec:
+  dependsOn:
+    - name: envoy-staging-db
+    - name: envoy-staging-mq
+  interval: 1h
+  path: ./kubernetes/apps/log-ai-staging/envoy-staging/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: log-ai-staging
+  wait: false
