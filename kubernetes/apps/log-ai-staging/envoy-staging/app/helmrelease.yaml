@@ -37,12 +37,12 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/envoy
-              # Staging, step 1: production's exact build (9083e54), so a bad
-              # bring-up can only be the restore or these manifests. Step 2
-              # (home-gitops#5475) moves to 30dc658ee48b130ae6f652b0051c646e73be93c5@sha256:44948697df696a2749db401a2e4b196d6b3f149bfc5d764095661e67aca84154
-              # (no new migrations between the two; going back is safe).
+              # Staging, step 2 (home-gitops#5475): the latest main build, 30dc658
+              # (backend main as of dmfrey/envoy#126). Step 1 was production's
+              # exact build, 9083e54@sha256:b1a95ee1e7691d28102265196e17b11e0523e4dcf3c9d413941039254079c1b4,
+              # so going back is a plain image bump (no migrations between the two).
               # Deliberately no renovate comment: staging is bumped by hand.
-              tag: 9083e54eb17dcf20c7b8efb755184f3ac75ab728@sha256:b1a95ee1e7691d28102265196e17b11e0523e4dcf3c9d413941039254079c1b4
+              tag: 30dc658ee48b130ae6f652b0051c646e73be93c5@sha256:44948697df696a2749db401a2e4b196d6b3f149bfc5d764095661e67aca84154
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: staging
@@ -173,8 +173,9 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/envoy-frontend
-              # Production's frontend build; step 2 moves to fa557f3cb299ae2ecdbe19796f38a89e4d9410ce@sha256:979d7e115f7ba3ce00bbf07ee4e2c61ecfd9fa6ebedd773a32d2722a00103af2.
-              tag: 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005
+              # Step 2: fa557f3 (frontend main as of dmfrey/envoy#110). Step 1 /
+              # production: 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005.
+              tag: fa557f3cb299ae2ecdbe19796f38a89e4d9410ce@sha256:979d7e115f7ba3ce00bbf07ee4e2c61ecfd9fa6ebedd773a32d2722a00103af2
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
