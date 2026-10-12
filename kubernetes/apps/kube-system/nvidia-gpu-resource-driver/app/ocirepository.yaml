@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.5.0
-    digest: sha256:47e43e3fbcaf525accef5b5ad14d87e80e19ef1549839495dcb0eabd06ff3bbe
+    tag: 0.5.1
+    digest: sha256:43a177ebd628565fff5c78a2e489e455161cbfd3e3ecdd3e80e50318c7d40ff1
   url: oci://registry.k8s.io/dra-driver-nvidia/charts/dra-driver-nvidia-gpu
