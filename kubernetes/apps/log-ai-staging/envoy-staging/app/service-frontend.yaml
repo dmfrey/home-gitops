@@ -6,6 +6,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: envoy-frontend
+  # Same reason as the backend Service in helmrelease.yaml: production has a
+  # Service of this name and gatus-sidecar rejects duplicate endpoint names.
+  annotations:
+    gatus.home-operations.com/enabled: "false"
 spec:
   type: ClusterIP
   selector:
