@@ -209,6 +209,11 @@ spec:
     service:
       backend:
         controller: backend
+        # Opt out of gatus-sidecar's --auto-service: it names an endpoint after
+        # the Service, and production has Services called envoy and
+        # envoy-frontend too (duplicate endpoint, gatus crash-loops).
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         ports:
           http:
             port: 8080
