@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+# Staging copy of the production Envoy database, restored from production's
+# barman archive (serverName envoy-cnpg).
+#
+# NEVER writes into production's archive: there is no spec.plugins entry, so
+# this cluster archives no WAL and takes no backups. The cluster is named
+# envoy-staging-cnpg (not envoy-cnpg) on purpose: if archiving is ever added,
+# its default serverName is the cluster name, which then cannot collide with
+# production's path. Do not add a ScheduledBackup or a plugins entry here.
+#
+# No recoveryTarget: CNPG restores the newest base backup in the archive and
+# replays WAL to the end, so a re-restore picks up whatever production has
+# then. First restore used the Backup envoy-cnpg-pre-staging taken on
+# 2026-10-12.
+#
+# RE-RESTORE (repeatable, nothing to edit):
+#   1. Optionally take a fresh production backup first:
+#        kubectl -n log-ai apply -f - <<EOY
+#        apiVersion: postgresql.cnpg.io/v1
+#        kind: Backup
+#        metadata: {name: envoy-cnpg-pre-restore-<date>}
+#        spec: {cluster: {name: envoy-cnpg}, method: plugin,
+#               pluginConfiguration: {name: barman-cloud.cloudnative-pg.io}}
+#        EOY
+#   2. Scale staging Envoy down:
+#        kubectl -n log-ai-staging scale deploy/envoy --replicas=0
+#   3. Delete the cluster and its volumes (envoy-staging-cnpg-1 and
+#      envoy-staging-cnpg-1-wal PVCs; they are Ceph block volumes and
+#      reclaim-Delete, so this destroys the staging data):
+#        kubectl -n log-ai-staging delete cluster envoy-staging-cnpg
+#        kubectl -n log-ai-staging delete pvc -l cnpg.io/cluster=envoy-staging-cnpg
+#   4. Let Flux recreate it from a fresh restore:
+#        flux reconcile kustomization envoy-staging-db -n log-ai-staging
+#      then scale Envoy back up (or reconcile the HelmRelease).
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: envoy-staging-cnpg
+spec:
+  instances: 1
+  enablePDB: false
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17-1.1.1@sha256:bb7eb8442f76b1e74911f28585019a77022911f8cfa2ddcfb166ea6af85abd09
+
+  managed:
+    services:
+      disabledDefaultServices:
+        - ro
+
+  bootstrap:
+    recovery:
+      source: origin
+      database: envoy
+      owner: envoy
+
+  externalClusters:
+    - name: origin
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: envoy-prod-archive
+          serverName: envoy-cnpg
+
+  monitoring:
+    enablePodMonitor: false
+
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 128MB
+
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: restart
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+  storage:
+    storageClass: ceph-block
+    size: 10Gi
+
+  walStorage:
+    storageClass: ceph-block
+    size: 5Gi

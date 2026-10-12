@@ -128,9 +128,9 @@ spec:
           // the pipelines carry them as log-record attributes, so groupbyattrs
           // regroups the records into one Resource per distinct set (a plain
           // resource set would mislabel records from different hosts that share a
-          // batch). The only exclusion is the log-ai namespace: Envoy's own logs
-          // (and its database and broker) must not feed back into Envoy. They keep
-          // flowing to Loki as normal.
+          // batch). The only exclusions are the log-ai and log-ai-staging
+          // namespaces: Envoy's own logs (and its database and broker) must not
+          // feed back into Envoy. They keep flowing to Loki as normal.
           //
           // Delivery: Envoy answers 429 when its ingest queue is full, which the
           // exporter retries with backoff. The sending queue is deliberately
@@ -155,7 +155,10 @@ spec:
 
               log_conditions {
                 context    = "log"
-                conditions = [`attributes["namespace"] == "log-ai"`]
+                conditions = [
+                  `attributes["namespace"] == "log-ai"`,
+                  `attributes["namespace"] == "log-ai-staging"`,
+                ]
               }
 
               output {

@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/service_v1.json
+# Standalone (not app-template-generated) so the chart's single service can be
+# the backend's, named "envoy" (see the comment in helmrelease.yaml).
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy-frontend
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/controller: frontend
+    app.kubernetes.io/instance: envoy
+    app.kubernetes.io/name: envoy
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP

@@ -1,0 +1,213 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+# Staging Envoy (home-gitops#5475): same chart values as production
+# (log-ai/log-ai) against a restored copy of its database. No log ingest and no
+# Alloy routing; see envoy-staging/ks.yaml. Resource names are envoy-staging-*
+# for the database and broker, but the app and Service stay "envoy": the
+# frontend image's nginx proxies to http://envoy:8080 and needs that name.
+kind: HelmRelease
+metadata:
+  name: envoy
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: envoy
+  interval: 1h
+  # Helm's default 5m action timeout rolled the upgrade back while the
+  # templating-009 migration was still running (the backend only turns Ready
+  # after Liquibase finishes). Keep this above the startup probe window.
+  timeout: 20m
+  values:
+    controllers:
+      backend:
+        # Envoy keeps its Drain trees in memory and is single-instance by
+        # design: exactly one replica, and Recreate so a rollout never runs
+        # two at once.
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+          secret.reloader.stakater.com/reload: envoy-staging-cnpg-app,envoy-staging-rabbitmq-default-user
+        pod:
+          # Room for the @PreDestroy Drain snapshot on shutdown. Spring Boot's
+          # graceful shutdown phase defaults to 30s, so this stays above it.
+          terminationGracePeriodSeconds: 60
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dmfrey/envoy
+              # Staging, step 1: production's exact build (9083e54), so a bad
+              # bring-up can only be the restore or these manifests. Step 2
+              # (home-gitops#5475) moves to 30dc658ee48b130ae6f652b0051c646e73be93c5@sha256:44948697df696a2749db401a2e4b196d6b3f149bfc5d764095661e67aca84154
+              # (no new migrations between the two; going back is safe).
+              # Deliberately no renovate comment: staging is bumped by hand.
+              tag: 9083e54eb17dcf20c7b8efb755184f3ac75ab728@sha256:b1a95ee1e7691d28102265196e17b11e0523e4dcf3c9d413941039254079c1b4
+            env:
+              TZ: America/New_York
+              DEPLOYMENT_ENVIRONMENT: staging
+              # Same pod-instance wiring as spring-notes. Name must sort before
+              # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
+              # and $(VAR) only expands if VAR is defined earlier.
+              APP_POD_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+              OTEL_RESOURCE_ATTRIBUTES: service.instance.id=$(APP_POD_NAME)
+              # Metrics come from the ServiceMonitor scrape of
+              # /actuator/prometheus. The app also defaults to pushing the same
+              # meters over OTLP, which would create a second series per meter.
+              # Traces still go to Alloy over OTLP.
+              MANAGEMENT_OTLP_METRICS_EXPORT_ENABLED: "false"
+              LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
+              # The app defaults its own package to debug. Info here keeps the
+              # per-request lines out of the pipeline, and matters once Alloy
+              # ships logs back into Envoy.
+              LOGGING_LEVEL_COM_BROADCOM_TANZU_ENVOY: info
+              # CNPG auto-creates envoy-staging-cnpg-app with host/port/dbname/username/password.
+              # Kubernetes env var substitution assembles the JDBC URL at runtime.
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-cnpg-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-cnpg-app
+                    key: port
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-cnpg-app
+                    key: dbname
+              SPRING_DATASOURCE_URL: "jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)"
+              SPRING_DATASOURCE_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-cnpg-app
+                    key: username
+              SPRING_DATASOURCE_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-cnpg-app
+                    key: password
+              # RabbitMQ Cluster Operator auto-creates envoy-staging-rabbitmq-default-user
+              # with host/port/username/password, same shape as CNPG's app secret.
+              SPRING_RABBITMQ_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-rabbitmq-default-user
+                    key: host
+              SPRING_RABBITMQ_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-rabbitmq-default-user
+                    key: port
+              SPRING_RABBITMQ_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-rabbitmq-default-user
+                    key: username
+              SPRING_RABBITMQ_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: envoy-staging-rabbitmq-default-user
+                    key: password
+              # Phase 3 AI client: Ollama's OpenAI-compatible endpoint. The API
+              # key is present but explicitly empty: that is Spring AI's
+              # no-auth signal for a keyless server (unset is not the same).
+              SPRING_AI_OPENAI_BASE_URL: http://ollama.ai.svc.cluster.local:11434/v1
+              SPRING_AI_OPENAI_API_KEY: ""
+              # Non-deprecated names (Spring AI 2.0.1). The older ..._OPTIONS_MODEL
+              # names write a different key than Envoy's own application.yml
+              # default (spring.ai.openai.chat.model: qwen2.5:0.5b), so the
+              # override might not have won. Values unchanged.
+              SPRING_AI_OPENAI_EMBEDDING_MODEL: nomic-embed-text
+              # qwen3:8b confirmed by the tool-calling test on dmfrey/envoy#12
+              # (args 18/21 vs 12/21 for qwen2.5:7b-instruct, same tool accuracy,
+              # 3.4 s median latency; thinking arrives in a separate field).
+              SPRING_AI_OPENAI_CHAT_MODEL: qwen3:8b
+            probes:
+              # The first start runs the Liquibase migrations, so give startup
+              # room (up to 600s) before liveness takes over. 150s was too
+              # short for templating-009 (retires ~20k aliased template rows
+              # in one transaction): the probe killed the pod mid-migration,
+              # which rolled back and retried forever (2026-10-11).
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/readiness
+                    port: 8080
+                  periodSeconds: 5
+                  failureThreshold: 120
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/liveness
+                    port: 8080
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health/readiness
+                    port: 8080
+                  periodSeconds: 10
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+
+      frontend:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dmfrey/envoy-frontend
+              # Production's frontend build; step 2 moves to fa557f3cb299ae2ecdbe19796f38a89e4d9410ce@sha256:979d7e115f7ba3ce00bbf07ee4e2c61ecfd9fa6ebedd773a32d2722a00103af2.
+              tag: 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005
+            # Explicit port: the frontend has no app-template Service (its
+            # Service is the standalone service-frontend.yaml), and a probe
+            # with custom: false derives its port from the chart's service,
+            # which rendered as port 0 and was rejected by the API server.
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 80
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+    # In-cluster only. The routed paths are defined in httproute.yaml;
+    # /v1/logs (ingest) and /actuator are deliberately not reachable through the
+    # gateway. This is the chart's only service, so app-template names it plain
+    # "envoy" - which the frontend image needs: its nginx proxies /api/ to
+    # http://envoy:8080 and resolves that name at startup, so a Service called
+    # exactly "envoy" must exist or nginx refuses to start. Alloy's exporter
+    # (PR B) uses the same name: http://envoy.log-ai.svc.cluster.local:8080.
+    # The frontend's Service is the standalone service-frontend.yaml.
+    service:
+      backend:
+        controller: backend
+        ports:
+          http:
+            port: 8080

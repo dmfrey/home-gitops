@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/barmancloud.cnpg.io/objectstore_v1.json
+# Points at PRODUCTION's archive (same bucket as log-ai/envoy-db) and is used
+# only as the recovery source of envoy-staging-cnpg: read access, nothing
+# archives through it. No retentionPolicy on purpose, so nothing here can
+# ever prune production's backups.
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: envoy-prod-archive
+  annotations:
+    secret.reloader.stakater.com/reload: envoy-staging-s3-secret
+spec:
+  configuration:
+    destinationPath: s3://cnpg/
+    endpointURL: http://garage.garage-system.svc.cluster.local:3900
+
+    s3Credentials:
+      accessKeyId:
+        name: envoy-staging-s3-secret
+        key: AWS_SECRET_ACCESS_KEY_ID
+      secretAccessKey:
+        name: envoy-staging-s3-secret
+        key: AWS_SECRET_ACCESS_KEY
