@@ -64,8 +64,16 @@ spec:
                   name: zigbee2mqtt-secret
 
             probes:
+              # The frontend port stops answering for a few seconds while the
+              # coordinator works through a burst of queued commands (Home
+              # Assistant reconnecting after a restart). The defaults (1s
+              # timeout, 3 failures x 10s) killed the pod mid-burst on
+              # 2026-10-12; allow about a minute of unresponsiveness instead.
               liveness:
                 enabled: true
+                spec:
+                  timeoutSeconds: 5
+                  failureThreshold: 6
               readiness:
                 enabled: true
               startup:
