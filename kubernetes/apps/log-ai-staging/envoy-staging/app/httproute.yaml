@@ -6,7 +6,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: envoy
+  # Not "envoy": the gatus sidecar names an endpoint after each HTTPRoute
+  # (group + route name), so a second route called envoy duplicates production's
+  # internal_envoy and crash-loops gatus (2026-10-12).
+  name: envoy-staging
 spec:
   hostnames:
     - project-envoy-staging.dmfrey.com
