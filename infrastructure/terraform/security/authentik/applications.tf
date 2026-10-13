@@ -224,7 +224,10 @@ resource "authentik_provider_oauth2" "oauth2" {
   client_type           = try(each.value.client_type, "confidential")
   authorization_flow    = authentik_flow.provider-authorization-implicit-consent.uuid
   authentication_flow   = authentik_flow.authentication.uuid
-  invalidation_flow     = data.authentik_flow.default-provider-invalidation-flow.id
+  # default-provider-invalidation-flow has no stages: it only ends the app's
+  # session and leaves the Authentik one alive, so "sign out" in Envoy signed
+  # straight back in (2026-10-13). Envoy's apps use the flow with a logout stage.
+  invalidation_flow     = contains(local.envoy_apps, each.key) ? authentik_flow.invalidation.uuid : data.authentik_flow.default-provider-invalidation-flow.id
   property_mappings = concat(
     data.authentik_property_mapping_provider_scope.oauth2.ids,
     [authentik_property_mapping_provider_scope.email_verified.id],
