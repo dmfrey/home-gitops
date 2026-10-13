@@ -1,5 +1,8 @@
 
 locals {
+  # Gated by envoy.admins OR envoy.operators instead of their display group.
+  envoy_apps = ["envoy", "envoy-mcp"]
+
   applications = {
     affine = {
       client_id     = var.AFFINE_CLIENT_ID
@@ -20,8 +23,26 @@ locals {
       redirect_uris = [
         { matching_mode = "strict", url = "https://project-envoy.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso" },
         { matching_mode = "strict", url = "https://project-envoy-staging.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso" },
+        # Authentik only honors post_logout_redirect_uri for entries of type
+        # "logout"; without these, Sign out ends on Authentik's logged-out page.
+        { matching_mode = "strict", url = "https://project-envoy.${var.CLUSTER_DOMAIN}/", redirect_uri_type = "logout" },
+        { matching_mode = "strict", url = "https://project-envoy-staging.${var.CLUSTER_DOMAIN}/", redirect_uri_type = "logout" },
       ]
       launch_url    = "https://project-envoy.${var.CLUSTER_DOMAIN}/"
+    },
+    # Public PKCE client for MCP clients (Claude Code and others); Authentik
+    # has no dynamic client registration. The client id is not a secret, so it
+    # is literal and there is no 1Password item. Same issuer-per-provider
+    # layout gives /application/o/envoy-mcp/.
+    envoy-mcp = {
+      client_id   = "envoy-mcp"
+      client_type = "public"
+      group       = "monitoring"
+      icon_url    = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/loki.png"
+      redirect_uris = [
+        { matching_mode = "regex", url = "http://(localhost|127\\.0\\.0\\.1):\\d+/.*" },
+      ]
+      launch_url = "https://project-envoy.${var.CLUSTER_DOMAIN}/"
     },
     freshrss = {
       client_id     = var.FRESHRSS_CLIENT_ID
@@ -199,7 +220,7 @@ resource "authentik_provider_oauth2" "oauth2" {
   for_each              = local.applications
   name                  = each.key
   client_id             = each.value.client_id
-  client_secret         = each.value.client_secret
+  client_secret         = try(each.value.client_secret, null)
   client_type           = try(each.value.client_type, "confidential")
   authorization_flow    = authentik_flow.provider-authorization-implicit-consent.uuid
   authentication_flow   = authentik_flow.authentication.uuid
@@ -238,7 +259,7 @@ resource "authentik_application" "application" {
   meta_icon          = each.value.icon_url
   meta_launch_url    = each.value.launch_url
   # envoy has two alternative groups (admins or operators); the rest have one.
-  policy_engine_mode = each.key == "envoy" ? "any" : "all"
+  policy_engine_mode = contains(local.envoy_apps, each.key) ? "any" : "all"
 }
 
 resource "authentik_provider_proxy" "proxy" {

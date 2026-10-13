@@ -49,22 +49,36 @@ resource "authentik_group" "default" {
 }
 
 resource "authentik_policy_binding" "application_policy_binding" {
-  # envoy is gated by its own groups instead, see below.
-  for_each = { for k, v in local.applications : k => v if k != "envoy" }
+  # envoy apps are gated by their own groups instead, see below.
+  for_each = { for k, v in local.applications : k => v if !contains(local.envoy_apps, k) }
 
   target = authentik_application.application[each.key].uuid
   group  = authentik_group.default[each.value.group].id
   order  = 0
 }
 
+moved {
+  from = authentik_policy_binding.envoy_admins
+  to   = authentik_policy_binding.envoy_admins["envoy"]
+}
+
+moved {
+  from = authentik_policy_binding.envoy_operators
+  to   = authentik_policy_binding.envoy_operators["envoy"]
+}
+
 resource "authentik_policy_binding" "envoy_admins" {
-  target = authentik_application.application["envoy"].uuid
+  for_each = toset(local.envoy_apps)
+
+  target = authentik_application.application[each.key].uuid
   group  = authentik_group.envoy_admins.id
   order  = 0
 }
 
 resource "authentik_policy_binding" "envoy_operators" {
-  target = authentik_application.application["envoy"].uuid
+  for_each = toset(local.envoy_apps)
+
+  target = authentik_application.application[each.key].uuid
   group  = authentik_group.envoy_operators.id
   order  = 1
 }
@@ -79,6 +93,7 @@ resource "authentik_user" "Dan" {
     [data.authentik_group.grafana_admin.id],
     [authentik_group.immich_admin.id],
     [authentik_group.envoy_admins.id],
+    [authentik_group.envoy_operators.id],
     values(authentik_group.default)[*].id
   )
 }
