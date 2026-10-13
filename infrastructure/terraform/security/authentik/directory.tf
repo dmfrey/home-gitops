@@ -30,6 +30,18 @@ resource "authentik_group" "immich_admin" {
   is_superuser = false
 }
 
+# Project Envoy access: operators use it, admins also manage it. Either group
+# grants sign-in (see the envoy bindings below).
+resource "authentik_group" "envoy_admins" {
+  name         = "envoy.admins"
+  is_superuser = false
+}
+
+resource "authentik_group" "envoy_operators" {
+  name         = "envoy.operators"
+  is_superuser = false
+}
+
 resource "authentik_group" "default" {
   for_each     = local.authentik_groups
   name         = each.value.name
@@ -37,11 +49,24 @@ resource "authentik_group" "default" {
 }
 
 resource "authentik_policy_binding" "application_policy_binding" {
-  for_each = local.applications
+  # envoy is gated by its own groups instead, see below.
+  for_each = { for k, v in local.applications : k => v if k != "envoy" }
 
   target = authentik_application.application[each.key].uuid
   group  = authentik_group.default[each.value.group].id
   order  = 0
+}
+
+resource "authentik_policy_binding" "envoy_admins" {
+  target = authentik_application.application["envoy"].uuid
+  group  = authentik_group.envoy_admins.id
+  order  = 0
+}
+
+resource "authentik_policy_binding" "envoy_operators" {
+  target = authentik_application.application["envoy"].uuid
+  group  = authentik_group.envoy_operators.id
+  order  = 1
 }
 
 resource "authentik_user" "Dan" {
@@ -53,6 +78,7 @@ resource "authentik_user" "Dan" {
     [data.authentik_group.admins.id],
     [data.authentik_group.grafana_admin.id],
     [authentik_group.immich_admin.id],
+    [authentik_group.envoy_admins.id],
     values(authentik_group.default)[*].id
   )
 }

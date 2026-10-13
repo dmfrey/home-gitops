@@ -12,6 +12,7 @@ locals {
     envoy = {
       client_id     = var.ENVOY_CLIENT_ID
       client_secret = var.ENVOY_CLIENT_SECRET
+      # Launcher grouping only; access is envoy.admins / envoy.operators.
       group         = "monitoring"
       icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/loki.png"
       # One provider serves both Project Envoy deployments (production and
@@ -236,7 +237,8 @@ resource "authentik_application" "application" {
   open_in_new_tab    = true
   meta_icon          = each.value.icon_url
   meta_launch_url    = each.value.launch_url
-  policy_engine_mode = "all"
+  # envoy has two alternative groups (admins or operators); the rest have one.
+  policy_engine_mode = each.key == "envoy" ? "any" : "all"
 }
 
 resource "authentik_provider_proxy" "proxy" {
