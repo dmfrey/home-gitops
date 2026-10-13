@@ -19,15 +19,12 @@ spec:
     minRunners: 1
     maxRunners: 3
 
+    # Docker-in-Docker so Testcontainers works: the chart adds a privileged
+    # docker:dind sidecar and points the runner at it over a shared socket.
+    # Privileged means job code is close to root on the node - keep this
+    # runner to a repo with trusted contributors and no fork PRs.
     containerMode:
-      type: kubernetes
-      kubernetesModeWorkVolumeClaim:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 25Gi
-        storageClassName: openebs-hostpath
+      type: dind
     controllerServiceAccount:
       name: actions-runner-controller
       namespace: actions-runner-system
@@ -39,7 +36,4 @@ spec:
             image: ghcr.io/home-operations/actions-runner:2.338.0@sha256:c867ecdf82d4e8537ea8a41acc6addae09f069daec137e5614b87e4678a953e8
             command:
               - /home/runner/run.sh
-            env:
-              - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
-                value: "false"
         serviceAccountName: *name
