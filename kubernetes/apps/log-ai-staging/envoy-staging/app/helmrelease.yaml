@@ -173,10 +173,10 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/envoy-frontend
-              # Step 3: a612def (chat markdown rendering fix). Earlier:
+              # Step 5: 212f8b3 (chat layout fix, CSS only). Earlier: a612def7baf3c1b028d916088fc99558d4fabc00@sha256:e2ecca07f4fd8978afd3be5bacf7f5bf5bdd2c8d7d18b0734c36cf6a7123a1d8 (step 3),
               # fa557f3cb299ae2ecdbe19796f38a89e4d9410ce@sha256:979d7e115f7ba3ce00bbf07ee4e2c61ecfd9fa6ebedd773a32d2722a00103af2 (step 2) and
               # production's 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005.
-              tag: a612def7baf3c1b028d916088fc99558d4fabc00@sha256:e2ecca07f4fd8978afd3be5bacf7f5bf5bdd2c8d7d18b0734c36cf6a7123a1d8
+              tag: 212f8b3525b90c7426a704992ea99ea290df96ce@sha256:5da8cd8d28e359d0950d136103c00912cec70fcdfc4ec785ccc8e71896c8682a
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
