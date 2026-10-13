@@ -188,10 +188,12 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/envoy-frontend
-              # Step 6: 8adee12 (sign-in). Earlier: 212f8b3525b90c7426a704992ea99ea290df96ce@sha256:5da8cd8d28e359d0950d136103c00912cec70fcdfc4ec785ccc8e71896c8682a (step 5, chat layout fix), a612def7baf3c1b028d916088fc99558d4fabc00@sha256:e2ecca07f4fd8978afd3be5bacf7f5bf5bdd2c8d7d18b0734c36cf6a7123a1d8 (step 3),
+              # Step 6a: f897efe (nginx passes the gateway's X-Forwarded-Proto
+              # through, fixing the http OIDC redirect_uri; envoy#137). Step 6:
+              # 8adee126dc396d8a34ee37a5d97a8a549cea9b50@sha256:2380a84baf5277f95c0c713ba2a59780cdbf81583ade08ed8da1152203b9f631 (sign-in). Earlier: 212f8b3525b90c7426a704992ea99ea290df96ce@sha256:5da8cd8d28e359d0950d136103c00912cec70fcdfc4ec785ccc8e71896c8682a (step 5, chat layout fix), a612def7baf3c1b028d916088fc99558d4fabc00@sha256:e2ecca07f4fd8978afd3be5bacf7f5bf5bdd2c8d7d18b0734c36cf6a7123a1d8 (step 3),
               # fa557f3cb299ae2ecdbe19796f38a89e4d9410ce@sha256:979d7e115f7ba3ce00bbf07ee4e2c61ecfd9fa6ebedd773a32d2722a00103af2 (step 2) and
               # production's 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005.
-              tag: 8adee126dc396d8a34ee37a5d97a8a549cea9b50@sha256:2380a84baf5277f95c0c713ba2a59780cdbf81583ade08ed8da1152203b9f631
+              tag: f897efeb5974c1da41d30f18d58b25c6bf89da76@sha256:2b0888ed2dcec89c392daa45c6ac043dfb00dad415075ac28846832116d5f081
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
