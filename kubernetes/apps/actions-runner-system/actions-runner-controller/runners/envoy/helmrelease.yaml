@@ -31,6 +31,16 @@ spec:
 
     template:
       spec:
+        # Pod-level, so it covers the runner and the dind sidecar together (the
+        # chart gives no way to set the sidecar's own resources). Without it the
+        # pod is BestEffort and Talos's OOM controller kills it first under
+        # memory pressure (2026-10-13: a Gradle + Testcontainers job died).
+        resources:
+          requests:
+            cpu: 500m
+            memory: 4Gi
+          limits:
+            memory: 10Gi
         containers:
           - name: runner
             image: ghcr.io/home-operations/actions-runner:2.338.0@sha256:c867ecdf82d4e8537ea8a41acc6addae09f069daec137e5614b87e4678a953e8
