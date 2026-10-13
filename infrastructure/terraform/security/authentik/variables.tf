@@ -29,6 +29,11 @@ variable "FRESHRSS_CLIENT_SECRET" {
   type      = string
   sensitive = true
 }
+variable "ENVOY_CLIENT_ID" { type = string }
+variable "ENVOY_CLIENT_SECRET" {
+  type      = string
+  sensitive = true
+}
 variable "GATUS_CLIENT_ID" { type = string }
 variable "GATUS_CLIENT_SECRET" {
   type      = string
