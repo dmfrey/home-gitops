@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
 # Internal-only UI for staging Envoy, same rules as production: one parent
 # (the internal gateway, never envoy-external), /v1 (ingest) and /actuator
-# answer 404, /api and /mcp go to the backend, everything else to the UI.
+# answer 404, /api, /mcp and the OAuth protected-resource metadata go to the backend, everything else to the UI.
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -38,6 +38,11 @@ spec:
         - path:
             type: PathPrefix
             value: /mcp
+        # MCP clients discover the authorization server here (RFC 9728); left
+        # to the catch-all it would return the SPA page from the frontend.
+        - path:
+            type: PathPrefix
+            value: /.well-known/oauth-protected-resource
       backendRefs:
         - name: envoy
           port: 8080
