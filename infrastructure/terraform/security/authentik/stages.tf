@@ -39,15 +39,8 @@ resource "authentik_stage_password" "authentication-password" {
 resource "authentik_stage_authenticator_validate" "authentication-mfa-validation" {
   name                  = "authentication-mfa-validation"
   device_classes        = ["static", "totp", "webauthn"]
-  not_configured_action = "skip"
-}
-
-# Same check for envoy.admins / envoy.operators members, but a user with no
-# authenticator is sent to passkey setup instead of being let through. Wired in
-# flows.tf; everyone else keeps the skip stage above.
-resource "authentik_stage_authenticator_validate" "authentication-mfa-enforced" {
-  name                  = "authentication-mfa-enforced"
-  device_classes        = ["static", "totp", "webauthn"]
+  # A user with no authenticator is sent to passkey setup instead of being let
+  # through (was "skip" until 2026-10-13). akadmin is exempted in flows.tf.
   not_configured_action = "configure"
   configuration_stages  = [authentik_stage_authenticator_webauthn.webauthn-setup.id]
 }

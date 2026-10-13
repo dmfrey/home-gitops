@@ -29,40 +29,17 @@ resource "authentik_flow_stage_binding" "authentication-flow-binding-10" {
   policy_engine_mode   = "all"
 }
 
-# envoy.* members skip the optional check above and get the enforced one.
-resource "authentik_flow_stage_binding" "authentication-flow-binding-11" {
-  target               = authentik_flow.authentication.uuid
-  stage                = authentik_stage_authenticator_validate.authentication-mfa-enforced.id
-  order                = 11
-  evaluate_on_plan     = false
-  re_evaluate_policies = true
-  policy_engine_mode   = "any"
+# The bootstrap admin has no authenticator and stays exempt from the MFA stage
+# (negated user binding: the stage runs for everyone except akadmin).
+data "authentik_user" "akadmin" {
+  username = "akadmin"
 }
 
-resource "authentik_policy_binding" "mfa_optional_not_envoy_admins" {
+resource "authentik_policy_binding" "mfa_not_akadmin" {
   target = authentik_flow_stage_binding.authentication-flow-binding-10.id
-  group  = authentik_group.envoy_admins.id
+  user   = data.authentik_user.akadmin.pk
   negate = true
   order  = 0
-}
-
-resource "authentik_policy_binding" "mfa_optional_not_envoy_operators" {
-  target = authentik_flow_stage_binding.authentication-flow-binding-10.id
-  group  = authentik_group.envoy_operators.id
-  negate = true
-  order  = 1
-}
-
-resource "authentik_policy_binding" "mfa_enforced_envoy_admins" {
-  target = authentik_flow_stage_binding.authentication-flow-binding-11.id
-  group  = authentik_group.envoy_admins.id
-  order  = 0
-}
-
-resource "authentik_policy_binding" "mfa_enforced_envoy_operators" {
-  target = authentik_flow_stage_binding.authentication-flow-binding-11.id
-  group  = authentik_group.envoy_operators.id
-  order  = 1
 }
 
 resource "authentik_flow_stage_binding" "authentication-flow-binding-100" {
