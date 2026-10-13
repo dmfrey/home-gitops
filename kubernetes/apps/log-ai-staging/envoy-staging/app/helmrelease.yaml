@@ -28,7 +28,7 @@ spec:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
-          secret.reloader.stakater.com/reload: envoy-staging-cnpg-app,envoy-staging-rabbitmq-default-user
+          secret.reloader.stakater.com/reload: envoy-staging-cnpg-app,envoy-staging-rabbitmq-default-user,envoy-staging-auth-secret
         pod:
           # Room for the @PreDestroy Drain snapshot on shutdown. Spring Boot's
           # graceful shutdown phase defaults to 30s, so this stays above it.
@@ -37,15 +37,30 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/envoy
-              # Staging, step 4 (home-gitops#5475): 7b6767e adds the Liquibase
-              # changeset templating-010-retire-restored-aliased-rows, dry-run here
-              # before production gets it. Earlier steps: 30dc658@sha256:44948697df696a2749db401a2e4b196d6b3f149bfc5d764095661e67aca84154
+              # Staging, step 6 (home-gitops#5475): 8adee12 turns sign-in on
+              # (envoy#23) and adds the Liquibase changeset
+              # audit-002-add-tool-calls-principal (nullable column, no rewrite).
+              # Earlier: 7b6767ed96d9d9b424df8a144abc0d7d80588528@sha256:2d6946dda62978f57b11e05dde34801360981e2b3e11d075f4a71145df48c354
+              # (step 4, adds templating-010-retire-restored-aliased-rows), 30dc658@sha256:44948697df696a2749db401a2e4b196d6b3f149bfc5d764095661e67aca84154
               # (step 2) and production's 9083e54@sha256:b1a95ee1e7691d28102265196e17b11e0523e4dcf3c9d413941039254079c1b4 (step 1).
               # Deliberately no renovate comment: staging is bumped by hand.
-              tag: 7b6767ed96d9d9b424df8a144abc0d7d80588528@sha256:2d6946dda62978f57b11e05dde34801360981e2b3e11d075f4a71145df48c354
+              tag: 8adee126dc396d8a34ee37a5d97a8a549cea9b50@sha256:9c2a0ea36374b25b6409db066d67bbee0f6a5a0bb9daffbc5bcfeb5df46b0038
+            # Authentik client id/secret for the "envoy" application, from the
+            # 1Password item project-envoy (see externalsecret.yaml).
+            envFrom:
+              - secretRef:
+                  name: envoy-staging-auth-secret
             env:
               TZ: America/New_York
               DEPLOYMENT_ENVIRONMENT: staging
+              # Sign-in (envoy#23). Auth is on by default, so the pod will not
+              # start without the client id/secret (envFrom above) and these.
+              # The Authentik application is `envoy` (browser, confidential) and
+              # `envoy-mcp` (public PKCE client used by MCP clients).
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE: openid,profile,email
+              SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy/
+              SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy-mcp/
+              ENVOY_REDUCER_AUTH_ACCOUNT_URL: https://auth.dmfrey.com/if/user/
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
@@ -173,10 +188,10 @@ spec:
           app:
             image:
               repository: ghcr.io/dmfrey/envoy-frontend
-              # Step 5: 212f8b3 (chat layout fix, CSS only). Earlier: a612def7baf3c1b028d916088fc99558d4fabc00@sha256:e2ecca07f4fd8978afd3be5bacf7f5bf5bdd2c8d7d18b0734c36cf6a7123a1d8 (step 3),
+              # Step 6: 8adee12 (sign-in). Earlier: 212f8b3525b90c7426a704992ea99ea290df96ce@sha256:5da8cd8d28e359d0950d136103c00912cec70fcdfc4ec785ccc8e71896c8682a (step 5, chat layout fix), a612def7baf3c1b028d916088fc99558d4fabc00@sha256:e2ecca07f4fd8978afd3be5bacf7f5bf5bdd2c8d7d18b0734c36cf6a7123a1d8 (step 3),
               # fa557f3cb299ae2ecdbe19796f38a89e4d9410ce@sha256:979d7e115f7ba3ce00bbf07ee4e2c61ecfd9fa6ebedd773a32d2722a00103af2 (step 2) and
               # production's 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005.
-              tag: 212f8b3525b90c7426a704992ea99ea290df96ce@sha256:5da8cd8d28e359d0950d136103c00912cec70fcdfc4ec785ccc8e71896c8682a
+              tag: 8adee126dc396d8a34ee37a5d97a8a549cea9b50@sha256:2380a84baf5277f95c0c713ba2a59780cdbf81583ade08ed8da1152203b9f631
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
