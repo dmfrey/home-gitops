@@ -9,6 +9,19 @@ locals {
       redirect_uri  = "https://affine.${var.CLUSTER_DOMAIN}/oauth/callback"
       launch_url    = "https://affine.${var.CLUSTER_DOMAIN}/"
     },
+    envoy = {
+      client_id     = var.ENVOY_CLIENT_ID
+      client_secret = var.ENVOY_CLIENT_SECRET
+      group         = "monitoring"
+      icon_url      = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/loki.png"
+      # One provider serves both Project Envoy deployments (production and
+      # staging): the redirect URI is the only thing that differs.
+      redirect_uris = [
+        { matching_mode = "strict", url = "https://project-envoy.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso" },
+        { matching_mode = "strict", url = "https://project-envoy-staging.${var.CLUSTER_DOMAIN}/login/oauth2/code/sso" },
+      ]
+      launch_url    = "https://project-envoy.${var.CLUSTER_DOMAIN}/"
+    },
     freshrss = {
       client_id     = var.FRESHRSS_CLIENT_ID
       client_secret = var.FRESHRSS_CLIENT_SECRET
