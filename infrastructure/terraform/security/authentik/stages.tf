@@ -39,7 +39,10 @@ resource "authentik_stage_password" "authentication-password" {
 resource "authentik_stage_authenticator_validate" "authentication-mfa-validation" {
   name                  = "authentication-mfa-validation"
   device_classes        = ["static", "totp", "webauthn"]
-  not_configured_action = "skip"
+  # A user with no authenticator is sent to passkey setup instead of being let
+  # through (was "skip" until 2026-10-13). akadmin is exempted in flows.tf.
+  not_configured_action = "configure"
+  configuration_stages  = [authentik_stage_authenticator_webauthn.webauthn-setup.id]
 }
 
 resource "authentik_stage_user_login" "authentication-login" {

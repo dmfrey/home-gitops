@@ -22,6 +22,24 @@ resource "authentik_flow_stage_binding" "authentication-flow-binding-10" {
   target = authentik_flow.authentication.uuid
   stage  = authentik_stage_authenticator_validate.authentication-mfa-validation.id
   order  = 10
+  # The user is only known after the identification stage, so policies must be
+  # evaluated when this stage is reached, not when the flow is planned.
+  evaluate_on_plan     = false
+  re_evaluate_policies = true
+  policy_engine_mode   = "all"
+}
+
+# The bootstrap admin has no authenticator and stays exempt from the MFA stage
+# (negated user binding: the stage runs for everyone except akadmin).
+data "authentik_user" "akadmin" {
+  username = "akadmin"
+}
+
+resource "authentik_policy_binding" "mfa_not_akadmin" {
+  target = authentik_flow_stage_binding.authentication-flow-binding-10.id
+  user   = data.authentik_user.akadmin.pk
+  negate = true
+  order  = 0
 }
 
 resource "authentik_flow_stage_binding" "authentication-flow-binding-100" {

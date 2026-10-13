@@ -314,6 +314,13 @@ resource "authentik_provider_saml" "sonarqube" {
   ]
 }
 
+# Without a binding any signed-in user could launch SonarQube.
+resource "authentik_policy_binding" "sonarqube" {
+  target = authentik_application.sonarqube.uuid
+  group  = authentik_group.default["infrastructure"].id
+  order  = 0
+}
+
 resource "authentik_application" "sonarqube" {
   name               = "SonarQube"
   slug               = "sonarqube"
