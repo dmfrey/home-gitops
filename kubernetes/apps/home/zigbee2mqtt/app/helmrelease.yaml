@@ -63,12 +63,15 @@ spec:
               # coordinator works through a burst of queued commands (Home
               # Assistant reconnecting after a restart). The defaults (1s
               # timeout, 3 failures x 10s) killed the pod mid-burst on
-              # 2026-10-12; allow about a minute of unresponsiveness instead.
+              # 2026-10-12. The zigbee2mqtt_resync_on_ha_start automation in
+              # hass-config also restarts z2m after every HA start, and that
+              # restart takes about 70s (6 failures = 60s killed it again the
+              # same day); allow about two minutes of unresponsiveness.
               liveness:
                 enabled: true
                 spec:
                   timeoutSeconds: 5
-                  failureThreshold: 6
+                  failureThreshold: 12
               readiness:
                 enabled: true
               startup:
