@@ -11,12 +11,14 @@ resource "sonarr_release_profile" "block_dangerous_extensions" {
   # Fixed 2026-10-14: the terms were bare strings like "\\.scr$", and Sonarr
   # treats a bare term as a plain substring, so they never matched anything. A
   # regex has to be wrapped in /.../ (and ends in /i to be case-insensitive).
-  # This only sees the title the indexer advertises. Releases whose ".exe" name
-  # appears only after the torrent is added in qBittorrent (five from
-  # TorrentDownload on 2026-10-13) can't be caught here.
+  # This only sees the title the indexer advertises, and some indexers write it
+  # with spaces instead of dots (TorrentDownload served "...FLUX exe" on
+  # 2026-10-13), so the extension is matched after a space, dot or underscore.
+  # A hyphen is deliberately not a separator, so release groups named "-CMD" or
+  # "-URL" aren't rejected.
   enabled    = true
   name       = "Block dangerous file extensions (malware-bait releases)"
-  ignored    = ["/\\.(scr|exe|lnk|bat|cmd|vbs|msi|jar|url|scf|pif)$/i"]
+  ignored    = ["/[ ._](scr|exe|lnk|bat|cmd|vbs|msi|jar|url|scf|pif)$/i"]
   indexer_id = 0 # all indexers
 
   lifecycle {
