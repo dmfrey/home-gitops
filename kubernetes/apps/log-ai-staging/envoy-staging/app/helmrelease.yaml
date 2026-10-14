@@ -62,7 +62,12 @@ spec:
               # (envoy#136, off unless ENVOY_REDUCER_NOTIFICATIONS_ENABLED=true).
               # Step 7 was
               # 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:6473af72e5daab9e6b98ac05436b435c1ed5977355d6847c3c69fb12584caa8c.
-              tag: 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:0b2d7669e53e91fb12e60a64729785fa0b1a15f8af25fb052c7a0540f2228414
+              # Step 9 (#5475 step 7): 0bdf6c7 adds the send-yourself test email
+              # (envoy#158), tracker reconnect after an MCP session loss (envoy#160)
+              # and ticket status polling (envoy#147). Liquibase ticketing-002: ticket
+              # status columns, additive. Step 8 was
+              # 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:0b2d7669e53e91fb12e60a64729785fa0b1a15f8af25fb052c7a0540f2228414.
+              tag: 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:2805aee2df9be41967215898863c52e36f029875aa0fc1e2154557f4869c0a8c
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -95,6 +100,14 @@ spec:
               # Unverified against RT's real reply: confirm with the first ticket.
               ENVOY_REDUCER_TICKETS_CREATE_SUCCESS_PATTERN: 'Ticket #(\d+) created'
               ENVOY_REDUCER_TICKETS_CREATE_URL_TEMPLATE: https://tickets.dmfrey.com/Ticket/Display.html?id={id}
+              # Ticket status polling (envoy#147). Shape taken from a real
+              # get_ticket_tool reply (2026-10-14): argument ticket_id, and a line
+              # "  Status: new". Anchored to line start so a "Status:" inside a
+              # subject can't match. No match is stored as unknown, not an error.
+              ENVOY_REDUCER_TICKETS_STATUS_TOOL: get_ticket_tool
+              ENVOY_REDUCER_TICKETS_STATUS_ARGUMENTS_TICKET_ID: "{externalId}"
+              ENVOY_REDUCER_TICKETS_STATUS_PATTERN: '(?m)^\s*Status: (\w+)\s*$'
+              ENVOY_REDUCER_TICKETS_STATUS_CLOSED_VALUES: resolved,rejected,deleted
               # Anomaly notification email (home-gitops#5502). Goes out through the
               # cluster's smtp-relay, which has no inbound auth and no TLS; it holds
               # the upstream credentials and uses STARTTLS on its own outbound hop,
@@ -244,7 +257,9 @@ spec:
               # Step 6c was 80e24f1234b8af6cdaaa821119735c7bd7ba9bb6@sha256:e1710b254bfa6a0c8dcc308badfcef6957743427dc193ed5d849f97e441f80c1.
               # Step 8: 5877564 (notification settings page). Step 7 was
               # 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:932705244773542003dcf697f3b2708311552d6e35288800915dc63b9ad84f6a.
-              tag: 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:4daaba226c8d3010df329f8e5dfa9b9c38774f7f044432fc760cbf0445a0a1b3
+              # Step 9: 0bdf6c7 (test email button, ticket status). Step 8 was
+              # 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:4daaba226c8d3010df329f8e5dfa9b9c38774f7f044432fc760cbf0445a0a1b3.
+              tag: 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:85836cb2e52542ebbb6be8bed2303dc581ce38728b78f47e04094ab3a1aa9086
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
