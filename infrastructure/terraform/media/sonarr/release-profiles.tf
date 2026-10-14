@@ -16,3 +16,32 @@ resource "sonarr_release_profile" "block_dangerous_extensions" {
     ignore_changes = all
   }
 }
+
+resource "sonarr_release_profile" "block_audio_description" {
+  # Added 2026-10-14 after Sonarr kept an HDTV capture of CIA S02E02 whose only
+  # audio track was the audio-description mix (it can't be switched off), and
+  # an "...with Audio Description..." AMZN WEB-DL sat at an equal Custom Format
+  # score in the same search. Sonarr can't see an AD track in a file's media
+  # info, so this rejects releases that are *labelled* AD at grab-decision time.
+  # Unlabelled releases still get through.
+  #
+  # Term syntax matters here: a bare term is a case-insensitive substring match,
+  # but a regex must be wrapped in /.../ and is case-SENSITIVE unless it ends in
+  # /i. The AD and DVS tags are matched case-sensitively on purpose so a title
+  # word like "Ad" or "Dvs" is not rejected. Verified against the live search
+  # for CIA S02E02: rejected both "with Audio Description" releases and none of
+  # the other 84.
+  enabled = true
+  name    = "Block audio-description releases"
+  ignored = [
+    "/audio[ ._-]?descri/i",
+    "/descriptive[ ._-]?(video|audio)/i",
+    "/\\bAD\\b/",
+    "/\\bDVS\\b/",
+  ]
+  indexer_id = 0 # all indexers
+
+  lifecycle {
+    ignore_changes = all
+  }
+}
