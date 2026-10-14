@@ -105,7 +105,11 @@ spec:
               # "  Status: new". Anchored to line start so a "Status:" inside a
               # subject can't match. No match is stored as unknown, not an error.
               ENVOY_REDUCER_TICKETS_STATUS_TOOL: get_ticket_tool
-              ENVOY_REDUCER_TICKETS_STATUS_ARGUMENTS_TICKET_ID: "{externalId}"
+              # The tool's argument is "ticket_id", but Spring maps the env var
+              # ..._ARGUMENTS_TICKET_ID to the key "ticket.id" (an env var cannot
+              # carry an underscore in a map key), and the tool then rejects the
+              # call. So this one argument goes in as JSON.
+              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}}}}}'
               ENVOY_REDUCER_TICKETS_STATUS_PATTERN: '(?m)^\s*Status: (\w+)\s*$'
               ENVOY_REDUCER_TICKETS_STATUS_CLOSED_VALUES: resolved,rejected,deleted
               # Anomaly notification email (home-gitops#5502). Goes out through the
