@@ -76,11 +76,11 @@ spec:
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy-mcp/
               ENVOY_REDUCER_AUTH_ACCOUNT_URL: https://auth.dmfrey.com/if/user/
               # Ticket filing through the in-cluster RT MCP server (home-gitops#5508).
-              # Off for now: this step only deploys the code and its migration.
+              # Enabled 2026-10-14 (step 7 deployed the code and migration off).
               # Staging files into its own queue so tickets never reach the
               # production "Envoy" queue, and has no automatic rules (manual
               # "Create ticket" button only). The MCP has no auth of its own.
-              ENVOY_REDUCER_TICKETS_ENABLED: "false"
+              ENVOY_REDUCER_TICKETS_ENABLED: "true"
               ENVOY_REDUCER_TICKETS_TRACKER: rt
               ENVOY_REDUCER_TICKETS_BASE_URL: https://project-envoy-staging.dmfrey.com
               ENVOY_REDUCER_TICKETS_MCP_URL: http://rt-mcp.observability.svc.cluster.local:8013/mcp
