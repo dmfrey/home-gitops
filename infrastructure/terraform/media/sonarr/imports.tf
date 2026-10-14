@@ -32,3 +32,8 @@ import {
   to = sonarr_release_profile.block_dangerous_extensions
   id = "1"
 }
+
+import {
+  to = sonarr_release_profile.block_audio_description
+  id = "2"
+}
