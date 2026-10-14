@@ -53,7 +53,12 @@ spec:
               # (step 4, adds templating-010-retire-restored-aliased-rows), 30dc658@sha256:44948697df696a2749db401a2e4b196d6b3f149bfc5d764095661e67aca84154
               # (step 2) and production's 9083e54@sha256:b1a95ee1e7691d28102265196e17b11e0523e4dcf3c9d413941039254079c1b4 (step 1).
               # Deliberately no renovate comment: staging is bumped by hand.
-              tag: 80e24f1234b8af6cdaaa821119735c7bd7ba9bb6@sha256:eb676c330c5195c8e696b57a99081a5c933392937b2b8078c2486aaa10aa179e
+              # Step 7 (home-gitops#5508): 26723e8 adds ticket filing (envoy#145,
+              # off unless ENVOY_REDUCER_TICKETS_ENABLED=true) and ticket chips/button
+              # (envoy#146). Liquibase ticketing-001: one nullable column plus one
+              # empty table. Step 6c was
+              # 80e24f1234b8af6cdaaa821119735c7bd7ba9bb6@sha256:eb676c330c5195c8e696b57a99081a5c933392937b2b8078c2486aaa10aa179e.
+              tag: 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:6473af72e5daab9e6b98ac05436b435c1ed5977355d6847c3c69fb12584caa8c
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -70,6 +75,22 @@ spec:
               SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy/
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy-mcp/
               ENVOY_REDUCER_AUTH_ACCOUNT_URL: https://auth.dmfrey.com/if/user/
+              # Ticket filing through the in-cluster RT MCP server (home-gitops#5508).
+              # Off for now: this step only deploys the code and its migration.
+              # Staging files into its own queue so tickets never reach the
+              # production "Envoy" queue, and has no automatic rules (manual
+              # "Create ticket" button only). The MCP has no auth of its own.
+              ENVOY_REDUCER_TICKETS_ENABLED: "false"
+              ENVOY_REDUCER_TICKETS_TRACKER: rt
+              ENVOY_REDUCER_TICKETS_BASE_URL: https://project-envoy-staging.dmfrey.com
+              ENVOY_REDUCER_TICKETS_MCP_URL: http://rt-mcp.observability.svc.cluster.local:8013/mcp
+              ENVOY_REDUCER_TICKETS_CREATE_TOOL: create_ticket_tool
+              ENVOY_REDUCER_TICKETS_CREATE_ARGUMENTS_QUEUE: Envoy-Staging
+              ENVOY_REDUCER_TICKETS_CREATE_ARGUMENTS_SUBJECT: "{subject}"
+              ENVOY_REDUCER_TICKETS_CREATE_ARGUMENTS_TEXT: "{body}"
+              # Unverified against RT's real reply: confirm with the first ticket.
+              ENVOY_REDUCER_TICKETS_CREATE_SUCCESS_PATTERN: 'Ticket #(\d+) created'
+              ENVOY_REDUCER_TICKETS_CREATE_URL_TEMPLATE: https://tickets.dmfrey.com/Ticket/Display.html?id={id}
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
@@ -203,7 +224,9 @@ spec:
               # 8adee126dc396d8a34ee37a5d97a8a549cea9b50@sha256:2380a84baf5277f95c0c713ba2a59780cdbf81583ade08ed8da1152203b9f631 (sign-in). Earlier: 212f8b3525b90c7426a704992ea99ea290df96ce@sha256:5da8cd8d28e359d0950d136103c00912cec70fcdfc4ec785ccc8e71896c8682a (step 5, chat layout fix), a612def7baf3c1b028d916088fc99558d4fabc00@sha256:e2ecca07f4fd8978afd3be5bacf7f5bf5bdd2c8d7d18b0734c36cf6a7123a1d8 (step 3),
               # fa557f3cb299ae2ecdbe19796f38a89e4d9410ce@sha256:979d7e115f7ba3ce00bbf07ee4e2c61ecfd9fa6ebedd773a32d2722a00103af2 (step 2) and
               # production's 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005.
-              tag: 80e24f1234b8af6cdaaa821119735c7bd7ba9bb6@sha256:e1710b254bfa6a0c8dcc308badfcef6957743427dc193ed5d849f97e441f80c1
+              # Step 7: 26723e8 (Create ticket button and ticket chips; envoy#146).
+              # Step 6c was 80e24f1234b8af6cdaaa821119735c7bd7ba9bb6@sha256:e1710b254bfa6a0c8dcc308badfcef6957743427dc193ed5d849f97e441f80c1.
+              tag: 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:932705244773542003dcf697f3b2708311552d6e35288800915dc63b9ad84f6a
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
