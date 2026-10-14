@@ -214,7 +214,13 @@ resource "prowlarr_indexer" "torrent_torrentdownload" {
   # directly (lifecycle.ignore_changes below), this is just to keep the
   # declared state from being misleading - same pattern as
   # torrent_limetorrents below.
-  enable          = true
+  #
+  # Disabled 2026-10-14 (trial, review ~2026-10-21): five more malware-bait
+  # torrents named "....exe" were grabbed from here on 2026-10-13. Priority is
+  # only a tiebreaker, so it didn't stop them; Sonarr refused to import all
+  # five. About 60 grabs in the previous 30 days came from this indexer, so
+  # check how many episodes had no other source before deciding to keep it off.
+  enable          = false
   name            = "TorrentDownload"
   implementation  = "Cardigann"
   config_contract = "CardigannSettings"
