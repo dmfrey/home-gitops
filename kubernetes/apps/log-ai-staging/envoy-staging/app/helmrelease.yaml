@@ -58,7 +58,11 @@ spec:
               # (envoy#146). Liquibase ticketing-001: one nullable column plus one
               # empty table. Step 6c was
               # 80e24f1234b8af6cdaaa821119735c7bd7ba9bb6@sha256:eb676c330c5195c8e696b57a99081a5c933392937b2b8078c2486aaa10aa179e.
-              tag: 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:6473af72e5daab9e6b98ac05436b435c1ed5977355d6847c3c69fb12584caa8c
+              # Step 8 (home-gitops#5502): 5877564 adds anomaly notification email
+              # (envoy#136, off unless ENVOY_REDUCER_NOTIFICATIONS_ENABLED=true).
+              # Step 7 was
+              # 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:6473af72e5daab9e6b98ac05436b435c1ed5977355d6847c3c69fb12584caa8c.
+              tag: 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:0b2d7669e53e91fb12e60a64729785fa0b1a15f8af25fb052c7a0540f2228414
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -91,6 +95,18 @@ spec:
               # Unverified against RT's real reply: confirm with the first ticket.
               ENVOY_REDUCER_TICKETS_CREATE_SUCCESS_PATTERN: 'Ticket #(\d+) created'
               ENVOY_REDUCER_TICKETS_CREATE_URL_TEMPLATE: https://tickets.dmfrey.com/Ticket/Display.html?id={id}
+              # Anomaly notification email (home-gitops#5502). Goes out through the
+              # cluster's smtp-relay, which has no inbound auth and no TLS; it holds
+              # the upstream credentials and uses STARTTLS on its own outbound hop,
+              # so Envoy sets no username, password or STARTTLS. The relay's only
+              # configured sender is the noreply address below. Real mail: only
+              # people who subscribed at /settings/notifications receive anything.
+              SPRING_MAIL_HOST: smtp-relay.kube-system.svc.cluster.local
+              SPRING_MAIL_PORT: "25"
+              ENVOY_REDUCER_NOTIFICATIONS_ENABLED: "true"
+              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_ENABLED: "true"
+              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_FROM: noreply@homelab5767.cc
+              ENVOY_REDUCER_NOTIFICATIONS_BASE_URL: https://project-envoy-staging.dmfrey.com
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
@@ -226,7 +242,9 @@ spec:
               # production's 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005.
               # Step 7: 26723e8 (Create ticket button and ticket chips; envoy#146).
               # Step 6c was 80e24f1234b8af6cdaaa821119735c7bd7ba9bb6@sha256:e1710b254bfa6a0c8dcc308badfcef6957743427dc193ed5d849f97e441f80c1.
-              tag: 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:932705244773542003dcf697f3b2708311552d6e35288800915dc63b9ad84f6a
+              # Step 8: 5877564 (notification settings page). Step 7 was
+              # 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:932705244773542003dcf697f3b2708311552d6e35288800915dc63b9ad84f6a.
+              tag: 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:4daaba226c8d3010df329f8e5dfa9b9c38774f7f044432fc760cbf0445a0a1b3
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
