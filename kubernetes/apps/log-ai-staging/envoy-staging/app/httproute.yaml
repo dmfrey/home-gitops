@@ -15,6 +15,14 @@ metadata:
   # (group + route name), so a second route called envoy duplicates production's
   # internal_envoy and crash-loops gatus (2026-10-12).
   name: envoy-staging
+  annotations:
+    # gatus-sidecar derives the URL from the first path match (/v1), which this
+    # route deliberately answers with 404, so the check was always red. Probe
+    # the UI instead: it needs no sign-in and proves tunnel, gateway and
+    # frontend are up. The backend's health is covered by the pod probes.
+    gatus.home-operations.com/endpoint: |-
+      url: "https://project-envoy-staging.dmfrey.com/"
+      conditions: ["[STATUS] == 200"]
 spec:
   hostnames:
     - project-envoy-staging.dmfrey.com
