@@ -7,9 +7,16 @@ resource "sonarr_release_profile" "block_dangerous_extensions" {
   # but this rejects the release at grab-decision time instead, before any
   # download happens - protects against this pattern from any indexer, not
   # just the one that triggered it.
+  #
+  # Fixed 2026-10-14: the terms were bare strings like "\\.scr$", and Sonarr
+  # treats a bare term as a plain substring, so they never matched anything. A
+  # regex has to be wrapped in /.../ (and ends in /i to be case-insensitive).
+  # This only sees the title the indexer advertises. Releases whose ".exe" name
+  # appears only after the torrent is added in qBittorrent (five from
+  # TorrentDownload on 2026-10-13) can't be caught here.
   enabled    = true
   name       = "Block dangerous file extensions (malware-bait releases)"
-  ignored    = ["\\.scr$", "\\.exe$", "\\.lnk$", "\\.bat$", "\\.cmd$", "\\.vbs$", "\\.msi$", "\\.jar$", "\\.url$", "\\.scf$", "\\.pif$"]
+  ignored    = ["/\\.(scr|exe|lnk|bat|cmd|vbs|msi|jar|url|scf|pif)$/i"]
   indexer_id = 0 # all indexers
 
   lifecycle {
