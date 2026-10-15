@@ -67,7 +67,11 @@ spec:
               # and ticket status polling (envoy#147). Liquibase ticketing-002: ticket
               # status columns, additive. Step 8 was
               # 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:0b2d7669e53e91fb12e60a64729785fa0b1a15f8af25fb052c7a0540f2228414.
-              tag: 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:2805aee2df9be41967215898863c52e36f029875aa0fc1e2154557f4869c0a8c
+              # Step 10 (#5475 step 8): e9b7c43 masks the media-automation value that
+              # leaked into template text (envoy#165). Backend only; no new changeset.
+              # Step 9 was
+              # 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:2805aee2df9be41967215898863c52e36f029875aa0fc1e2154557f4869c0a8c.
+              tag: e9b7c430d9cc8b358d35814301e2f3a25ed37c64@sha256:b4f3f4d3338630218c2a66fd178fab9f5cec885c4a72303938773ed3062f1529
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -263,7 +267,10 @@ spec:
               # 26723e83e81ef6d72ba78a780d06b0fdf3e1ed61@sha256:932705244773542003dcf697f3b2708311552d6e35288800915dc63b9ad84f6a.
               # Step 9: 0bdf6c7 (test email button, ticket status). Step 8 was
               # 5877564a169d54623c6b1a2bc760ac5d6d6a5b62@sha256:4daaba226c8d3010df329f8e5dfa9b9c38774f7f044432fc760cbf0445a0a1b3.
-              tag: 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:85836cb2e52542ebbb6be8bed2303dc581ce38728b78f47e04094ab3a1aa9086
+              # Step 10: 799194b (sign-in lands back on the page you asked for;
+              # envoy#166). Frontend only. Step 9 was
+              # 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:85836cb2e52542ebbb6be8bed2303dc581ce38728b78f47e04094ab3a1aa9086.
+              tag: 799194b02b8401d6fd5d71920b7401898806e001@sha256:56cbfc3bd2acf43a0af173a836453f24f0de04db165a0e7b72b8f36b36eb8990
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
