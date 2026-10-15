@@ -83,7 +83,12 @@ spec:
               # Round 2, step 1 (home-gitops#5552): 1650590 adds the scoped reset page
               # (envoy#172). No config or Liquibase changes. 202deb1 was
               # 202deb1f639be3d8054e3ef12853aec1fd438a52@sha256:03d971f05d4863eb2d5f7afcbf4cfb1db658e81293a91a649541e1cc0b2d3663.
-              tag: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:1251a19d839c2b6a05c9d47dd185182418815cdb5572fd5c9195fec989dee624
+              # Round 2, step 2 (home-gitops#5552): c05be2a (paged MCP get_anomalies and
+              # get_anomaly, logfmt and gateway masking/allowlist fixes, quiet tracker MCP
+              # reconnect, per-source Drain threshold; envoy#177, #181, #182, #186, #187).
+              # No config or Liquibase changes. Backend only. 1650590 was
+              # 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:1251a19d839c2b6a05c9d47dd185182418815cdb5572fd5c9195fec989dee624.
+              tag: c05be2aef122d108a2df5c000c49a7ba4bee6ee4@sha256:2e9971a461c8c0eec54d94c041e2c2b97557ae7223d74dd7d89a063dad3f517c
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
