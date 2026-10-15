@@ -80,7 +80,10 @@ spec:
               # Liquibase detection-006-create-source-warmup: one new table, seeded with
               # one row per existing source. Backend only. Step 11 was
               # 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:2c9507cb07058b4c2a5cc5602335063281599635e180e69c2518bdcd7045c3dc.
-              tag: 202deb1f639be3d8054e3ef12853aec1fd438a52@sha256:03d971f05d4863eb2d5f7afcbf4cfb1db658e81293a91a649541e1cc0b2d3663
+              # Round 2, step 1 (home-gitops#5552): 1650590 adds the scoped reset page
+              # (envoy#172). No config or Liquibase changes. 202deb1 was
+              # 202deb1f639be3d8054e3ef12853aec1fd438a52@sha256:03d971f05d4863eb2d5f7afcbf4cfb1db658e81293a91a649541e1cc0b2d3663.
+              tag: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:1251a19d839c2b6a05c9d47dd185182418815cdb5572fd5c9195fec989dee624
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -281,7 +284,10 @@ spec:
               # 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:85836cb2e52542ebbb6be8bed2303dc581ce38728b78f47e04094ab3a1aa9086.
               # Step 11: 8a5ab21 (paged anomalies inbox, envoy#175). Step 10 was
               # 799194b02b8401d6fd5d71920b7401898806e001@sha256:56cbfc3bd2acf43a0af173a836453f24f0de04db165a0e7b72b8f36b36eb8990.
-              tag: 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:7d828df8e91caa49769d58e1800564d7337ebde0be5f97a599311eb0c58c5dec
+              # Round 2, step 1 (home-gitops#5552): 1650590 (scoped reset page, envoy#172).
+              # Step 11 was
+              # 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:7d828df8e91caa49769d58e1800564d7337ebde0be5f97a599311eb0c58c5dec.
+              tag: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:2d6bbd37fb732ce30e57147e630bfb31009a8847a6d2afce6749935527785eec
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
