@@ -1,8 +1,8 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
-# Internal-only UI for the Envoy log reducer. The UI is unauthenticated and its
-# exemplars are real log lines, so this route has exactly one parent, the
-# internal gateway: never envoy-external. (A route on both gateways would also
+# Internal-only UI for the Envoy log reducer. Sign-in (Authentik) gates /api
+# and /mcp, and its exemplars are real log lines, so this route has exactly one
+# parent, the internal gateway: never envoy-external. (A route on both gateways would also
 # make external-dns publish two CNAME targets for the hostname.)
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -39,6 +39,14 @@ spec:
         - path:
             type: PathPrefix
             value: /api
+        - path:
+            type: PathPrefix
+            value: /mcp
+        # MCP clients discover the authorization server here (RFC 9728); left
+        # to the catch-all it would return the SPA page from the frontend.
+        - path:
+            type: PathPrefix
+            value: /.well-known/oauth-protected-resource
       backendRefs:
         - name: envoy
           port: 8080
