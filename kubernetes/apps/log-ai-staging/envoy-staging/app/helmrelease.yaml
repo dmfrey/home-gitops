@@ -76,7 +76,11 @@ spec:
               # and detection-005), envoy#173 and the paged anomalies API (envoy#175).
               # Step 10 was
               # e9b7c430d9cc8b358d35814301e2f3a25ed37c64@sha256:b4f3f4d3338630218c2a66fd178fab9f5cec885c4a72303938773ed3062f1529.
-              tag: 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:2c9507cb07058b4c2a5cc5602335063281599635e180e69c2518bdcd7045c3dc
+              # Step 12 (#5475 step 10): 202deb1 fixes the warm-up clock (envoy#168).
+              # Liquibase detection-006-create-source-warmup: one new table, seeded with
+              # one row per existing source. Backend only. Step 11 was
+              # 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:2c9507cb07058b4c2a5cc5602335063281599635e180e69c2518bdcd7045c3dc.
+              tag: 202deb1f639be3d8054e3ef12853aec1fd438a52@sha256:03d971f05d4863eb2d5f7afcbf4cfb1db658e81293a91a649541e1cc0b2d3663
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
