@@ -71,7 +71,12 @@ spec:
               # leaked into template text (envoy#165). Backend only; no new changeset.
               # Step 9 was
               # 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:2805aee2df9be41967215898863c52e36f029875aa0fc1e2154557f4869c0a8c.
-              tag: e9b7c430d9cc8b358d35814301e2f3a25ed37c64@sha256:b4f3f4d3338630218c2a66fd178fab9f5cec885c4a72303938773ed3062f1529
+              # Step 11 (#5475 step 9): 8a5ab21 is the production release candidate:
+              # envoy#171 (NEW_TEMPLATE re-fire fix and one-time cleanup, detection-004
+              # and detection-005), envoy#173 and the paged anomalies API (envoy#175).
+              # Step 10 was
+              # e9b7c430d9cc8b358d35814301e2f3a25ed37c64@sha256:b4f3f4d3338630218c2a66fd178fab9f5cec885c4a72303938773ed3062f1529.
+              tag: 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:2c9507cb07058b4c2a5cc5602335063281599635e180e69c2518bdcd7045c3dc
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -270,7 +275,9 @@ spec:
               # Step 10: 799194b (sign-in lands back on the page you asked for;
               # envoy#166). Frontend only. Step 9 was
               # 0bdf6c7fc83e004826575bc99907e91dc082623f@sha256:85836cb2e52542ebbb6be8bed2303dc581ce38728b78f47e04094ab3a1aa9086.
-              tag: 799194b02b8401d6fd5d71920b7401898806e001@sha256:56cbfc3bd2acf43a0af173a836453f24f0de04db165a0e7b72b8f36b36eb8990
+              # Step 11: 8a5ab21 (paged anomalies inbox, envoy#175). Step 10 was
+              # 799194b02b8401d6fd5d71920b7401898806e001@sha256:56cbfc3bd2acf43a0af173a836453f24f0de04db165a0e7b72b8f36b36eb8990.
+              tag: 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:7d828df8e91caa49769d58e1800564d7337ebde0be5f97a599311eb0c58c5dec
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
