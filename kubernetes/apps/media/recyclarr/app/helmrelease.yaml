@@ -34,7 +34,7 @@ spec:
             command: ["/bin/sh", "-c"]
 
             args:
-              - "/app/recyclarr/recyclarr state repair --adopt; /app/recyclarr/recyclarr sync"
+              - "/app/recyclarr/recyclarr sync"
 
             envFrom:
               - secretRef:
