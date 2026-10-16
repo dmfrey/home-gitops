@@ -57,6 +57,22 @@ spec:
                 requests:
                   storage: 1Gi
 
+    kubeApiServer:
+      serviceMonitor:
+        # Setting metricRelabelings replaces the chart's default list, so the first
+        # rule is the chart default (coarser request-duration buckets) copied verbatim.
+        # The second drops per-resource histogram families that nothing uses (checked
+        # 2026-10-16 against every PrometheusRule, ConfigMap and URL-sourced dashboard
+        # in the cluster, and the repo). With this cluster's many CRDs they were about
+        # 113k live series, a quarter of the Prometheus head, across the 3 apiservers.
+        metricRelabelings:
+          - action: drop
+            sourceLabels: [__name__, le]
+            regex: (etcd_request|apiserver_request_slo|apiserver_request_sli|apiserver_request)_duration_seconds_bucket;(0\.15|0\.2|0\.3|0\.35|0\.4|0\.45|0\.6|0\.7|0\.8|0\.9|1\.25|1\.5|1\.75|2|3|3\.5|4|4\.5|6|7|8|9|15|20|40|45|50)(\.0)?
+          - action: drop
+            sourceLabels: [__name__]
+            regex: apiserver_(watch_events_dispatch_duration_seconds|watch_list_duration_seconds|request_body_size_bytes|storage_list_duration_seconds|watch_cache_read_wait_seconds|watch_cache_initialization_duration_seconds|response_sizes|watch_events_sizes)_bucket
+
     kubeEtcd:
       service:
         selector:
