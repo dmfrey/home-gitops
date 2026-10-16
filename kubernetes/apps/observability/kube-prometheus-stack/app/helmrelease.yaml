@@ -113,7 +113,9 @@ spec:
         serviceMonitorSelectorNilUsesHelmValues: false
 
         retention: 14d
-        retentionSize: 50GB
+        # Below the 50Gi PVC: retention only prunes when it hits this size, and a full
+        # disk corrupts the TSDB. Was 50GB, the same as the disk.
+        retentionSize: 42GB
 
         resources:
           requests:
@@ -198,6 +200,40 @@ spec:
                       > 1
                   )
                 for: 15m
+                labels:
+                  severity: warning
+      prometheus-capacity:
+        groups:
+          - name: prometheus-capacity
+            rules:
+              # 2026-10-16: Prometheus crash-looped on OOM at about 620k head series and
+              # only the OomKilled alert said so, after the fact. After the envoy and
+              # apiserver histogram drops the live head should sit near 380k, so 500k
+              # means something new is adding series, with room left before the 6000Mi
+              # limit bites.
+              - alert: PrometheusHeadSeriesHigh
+                expr: |
+                  max(prometheus_tsdb_head_series{job="kube-prometheus-stack-prometheus"}) > 500000
+                for: 1h
+                annotations:
+                  summary: >-
+                    Prometheus holds {{ $value | humanize }} head series (expected about 380k); find the new cardinality with topk(10, count by (__name__) ({__name__=~".+"})) before it OOMs
+                labels:
+                  severity: warning
+              # GOMEMLIMIT is 90% of the limit, so a healthy Prometheus sits near 0.9;
+              # working set also counts page cache from the mmapped blocks, hence the
+              # high threshold and long window.
+              - alert: PrometheusMemoryNearLimit
+                expr: |
+                  max(
+                    container_memory_working_set_bytes{namespace="observability", pod="prometheus-kube-prometheus-stack-0", container="prometheus"}
+                    / on (namespace, pod, container)
+                    kube_pod_container_resource_limits{namespace="observability", pod="prometheus-kube-prometheus-stack-0", container="prometheus", resource="memory"}
+                  ) > 0.97
+                for: 30m
+                annotations:
+                  summary: >-
+                    Prometheus has been above 97% of its memory limit for 30 minutes
                 labels:
                   severity: warning
       dockerhub-rules:
