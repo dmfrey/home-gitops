@@ -11,6 +11,15 @@ spec:
   interval: 1h
   values:
     tempo:
+      # Added 2026-10-17: was BestEffort. Typical use is about 1.6Gi but the 7d
+      # peak working set was 3.4Gi (compaction), so the limit sits well above
+      # that: an OOM here stops trace ingestion. p95 CPU 38m.
+      resources:
+        requests:
+          cpu: 25m
+          memory: 1Gi
+        limits:
+          memory: 5Gi
       # Trace block retention in Garage S3 (chart default is 24h).
       retention: 168h
       storage:

@@ -149,6 +149,14 @@ spec:
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
 
+      # Added 2026-10-17: was BestEffort. 7d peak working set 178Mi, p95 CPU 11m.
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+
       # metricLabelsAllowlist:
       #   - pods=[*]
       #   - deployments=[*]

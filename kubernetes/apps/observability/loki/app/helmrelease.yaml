@@ -52,6 +52,13 @@ spec:
 
     singleBinary:
       replicas: 1
+      # Added 2026-10-17: was BestEffort. 7d peak working set 700Mi, p95 CPU 29m.
+      resources:
+        requests:
+          cpu: 25m
+          memory: 512Mi
+        limits:
+          memory: 1536Mi
       persistence:
         storageClass: ceph-block
         size: 10Gi
@@ -72,6 +79,15 @@ spec:
 
     resultsCache:
       enabled: false
+
+    sidecar:
+      # Rules sidecar in the loki pod (7d peak 87Mi).
+      resources:
+        requests:
+          cpu: 5m
+          memory: 32Mi
+        limits:
+          memory: 256Mi
 
     lokiCanary:
       enabled: false
