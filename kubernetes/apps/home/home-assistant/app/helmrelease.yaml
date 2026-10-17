@@ -20,7 +20,7 @@ spec:
           venv-cleanup:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2026.10.1@sha256:627056a9e95d904822e14887ce84b9e411c55bd913f4a593d7596103848c15ec
+              tag: 2026.10.2@sha256:0d289f21951f9ecf0bf8888089c6d43f379611c47fe84f13d3302e83daa3c8fa
             command:
               - /bin/sh
               - -c
@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2026.10.1@sha256:627056a9e95d904822e14887ce84b9e411c55bd913f4a593d7596103848c15ec
+              tag: 2026.10.2@sha256:0d289f21951f9ecf0bf8888089c6d43f379611c47fe84f13d3302e83daa3c8fa
             # Overrides the image's own /entrypoint.sh - confirmed live 2026-09-30
             # that upstream's `uv venv --system-site-packages "${VENV_FOLDER}"`
             # call fails every single time with `/config/.venv` as a mounted PVC:
