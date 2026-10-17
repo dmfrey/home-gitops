@@ -72,6 +72,14 @@ spec:
           - action: drop
             sourceLabels: [__name__]
             regex: apiserver_(watch_events_dispatch_duration_seconds|watch_list_duration_seconds|request_body_size_bytes|storage_list_duration_seconds|watch_cache_read_wait_seconds|watch_cache_initialization_duration_seconds|response_sizes|watch_events_sizes)_bucket
+          # Third: the apiserver's etcd client latency histogram, still about 20k
+          # series after the first rule's coarser buckets. Checked 2026-10-17: no
+          # PrometheusRule and no dashboard (inline, ConfigMap or cached URL
+          # content) references it; etcd's own latency comes from the Talos etcd
+          # scrape. Its _count and _sum series stay.
+          - action: drop
+            sourceLabels: [__name__]
+            regex: etcd_request_duration_seconds_bucket
 
     kubeEtcd:
       service:
