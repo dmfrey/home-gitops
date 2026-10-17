@@ -11,6 +11,15 @@ spec:
   interval: 1h
   values:
     alloy:
+      # Added 2026-10-17: Alloy had none (BestEffort). 7d peak working set was
+      # 350Mi, p95 CPU 54m; the limit leaves room for the re-tail burst that a
+      # pod-stream label change causes.
+      resources:
+        requests:
+          cpu: 50m
+          memory: 256Mi
+        limits:
+          memory: 1Gi
       # otelcol.receiver.tcplog (kernel-log pipeline below) is gated at the
       # "experimental" stability level - confirmed live 2026-09-16, the
       # component docs don't flag this but the chart's default
