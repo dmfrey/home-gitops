@@ -160,6 +160,12 @@ spec:
     persistence:
       config:
         type: emptyDir
+      # Read-only root filesystem: SQLite needs a writable temp dir for larger
+      # queries (brrpolice failed with SQLITE_IOERR_GETTEMPPATH without one).
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
       config-file:
         type: configMap
         name: "{{ .Release.Name }}-configmap"

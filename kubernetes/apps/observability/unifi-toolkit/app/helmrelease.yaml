@@ -98,6 +98,13 @@ spec:
         globalMounts:
           - path: /app/data
 
+      # Read-only root filesystem: SQLite needs a writable temp dir for larger
+      # queries (brrpolice failed with SQLITE_IOERR_GETTEMPPATH without one).
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+
       env:
         type: secret
         name: "{{ .Release.Name }}-secret"
