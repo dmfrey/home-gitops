@@ -188,6 +188,11 @@ spec:
               # (args 18/21 vs 12/21 for qwen2.5:7b-instruct, same tool accuracy,
               # 3.4 s median latency; thinking arrives in a separate field).
               SPRING_AI_OPENAI_CHAT_MODEL: qwen3:8b
+              # Write a heap dump when the JVM runs out of heap (envoy#189), so the
+              # next OOM can be diagnosed. The Paketo launcher appends its own memory
+              # flags after this, so they are kept. The dump goes to the emptyDir at
+              # /dumps below (about the size of the heap, ~1.3 GiB).
+              JAVA_TOOL_OPTIONS: -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dumps
             probes:
               # The first start runs the Liquibase migrations, so give startup
               # room (up to 600s) before liveness takes over. 150s was too
@@ -277,3 +282,15 @@ spec:
         ports:
           http:
             port: 8080
+    persistence:
+      # Heap dumps from HeapDumpOnOutOfMemoryError (envoy#189). Not a PVC: the
+      # JVM exits after the dump (ExitOnOutOfMemoryError) and the container
+      # restarts in the same pod, so the emptyDir keeps it until the pod is
+      # replaced. Copy it out first.
+      dumps:
+        type: emptyDir
+        sizeLimit: 2Gi
+        advancedMounts:
+          backend:
+            app:
+              - path: /dumps
