@@ -71,3 +71,11 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
+      # The root filesystem is read-only, so without this SQLite has no
+      # writable temp dir. It only needs one for larger queries, so it ran 14
+      # days fine, then failed every tick with code 6410
+      # (SQLITE_IOERR_GETTEMPPATH) from 2026-10-17 06:26Z and stayed unready.
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
