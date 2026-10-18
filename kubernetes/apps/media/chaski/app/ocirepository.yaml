@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.5.1
-    digest: sha256:3660e79b8c1bea2e1ddb45477bd4621024482b4a8fda8d192ec1a22c20969405
+    tag: 0.5.2
+    digest: sha256:7b34b16657631198a64af94aaf955afd9e68d2d7e8762d9c031ee403b42be20e
   url: oci://ghcr.io/home-operations/charts/chaski
