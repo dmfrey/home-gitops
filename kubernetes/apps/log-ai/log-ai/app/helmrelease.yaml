@@ -88,7 +88,9 @@ spec:
               # anomalies. Rollback is a restore of the envoy-cnpg-pre-202deb1
               # backup, not an image revert. Previous:
               # 9083e54eb17dcf20c7b8efb755184f3ac75ab728@sha256:b1a95ee1e7691d28102265196e17b11e0523e4dcf3c9d413941039254079c1b4.
-              tag: 202deb1f639be3d8054e3ef12853aec1fd438a52@sha256:03d971f05d4863eb2d5f7afcbf4cfb1db658e81293a91a649541e1cc0b2d3663
+              # 9067af7 (#5585): metric cardinality fix (envoy#188/#190), scoped
+              # Reset, logfmt masking, paged MCP. Previous (release A): 202deb1f639be3d8054e3ef12853aec1fd438a52@sha256:03d971f05d4863eb2d5f7afcbf4cfb1db658e81293a91a649541e1cc0b2d3663.
+              tag: 9067af7814b81cbeb038584dd805b6a1d7584f30@sha256:d5582ea09928bec05a1ba2576dd66d4369364a4481a72afdf6b01f8c1734acba
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -245,7 +247,8 @@ spec:
               # Release A: 8a5ab21 (sign-in and sign-out flows, deep links, paged
               # anomalies inbox). Deploy with the matching backend. Previous:
               # 7272872da1c8a7a900c760fc4e8fd6200f8a0285@sha256:a65d962e0e949d5acb258264357a91d4ff80bb4e7c75f0a72cbcc4810fb20005.
-              tag: 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:7d828df8e91caa49769d58e1800564d7337ebde0be5f97a599311eb0c58c5dec
+              # 1650590 (#5585): scoped Reset page. Previous: 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:7d828df8e91caa49769d58e1800564d7337ebde0be5f97a599311eb0c58c5dec.
+              tag: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:2d6bbd37fb732ce30e57147e630bfb31009a8847a6d2afce6749935527785eec
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
