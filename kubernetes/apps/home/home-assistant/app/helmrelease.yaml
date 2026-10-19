@@ -67,6 +67,9 @@ spec:
             # partial clear (the init container used to `rm -rf /config/.venv/*`, which
             # skips dotfiles) left .image behind with no bin/, so the rebuild was skipped
             # and `source .../bin/activate` failed on every restart (2026-10-19, #5613).
+            # The rebuild keeps .ha-version (written by the venv-cleanup init container):
+            # deleting it here made every restart look like a version change, so the init
+            # container cleared the whole venv and it was rebuilt on every start (follow-up to #5614).
             # NOTE: deliberately $VAR not ${VAR} throughout - Flux's own
             # postBuild.substitute scans rendered YAML for ${...} patterns in
             # strict mode and fails the whole Kustomization if it finds one it
@@ -79,7 +82,7 @@ spec:
                 image="$(python3 -c 'from importlib.metadata import version; print(version("homeassistant"))')-$(uname -m)"
                 if [ "$(cat "$VENV_FOLDER/.image" 2>/dev/null)" != "$image" ] || [ ! -f "$VENV_FOLDER/bin/activate" ]; then
                   mkdir -p "$VENV_FOLDER"
-                  find "$VENV_FOLDER" -mindepth 1 -delete
+                  find "$VENV_FOLDER" -mindepth 1 ! -name .ha-version -delete
                   uv venv --system-site-packages --allow-existing "$VENV_FOLDER"
                   echo "$image" > "$VENV_FOLDER/.image"
                 fi
