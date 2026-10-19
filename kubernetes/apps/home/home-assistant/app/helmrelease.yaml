@@ -129,6 +129,83 @@ spec:
               GIT_CONFIG_COUNT: "1"
               GIT_CONFIG_KEY_0: safe.directory
               GIT_CONFIG_VALUE_0: "*"
+          mdns:
+            # Publishes homeassistant.local over mDNS on the IoT VLAN interface (net1).
+            # Home Assistant's own zeroconf only announces a uuid-based host name, and a
+            # container install has no Avahi to publish homeassistant.local. Reuses the HA
+            # image (it already ships the zeroconf and ifaddr libraries), so there is no
+            # extra image to track; Renovate bumps this tag together with the others.
+            image:
+              repository: ghcr.io/home-operations/home-assistant
+              tag: 2026.10.2@sha256:0d289f21951f9ecf0bf8888089c6d43f379611c47fe84f13d3302e83daa3c8fa
+            command:
+              - python3
+              - -P
+              - -c
+              - |
+                import ipaddress
+                import os
+                import signal
+                import socket
+                import threading
+
+                import ifaddr
+                from zeroconf import IPVersion, ServiceInfo, Zeroconf
+
+                # Publishes <HOSTNAME>.local for the pod's address(es) on one interface, so clients on
+                # that VLAN can resolve it over mDNS. Home Assistant's own zeroconf only announces a
+                # uuid-based host name; nothing in a container install publishes homeassistant.local.
+                host = os.environ.get("MDNS_HOSTNAME", "homeassistant")
+                iface = os.environ.get("MDNS_INTERFACE", "net1")
+                port = int(os.environ.get("MDNS_PORT", "8123"))
+
+                v4, v6 = [], []
+                for adapter in ifaddr.get_adapters():
+                    if adapter.name != iface:
+                        continue
+                    for ip in adapter.ips:
+                        if ip.is_IPv4:
+                            v4.append(ip.ip)
+                        else:
+                            addr = ipaddress.ip_address(ip.ip[0])
+                            if not addr.is_link_local:
+                                v6.append((ip.ip[0], ip.ip[2]))
+                if not v4:
+                    raise SystemExit("no IPv4 address on " + iface)
+
+                interfaces = list(v4) + [a for a in v6]
+                zc = Zeroconf(interfaces=interfaces, ip_version=IPVersion.All if v6 else IPVersion.V4Only)
+                info = ServiceInfo(
+                    "_http._tcp.local.",
+                    "Home Assistant (" + host + ")._http._tcp.local.",
+                    port=port,
+                    server=host + ".local.",
+                    parsed_addresses=list(v4) + [a[0] for a in v6],
+                )
+                zc.register_service(info, allow_name_change=False)
+                print("published", host + ".local ->", info.parsed_addresses(), "on", iface, flush=True)
+
+                stop = threading.Event()
+                for sig in (signal.SIGTERM, signal.SIGINT):
+                    signal.signal(sig, lambda *_: stop.set())
+                stop.wait()
+                zc.unregister_all_services()
+                zc.close()
+                print("unpublished", host + ".local", flush=True)
+            env:
+              MDNS_HOSTNAME: homeassistant
+              MDNS_INTERFACE: net1
+              MDNS_PORT: "8123"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 64Mi
     defaultPodOptions:
       priorityClassName: high
       annotations:
