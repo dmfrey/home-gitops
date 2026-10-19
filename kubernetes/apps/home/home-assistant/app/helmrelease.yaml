@@ -31,7 +31,7 @@ spec:
                   echo "HA $CURRENT unchanged, keeping .venv cache"
                 else
                   echo "HA version changed to $CURRENT, clearing .venv cache"
-                  rm -rf /config/.venv/*
+                  find /config/.venv -mindepth 1 -delete
                 fi
                 echo "$CURRENT" > "$VERSION_FILE"
             securityContext:
@@ -63,6 +63,10 @@ spec:
             # This is identical to upstream's entrypoint.sh with only
             # --allow-existing added to the uv venv call - drop this override
             # if home-operations/containers fixes it upstream.
+            # Rebuild also when bin/activate is missing, not only when .image differs: a
+            # partial clear (the init container used to `rm -rf /config/.venv/*`, which
+            # skips dotfiles) left .image behind with no bin/, so the rebuild was skipped
+            # and `source .../bin/activate` failed on every restart (2026-10-19, #5613).
             # NOTE: deliberately $VAR not ${VAR} throughout - Flux's own
             # postBuild.substitute scans rendered YAML for ${...} patterns in
             # strict mode and fails the whole Kustomization if it finds one it
@@ -73,7 +77,7 @@ spec:
               - -c
               - |
                 image="$(python3 -c 'from importlib.metadata import version; print(version("homeassistant"))')-$(uname -m)"
-                if [ "$(cat "$VENV_FOLDER/.image" 2>/dev/null)" != "$image" ]; then
+                if [ "$(cat "$VENV_FOLDER/.image" 2>/dev/null)" != "$image" ] || [ ! -f "$VENV_FOLDER/bin/activate" ]; then
                   mkdir -p "$VENV_FOLDER"
                   find "$VENV_FOLDER" -mindepth 1 -delete
                   uv venv --system-site-packages --allow-existing "$VENV_FOLDER"
