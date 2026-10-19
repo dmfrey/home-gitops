@@ -197,6 +197,12 @@ extraArgs:
   # github.com/aclerici38/home-ops uses.
   allowed-unsafe-sysctls: net.ipv6.conf.*
 config:
+  # Default is 110, which is half of a node's /24 pod CIDR. With one node drained
+  # the other two sat at 110/110 and ~40 evicted pods stayed Pending (2026-10-19,
+  # home-gitops#5612). 150 lets two nodes hold the ~261 pods of all three while
+  # leaving about 100 of the 254 addresses per node free for terminating pods.
+  # Going much higher needs a wider per-node CIDR. Applied without a reboot.
+  maxPods: 150
   imageMaximumGCAge: 24h
   imageGCHighThresholdPercent: 65
   imageGCLowThresholdPercent: 50
