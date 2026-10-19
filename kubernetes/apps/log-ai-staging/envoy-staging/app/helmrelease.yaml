@@ -241,6 +241,10 @@ spec:
               # flags after this, so they are kept. The dump goes to the emptyDir at
               # /dumps below (about the size of the heap, ~1.3 GiB).
               JAVA_TOOL_OPTIONS: -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dumps
+              # envoy#197: Spring Boot leaves the heapdump endpoint unregistered unless its
+              # access is set (exposure.include alone is not enough), so /actuator/heapdump
+              # is a 404 on 972c289. Staging-only until the image sets it itself, then drop this.
+              MANAGEMENT_ENDPOINT_HEAPDUMP_ACCESS: unrestricted
             probes:
               # The first start runs the Liquibase migrations, so give startup
               # room (up to 600s) before liveness takes over. 150s was too
