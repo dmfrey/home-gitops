@@ -137,8 +137,8 @@ spec:
           // the pipelines carry them as log-record attributes, so groupbyattrs
           // regroups the records into one Resource per distinct set (a plain
           // resource set would mislabel records from different hosts that share a
-          // batch). The only exclusions are the log-ai and log-ai-staging
-          // namespaces: Envoy's own logs (and its database and broker) must not
+          // batch). The exclusions are the log-ai and log-ai-staging
+          // namespaces (and actions-runner-system, see the filter): Envoy's own logs (and its database and broker) must not
           // feed back into Envoy. They keep flowing to Loki as normal.
           //
           // Delivery: Envoy answers 429 when its ingest queue is full, which the
@@ -167,6 +167,10 @@ spec:
                 conditions = [
                   `attributes["namespace"] == "log-ai"`,
                   `attributes["namespace"] == "log-ai-staging"`,
+                  // Runner and worker chatter (per-job) templates poorly and is not
+                  // operational signal: ~3% of records, 5th by NEW_TEMPLATE anomalies
+                  // (envoy#8 day-7 review). Envoy branch only; Loki keeps it.
+                  `attributes["namespace"] == "actions-runner-system"`,
                 ]
               }
 
