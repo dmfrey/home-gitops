@@ -95,7 +95,9 @@ spec:
               # a mask would change the text (envoy#20 / #192). No Liquibase changes.
               # Heap dump on OOM is set below (envoy#189). c05be2a was
               # c05be2aef122d108a2df5c000c49a7ba4bee6ee4@sha256:2e9971a461c8c0eec54d94c041e2c2b97557ae7223d74dd7d89a063dad3f517c.
-              tag: 9067af7814b81cbeb038584dd805b6a1d7584f30@sha256:d5582ea09928bec05a1ba2576dd66d4369364a4481a72afdf6b01f8c1734acba
+              # Round 3 (home-gitops#5600): 972c289 adds chat stage 2, inbox grouping, the admin-only
+              # heapdump endpoint, doc links. Previous (9067af7): 9067af7814b81cbeb038584dd805b6a1d7584f30@sha256:d5582ea09928bec05a1ba2576dd66d4369364a4481a72afdf6b01f8c1734acba.
+              tag: 972c289b640d3018a0e9a8eea725be17a6f2925c@sha256:57e07ae87a80ae013d151359dd868168fdb1d3cd3ffaf1b16c199eead840b942
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -304,7 +306,8 @@ spec:
               # Round 2, step 1 (home-gitops#5552): 1650590 (scoped reset page, envoy#172).
               # Step 11 was
               # 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:7d828df8e91caa49769d58e1800564d7337ebde0be5f97a599311eb0c58c5dec.
-              tag: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:2d6bbd37fb732ce30e57147e630bfb31009a8847a6d2afce6749935527785eec
+              # Round 3 (home-gitops#5600). Previous: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:2d6bbd37fb732ce30e57147e630bfb31009a8847a6d2afce6749935527785eec.
+              tag: 972c289b640d3018a0e9a8eea725be17a6f2925c@sha256:b26207251895aead8ad04b6dc3b0e2509cc66e00339228e284127cc3bcc6f938
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
