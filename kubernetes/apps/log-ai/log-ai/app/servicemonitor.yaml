@@ -16,13 +16,3 @@ spec:
     - port: http
       path: /actuator/prometheus
       interval: 30s
-      # envoy meters db.client.operation.duration with the statement text as a label,
-      # and batched inserts make every batch size a new statement: template_alias alone
-      # had 830 statements (about 64k series) and templates 275 (about 22k) on
-      # 2026-10-16, which with the rest pushed Prometheus into an OOM crash loop.
-      # Drop the buckets; _count and _sum stay. Remove once envoy stops emitting the
-      # statement text as a label.
-      metricRelabelings:
-        - action: drop
-          sourceLabels: [__name__]
-          regex: db_client_operation_duration_seconds_bucket
