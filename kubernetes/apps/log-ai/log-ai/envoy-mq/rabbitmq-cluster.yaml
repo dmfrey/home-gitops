@@ -12,6 +12,12 @@ spec:
   replicas: 1
   # renovate: datasource=docker depName=rabbitmq versioning=loose
   image: rabbitmq:4.4-management@sha256:c200fd496482cda18c412be4e6f244830e1e75949b8cf5f0e887cea9ea456109
+  rabbitmq:
+    additionalConfig: |
+      # The operator default (2GB) is larger than these PVCs, which raises a
+      # permanent free-disk alarm that blocks every publisher. Events are
+      # transient, so a small absolute floor is enough.
+      disk_free_limit.absolute = 500MB
   resources:
     requests:
       cpu: 100m
