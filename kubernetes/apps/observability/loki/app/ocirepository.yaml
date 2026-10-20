@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 18.16.0
-    digest: sha256:85e833f9f1b60f472588b9b89ccd2ec8f98de8845cd6b8058fef700290b377e3
+    tag: 18.17.1
+    digest: sha256:f7a952f001f5ab47e3d35c3793b96e523018cbef2d167f97cb0c762303d3e37f
   url: oci://ghcr.io/grafana-community/helm-charts/loki
