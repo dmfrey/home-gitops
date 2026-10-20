@@ -118,6 +118,11 @@ spec:
               SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy/
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy-mcp/
               ENVOY_REDUCER_AUTH_ACCOUNT_URL: https://auth.dmfrey.com/if/user/
+              # Raw-log tool (query_raw_logs, envoy#16/#5647). The property default is
+              # http://localhost:3100, i.e. the pod itself, so every call was refused.
+              # The Loki gateway is the same path Grafana's datasource uses; Loki has
+              # auth_enabled: false, so no tenant header is needed.
+              ENVOY_REDUCER_ASSIST_LOKI_BASE_URL: http://loki-gateway.observability.svc.cluster.local
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
