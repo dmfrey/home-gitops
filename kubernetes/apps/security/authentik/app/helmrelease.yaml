@@ -52,6 +52,9 @@ spec:
       resources:
         requests:
           cpu: 50m
+          # Was implicit (the 512Mi limit). One sidecar per server/worker pod, 9 pods, so
+          # this alone held about 4 GiB of the cluster's memory requests (#5612).
+          memory: 128Mi
         limits:
           memory: 512Mi
     prometheus:
@@ -82,6 +85,8 @@ spec:
       resources:
         requests:
           cpu: 200m
+          # Was implicit (the 4Gi limit). 7-day peak for the whole pod is 0.84 GiB (#5612).
+          memory: 1280Mi
         limits:
           memory: 4Gi
       volumes: &postgresCredsVolume
@@ -106,6 +111,8 @@ spec:
       resources:
         requests:
           cpu: 100m
+          # Was implicit (the 1024Mi limit). 7-day peak for the whole pod is 0.40 GiB (#5612).
+          memory: 512Mi
         limits:
           memory: 1024Mi
       volumes: *postgresCredsVolume
