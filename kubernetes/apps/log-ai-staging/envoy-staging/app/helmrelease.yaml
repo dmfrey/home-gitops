@@ -146,7 +146,10 @@ spec:
               # ..._ARGUMENTS_TICKET_ID to the key "ticket.id" (an env var cannot
               # carry an underscore in a map key), and the tool then rejects the
               # call. So this one argument goes in as JSON.
-              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}}}}}'
+              # Same source-to-product mapping as production (home-gitops#5644), in bracket form so the
+              # '/' in each key survives Spring's Map-key binding. Staging gets no live logs, so this
+              # is parity only; it cannot be exercised here.
+              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}}}}}'
               ENVOY_REDUCER_TICKETS_STATUS_PATTERN: '(?m)^\s*Status: (\w+)\s*$'
               ENVOY_REDUCER_TICKETS_STATUS_CLOSED_VALUES: resolved,rejected,deleted
               # Anomaly notification email (home-gitops#5502). Goes out through the

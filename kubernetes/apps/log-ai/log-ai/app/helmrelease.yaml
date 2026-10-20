@@ -123,8 +123,10 @@ spec:
               # match from a bad one. Values match the lowercase `product` tag exactly as
               # uploaded (see /knowledge). Only sources with one obvious owner are
               # mapped; the rest keep searching everything. SPRING_APPLICATION_JSON,
-              # because a plain env var cannot carry map keys containing '/'.
-              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"detection":{"doc-links":{"source-products":{"infra/storage":{"product":"ceph"},"infra/talos":{"product":"talos"},"infra/object-storage":{"product":"garage"},"platform/flux-system":{"product":"flux"}}}}}}}'
+              # because a plain env var cannot carry map keys containing '/'. The keys are in
+              # bracket form: Spring drops every character outside [a-z0-9-.] from an unbracketed
+              # Map key, so a bare infra/storage would have bound as infrastorage and matched nothing.
+              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}}}}}'
               # Raw-log tool (query_raw_logs, envoy#16/#5647). The property default is
               # http://localhost:3100, i.e. the pod itself, so every call was refused.
               # The Loki gateway is the same path Grafana's datasource uses; Loki has
