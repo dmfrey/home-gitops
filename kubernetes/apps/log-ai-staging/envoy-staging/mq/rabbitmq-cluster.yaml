@@ -1,7 +1,8 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/rabbitmq.com/rabbitmqcluster_v1beta1.json
-# Broker for staging Envoy's anomaly events. Same image and sizing as
-# log-ai/envoy-mq; disposable, no backup.
+# Broker for staging Envoy's anomaly events. Same sizing as log-ai/envoy-mq;
+# disposable, no backup. Runs one minor ahead (4.4) of the production and
+# spring-notes brokers (4.3) while the 4.4 upgrade is proven here first.
 apiVersion: rabbitmq.com/v1beta1
 kind: RabbitmqCluster
 metadata:
@@ -9,7 +10,7 @@ metadata:
 spec:
   replicas: 1
   # renovate: datasource=docker depName=rabbitmq versioning=loose
-  image: rabbitmq:4.3-management@sha256:54cb013d76cd1fd6c0a0708f34062ad61c452bb6f016b434c6c33f1a765d2b58
+  image: rabbitmq:4.4-management@sha256:c200fd496482cda18c412be4e6f244830e1e75949b8cf5f0e887cea9ea456109
   resources:
     requests:
       cpu: 100m
