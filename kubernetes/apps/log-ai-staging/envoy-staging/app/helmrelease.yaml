@@ -102,7 +102,9 @@ spec:
               # Backend only; the frontend stays on 972c289. Previous (972c289): 972c289b640d3018a0e9a8eea725be17a6f2925c@sha256:57e07ae87a80ae013d151359dd868168fdb1d3cd3ffaf1b16c199eead840b942.
               # Step 3 (home-gitops#5600; envoy#206, #208, #209): c513c4d adds deploys-001 (empty deploys table),
               # POST /api/deploys, mask counts on /admin/system. Previous (4c40c94): 4c40c948f0dc6985e379f69ee6857fd95200006f@sha256:49c45eabd76166a5a2763a822314988fa9f6eb047757ad63be12852df67c2444.
-              tag: c513c4dd90b45993b3b2cadfe03f321022028102@sha256:9775cbd8b5a409cc9a90e14783bb48835078463af63cf4d89ecdf3d536c9b1fc
+              # Step 4 (home-gitops#5600; envoy #211-#220): ebc5d52 adds maintenance windows, the hourly rollup, detectors,
+              # anomaly windows, triage, event publishing and incident memory, all off by default. Previous (c513c4d): c513c4dd90b45993b3b2cadfe03f321022028102@sha256:9775cbd8b5a409cc9a90e14783bb48835078463af63cf4d89ecdf3d536c9b1fc.
+              tag: ebc5d52f7016ab79ca51eb3031eefb989210fa08@sha256:4391f7a3427498837c6b82c36a66c32b1c3fb68062ee2112b4d81d5eb533a342
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -313,7 +315,8 @@ spec:
               # 8a5ab21d96b0534171aca8d48ec04c5f3786d35b@sha256:7d828df8e91caa49769d58e1800564d7337ebde0be5f97a599311eb0c58c5dec.
               # Round 3 (home-gitops#5600). Previous: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:2d6bbd37fb732ce30e57147e630bfb31009a8847a6d2afce6749935527785eec.
               # Step 3 (home-gitops#5600): ffa19ec adds the error panel (envoy#209). Previous (972c289): 972c289b640d3018a0e9a8eea725be17a6f2925c@sha256:b26207251895aead8ad04b6dc3b0e2509cc66e00339228e284127cc3bcc6f938.
-              tag: ffa19ecffc886201da3cfd7fec585fcfb1b6214d@sha256:152047ede2360664963d75007d88749d0acee2de46b81a63989d6de115523f92
+              # Step 4 (home-gitops#5600): ebc5d52, same commit as the backend. Previous (ffa19ec): ffa19ecffc886201da3cfd7fec585fcfb1b6214d@sha256:152047ede2360664963d75007d88749d0acee2de46b81a63989d6de115523f92.
+              tag: ebc5d52f7016ab79ca51eb3031eefb989210fa08@sha256:1cd8e6315614f2f2cc6e7b34de2ef8786de751283ea97b9426c5aa986cb3c2dc
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
