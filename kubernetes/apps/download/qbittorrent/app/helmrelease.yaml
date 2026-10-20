@@ -71,6 +71,9 @@ spec:
             resources:
               requests:
                 cpu: 25m
+                # Was implicit: with only a limit set, the request defaults to it (8Gi).
+                # 7-day peak is 0.17 GiB, so 1Gi is generous; the 8Gi limit is unchanged.
+                memory: 1Gi
               limits:
                 memory: 8Gi
     defaultPodOptions:
