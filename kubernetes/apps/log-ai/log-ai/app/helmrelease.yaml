@@ -118,15 +118,54 @@ spec:
               SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy/
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy-mcp/
               ENVOY_REDUCER_AUTH_ACCOUNT_URL: https://auth.dmfrey.com/if/user/
+              # Ticket filing through the in-cluster RT MCP server (home-gitops#5508). Enabled 2026-10-20
+              # after the day-7 review (envoy#8). Files into the production "Envoy" queue and has
+              # no automatic rules yet (manual "Create ticket" button only; rules are a later
+              # change). The MCP has no auth of its own.
+              ENVOY_REDUCER_TICKETS_ENABLED: "true"
+              ENVOY_REDUCER_TICKETS_TRACKER: rt
+              ENVOY_REDUCER_TICKETS_BASE_URL: https://project-envoy.dmfrey.com
+              ENVOY_REDUCER_TICKETS_MCP_URL: http://rt-mcp.observability.svc.cluster.local:8013/mcp
+              ENVOY_REDUCER_TICKETS_CREATE_TOOL: create_ticket_tool
+              ENVOY_REDUCER_TICKETS_CREATE_ARGUMENTS_QUEUE: Envoy
+              ENVOY_REDUCER_TICKETS_CREATE_ARGUMENTS_SUBJECT: "{subject}"
+              ENVOY_REDUCER_TICKETS_CREATE_ARGUMENTS_TEXT: "{body}"
+              # Matches RT's real reply (verified on staging 2026-10-14).
+              ENVOY_REDUCER_TICKETS_CREATE_SUCCESS_PATTERN: 'Ticket #(\d+) created'
+              ENVOY_REDUCER_TICKETS_CREATE_URL_TEMPLATE: https://tickets.dmfrey.com/Ticket/Display.html?id={id}
+              # Ticket status polling (envoy#147). Shape taken from a real
+              # get_ticket_tool reply (2026-10-14): argument ticket_id, and a line
+              # "  Status: new". Anchored to line start so a "Status:" inside a
+              # subject can't match. No match is stored as unknown, not an error.
+              ENVOY_REDUCER_TICKETS_STATUS_TOOL: get_ticket_tool
+              # The tool's argument is "ticket_id", but Spring maps the env var
+              # ..._ARGUMENTS_TICKET_ID to the key "ticket.id" (an env var cannot
+              # carry an underscore in a map key), and the tool then rejects the
+              # call. So this one argument goes in as JSON.
+              ENVOY_REDUCER_TICKETS_STATUS_PATTERN: '(?m)^\s*Status: (\w+)\s*$'
+              ENVOY_REDUCER_TICKETS_STATUS_CLOSED_VALUES: resolved,rejected,deleted
+              # Anomaly notification email (home-gitops#5502). Goes out through the
+              # cluster's smtp-relay, which has no inbound auth and no TLS; it holds
+              # the upstream credentials and uses STARTTLS on its own outbound hop,
+              # so Envoy sets no username, password or STARTTLS. The relay's only
+              # configured sender is the noreply address below. Only people
+              # who subscribed at /settings/notifications receive anything.
+              SPRING_MAIL_HOST: smtp-relay.kube-system.svc.cluster.local
+              SPRING_MAIL_PORT: "25"
+              ENVOY_REDUCER_NOTIFICATIONS_ENABLED: "true"
+              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_ENABLED: "true"
+              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_FROM: noreply@homelab5767.cc
+              ENVOY_REDUCER_NOTIFICATIONS_BASE_URL: https://project-envoy.dmfrey.com
               # Narrow each anomaly's doc search to the product its source belongs to
               # (home-gitops#5644, envoy#17): relevance scores alone cannot tell a good
               # match from a bad one. Values match the lowercase `product` tag exactly as
               # uploaded (see /knowledge). Only sources with one obvious owner are
               # mapped; the rest keep searching everything. SPRING_APPLICATION_JSON,
-              # because a plain env var cannot carry map keys containing '/'. The keys are in
+              # because a plain env var cannot carry map keys containing '/' (or an underscore, as in
+              # the ticket status argument ticket_id). The keys are in
               # bracket form: Spring drops every character outside [a-z0-9-.] from an unbracketed
               # Map key, so a bare infra/storage would have bound as infrastorage and matched nothing.
-              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}}}}}'
+              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}},"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}}}}}'
               # Raw-log tool (query_raw_logs, envoy#16/#5647). The property default is
               # http://localhost:3100, i.e. the pod itself, so every call was refused.
               # The Loki gateway is the same path Grafana's datasource uses; Loki has
