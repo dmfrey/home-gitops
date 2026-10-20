@@ -100,7 +100,10 @@ spec:
               # incident citations in chat (#232) and the eval/knowledge-upload fixes (#16). Twelve additive
               # changesets (maintenance-001 .. incidents-001). Rollback: revert the images (additive schema) or
               # restore envoy-cnpg-pre-245d884. Previous (c513c4d): c513c4dd90b45993b3b2cadfe03f321022028102@sha256:9775cbd8b5a409cc9a90e14783bb48835078463af63cf4d89ecdf3d536c9b1fc.
-              tag: 245d884e836e1b2d7a247430e098a86e3ee10b8a@sha256:b5cefa2ce13f6e7da7539839e6b56b4c7c304dd3d3943d499f1581ff682fee32
+              # home-gitops#5656: b75ebe6 adds masking of scale-suffixed counts (envoy#240), chat prompt v6
+              # (#238, #239, #241) and the doc-link word gate (#237); one additive changeset (detection-015).
+              # Rollback: revert the images. Previous (245d884): 245d884e836e1b2d7a247430e098a86e3ee10b8a@sha256:b5cefa2ce13f6e7da7539839e6b56b4c7c304dd3d3943d499f1581ff682fee32.
+              tag: b75ebe648037413d2bc9f60d9b3bfee59a51bab5@sha256:0d6d17500bde3e824b6729aa1b16972e325457749d6f60857aed1b1dc314e079
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -314,7 +317,9 @@ spec:
               # ffa19ec (#5611): error panel instead of a blank screen (envoy#209), plus the
               # chat, inbox and doc-link UI that shipped with 972c289. Previous (1650590): 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:2d6bbd37fb732ce30e57147e630bfb31009a8847a6d2afce6749935527785eec.
               # home-gitops#5645: 245d884, same commit as the backend. Previous (ffa19ec): ffa19ecffc886201da3cfd7fec585fcfb1b6214d@sha256:152047ede2360664963d75007d88749d0acee2de46b81a63989d6de115523f92.
-              tag: 245d884e836e1b2d7a247430e098a86e3ee10b8a@sha256:e0fde006488b874ecf2944dd408a4938a518bc0c84d179c39cd18763d5868c16
+              # home-gitops#5656: c72f408 (no newer frontend build; #247 changed no frontend files).
+              # Previous (245d884): 245d884e836e1b2d7a247430e098a86e3ee10b8a@sha256:e0fde006488b874ecf2944dd408a4938a518bc0c84d179c39cd18763d5868c16.
+              tag: c72f408148763dc79f2e3c4d1e432e7c829520b6@sha256:1f09e065990c9952b354adb9005a8dfc1a9b54a4901d6defe4e3e3f4840e8757
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
