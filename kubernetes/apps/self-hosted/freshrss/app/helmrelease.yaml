@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: docker.io/freshrss/freshrss
-              tag: 1.30.1@sha256:48b63b9bc3d042a1301c32971b01af8841c7f059b452589c5bf77f475ba44c61
+              tag: 1.30.2@sha256:a4a4a2233c082940b3ed5a32e2bf12d6c5271062be7e34c188dec99816540fc4
             env:
               TZ: America/New_York
               CRON_MIN: "1,31"
