@@ -1,0 +1,2401 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: envoy
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  json: |-
+    {
+      "uid": "envoy-production",
+      "title": "Envoy (Production)",
+      "tags": [
+        "envoy",
+        "log-ai",
+        "production"
+      ],
+      "schemaVersion": 39,
+      "editable": true,
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "refresh": "1m",
+      "templating": {
+        "list": [
+          {
+            "name": "pod",
+            "label": "Backend pod",
+            "type": "query",
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "query": "label_values(jvm_info{namespace=\"log-ai\", job=\"envoy\"}, pod)",
+            "refresh": 2,
+            "includeAll": true,
+            "allValue": "envoy-backend-.*",
+            "current": {
+              "text": "All",
+              "value": "$__all"
+            }
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "row",
+          "title": "Overview",
+          "collapsed": false,
+          "panels": [],
+          "id": 1,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Uptime",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "decimals": 1
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "max(process_uptime_seconds{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 2,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Process CPU",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 0.7
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.9
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "max(process_cpu_usage{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 3,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 4,
+            "y": 1
+          }
+        },
+        {
+          "type": "gauge",
+          "title": "Heap Used",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0,
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 70
+                  },
+                  {
+                    "color": "red",
+                    "value": 90
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(jvm_memory_used_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", area=\"heap\"}) * 100 / sum(jvm_memory_max_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", area=\"heap\"})",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 4,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 8,
+            "y": 1
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Heap After GC",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "max(jvm_gc_live_data_size_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "description": "Live data after the last full GC; the leak indicator. Compare across releases.",
+          "id": 5,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 12,
+            "y": 1
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Ingest Queue Depth",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 1000
+                  },
+                  {
+                    "color": "red",
+                    "value": 5000
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "max(envoy_reducer_ingest_queue_depth{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 6,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 16,
+            "y": 1
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Log Records/s",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "decimals": 1
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(envoy_reducer_log_records_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 7,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 20,
+            "y": 1
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Windows Opened (24h)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(increase(envoy_reducer_detection_windows_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", event=\"opened\"}[24h])) or vector(0)",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 8,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 0,
+            "y": 5
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Notifications Pending",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 20
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "max(envoy_reducer_notifications_pending{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 9,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 4,
+            "y": 5
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Tickets Filed (24h)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(increase(envoy_reducer_tickets_filed_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", outcome=\"ok\"}[24h])) or vector(0)",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 10,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 8,
+            "y": 5
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Log Errors (5m)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(increase(logback_events_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", level=\"error\"}[5m])) or vector(0)",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 11,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 12,
+            "y": 5
+          }
+        },
+        {
+          "type": "stat",
+          "title": "HTTP 5xx (5m)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(increase(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", status=~\"5..\"}[5m])) or vector(0)",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "id": 12,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 16,
+            "y": 5
+          }
+        },
+        {
+          "type": "stat",
+          "title": "Ingest 429s (5m)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 1
+                  },
+                  {
+                    "color": "red",
+                    "value": 20
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ]
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(increase(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/v1/logs\", status=\"429\"}[5m])) or vector(0)",
+              "refId": "A",
+              "instant": true
+            }
+          ],
+          "description": "Backpressure on OTLP ingest (/v1/logs). Non-zero means Alloy is being told to slow down.",
+          "id": 13,
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 20,
+            "y": 5
+          }
+        },
+        {
+          "type": "row",
+          "title": "Ingest (OTLP /v1/logs)",
+          "collapsed": false,
+          "panels": [],
+          "id": 14,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Log Records/s by Layer",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "custom": {
+                "stacking": {
+                  "mode": "normal"
+                },
+                "fillOpacity": 30
+              }
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (infra_layer) (rate(envoy_reducer_log_records_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{infra_layer}}"
+            }
+          ],
+          "id": 15,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 10
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Log Records/s by Component (top 10)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "topk(10, sum by (infra_layer, infra_component) (rate(envoy_reducer_log_records_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])))",
+              "refId": "A",
+              "legendFormat": "{{infra_layer}}/{{infra_component}}"
+            }
+          ],
+          "id": 16,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 10
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Records by Severity Class",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops",
+              "custom": {
+                "stacking": {
+                  "mode": "normal"
+                },
+                "fillOpacity": 30
+              }
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (class) (rate(envoy_reducer_ingest_severity_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{class}}"
+            }
+          ],
+          "id": 17,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 10
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Ingest Queue Depth",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "max(envoy_reducer_ingest_queue_depth{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "legendFormat": "queue depth"
+            }
+          ],
+          "description": "Records waiting to be drained into templates. A rising line means ingest is outrunning templating.",
+          "id": 18,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 18
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "/v1/logs Requests by Status",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (status) (rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/v1/logs\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{status}}"
+            }
+          ],
+          "id": 19,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 18
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "/v1/logs Latency",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_requests_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/v1/logs\"}[$__rate_interval])) / sum(rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/v1/logs\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "avg"
+            },
+            {
+              "expr": "max(http_server_requests_seconds_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/v1/logs\"})",
+              "refId": "B",
+              "legendFormat": "max"
+            }
+          ],
+          "description": "Mean and window-max; this service does not export request-latency histograms.",
+          "id": 20,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 18
+          }
+        },
+        {
+          "type": "row",
+          "title": "Templating",
+          "collapsed": false,
+          "panels": [],
+          "id": 21,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 26
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Template Churn",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(envoy_reducer_templating_templates_new_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "new templates"
+            },
+            {
+              "expr": "sum(rate(envoy_reducer_templating_folded_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "B",
+              "legendFormat": "folded"
+            },
+            {
+              "expr": "sum(rate(envoy_reducer_templating_converged_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "C",
+              "legendFormat": "converged"
+            },
+            {
+              "expr": "sum(rate(envoy_reducer_templating_evictions_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) or vector(0)",
+              "refId": "D",
+              "legendFormat": "evictions"
+            },
+            {
+              "expr": "sum(rate(envoy_reducer_templating_counts_dropped_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) or vector(0)",
+              "refId": "E",
+              "legendFormat": "counts dropped"
+            }
+          ],
+          "description": "New templates, merges of near-duplicates, and evictions. Counts dropped should stay at zero.",
+          "id": 22,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 27
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Records Processed/s",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(envoy_reducer_templating_records_processed_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "processed"
+            },
+            {
+              "expr": "sum(rate(envoy_reducer_log_records_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "B",
+              "legendFormat": "received"
+            }
+          ],
+          "id": 23,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 27
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Drain Duration by Source (top 10, mean)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "topk(10, sum by (source_key)(rate(envoy_reducer_templating_drain_duration_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) / sum by (source_key)(rate(envoy_reducer_templating_drain_duration_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])))",
+              "refId": "A",
+              "legendFormat": "{{source_key}}"
+            }
+          ],
+          "id": 24,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 27
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Drain Duration (max by source, top 10)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "topk(10, max by (source_key) (envoy_reducer_templating_drain_duration_seconds_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}))",
+              "refId": "A",
+              "legendFormat": "{{source_key}}"
+            }
+          ],
+          "id": 25,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 35
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Tree Clusters by Source (top 15)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "topk(15, max by (source_key) (envoy_reducer_templating_tree_clusters{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}))",
+              "refId": "A",
+              "legendFormat": "{{source_key}}"
+            }
+          ],
+          "description": "Live template clusters per source in the in-memory tree.",
+          "id": 26,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 35
+          }
+        },
+        {
+          "type": "row",
+          "title": "Detection",
+          "collapsed": false,
+          "panels": [],
+          "id": 27,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 43
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Suppressed Anomalies (warm-up etc.)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (reason, type) (rate(envoy_reducer_detection_suppressed_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{type}} / {{reason}}"
+            }
+          ],
+          "id": 28,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 44
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Anomaly Windows",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (event) (increase(envoy_reducer_detection_windows_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{event}}"
+            }
+          ],
+          "description": "Windows opened and closed per interval.",
+          "id": 29,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 44
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Doc-Link Sweep Outcomes",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (outcome) (increase(envoy_reducer_detection_doc_links_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{outcome}}"
+            }
+          ],
+          "id": 30,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 44
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Incident Memory Indexing",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (outcome) (increase(envoy_reducer_incidents_indexed_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{outcome}}"
+            }
+          ],
+          "description": "Closed windows indexed into incident memory; any error outcome is worth a look.",
+          "id": 31,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 52
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Anomaly Windows API Reads",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (uri) (rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=~\"/api/anomal.*|/api/incidents.*\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{uri}}"
+            }
+          ],
+          "id": 32,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 52
+          }
+        },
+        {
+          "type": "row",
+          "title": "Notifications, Tickets & Messaging",
+          "collapsed": false,
+          "panels": [],
+          "id": 33,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 60
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Notification Deliveries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (channel, outcome) (increase(envoy_reducer_notifications_deliveries_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{channel}} {{outcome}}"
+            },
+            {
+              "expr": "max(envoy_reducer_notifications_pending{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "pending"
+            }
+          ],
+          "id": 34,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 61
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Ticket Filing & Status",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (outcome) (increase(envoy_reducer_tickets_filed_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "filed {{outcome}}"
+            },
+            {
+              "expr": "sum by (outcome) (increase(envoy_reducer_tickets_status_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "B",
+              "legendFormat": "status {{outcome}}"
+            },
+            {
+              "expr": "sum(increase(envoy_reducer_tickets_session_reconnects_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) or vector(0)",
+              "refId": "C",
+              "legendFormat": "session reconnects"
+            }
+          ],
+          "description": "RT ticket creation and status polling, plus MCP session reconnects.",
+          "id": 35,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 61
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "RabbitMQ (client side)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(rabbitmq_published_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "published"
+            },
+            {
+              "expr": "sum(rate(rabbitmq_consumed_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "B",
+              "legendFormat": "consumed"
+            },
+            {
+              "expr": "sum(rate(rabbitmq_acknowledged_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "C",
+              "legendFormat": "acknowledged"
+            },
+            {
+              "expr": "sum(rate(rabbitmq_rejected_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) or vector(0)",
+              "refId": "D",
+              "legendFormat": "rejected"
+            },
+            {
+              "expr": "sum(rate(rabbitmq_requeued_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) or vector(0)",
+              "refId": "E",
+              "legendFormat": "requeued"
+            },
+            {
+              "expr": "sum(rate(rabbitmq_failed_to_publish_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) or vector(0)",
+              "refId": "F",
+              "legendFormat": "failed to publish"
+            }
+          ],
+          "id": 36,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 61
+          }
+        },
+        {
+          "type": "row",
+          "title": "Assistant (Chat & Tools)",
+          "collapsed": false,
+          "panels": [],
+          "id": 37,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 69
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Chat Turns",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (outcome) (increase(envoy_reducer_chat_turns_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{outcome}}"
+            }
+          ],
+          "id": 38,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 70
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Tool Calls",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (tool, outcome) (rate(envoy_reducer_assist_tool_calls_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{tool}} {{outcome}}"
+            }
+          ],
+          "id": 39,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 70
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Tool Latency (mean)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (tool)(rate(envoy_reducer_assist_tool_duration_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) / sum by (tool)(rate(envoy_reducer_assist_tool_duration_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{tool}}"
+            }
+          ],
+          "id": 40,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 70
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Gen AI Calls",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (gen_ai_operation_name) (rate(gen_ai_client_operation_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{gen_ai_operation_name}}"
+            }
+          ],
+          "id": 41,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 78
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Gen AI Latency",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (gen_ai_operation_name)(rate(gen_ai_client_operation_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) / sum by (gen_ai_operation_name)(rate(gen_ai_client_operation_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "mean {{gen_ai_operation_name}}"
+            },
+            {
+              "expr": "max by (gen_ai_operation_name) (gen_ai_client_operation_seconds_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "max {{gen_ai_operation_name}}"
+            }
+          ],
+          "id": 42,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 78
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Token Usage",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": {
+                "stacking": {
+                  "mode": "normal"
+                },
+                "fillOpacity": 30
+              }
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (gen_ai_operation_name, gen_ai_token_type) (rate(gen_ai_client_token_usage_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", gen_ai_token_type!=\"total\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{gen_ai_operation_name}} {{gen_ai_token_type}}"
+            }
+          ],
+          "description": "Tokens per second by operation and direction; the 'total' series is left out to avoid double counting.",
+          "id": 43,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 78
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Chat Endpoint",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/api/chats/{id}/messages\", method=\"POST\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "requests/s"
+            }
+          ],
+          "id": 44,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 86
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Chat Endpoint Latency",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(http_server_requests_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/api/chats/{id}/messages\", method=\"POST\"}[$__rate_interval])) / sum(rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/api/chats/{id}/messages\", method=\"POST\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "mean"
+            },
+            {
+              "expr": "max(http_server_requests_seconds_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/api/chats/{id}/messages\", method=\"POST\"})",
+              "refId": "B",
+              "legendFormat": "max"
+            }
+          ],
+          "id": 45,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 86
+          }
+        },
+        {
+          "type": "row",
+          "title": "HTTP API",
+          "collapsed": false,
+          "panels": [],
+          "id": 46,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 94
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Request Rate by URI (excluding actuator and ingest)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "topk(10, sum by (method, uri) (rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri!~\"/actuator.*|/v1/logs\"}[$__rate_interval])))",
+              "refId": "A",
+              "legendFormat": "{{method}} {{uri}}"
+            }
+          ],
+          "id": 47,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 95
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Mean Latency by URI (top 10)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "topk(10, sum by (method, uri)(rate(http_server_requests_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri!~\"/actuator.*|/v1/logs\"}[$__rate_interval])) / sum by (method, uri)(rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri!~\"/actuator.*|/v1/logs\"}[$__rate_interval])))",
+              "refId": "A",
+              "legendFormat": "{{method}} {{uri}}"
+            }
+          ],
+          "id": 48,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 95
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Non-2xx Responses",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (status, uri) (rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", status!~\"2..\", uri!~\"/actuator.*\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{status}} {{uri}}"
+            }
+          ],
+          "id": 49,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 95
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "MCP Endpoint (/mcp) by Status",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (status) (rate(http_server_requests_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", uri=\"/mcp\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{status}}"
+            }
+          ],
+          "description": "Calls from chat clients and the Envoy MCP tools.",
+          "id": 50,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 103
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Spring Security Authorization",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(spring_security_authorizations_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) / sum(rate(spring_security_authorizations_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "mean"
+            },
+            {
+              "expr": "max(spring_security_authorizations_seconds_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "max"
+            }
+          ],
+          "id": 51,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 103
+          }
+        },
+        {
+          "type": "row",
+          "title": "Database & JVM",
+          "collapsed": false,
+          "panels": [],
+          "id": 52,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 111
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "HikariCP Connections",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "hikaricp_connections_active{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "A",
+              "legendFormat": "active"
+            },
+            {
+              "expr": "hikaricp_connections_idle{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "B",
+              "legendFormat": "idle"
+            },
+            {
+              "expr": "hikaricp_connections_pending{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "C",
+              "legendFormat": "pending"
+            },
+            {
+              "expr": "hikaricp_connections_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "D",
+              "legendFormat": "max"
+            }
+          ],
+          "id": 53,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 112
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "DB Latency (mean / max)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(jdbc_query_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) / sum(rate(jdbc_query_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "query mean"
+            },
+            {
+              "expr": "max(jdbc_query_seconds_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "query max"
+            },
+            {
+              "expr": "sum(rate(hikaricp_connections_acquire_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) / sum(rate(hikaricp_connections_acquire_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "C",
+              "legendFormat": "acquire mean"
+            }
+          ],
+          "id": 54,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 112
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "JDBC Activity",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(jdbc_query_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "queries"
+            },
+            {
+              "expr": "sum(rate(jdbc_connection_commit_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "B",
+              "legendFormat": "commits"
+            },
+            {
+              "expr": "sum(rate(jdbc_connection_rollback_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "C",
+              "legendFormat": "rollbacks"
+            },
+            {
+              "expr": "sum(rate(hikaricp_connections_timeout_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "D",
+              "legendFormat": "pool timeouts"
+            }
+          ],
+          "id": 55,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 112
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "JVM Heap",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(jvm_memory_used_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", area=\"heap\"})",
+              "refId": "A",
+              "legendFormat": "used"
+            },
+            {
+              "expr": "sum(jvm_memory_committed_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", area=\"heap\"})",
+              "refId": "B",
+              "legendFormat": "committed"
+            },
+            {
+              "expr": "sum(jvm_memory_max_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\", area=\"heap\"})",
+              "refId": "C",
+              "legendFormat": "max"
+            }
+          ],
+          "id": 56,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 120
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Heap After GC",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "max(jvm_gc_live_data_size_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "legendFormat": "live data after GC"
+            },
+            {
+              "expr": "max(jvm_gc_max_data_size_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "max data size"
+            }
+          ],
+          "description": "A line that climbs across GCs is a leak; a sawtooth that returns to a floor is healthy.",
+          "id": 57,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 120
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "JVM Memory Pools",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "jvm_memory_used_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "A",
+              "legendFormat": "{{id}} ({{area}})"
+            }
+          ],
+          "id": 58,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 120
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "GC",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(jvm_gc_pause_seconds_sum{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval])) / sum(rate(jvm_gc_pause_seconds_count{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "mean pause"
+            },
+            {
+              "expr": "max(jvm_gc_pause_seconds_max{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "max pause"
+            },
+            {
+              "expr": "max(jvm_gc_overhead{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "C",
+              "legendFormat": "overhead (fraction)"
+            }
+          ],
+          "description": "Pause times in seconds; overhead is the fraction of CPU spent in GC.",
+          "id": 59,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 128
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Allocation & Promotion",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(jvm_gc_memory_allocated_bytes_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "allocated"
+            },
+            {
+              "expr": "sum(rate(jvm_gc_memory_promoted_bytes_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "B",
+              "legendFormat": "promoted"
+            }
+          ],
+          "id": 60,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 128
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Threads",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "jvm_threads_live_threads{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "A",
+              "legendFormat": "live"
+            },
+            {
+              "expr": "jvm_threads_daemon_threads{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "B",
+              "legendFormat": "daemon"
+            },
+            {
+              "expr": "jvm_threads_peak_threads{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "C",
+              "legendFormat": "peak"
+            },
+            {
+              "expr": "jvm_threads_states_threads{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "D",
+              "legendFormat": "{{state}}"
+            }
+          ],
+          "id": 61,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 128
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "CPU",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "max(process_cpu_usage{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "legendFormat": "process"
+            },
+            {
+              "expr": "max(system_cpu_usage{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "system"
+            }
+          ],
+          "id": 62,
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 0,
+            "y": 136
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "File Descriptors",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "decimals": 0
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "max(process_files_open_files{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "legendFormat": "open"
+            },
+            {
+              "expr": "max(process_files_max_files{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "max"
+            }
+          ],
+          "id": 63,
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 6,
+            "y": 136
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Log Events by Level",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (level) (rate(logback_events_total{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{level}}"
+            }
+          ],
+          "id": 64,
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 12,
+            "y": 136
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Disk",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "max(disk_free_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "A",
+              "legendFormat": "free"
+            },
+            {
+              "expr": "max(disk_total_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "total"
+            }
+          ],
+          "id": 65,
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 18,
+            "y": 136
+          }
+        },
+        {
+          "type": "row",
+          "title": "Traces",
+          "collapsed": false,
+          "panels": [],
+          "id": 66,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 144
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Span Rate (server spans)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (span_name) (rate(traces_spanmetrics_calls_total{service=\"envoy\", span_kind=\"SPAN_KIND_SERVER\"}[$__rate_interval]))",
+              "refId": "A",
+              "legendFormat": "{{span_name}}"
+            }
+          ],
+          "description": "From Tempo metrics-generator span metrics",
+          "id": 67,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 145
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Span Latency p95 (server spans)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum by (le, span_name) (rate(traces_spanmetrics_latency_bucket{service=\"envoy\", span_kind=\"SPAN_KIND_SERVER\"}[$__rate_interval])))",
+              "refId": "A",
+              "legendFormat": "{{span_name}}"
+            }
+          ],
+          "description": "From Tempo metrics-generator span metrics",
+          "id": 68,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 145
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Error Spans",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(traces_spanmetrics_calls_total{service=\"envoy\", status_code=\"STATUS_CODE_ERROR\"}[$__rate_interval])) or vector(0)",
+              "refId": "A",
+              "legendFormat": "error spans"
+            }
+          ],
+          "id": 69,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 145
+          }
+        },
+        {
+          "type": "traces",
+          "title": "Recent Traces (excluding actuator)",
+          "datasource": {
+            "type": "tempo",
+            "uid": "tempo"
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "tempo",
+                "uid": "tempo"
+              },
+              "queryType": "traceql",
+              "query": "{resource.service.name=\"envoy\" && kind=server && name!~\"http get /actuator.*\"}",
+              "limit": 20,
+              "tableType": "traces",
+              "refId": "A"
+            }
+          ],
+          "id": 70,
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 153
+          }
+        },
+        {
+          "type": "row",
+          "title": "Logs",
+          "collapsed": false,
+          "panels": [],
+          "id": 71,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 162
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Log Volume by Level",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "none",
+              "custom": {
+                "drawStyle": "bars",
+                "fillOpacity": 50
+              }
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "sum by (detected_level) (count_over_time({namespace=\"log-ai\", service_name=\"envoy\", pod=~\"$pod\"} [$__auto]))",
+              "refId": "A",
+              "legendFormat": "{{detected_level}}"
+            }
+          ],
+          "id": 72,
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 0,
+            "y": 163
+          }
+        },
+        {
+          "type": "logs",
+          "title": "Application Logs",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "options": {
+            "showTime": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "enableLogDetails": true,
+            "dedupStrategy": "none"
+          },
+          "targets": [
+            {
+              "expr": "{namespace=\"log-ai\", service_name=\"envoy\", pod=~\"$pod\"}",
+              "refId": "A"
+            }
+          ],
+          "id": 73,
+          "gridPos": {
+            "h": 10,
+            "w": 16,
+            "x": 8,
+            "y": 163
+          }
+        },
+        {
+          "type": "logs",
+          "title": "Warnings and Errors",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "options": {
+            "showTime": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "enableLogDetails": true,
+            "dedupStrategy": "none"
+          },
+          "targets": [
+            {
+              "expr": "{namespace=\"log-ai\", service_name=\"envoy\", pod=~\"$pod\"} | detected_level=~\"warn|warning|error\"",
+              "refId": "A"
+            }
+          ],
+          "id": 74,
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 173
+          }
+        }
+      ]
+    }
