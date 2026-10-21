@@ -125,6 +125,11 @@ spec:
               SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy/
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy-mcp/
               ENVOY_REDUCER_AUTH_ACCOUNT_URL: https://auth.dmfrey.com/if/user/
+              # Anomaly window grouping (envoy#217, home-gitops#5678). Turns on grouping only: the
+              # RATE_CHANGE and DISAPPEARANCE/SOURCE_SILENT detectors, window triage and event
+              # publishing stay off. Other window settings keep their defaults (join-gap 10m,
+              # close-after 30m, lookback 2h, max-per-sweep 500, sweep-interval 2m).
+              ENVOY_REDUCER_DETECTION_WINDOWS_ENABLED: "true"
               # Ticket filing through the in-cluster RT MCP server (home-gitops#5508). Enabled 2026-10-20
               # after the day-7 review (envoy#8). Files into the production "Envoy" queue and has
               # no automatic rules yet (manual "Create ticket" button only; rules are a later
