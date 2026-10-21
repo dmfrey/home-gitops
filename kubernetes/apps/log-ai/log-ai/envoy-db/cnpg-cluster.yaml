@@ -5,7 +5,11 @@ kind: Cluster
 metadata:
   name: envoy-cnpg
 spec:
-  instances: 1
+  # Two instances: a streaming replica makes node loss and the restarts a
+  # resource or parameter change needs a switchover (seconds) instead of the
+  # single primary being down for the whole restart. Backups are unchanged
+  # (barman/Garage WAL archiving plus the daily ScheduledBackup).
+  instances: 2
   enablePDB: false
   # tensorchord's CNPG-compatible Postgres image with pgvector pre-installed
   # (also bundles VectorChord's own vchord extension, unused here - only
@@ -57,7 +61,7 @@ spec:
       shared_buffers: 128MB
 
   primaryUpdateStrategy: unsupervised
-  primaryUpdateMethod: restart
+  primaryUpdateMethod: switchover
 
   resources:
     requests:
