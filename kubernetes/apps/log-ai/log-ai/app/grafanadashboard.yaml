@@ -70,7 +70,16 @@ spec:
           "fieldConfig": {
             "defaults": {
               "unit": "s",
-              "decimals": 1
+              "decimals": 1,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": null
+                  }
+                ]
+              }
             },
             "overrides": []
           },
@@ -204,7 +213,16 @@ spec:
           },
           "fieldConfig": {
             "defaults": {
-              "unit": "bytes"
+              "unit": "bytes",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": null
+                  }
+                ]
+              }
             },
             "overrides": []
           },
@@ -294,7 +312,16 @@ spec:
           "fieldConfig": {
             "defaults": {
               "unit": "ops",
-              "decimals": 1
+              "decimals": 1,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": null
+                  }
+                ]
+              }
             },
             "overrides": []
           },
@@ -330,7 +357,16 @@ spec:
           "fieldConfig": {
             "defaults": {
               "unit": "none",
-              "decimals": 0
+              "decimals": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": null
+                  }
+                ]
+              }
             },
             "overrides": []
           },
@@ -415,7 +451,16 @@ spec:
           "fieldConfig": {
             "defaults": {
               "unit": "none",
-              "decimals": 0
+              "decimals": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": null
+                  }
+                ]
+              }
             },
             "overrides": []
           },
@@ -1881,11 +1926,6 @@ spec:
               "expr": "max(jvm_gc_live_data_size_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
               "refId": "A",
               "legendFormat": "live data after GC"
-            },
-            {
-              "expr": "max(jvm_gc_max_data_size_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
-              "refId": "B",
-              "legendFormat": "max data size"
             }
           ],
           "description": "A line that climbs across GCs is a leak; a sawtooth that returns to a floor is healthy.",
