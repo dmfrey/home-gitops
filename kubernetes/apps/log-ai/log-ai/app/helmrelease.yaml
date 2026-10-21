@@ -103,7 +103,11 @@ spec:
               # home-gitops#5656: b75ebe6 adds masking of scale-suffixed counts (envoy#240), chat prompt v6
               # (#238, #239, #241) and the doc-link word gate (#237); one additive changeset (detection-015).
               # Rollback: revert the images. Previous (245d884): 245d884e836e1b2d7a247430e098a86e3ee10b8a@sha256:b5cefa2ce13f6e7da7539839e6b56b4c7c304dd3d3943d499f1581ff682fee32.
-              tag: b75ebe648037413d2bc9f60d9b3bfee59a51bab5@sha256:0d6d17500bde3e824b6729aa1b16972e325457749d6f60857aed1b1dc314e079
+              # home-gitops#5677: 5669bc4 fixes the hourly-rollup / retire-fold deadlock on
+              # template_counts_hourly (envoy#246): both writers now take row locks in the same order.
+              # No changesets, no config. Backend only; the frontend stays on c72f408.
+              # Rollback: revert the image. Previous (b75ebe6): b75ebe648037413d2bc9f60d9b3bfee59a51bab5@sha256:0d6d17500bde3e824b6729aa1b16972e325457749d6f60857aed1b1dc314e079.
+              tag: 5669bc4881949df3fc23d78cc07ff82f313a52db@sha256:9ac322ad27a3344246c63cbedd05f39a5ba95cea6442b1c41a5d4a45911dacd8
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
