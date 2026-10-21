@@ -54,18 +54,19 @@ spec:
   postgresql:
     parameters:
       max_connections: "200"
-      shared_buffers: 128MB
+      shared_buffers: 512MB
+      work_mem: 16MB
 
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: restart
 
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 250m
+      memory: 768Mi
     limits:
-      cpu: 500m
-      memory: 1Gi
+      cpu: 1500m
+      memory: 2Gi
 
   storage:
     storageClass: ceph-block
