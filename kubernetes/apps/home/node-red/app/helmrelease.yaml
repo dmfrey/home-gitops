@@ -20,7 +20,7 @@ spec:
           node-red:
             image:
               repository: nodered/node-red
-              tag: 4.1.16-18-minimal@sha256:cb36ef518be7230e0bf0e8ed68a65ff80f74925730a9484ee90e4104bb8314f4
+              tag: 4.1.17-18-minimal@sha256:d85fd91dc8bb31337917a2ae9d7d28e4161a55b96d3bd15cab0119f6d889f90a
 
             env:
               TZ: America/New_York
