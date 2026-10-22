@@ -220,6 +220,17 @@ resource "prowlarr_indexer" "torrent_torrentdownload" {
   # only a tiebreaker, so it didn't stop them; Sonarr refused to import all
   # five. About 60 grabs in the previous 30 days came from this indexer, so
   # check how many episodes had no other source before deciding to keep it off.
+  #
+  # Trial concluded 2026-10-22, kept disabled: Sonarr, Radarr and Lidarr all
+  # kept grabbing from the other indexers (Sonarr 194 grabs in the 8 days after
+  # the switch-off, 0 from this one), and none of the 126 / 52 / 37 monitored
+  # missing episodes, movies and albums aired or released after 2026-10-14.
+  # Only two old Poldark (2015) episodes and two movies (The Ritual, Methodic)
+  # have a grab from it in their history.
+  # cross-seed tag removed 2026-10-22 (applied live in Prowlarr): cross-seed
+  # selects indexers by tag regardless of enable state, so it kept asking for
+  # this disabled indexer's caps and logging "responded with code 410" - same
+  # as torrent_limetorrents below.
   enable          = false
   name            = "TorrentDownload"
   implementation  = "Cardigann"
@@ -227,7 +238,7 @@ resource "prowlarr_indexer" "torrent_torrentdownload" {
   app_profile_id  = 1
   protocol        = "torrent"
   priority        = 50
-  tags            = [prowlarr_tag.cross_seed.id]
+  tags            = []
 
   fields = [
     {
