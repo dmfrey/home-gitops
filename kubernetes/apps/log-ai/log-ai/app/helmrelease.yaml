@@ -107,7 +107,12 @@ spec:
               # template_counts_hourly (envoy#246): both writers now take row locks in the same order.
               # No changesets, no config. Backend only; the frontend stays on c72f408.
               # Rollback: revert the image. Previous (b75ebe6): b75ebe648037413d2bc9f60d9b3bfee59a51bab5@sha256:0d6d17500bde3e824b6729aa1b16972e325457749d6f60857aed1b1dc314e079.
-              tag: 5669bc4881949df3fc23d78cc07ff82f313a52db@sha256:9ac322ad27a3344246c63cbedd05f39a5ba95cea6442b1c41a5d4a45911dacd8
+              # home-gitops#5688: f144461 scopes window joins (envoy#266), closes windows against
+              # post-placement state (envoy#263), returns incident summaries with a one-incident tool
+              # (envoy#264, #254, #238), sweeps hourly rows orphaned by a concurrent merge (envoy#251),
+              # chat prompt v9. No changesets, no config. Backend only. Rollback: revert the image
+              # (no schema change; backup envoy-cnpg-pre-f144461 is a precaution). Previous (5669bc4): 5669bc4881949df3fc23d78cc07ff82f313a52db@sha256:9ac322ad27a3344246c63cbedd05f39a5ba95cea6442b1c41a5d4a45911dacd8.
+              tag: f1444613299c7bb4812f298d00ac1190f13a9ddb@sha256:8fbf3486f29cf6582360a067b3d3f9e7911d0a8b476e038538d1811dbbc9df8b
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
