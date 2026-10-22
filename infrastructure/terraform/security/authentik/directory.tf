@@ -42,6 +42,15 @@ resource "authentik_group" "envoy_operators" {
   is_superuser = false
 }
 
+# Envoy deploy reporting (home-gitops#5605). Envoy accepts POST /api/deploys only
+# from a bearer token whose `groups` claim contains envoy.deployers, which it maps
+# to ROLE_DEPLOYER: a role that can report a deploy and nothing else. Operators and
+# admins are deliberately not in it.
+resource "authentik_group" "envoy_deployers" {
+  name         = "envoy.deployers"
+  is_superuser = false
+}
+
 resource "authentik_group" "default" {
   for_each     = local.authentik_groups
   name         = each.value.name
@@ -81,6 +90,29 @@ resource "authentik_policy_binding" "envoy_operators" {
   target = authentik_application.application[each.key].uuid
   group  = authentik_group.envoy_operators.id
   order  = 1
+}
+
+# As far as I know authentik checks the application's access policy for the user
+# behind a client_credentials token too, so the deployers group is bound to the
+# application that issues them; if it does not, this binding is harmless.
+resource "authentik_policy_binding" "envoy_deployers" {
+  target = authentik_application.application["envoy-mcp"].uuid
+  group  = authentik_group.envoy_deployers.id
+  order  = 2
+}
+
+# The identity behind the deploy reporter's token. authentik machine clients do not
+# use a client secret: they post grant_type=client_credentials with this username and
+# an app password. The app password is created by hand in the authentik UI
+# (Directory > Tokens and App passwords, intent "App password", user envoy-deployer,
+# no expiry) and stored in 1Password, so the secret is never in Terraform state.
+# Request scope=profile: the "Group Membership" scope mapping puts `groups` in the JWT.
+resource "authentik_user" "envoy_deployer" {
+  username = "envoy-deployer"
+  name     = "Envoy deploy reporter"
+  type     = "service_account"
+  path     = "service-accounts"
+  groups   = [authentik_group.envoy_deployers.id]
 }
 
 resource "authentik_user" "Dan" {
