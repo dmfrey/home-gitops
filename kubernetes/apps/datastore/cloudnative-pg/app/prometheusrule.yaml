@@ -58,10 +58,15 @@ spec:
             severity: warning
         - alert: DatabaseDeadlockConflicts
           annotations:
-            description: There are over 10 deadlock conflicts in {{ $labels.pod }}
-            summary: Checks the number of database conflicts
+            description: There were over 10 deadlocks in the last hour in {{ $labels.pod }} (database {{ $labels.datname }})
+            summary: Checks the number of recent database deadlocks
+          # cnpg_pg_stat_database_deadlocks is Postgres's lifetime counter and
+          # only resets with the database stats, so comparing it to a number
+          # fires forever once the total passes it (authentik-cnpg sat at
+          # "firing" for 42 hours at roughly one deadlock an hour). Alert on
+          # the recent increase instead.
           expr: |-
-            cnpg_pg_stat_database_deadlocks > 10
+            increase(cnpg_pg_stat_database_deadlocks[1h]) > 10
           for: 1m
           labels:
             severity: warning
