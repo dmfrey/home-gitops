@@ -224,9 +224,9 @@ resource "prowlarr_indexer" "torrent_torrentdownload" {
   # Trial concluded 2026-10-22, kept disabled: Sonarr, Radarr and Lidarr all
   # kept grabbing from the other indexers (Sonarr 194 grabs in the 8 days after
   # the switch-off, 0 from this one), and none of the 126 / 52 / 37 monitored
-  # missing episodes, movies and albums aired or released after 2026-10-14 or
-  # depends on it. Only two old Poldark (2015) episodes and one movie
-  # (The Ritual) have a grab from it in their history.
+  # missing episodes, movies and albums aired or released after 2026-10-14.
+  # Only two old Poldark (2015) episodes and two movies (The Ritual, Methodic)
+  # have a grab from it in their history.
   # cross-seed tag removed 2026-10-22 (applied live in Prowlarr): cross-seed
   # selects indexers by tag regardless of enable state, so it kept asking for
   # this disabled indexer's caps and logging "responded with code 410" - same
