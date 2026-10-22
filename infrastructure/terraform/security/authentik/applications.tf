@@ -37,6 +37,10 @@ locals {
     envoy-mcp = {
       client_id   = "envoy-mcp"
       client_type = "public"
+      # client_credentials is for the envoy-deployer service account only
+      # (home-gitops#5605, see directory.tf): Envoy trusts exactly one token
+      # issuer (this provider's), shared by its MCP and deploy endpoints.
+      grant_types = ["authorization_code", "refresh_token", "client_credentials"]
       group       = "monitoring"
       icon_url    = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/loki.png"
       redirect_uris = [
@@ -240,7 +244,7 @@ resource "authentik_provider_oauth2" "oauth2" {
   # providers (confirmed on immich - "grant_types": [] rejected every
   # authorization_code request with "Invalid grant_type for provider"), even
   # though older providers created before this had a full default list.
-  grant_types = ["authorization_code", "refresh_token"]
+  grant_types = try(each.value.grant_types, ["authorization_code", "refresh_token"])
   # apps needing more than one redirect (e.g. web + mobile) set redirect_uris
   # (a list); everything else keeps the single redirect_uri/redirect_uri_mode
   # shorthand, wrapped into a one-element list here.
