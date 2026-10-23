@@ -352,7 +352,8 @@ spec:
               # home-gitops#5722: fadd7d3 (HTML email, announce-after and stats label UI).
               # Previous (c72f408): c72f408148763dc79f2e3c4d1e432e7c829520b6@sha256:1f09e065990c9952b354adb9005a8dfc1a9b54a4901d6defe4e3e3f4840e8757.
               # home-gitops#5736: 669e411 (the "Sign-in failed" card at /?login_error). Previous (fadd7d3): fadd7d37b9d3ee5d5f0ccaa989381cdc4587e8cc@sha256:bfb2dd87c5705d1c9101649b9a00e423dcc3aebd2a68824f9baddd956cac0f2f.
-              tag: 669e411fc9355b4775c242c7278983f019d319e3@sha256:f0a59f4644f55d72926b530b2be6099be4ad0756d8cb03048a65d74619e50f8a
+              # home-gitops#5739: bc50b5e, frontend only (in-app help, field tooltips). Previous (669e411): 669e411fc9355b4775c242c7278983f019d319e3@sha256:f0a59f4644f55d72926b530b2be6099be4ad0756d8cb03048a65d74619e50f8a.
+              tag: bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
