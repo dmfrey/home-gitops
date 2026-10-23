@@ -41,3 +41,32 @@ spec:
               Envoy's ingest queue metric has been missing for 10 minutes; the backend is down or the ServiceMonitor scrape is failing
           labels:
             severity: warning
+        # Netty keeps its own direct-memory counter (the JVM's buffer-pool
+        # metric reads ~0 while Netty is at its cap). At the cap every new TLS
+        # connection fails, including the OAuth2 token request to authentik
+        # (envoy#293, 2026-10-23). The cap is 64 MiB via -XX:MaxDirectMemorySize.
+        - alert: EnvoyNettyDirectMemoryHigh
+          expr: |
+            max by (pod) (
+              envoy_reducer_netty_direct_memory_used_bytes{job="envoy"}
+              / envoy_reducer_netty_direct_memory_max_bytes{job="envoy"}
+            ) > 0.7
+          for: 10m
+          annotations:
+            summary: >-
+              Envoy pod {{ $labels.pod }} has used {{ $value | humanizePercentage }} of Netty's direct-memory cap; at 100% new TLS connections and SSO sign-in fail
+          labels:
+            severity: warning
+        # Both gauges report NaN if Netty's counter stops being readable, and
+        # NaN > 0.7 is false, so the alert above would stay silent. Cover
+        # both a missing series and a NaN reading.
+        - alert: EnvoyNettyDirectMemoryAbsent
+          expr: |
+            absent(envoy_reducer_netty_direct_memory_used_bytes{job="envoy"})
+            or on() (max(envoy_reducer_netty_direct_memory_used_bytes{job="envoy"}) != max(envoy_reducer_netty_direct_memory_used_bytes{job="envoy"}))
+          for: 15m
+          annotations:
+            summary: >-
+              Envoy's Netty direct-memory gauge has been missing or NaN for 15 minutes; the high-usage alert cannot fire
+          labels:
+            severity: warning
