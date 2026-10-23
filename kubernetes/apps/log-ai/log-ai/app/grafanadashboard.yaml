@@ -1967,6 +1967,69 @@ spec:
         },
         {
           "type": "timeseries",
+          "title": "Netty Direct Memory",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "envoy_reducer_netty_direct_memory_used_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "A",
+              "legendFormat": "used {{pod}}"
+            },
+            {
+              "expr": "max(envoy_reducer_netty_direct_memory_max_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"})",
+              "refId": "B",
+              "legendFormat": "cap"
+            }
+          ],
+          "description": "Netty's own counter; the JVM direct-buffer metric does not see it. At the cap every new TLS connection fails (envoy#293). Alert EnvoyNettyDirectMemoryHigh fires above 70% of the cap.",
+          "id": 59,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 128
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Netty Direct Memory Used (% of cap)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "expr": "envoy_reducer_netty_direct_memory_used_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"} / envoy_reducer_netty_direct_memory_max_bytes{namespace=\"log-ai\", job=\"envoy\", pod=~\"$pod\"}",
+              "refId": "A",
+              "legendFormat": "{{pod}}"
+            }
+          ],
+          "description": "No line means the gauge is NaN or absent; the EnvoyNettyDirectMemoryAbsent alert covers that.",
+          "id": 60,
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 8,
+            "y": 128
+          }
+        },
+        {
+          "type": "timeseries",
           "title": "GC",
           "datasource": {
             "type": "prometheus",
@@ -1996,11 +2059,11 @@ spec:
             }
           ],
           "description": "Pause times in seconds; overhead is the fraction of CPU spent in GC.",
-          "id": 59,
+          "id": 61,
           "gridPos": {
             "h": 8,
             "w": 8,
-            "x": 0,
+            "x": 14,
             "y": 128
           }
         },
@@ -2029,12 +2092,12 @@ spec:
               "legendFormat": "promoted"
             }
           ],
-          "id": 60,
+          "id": 62,
           "gridPos": {
             "h": 8,
             "w": 8,
-            "x": 8,
-            "y": 128
+            "x": 0,
+            "y": 136
           }
         },
         {
@@ -2073,12 +2136,12 @@ spec:
               "legendFormat": "{{state}}"
             }
           ],
-          "id": 61,
+          "id": 63,
           "gridPos": {
             "h": 8,
             "w": 8,
-            "x": 16,
-            "y": 128
+            "x": 8,
+            "y": 136
           }
         },
         {
@@ -2106,11 +2169,11 @@ spec:
               "legendFormat": "system"
             }
           ],
-          "id": 62,
+          "id": 64,
           "gridPos": {
             "h": 8,
             "w": 6,
-            "x": 0,
+            "x": 16,
             "y": 136
           }
         },
@@ -2140,12 +2203,12 @@ spec:
               "legendFormat": "max"
             }
           ],
-          "id": 63,
+          "id": 65,
           "gridPos": {
             "h": 8,
             "w": 6,
-            "x": 6,
-            "y": 136
+            "x": 0,
+            "y": 144
           }
         },
         {
@@ -2168,12 +2231,12 @@ spec:
               "legendFormat": "{{level}}"
             }
           ],
-          "id": 64,
+          "id": 66,
           "gridPos": {
             "h": 8,
             "w": 6,
-            "x": 12,
-            "y": 136
+            "x": 6,
+            "y": 144
           }
         },
         {
@@ -2201,12 +2264,12 @@ spec:
               "legendFormat": "total"
             }
           ],
-          "id": 65,
+          "id": 67,
           "gridPos": {
             "h": 8,
             "w": 6,
-            "x": 18,
-            "y": 136
+            "x": 12,
+            "y": 144
           }
         },
         {
@@ -2214,12 +2277,12 @@ spec:
           "title": "Traces",
           "collapsed": false,
           "panels": [],
-          "id": 66,
+          "id": 68,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 144
+            "y": 152
           }
         },
         {
@@ -2243,12 +2306,12 @@ spec:
             }
           ],
           "description": "From Tempo metrics-generator span metrics",
-          "id": 67,
+          "id": 69,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 145
+            "y": 153
           }
         },
         {
@@ -2272,12 +2335,12 @@ spec:
             }
           ],
           "description": "From Tempo metrics-generator span metrics",
-          "id": 68,
+          "id": 70,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 145
+            "y": 153
           }
         },
         {
@@ -2300,12 +2363,12 @@ spec:
               "legendFormat": "error spans"
             }
           ],
-          "id": 69,
+          "id": 71,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 145
+            "y": 153
           }
         },
         {
@@ -2328,12 +2391,12 @@ spec:
               "refId": "A"
             }
           ],
-          "id": 70,
+          "id": 72,
           "gridPos": {
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 153
+            "y": 161
           }
         },
         {
@@ -2341,12 +2404,12 @@ spec:
           "title": "Logs",
           "collapsed": false,
           "panels": [],
-          "id": 71,
+          "id": 73,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 162
+            "y": 170
           }
         },
         {
@@ -2373,12 +2436,12 @@ spec:
               "legendFormat": "{{detected_level}}"
             }
           ],
-          "id": 72,
+          "id": 74,
           "gridPos": {
             "h": 10,
             "w": 8,
             "x": 0,
-            "y": 163
+            "y": 171
           }
         },
         {
@@ -2401,12 +2464,12 @@ spec:
               "refId": "A"
             }
           ],
-          "id": 73,
+          "id": 75,
           "gridPos": {
             "h": 10,
             "w": 16,
             "x": 8,
-            "y": 163
+            "y": 171
           }
         },
         {
@@ -2429,12 +2492,12 @@ spec:
               "refId": "A"
             }
           ],
-          "id": 74,
+          "id": 76,
           "gridPos": {
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 173
+            "y": 181
           }
         }
       ]
