@@ -112,7 +112,14 @@ spec:
               # (envoy#264, #254, #238), sweeps hourly rows orphaned by a concurrent merge (envoy#251),
               # chat prompt v9. No changesets, no config. Backend only. Rollback: revert the image
               # (no schema change; backup envoy-cnpg-pre-f144461 is a precaution). Previous (5669bc4): 5669bc4881949df3fc23d78cc07ff82f313a52db@sha256:9ac322ad27a3344246c63cbedd05f39a5ba95cea6442b1c41a5d4a45911dacd8.
-              tag: f1444613299c7bb4812f298d00ac1190f13a9ddb@sha256:8fbf3486f29cf6582360a067b3d3f9e7911d0a8b476e038538d1811dbbc9df8b
+              # home-gitops#5722: b187205 holds WINDOW_OPENED until the window has settled (envoy#276),
+              # locks outbox rows in id order (#281), matches window subscriptions on any source (#273),
+              # escapes the HTML email (#260), says when get_anomalies is partial (#254), bounds window
+              # age (#288), and stops scanning the whole minute table for stats (#274). One additive
+              # changeset (detection-016, a nullable announced_at column plus its backfill). The same
+              # change sets -XX:MaxDirectMemorySize=64M below (envoy#293). Rollback: revert the images;
+              # the flag can stay. Previous (f144461): f1444613299c7bb4812f298d00ac1190f13a9ddb@sha256:8fbf3486f29cf6582360a067b3d3f9e7911d0a8b476e038538d1811dbbc9df8b.
+              tag: b1872058a16847116209fd44705396784979e091@sha256:0e4e309e16502744d49fd61fb12f0c6b49c3f30ceeb44044ec83df60c4cc1c6d
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -274,7 +281,11 @@ spec:
               # next OOM can be diagnosed. The Paketo launcher appends its own memory
               # flags after this, so they are kept. The dump goes to the emptyDir at
               # /dumps below (about the size of the heap, ~1.3 GiB).
-              JAVA_TOOL_OPTIONS: -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dumps
+              # envoy#293 (2026-10-23): Netty's direct-memory cap was the buildpack default of
+              # 10 MiB and ran out after about 16 h, which broke SSO sign-in (new TLS connections
+              # could not allocate buffers). An explicit flag is kept by the memory calculator, which
+              # subtracts it from the heap budget (about 54 MiB less -Xmx; heap after GC is ~130 MiB).
+              JAVA_TOOL_OPTIONS: -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dumps -XX:MaxDirectMemorySize=64M
             probes:
               # The first start runs the Liquibase migrations, so give startup
               # room (up to 600s) before liveness takes over. 150s was too
@@ -333,7 +344,9 @@ spec:
               # home-gitops#5645: 245d884, same commit as the backend. Previous (ffa19ec): ffa19ecffc886201da3cfd7fec585fcfb1b6214d@sha256:152047ede2360664963d75007d88749d0acee2de46b81a63989d6de115523f92.
               # home-gitops#5656: c72f408 (no newer frontend build; #247 changed no frontend files).
               # Previous (245d884): 245d884e836e1b2d7a247430e098a86e3ee10b8a@sha256:e0fde006488b874ecf2944dd408a4938a518bc0c84d179c39cd18763d5868c16.
-              tag: c72f408148763dc79f2e3c4d1e432e7c829520b6@sha256:1f09e065990c9952b354adb9005a8dfc1a9b54a4901d6defe4e3e3f4840e8757
+              # home-gitops#5722: fadd7d3 (HTML email, announce-after and stats label UI).
+              # Previous (c72f408): c72f408148763dc79f2e3c4d1e432e7c829520b6@sha256:1f09e065990c9952b354adb9005a8dfc1a9b54a4901d6defe4e3e3f4840e8757.
+              tag: fadd7d37b9d3ee5d5f0ccaa989381cdc4587e8cc@sha256:bfb2dd87c5705d1c9101649b9a00e423dcc3aebd2a68824f9baddd956cac0f2f
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,

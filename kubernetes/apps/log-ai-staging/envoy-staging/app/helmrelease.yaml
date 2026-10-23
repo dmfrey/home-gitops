@@ -255,7 +255,11 @@ spec:
               # next OOM can be diagnosed. The Paketo launcher appends its own memory
               # flags after this, so they are kept. The dump goes to the emptyDir at
               # /dumps below (about the size of the heap, ~1.3 GiB).
-              JAVA_TOOL_OPTIONS: -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dumps
+              # envoy#293 (2026-10-23): Netty's direct-memory cap was the buildpack default of
+              # 10 MiB and ran out after about 16 h, which broke SSO sign-in (new TLS connections
+              # could not allocate buffers). An explicit flag is kept by the memory calculator, which
+              # subtracts it from the heap budget (about 54 MiB less -Xmx; heap after GC is ~130 MiB).
+              JAVA_TOOL_OPTIONS: -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dumps -XX:MaxDirectMemorySize=64M
             probes:
               # The first start runs the Liquibase migrations, so give startup
               # room (up to 600s) before liveness takes over. 150s was too
