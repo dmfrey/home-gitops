@@ -119,7 +119,12 @@ spec:
               # changeset (detection-016, a nullable announced_at column plus its backfill). The same
               # change sets -XX:MaxDirectMemorySize=64M below (envoy#293). Rollback: revert the images;
               # the flag can stay. Previous (f144461): f1444613299c7bb4812f298d00ac1190f13a9ddb@sha256:8fbf3486f29cf6582360a067b3d3f9e7911d0a8b476e038538d1811dbbc9df8b.
-              tag: b1872058a16847116209fd44705396784979e091@sha256:0e4e309e16502744d49fd61fb12f0c6b49c3f30ceeb44044ec83df60c4cc1c6d
+              # home-gitops#5736: 669e411 adds two Netty direct-memory gauges
+              # (envoy_reducer_netty_direct_memory_used_bytes / _max_bytes) and logs a failed OIDC
+              # sign-in at ERROR with its cause chain (envoy#293, PR #294). No changesets, no config;
+              # keep -XX:MaxDirectMemorySize=64M below. Rollback: revert the images.
+              # Previous (b187205): b1872058a16847116209fd44705396784979e091@sha256:0e4e309e16502744d49fd61fb12f0c6b49c3f30ceeb44044ec83df60c4cc1c6d.
+              tag: 669e411fc9355b4775c242c7278983f019d319e3@sha256:e24127f08e5f1f65ba242ddd5e2c75ff355634b7571ac2e01c24c1ab324d2810
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -346,7 +351,8 @@ spec:
               # Previous (245d884): 245d884e836e1b2d7a247430e098a86e3ee10b8a@sha256:e0fde006488b874ecf2944dd408a4938a518bc0c84d179c39cd18763d5868c16.
               # home-gitops#5722: fadd7d3 (HTML email, announce-after and stats label UI).
               # Previous (c72f408): c72f408148763dc79f2e3c4d1e432e7c829520b6@sha256:1f09e065990c9952b354adb9005a8dfc1a9b54a4901d6defe4e3e3f4840e8757.
-              tag: fadd7d37b9d3ee5d5f0ccaa989381cdc4587e8cc@sha256:bfb2dd87c5705d1c9101649b9a00e423dcc3aebd2a68824f9baddd956cac0f2f
+              # home-gitops#5736: 669e411 (the "Sign-in failed" card at /?login_error). Previous (fadd7d3): fadd7d37b9d3ee5d5f0ccaa989381cdc4587e8cc@sha256:bfb2dd87c5705d1c9101649b9a00e423dcc3aebd2a68824f9baddd956cac0f2f.
+              tag: 669e411fc9355b4775c242c7278983f019d319e3@sha256:f0a59f4644f55d72926b530b2be6099be4ad0756d8cb03048a65d74619e50f8a
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
