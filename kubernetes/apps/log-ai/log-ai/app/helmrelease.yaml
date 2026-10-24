@@ -124,7 +124,12 @@ spec:
               # sign-in at ERROR with its cause chain (envoy#293, PR #294). No changesets, no config;
               # keep -XX:MaxDirectMemorySize=64M below. Rollback: revert the images.
               # Previous (b187205): b1872058a16847116209fd44705396784979e091@sha256:0e4e309e16502744d49fd61fb12f0c6b49c3f30ceeb44044ec83df60c4cc1c6d.
-              tag: 669e411fc9355b4775c242c7278983f019d319e3@sha256:e24127f08e5f1f65ba242ddd5e2c75ff355634b7571ac2e01c24c1ab324d2810
+              # home-gitops#5749: 8a894c5 (raw-log guards, prompt v11, incident email fixes). Changeset
+              # notifications-003 makes idx_notification_deliveries_open_digest UNIQUE: rolling back needs
+              # the images reverted AND the old non-unique index recreated (SQL in #5749); restore
+              # envoy-cnpg-pre-8a894c5 only if the changeset itself fails. Keep -XX:MaxDirectMemorySize=64M.
+              # Previous (669e411): 669e411fc9355b4775c242c7278983f019d319e3@sha256:e24127f08e5f1f65ba242ddd5e2c75ff355634b7571ac2e01c24c1ab324d2810.
+              tag: 8a894c50fe790d83cf9ad24bebbabdda52af5d52@sha256:ea430cee24f71123734c5211751445c0a320d8430fbdb46fd8004b8becc8d8f7
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
