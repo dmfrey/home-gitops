@@ -1,27 +1,40 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
-# Internal-only UI for the Envoy log reducer. Sign-in (Authentik) gates /api
-# and /mcp, and its exemplars are real log lines, so this route has exactly one
-# parent, the internal gateway: never envoy-external. (A route on both gateways would also
-# make external-dns publish two CNAME targets for the hostname.)
+# Envoy log reducer (production), reachable over the Cloudflare tunnel
+# (envoy-external) since 2026-10-24; it was internal-only before. One parent only
+# (never both gateways: two CNAME targets made the UDM dnsmasq churn, #5333).
+# Sign-in (Authentik) gates /api and /mcp. Its exemplars are real log lines, so
+# everything unauthenticated must stay unreachable from the internet: /v1
+# (ingest) and /actuator are internal-only by design, and /otlp answers 404
+# because the frontend nginx proxies it to Alloy with no auth, so anyone could
+# push traces into the observability stack. /api, /mcp and the OAuth
+# protected-resource metadata go to the backend, everything else to the UI.
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: envoy
+  annotations:
+    # gatus-sidecar derives the URL from the first path match (/v1), which this
+    # route answers with 404, so the check would always be red. Probe the UI
+    # instead: it needs no sign-in and proves tunnel, gateway and frontend are up.
+    gatus.home-operations.com/endpoint: |-
+      url: "https://project-envoy.dmfrey.com/"
+      conditions: ["[STATUS] == 200"]
 spec:
   hostnames:
     - project-envoy.dmfrey.com
   parentRefs:
-    # Naming: "envoy-internal" is the Gateway that runs the Envoy *proxy*
+    # Naming: "envoy-external" is the Gateway that runs the Envoy *proxy*
     # (Envoy Gateway). It is unrelated to this app, the Envoy log reducer.
     #
     # https listener only (sectionName), like jellyfin and others: no plain-http
     # endpoint; http falls through to the cluster's catch-all 301 redirect.
-    - name: envoy-internal
+    - name: envoy-external
       namespace: network
       sectionName: https
   rules:
-    # Ingest and actuator must only be reachable in-cluster via the Service.
+    # Ingest, actuator and the unauthenticated /otlp proxy must not be reachable
+    # through the hostname (in-cluster use goes via the Service).
     - matches:
         - path:
             type: PathPrefix
@@ -29,6 +42,9 @@ spec:
         - path:
             type: PathPrefix
             value: /actuator
+        - path:
+            type: PathPrefix
+            value: /otlp
       filters:
         - type: ExtensionRef
           extensionRef:
