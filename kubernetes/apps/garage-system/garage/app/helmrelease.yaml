@@ -16,6 +16,14 @@ spec:
       garage:
         type: statefulset
         replicas: 3
+        # Garage v2.5.0 rollout (home-gitops#5761): v2.5.0 migrates the resync queue and is
+        # one-way (no downgrade once a node runs it), and the probes below are disabled, so the
+        # default rolling update would restart all 3 pods within seconds, possibly two at once.
+        # partition lowers one step at a time (3 = no pod rolls, 2 = garage-2, 1 = garage-1,
+        # 0 = garage-0) with a health check between steps. Remove this block once done.
+        strategy: RollingUpdate
+        rollingUpdate:
+          partition: 3
         annotations:
           reloader.stakater.com/auto: "true"
         statefulset:
