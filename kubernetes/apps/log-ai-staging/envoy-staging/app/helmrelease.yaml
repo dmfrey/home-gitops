@@ -129,15 +129,14 @@ spec:
               # close-after 30m, lookback 2h, max-per-sweep 500, sweep-interval 2m).
               ENVOY_REDUCER_DETECTION_WINDOWS_ENABLED: "true"
               # Ticket filing through the in-cluster RT MCP server (home-gitops#5508).
-              # OFF since 2026-10-25 (#5774): staging's database is a copy of production's,
-              # so it must not file tickets or send mail for real people; every other
-              # setting here stays identical to production so the feature can be turned
-              # back on by flipping the flags.
+              # Briefly OFF on 2026-10-25 (#5774) and back ON the same day by request. Note
+              # the database is a copy of production's, so it carries production's
+              # recipient and subscriptions: they receive staging's mail too.
               # Enabled 2026-10-14 (step 7 deployed the code and migration off).
               # Staging files into its own queue so tickets never reach the
               # production "Envoy" queue, and has no automatic rules (manual
               # "Create ticket" button only). The MCP has no auth of its own.
-              ENVOY_REDUCER_TICKETS_ENABLED: "false"
+              ENVOY_REDUCER_TICKETS_ENABLED: "true"
               ENVOY_REDUCER_TICKETS_TRACKER: rt
               ENVOY_REDUCER_TICKETS_BASE_URL: https://project-envoy-staging.dmfrey.com
               ENVOY_REDUCER_TICKETS_MCP_URL: http://rt-mcp.observability.svc.cluster.local:8013/mcp
@@ -163,9 +162,9 @@ spec:
               SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}}}}}'
               ENVOY_REDUCER_TICKETS_STATUS_PATTERN: '(?m)^\s*Status: (\w+)\s*$'
               ENVOY_REDUCER_TICKETS_STATUS_CLOSED_VALUES: resolved,rejected,deleted
-              # Anomaly notification email (home-gitops#5502). OFF since 2026-10-25 (#5774):
-              # the restored database carries production's recipients and subscriptions,
-              # so enabling this would mail real people about staging. Goes out through the
+              # Anomaly notification email (home-gitops#5502). The restored database carries
+              # production's recipients and subscriptions (2026-10-25), so they get staging
+              # mail as well. Goes out through the
               # cluster's smtp-relay, which has no inbound auth and no TLS; it holds
               # the upstream credentials and uses STARTTLS on its own outbound hop,
               # so Envoy sets no username, password or STARTTLS. The relay's only
@@ -173,8 +172,8 @@ spec:
               # people who subscribed at /settings/notifications receive anything.
               SPRING_MAIL_HOST: smtp-relay.kube-system.svc.cluster.local
               SPRING_MAIL_PORT: "25"
-              ENVOY_REDUCER_NOTIFICATIONS_ENABLED: "false"
-              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_ENABLED: "false"
+              ENVOY_REDUCER_NOTIFICATIONS_ENABLED: "true"
+              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_ENABLED: "true"
               ENVOY_REDUCER_NOTIFICATIONS_EMAIL_FROM: noreply@homelab5767.cc
               ENVOY_REDUCER_NOTIFICATIONS_BASE_URL: https://project-envoy-staging.dmfrey.com
               # Same pod-instance wiring as spring-notes. Name must sort before
