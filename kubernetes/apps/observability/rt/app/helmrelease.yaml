@@ -40,7 +40,7 @@ spec:
             image:
               repository: ghcr.io/netsandbox/request-tracker
               # renovate: datasource=docker depName=ghcr.io/netsandbox/request-tracker
-              tag: 6.0@sha256:2320034a3e534703d5d6ca54aa3cde990ad1983909503dc4991b8515f5873881
+              tag: 6.0@sha256:ed70307b11a6adfd495abc887d5f7a0a9fbcf11f6222196d93a0ca32cf9c511a
             command:
               - bash
               - -c
@@ -50,7 +50,7 @@ spec:
             image:
               repository: ghcr.io/netsandbox/request-tracker
               # renovate: datasource=docker depName=ghcr.io/netsandbox/request-tracker
-              tag: 6.0@sha256:2320034a3e534703d5d6ca54aa3cde990ad1983909503dc4991b8515f5873881
+              tag: 6.0@sha256:ed70307b11a6adfd495abc887d5f7a0a9fbcf11f6222196d93a0ca32cf9c511a
             # RT_WEB_PORT is both the port used to build links AND the port the
             # standalone rt-server listens on. Links must be https (443, TLS
             # ends at the gateway) while the pod listens on 80, hence the
