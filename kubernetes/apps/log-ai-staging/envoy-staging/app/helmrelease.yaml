@@ -104,7 +104,9 @@ spec:
               # POST /api/deploys, mask counts on /admin/system. Previous (4c40c94): 4c40c948f0dc6985e379f69ee6857fd95200006f@sha256:49c45eabd76166a5a2763a822314988fa9f6eb047757ad63be12852df67c2444.
               # Step 4 (home-gitops#5600; envoy #211-#220): ebc5d52 adds maintenance windows, the hourly rollup, detectors,
               # anomaly windows, triage, event publishing and incident memory, all off by default. Previous (c513c4d): c513c4dd90b45993b3b2cadfe03f321022028102@sha256:9775cbd8b5a409cc9a90e14783bb48835078463af63cf4d89ecdf3d536c9b1fc.
-              tag: ebc5d52f7016ab79ca51eb3031eefb989210fa08@sha256:4391f7a3427498837c6b82c36a66c32b1c3fb68062ee2112b4d81d5eb533a342
+              # 2026-10-25 (home-gitops#5774): staging now mirrors production's images, config
+              # and database (restored from a fresh production backup); previously ebc5d52f7016.
+              tag: 8a894c50fe790d83cf9ad24bebbabdda52af5d52@sha256:ea430cee24f71123734c5211751445c0a320d8430fbdb46fd8004b8becc8d8f7
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -127,11 +129,15 @@ spec:
               # close-after 30m, lookback 2h, max-per-sweep 500, sweep-interval 2m).
               ENVOY_REDUCER_DETECTION_WINDOWS_ENABLED: "true"
               # Ticket filing through the in-cluster RT MCP server (home-gitops#5508).
+              # OFF since 2026-10-25 (#5774): staging's database is a copy of production's,
+              # so it must not file tickets or send mail for real people; every other
+              # setting here stays identical to production so the feature can be turned
+              # back on by flipping the flags.
               # Enabled 2026-10-14 (step 7 deployed the code and migration off).
               # Staging files into its own queue so tickets never reach the
               # production "Envoy" queue, and has no automatic rules (manual
               # "Create ticket" button only). The MCP has no auth of its own.
-              ENVOY_REDUCER_TICKETS_ENABLED: "true"
+              ENVOY_REDUCER_TICKETS_ENABLED: "false"
               ENVOY_REDUCER_TICKETS_TRACKER: rt
               ENVOY_REDUCER_TICKETS_BASE_URL: https://project-envoy-staging.dmfrey.com
               ENVOY_REDUCER_TICKETS_MCP_URL: http://rt-mcp.observability.svc.cluster.local:8013/mcp
@@ -157,7 +163,9 @@ spec:
               SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}}}}}'
               ENVOY_REDUCER_TICKETS_STATUS_PATTERN: '(?m)^\s*Status: (\w+)\s*$'
               ENVOY_REDUCER_TICKETS_STATUS_CLOSED_VALUES: resolved,rejected,deleted
-              # Anomaly notification email (home-gitops#5502). Goes out through the
+              # Anomaly notification email (home-gitops#5502). OFF since 2026-10-25 (#5774):
+              # the restored database carries production's recipients and subscriptions,
+              # so enabling this would mail real people about staging. Goes out through the
               # cluster's smtp-relay, which has no inbound auth and no TLS; it holds
               # the upstream credentials and uses STARTTLS on its own outbound hop,
               # so Envoy sets no username, password or STARTTLS. The relay's only
@@ -165,8 +173,8 @@ spec:
               # people who subscribed at /settings/notifications receive anything.
               SPRING_MAIL_HOST: smtp-relay.kube-system.svc.cluster.local
               SPRING_MAIL_PORT: "25"
-              ENVOY_REDUCER_NOTIFICATIONS_ENABLED: "true"
-              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_ENABLED: "true"
+              ENVOY_REDUCER_NOTIFICATIONS_ENABLED: "false"
+              ENVOY_REDUCER_NOTIFICATIONS_EMAIL_ENABLED: "false"
               ENVOY_REDUCER_NOTIFICATIONS_EMAIL_FROM: noreply@homelab5767.cc
               ENVOY_REDUCER_NOTIFICATIONS_BASE_URL: https://project-envoy-staging.dmfrey.com
               # Same pod-instance wiring as spring-notes. Name must sort before
@@ -328,7 +336,8 @@ spec:
               # Round 3 (home-gitops#5600). Previous: 1650590ec642a24c01d9d0e9740e1efcdeea810a@sha256:2d6bbd37fb732ce30e57147e630bfb31009a8847a6d2afce6749935527785eec.
               # Step 3 (home-gitops#5600): ffa19ec adds the error panel (envoy#209). Previous (972c289): 972c289b640d3018a0e9a8eea725be17a6f2925c@sha256:b26207251895aead8ad04b6dc3b0e2509cc66e00339228e284127cc3bcc6f938.
               # Step 4 (home-gitops#5600): ebc5d52, same commit as the backend. Previous (ffa19ec): ffa19ecffc886201da3cfd7fec585fcfb1b6214d@sha256:152047ede2360664963d75007d88749d0acee2de46b81a63989d6de115523f92.
-              tag: ebc5d52f7016ab79ca51eb3031eefb989210fa08@sha256:1cd8e6315614f2f2cc6e7b34de2ef8786de751283ea97b9426c5aa986cb3c2dc
+              # 2026-10-25 (home-gitops#5774): production's frontend; previously ebc5d52f7016.
+              tag: bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
