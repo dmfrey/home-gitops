@@ -23,7 +23,7 @@ spec:
         # 0 = garage-0) with a health check between steps. Remove this block once done.
         strategy: RollingUpdate
         rollingUpdate:
-          partition: 3
+          partition: 2
         annotations:
           reloader.stakater.com/auto: "true"
         statefulset:
