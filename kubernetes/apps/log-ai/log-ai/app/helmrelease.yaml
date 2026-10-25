@@ -129,7 +129,11 @@ spec:
               # the images reverted AND the old non-unique index recreated (SQL in #5749); restore
               # envoy-cnpg-pre-8a894c5 only if the changeset itself fails. Keep -XX:MaxDirectMemorySize=64M.
               # Previous (669e411): 669e411fc9355b4775c242c7278983f019d319e3@sha256:e24127f08e5f1f65ba242ddd5e2c75ff355634b7571ac2e01c24c1ab324d2810.
-              tag: 8a894c50fe790d83cf9ad24bebbabdda52af5d52@sha256:ea430cee24f71123734c5211751445c0a320d8430fbdb46fd8004b8becc8d8f7
+              # home-gitops#5763: 67b4a86 (raw-log clamp and label refusals, prompt v12, incident email
+              # members, folder mask via config). No changesets. Keep -XX:MaxDirectMemorySize=64M.
+              # Rollback: revert both images (the three MASKING_ADDITIONALMASKS_0 vars may stay).
+              # Previous (8a894c5): 8a894c50fe790d83cf9ad24bebbabdda52af5d52@sha256:ea430cee24f71123734c5211751445c0a320d8430fbdb46fd8004b8becc8d8f7.
+              tag: 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:690e491f50e84f8f79c1fa5f842139682223aa7b346d8393f7f86d354cc5f2dd
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -147,6 +151,16 @@ spec:
               SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy/
               SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: https://auth.dmfrey.com/application/o/envoy-mcp/
               ENVOY_REDUCER_AUTH_ACCOUNT_URL: https://auth.dmfrey.com/if/user/
+              # Deployment-specific mask (envoy#325, #327; home-gitops#5763): soularr's
+              # "Folder: <name> in cache." / "not in cache." lines minted ~216 templates a day
+              # from album names. Appended after the built-in masks (so a folder like
+              # "1999 Greatest Hits" arrives as "<NUM> ..." and is still masked); applies to every
+              # source but only matches the Folder: label ahead of that fixed tail. Indexed env
+              # vars avoid escaping the regex backslashes inside SPRING_APPLICATION_JSON; the
+              # single quotes keep them literal.
+              ENVOY_REDUCER_TEMPLATING_MASKING_ADDITIONALMASKS_0_NAME: folder-before-cache-tail
+              ENVOY_REDUCER_TEMPLATING_MASKING_ADDITIONALMASKS_0_PATTERN: '(?<=\bFolder:\s)[^\n]+?(?=\s(?:not\s)?in cache\.)'
+              ENVOY_REDUCER_TEMPLATING_MASKING_ADDITIONALMASKS_0_PLACEHOLDER: <VALUE>
               # Anomaly window grouping (envoy#217, home-gitops#5678). Turns on grouping only: the
               # RATE_CHANGE and DISAPPEARANCE/SOURCE_SILENT detectors, window triage and event
               # publishing stay off. Other window settings keep their defaults (join-gap 10m,
@@ -358,7 +372,8 @@ spec:
               # Previous (c72f408): c72f408148763dc79f2e3c4d1e432e7c829520b6@sha256:1f09e065990c9952b354adb9005a8dfc1a9b54a4901d6defe4e3e3f4840e8757.
               # home-gitops#5736: 669e411 (the "Sign-in failed" card at /?login_error). Previous (fadd7d3): fadd7d37b9d3ee5d5f0ccaa989381cdc4587e8cc@sha256:bfb2dd87c5705d1c9101649b9a00e423dcc3aebd2a68824f9baddd956cac0f2f.
               # home-gitops#5739: bc50b5e, frontend only (in-app help, field tooltips). Previous (669e411): 669e411fc9355b4775c242c7278983f019d319e3@sha256:f0a59f4644f55d72926b530b2be6099be4ad0756d8cb03048a65d74619e50f8a.
-              tag: bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f
+              # home-gitops#5763: 67b4a86 (/admin/masking, copy icon). Previous (bc50b5e): bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f.
+              tag: 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:baffc3708f30bb9e8df04846de808b1602214cd0d73cee3d0602599044f4927d
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
