@@ -609,6 +609,67 @@ spec:
             }
           }
 
+          // ---- Browser traces: untrusted, public write-only ingest ----
+          // Receives only what the Envoy frontend's nginx forwards from visitors'
+          // browsers (planned: POST /otlp/v1/traces behind the sign-in session and
+          // a rate limit). Anyone who can load the page can send here, so nothing a
+          // browser says is trusted: the resource is rewritten to a fixed
+          // service.name (a sender cannot pose as another service), span attributes
+          // are limited to an allowlist and 256 chars, and the request body and
+          // memory are capped. Own port (4319), Service alloy-otlp-browser; no
+          // containerPort is declared, which would roll every Alloy pod.
+          otelcol.receiver.otlp "browser" {
+            http {
+              endpoint              = "0.0.0.0:4319"
+              max_request_body_size = "256KiB"
+            }
+
+            output {
+              traces = [otelcol.processor.memory_limiter.browser.input]
+            }
+          }
+
+          otelcol.processor.memory_limiter "browser" {
+            check_interval = "1s"
+            limit          = "64MiB"
+
+            output {
+              traces = [otelcol.processor.transform.browser.input]
+            }
+          }
+
+          otelcol.processor.transform "browser" {
+            error_mode = "ignore"
+
+            trace_statements {
+              context = "resource"
+              statements = [
+                `keep_keys(resource.attributes, ["service.name"])`,
+                `set(resource.attributes["service.name"], "envoy-frontend")`,
+                `set(resource.attributes["telemetry.source"], "browser")`,
+              ]
+            }
+
+            trace_statements {
+              context = "span"
+              statements = [
+                `keep_matching_keys(span.attributes, "^(http|url|server|network|user_agent|error)\\.")`,
+                `limit(span.attributes, 20, [])`,
+                `truncate_all(span.attributes, 256)`,
+              ]
+            }
+
+            output {
+              traces = [otelcol.processor.batch.browser.input]
+            }
+          }
+
+          otelcol.processor.batch "browser" {
+            output {
+              traces = [otelcol.exporter.otlp.tempo.input]
+            }
+          }
+
           // Convert OTLP metrics to Prometheus format
           otelcol.exporter.prometheus "otlp" {
             forward_to = [prometheus.remote_write.default.receiver]

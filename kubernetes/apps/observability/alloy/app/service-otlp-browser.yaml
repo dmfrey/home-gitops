@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/v1/service_v1.json
+# In-cluster address of Alloy's browser-traces receiver (otelcol.receiver.otlp
+# "browser", port 4319; see the helmrelease). Intended only for the Envoy
+# frontend's nginx. The pod already listens once the config loads; no
+# containerPort is declared (it would roll every Alloy pod). ClusterIP: not
+# reachable from outside the cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-otlp-browser
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: alloy
+    app.kubernetes.io/name: alloy
+  ports:
+    - name: otlp-browser
+      port: 4319
+      targetPort: 4319
+      protocol: TCP
