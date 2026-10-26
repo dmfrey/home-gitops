@@ -10,8 +10,6 @@ spec:
     name: loki
   interval: 1h
   values:
-    priorityClassName: high
-
     deploymentMode: SingleBinary
 
     loki:
