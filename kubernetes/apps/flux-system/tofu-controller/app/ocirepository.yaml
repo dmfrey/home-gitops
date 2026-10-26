@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.16.5
-    digest: sha256:336e9a2690b868781422165bf20550dc7e7093abeb841c498d8bd1dd594fbd27
+    tag: 0.16.6
+    digest: sha256:ac4dba4fc60b8e7c5337944ce9747a0751802cd47aaf532fa14c5988d7db00ff
   url: oci://ghcr.io/flux-iac/charts/tofu-controller
