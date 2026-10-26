@@ -3,11 +3,15 @@
 # Staging Envoy, shared with coworkers over the Cloudflare tunnel (envoy-external).
 # One parent only (never both gateways: two CNAME targets made the UDM dnsmasq
 # churn, #5333). Sign-in (Authentik, passkey required) gates /api and /mcp.
-# /v1 (ingest), /actuator and /otlp answer 404: /v1 and /actuator because they
-# are unauthenticated and internal-only by design, /otlp because the frontend
-# nginx proxies it to Alloy with no auth, so on the internet anyone could push
-# traces into the observability stack. /api, /mcp and the OAuth
-# protected-resource metadata go to the backend, everything else to the UI.
+# /v1 (ingest) and /actuator answer 404 because they are unauthenticated and
+# internal-only by design. /otlp reaches the frontend again since 2026-10-26
+# (home-gitops#5794, envoy#346): its nginx now accepts only POST
+# /otlp/v1/traces, from a signed-in session (auth_request to /api/me), with a
+# 256k body cap and a per-client rate limit, and forwards to Alloy's separate
+# browser receiver, which pins service.name and allowlists span attributes
+# (home-gitops#5788). Before that it answered 404 here (#5507) because the old
+# proxy had no authentication. /api, /mcp and the OAuth protected-resource
+# metadata go to the backend, everything else to the UI.
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -38,9 +42,6 @@ spec:
         - path:
             type: PathPrefix
             value: /actuator
-        - path:
-            type: PathPrefix
-            value: /otlp
       filters:
         - type: ExtensionRef
           extensionRef:
