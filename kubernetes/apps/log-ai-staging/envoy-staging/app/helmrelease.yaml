@@ -356,7 +356,10 @@ spec:
               # 2026-10-25 (home-gitops#5774): production's frontend; previously ebc5d52f7016.
               # home-gitops#5763 (staging first): 67b4a86 (/admin/masking, copy icon). Previous (bc50b5e): bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f.
               # home-gitops#5786 (staging first): f25ccff (browser fetch spans via browser-instrumentation, vite 8.3.5). Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:baffc3708f30bb9e8df04846de808b1602214cd0d73cee3d0602599044f4927d.
-              tag: f25ccff14b52b22462e2f8e96e62763870e34b13@sha256:ad70c2a84043ecf8335c5ef9615aa1f5fb54b5908019bdda8240818221fbc463
+              # home-gitops#5794 (staging only): 5c3901a changes only nginx.conf (authenticated, rate-limited
+              # /otlp browser-traces proxy to alloy-otlp-browser:4319, envoy#346). Rollback: revert to f25ccff.
+              # Previous (f25ccff): f25ccff14b52b22462e2f8e96e62763870e34b13@sha256:ad70c2a84043ecf8335c5ef9615aa1f5fb54b5908019bdda8240818221fbc463.
+              tag: 5c3901a5fe06f05ec431024b7bf1554ee43b0a8e@sha256:13a485799716550c15218930f2c2db7f7d38ace9327bab9c67094d4b76c4acb0
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
