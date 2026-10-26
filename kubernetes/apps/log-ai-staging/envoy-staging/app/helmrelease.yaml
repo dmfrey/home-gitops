@@ -359,7 +359,10 @@ spec:
               # home-gitops#5794 (staging only): 5c3901a changes only nginx.conf (authenticated, rate-limited
               # /otlp browser-traces proxy to alloy-otlp-browser:4319, envoy#346). Rollback: revert to f25ccff.
               # Previous (f25ccff): f25ccff14b52b22462e2f8e96e62763870e34b13@sha256:ad70c2a84043ecf8335c5ef9615aa1f5fb54b5908019bdda8240818221fbc463.
-              tag: 5c3901a5fe06f05ec431024b7bf1554ee43b0a8e@sha256:13a485799716550c15218930f2c2db7f7d38ace9327bab9c67094d4b76c4acb0
+              # home-gitops#5794 step 6 (staging only): 4cdeb65 adds the guided tours (envoy#353, #354, #355);
+              # nginx.conf and the /otlp proxy are unchanged. Rollback: revert to 5c3901a.
+              # Previous (5c3901a): 5c3901a5fe06f05ec431024b7bf1554ee43b0a8e@sha256:13a485799716550c15218930f2c2db7f7d38ace9327bab9c67094d4b76c4acb0.
+              tag: 4cdeb653b87f82234c98a20f0325580df8b3f615@sha256:3fce7dda471a3e6801fe29b74fb4db33045e5e0c67296bff48861403126a34c9
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
