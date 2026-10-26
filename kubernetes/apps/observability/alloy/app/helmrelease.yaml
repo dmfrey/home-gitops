@@ -629,9 +629,14 @@ spec:
             }
           }
 
+          // The limiter measures the whole Alloy process (logs, kernel and Talos
+          // pipelines included), not just this pipeline, so a fixed MiB limit below the
+          // process's normal 130-300 MiB refuses every span and forces a GC each second.
+          // Percentages of the 1Gi container limit: soft 60% (data dropped), hard 80%.
           otelcol.processor.memory_limiter "browser" {
-            check_interval = "1s"
-            limit          = "64MiB"
+            check_interval         = "1s"
+            limit_percentage       = 80
+            spike_limit_percentage = 20
 
             output {
               traces = [otelcol.processor.transform.browser.input]
