@@ -110,7 +110,11 @@ spec:
               # members, folder mask via config). No changesets. Keep -XX:MaxDirectMemorySize=64M.
               # Rollback: revert both images (the three MASKING_ADDITIONALMASKS_0 vars may stay).
               # Previous (8a894c5): 8a894c50fe790d83cf9ad24bebbabdda52af5d52@sha256:ea430cee24f71123734c5211751445c0a320d8430fbdb46fd8004b8becc8d8f7.
-              tag: 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:690e491f50e84f8f79c1fa5f842139682223aa7b346d8393f7f86d354cc5f2dd
+              # home-gitops#5786 (staging first): 5bcf89f (digest covers only sent events, deleted-age timer,
+              # #302 follow-ups, unknown-source refusal, Boot 4.1.2). No changesets, no new settings; keep the
+              # ADDITIONALMASKS_0 vars and -XX:MaxDirectMemorySize=64M. Rollback: revert both images.
+              # Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:690e491f50e84f8f79c1fa5f842139682223aa7b346d8393f7f86d354cc5f2dd.
+              tag: 5bcf89f6b10803f1ce8d2f4532606b47cd56f23f@sha256:7fc2871c7f31086c45f0a6fcbca69bfa5d80a264a6b97aad6920a14641389a8a
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -351,7 +355,8 @@ spec:
               # Step 4 (home-gitops#5600): ebc5d52, same commit as the backend. Previous (ffa19ec): ffa19ecffc886201da3cfd7fec585fcfb1b6214d@sha256:152047ede2360664963d75007d88749d0acee2de46b81a63989d6de115523f92.
               # 2026-10-25 (home-gitops#5774): production's frontend; previously ebc5d52f7016.
               # home-gitops#5763 (staging first): 67b4a86 (/admin/masking, copy icon). Previous (bc50b5e): bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f.
-              tag: 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:baffc3708f30bb9e8df04846de808b1602214cd0d73cee3d0602599044f4927d
+              # home-gitops#5786 (staging first): f25ccff (browser fetch spans via browser-instrumentation, vite 8.3.5). Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:baffc3708f30bb9e8df04846de808b1602214cd0d73cee3d0602599044f4927d.
+              tag: f25ccff14b52b22462e2f8e96e62763870e34b13@sha256:ad70c2a84043ecf8335c5ef9615aa1f5fb54b5908019bdda8240818221fbc463
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
