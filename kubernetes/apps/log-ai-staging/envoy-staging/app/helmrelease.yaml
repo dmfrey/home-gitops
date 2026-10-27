@@ -200,6 +200,10 @@ spec:
               ENVOY_REDUCER_NOTIFICATIONS_EMAIL_ENABLED: "true"
               ENVOY_REDUCER_NOTIFICATIONS_EMAIL_FROM: noreply@homelab5767.cc
               ENVOY_REDUCER_NOTIFICATIONS_BASE_URL: https://project-envoy-staging.dmfrey.com
+              # home-gitops#5803 step 3 (staging only, eval B): chat reasoning effort off. Keep only if eval B
+              # does not lower the data/docs scores and the mean turn time falls below eval A's 9.5 s (envoy#275);
+              # otherwise remove this var.
+              ENVOY_REDUCER_CHAT_REASONINGEFFORT: none
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
