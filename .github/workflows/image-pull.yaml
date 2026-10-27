@@ -46,6 +46,10 @@ jobs:
         uses: jdx/mise-action@82a612c5ab8bcda7cc5db6b7e81a8e7584c3dc6e # v5.2.3
         with:
           cache: false
+          # Pinned: mise 2026.10.19 (2026-10-24) fails `mise lock` for 1password-cli on linux-arm64
+          # ("Plugin directory not found" from the vfox plugin), which broke every new PR's Flate and
+          # Image Pull jobs from 2026-10-27 23:25Z. 2026.10.18 passed. Unpin once a fixed mise is out.
+          version: 2026.10.18
           # See flate.yaml's matching comment - mise 2026.9.16 shipped a
           # same-day SLSA provenance regression breaking aqua tool installs.
           minimum_release_age: 3d
@@ -82,6 +86,10 @@ jobs:
         uses: jdx/mise-action@82a612c5ab8bcda7cc5db6b7e81a8e7584c3dc6e # v5.2.3
         with:
           cache: false
+          # Pinned: mise 2026.10.19 (2026-10-24) fails `mise lock` for 1password-cli on linux-arm64
+          # ("Plugin directory not found" from the vfox plugin), which broke every new PR's Flate and
+          # Image Pull jobs from 2026-10-27 23:25Z. 2026.10.18 passed. Unpin once a fixed mise is out.
+          version: 2026.10.18
           # See flate.yaml's matching comment - mise 2026.9.16 shipped a
           # same-day SLSA provenance regression breaking aqua tool installs.
           minimum_release_age: 3d
