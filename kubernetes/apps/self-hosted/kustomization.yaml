@@ -19,3 +19,4 @@ resources:
   - ./linkwarden/ks.yaml
   - ./omni-tools/ks.yaml
   - ./orcaslicer/ks.yaml
+  - ./reposilite/ks.yaml
