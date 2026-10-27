@@ -419,49 +419,49 @@ url_api = "https://api.github.com/repos/zizmorcore/zizmor/releases/assets/645467
 provenance = "github-attestations"
 
 [[tools.flux-operator-mcp]]
-version = "0.62.0"
+version = "0.62.1"
 backend = "aqua:controlplaneio-fluxcd/flux-operator/flux-operator-mcp"
 
 [tools.flux-operator-mcp."platforms.linux-arm64"]
-checksum = "sha256:53817d688ec3a3c1ce408899e8cb8d4e3916607aa88142473fa8c5c258e3bc16"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905951"
+checksum = "sha256:6a3d9345b25a3662879c81587854b7ba9a130e8d8eb353379fd10da797444a7e"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028425"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.linux-arm64-musl"]
-checksum = "sha256:53817d688ec3a3c1ce408899e8cb8d4e3916607aa88142473fa8c5c258e3bc16"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905951"
+checksum = "sha256:6a3d9345b25a3662879c81587854b7ba9a130e8d8eb353379fd10da797444a7e"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028425"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.linux-x64"]
-checksum = "sha256:f542726ab1727e01c0df790b9f5ba32065e8e4475e4a00be928c13e84cdec80a"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905962"
+checksum = "sha256:13ec856169d8a2905e822bdfad761728290d7b9d72c3f68ab3f39b1508e80327"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028437"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.linux-x64-musl"]
-checksum = "sha256:f542726ab1727e01c0df790b9f5ba32065e8e4475e4a00be928c13e84cdec80a"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905962"
+checksum = "sha256:13ec856169d8a2905e822bdfad761728290d7b9d72c3f68ab3f39b1508e80327"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028437"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.macos-arm64"]
-checksum = "sha256:c5ca16a815dff3f3d308c79b99ff7b12b66a54a89f52c1645db53c90abf80e6a"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905965"
+checksum = "sha256:138d3a45d442481df15504607b36342db334ca42d8c82021881c43c020614b1f"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028446"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.macos-x64"]
-checksum = "sha256:0411609226c28a7b313b835ac52a41cf23261af73c617716d31b10a119adf272"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_darwin_amd64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905963"
+checksum = "sha256:f4d454e226c0519c57e9758dc0481da400c85211de533be134af1f6133d6266f"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028445"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.windows-x64"]
-checksum = "sha256:7b06fde7ce2204c20facd6ae3644b8829f31f39983a6039b3dca20ee74ce5b7b"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_windows_amd64.zip"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678906034"
+checksum = "sha256:cc5c74c31dceba6ad9151e7403e65b713eb12283f7b95b45080a2d070ddd09cd"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_windows_amd64.zip"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028540"
 provenance = "github-attestations"
 
 [[tools.flux2]]
@@ -543,43 +543,50 @@ url = "https://github.com/home-operations/flate/releases/download/v0.6.5/flate_0
 url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/541337344"
 
 [[tools."github:mitsuhiko/minijinja"]]
-version = "3.0.3"
+version = "3.0.4"
 backend = "github:mitsuhiko/minijinja"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-arm64"]
-checksum = "sha256:b41fee71256ee3ea0f0b3fa32bc7042f4a3db5049ede6262c8d480078a7a67ba"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.3/minijinja-cli-aarch64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/668256982"
+checksum = "sha256:3deb041ea4d304654da6097ba30ec096362ac568a36fea6a84d9d3c455eed04b"
+checksum_source = "mise-versions"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.4/minijinja-cli-aarch64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/679698134"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-arm64-musl"]
-checksum = "sha256:42e1b33a664ac36eec5226e2aebce56396ddb22d8a673cabbfb7b48fbc21a4ea"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.3/minijinja-cli-aarch64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/668256980"
+checksum = "sha256:060a4a192e0dd2a15009eb13cf1128516cead753adc5a694d913c72ab8d54c6f"
+checksum_source = "mise-versions"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.4/minijinja-cli-aarch64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/679698136"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-x64"]
-checksum = "sha256:8db0a7cdc55975e2abace49b18c0076f338f806645ab6b08097a9417189e4888"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.3/minijinja-cli-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/668257054"
+checksum = "sha256:f103f5b53156bbcf94f82427979a476497d85de50158a3598996962722bab6d6"
+checksum_source = "mise-versions"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.4/minijinja-cli-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/679698186"
 
 [tools."github:mitsuhiko/minijinja"."platforms.linux-x64-musl"]
-checksum = "sha256:5117cfc78ebf2b3645ed6ebd6cd953f2ce830ba5efbdac4decbc0a6191d27f8a"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.3/minijinja-cli-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/668257066"
+checksum = "sha256:d39c681066da5175ec94fd245f2bb3ccca46ded18457e3bfe27d2daa59c6dfce"
+checksum_source = "mise-versions"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.4/minijinja-cli-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/679698216"
 
 [tools."github:mitsuhiko/minijinja"."platforms.macos-arm64"]
-checksum = "sha256:815f3bf68d18b4cd49e3e3473a083910f1b1a8a7eb1bc6cf0aa1c8d404871c96"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.3/minijinja-cli-aarch64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/668256939"
+checksum = "sha256:0ae08cce1d8ecea4c1d059e7540609c6dfce1b7a76689ba2f2e5a5e0fbd9c9fb"
+checksum_source = "mise-versions"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.4/minijinja-cli-aarch64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/679698108"
 
 [tools."github:mitsuhiko/minijinja"."platforms.macos-x64"]
-checksum = "sha256:f3b7516d5f76007d068f3eb59e5de3fea4c386e9aed6b286d3b7617ab77b42f5"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.3/minijinja-cli-x86_64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/668257035"
+checksum = "sha256:3afc01480feae0f0592f6d91c2fe1bf2b71fb0f84dd9aa3aa41b77ed8fbd0cdb"
+checksum_source = "mise-versions"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.4/minijinja-cli-x86_64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/679698171"
 
 [tools."github:mitsuhiko/minijinja"."platforms.windows-x64"]
-checksum = "sha256:3a14bfaf1fc05487f31b47a2bb7ca3344cfd4af7a60faebe912afa4d6ea65b58"
-url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.3/minijinja-cli-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/668257043"
+checksum = "sha256:9171ae4dc6e8578fea8749df968cded903dfb7c5809b61da5693c11216fb8f22"
+checksum_source = "mise-versions"
+url = "https://github.com/mitsuhiko/minijinja/releases/download/3.0.4/minijinja-cli-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/mitsuhiko/minijinja/releases/assets/679698183"
 
 [[tools.just]]
 version = "1.59.0"
@@ -653,7 +660,7 @@ checksum = "sha256:b3efd5c70cba3308ed46e7e699a9b8aac075bbc6b027fcb39c84c31acc25e
 url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-win-x64.zip"
 
 [[tools."npm:oxfmt"]]
-version = "0.74.0"
+version = "0.75.0"
 backend = "npm:oxfmt"
 
 [[tools.talos]]
@@ -703,47 +710,47 @@ url_api = "https://api.github.com/repos/siderolabs/talos/releases/assets/6475477
 provenance = "cosign"
 
 [[tools.uv]]
-version = "0.13.5"
+version = "0.13.6"
 backend = "aqua:astral-sh/uv"
 
 [tools.uv."platforms.linux-arm64"]
-checksum = "sha256:4bb69cf95ed13f23713bb7bc09f241896ea0c75b7c557e615a20604b82f9c403"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664335837"
+checksum = "sha256:229e194255c7958d86d56e8790d969a6f74736592133f0dfd0076f754c642c1d"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.6/uv-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/679980412"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-arm64-musl"]
-checksum = "sha256:7906c79adb21c81abd559841ba76bb1d9af9d791acac7a041b2972e03ae16538"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664335857"
+checksum = "sha256:819692e404d23e5aae6bc44c0e260f1f5492fd1910ab4693b2c650f926dbe800"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.6/uv-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/679980430"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64"]
-checksum = "sha256:f68d291c75783122dad58ab77def0e13f3233f358731db5d6d7e8715603b928f"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664336023"
+checksum = "sha256:f29c3e94ffabd7e6f3ba521dba169a9b7ec12100bf3257087f0f24f6123f3645"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.6/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/679980644"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-musl"]
-checksum = "sha256:57ef9d9ccb01fb1bd998df995b0dd221b52f7d7841fbea93f2d4463bf61fb7a9"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664336027"
+checksum = "sha256:5d61f26b6c7213779eda90edc6971ea6b0b796bfb8d49a574c8ad69b59838548"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.6/uv-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/679980664"
 provenance = "github-attestations"
 
 [tools.uv."platforms.macos-arm64"]
-checksum = "sha256:743f85035a1996ecb350659e01cd9faea9709829be09b1b4b03c73eaf3c9cd73"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664335803"
+checksum = "sha256:60fbd5c8a1ed681845eea28d9d622fcde03c51e91a43465b64a1e17db1ed3472"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.6/uv-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/679980393"
 provenance = "github-attestations"
 
 [tools.uv."platforms.macos-x64"]
-checksum = "sha256:b0f52b0e3945b4107d89024ea38e625683011fbfc05a0d98f9fa2d6dcee28c66"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664335993"
+checksum = "sha256:63ba17fdda55ad1a230d4b37fc6017ffa10c23688c83818bd3bfdf914c652a02"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.6/uv-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/679980609"
 provenance = "github-attestations"
 
 [tools.uv."platforms.windows-x64"]
-checksum = "sha256:a38b8d1902b7cfbc76b423ba1bb456f623f42064cdc72628b6075b89afd1019a"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664336006"
+checksum = "sha256:a2a8820d5eea32f08ef467ef3b7f66883a9b076d5737a2fc2fbb5f458d1bb50f"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.6/uv-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/679980629"
 provenance = "github-attestations"
