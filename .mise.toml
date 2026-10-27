@@ -14,14 +14,14 @@ postinstall = "lefthook install"
 "aqua:rhysd/actionlint" = "1.7.12"
 "aqua:zizmorcore/zizmor" = "1.31.1"
 "just" = "1.59.0"
-"uv" = "0.13.5"
+"uv" = "0.13.6"
 # flux-local is deprecated/sunsetted upstream in favor of flate (and
 # konflate) - our own .github/workflows/flate.yaml already uses flate in
 # CI, this pins the same tool for local `just kube apply-ks`/`delete-ks`
 # rendering (kubernetes/mod.just's render-local-ks) instead of running two
 # different Flux renderers.
 "github:home-operations/flate" = "v0.6.5"
-"npm:oxfmt" = "0.74.0"
+"npm:oxfmt" = "0.75.0"
 "aqua:yannh/kubeconform" = "0.8.0"
 "aqua:charmbracelet/gum" = "2.0.2"
 # Mise's own talosctl tool (resolves to aqua:siderolabs/talos, same as the
@@ -45,7 +45,7 @@ postinstall = "lefthook install"
 # Same v1beta2/v1 staleness as flux2 above, on the CLI half of the
 # flux-operator-mcp server (~/.local/bin/flux-operator-mcp was 0.45.1);
 # pinned to keep it tracked and current going forward.
-"flux-operator-mcp" = "0.62.0"
+"flux-operator-mcp" = "0.62.1"
 # Compared against onedr0p/home-ops's tool pins 2026-08-26: yq, jq,
 # shellcheck, op, and minijinja-cli were all unpinned/system-installed here.
 # yq specifically was actively wrong - system /usr/bin/yq resolved to the
@@ -67,7 +67,7 @@ postinstall = "lefthook install"
 # fallback and forces the broken backend directly. Unprefixed name (matching
 # onedr0p/home-ops's own pin) resolves through vfox correctly instead.
 "1password-cli" = "2.39.0"
-"github:mitsuhiko/minijinja" = "3.0.3"
+"github:mitsuhiko/minijinja" = "3.0.4"
 # npm:oxfmt (above) shells out to npm, which needs a node runtime - same
 # silent-version-drift risk class as the other tools pinned in the
 # 2026-08-26 comparison above. onedr0p/home-ops pins the same thing for the
