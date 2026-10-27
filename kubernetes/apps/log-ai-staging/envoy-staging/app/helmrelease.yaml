@@ -114,7 +114,13 @@ spec:
               # #302 follow-ups, unknown-source refusal, Boot 4.1.2). No changesets, no new settings; keep the
               # ADDITIONALMASKS_0 vars and -XX:MaxDirectMemorySize=64M. Rollback: revert both images.
               # Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:690e491f50e84f8f79c1fa5f842139682223aa7b346d8393f7f86d354cc5f2dd.
-              tag: 5bcf89f6b10803f1ce8d2f4532606b47cd56f23f@sha256:7fc2871c7f31086c45f0a6fcbca69bfa5d80a264a6b97aad6920a14641389a8a
+              # home-gitops#5803 (staging first): 3f6198a (memberless windows not indexed and removed with their
+              # merge, hidden-incident counts, opt-in chat reasoning-effort, retention refusal ordering).
+              # Changeset incidents-002 (one-time, irreversible) deletes incidents whose window has no member
+              # anomaly. Keep the ADDITIONALMASKS_0 vars and -XX:MaxDirectMemorySize=64M. Rollback: revert both
+              # images; undoing the changeset means restoring staging from a production backup again.
+              # Previous (5bcf89f): 5bcf89f6b10803f1ce8d2f4532606b47cd56f23f@sha256:7fc2871c7f31086c45f0a6fcbca69bfa5d80a264a6b97aad6920a14641389a8a.
+              tag: 3f6198acec4b0de807c5da775bc4de8e1ac5dd7b@sha256:622f5b209e30429e200d4358b56c08d29ef8260dc1bbac20a10a1a7807bf3fcb
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -362,7 +368,10 @@ spec:
               # home-gitops#5794 step 6 (staging only): 4cdeb65 adds the guided tours (envoy#353, #354, #355);
               # nginx.conf and the /otlp proxy are unchanged. Rollback: revert to 5c3901a.
               # Previous (5c3901a): 5c3901a5fe06f05ec431024b7bf1554ee43b0a8e@sha256:13a485799716550c15218930f2c2db7f7d38ace9327bab9c67094d4b76c4acb0.
-              tag: 4cdeb653b87f82234c98a20f0325580df8b3f615@sha256:3fce7dda471a3e6801fe29b74fb4db33045e5e0c67296bff48861403126a34c9
+              # home-gitops#5803 (staging first): 0665930 adds the hidden-incidents note and its toggle on top
+              # of the tours. Rollback: revert to 4cdeb65.
+              # Previous (4cdeb65): 4cdeb653b87f82234c98a20f0325580df8b3f615@sha256:3fce7dda471a3e6801fe29b74fb4db33045e5e0c67296bff48861403126a34c9.
+              tag: 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
