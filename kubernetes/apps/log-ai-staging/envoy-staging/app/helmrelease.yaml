@@ -124,7 +124,12 @@ spec:
               # No new changesets or settings since 3f6198a; only the Paketo builder bump (envoy#343) differs.
               # Rollback: revert to 3f6198a, keeping triage off.
               # Previous (3f6198a): 3f6198acec4b0de807c5da775bc4de8e1ac5dd7b@sha256:622f5b209e30429e200d4358b56c08d29ef8260dc1bbac20a10a1a7807bf3fcb.
-              tag: 1b5f9ac8cd30842f25f924a114347c703b96746d@sha256:edf7603bf58a826d6444bf93fa9cab7dfb7c0c5a3ca84fe5519bdb276ab9dc59
+              # home-gitops#5803 step 4, second try: c89b246 reads the triage model from the same ChatProperties value chat
+              # uses (envoy#219, PR #367), so no ENVOY_REDUCER_CHAT_MODEL is needed. First image where the whole app starting
+              # with triage on is covered in CI (TriageEnabledIntegrationTest). No changesets or settings since 1b5f9ac.
+              # Rollback: revert to 1b5f9ac, keeping triage off.
+              # Previous (1b5f9ac): 1b5f9ac8cd30842f25f924a114347c703b96746d@sha256:edf7603bf58a826d6444bf93fa9cab7dfb7c0c5a3ca84fe5519bdb276ab9dc59.
+              tag: c89b246cee9cabe0c9614f149bf332b709a10c06@sha256:5ee0c7271c962c17b51def737be536c3517bd1277562b01bce5989819fc91819
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
