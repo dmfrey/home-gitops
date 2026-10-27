@@ -213,9 +213,13 @@ spec:
               # does not lower the data/docs scores and the mean turn time falls below eval A's 9.5 s (envoy#275);
               # otherwise remove this var.
               ENVOY_REDUCER_CHAT_REASONINGEFFORT: none
-              # home-gitops#5803 step 4: triage OFF. 1b5f9ac fixed the executor-bean startup failure but the triage
-              # summary adapter still fails to start: it needs envoy.reducer.chat.model (ENVOY_REDUCER_CHAT_MODEL), which
-              # nothing sets (envoy#219). Turn triage on again only with that value set or defaulted in the image.
+              # home-gitops#5803 step 4 (staging only), second try: window triage on, reaching back 72h because staging
+              # ingests no logs and the restored windows are older than the 6h default. max-per-poll (3) and poll-interval
+              # (5m) stay at their defaults. Needs backend c89b246 or later (envoy#219: 3f6198a lacked an executor bean,
+              # 1b5f9ac lacked the triage model value). Keep on if the five checks hold; turn off if heap climbs or
+              # summaries time out.
+              ENVOY_REDUCER_TRIAGE_ENABLED: "true"
+              ENVOY_REDUCER_TRIAGE_MAXEVENTAGE: 72h
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
