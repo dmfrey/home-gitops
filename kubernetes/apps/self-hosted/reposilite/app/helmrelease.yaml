@@ -1,0 +1,107 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: reposilite
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: reposilite
+  interval: 1h
+  values:
+    controllers:
+      reposilite:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/dzikoysk/reposilite
+              tag: 3.6.5@sha256:ef3a50d7bec804def6c62a98bcd1c10cf39f181d4010ed009d6a07c8bd303c37
+            env:
+              TZ: America/New_York
+              # Container-aware heap: ~60% of the 768Mi limit, rest for metaspace and the HTTP client.
+              JAVA_OPTS: -XX:MaxRAMPercentage=60
+            envFrom:
+              - secretRef:
+                  name: reposilite-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &port 8080
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *port
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+                  failureThreshold: 5
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 768Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] < 400"]
+            url: "http://reposilite-app.self-hosted.svc.cluster.local:8080"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Tools
+          gethomepage.dev/name: Maven
+          gethomepage.dev/icon: maven.svg
+          gethomepage.dev/description: Private Maven and Gradle mirror (Spring Enterprise).
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=reposilite
+        hostnames:
+          - maven.dmfrey.com
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/data
+      config:
+        type: secret
+        name: reposilite-secret
+        globalMounts:
+          - path: /config/configuration.shared.json
+            subPath: configuration.shared.json
+            readOnly: true
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/log/reposilite
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
