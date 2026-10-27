@@ -208,8 +208,12 @@ spec:
               # does not lower the data/docs scores and the mean turn time falls below eval A's 9.5 s (envoy#275);
               # otherwise remove this var.
               ENVOY_REDUCER_CHAT_REASONINGEFFORT: none
-              # home-gitops#5803 step 4: triage stays OFF here until the backend below is Ready; then it is turned on
-              # in its own PR (ENVOY_REDUCER_TRIAGE_ENABLED "true", MAXEVENTAGE 72h). 3f6198a crashed at startup with it on.
+              # home-gitops#5803 step 4 (staging only): window triage on, reaching back 72h because staging ingests
+              # no logs and the restored windows are older than the 6h default. max-per-poll (3) and poll-interval
+              # (5m) stay at their defaults. Needs backend 1b5f9ac or later (3f6198a crashed at startup with triage on,
+              # envoy#219). Keep on if the five checks hold; turn off if heap climbs or summaries time out.
+              ENVOY_REDUCER_TRIAGE_ENABLED: "true"
+              ENVOY_REDUCER_TRIAGE_MAXEVENTAGE: 72h
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
