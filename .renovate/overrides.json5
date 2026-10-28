@@ -9,6 +9,19 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      // 2026-10-28: Renovate's github-actions manager reads `version:` on the
+      // jdx/mise-action steps as the mise release and auto-merged
+      // v2026.10.18 -> v2026.10.19 (f81789b8e) at 03:07Z, which silently undid
+      // the pin from #5841. mise 2026.10.19 fails `mise lock` for 1password-cli
+      // on linux-arm64 ("module 'metadata' not found" from the vfox plugin) and
+      // broke every new PR's Flate and Image Pull jobs. 2026.10.20 and .21 are
+      // out but their notes do not mention a fix, and nothing has proven them.
+      // Lift this hold after a PR with `version:` bumped by hand passes CI.
+      description: "Hold the mise version used by jdx/mise-action at 2026.10.18 (2026.10.19 breaks mise lock for 1password-cli)",
+      matchPackageNames: ["jdx/mise"],
+      enabled: false,
+    },
+    {
       // 2026-10-10: Renovate's mise manager maps the "1password-cli" entry in
       // .mise.toml to the github-tags package 1password/cli, but 1Password's
       // CLI is not distributed from a public GitHub repo, so every run logged
