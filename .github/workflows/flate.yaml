@@ -53,7 +53,7 @@ jobs:
           # Pinned: mise 2026.10.19 (2026-10-24) fails `mise lock` for 1password-cli on linux-arm64
           # ("Plugin directory not found" from the vfox plugin), which broke every new PR's Flate and
           # Image Pull jobs from 2026-10-27 23:25Z. 2026.10.18 passed. Unpin once a fixed mise is out.
-          version: 2026.10.18
+          version: 2026.10.19
           # mise 2026.9.16 shipped a same-day SLSA provenance regression
           # (hard-errors on aqua tools missing signer_identity/signer_issuer,
           # e.g. flux2, instead of gracefully skipping as documented) -
