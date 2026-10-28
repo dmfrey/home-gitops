@@ -154,7 +154,12 @@ spec:
               # search_templates. No changesets or config changes; keep every env var, triage stays OFF.
               # Rollback: revert to b382ec6.
               # Previous (b382ec6): b382ec6c0311f39ef070e1246123701cc43272a3@sha256:1f549f94255bc3d9dd89b5c48ed9165bf5473c8fbd35d6c79c3096e320b6753e.
-              tag: 60f2d303e49274fa0e2b5dc900ce5549e21a391a@sha256:153c6ad2c9df90a4b2d8a23d14f48773d1be9bcaaac1158165eee8da07ee1315
+              # home-gitops#5859: a67ad85, chat no-tool-call retry (a turn that finishes with no tool call is asked once more;
+              # on by default, ENVOY_REDUCER_CHAT_RETRYWITHOUTTOOLCALL=false turns it off; envoy#299, PR #377), plus Cloud Foundry
+              # support that is inert here (#376) and CI only (#375). No changesets or config changes; keep every env var,
+              # triage stays OFF, prompt stays v12. Rollback: revert to 60f2d30.
+              # Previous (60f2d30): 60f2d303e49274fa0e2b5dc900ce5549e21a391a@sha256:153c6ad2c9df90a4b2d8a23d14f48773d1be9bcaaac1158165eee8da07ee1315.
+              tag: a67ad85119c311608660af5c1c162dd6f6b018f1@sha256:c2545cfc042fb291cfd7f165d3dad637c6613c19043f53a3135baa36620e751a
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
