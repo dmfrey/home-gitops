@@ -5,10 +5,14 @@
 # (never both gateways: two CNAME targets made the UDM dnsmasq churn, #5333).
 # Sign-in (Authentik) gates /api and /mcp. Its exemplars are real log lines, so
 # everything unauthenticated must stay unreachable from the internet: /v1
-# (ingest) and /actuator are internal-only by design, and /otlp answers 404
-# because the frontend nginx proxies it to Alloy with no auth, so anyone could
-# push traces into the observability stack. /api, /mcp and the OAuth
-# protected-resource metadata go to the backend, everything else to the UI.
+# (ingest) and /actuator are internal-only by design. /otlp (browser traces) now
+# goes to the frontend like the rest of the UI since home-gitops#5786: from
+# frontend 5c3901a its nginx requires a signed-in session (auth_request to
+# /api/me), accepts POST only, caps the body at 256 KiB and rate-limits per
+# client before forwarding to Alloy's hardened receiver (envoy#346). It answered
+# 404 here from 2026-10-24 to 2026-10-28, when the proxy had no auth. /api, /mcp
+# and the OAuth protected-resource metadata go to the backend, everything else
+# to the UI.
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -33,8 +37,8 @@ spec:
       namespace: network
       sectionName: https
   rules:
-    # Ingest, actuator and the unauthenticated /otlp proxy must not be reachable
-    # through the hostname (in-cluster use goes via the Service).
+    # Ingest and actuator must not be reachable through the hostname (in-cluster
+    # use goes via the Service). /otlp used to be here too; see the header.
     - matches:
         - path:
             type: PathPrefix
@@ -42,9 +46,6 @@ spec:
         - path:
             type: PathPrefix
             value: /actuator
-        - path:
-            type: PathPrefix
-            value: /otlp
       filters:
         - type: ExtensionRef
           extensionRef:
