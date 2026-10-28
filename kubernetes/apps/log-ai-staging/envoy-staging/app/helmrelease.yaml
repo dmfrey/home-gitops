@@ -134,7 +134,11 @@ spec:
               # so neither reaches the model (envoy#219, PR #368). No changesets or settings; triage vars stay as they are.
               # Rollback: revert to c89b246.
               # Previous (c89b246): c89b246cee9cabe0c9614f149bf332b709a10c06@sha256:5ee0c7271c962c17b51def737be536c3517bd1277562b01bce5989819fc91819.
-              tag: 476f751fa09b2a4a598a4dbcdfe316757022851b@sha256:eb95b329222914aa641cc774647abbc002326ab993ae1f2327c169ae3c1c1bb9
+              # home-gitops#5803 step 4d: 991b3ed, triage prompt v3 reads the window with get_incident and cites it;
+              # a summary with no citation is discarded (outcome="uncited") and not retried (envoy#219, PR #370).
+              # No changesets or settings since 476f751; triage env vars unchanged. Rollback: revert to 476f751.
+              # Previous (476f751): 476f751fa09b2a4a598a4dbcdfe316757022851b@sha256:eb95b329222914aa641cc774647abbc002326ab993ae1f2327c169ae3c1c1bb9.
+              tag: 991b3ed067f573458bfe7a38ec3f3d1bbdf3598d@sha256:b2bbeeb2763b76ac188b60107afc23cdcf45914a144cb1a9ec2e18edd4744adc
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
