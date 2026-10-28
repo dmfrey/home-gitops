@@ -140,7 +140,12 @@ spec:
               # Keep the ADDITIONALMASKS_0 vars and -XX:MaxDirectMemorySize=64M. Do NOT add the triage vars.
               # Rollback: revert both images and drop ENVOY_REDUCER_CHAT_REASONINGEFFORT; no restore needed.
               # Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:690e491f50e84f8f79c1fa5f842139682223aa7b346d8393f7f86d354cc5f2dd.
-              tag: 991b3ed067f573458bfe7a38ec3f3d1bbdf3598d@sha256:b2bbeeb2763b76ac188b60107afc23cdcf45914a144cb1a9ec2e18edd4744adc
+              # home-gitops#5853: 2122860, backend only, chat system prompt v13 (one rule: a question about what a
+              # source logged needs search_templates; an empty get_anomalies page means no anomaly, not no logs;
+              # envoy#336, PR #372). No changesets, no config changes: keep every env var, triage stays OFF.
+              # Rollback: revert to 991b3ed.
+              # Previous (991b3ed): 991b3ed067f573458bfe7a38ec3f3d1bbdf3598d@sha256:b2bbeeb2763b76ac188b60107afc23cdcf45914a144cb1a9ec2e18edd4744adc.
+              tag: 2122860b8800ac8bd119f1eddb12c0677f960594@sha256:b04a12b8a9d2f48747b509ac13cf72d208c75991d8938b79e9ca1bb8b892559c
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
