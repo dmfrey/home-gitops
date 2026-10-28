@@ -110,7 +110,13 @@ spec:
         runAsNonRoot: false
         runAsUser: 0
         runAsGroup: 0
-        fsGroup: 0
+        # fsGroup 33 = www-data, the group the Apache workers run as. It was 0, and the kubelet re-applies fsGroup
+        # to the volume whenever it restarts (a Kubernetes upgrade did it on 2026-10-28 11:17Z), resetting
+        # everything under data/ to root:root where the www-data workers cannot write: "Error during context user
+        # init!" and the requirements self-check failing (the same symptom as 2026-09-16 and 09-24). With 33 the
+        # kubelet re-applies the group FreshRSS needs, so it can no longer undo it. The init container below stays
+        # as insurance for a fresh volume.
+        fsGroup: 33
     service:
       app:
         ports:
