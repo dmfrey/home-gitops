@@ -133,7 +133,14 @@ spec:
               # members, folder mask via config). No changesets. Keep -XX:MaxDirectMemorySize=64M.
               # Rollback: revert both images (the three MASKING_ADDITIONALMASKS_0 vars may stay).
               # Previous (8a894c5): 8a894c50fe790d83cf9ad24bebbabdda52af5d52@sha256:ea430cee24f71123734c5211751445c0a320d8430fbdb46fd8004b8becc8d8f7.
-              tag: 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:690e491f50e84f8f79c1fa5f842139682223aa7b346d8393f7f86d354cc5f2dd
+              # home-gitops#5786: 991b3ed (staging-verified in #5794 and #5803): digests record only events they covered,
+              # deletion-age timer, raw-log refusal fixes, unknown-source refusal, hidden empty incidents, chat reasoning-effort,
+              # triage fixes (inert, triage stays OFF), Spring Boot 4.1.2, Spring AI 2.0.2. One IRREVERSIBLE changeset,
+              # incidents-002 (deletes incident index rows whose window has no member). Backup: envoy-cnpg-pre-991b3ed.
+              # Keep the ADDITIONALMASKS_0 vars and -XX:MaxDirectMemorySize=64M. Do NOT add the triage vars.
+              # Rollback: revert both images and drop ENVOY_REDUCER_CHAT_REASONINGEFFORT; no restore needed.
+              # Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:690e491f50e84f8f79c1fa5f842139682223aa7b346d8393f7f86d354cc5f2dd.
+              tag: 991b3ed067f573458bfe7a38ec3f3d1bbdf3598d@sha256:b2bbeeb2763b76ac188b60107afc23cdcf45914a144cb1a9ec2e18edd4744adc
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -166,6 +173,9 @@ spec:
               # publishing stay off. Other window settings keep their defaults (join-gap 10m,
               # close-after 30m, lookback 2h, max-per-sweep 500, sweep-interval 2m).
               ENVOY_REDUCER_DETECTION_WINDOWS_ENABLED: "true"
+              # Chat reasoning effort off (envoy#275, home-gitops#5786): staging eval B scored 24/30 vs 21/30 with a
+              # 5.9 s vs 9.5 s mean turn (home-gitops#5803 step 3). Rollback: drop this var.
+              ENVOY_REDUCER_CHAT_REASONINGEFFORT: none
               # Ticket filing through the in-cluster RT MCP server (home-gitops#5508). Enabled 2026-10-20
               # after the day-7 review (envoy#8). Files into the production "Envoy" queue and has
               # no automatic rules yet (manual "Create ticket" button only; rules are a later
@@ -373,7 +383,9 @@ spec:
               # home-gitops#5736: 669e411 (the "Sign-in failed" card at /?login_error). Previous (fadd7d3): fadd7d37b9d3ee5d5f0ccaa989381cdc4587e8cc@sha256:bfb2dd87c5705d1c9101649b9a00e423dcc3aebd2a68824f9baddd956cac0f2f.
               # home-gitops#5739: bc50b5e, frontend only (in-app help, field tooltips). Previous (669e411): 669e411fc9355b4775c242c7278983f019d319e3@sha256:f0a59f4644f55d72926b530b2be6099be4ad0756d8cb03048a65d74619e50f8a.
               # home-gitops#5763: 67b4a86 (/admin/masking, copy icon). Previous (bc50b5e): bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f.
-              tag: 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:baffc3708f30bb9e8df04846de808b1602214cd0d73cee3d0602599044f4927d
+              # home-gitops#5786: 0665930 (authenticated /otlp proxy, guided tours, hidden-incidents note, browser fetch spans).
+              # Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:baffc3708f30bb9e8df04846de808b1602214cd0d73cee3d0602599044f4927d.
+              tag: 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
