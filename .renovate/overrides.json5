@@ -9,6 +9,16 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      // 2026-10-29: Renovate proposed Cilium 1.18.6 -> 1.20.4 in one PR (#5870),
+      // skipping 1.19. The chart's validate.yaml refuses bpf.tproxy together
+      // with datapathMode=netkit, so it failed at render time. Cilium is the
+      // CNI; upgrade one minor at a time with a supervised rollout each.
+      description: "Step Cilium one minor at a time and keep patch bumps separate from minor bumps",
+      matchPackageNames: ["quay.io/cilium/charts/cilium"],
+      separateMultipleMinor: true,
+      separateMinorPatch: true,
+    },
+    {
       // 2026-10-28: Renovate's github-actions manager reads `version:` on the
       // jdx/mise-action steps as the mise release and auto-merged
       // v2026.10.18 -> v2026.10.19 (f81789b8e) at 03:07Z, which silently undid
