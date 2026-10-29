@@ -25,7 +25,9 @@ spec:
       datapathMode: netkit
       masquerade: true
       preallocateMaps: true
-      tproxy: true
+      # bpf.tproxy was true here and is dropped: this cluster has no Cilium network policies (no L7 or FQDN
+      # rules), so nothing uses it, and Cilium 1.19+ refuses to start with tproxy and netkit together
+      # (onedr0p/home-ops removed it in its 1.19.0 upgrade, #10451).
 
     bpfClockProbe: true
 
@@ -33,7 +35,9 @@ spec:
       enabled: true
 
     cgroup:
-      automount:
+      # Was `automount` (lowercase), which the chart ignores, so the mount-cgroup init container kept running.
+      # Talos already mounts cgroup2 at /sys/fs/cgroup, which is what hostRoot points at.
+      autoMount:
         enabled: false
       hostRoot: /sys/fs/cgroup
 
@@ -76,6 +80,9 @@ spec:
     loadBalancer:
       algorithm: maglev
       mode: dsr
+      # spegel-registry sets trafficDistribution: PreferSameNode and Cilium only honours it with service topology
+      # on (same as onedr0p/home-ops). It is the only Service here that sets trafficDistribution.
+      serviceTopology: true
 
     localRedirectPolicies:
       enabled: true
