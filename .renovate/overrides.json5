@@ -63,12 +63,6 @@
       allowedVersions: "<2.3.2",
     },
     {
-      description: "Block multus chart 1.3.x — bjw-s common v5 defaults automountServiceAccountToken=false; chart doesn't expose override; breaks multus API server access",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/bjw-s-labs/helm/multus"],
-      allowedVersions: "!/^1\\.3\\./",
-    },
-    {
       // 2026-08-03: the managers/cnpg.json5 custom manager we picked up from
       // the shared preset started tracking Cluster.spec.imageName, which
       // proposed a single PR bumping all 13 CNPG-backed databases from PG
