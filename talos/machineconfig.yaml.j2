@@ -207,6 +207,21 @@ config:
   imageGCHighThresholdPercent: 65
   imageGCLowThresholdPercent: 50
   serializeImagePulls: false
+  # Graceful node shutdown (same values onedr0p/home-ops uses). Gives pods up to
+  # 90s to stop (60s of that reserved for critical pods) so Ceph RBD/CephFS and
+  # NFS mounts are released before the node powers off, instead of being cut off.
+  # Added after the 2026-08-04 outage, where 2nd/3rd node shutdowns hung on
+  # unmountPodMounts with Ceph mon quorum degrading. Applied without a reboot.
+  shutdownGracePeriod: 90s
+  shutdownGracePeriodCriticalPods: 60s
+  # Cap CrashLoopBackOff's restart delay at 60s (kubelet default is 5m) so pods
+  # that crash while a dependency is still coming up (DragonflyDB, Garage clients
+  # after a power-on) retry quickly instead of sitting in long backoff.
+  crashLoopBackOff:
+    maxContainerRestartPeriod: 60s
+  # Pull up to 3 images at once now that serializeImagePulls is off; unbounded
+  # parallel pulls are what the kubelet defaults to when this is unset.
+  maxParallelImagePulls: 3
 image: ghcr.io/siderolabs/kubelet:v1.37.2@sha256:d80d3843530cfae376a0814f73bcc4ac70e32bc157de777b38a90f33b82d1111
 
 ---
@@ -478,6 +493,18 @@ apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 5m
+
+---
+# Weekly TRIM / scrub of Talos-managed filesystems (same 168h interval as
+# onedr0p/home-ops). Applied without a reboot.
+apiVersion: v1alpha1
+kind: FilesystemTrimConfig
+interval: 168h0m0s
+
+---
+apiVersion: v1alpha1
+kind: FilesystemScrubConfig
+interval: 168h0m0s
 
 ---
 apiVersion: v1alpha1
