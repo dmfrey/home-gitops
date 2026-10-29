@@ -25,9 +25,15 @@ spec:
           pluginConfig:
             - name: DefaultEvictor
               args:
-                evictFailedBarePods: true
-                evictLocalStoragePods: true
-                evictSystemCriticalPods: true
+                # The evictFailedBarePods / evictLocalStoragePods /
+                # evictSystemCriticalPods booleans are deprecated in favour of
+                # podProtections; defaultDisabled turns these default protections
+                # off, which is what the old booleans did.
+                podProtections:
+                  defaultDisabled:
+                    - FailedBarePods
+                    - PodsWithLocalStorage
+                    - SystemCriticalPods
             - name: LowNodeUtilization
               args:
                 metricsUtilization:
