@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-  # ./securitypolicy.yaml is added in a follow-up PR once the agent is parsing logs.
+  - ./securitypolicy.yaml

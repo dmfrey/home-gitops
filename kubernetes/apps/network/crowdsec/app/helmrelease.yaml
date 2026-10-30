@@ -43,6 +43,21 @@ spec:
         serviceMonitor:
           enabled: true
 
+    config:
+      postoverflows:
+        s01-whitelist:
+          # Never ban the home connection (Gatus's external checks and any hairpin traffic arrive from here)
+          # or add travel addresses below when needed. Applies before a ban decision is created.
+          home-whitelist.yaml: |
+            name: dmfrey/home-whitelist
+            description: "Home WAN addresses are never banned"
+            whitelist:
+              reason: "home WAN"
+              ip:
+                - "73.13.36.43"
+              cidr:
+                - "2601:40:cb81:f0c0::/64"
+
     agent:
       isDeployment: true
       hostVarLog: false

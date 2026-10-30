@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+# Every request on envoy-external asks the CrowdSec bouncer whether the client address is banned.
+# failOpen: if the bouncer or the LAPI is down, traffic still flows (no CrowdSec check) instead of failing.
+# Routes with their own extAuth (excalidraw, via the Authentik outpost) override this gateway-level policy
+# for that field and are therefore not checked by CrowdSec; they already require SSO.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: crowdsec-bouncer
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-external
+  extAuth:
+    failOpen: true
+    grpc:
+      backendRefs:
+        - name: crowdsec-bouncer
+          port: 8080
