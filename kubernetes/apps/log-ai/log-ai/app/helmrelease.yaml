@@ -164,7 +164,13 @@ spec:
               # GET /api/me (authenticationEnabled: true) here (#380); CI only (#378, #379). No changesets or config changes;
               # keep every env var, retry stays on (RETRYWITHOUTTOOLCALL unset), triage stays OFF. Rollback: revert to a67ad85.
               # Previous (a67ad85): a67ad85119c311608660af5c1c162dd6f6b018f1@sha256:c2545cfc042fb291cfd7f165d3dad637c6613c19043f53a3135baa36620e751a.
-              tag: c8622cf6fc130adb8eb747a0f5f1843a416bdf1c@sha256:1874487a96693f0055829a8781c660d5cd5dc008195c971bd095ef4a792df54c
+              # home-gitops#5899: 7f5f4de. Chat tools treat a blank source/type/product filter as no filter (envoy#382), terminal
+              # escape codes are stripped from exemplars when shown (envoy#384), document uploads up to 100 MB with a clean 413
+              # (envoy#385; config in the jar), test-only (#388). No Liquibase changesets, no new required env vars. Window triage
+              # summaries are turned on below (ENVOY_REDUCER_TRIAGE_ENABLED). Rollback for an image regression: revert to c8622cf;
+              # for triage trouble: drop ENVOY_REDUCER_TRIAGE_ENABLED (config only).
+              # Previous (c8622cf): c8622cf6fc130adb8eb747a0f5f1843a416bdf1c@sha256:1874487a96693f0055829a8781c660d5cd5dc008195c971bd095ef4a792df54c.
+              tag: 7f5f4de79790462065d7fd8fffd853166eef289f@sha256:89830c3836ec7645d1a3feabf90da2e19b8a8018e10c77ab638e3a6839275b4c
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -200,6 +206,11 @@ spec:
               # Chat reasoning effort off (envoy#275, home-gitops#5786): staging eval B scored 24/30 vs 21/30 with a
               # 5.9 s vs 9.5 s mean turn (home-gitops#5803 step 3). Rollback: drop this var.
               ENVOY_REDUCER_CHAT_REASONINGEFFORT: none
+              # Window triage summaries on (envoy#219, verified on staging, home-gitops#5899): each closed incident window
+              # gets a short model-written summary. Production keeps the default 6h max event age (staging's 72h would work
+              # through a three-day backlog); not set here on purpose. Shares the Ollama GPU with chat: one pass at a time,
+              # at most 3 windows per poll every 5 minutes, 3 minute limit per model call.
+              ENVOY_REDUCER_TRIAGE_ENABLED: "true"
               # Ticket filing through the in-cluster RT MCP server (home-gitops#5508). Enabled 2026-10-20
               # after the day-7 review (envoy#8). Files into the production "Envoy" queue and has
               # no automatic rules yet (manual "Create ticket" button only; rules are a later
@@ -409,7 +420,10 @@ spec:
               # home-gitops#5763: 67b4a86 (/admin/masking, copy icon). Previous (bc50b5e): bc50b5e60b4abbf43bf1427ffd667dff59b38470@sha256:6ea739f6b34e8c4c1855fc83d0d59696e2dd93f583931bc3c9844d31be2f7c6f.
               # home-gitops#5786: 0665930 (authenticated /otlp proxy, guided tours, hidden-incidents note, browser fetch spans).
               # Previous (67b4a86): 67b4a86bf96b96e5f85694fc7170b5f835b80116@sha256:baffc3708f30bb9e8df04846de808b1602214cd0d73cee3d0602599044f4927d.
-              tag: 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b
+              # home-gitops#5899: 01515cd (envoy#380: the profile menu hides sign-out only when the backend reports sign-in off;
+              # production has OIDC on, so nothing should change). No nginx.conf changes.
+              # Previous (0665930): 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b.
+              tag: 01515cd09a6d241d272a59a39c28cc0149adafb3@sha256:b15b094d59473ade1fe4a0dd747f99bb74fe757de9288ec9565772e387fc553a
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
