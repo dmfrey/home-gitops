@@ -159,7 +159,12 @@ spec:
               # support that is inert here (#376) and CI only (#375). No changesets or config changes; keep every env var,
               # triage stays OFF, prompt stays v12. Rollback: revert to 60f2d30.
               # Previous (60f2d30): 60f2d303e49274fa0e2b5dc900ce5549e21a391a@sha256:153c6ad2c9df90a4b2d8a23d14f48773d1be9bcaaac1158165eee8da07ee1315.
-              tag: a67ad85119c311608660af5c1c162dd6f6b018f1@sha256:c2545cfc042fb291cfd7f165d3dad637c6613c19043f53a3135baa36620e751a
+              # home-gitops#5863: c8622cf, retry note defaults to search_docs and a turn is not retried once an earlier turn
+              # in the same session called a tool (envoy#299 follow-up, PR #381); optional OIDC that only changes
+              # GET /api/me (authenticationEnabled: true) here (#380); CI only (#378, #379). No changesets or config changes;
+              # keep every env var, retry stays on (RETRYWITHOUTTOOLCALL unset), triage stays OFF. Rollback: revert to a67ad85.
+              # Previous (a67ad85): a67ad85119c311608660af5c1c162dd6f6b018f1@sha256:c2545cfc042fb291cfd7f165d3dad637c6613c19043f53a3135baa36620e751a.
+              tag: c8622cf6fc130adb8eb747a0f5f1843a416bdf1c@sha256:1874487a96693f0055829a8781c660d5cd5dc008195c971bd095ef4a792df54c
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
