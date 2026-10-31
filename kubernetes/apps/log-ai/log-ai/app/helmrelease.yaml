@@ -175,7 +175,13 @@ spec:
               # writes a sentence about history (envoy#391). No Liquibase changesets, no env var changes; stored text and its hash are
               # unchanged. Triage stays on. Rollback: revert to 7f5f4de.
               # Previous (7f5f4de): 7f5f4de79790462065d7fd8fffd853166eef289f@sha256:89830c3836ec7645d1a3feabf90da2e19b8a8018e10c77ab638e3a6839275b4c.
-              tag: 1a819ae7b14dbfaf6f11f325cdf11a7468f3171c@sha256:f3a753c59fce8dc5cee66dcca78fed3bffbfbba3c8a2f34b6fab0c09e57cd892
+              # home-gitops#5910: 062b965 (envoy#394). The incident detail (get_incident and the incident page) reports only the hosts and
+              # workloads its current members explain (stored grouping keys are never pruned and a template merge can delete a member
+              # after announce), and the get_incidents host/workload search applies the same rule, counting skipped matches as
+              # staleMatchesSkipped. Grouping itself is unchanged. Backend only: no Liquibase changesets, no env var changes, frontend unchanged
+              # (83aebbf). Rollback: revert to 1a819ae.
+              # Previous (1a819ae): 1a819ae7b14dbfaf6f11f325cdf11a7468f3171c@sha256:f3a753c59fce8dc5cee66dcca78fed3bffbfbba3c8a2f34b6fab0c09e57cd892.
+              tag: 062b965e4b991f3b0f59b2287080dbbf02480391@sha256:d1ef773da94555061f5d36ffb2fa1f468d1495bfb5106bd5fd46f616959371db
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
