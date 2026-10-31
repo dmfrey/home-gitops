@@ -170,7 +170,12 @@ spec:
               # summaries are turned on below (ENVOY_REDUCER_TRIAGE_ENABLED). Rollback for an image regression: revert to c8622cf;
               # for triage trouble: drop ENVOY_REDUCER_TRIAGE_ENABLED (config only).
               # Previous (c8622cf): c8622cf6fc130adb8eb747a0f5f1843a416bdf1c@sha256:1874487a96693f0055829a8781c660d5cd5dc008195c971bd095ef4a792df54c.
-              tag: 7f5f4de79790462065d7fd8fffd853166eef289f@sha256:89830c3836ec7645d1a3feabf90da2e19b8a8018e10c77ab638e3a6839275b4c
+              # home-gitops#5905: 1a819ae. Terminal escape codes are stripped from template text as well as exemplars, wherever shown,
+              # including codes the masker rewrote (ESC[<NUM>;90m) (envoy#389), and triage prompt v4 no longer searches past incidents or
+              # writes a sentence about history (envoy#391). No Liquibase changesets, no env var changes; stored text and its hash are
+              # unchanged. Triage stays on. Rollback: revert to 7f5f4de.
+              # Previous (7f5f4de): 7f5f4de79790462065d7fd8fffd853166eef289f@sha256:89830c3836ec7645d1a3feabf90da2e19b8a8018e10c77ab638e3a6839275b4c.
+              tag: 1a819ae7b14dbfaf6f11f325cdf11a7468f3171c@sha256:f3a753c59fce8dc5cee66dcca78fed3bffbfbba3c8a2f34b6fab0c09e57cd892
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -423,7 +428,9 @@ spec:
               # home-gitops#5899: 01515cd (envoy#380: the profile menu hides sign-out only when the backend reports sign-in off;
               # production has OIDC on, so nothing should change). No nginx.conf changes.
               # Previous (0665930): 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b.
-              tag: 01515cd09a6d241d272a59a39c28cc0149adafb3@sha256:b15b094d59473ade1fe4a0dd747f99bb74fe757de9288ec9565772e387fc553a
+              # home-gitops#5905: 83aebbf, the frontend that goes with 1a819ae (no nginx.conf changes).
+              # Previous (01515cd): 01515cd09a6d241d272a59a39c28cc0149adafb3@sha256:b15b094d59473ade1fe4a0dd747f99bb74fe757de9288ec9565772e387fc553a.
+              tag: 83aebbfef73ab4f7070dd9e18f9433ff287afbdb@sha256:7ea4db1241b3da80edb2f8f6f6dcfce58e0655fc5c01ba1889e42e7e1f77d632
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
