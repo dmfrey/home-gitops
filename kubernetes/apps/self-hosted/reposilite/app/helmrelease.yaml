@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: docker.io/dzikoysk/reposilite
-              tag: 3.6.5@sha256:ef3a50d7bec804def6c62a98bcd1c10cf39f181d4010ed009d6a07c8bd303c37
+              tag: 3.6.6@sha256:f70e7a0976be2e74e6b49bbc4677bea705a314783dddb439cc227e7adfff7b83
             env:
               TZ: America/New_York
               # Container-aware heap: ~60% of the 768Mi limit, rest for metaspace and the HTTP client.
