@@ -181,7 +181,13 @@ spec:
               # staleMatchesSkipped. Grouping itself is unchanged. Backend only: no Liquibase changesets, no env var changes, frontend unchanged
               # (83aebbf). Rollback: revert to 1a819ae.
               # Previous (1a819ae): 1a819ae7b14dbfaf6f11f325cdf11a7468f3171c@sha256:f3a753c59fce8dc5cee66dcca78fed3bffbfbba3c8a2f34b6fab0c09e57cd892.
-              tag: 062b965e4b991f3b0f59b2287080dbbf02480391@sha256:d1ef773da94555061f5d36ffb2fa1f468d1495bfb5106bd5fd46f616959371db
+              # home-gitops#5928: 522740a (envoy#395, PR #399). An announced incident that closes with no members left sends
+              # "Incident closed: nothing remained" with a body saying its anomalies were removed after it opened, instead of
+              # "Incident closed: 0 anomalies" over "0 anomalies from 0 sources ()". Nothing else changes: no payload fields, grouping,
+              # triage or template-merge behaviour. Backend only: no Liquibase changesets, no env var changes, frontend unchanged
+              # (83aebbf). Rollback: revert to 062b965.
+              # Previous (062b965): 062b965e4b991f3b0f59b2287080dbbf02480391@sha256:d1ef773da94555061f5d36ffb2fa1f468d1495bfb5106bd5fd46f616959371db.
+              tag: 522740a62dddf883b33ef47b4d046c608e6dfc05@sha256:6bb9571e55e1868c225b2cc67215cf2aaf9e45d40c9117bb3da96f457f342610
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
