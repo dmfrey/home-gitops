@@ -232,6 +232,12 @@ spec:
               # after the day-7 review (envoy#8). Files into the production "Envoy" queue and has
               # no automatic rules yet (manual "Create ticket" button only; rules are a later
               # change). The MCP has no auth of its own.
+              # RATE_CHANGE detector on (envoy#214, home-gitops#5735): hourly, compares each template's count for the
+              # hour just closed against its own same-hour history (median/MAD; z >= 5, >= 50 records/h of change, usual
+              # volume >= 10/h). DISAPPEARANCE/SOURCE_SILENT (envoy#215) stay off. Not mailed: no enabled subscription
+              # has a NULL type filter (checked before this change). Rollback: drop this var; existing anomalies stay
+              # (DELETE FROM anomalies WHERE type = 'RATE_CHANGE' to clear). Staging stays off.
+              ENVOY_REDUCER_DETECTION_RATECHANGE_ENABLED: "true"
               ENVOY_REDUCER_TICKETS_ENABLED: "true"
               ENVOY_REDUCER_TICKETS_TRACKER: rt
               ENVOY_REDUCER_TICKETS_BASE_URL: https://project-envoy.dmfrey.com
