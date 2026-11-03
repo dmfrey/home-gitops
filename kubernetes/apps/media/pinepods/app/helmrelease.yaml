@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: madeofpendletonwool/pinepods
-              tag: 0.9.0@sha256:ebc258bb0c62cdb69e5fb726b247c885dac19b50d06fed68fa8d37197b88ace4
+              tag: 0.9.1@sha256:01688a4d5138ce6acc54a1b10df1814edf531de35015c5276068257b9ad133fc
             env:
               TZ: America/New_York
               PUID: 1000
