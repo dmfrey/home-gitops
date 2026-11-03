@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: v0.12.5-ollama@sha256:4157f2f3a40048d2968610085e4f6e2415c760521014dbd8517e891b6122b818
+              tag: v0.13.0-ollama@sha256:1c3661c6b30d79232973eb4ae36be6db3c15ef58eb23ca61af70cb50922bd0ab
             env:
               TZ: America/New_York
               ENABLE_OPENAI_API: False
