@@ -409,7 +409,11 @@ spec:
               # colours with tighter list rows (envoy#418). No API, nginx.conf or Dockerfile change, backend unchanged.
               # Rollback: revert to e5e6a62.
               # Previous (e5e6a62): e5e6a628d5c1b555a15cdee5d114709429be35e4@sha256:40036234009fa89110e1ea6dbf058194786a923d5bb81900e4db67b2a5dbe6c0.
-              tag: 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9
+              # home-gitops#5961 (staging first): 78f07d8, nginx.conf only (envoy#428, PR #429): index.html and SPA routes
+              # get Cache-Control: no-cache, /assets/ is immutable for a year, a missing /assets/ file is a 404. No app
+              # code change, backend unchanged. Rollback: revert to 4db3a03.
+              # Previous (4db3a03): 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9.
+              tag: 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
