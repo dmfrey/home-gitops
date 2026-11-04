@@ -458,7 +458,11 @@ spec:
               # font, Clarity header, buttons, labels, tables, alerts and forms, dark mode follows the OS. CSS only; no API,
               # nginx.conf or Dockerfile change, backend unchanged (bcd353a). Rollback: revert to 83aebbf.
               # Previous (83aebbf): 83aebbfef73ab4f7070dd9e18f9433ff287afbdb@sha256:7ea4db1241b3da80edb2f8f6f6dcfce58e0655fc5c01ba1889e42e7e1f77d632.
-              tag: 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9
+              # home-gitops#5961 (staging first, passed): 78f07d8, nginx.conf only (envoy#428, PR #429): index.html and SPA
+              # routes get Cache-Control: no-cache, /assets/ is immutable for a year, a missing /assets/ file is a 404.
+              # No app code change, backend unchanged (bcd353a). Rollback: revert to 4db3a03.
+              # Previous (4db3a03): 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9.
+              tag: 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
