@@ -404,7 +404,12 @@ spec:
               # font, Clarity header, dark mode follows the OS. CSS package only; no nginx.conf, Dockerfile or Vite proxy
               # change, no API change, backend unchanged. Rollback: revert to 0665930.
               # Previous (0665930): 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b.
-              tag: e5e6a628d5c1b555a15cdee5d114709429be35e4@sha256:40036234009fa89110e1ea6dbf058194786a923d5bb81900e4db67b2a5dbe6c0
+              # home-gitops#5953 (staging only), final Clarity step: 4db3a03 adds Clarity buttons, labels, cards, tables, alerts
+              # and spinners (envoy#416), Clarity form markup, tooltip, help panel and tour card (envoy#417), and token-only
+              # colours with tighter list rows (envoy#418). No API, nginx.conf or Dockerfile change, backend unchanged.
+              # Rollback: revert to e5e6a62.
+              # Previous (e5e6a62): e5e6a628d5c1b555a15cdee5d114709429be35e4@sha256:40036234009fa89110e1ea6dbf058194786a923d5bb81900e4db67b2a5dbe6c0.
+              tag: 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
