@@ -80,17 +80,20 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
+              # 0.9.1's first start merges duplicate episodes and podcasts and reads every
+              # feed in full once (irreversible); allow 20 minutes instead of 5 so the probe
+              # cannot restart it mid-migration.
               startup:
                 enabled: true
                 spec:
-                  failureThreshold: 30
+                  failureThreshold: 120
                   periodSeconds: 10
             resources:
               requests:
                 cpu: 10m
                 memory: 128Mi
               limits:
-                memory: 1Gi
+                memory: 2Gi
                 # securityContext:
               # allowPrivilegeEscalation: false
               # readOnlyRootFilesystem: true
