@@ -187,7 +187,13 @@ spec:
               # triage or template-merge behaviour. Backend only: no Liquibase changesets, no env var changes, frontend unchanged
               # (83aebbf). Rollback: revert to 062b965.
               # Previous (062b965): 062b965e4b991f3b0f59b2287080dbbf02480391@sha256:d1ef773da94555061f5d36ffb2fa1f468d1495bfb5106bd5fd46f616959371db.
-              tag: 522740a62dddf883b33ef47b4d046c608e6dfc05@sha256:6bb9571e55e1868c225b2cc67215cf2aaf9e45d40c9117bb3da96f457f342610
+              # Previous (522740a): 522740a62dddf883b33ef47b4d046c608e6dfc05@sha256:6bb9571e55e1868c225b2cc67215cf2aaf9e45d40c9117bb3da96f457f342610.
+              # home-gitops#5952: bcd353a (envoy#419, PR #420). The warm-up read every detector pass makes now selects
+              # source_warmup.first_processed_at instead of a non-existent started_at, which made RATE_CHANGE fail with
+              # BadSqlGrammar (#5735). Also a Paketo builder refresh (0.0.203 -> 0.0.206, envoy#365). Backend only: no Liquibase
+              # changesets, no env var changes (RATE_CHANGE stays enabled from #5735), frontend unchanged (83aebbf).
+              # Rollback: revert to 522740a (no database step), or drop ENVOY_REDUCER_DETECTION_RATECHANGE_ENABLED.
+              tag: bcd353adcb21033c7fd6bdd33fdcd983f208203d@sha256:a11ebf59e09d2b8ad2f3f2f9c68b1e25b291dcfb239de8369e8d29417dc91e6d
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
