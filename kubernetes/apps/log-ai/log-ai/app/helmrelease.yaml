@@ -454,7 +454,11 @@ spec:
               # Previous (0665930): 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b.
               # home-gitops#5905: 83aebbf, the frontend that goes with 1a819ae (no nginx.conf changes).
               # Previous (01515cd): 01515cd09a6d241d272a59a39c28cc0149adafb3@sha256:b15b094d59473ade1fe4a0dd747f99bb74fe757de9288ec9565772e387fc553a.
-              tag: 83aebbfef73ab4f7070dd9e18f9433ff287afbdb@sha256:7ea4db1241b3da80edb2f8f6f6dcfce58e0655fc5c01ba1889e42e7e1f77d632
+              # home-gitops#5959 (staging first, #5953): 4db3a03, the Clarity restyle (envoy#415-#418). Clarity blue, Metropolis
+              # font, Clarity header, buttons, labels, tables, alerts and forms, dark mode follows the OS. CSS only; no API,
+              # nginx.conf or Dockerfile change, backend unchanged (bcd353a). Rollback: revert to 83aebbf.
+              # Previous (83aebbf): 83aebbfef73ab4f7070dd9e18f9433ff287afbdb@sha256:7ea4db1241b3da80edb2f8f6f6dcfce58e0655fc5c01ba1889e42e7e1f77d632.
+              tag: 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
