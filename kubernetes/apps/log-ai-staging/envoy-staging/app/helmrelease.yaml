@@ -400,7 +400,11 @@ spec:
               # home-gitops#5803 (staging first): 0665930 adds the hidden-incidents note and its toggle on top
               # of the tours. Rollback: revert to 4cdeb65.
               # Previous (4cdeb65): 4cdeb653b87f82234c98a20f0325580df8b3f615@sha256:3fce7dda471a3e6801fe29b74fb4db33045e5e0c67296bff48861403126a34c9.
-              tag: 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b
+              # home-gitops#5953 (staging first): e5e6a62, the Clarity restyle (envoy#415, PR #421): Clarity blue, Metropolis
+              # font, Clarity header, dark mode follows the OS. CSS package only; no nginx.conf, Dockerfile or Vite proxy
+              # change, no API change, backend unchanged. Rollback: revert to 0665930.
+              # Previous (0665930): 0665930f74f577c13da65048786bd580ac4d7663@sha256:6156981ff569f63ad1c2e1d483bfd06a4aa98b0259c2f93d9159ac07b854835b.
+              tag: e5e6a628d5c1b555a15cdee5d114709429be35e4@sha256:40036234009fa89110e1ea6dbf058194786a923d5bb81900e4db67b2a5dbe6c0
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
