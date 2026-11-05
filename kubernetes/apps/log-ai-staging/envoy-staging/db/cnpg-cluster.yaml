@@ -15,7 +15,8 @@
 # 2026-10-12.
 #
 # RE-RESTORE (repeatable, nothing to edit):
-#   1. Optionally take a fresh production backup first:
+#   1. Take a fresh production backup first (otherwise CNPG restores the newest base backup and
+#      replays WAL to the end, which works but takes longer):
 #        kubectl -n log-ai apply -f - <<EOY
 #        apiVersion: postgresql.cnpg.io/v1
 #        kind: Backup
@@ -24,7 +25,7 @@
 #               pluginConfiguration: {name: barman-cloud.cloudnative-pg.io}}
 #        EOY
 #   2. Scale staging Envoy down:
-#        kubectl -n log-ai-staging scale deploy/envoy --replicas=0
+#        kubectl -n log-ai-staging scale deploy/envoy-backend --replicas=0
 #   3. Delete the cluster and its volumes (envoy-staging-cnpg-1 and
 #      envoy-staging-cnpg-1-wal PVCs; they are Ceph block volumes and
 #      reclaim-Delete, so this destroys the staging data):

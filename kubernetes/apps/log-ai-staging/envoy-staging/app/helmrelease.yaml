@@ -138,7 +138,10 @@ spec:
               # a summary with no citation is discarded (outcome="uncited") and not retried (envoy#219, PR #370).
               # No changesets or settings since 476f751; triage env vars unchanged. Rollback: revert to 476f751.
               # Previous (476f751): 476f751fa09b2a4a598a4dbcdfe316757022851b@sha256:eb95b329222914aa641cc774647abbc002326ab993ae1f2327c169ae3c1c1bb9.
-              tag: 991b3ed067f573458bfe7a38ec3f3d1bbdf3598d@sha256:b2bbeeb2763b76ac188b60107afc23cdcf45914a144cb1a9ec2e18edd4744adc
+              # home-gitops#5980: v1.0.0 (31ec95f, envoy#25), matching production. Identical to production's bcd353a
+              # apart from the bundled changelog; no changesets or settings. Rollback: revert to 991b3ed.
+              # Previous (991b3ed): 991b3ed067f573458bfe7a38ec3f3d1bbdf3598d@sha256:b2bbeeb2763b76ac188b60107afc23cdcf45914a144cb1a9ec2e18edd4744adc.
+              tag: 31ec95f9332801142230886c5c87935a5aa5962c@sha256:c7bbf06588545f26a724b5a0004a0094fec4b064a7c0c5d888a6c6ee9f5b3c7e
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -227,8 +230,14 @@ spec:
               # (5m) stay at their defaults. Needs backend c89b246 or later (envoy#219: 3f6198a lacked an executor bean,
               # 1b5f9ac lacked the triage model value). Keep on if the five checks hold; turn off if heap climbs or
               # summaries time out.
+              # home-gitops#5980: max-event-age 72h removed so triage runs on the 6h default like production; with 72h a freshly
+              # restored database let triage pick up any window from the last three days on the shared GPU.
               ENVOY_REDUCER_TRIAGE_ENABLED: "true"
-              ENVOY_REDUCER_TRIAGE_MAXEVENTAGE: 72h
+              # home-gitops#5980: match production. Staging ingests no logs, so both detectors see no observed hours and
+              # raise nothing (the ingest-heartbeat gate). Loki URL is production's, read-only, for the query_raw_logs tool.
+              ENVOY_REDUCER_DETECTION_RATECHANGE_ENABLED: "true"
+              ENVOY_REDUCER_DETECTION_DISAPPEARANCE_ENABLED: "true"
+              ENVOY_REDUCER_ASSIST_LOKI_BASE_URL: http://loki-gateway.observability.svc.cluster.local
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
@@ -413,7 +422,9 @@ spec:
               # get Cache-Control: no-cache, /assets/ is immutable for a year, a missing /assets/ file is a 404. No app
               # code change, backend unchanged. Rollback: revert to 4db3a03.
               # Previous (4db3a03): 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9.
-              tag: 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352
+              # home-gitops#5980: v1.0.0 (31ec95f), identical to production's 78f07d8. Rollback: revert to 78f07d8.
+              # Previous (78f07d8): 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352.
+              tag: 31ec95f9332801142230886c5c87935a5aa5962c@sha256:1c69bda65d691571b89c0a80502d2a60dcaf6268ca230f28d38be24dea22d852
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
