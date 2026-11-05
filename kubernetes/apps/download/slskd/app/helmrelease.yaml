@@ -78,8 +78,11 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 512Mi
+              # 2026-11-05: OOMKilled at 1Gi (16:22Z) after a burst of ~120/min incoming
+              # search-response timeouts, from a steady ~540Mi. Raised 1Gi -> 2Gi.
               limits:
-                memory: 1Gi
+                memory: 2Gi
     defaultPodOptions:
       annotations:
         # Routes this pod's egress through the VPN VLAN (WireGuard gateway
