@@ -240,10 +240,20 @@ spec:
               # change). The MCP has no auth of its own.
               # RATE_CHANGE detector on (envoy#214, home-gitops#5735): hourly, compares each template's count for the
               # hour just closed against its own same-hour history (median/MAD; z >= 5, >= 50 records/h of change, usual
-              # volume >= 10/h). DISAPPEARANCE/SOURCE_SILENT (envoy#215) stay off. Not mailed: no enabled subscription
-              # has a NULL type filter (checked before this change). Rollback: drop this var; existing anomalies stay
-              # (DELETE FROM anomalies WHERE type = 'RATE_CHANGE' to clear). Staging stays off.
+              # volume >= 10/h). Not mailed: no enabled subscription has a NULL type filter (checked before this
+              # change). Rollback: drop this var; existing anomalies stay (DELETE FROM anomalies WHERE type =
+              # 'RATE_CHANGE' to clear). Staging stays off.
               ENVOY_REDUCER_DETECTION_RATECHANGE_ENABLED: "true"
+              # DISAPPEARANCE detector on (envoy#215, home-gitops#5942); this one switch also raises SOURCE_SILENT.
+              # Hourly, next to the rate check: a regular template (present in >= 90% of the hours Envoy observed over 7
+              # days) counts as silent once it has been quiet for max(3 x its typical gap, 1h); if every regular template
+              # on a source (>= 2 needed) stops at once that is one SOURCE_SILENT row. Hours where Envoy's own ingest
+              # heartbeat covered < 45 minutes are not judged, so a backend restart reads as unobserved. Other
+              # disappearance.* properties stay at their defaults (no demo-shortened history). Not mailed: no enabled
+              # subscription has a NULL type filter (0 rows, checked before this change; all subscriptions are
+              # disabled). Rollback: drop this var; existing anomalies stay (DELETE FROM anomalies WHERE type IN
+              # ('DISAPPEARANCE', 'SOURCE_SILENT') to clear). Staging stays off: it ingests no logs.
+              ENVOY_REDUCER_DETECTION_DISAPPEARANCE_ENABLED: "true"
               ENVOY_REDUCER_TICKETS_ENABLED: "true"
               ENVOY_REDUCER_TICKETS_TRACKER: rt
               ENVOY_REDUCER_TICKETS_BASE_URL: https://project-envoy.dmfrey.com
