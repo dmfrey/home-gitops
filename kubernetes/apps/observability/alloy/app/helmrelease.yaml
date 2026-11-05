@@ -433,6 +433,23 @@ spec:
               expression = "^\\s*$"
             }
 
+            // Ceph mgr/mon write their cluster-log and audit channels to stderr at
+            // level 0, prefixed "debug " (the daemons' stderr format, not a verbosity
+            // setting: log_to_stderr and debug_* are at defaults, so no Ceph option
+            // quiets them). rook-ceph logs about 500k "debug "-prefixed lines a day,
+            // and a sample was nearly all [DBG] lines of these two channels: the mgr's
+            // pgmap status every 2s and the mons' read-only command dispatch/finished
+            // audit. They feed Loki and the Envoy fan-out (where they show up as
+            // infra/storage RATE_CHANGE noise), and Ceph's metrics cover the same
+            // state. Only the [DBG] priority of these two channels is dropped; their
+            // other priorities and all other Ceph logs are kept. Counted in
+            // loki_process_dropped_lines_total{reason="ceph_channel_dbg"}.
+            stage.match {
+              selector            = `{namespace="rook-ceph", app=~"ceph-mgr|ceph-mon"} |~ "log_channel\\((cluster|audit)\\) log \\[DBG\\]"`
+              action              = "drop"
+              drop_counter_reason = "ceph_channel_dbg"
+            }
+
             // Join multi-line records into one entry for the media apps that emit
             // them, so Envoy sees one record instead of one template per line
             // (Bazarr's pretty-printed "GuessIt found: {...}" JSON dumps, and the
