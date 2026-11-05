@@ -10,5 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.24.2
+    tag: 0.24.3
+    digest: sha256:cae3cb95b97e0e4de1e19060adf7ebe7ece799b9a0a9620294e2118a9822178b
   url: oci://ghcr.io/crowdsecurity/helm-charts/crowdsec
