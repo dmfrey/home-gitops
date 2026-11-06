@@ -431,8 +431,12 @@ spec:
               requests:
                 cpu: 100m
                 memory: 1Gi
+              # 2Gi -> 6Gi (2026-11-06): a 92 MB PDF upload (VCF 9.1 docs) sat in PROCESSING
+              # with ~68% GC overhead, because the Paketo memory calculator capped -Xmx at
+              # ~1.2 GiB on a 2Gi limit. The calculator scales -Xmx with this limit (~4.9 GiB
+              # at 6Gi). The request stays at 1Gi, so scheduling is unchanged.
               limits:
-                memory: 2Gi
+                memory: 6Gi
 
       frontend:
         containers:
@@ -516,7 +520,7 @@ spec:
       # replaced. Copy it out first.
       dumps:
         type: emptyDir
-        sizeLimit: 2Gi
+        sizeLimit: 6Gi # a heap dump is about the size of -Xmx (~4.9 GiB at the 6Gi memory limit)
         advancedMounts:
           backend:
             app:
