@@ -197,7 +197,7 @@ spec:
               # BadSqlGrammar (#5735). Also a Paketo builder refresh (0.0.203 -> 0.0.206, envoy#365). Backend only: no Liquibase
               # changesets, no env var changes (RATE_CHANGE stays enabled from #5735), frontend unchanged (83aebbf).
               # Rollback: revert to 522740a (no database step), or drop ENVOY_REDUCER_DETECTION_RATECHANGE_ENABLED.
-              tag: v1.0.1@sha256:4a07bfedb6d9feb9592bd96e3893fac4f9a3ce15259cb504f6304d3ce20d1050
+              tag: v1.0.2@sha256:9c0dc3d16cf1729f149385f9bdd727efb268ca5f3ed3f6025567778a742a1658
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
