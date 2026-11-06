@@ -50,12 +50,26 @@ spec:
                     name: slskd-secret
                     key: SLSKD_SLSK_PASSWORD
             probes:
+              # The server connection to Soulseek can wedge in "Disconnecting"
+              # while the web server keeps answering (2026-11-05 21:26Z, ~14h
+              # undetected, soularr got 409 on every search). Fail liveness
+              # when slskd is not logged in to the Soulseek server so the
+              # kubelet restarts it. /api/v0/server needs no key here
+              # (SLSKD_NO_AUTH). 60s x 10 = 10 min tolerance, so a normal
+              # reconnect or a short Soulseek server outage is not killed.
+              # Port 80 must match SLSKD_HTTP_PORT above.
               liveness:
                 enabled: true
+                custom: true
                 spec:
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 5
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - wget -qO- -T 5 http://127.0.0.1:80/api/v0/server | grep -q '"isLoggedIn":true'
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 10
               readiness:
                 enabled: true
                 custom: true
