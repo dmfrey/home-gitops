@@ -144,7 +144,10 @@ spec:
               # home-gitops#5980 step 2: v1.0.1 (b1ecf08, envoy#436). An hour is observed only when at least 45 of its minutes ingested
               # records, for both RATE_CHANGE and DISAPPEARANCE. No changesets or settings. Rollback: revert to 31ec95f.
               # Previous (31ec95f, v1.0.0): 31ec95f9332801142230886c5c87935a5aa5962c@sha256:c7bbf06588545f26a724b5a0004a0094fec4b064a7c0c5d888a6c6ee9f5b3c7e.
-              tag: b1ecf08a2329207a2f2e143c56169e34ebb9e784@sha256:4a07bfedb6d9feb9592bd96e3893fac4f9a3ce15259cb504f6304d3ce20d1050
+              # home-gitops#6009: v1.0.2 (4b85d06, envoy#455). klog date-prefixed headers (E1106 00:01:02.123456) are masked as <TIMESTAMP>,
+              # so templates stop splitting at UTC midnight. No changesets or settings. Rollback: revert to b1ecf08.
+              # Previous (b1ecf08, v1.0.1): b1ecf08a2329207a2f2e143c56169e34ebb9e784@sha256:4a07bfedb6d9feb9592bd96e3893fac4f9a3ce15259cb504f6304d3ce20d1050.
+              tag: 4b85d06cd8801092346c01ad7eeccc296861bd06@sha256:9c0dc3d16cf1729f149385f9bdd727efb268ca5f3ed3f6025567778a742a1658
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
