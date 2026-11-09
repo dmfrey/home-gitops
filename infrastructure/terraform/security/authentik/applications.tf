@@ -248,12 +248,19 @@ resource "authentik_provider_oauth2" "oauth2" {
   # apps needing more than one redirect (e.g. web + mobile) set redirect_uris
   # (a list); everything else keeps the single redirect_uri/redirect_uri_mode
   # shorthand, wrapped into a one-element list here.
-  allowed_redirect_uris = try(each.value.redirect_uris, [
-    {
-      matching_mode = try(each.value.redirect_uri_mode, "strict"),
-      url           = each.value.redirect_uri,
-    }
-  ])
+  #
+  # redirect_uri_type is set explicitly (default "authorization"): authentik
+  # returns it on every entry, so leaving it unset made every plan show the
+  # whole list as changed and the provisioner re-applied all 17 providers
+  # every 15 minutes (home-gitops#6032).
+  allowed_redirect_uris = [
+    for u in try(each.value.redirect_uris, [
+      {
+        matching_mode = try(each.value.redirect_uri_mode, "strict"),
+        url           = each.value.redirect_uri,
+      }
+    ]) : merge({ redirect_uri_type = "authorization" }, u)
+  ]
 }
 
 resource "authentik_application" "application" {
