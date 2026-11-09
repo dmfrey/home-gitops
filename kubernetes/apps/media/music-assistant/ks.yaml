@@ -19,6 +19,7 @@ spec:
     substitute:
       APP: music-assistant
       KOPIUR_CAPACITY: 15Gi
+      KOPIUR_VERIFY_CAPACITY: 15Gi # deep-verify restore of ~5.2G of data failed at the 5Gi default (library.db)
     substituteFrom:
       - kind: Secret
         name: cluster-secrets
