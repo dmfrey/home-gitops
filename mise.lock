@@ -273,6 +273,45 @@ provenance = "cosign"
 [tools."aqua:mikefarah/yq"."platforms.windows-x64"]
 provenance = "cosign"
 
+[[tools."aqua:opentofu/opentofu"]]
+version = "1.11.14"
+backend = "aqua:opentofu/opentofu"
+
+[tools."aqua:opentofu/opentofu"."platforms.linux-arm64"]
+checksum = "sha256:6c4d06e6c1235578f80f192c95257918450c5a28eb1aadbf34973dcd4fc1fdd0"
+url = "https://github.com/opentofu/opentofu/releases/download/v1.11.14/tofu_1.11.14_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520675889"
+
+[tools."aqua:opentofu/opentofu"."platforms.linux-arm64-musl"]
+checksum = "sha256:6c4d06e6c1235578f80f192c95257918450c5a28eb1aadbf34973dcd4fc1fdd0"
+url = "https://github.com/opentofu/opentofu/releases/download/v1.11.14/tofu_1.11.14_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520675889"
+
+[tools."aqua:opentofu/opentofu"."platforms.linux-x64"]
+checksum = "sha256:88ee1d2e1a69f266ac99b8b30374e07757a42219e745b046ea0426c08ea951ae"
+url = "https://github.com/opentofu/opentofu/releases/download/v1.11.14/tofu_1.11.14_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520675938"
+
+[tools."aqua:opentofu/opentofu"."platforms.linux-x64-musl"]
+checksum = "sha256:88ee1d2e1a69f266ac99b8b30374e07757a42219e745b046ea0426c08ea951ae"
+url = "https://github.com/opentofu/opentofu/releases/download/v1.11.14/tofu_1.11.14_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520675938"
+
+[tools."aqua:opentofu/opentofu"."platforms.macos-arm64"]
+checksum = "sha256:76d7c6e5be6fbe13496e691873603ffaec28bd734b6138b4e9bc8e6d3c710ec6"
+url = "https://github.com/opentofu/opentofu/releases/download/v1.11.14/tofu_1.11.14_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520675932"
+
+[tools."aqua:opentofu/opentofu"."platforms.macos-x64"]
+checksum = "sha256:a3ad1623fad49f77b4128cc4af15dac6aea1e61dc191b337962def71e526b383"
+url = "https://github.com/opentofu/opentofu/releases/download/v1.11.14/tofu_1.11.14_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520675888"
+
+[tools."aqua:opentofu/opentofu"."platforms.windows-x64"]
+checksum = "sha256:2f9584a312d40a33ca773dcb530081908cdcc22328a1238e6e0284f4582b1859"
+url = "https://github.com/opentofu/opentofu/releases/download/v1.11.14/tofu_1.11.14_windows_amd64.tar.gz"
+url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520675970"
+
 [[tools."aqua:rhysd/actionlint"]]
 version = "1.7.12"
 backend = "aqua:rhysd/actionlint"
