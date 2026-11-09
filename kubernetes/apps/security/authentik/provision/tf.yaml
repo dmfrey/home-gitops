@@ -6,8 +6,6 @@ metadata:
   name: authentik-provisioner
 spec:
   approvePlan: auto
-  # TEMPORARY (home-gitops#6032): store a readable plan so the perpetual drift can be diagnosed. Remove after.
-  storeReadablePlan: human
   interval: 15m
   path: "./"
 
