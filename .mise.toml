@@ -20,7 +20,7 @@ postinstall = "lefthook install"
 # CI, this pins the same tool for local `just kube apply-ks`/`delete-ks`
 # rendering (kubernetes/mod.just's render-local-ks) instead of running two
 # different Flux renderers.
-"github:home-operations/flate" = "v0.7.1"
+"github:home-operations/flate" = "v0.7.3"
 "npm:oxfmt" = "0.77.0"
 # OpenTofu CLI for inspecting the tofu-controller provisioners locally (home-gitops#6032).
 # The cluster's tf-runner image bundles its own tofu; this is not used by CI.
