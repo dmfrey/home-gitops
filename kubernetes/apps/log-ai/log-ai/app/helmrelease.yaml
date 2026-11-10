@@ -301,7 +301,10 @@ spec:
               # the ticket status argument ticket_id). The keys are in
               # bracket form: Spring drops every character outside [a-z0-9-.] from an unbracketed
               # Map key, so a bare infra/storage would have bound as infrastorage and matched nothing.
-              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}},"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}}}}}'
+              # Per-source Drain max-clusters (envoy#191, 20f3fc2; default 1000). The four sources that sat
+              # at the cap are raised to 2000. Bracket keys for the same reason as above; verify after the
+              # restart that /api/stats maxClustersPerSource lists all four at 2000 (a missing one = key did not bind).
+              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}},"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"templating":{"drain":{"source-overrides[app/media]":{"max-clusters":2000},"source-overrides[app/download]":{"max-clusters":2000},"source-overrides[app/home]":{"max-clusters":2000},"source-overrides[platform/observability]":{"max-clusters":2000}}}}}}'
               # Raw-log tool (query_raw_logs, envoy#16/#5647). The property default is
               # http://localhost:3100, i.e. the pod itself, so every call was refused.
               # The Loki gateway is the same path Grafana's datasource uses; Loki has
