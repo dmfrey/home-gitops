@@ -24,7 +24,7 @@ postinstall = "lefthook install"
 "npm:oxfmt" = "0.78.0"
 # OpenTofu CLI for inspecting the tofu-controller provisioners locally (home-gitops#6032).
 # The cluster's tf-runner image bundles its own tofu; this is not used by CI.
-"aqua:opentofu/opentofu" = "1.11.14"
+"aqua:opentofu/opentofu" = "1.13.9"
 "aqua:yannh/kubeconform" = "0.8.0"
 "aqua:charmbracelet/gum" = "2.0.2"
 # Mise's own talosctl tool (resolves to aqua:siderolabs/talos, same as the
