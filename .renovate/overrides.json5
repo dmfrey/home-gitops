@@ -165,5 +165,18 @@
       matchPackageNames: ["docker.io/golift/unpackerr"],
       enabled: false,
     },
+    {
+      // Envoy demo freeze (dmfrey/envoy demo 2026-11-17, home-gitops#6070):
+      // production stays on 1.0.x. 1.0.x patches still flow, so an emergency
+      // v1.0.3 arrives as a normal PR. The frontend is pinned by git-SHA tag
+      // (not semver) and bumped by hand, so listing it is a safeguard only.
+      // REMOVE after 2026-11-17, as its own change BEFORE taking 1.1.0 to
+      // production: while this is active Renovate opens no 1.1.0 PR.
+      description: "Hold production Envoy at 1.0.x until after the 2026-11-17 demo",
+      matchDatasources: ["docker"],
+      matchFileNames: ["kubernetes/apps/log-ai/log-ai/**"],
+      matchPackageNames: ["ghcr.io/dmfrey/envoy", "ghcr.io/dmfrey/envoy-frontend"],
+      allowedVersions: "<1.1.0",
+    },
   ],
 }
