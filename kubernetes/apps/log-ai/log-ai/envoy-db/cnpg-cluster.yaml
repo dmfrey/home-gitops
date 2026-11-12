@@ -76,6 +76,9 @@ spec:
     storageClass: ceph-block
     size: 10Gi
 
+  # 2026-11-12: raised 5Gi -> 10Gi after the WAL volume filled while Garage was
+  # paused (WAL cannot be archived), which crash-looped the primary. The live PVC
+  # was expanded by hand first; this keeps git in step with it.
   walStorage:
     storageClass: ceph-block
-    size: 5Gi
+    size: 10Gi
