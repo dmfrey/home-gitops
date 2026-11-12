@@ -8,6 +8,8 @@
 # hardlink pipeline (romm downloads/manages its own library directly), so
 # no category-routing fix needed here - straight cutover like
 # homeassistant/ai_models.
+# 2026-11-12 UNAS BAD BLOCKS: pointed at the QNAP (192.168.30.2) copy until the UNAS pool is
+# rebuilt. PV spec.nfs is immutable: changing it means deleting the PV and PVC first.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -21,8 +23,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: nas.internal
-    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_games/.data
+    server: 192.168.30.2
+    path: /media_games
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
