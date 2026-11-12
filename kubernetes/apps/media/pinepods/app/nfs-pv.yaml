@@ -13,6 +13,8 @@
 # the Android app instead), so the old QNAP content is historical/static
 # and was deliberately left behind rather than copied over. This mount is
 # kept (not removed) in case that setup ever changes back.
+# 2026-11-12 UNAS BAD BLOCKS: pointed at the QNAP (192.168.30.2) copy until the UNAS pool is
+# rebuilt. PV spec.nfs is immutable: changing it means deleting the PV and PVC first.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -26,8 +28,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: nas.internal
-    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_podcasts/.data
+    server: 192.168.30.2
+    path: /media_podcasts
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1

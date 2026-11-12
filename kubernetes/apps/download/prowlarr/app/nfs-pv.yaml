@@ -4,6 +4,8 @@
 # kubernetes/apps/media/app-backups/app/nfs-pv.yaml) - PVCs are
 # namespace-scoped, so this is a separate Kubernetes object pointing at
 # the identical underlying share.
+# 2026-11-12 UNAS BAD BLOCKS: pointed at the QNAP (192.168.30.2) copy until the UNAS pool is
+# rebuilt. PV spec.nfs is immutable: changing it means deleting the PV and PVC first.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -17,8 +19,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: nas.internal
-    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/app_backups/.data
+    server: 192.168.30.2
+    path: /app_backups
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
