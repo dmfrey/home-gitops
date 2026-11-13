@@ -6,6 +6,8 @@
 # this is a straight cutover with no rsync pass. Subpaths below drop the
 # redundant "downloads/" prefix the old QNAP /media root needed, since this
 # share's root already IS that directory.
+# 2026-11-12 UNAS BAD BLOCKS: the media_music PV(s) below point at the QNAP (192.168.30.2)
+# copy until the UNAS pool is rebuilt. PV spec.nfs is immutable: delete PV and PVC to change it.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -94,8 +96,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: nas.internal
-    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_music/.data
+    server: 192.168.30.2
+    path: /media_music
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
