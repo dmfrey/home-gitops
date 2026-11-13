@@ -8,6 +8,8 @@
 # share's root already IS that directory.
 # 2026-11-12 UNAS BAD BLOCKS: the media_music PV(s) below point at the QNAP (192.168.30.2)
 # copy until the UNAS pool is rebuilt. PV spec.nfs is immutable: delete PV and PVC to change it.
+# 2026-11-13 UNAS BAD BLOCKS: the downloads_staging PV below points at the QNAP (192.168.30.2)
+# copy until the UNAS pool is rebuilt. PV spec.nfs is immutable: delete PV and PVC to change it.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -21,8 +23,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: nas.internal
-    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/downloads_staging/.data
+    server: 192.168.30.2
+    path: /downloads_staging
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
