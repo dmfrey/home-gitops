@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: delfer/alpine-ftp-server
-              tag: latest@sha256:60bb774d8408d9d4d5c74d05d1c086a34ce192c6c1a142ffac268cac0dbc6fac
+              tag: latest@sha256:e15eaa84827ae150807ca749a59fc9e7297086e836e0b1f79fc238db60d47b46
 
             env:
               TZ: America/New_York
