@@ -7,7 +7,7 @@
 # garage-system/kopiur-system split on kopia_nfs_repo. PV names must be
 # unique cluster-wide; PVC names match what qbittorrent itself uses since
 # they're in a different namespace.
-# 2026-11-12 UNAS BAD BLOCKS: the media_music PV(s) below point at the QNAP (192.168.30.2)
+# 2026-11-12 UNAS BAD BLOCKS: the media_music and media_tv PV(s) below point at the QNAP (192.168.30.2)
 # copy until the UNAS pool is rebuilt. PV spec.nfs is immutable: delete PV and PVC to change it.
 apiVersion: v1
 kind: PersistentVolume
@@ -22,8 +22,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: nas.internal
-    path: /volume/98306492-ba3e-4373-ba5a-e6e661135f84/.srv/.unifi-drive/media_tv/.data
+    server: 192.168.30.2
+    path: /media_tv
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
