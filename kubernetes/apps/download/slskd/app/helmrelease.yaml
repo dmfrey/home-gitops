@@ -180,6 +180,13 @@ spec:
                 - \.ini$
                 - Thumbs.db$
                 - \.DS_Store$
+            # 2026-11-16: no retention was set, so slskd kept every search forever.
+            # search.db grew to 4.8 GB and filled the 5Gi config volume (SQLite
+            # Error 10 "disk I/O error"). Searches are deleted from the UI and the
+            # database after a day. Do NOT add retention.files: that deletes real
+            # downloaded files by age.
+            retention:
+              search: 1440
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
