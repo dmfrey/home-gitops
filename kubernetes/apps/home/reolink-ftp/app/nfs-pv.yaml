@@ -1,6 +1,7 @@
 ---
-# 2026-11-12 UNAS BAD BLOCKS: pointed at the QNAP (192.168.30.2) copy until the UNAS pool is
-# rebuilt. PV spec.nfs is immutable: changing it means deleting the PV and PVC first.
+# 2026-11-16: UNAS pool rebuilt (RAID6, new pool UUID); restored from the QNAP copy.
+# PV spec.nfs is immutable: changing it means deleting the PV and PVC first. The
+# share's export path ends in /.data.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -14,8 +15,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: 192.168.30.2
-    path: /reolink
+    server: nas.internal
+    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/reolink/.data
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
