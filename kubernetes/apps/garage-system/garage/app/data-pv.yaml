@@ -23,27 +23,13 @@
 # rsync (pre-copy, live catch-up, then a final --delete sync with the pod stopped)
 # instead of resync-from-peers. garage-0 goes to Ceph and garage-2 stays on the
 # QNAP so the three replicas sit on three failure domains.
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: garage-data-0
-spec:
-  capacity:
-    storage: 500Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
-  mountOptions:
-    - vers=3
-    - nolock
-  nfs:
-    server: 192.168.30.2
-    path: /garage_data_0
-  claimRef:
-    name: data-garage-0
-    namespace: garage-system
----
+# garage-0 -> Ceph (2026-11-17): data-garage-0 is bound by hand to a retained
+# ceph-block RBD volume (a dynamic, RWO PV; pvc-f6902815-c57e-4d13-91f9-5f9a32eb2304,
+# reclaimPolicy Retain, claimRef set to garage-system/data-garage-0), so there is no
+# garage-data-0 PV here any more. The StatefulSet's RWX claim template does not match
+# an RBD volume, so if that PVC is ever deleted, re-bind it to the retained PV rather
+# than letting the StatefulSet provision a new one (an empty volume would resync
+# ~150 GB from peers).
 apiVersion: v1
 kind: PersistentVolume
 metadata:
