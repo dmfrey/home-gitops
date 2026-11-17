@@ -1,0 +1,81 @@
+---
+# Prunes stale files from the kopiur mover cache volumes on openebs-hostpath.
+#
+# Why: hostpath enforces no quota, and kopia never sweeps its cached repository
+# index blobs (cache/index-blobs). Every app caches the shared repository's index,
+# and superseded index blobs from past epochs pile up (2026-11-17: ~282k files,
+# ~1.4 GB per app, 97% of them older than 2 days) until the 119 GB node-local disks
+# fill (k8s-1 hit 98%). The content/metadata budgets in the SnapshotPolicy bound
+# the other two caches but not this one. Everything removed here is a cache copy
+# of data that lives in the repository: kopia re-downloads whatever it still needs.
+#
+# Safety: only touches */cache/index-blobs and */logs/{cli-logs,content-logs}, and
+# only in volumes that hold a kopia cache (cache/kopia.repository exists), so other
+# hostpath volumes (Garage metadata, CI work volumes) are never matched.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kopiur-cache-janitor
+  labels:
+    app.kubernetes.io/name: kopiur-cache-janitor
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kopiur-cache-janitor
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kopiur-cache-janitor
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: janitor
+          image: docker.io/alpine/k8s:1.37.2@sha256:7a82aeefea3d554a43a8676b137f2b88bae6c1fe11c13862b191b3a086cc28c0
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              INDEX_MAX_MIN=2880   # cached index blobs older than 2 days
+              LOG_MAX_MIN=1440     # kopia cli/content logs older than 1 day
+              INTERVAL=21600       # every 6 hours
+              trap 'exit 0' TERM INT
+              while true; do
+                start=$(date +%s); dirs=0; idx=0; lg=0
+                for d in /hp/pvc-*; do
+                  [ -f "$d/cache/kopia.repository" ] || continue
+                  dirs=$((dirs+1))
+                  n=$(nice -n 19 find "$d/cache/index-blobs" -type f -mmin +$INDEX_MAX_MIN -delete -print 2>/dev/null | wc -l)
+                  idx=$((idx+n))
+                  for l in cli-logs content-logs; do
+                    n=$(nice -n 19 find "$d/logs/$l" -type f -mmin +$LOG_MAX_MIN -delete -print 2>/dev/null | wc -l)
+                    lg=$((lg+n))
+                  done
+                done
+                echo "$(date -u +%FT%TZ) pruned kopia-cache-dirs=$dirs index-blobs=$idx logs=$lg in $(( $(date +%s) - start ))s"
+                sleep $INTERVAL &
+                wait $!
+              done
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsUser: 0
+            capabilities:
+              drop: ["ALL"]
+              add: ["DAC_OVERRIDE", "FOWNER"]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+          volumeMounts:
+            - name: hostpath
+              mountPath: /hp
+      volumes:
+        - name: hostpath
+          hostPath:
+            path: /var/mnt/local-hostpath
+            type: Directory
