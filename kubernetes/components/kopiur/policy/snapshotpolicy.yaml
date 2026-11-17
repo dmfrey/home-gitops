@@ -28,6 +28,15 @@ spec:
       # github.com/onedr0p/home-ops's own proven-in-production default for
       # this exact field (they call it ${KOPIUR_CAPACITY:=5Gi} there).
       capacity: ${KOPIUR_CACHE_CAPACITY:=5Gi}
+      # 2026-11-17: explicit kopia cache budgets. Without these, kopiur derives
+      # them from `capacity` (content 60% + metadata 15% = 3.75 GB at 5Gi, more at
+      # 10Gi), and openebs-hostpath enforces no quota, so every app's cache kept
+      # growing toward that budget (~2.3 GB cache + ~0.9 GB logs each, 19-29 dirs
+      # per node) and filled the 119 GB node-local disks (k8s-1 hit 98%). 256 MiB
+      # content + 512 MiB metadata keeps a dir near 1.7 GB with the logs. An app
+      # with a big file tree can raise KOPIUR_CACHE_METADATA_MB / _CONTENT_MB.
+      contentCacheSizeMb: ${KOPIUR_CACHE_CONTENT_MB:=256}
+      metadataCacheSizeMb: ${KOPIUR_CACHE_METADATA_MB:=512}
       mode: Persistent
       # Hardcoded (not the shared ${KOPIUR_STORAGECLASS} used by the actual
       # app-data PVC below and the deep-verify scratch target) - this cache
