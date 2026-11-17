@@ -31,6 +31,10 @@ spec:
       # (standalone PVC-name override), so it needed the same fix applied
       # by hand.
       capacity: 5Gi
+      # 2026-11-17: explicit kopia cache budgets (see the shared component:
+      # derived budgets from capacity grow unchecked on openebs-hostpath).
+      contentCacheSizeMb: 256
+      metadataCacheSizeMb: 512
       mode: Persistent
       storageClassName: openebs-hostpath
     securityContext:
