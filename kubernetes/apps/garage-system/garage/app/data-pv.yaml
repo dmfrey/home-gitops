@@ -19,6 +19,10 @@
 # against losing that volume. When the UNAS is rebuilt, do not copy data back;
 # use Garage's node-replacement/resync workflow. PV spec.nfs is immutable: changing
 # it means deleting the PV and the data-garage-N PVC first (Garage scaled to 0).
+# 2026-11-17: UNAS rebuilt. garage-1 moved back to the UNAS (garage_1 share) by
+# rsync (pre-copy, live catch-up, then a final --delete sync with the pod stopped)
+# instead of resync-from-peers. garage-0 goes to Ceph and garage-2 stays on the
+# QNAP so the three replicas sit on three failure domains.
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -55,8 +59,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: 192.168.30.2
-    path: /garage_data_1
+    server: nas.internal
+    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/garage_1/.data
   claimRef:
     name: data-garage-1
     namespace: garage-system
