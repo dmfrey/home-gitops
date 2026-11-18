@@ -28,7 +28,7 @@ spec:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
-          secret.reloader.stakater.com/reload: rt-secret
+          secret.reloader.stakater.com/reload: rt-secret,rt-secretkey
         initContainers:
           # The image keeps RT's state (SQLite database, sessions, mason cache)
           # in /opt/rt/var and declares VOLUME /opt/rt. Docker copies that into
@@ -183,7 +183,38 @@ spec:
               limits:
                 memory: 256Mi
 
+    configMaps:
+      siteconfig:
+        data:
+          10-referrer.pm: |
+            # TLS ends at the gateway, so RT sees plain http on port 80 while
+            # WebDomain/WebPort say tickets.dmfrey.com:443. RT builds the
+            # "current" URL from the request (http, port 80) and warns "Some
+            # features, including inline edit, do not work under the current
+            # domain" when that host:port is not whitelisted. Whitelist what
+            # the pod actually sees.
+            Set(@ReferrerWhitelist, ('tickets.dmfrey.com:80'));
+            1;
+
     persistence:
+      siteconfig:
+        type: configMap
+        identifier: siteconfig
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/rt/etc/RT_SiteConfig.d/10-referrer.pm
+                subPath: 10-referrer.pm
+                readOnly: true
+      secretkey:
+        type: secret
+        name: rt-secretkey
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/rt/etc/RT_SiteConfig.d/20-secretkey.pm
+                subPath: 20-secretkey.pm
+                readOnly: true
       data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
