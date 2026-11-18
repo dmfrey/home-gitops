@@ -137,8 +137,8 @@ spec:
     - vers=3
     - nolock
   nfs:
-    server: 192.168.30.2
-    path: /media_movies
+    server: nas.internal
+    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/media_movies/.data
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
