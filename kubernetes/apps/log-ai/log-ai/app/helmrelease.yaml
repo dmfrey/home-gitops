@@ -197,7 +197,7 @@ spec:
               # BadSqlGrammar (#5735). Also a Paketo builder refresh (0.0.203 -> 0.0.206, envoy#365). Backend only: no Liquibase
               # changesets, no env var changes (RATE_CHANGE stays enabled from #5735), frontend unchanged (83aebbf).
               # Rollback: revert to 522740a (no database step), or drop ENVOY_REDUCER_DETECTION_RATECHANGE_ENABLED.
-              tag: v1.0.2@sha256:9c0dc3d16cf1729f149385f9bdd727efb268ca5f3ed3f6025567778a742a1658
+              tag: v1.1.0@sha256:054c2f28d45ae1948b9e0f157e1317883484d1110aabe52e08d8ee62507116d7
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -483,7 +483,10 @@ spec:
               # routes get Cache-Control: no-cache, /assets/ is immutable for a year, a missing /assets/ file is a 404.
               # No app code change, backend unchanged (bcd353a). Rollback: revert to 4db3a03.
               # Previous (4db3a03): 4db3a0382306b973835c3487a0f28261b7b02a7f@sha256:3ed6c6287fea61b0c50dd036186091cab1ad104b7f4013ebd2fbbc2d7eb66fd9.
-              tag: 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352
+              # home-gitops#6159: v1.1.0 frontend, with the v1.1.0 backend above. Not reversible by redeploying: rollback is restoring
+              # CNPG backup envoy-cnpg-pre-v1.1.0, then the previous digests (backend v1.0.2@sha256:9c0dc3d1..., frontend below).
+              # Previous (78f07d8): 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352.
+              tag: v1.1.0@sha256:0f8b27c1df0951ddf86fd2106517127205cbfa67436ebbc42d84a6d584082e59
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
