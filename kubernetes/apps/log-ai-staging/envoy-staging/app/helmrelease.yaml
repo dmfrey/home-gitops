@@ -250,6 +250,9 @@ spec:
               # home-gitops#6177 part 1 (staging only; envoy#432): turns on the query_metrics chat/MCP tool against the
               # cluster's Prometheus. No credential needed. Off by default; unset this to turn it off again.
               ENVOY_REDUCER_ASSIST_METRICS_BASE_URL: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+              # home-gitops#6177 part 2 (staging only; envoy#431/#433): accepts Alertmanager webhooks at
+              # /api/alerts/alertmanager (bearer token, envoy.deployers group). Off by default.
+              ENVOY_REDUCER_ALERTS_ALERTMANAGER_ENABLED: "true"
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.

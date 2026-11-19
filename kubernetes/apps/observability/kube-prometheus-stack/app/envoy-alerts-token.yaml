@@ -1,0 +1,78 @@
+---
+# home-gitops#6177 part 2: Alertmanager -> Envoy staging (envoy#431/#433).
+# Envoy only accepts bearer tokens from the envoy-mcp Authentik provider, and
+# the envoy-deployer service account gets one with a client_credentials grant
+# whose username/password go in the request BODY (tested 2026-11-19; HTTP Basic
+# is rejected with invalid_client). Alertmanager's oauth2 block can only send
+# Basic and takes endpoint params as plain strings, so it cannot do this itself.
+# Instead: 1Password -> credentials Secret -> ESO Webhook generator POSTs to
+# Authentik -> short-lived token Secret that Alertmanager reads as a bearer
+# credential. Tokens live 4h (expires_in 14400); refreshed hourly.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: alertmanager-envoy-credentials
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: alertmanager-envoy-credentials
+    template:
+      engineVersion: v2
+      data:
+        username: "{{ .ENVOY_ALERTMANAGER_USER }}"
+        password: "{{ .ENVOY_ALERTMANAGER_TOKEN }}"
+  dataFrom:
+    - extract:
+        key: project-envoy
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/generators.external-secrets.io/webhook_v1alpha1.json
+apiVersion: generators.external-secrets.io/v1alpha1
+kind: Webhook
+metadata:
+  name: envoy-alerts-token
+spec:
+  url: https://auth.dmfrey.com/application/o/token/
+  method: POST
+  headers:
+    Content-Type: application/x-www-form-urlencoded
+  body: >-
+    grant_type=client_credentials&client_id=envoy-mcp&scope=profile&username={{ .username | urlquery }}&password={{ .password | urlquery }}
+  secrets:
+    - name: username
+      secretRef:
+        name: alertmanager-envoy-credentials
+        key: username
+    - name: password
+      secretRef:
+        name: alertmanager-envoy-credentials
+        key: password
+  result:
+    jsonPath: $.access_token
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: alertmanager-envoy-token
+spec:
+  refreshInterval: 1h
+  target:
+    name: alertmanager-envoy-token
+    template:
+      engineVersion: v2
+      data:
+        token: "{{ .token }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Webhook
+          name: envoy-alerts-token
+      rewrite:
+        - regexp:
+            source: ".*"
+            target: token
