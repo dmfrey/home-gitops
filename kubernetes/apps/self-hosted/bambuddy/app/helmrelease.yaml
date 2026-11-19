@@ -159,17 +159,23 @@ spec:
           - name: envoy-internal
             namespace: network
     persistence:
+      # advancedMounts (app container only): globalMounts would also put the
+      # data PVC at /app/data in the slicer sidecars, clashing with their own.
       data:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /app/data
+        advancedMounts:
+          bambuddy:
+            app:
+              - path: /app/data
       tmpfs:
         type: emptyDir
-        globalMounts:
-          - path: /app/logs
-            subPath: logs
-          - path: /tmp
-            subPath: tmp
+        advancedMounts:
+          bambuddy:
+            app:
+              - path: /app/logs
+                subPath: logs
+              - path: /tmp
+                subPath: tmp
       slicer-data-bambu:
         type: emptyDir
         advancedMounts:
