@@ -22,6 +22,10 @@ spec:
     name: alertmanager-envoy-credentials
     template:
       engineVersion: v2
+      # The Webhook generator refuses secrets without this label.
+      metadata:
+        labels:
+          external-secrets.io/type: webhook
       data:
         username: "{{ .ENVOY_ALERTMANAGER_USER }}"
         password: "{{ .ENVOY_ALERTMANAGER_TOKEN }}"
