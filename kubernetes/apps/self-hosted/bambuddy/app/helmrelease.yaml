@@ -48,6 +48,74 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 512Mi
+          # Slicer-API sidecars (maziggy/orca-slicer-api): headless Bambu Studio
+          # and OrcaSlicer CLIs behind /slice, called by Bambuddy's in-app
+          # slicing at its built-in defaults (localhost:3001 / localhost:3003;
+          # the virtual printer owns 3000/3002). Stateless: Bambuddy sends the
+          # model plus an explicit profile triplet with each request. The
+          # images run as root (their default) and need /app/data. Tags follow
+          # Bambuddy's release: keep bambuddy-X.Y.Z in step with the main
+          # image above. amd64 only. Enable "use slicer API" in Settings.
+          bambu-studio-api:
+            image:
+              repository: ghcr.io/maziggy/bambu-studio-api
+              tag: bambuddy-1.3.1@sha256:7dbe1531e74a6ec3cb3fc390cd399882c62511f294d25425537efd0649d227b8
+            env:
+              NODE_ENV: production
+              PORT: "3001"
+              MAX_MODEL_UPLOAD_MB: "512"
+            probes:
+              liveness: &slicer-probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3001
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *slicer-probe
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+              runAsGroup: 0
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 3Gi
+          orca-slicer-api:
+            image:
+              repository: ghcr.io/maziggy/orca-slicer-api
+              tag: bambuddy-1.3.1@sha256:558a91b06a539794ccb5562989b859daf19952dcb4ff6477e2946e7e4e78635c
+            env:
+              NODE_ENV: production
+              PORT: "3003"
+              MAX_MODEL_UPLOAD_MB: "512"
+            probes:
+              liveness: &orca-probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3003
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness: *orca-probe
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+              runAsGroup: 0
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 3Gi
     defaultPodOptions:
       priorityClassName: low
       annotations:
@@ -102,3 +170,15 @@ spec:
             subPath: logs
           - path: /tmp
             subPath: tmp
+      slicer-data-bambu:
+        type: emptyDir
+        advancedMounts:
+          bambuddy:
+            bambu-studio-api:
+              - path: /app/data
+      slicer-data-orca:
+        type: emptyDir
+        advancedMounts:
+          bambuddy:
+            orca-slicer-api:
+              - path: /app/data
