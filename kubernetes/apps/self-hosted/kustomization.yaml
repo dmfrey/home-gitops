@@ -20,4 +20,3 @@ resources:
   - ./omni-tools/ks.yaml
   - ./orcaslicer/ks.yaml
   - ./reposilite/ks.yaml
-  - ./slicer-api/ks.yaml
