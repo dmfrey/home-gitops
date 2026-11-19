@@ -247,6 +247,9 @@ spec:
               ENVOY_REDUCER_DETECTION_RATECHANGE_ENABLED: "true"
               ENVOY_REDUCER_DETECTION_DISAPPEARANCE_ENABLED: "true"
               ENVOY_REDUCER_ASSIST_LOKI_BASE_URL: http://loki-gateway.observability.svc.cluster.local
+              # home-gitops#6177 part 1 (staging only; envoy#432): turns on the query_metrics chat/MCP tool against the
+              # cluster's Prometheus. No credential needed. Off by default; unset this to turn it off again.
+              ENVOY_REDUCER_ASSIST_METRICS_BASE_URL: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
