@@ -63,11 +63,18 @@ spec:
             resources:
               claims:
                 - name: gpu
+              # 2026-11-19: OOMKilled at 24Gi (exit 137, 14:01Z). Working set sat at
+              # 21-22Gi for hours with three models resident (qwen3:8b,
+              # qwen2.5vl:7b, nomic-embed-text, all 100% GPU): llama.cpp's host-RAM
+              # prompt cache is capped at 8Gi per server and fills with ~0.8Gi
+              # entries from 15k-token prompts, on top of mmapped model page cache.
+              # k8s-2 (64Gi) sat at 47% used, so raise the limit rather than shrink
+              # the cache; request matches observed use since the pod is pinned here.
               requests:
                 cpu: 200m
-                memory: 4Gi
+                memory: 16Gi
               limits:
-                memory: 24Gi
+                memory: 32Gi
 
         pod:
           securityContext:
