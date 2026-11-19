@@ -114,6 +114,43 @@ spec:
 
         externalUrl: https://prometheus.dmfrey.com
 
+        # home-gitops#6177 part 2: Envoy keys an alert as infra_layer/infra_component, else
+        # infra_layer/namespace, the same rule it uses for logs. Alloy stamps those labels on
+        # logs from the namespace; alerts only carry `namespace`, so without this every alert
+        # keyed "unknown/<namespace>" and could not meet the logs of the same source
+        # ("app/stigs", "platform/observability"). Mirrors the namespace_layers lists in
+        # kubernetes/apps/observability/alloy/app/helmrelease.yaml - keep the two in step.
+        # Alerts with no namespace get no layer (Envoy keys them unknown/unknown, counted).
+        additionalAlertRelabelConfigs:
+          - source_labels: [namespace]
+            regex: "(.+)"
+            target_label: infra_layer
+            replacement: app
+          - source_labels: [namespace]
+            regex: "kube-system|flux-system|cert-manager|datastore|observability|external-secrets|cilium-secrets|kopiur-system|system-upgrade|actions-runner-system"
+            target_label: infra_layer
+            replacement: platform
+          - source_labels: [namespace]
+            regex: "rook-ceph|garage-system|openebs-system|network"
+            target_label: infra_layer
+            replacement: infra
+          - source_labels: [namespace]
+            regex: "rook-ceph"
+            target_label: infra_component
+            replacement: storage
+          - source_labels: [namespace]
+            regex: "garage-system"
+            target_label: infra_component
+            replacement: object-storage
+          - source_labels: [namespace]
+            regex: "openebs-system"
+            target_label: infra_component
+            replacement: local-storage
+          - source_labels: [namespace]
+            regex: "network"
+            target_label: infra_component
+            replacement: cluster-network
+
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
