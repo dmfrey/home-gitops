@@ -44,16 +44,13 @@ spec:
   headers:
     Content-Type: application/x-www-form-urlencoded
   body: >-
-    grant_type=client_credentials&client_id=envoy-mcp&scope=profile&username={{ .username | urlquery }}&password={{ .password | urlquery }}
+    grant_type=client_credentials&client_id=envoy-mcp&scope=profile&username={{ .creds.username | urlquery }}&password={{ .creds.password | urlquery }}
+  # A generator "secret" is exposed to the template as the whole Secret's data
+  # map under this name, so fields are .creds.username / .creds.password.
   secrets:
-    - name: username
+    - name: creds
       secretRef:
         name: alertmanager-envoy-credentials
-        key: username
-    - name: password
-      secretRef:
-        name: alertmanager-envoy-credentials
-        key: password
   result:
     jsonPath: $.access_token
 ---
