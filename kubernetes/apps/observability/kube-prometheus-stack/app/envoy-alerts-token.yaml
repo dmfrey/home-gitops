@@ -52,7 +52,9 @@ spec:
       secretRef:
         name: alertmanager-envoy-credentials
   result:
-    jsonPath: $.access_token
+    # The generator output is parsed as a JSON object (a bare string fails with
+    # "invalid character 'e'"), so take the whole response and pick the field below.
+    jsonPath: $
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/external-secrets.io/externalsecret_v1.json
 apiVersion: external-secrets.io/v1
@@ -66,14 +68,10 @@ spec:
     template:
       engineVersion: v2
       data:
-        token: "{{ .token }}"
+        token: "{{ .access_token }}"
   dataFrom:
     - sourceRef:
         generatorRef:
           apiVersion: generators.external-secrets.io/v1alpha1
           kind: Webhook
           name: envoy-alerts-token
-      rewrite:
-        - regexp:
-            source: ".*"
-            target: token
