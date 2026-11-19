@@ -10,6 +10,10 @@ spec:
     receiver: pushover
     repeatInterval: 12h
     routes:
+      # Copy everything to Envoy staging (home-gitops#6177 part 2), then keep
+      # matching so Pushover paging is unchanged.
+      - receiver: envoy-staging
+        continue: true
       - receiver: blackhole
         matchers:
           - name: alertname
@@ -50,6 +54,16 @@ spec:
 
   receivers:
     - name: blackhole
+    - name: envoy-staging
+      webhookConfigs:
+        - url: http://envoy.log-ai-staging.svc.cluster.local:8080/api/alerts/alertmanager
+          sendResolved: true
+          httpConfig:
+            authorization:
+              type: Bearer
+              credentials:
+                name: alertmanager-envoy-token
+                key: token
     - name: heartbeat
       webhookConfigs:
         - urlSecret:
