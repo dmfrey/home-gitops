@@ -11,9 +11,15 @@ spec:
     repeatInterval: 12h
     routes:
       # Copy everything to Envoy staging (home-gitops#6177 part 2), then keep
-      # matching so Pushover paging is unchanged.
+      # matching so Pushover paging is unchanged. InfoInhibitor and Watchdog are
+      # meta-alerts (always or flapping, no incident value) and only add noise
+      # to Envoy's Alerts page.
       - receiver: envoy-staging
         continue: true
+        matchers:
+          - name: alertname
+            value: InfoInhibitor|Watchdog
+            matchType: "!~"
       - receiver: blackhole
         matchers:
           - name: alertname
