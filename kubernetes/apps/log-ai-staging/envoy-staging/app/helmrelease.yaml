@@ -148,9 +148,12 @@ spec:
               # so templates stop splitting at UTC midnight. No changesets or settings. Rollback: revert to b1ecf08.
               # Previous (b1ecf08, v1.0.1): b1ecf08a2329207a2f2e143c56169e34ebb9e784@sha256:4a07bfedb6d9feb9592bd96e3893fac4f9a3ce15259cb504f6304d3ce20d1050.
               # home-gitops#6159: v1.1.0 (envoy#437). Four Liquibase changesets (alerts-001, detection-017, knowledge-002, templating-013); treat as not
-              # reversible, rollback is restoring a DB dump, not redeploying. Alerts and query_metrics stay off.
+              # reversible, rollback is restoring a DB dump, not redeploying. Alerts and query_metrics were off then (both on since home-gitops#6177).
               # Previous (4b85d06, v1.0.2): 4b85d06cd8801092346c01ad7eeccc296861bd06@sha256:9c0dc3d16cf1729f149385f9bdd727efb268ca5f3ed3f6025567778a742a1658.
-              tag: v1.1.0@sha256:054c2f28d45ae1948b9e0f157e1317883484d1110aabe52e08d8ee62507116d7
+              # home-gitops#5946: v2.0.0 (envoy#408-#411). One new changeset (changes-001, change_records table); treat as not
+              # reversible, rollback is restoring the pre-upgrade dump, not redeploying. Config repo list below, in SPRING_APPLICATION_JSON.
+              # Previous (v1.1.0): v1.1.0@sha256:054c2f28d45ae1948b9e0f157e1317883484d1110aabe52e08d8ee62507116d7.
+              tag: v2.0.0@sha256:4d1cae6b7317aaa27f7d22878c340da5bed60ca022e03055390935cfaaf08fac
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -213,7 +216,9 @@ spec:
               # Same source-to-product mapping as production (home-gitops#5644), in bracket form so the
               # '/' in each key survives Spring's Map-key binding. Staging gets no live logs, so this
               # is parity only; it cannot be exercised here.
-              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}}}}}'
+              # home-gitops#5946: also holds envoy.reducer.changes (the config repo list, nested, so JSON). The
+              # clone cache is the emptyDir mounted at /var/cache/envoy-changes; a restart re-clones.
+              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}},"changes":{"clone-directory":"/var/cache/envoy-changes","repos":[{"name":"home-gitops","category":"platform","url":"https://github.com/dmfrey/home-gitops.git","branch":"main","include":["kubernetes/**"],"browse":{"repo":"https://github.com/dmfrey/home-gitops","file":"https://github.com/dmfrey/home-gitops/blob/{ref}/{path}","commit":"https://github.com/dmfrey/home-gitops/commit/{sha}"},"sources":[{"path":"kubernetes/apps/rook-ceph/**","source":"infra/storage"},{"path":"kubernetes/apps/garage-system/**","source":"infra/object-storage"},{"path":"kubernetes/apps/flux-system/**","source":"platform/flux-system"},{"path":"kubernetes/apps/security/**","source":"app/security"}]}]}}}}'
               ENVOY_REDUCER_TICKETS_STATUS_PATTERN: '(?m)^\s*Status: (\w+)\s*$'
               ENVOY_REDUCER_TICKETS_STATUS_CLOSED_VALUES: resolved,rejected,deleted
               # Anomaly notification email (home-gitops#5502). The restored database carries
@@ -441,7 +446,9 @@ spec:
               # Previous (78f07d8): 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352.
               # home-gitops#6159: v1.1.0 frontend.
               # Previous (31ec95f, v1.0.0): 31ec95f9332801142230886c5c87935a5aa5962c@sha256:1c69bda65d691571b89c0a80502d2a60dcaf6268ca230f28d38be24dea22d852.
-              tag: v1.1.0@sha256:0f8b27c1df0951ddf86fd2106517127205cbfa67436ebbc42d84a6d584082e59
+              # home-gitops#5946: v2.0.0 frontend (@clr/ui 18.5, changes panel, git-branch header icon).
+              # Previous (v1.1.0): v1.1.0@sha256:0f8b27c1df0951ddf86fd2106517127205cbfa67436ebbc42d84a6d584082e59.
+              tag: v2.0.0@sha256:493dec84786122c0f0b804733fd37abaabad8d1685952a0de7f89e45cc5c37b7
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
@@ -495,3 +502,13 @@ spec:
           backend:
             app:
               - path: /dumps
+      # Disposable clone of home-gitops for the change log (envoy#408). A blank
+      # clone-directory falls back to java.io.tmpdir, which fails on a read-only
+      # root filesystem.
+      changes:
+        type: emptyDir
+        sizeLimit: 1Gi
+        advancedMounts:
+          backend:
+            app:
+              - path: /var/cache/envoy-changes
