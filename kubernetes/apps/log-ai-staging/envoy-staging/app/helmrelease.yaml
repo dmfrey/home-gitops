@@ -6,6 +6,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 # Alloy routing; see envoy-staging/ks.yaml. Resource names are envoy-staging-*
 # for the database and broker, but the app and Service stay "envoy": the
 # frontend image's nginx proxies to http://envoy:8080 and needs that name.
+# Config repo: home-gitops is the first repo under envoy.reducer.changes (#5946).
 kind: HelmRelease
 metadata:
   name: envoy
