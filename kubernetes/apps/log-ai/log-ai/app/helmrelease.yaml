@@ -304,12 +304,17 @@ spec:
               # Per-source Drain max-clusters (envoy#191, 20f3fc2; default 1000). The four sources that sat
               # at the cap are raised to 2000. Bracket keys for the same reason as above; verify after the
               # restart that /api/stats maxClustersPerSource lists all four at 2000 (a missing one = key did not bind).
-              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}},"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"templating":{"drain":{"source-overrides[app/media]":{"max-clusters":2000},"source-overrides[app/download]":{"max-clusters":2000},"source-overrides[app/home]":{"max-clusters":2000},"source-overrides[platform/observability]":{"max-clusters":2000}}}}}}'
+              # home-gitops#6219 follow-up: also holds envoy.reducer.changes (home-gitops as the config repo, same as staging,
+              # #5946). The clone cache is the emptyDir mounted at /var/cache/envoy-changes; a restart re-clones.
+              SPRING_APPLICATION_JSON: '{"envoy":{"reducer":{"changes":{"clone-directory":"/var/cache/envoy-changes","repos":[{"name":"home-gitops","category":"platform","url":"https://github.com/dmfrey/home-gitops.git","branch":"main","include":["kubernetes/**"],"browse":{"repo":"https://github.com/dmfrey/home-gitops","file":"https://github.com/dmfrey/home-gitops/blob/{ref}/{path}","commit":"https://github.com/dmfrey/home-gitops/commit/{sha}"},"sources":[{"path":"kubernetes/apps/rook-ceph/**","source":"infra/storage"},{"path":"kubernetes/apps/garage-system/**","source":"infra/object-storage"},{"path":"kubernetes/apps/flux-system/**","source":"platform/flux-system"},{"path":"kubernetes/apps/security/**","source":"app/security"}]}]},"detection":{"doc-links":{"source-products[infra/storage]":{"product":"ceph"},"source-products[infra/talos]":{"product":"talos"},"source-products[infra/object-storage]":{"product":"garage"},"source-products[platform/flux-system]":{"product":"flux"}}},"tickets":{"status":{"arguments":{"ticket_id":"{externalId}"}}},"templating":{"drain":{"source-overrides[app/media]":{"max-clusters":2000},"source-overrides[app/download]":{"max-clusters":2000},"source-overrides[app/home]":{"max-clusters":2000},"source-overrides[platform/observability]":{"max-clusters":2000}}}}}}'
               # Raw-log tool (query_raw_logs, envoy#16/#5647). The property default is
               # http://localhost:3100, i.e. the pod itself, so every call was refused.
               # The Loki gateway is the same path Grafana's datasource uses; Loki has
               # auth_enabled: false, so no tenant header is needed.
               ENVOY_REDUCER_ASSIST_LOKI_BASE_URL: http://loki-gateway.observability.svc.cluster.local
+              # home-gitops#6219 follow-up: accepts Alertmanager webhooks at /api/alerts/alertmanager
+              # (bearer token, envoy.deployers group); same receiver wiring as staging (home-gitops#6177).
+              ENVOY_REDUCER_ALERTS_ALERTMANAGER_ENABLED: "true"
               # Same pod-instance wiring as spring-notes. Name must sort before
               # OTEL_RESOURCE_ATTRIBUTES: the chart renders env alphabetically
               # and $(VAR) only expands if VAR is defined earlier.
@@ -524,6 +529,16 @@ spec:
           http:
             port: 8080
     persistence:
+      # Disposable clone of home-gitops for the change log (envoy#408). A blank
+      # clone-directory falls back to java.io.tmpdir, which fails on a read-only
+      # root filesystem.
+      changes:
+        type: emptyDir
+        sizeLimit: 1Gi
+        advancedMounts:
+          backend:
+            app:
+              - path: /var/cache/envoy-changes
       # Heap dumps from HeapDumpOnOutOfMemoryError (envoy#189). Not a PVC: the
       # JVM exits after the dump (ExitOnOutOfMemoryError) and the container
       # restarts in the same pod, so the emptyDir keeps it until the pod is
