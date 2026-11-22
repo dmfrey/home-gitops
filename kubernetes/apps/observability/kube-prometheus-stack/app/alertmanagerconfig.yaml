@@ -10,11 +10,17 @@ spec:
     receiver: pushover
     repeatInterval: 12h
     routes:
-      # Copy everything to Envoy staging (home-gitops#6177 part 2), then keep
+      # Copy everything to Envoy staging (home-gitops#6177 part 2) and production, then keep
       # matching so Pushover paging is unchanged. InfoInhibitor and Watchdog are
       # meta-alerts (always or flapping, no incident value) and only add noise
       # to Envoy's Alerts page.
       - receiver: envoy-staging
+        continue: true
+        matchers:
+          - name: alertname
+            value: InfoInhibitor|Watchdog
+            matchType: "!~"
+      - receiver: envoy
         continue: true
         matchers:
           - name: alertname
@@ -63,6 +69,16 @@ spec:
     - name: envoy-staging
       webhookConfigs:
         - url: http://envoy.log-ai-staging.svc.cluster.local:8080/api/alerts/alertmanager
+          sendResolved: true
+          httpConfig:
+            authorization:
+              type: Bearer
+              credentials:
+                name: alertmanager-envoy-token
+                key: token
+    - name: envoy
+      webhookConfigs:
+        - url: http://envoy.log-ai.svc.cluster.local:8080/api/alerts/alertmanager
           sendResolved: true
           httpConfig:
             authorization:
