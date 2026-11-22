@@ -154,7 +154,7 @@ spec:
               # home-gitops#5946: v2.0.0 (envoy#408-#411). One new changeset (changes-001, change_records table); treat as not
               # reversible, rollback is restoring the pre-upgrade dump, not redeploying. Config repo list below, in SPRING_APPLICATION_JSON.
               # Previous (v1.1.0): v1.1.0@sha256:054c2f28d45ae1948b9e0f157e1317883484d1110aabe52e08d8ee62507116d7.
-              tag: v2.0.0@sha256:4d1cae6b7317aaa27f7d22878c340da5bed60ca022e03055390935cfaaf08fac
+              tag: v2.1.0@sha256:d82e30416b2af20980dda385d02af3cdc0d7d2c3661593b26d2caf3367a6f554
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
