@@ -40,7 +40,52 @@ spec:
             summary: >-
               Envoy's ingest queue metric has been missing for 10 minutes; the backend is down or the ServiceMonitor scrape is failing
           labels:
+            # Critical since home-gitops#6230: on 2026-11-12 the backend target was down
+            # for ~9.7 h (envoy#545) and this fired as a warning, whose single Pushover
+            # notification (12 h repeat) went unnoticed.
+            severity: critical
+        # home-gitops#6230 (envoy#545): failures where the process is up, or half up, and
+        # EnvoyMetricsAbsent says nothing. job="envoy" matters: spring-notes exposes the
+        # same Hikari metrics. Production only: staging has no PrometheusRule of its own.
+        - alert: EnvoyDbPoolExhausted
+          expr: |
+            max(hikaricp_connections_pending{job="envoy"}) > 0
+          for: 5m
+          annotations:
+            summary: >-
+              Envoy has had threads waiting for a database connection for 5 minutes; the pool is held and nothing is flushing
+          labels:
+            severity: critical
+        - alert: EnvoyDbConnectionTimeouts
+          expr: |
+            increase(hikaricp_connections_timeout_total{job="envoy"}[10m]) > 0
+          for: 0m
+          annotations:
+            summary: >-
+              Envoy could not get a database connection within its timeout in the last 10 minutes
+          labels:
             severity: warning
+        # The two rules below read metrics that only exist in the Envoy build with
+        # envoy#545. Until it is deployed the expressions return nothing, so they are
+        # inert (they do not fire and do not error).
+        - alert: EnvoyIngestRecordsRejected
+          expr: |
+            sum(rate(envoy_reducer_ingest_rejected_total{job="envoy"}[5m])) > 0
+          for: 5m
+          annotations:
+            summary: >-
+              Envoy is turning ingest records away (queue full or shutting down); this counts records, not requests, unlike EnvoyIngestRejecting
+          labels:
+            severity: critical
+        - alert: EnvoyFlushStalled
+          expr: |
+            time() - max(envoy_reducer_templating_flush_last_success_seconds{job="envoy"}) > 300
+          for: 2m
+          annotations:
+            summary: >-
+              Envoy's flush has not completed a cycle for over 5 minutes; counts and heartbeats are not being written and detection is blind for those hours
+          labels:
+            severity: critical
         # Netty keeps its own direct-memory counter (the JVM's buffer-pool
         # metric reads ~0 while Netty is at its cap). At the cap every new TLS
         # connection fails, including the OAuth2 token request to authentik
