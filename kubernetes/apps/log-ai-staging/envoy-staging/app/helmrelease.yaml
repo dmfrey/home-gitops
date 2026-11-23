@@ -157,7 +157,11 @@ spec:
               # home-gitops#6219: v2.1.0 (Spring Boot 4.2, Spring AI 2.1; envoy#536). One new changeset (chat-002, index on chat_sessions);
               # rollback is restoring the pre-upgrade dump. Do NOT set server.forward-headers-strategy (Boot 4.2 renamed it; both set fails startup).
               # Previous (v2.0.0): v2.0.0@sha256:4d1cae6b7317aaa27f7d22878c340da5bed60ca022e03055390935cfaaf08fac.
-              tag: v2.1.0@sha256:d82e30416b2af20980dda385d02af3cdc0d7d2c3661593b26d2caf3367a6f554
+              # home-gitops#6232: v2.2.0 (Ask Envoy panel, get_alert, chat subjects; envoy#527-#529). One new changeset (chat-003, two nullable
+              # columns, a check constraint and an index on chat_sessions); rollback is restoring the pre-upgrade dump.
+              # envoy.reducer.templating.drain.keep-content stays off (default).
+              # Previous (v2.1.0): v2.1.0@sha256:d82e30416b2af20980dda385d02af3cdc0d7d2c3661593b26d2caf3367a6f554.
+              tag: v2.2.0@sha256:8568cbf6f55809bd306b3c35dcf0831107ae8081f35e1e6b87526c982ca454f6
             # Authentik client id/secret for the "envoy" application, from the
             # 1Password item project-envoy (see externalsecret.yaml).
             envFrom:
@@ -454,7 +458,9 @@ spec:
               # Previous (v1.1.0): v1.1.0@sha256:0f8b27c1df0951ddf86fd2106517127205cbfa67436ebbc42d84a6d584082e59.
               # home-gitops#6219: v2.1.0 frontend.
               # Previous (v2.0.0): v2.0.0@sha256:493dec84786122c0f0b804733fd37abaabad8d1685952a0de7f89e45cc5c37b7.
-              tag: v2.1.0@sha256:69955dcfcfbc667a678c5a5c446fc652176638f6659b3eff3b7f97a2340c3dd5
+              # home-gitops#6232: v2.2.0 frontend (Ask Envoy panel).
+              # Previous (v2.1.0): v2.1.0@sha256:69955dcfcfbc667a678c5a5c446fc652176638f6659b3eff3b7f97a2340c3dd5.
+              tag: v2.2.0@sha256:778331528e44f140c8a13207134ee73863fe4505796c4072f4b64fca4bc1a72b
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
