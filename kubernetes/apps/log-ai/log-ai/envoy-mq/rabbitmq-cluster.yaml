@@ -11,7 +11,7 @@ metadata:
 spec:
   replicas: 1
   # renovate: datasource=docker depName=rabbitmq versioning=loose
-  image: rabbitmq:4.4-management@sha256:61f90c401a5b5ed2486771973ea92ad66046471eacab9c9149f1a6e091c91677
+  image: rabbitmq:4.4-management@sha256:1c70aa901955dff9c3c86975cf77a9498a6e3448336a2e049dde888b44f9b977
   rabbitmq:
     additionalConfig: |
       # The operator default (2GB) is larger than these PVCs, which raises a
