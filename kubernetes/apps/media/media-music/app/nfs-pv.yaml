@@ -4,7 +4,7 @@
 # UNAS Pro migration (2026-09-29): same pattern as media-tv - app-template's
 # persistence.type: nfs shorthand has no mountOptions field, and the UNAS
 # Pro only speaks NFSv3 to Linux clients, so this needs an explicit static
-# PV/PVC pair with mountOptions: [vers=3, nolock].
+# PV/PVC pair with mountOptions: [vers=4.1].
 #
 # A separate PV/PVC pointing at this same NFS path also exists in the
 # download namespace (kubernetes/apps/download/downloads-staging/) so
@@ -23,11 +23,10 @@ spec:
   capacity:
     storage: 1Ti
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/media_music/.data
+    path: /media_music
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
