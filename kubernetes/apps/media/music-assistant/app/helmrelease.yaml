@@ -108,7 +108,11 @@ spec:
         type: persistentVolumeClaim
         existingClaim: media-music
         globalMounts:
+          # 2026-11-26: the export now holds library/ (artist folders) next to
+          # downloads/ and .trash/. Mount only library/ so MA's relative paths
+          # stay unchanged and it never indexes the download folders.
           - path: /media
+            subPath: library
       tmpfs:
         type: emptyDir
         sizeLimit: 2Gi
