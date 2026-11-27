@@ -39,6 +39,9 @@ resource "lidarr_root_folder" "music" {
   metadata_profile_id     = lidarr_metadata_profile.standard.id
   monitor_option          = "future"
   new_item_monitor_option = "all"
-  path                    = "/media/music"
+  # 2026-11-26: library lives in library/ so Lidarr's scans never walk the
+  # sibling downloads/ folder (same export, hardlink-safe). Recycle bin stays
+  # at /media/music/.trash, outside this root.
+  path                    = "/media/music/library"
   tags                    = [lidarr_tag.music.id]
 }
