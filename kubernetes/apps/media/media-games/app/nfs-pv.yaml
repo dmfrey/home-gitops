@@ -19,11 +19,10 @@ spec:
   capacity:
     storage: 500Gi
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/media_games/.data
+    path: /media_games
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1

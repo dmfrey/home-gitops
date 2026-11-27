@@ -18,11 +18,10 @@ spec:
   capacity:
     storage: 500Gi
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/downloads_staging/.data
+    path: /downloads_staging
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -60,11 +59,10 @@ spec:
   capacity:
     storage: 4Ti
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/media_tv/.data
+    path: /media_tv
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -94,11 +92,10 @@ spec:
   capacity:
     storage: 1Ti
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/media_music/.data
+    path: /media_music
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -134,11 +131,10 @@ spec:
   capacity:
     storage: 8Ti
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/media_movies/.data
+    path: /media_movies
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1

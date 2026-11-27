@@ -4,8 +4,8 @@
 # ClusterRepository.spec.backend.filesystem.volume.nfs is an inline
 # v1.NFSVolumeSource, which has no mountOptions field - same limitation
 # hit throughout this migration for app-template's persistence.type: nfs
-# shorthand. The UNAS Pro only speaks NFSv3 to Linux clients and needs
-# vers=3+nolock, so this uses volume.pvc instead, backed by a real static
+# shorthand. The UNAS Pro speaks NFSv4.1 as of 2026-11-27 (was v3-only, hence the old vers=4.1) and needs
+# vers=4.1, so this uses volume.pvc instead, backed by a real static
 # PV/PVC pair here.
 # 2026-11-15: UNAS pool rebuilt (RAID6, new pool UUID); restored from the QNAP copy
 # (rsync, all files 1000:1000). PV spec.nfs is immutable: changing it means
@@ -20,11 +20,10 @@ spec:
   capacity:
     storage: 200Gi
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/kopia_nfs_repo/.data
+    path: /kopia_nfs_repo
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1

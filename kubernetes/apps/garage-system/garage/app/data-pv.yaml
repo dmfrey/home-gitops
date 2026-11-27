@@ -42,11 +42,10 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   mountOptions:
-    - vers=3
-    - nolock
+    - vers=4.1
   nfs:
     server: nas.internal
-    path: /volume/bca65fde-53e9-4a44-9c10-970f844d3152/.srv/.unifi-drive/garage_1/.data
+    path: /garage_1
   claimRef:
     name: data-garage-1
     namespace: garage-system
