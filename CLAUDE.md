@@ -250,29 +250,4 @@ GitHub Actions runs the `Flate` workflow (`.github/workflows/flate.yaml`) on PRs
 
 ## Home Assistant
 
-Home Assistant is setup as fluxcd HelmRelease and maintains local configuration for configuration, automations and dashboards. These 3 items are never checked into git since I have to manually update them on the home assistant server.
-
-### Configuration
-
-location: /kubernetes/apps/home/home-assistant/app/configuration/
-|- groups/people.yaml
-|- themes/
-|- configuration.yaml
-|- automations.yaml
-|- notify.yaml
-|- scripts.yaml
-
-### Automations
-
-location: /kubernetes/apps/home/home-assistant/app/configuration/automations.yaml
-
-### Dashboards
-
-location: /kubernetes/apps/home/home-assistant/app/dashboards/
-
-### Details
-
-Useful developer tools templates and results for diagnosing issues in home assistant.
-
-location: /kubernetes/apps/home/home-assistant/app/dashboards/
-|- developer_tools_templates.yaml
+Home Assistant is deployed as a Flux HelmRelease in `kubernetes/apps/home/home-assistant/`, but its configuration (configuration.yaml, automations, scripts, dashboards) lives in the separate `hass-config` repo, which is deployed by webhook. Nothing in this repo holds live HA configuration; use the Home Assistant MCP tools (`mcp__home-assistant__*`) to inspect state and config.
