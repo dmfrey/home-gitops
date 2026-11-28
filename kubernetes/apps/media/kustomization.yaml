@@ -10,14 +10,12 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./app-backups/ks.yaml
   - ./bazarr/ks.yaml
   - ./chaski/ks.yaml
   - ./cleanrr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellystat/ks.yaml
   - ./lidarr/ks.yaml
-  - ./media-games/ks.yaml
   - ./media-movies/ks.yaml
   - ./media-music/ks.yaml
   - ./media-tv/ks.yaml

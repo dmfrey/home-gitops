@@ -239,8 +239,9 @@ spec:
         type: emptyDir
 
       backups:
-        type: persistentVolumeClaim
-        existingClaim: app-backups
+        type: nfs
+        server: nas.internal
+        path: /app_backups
         globalMounts:
           - path: /config/backup
             subPath: backups/bazarr

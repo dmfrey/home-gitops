@@ -139,8 +139,9 @@ spec:
 
       backups:
         enabled: true
-        type: persistentVolumeClaim
-        existingClaim: app-backups
+        type: nfs
+        server: nas.internal
+        path: /app_backups
         advancedMounts:
           radarr:
             app:

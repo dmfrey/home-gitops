@@ -160,8 +160,9 @@ spec:
     persistence:
       library:
         enabled: true
-        type: persistentVolumeClaim
-        existingClaim: app-data
+        type: nfs
+        server: nas.internal
+        path: /app_data
         advancedMounts:
           immich-server:
             app:

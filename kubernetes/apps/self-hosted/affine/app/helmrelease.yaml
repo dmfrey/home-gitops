@@ -188,8 +188,9 @@ spec:
 
       uploads:
         enabled: true
-        type: persistentVolumeClaim
-        existingClaim: app-data
+        type: nfs
+        server: nas.internal
+        path: /app_data
         globalMounts:
           - path: /data/storage
             subPath: affine
