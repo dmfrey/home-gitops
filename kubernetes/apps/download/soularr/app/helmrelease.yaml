@@ -104,8 +104,9 @@ spec:
       # (its complete/downloads dir moved off downloads-staging onto the
       # same filesystem as lidarr's library).
       downloads:
-        type: persistentVolumeClaim
-        existingClaim: media-music-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_music
         globalMounts:
           - path: /downloads
             subPath: downloads/slskd/complete

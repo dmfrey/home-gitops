@@ -6,7 +6,6 @@ metadata:
   name: cross-seed
 spec:
   dependsOn:
-    - name: downloads-staging
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h

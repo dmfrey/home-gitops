@@ -133,8 +133,9 @@ spec:
         existingClaim: "{{ .Release.Name }}"
 
       media:
-        type: persistentVolumeClaim
-        existingClaim: media-tv
+        type: nfs
+        server: nas.internal
+        path: /media_tv
         globalMounts:
           - path: /media/tv_shows
 

@@ -113,13 +113,15 @@ spec:
       # byte-identical to before, so no change needed on Jellyfin's own
       # library config side.
       media-movies:
-        type: persistentVolumeClaim
-        existingClaim: media-movies
+        type: nfs
+        server: nas.internal
+        path: /media_movies
         globalMounts:
           - path: /media/movies
       media-tv:
-        type: persistentVolumeClaim
-        existingClaim: media-tv
+        type: nfs
+        server: nas.internal
+        path: /media_tv
         globalMounts:
           - path: /media/tv_shows
       transcode:
