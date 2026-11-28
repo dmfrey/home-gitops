@@ -491,8 +491,9 @@ spec:
           - path: /config/.qbt.toml
             subPath: .qbt.toml
       media:
-        type: persistentVolumeClaim
-        existingClaim: downloads-staging
+        type: nfs
+        server: nas.internal
+        path: /downloads_staging
         globalMounts:
           - path: /media/downloads/qbittorrent
             subPath: qbittorrent
@@ -504,8 +505,9 @@ spec:
       # root:root ownership issue Kubernetes' subPath auto-mkdir hit on
       # downloads-staging.
       media-tv:
-        type: persistentVolumeClaim
-        existingClaim: media-tv-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_tv
         globalMounts:
           - path: /media/tv
       # Same cross-filesystem hardlink fix as media-tv above, for the
@@ -519,15 +521,17 @@ spec:
       # a Lidarr Remote Path Mapping (/media/music-downloads -> /media/music)
       # translates cleanly, same mechanism as sonarr's tv/tv_shows mapping.
       media-music:
-        type: persistentVolumeClaim
-        existingClaim: media-music-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_music
         globalMounts:
           - path: /media/music-downloads
       # Same cross-filesystem hardlink fix as media-music above, for the
       # "movie" category (Radarr's library).
       media-movies:
-        type: persistentVolumeClaim
-        existingClaim: media-movies-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_movies
         globalMounts:
           - path: /media/movies-downloads
       tools:

@@ -87,17 +87,20 @@ spec:
       # uses at the exact same container paths, matching qbittorrent's own
       # mount-shape comments for why each is structured this way.
       media-tv:
-        type: persistentVolumeClaim
-        existingClaim: media-tv-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_tv
         globalMounts:
           - path: /media/tv
       media-music:
-        type: persistentVolumeClaim
-        existingClaim: media-music-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_music
         globalMounts:
           - path: /media/music-downloads
       media-movies:
-        type: persistentVolumeClaim
-        existingClaim: media-movies-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_movies
         globalMounts:
           - path: /media/movies-downloads

@@ -197,8 +197,9 @@ spec:
           - path: /config/slskd.yml
             subPath: slskd.yml
       media:
-        type: persistentVolumeClaim
-        existingClaim: downloads-staging
+        type: nfs
+        server: nas.internal
+        path: /downloads_staging
         globalMounts:
           - path: /media/downloads/slskd
             subPath: slskd
@@ -207,8 +208,9 @@ spec:
       # own /media/music - see qbittorrent's matching comment for why
       # (DownloadClientRootFolderCheck warning).
       media-music:
-        type: persistentVolumeClaim
-        existingClaim: media-music-downloads
+        type: nfs
+        server: nas.internal
+        path: /media_music
         globalMounts:
           - path: /media/music-downloads
       tmp:

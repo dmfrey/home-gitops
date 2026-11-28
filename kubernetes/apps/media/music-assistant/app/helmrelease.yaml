@@ -105,8 +105,9 @@ spec:
       data:
         existingClaim: "{{ .Release.Name }}"
       media:
-        type: persistentVolumeClaim
-        existingClaim: media-music
+        type: nfs
+        server: nas.internal
+        path: /media_music
         globalMounts:
           # 2026-11-26: the export now holds library/ (artist folders) next to
           # downloads/ and .trash/. Mount only library/ so MA's relative paths
