@@ -285,3 +285,58 @@ resource "prowlarr_indexer" "torrent_uindex" {
     ignore_changes = all
   }
 }
+
+resource "prowlarr_indexer" "torrent_torrentleech" {
+  # Private tracker (invite 2026-11-28). Rules: seed to ratio 1.10 OR 10 days,
+  # whichever comes first. seedRatio/seedTime/packSeedTime sync to Sonarr/
+  # Radarr/Lidarr, which apply them to each torrent in qBittorrent as
+  # per-torrent share limits, overriding qBittorrent's global 1.0 / 1 day.
+  # seedTime is in MINUTES (14400 = 10 days).
+  # Deliberately NOT tagged cross_seed: cross-seed-injected torrents get no
+  # per-torrent limits, so the global 1.0 / 1 day would apply and break the
+  # tracker's rules. Tagged flaresolverr because the Prowlarr definition
+  # warns the site may sit behind Cloudflare.
+  enable          = true
+  name            = "TorrentLeech"
+  implementation  = "Cardigann"
+  config_contract = "CardigannSettings"
+  app_profile_id  = 1
+  protocol        = "torrent"
+  priority        = 25
+  tags            = [prowlarr_tag.flaresolverr.id]
+
+  fields = [
+    {
+      name: "definitionFile"
+      text_value: "torrentleech"
+    },
+    {
+      name: "username"
+      sensitive_value: var.TORRENTLEECH_USERNAME
+    },
+    {
+      name: "password"
+      sensitive_value: var.TORRENTLEECH_PASSWORD
+    },
+    {
+      name: "baseSettings.limitsUnit"
+      number_value: "0"
+    },
+    {
+      name: "torrentBaseSettings.seedRatio"
+      number_value: "1.1"
+    },
+    {
+      name: "torrentBaseSettings.seedTime"
+      number_value: "14400"
+    },
+    {
+      name: "torrentBaseSettings.packSeedTime"
+      number_value: "14400"
+    }
+  ]
+
+  lifecycle {
+    ignore_changes = [fields]
+  }
+}
