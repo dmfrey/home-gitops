@@ -491,7 +491,7 @@ spec:
               # home-gitops#6159: v1.1.0 frontend, with the v1.1.0 backend above. Not reversible by redeploying: rollback is restoring
               # CNPG backup envoy-cnpg-pre-v1.1.0, then the previous digests (backend v1.0.2@sha256:9c0dc3d1..., frontend below).
               # Previous (78f07d8): 78f07d856c669a981cf95178e7d9455dd3e47c80@sha256:77194c5c476906eb1fc28b282188ff7c23ef3faa19c2fd0d98fab91caa3f1352.
-              tag: v2.1.0@sha256:69955dcfcfbc667a678c5a5c446fc652176638f6659b3eff3b7f97a2340c3dd5
+              tag: v2.2.0@sha256:778331528e44f140c8a13207134ee73863fe4505796c4072f4b64fca4bc1a72b
             # Explicit port: the frontend has no app-template Service (its
             # Service is the standalone service-frontend.yaml), and a probe
             # with custom: false derives its port from the chart's service,
