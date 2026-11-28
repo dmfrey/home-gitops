@@ -319,6 +319,12 @@ resource "prowlarr_indexer" "torrent_torrentleech" {
       sensitive_value: var.TORRENTLEECH_PASSWORD
     },
     {
+      # Tracker rule: stick to freeleech. Downloads of freeleech torrents
+      # don't count against the download total, so ratio isn't hurt.
+      name: "freeleech"
+      bool_value: true
+    },
+    {
       name: "baseSettings.limitsUnit"
       number_value: "0"
     },
