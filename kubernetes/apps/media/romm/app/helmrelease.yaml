@@ -157,26 +157,30 @@ spec:
       romm:
         existingClaim: "{{ .Release.Name }}"
       romm-config:
-        type: persistentVolumeClaim
-        existingClaim: media-games
+        type: nfs
+        server: nas.internal
+        path: /media_games
         globalMounts:
           - path: /romm/config
             subPath: config
       romm-assets:
-        type: persistentVolumeClaim
-        existingClaim: media-games
+        type: nfs
+        server: nas.internal
+        path: /media_games
         globalMounts:
           - path: /romm/assets
             subPath: assets
       romm-library:
-        type: persistentVolumeClaim
-        existingClaim: media-games
+        type: nfs
+        server: nas.internal
+        path: /media_games
         globalMounts:
           - path: /romm/library
             subPath: library
       romm-resources:
-        type: persistentVolumeClaim
-        existingClaim: media-games
+        type: nfs
+        server: nas.internal
+        path: /media_games
         globalMounts:
           - path: /romm/resources
             subPath: resources

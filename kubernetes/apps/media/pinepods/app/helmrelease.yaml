@@ -138,13 +138,15 @@ spec:
         globalMounts:
           - path: /opt/pinepods
       media:
-        type: persistentVolumeClaim
-        existingClaim: pinepods-media
+        type: nfs
+        server: nas.internal
+        path: /media_podcasts
         globalMounts:
           - path: /opt/pinepods/downloads
       backup:
-        type: persistentVolumeClaim
-        existingClaim: app-backups
+        type: nfs
+        server: nas.internal
+        path: /app_backups
         globalMounts:
           - path: /opt/pinepods/backups
             subPath: backups/pinepods

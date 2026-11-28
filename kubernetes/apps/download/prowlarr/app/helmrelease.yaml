@@ -109,8 +109,9 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
       backups:
-        type: persistentVolumeClaim
-        existingClaim: app-backups-prowlarr
+        type: nfs
+        server: nas.internal
+        path: /app_backups
         advancedMounts:
           prowlarr:
             app:

@@ -38,7 +38,6 @@ spec:
     - name: bazarr-db
     - name: media-movies
     - name: media-tv
-    - name: app-backups
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository

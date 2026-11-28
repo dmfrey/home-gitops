@@ -96,7 +96,6 @@ spec:
   dependsOn:
     - name: affine-db
     - name: affine-kv
-    - name: app-data
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: kopiur-repository
