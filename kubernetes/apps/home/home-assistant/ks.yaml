@@ -3,37 +3,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: home-assistant-llmvision
-spec:
-  components:
-    - ../../../../components/kopiur/backup
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: kopiur-repository
-      namespace: kopiur-system
-  interval: 1h
-  path: "./kubernetes/apps/home/home-assistant/home-assistant-llmvision"
-  postBuild:
-    substitute:
-      APP: home-assistant-llmvision
-      KOPIUR_CAPACITY: 2Gi
-    substituteFrom:
-      - kind: Secret
-        name: cluster-secrets
-        optional: false
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: home
-  wait: false
----
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: home-assistant-db
 spec:
   dependsOn:
