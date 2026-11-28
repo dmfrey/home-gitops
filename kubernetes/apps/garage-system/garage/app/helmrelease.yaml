@@ -42,15 +42,11 @@ spec:
               globalMounts:
                 - path: /meta
             - name: data
-              # 200Gi request matches the smaller of the 3 static PVs (garage-1/garage-2,
-              # 200Gi each on the multimedia NFS volume with 1.26Ti free) — garage-0's PV
-              # (248Gi, its existing /garage export, 159Gi free today) has more headroom
-              # than this ever requests, which is fine (a PVC only needs request <= PV
-              # capacity, not equal). storageClass: "" means don't dynamically provision;
-              # bind to the pre-created static PV in data-pv.yaml instead, matched by
-              # claimRef per ordinal (data-garage-0/1/2). This whole NFS-static-PV setup
-              # is a stopgap: the QNAP is near capacity, expect to redo this once the
-              # planned Unifi UNAS Pro 4 migration lands.
+              # 200Gi is only a request (a PVC needs request <= PV capacity, not
+              # equal). Replica 0 binds a retained Ceph RBD volume, replica 1 the
+              # static garage-data-1 NFS PV (UNAS /garage_1) and replica 2 the static
+              # garage-data-2 NFS PV (QNAP), pre-bound by claimRef per ordinal in
+              # data-pv.yaml. storageClass: "" means don't dynamically provision.
               size: 200Gi
               accessMode: ReadWriteMany
               storageClass: ""

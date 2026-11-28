@@ -3,8 +3,7 @@
 # in THIS namespace. spec.allowedNamespaces lists both garage-system and
 # kopiur-system as consumers, but PersistentVolumeClaims are namespace-scoped,
 # so each consuming namespace needs its own PVC pointing at the same
-# underlying NFS export - same pattern as downloads-staging/app-backups
-# elsewhere in this migration. The kopiur-system/kopiur/repository/nfs-pv.yaml
+# underlying NFS export. The kopiur-system/kopiur/repository/nfs-pv.yaml
 # PVC only covers that namespace; this one was missed during the 2026-09-29
 # UNAS migration, leaving kopiur's garage-system-side verify/maintenance Jobs
 # permanently Pending (persistentvolumeclaim "kopia-nfs-repo" not found).
@@ -12,7 +11,7 @@
 # expect in this namespace.
 # 2026-11-15: UNAS pool rebuilt (RAID6, new pool UUID); restored from the QNAP copy
 # (rsync, all files 1000:1000). PV spec.nfs is immutable: changing it means
-# deleting the PV and PVC first. The share's export path ends in /.data.
+# deleting the PV and PVC first.
 apiVersion: v1
 kind: PersistentVolume
 metadata:

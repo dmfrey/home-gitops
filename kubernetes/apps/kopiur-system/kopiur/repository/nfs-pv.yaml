@@ -1,15 +1,14 @@
 ---
-# Backing volume for the "nfs" ClusterRepository (clusterrepository-nfs.yaml)
-# - UNAS Pro migration (2026-09-29), moved off the QNAP's nas.internal:/Kopia/kopiur.
-# ClusterRepository.spec.backend.filesystem.volume.nfs is an inline
-# v1.NFSVolumeSource, which has no mountOptions field - same limitation
-# hit throughout this migration for app-template's persistence.type: nfs
-# shorthand. The UNAS Pro speaks NFSv4.1 as of 2026-11-27 (was v3-only, hence the old vers=4.1) and needs
-# vers=4.1, so this uses volume.pvc instead, backed by a real static
-# PV/PVC pair here.
-# 2026-11-15: UNAS pool rebuilt (RAID6, new pool UUID); restored from the QNAP copy
-# (rsync, all files 1000:1000). PV spec.nfs is immutable: changing it means
-# deleting the PV and PVC first. The share's export path ends in /.data.
+# Backing volume for the "nfs" ClusterRepository (clusterrepository-nfs.yaml),
+# on the UNAS Pro's kopia_nfs_repo share (moved off the QNAP's /Kopia/kopiur on
+# 2026-09-29). The ClusterRepository references it as volume.pvc. This is a PV
+# rather than an inline NFS volume from the days when the UNAS was NFSv3-only
+# and the mount needed an explicit vers option; the UNAS has spoken NFSv4.1 since
+# 2026-11-27 and Talos nodes default to nfsvers=4.1 (/etc/nfsmount.conf), so the
+# vers=4.1 below is now just explicit, and an inline volume would also work.
+# 2026-11-15: UNAS pool rebuilt; restored from the QNAP copy (rsync, all files
+# 1000:1000). PV spec.nfs is immutable: changing it means deleting the PV and PVC
+# first.
 apiVersion: v1
 kind: PersistentVolume
 metadata:

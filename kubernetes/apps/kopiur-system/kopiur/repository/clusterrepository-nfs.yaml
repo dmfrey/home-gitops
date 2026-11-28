@@ -13,9 +13,11 @@ spec:
   # UNAS Pro migration (2026-09-29): moved off the QNAP's
   # nas.internal:/Kopia/kopiur onto the dedicated kopia_nfs_repo UNAS
   # Shared Drive. Switched from an inline NFS volume to a PVC
-  # (nfs-pv.yaml, in this same directory) - the UNAS Pro needs
-  # explicit vers=4.1 mount options, which an inline v1.NFSVolumeSource can't
-  # carry (no mountOptions field). Migrated with the SnapshotSchedule
+  # (nfs-pv.yaml, in this same directory) while the UNAS was NFSv3-only and
+  # needed explicit mount options, which an inline v1.NFSVolumeSource can't
+  # carry (no mountOptions field). The UNAS has spoken NFSv4.1 since
+  # 2026-11-27 and nodes default to nfsvers=4.1, so an inline volume would
+  # now work too; the PVC stays. Migrated with the SnapshotSchedule
   # suspended first (not a live rsync) and a full `kopia snapshot verify
   # --verify-files-percent=100` pass confirmed clean on the new location
   # before this cutover - see project_qnap_to_unas_migration memory for
