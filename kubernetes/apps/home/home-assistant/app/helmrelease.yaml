@@ -286,12 +286,6 @@ spec:
         existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/.venv
-      llmvision:
-        existingClaim: home-assistant-llmvision
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config/www/llmvision
       # Split out of the old whole-root nas.internal:/media QNAP mount
       # (2026-09-30) - configuration.yaml/automations.yaml both hardcode
       # /media/llmvision and /media/reolink (HACS blueprints expect them
