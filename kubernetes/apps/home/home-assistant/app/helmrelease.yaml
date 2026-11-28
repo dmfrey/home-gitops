@@ -294,16 +294,20 @@ spec:
       # UNAS shares now. Confirmed no other /media/* path is referenced
       # anywhere in config before retiring the catch-all mount.
       media-llmvision:
-        existingClaim: home-assistant-media-llmvision
+        type: nfs
+        server: nas.internal
+        path: /llmvision
         advancedMounts:
           home-assistant:
             app:
               - path: /media/llmvision
       media-reolink:
-        # Shares the same PVC reolink-ftp itself writes to (both in the
-        # `home` namespace) - HA only reads here (the "cat house" shell_command
-        # lists recent recordings), never writes, so mounted read-only.
-        existingClaim: reolink-ftp
+        # Same share reolink-ftp itself writes to - HA only reads here (the
+        # "cat house" shell_command lists recent recordings), never writes,
+        # so mounted read-only.
+        type: nfs
+        server: nas.internal
+        path: /reolink
         advancedMounts:
           home-assistant:
             app:
@@ -318,8 +322,9 @@ spec:
             subPath: tmp
       backups:
         enabled: true
-        type: persistentVolumeClaim
-        existingClaim: home-assistant-backups
+        type: nfs
+        server: nas.internal
+        path: /homeassistant
         advancedMounts:
           home-assistant:
             app:

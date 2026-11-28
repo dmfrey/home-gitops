@@ -84,6 +84,8 @@ spec:
 
     persistence:
       data:
-        existingClaim: reolink-ftp
+        type: nfs
+        server: nas.internal
+        path: /reolink
         globalMounts:
           - path: /home/reolink/uploads
