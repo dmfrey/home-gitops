@@ -38,6 +38,16 @@ variable "NZBPLANET_API_KEY" {
   sensitive = true
 }
 
+variable "TORRENTLEECH_USERNAME" {
+  type      = string
+  sensitive = true
+}
+
+variable "TORRENTLEECH_PASSWORD" {
+  type      = string
+  sensitive = true
+}
+
 variable "prowlarr_url" {
   type    = string
   default = "http://prowlarr.download.svc.cluster.local:9696"
