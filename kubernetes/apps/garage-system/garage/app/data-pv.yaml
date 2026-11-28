@@ -1,4 +1,12 @@
 ---
+# Current state (2026-11-27): garage-0 is on a retained Ceph RBD volume (no PV
+# here), garage-1 is garage-data-1 below (UNAS nas.internal:/garage_1, NFSv4.1
+# from the node default plus the explicit option), garage-2 is garage-data-2
+# (QNAP 192.168.30.2:/garage_data_2, NFSv3 + nolock, which overrides the nodes'
+# default nfsvers=4.1 from talos/machineconfig.yaml.j2). These stay static PVs
+# because each ordinal needs its own export/backing store, which inline volumes
+# in a volumeClaimTemplate can't provide.
+#
 # Static per-replica NFS PersistentVolumes for Garage's object data. NFS volumes
 # don't get per-ordinal templating the way StatefulSet volumeClaimTemplates give
 # Ceph PVCs (see the "meta" volumeClaimTemplate in helmrelease.yaml) — each of
@@ -61,6 +69,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
+  # QNAP export: NFSv3 only, so pin it explicitly (nodes default to nfsvers=4.1).
   mountOptions:
     - vers=3
     - nolock
